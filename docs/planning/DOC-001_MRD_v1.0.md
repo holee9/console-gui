@@ -6,7 +6,7 @@
 | 항목 | 내용 |
 |------|------|
 | **문서 ID** | MRD-XRAY-GUI-001 |
-| **버전** | v1.0 |
+| **버전** | v1.1 |
 | **작성일** | 2026년 3월 16일 |
 | **상태** | 검토 중 (Under Review) |
 | **분류** | 대외비 (Confidential) |
@@ -20,6 +20,22 @@
 | 버전 | 날짜 | 개정자 | 개정 내용 |
 |------|------|--------|---------|
 | v1.0 | 2026-03-27 | 제품전략팀 | 최초 작성 |
+| v1.1 | 2026-03-27 | 제품전략팀 | 우선순위 체계 4단계(P1-P4) 재분류, 체크박스 선택 형식 도입, 규제-위험 기반 분류 기준 적용 |
+
+---
+
+## 우선순위 분류 체계 (Priority Classification)
+
+본 문서는 규제-위험 기반 4단계 우선순위 체계를 적용합니다.
+
+| 등급 | 명칭 | 정의 | 선택 |
+|------|------|------|------|
+| **P1** | Regulatory Mandatory | 법규/인증 필수. 미충족 시 시판 불가 | ☑ 고정 |
+| **P2** | Safety-Critical | ISO 14971 위험분석 기반 위험 제어 수단 | ☑ 고정 |
+| **P3** | Clinically Important | 임상 워크플로우/진단 품질에 중요 | ☐ 선택 가능 |
+| **P4** | Desirable | UX 향상/경쟁력 기능. 차기 릴리스 연기 가능 | ☐ 선택 가능 |
+
+**분류 기준**: 규제 필수 → P1 | 위험 제어 수단 → P2 | 임상 중요도 높음 → P3 | 기타 → P4
 
 ---
 
@@ -570,103 +586,103 @@ flowchart LR
 
 | MR ID | 카테고리 | 요구사항 | 우선순위 | DI 분류 | 연결 PRD ID | 검증 방법 | 밸리데이션 방법 | 위험 참조 | 근거/출처 |
 |-------|---------|---------|---------|---------|-----------|---------|-------------|---------|---------|
-| MR-001 | 워크플로우 | DICOM Modality Worklist(MWL)를 통해 HIS/RIS에서 환자 검사 목록을 자동으로 가져와야 하며, 수동 데이터 입력을 최소화해야 한다 | Must | Interface, Functional | FR-WF-001, FR-WF-002, NFR-RG-001 | Test | Clinical Simulation | HAZ-WF-001 (환자 정보 오입력) | DICOM 표준; 입력 오류 방지 |
-| MR-002 | 워크플로우 | 촬영 완료부터 PACS 영상 확인 가능까지 소요 시간이 30초 이내여야 한다 | Must | Performance | FR-WF-003, NFR-EX-001 | Performance Test | Performance Test | HAZ-WF-002 (진단 지연) | 임상 워크플로우 효율성; VoC 요구 |
-| MR-003 | 워크플로우 | 한 환자의 일반적인 X-Ray 촬영 워크플로우(환자 선택 → 프로토콜 선택 → 촬영 → 전송)를 최대 5 클릭 이내로 완료할 수 있어야 한다 | Must | Usability | FR-WF-004, NFR-UX-001 | Test | Usability Test | HAZ-UX-001 (조작 오류) | Click Fatigue 해소; Carestream 벤치마크 |
-| MR-004 | 워크플로우 | 200개 이상의 표준 촬영 프로토콜(Body Part + Projection 조합)을 사전 정의하여 제공해야 한다 | Must | Functional | FR-WF-005, FR-WF-006 | Inspection | Clinical Simulation | HAZ-WF-003 (프로토콜 오선택) | OR Technology 400개+ 대비 기본 커버리지 |
-| MR-005 | 워크플로우 | 자주 사용하는 프로토콜에 대한 즐겨찾기(Favorites) 기능 및 사용자 맞춤형 프로토콜 설정이 가능해야 한다 | Should | Usability | FR-WF-007, NFR-UX-002 | Test | Usability Test | HAZ-WF-003 (프로토콜 오선택) | 방사선사 개인화 니즈; UX 향상 |
-| MR-006 | 워크플로우 | 이전 촬영 영상을 현재 촬영 화면과 나란히 비교(Prior Image Comparison)할 수 있어야 한다 | Should | Functional | FR-WF-008 | Test | Clinical Simulation | HAZ-IP-001 (진단 오류) | 영상의학과 의사 니즈; Siemens 벤치마크 |
-| MR-007 | 워크플로우 | 응급(STAT) 검사 우선순위 처리 기능을 지원해야 한다 | Must | Functional, Safety | FR-WF-009, FR-SF-001 | Test | Clinical Simulation | HAZ-WF-004 (응급 처리 지연) | 응급 임상 환경 필수 기능 |
-| MR-008 | 워크플로우 | 이동형 장치(Mobile X-Ray)를 위한 무선 연결 기반 동일 워크플로우를 지원해야 한다 | Should | Functional, Interface | FR-WF-010, FR-DC-001 | Test | Clinical Simulation | HAZ-WF-005 (연결 단절) | 응급실, 중환자실 이동 촬영 수요 |
-| MR-009 | 워크플로우 | 촬영 완료 후 MPPS(Modality Performed Procedure Step)를 자동으로 RIS/HIS에 보고해야 한다 | Must | Interface, Functional | FR-WF-011, FR-DC-002 | Test | N/A | HAZ-WF-001 (환자 정보 오류) | DICOM 표준; IHE Scheduled Workflow 준수 |
-| MR-010 | 워크플로우 | 다중 디텍터(Multi-detector) 환경에서 각 디텍터의 상태를 실시간으로 표시하고 선택할 수 있어야 한다 | Should | Functional, Interface | FR-WF-012, FR-DC-003 | Test | Demonstration | HAZ-HW-001 (디텍터 오선택) | 멀티룸 운영 환경; OR Technology 벤치마크 |
+| MR-001 | 워크플로우 | DICOM Modality Worklist(MWL)를 통해 HIS/RIS에서 환자 검사 목록을 자동으로 가져와야 하며, 수동 데이터 입력을 최소화해야 한다 | ☐ P3 | Interface, Functional | FR-WF-001, FR-WF-002, NFR-RG-001 | Test | Clinical Simulation | HAZ-WF-001 (환자 정보 오입력) | DICOM 표준; 입력 오류 방지 |
+| MR-002 | 워크플로우 | 촬영 완료부터 PACS 영상 확인 가능까지 소요 시간이 30초 이내여야 한다 | ☐ P3 | Performance | FR-WF-003, NFR-EX-001 | Performance Test | Performance Test | HAZ-WF-002 (진단 지연) | 임상 워크플로우 효율성; VoC 요구 |
+| MR-003 | 워크플로우 | 한 환자의 일반적인 X-Ray 촬영 워크플로우(환자 선택 → 프로토콜 선택 → 촬영 → 전송)를 최대 5 클릭 이내로 완료할 수 있어야 한다 | ☐ P3 | Usability | FR-WF-004, NFR-UX-001 | Test | Usability Test | HAZ-UX-001 (조작 오류) | Click Fatigue 해소; Carestream 벤치마크 |
+| MR-004 | 워크플로우 | 200개 이상의 표준 촬영 프로토콜(Body Part + Projection 조합)을 사전 정의하여 제공해야 한다 | ☐ P3 | Functional | FR-WF-005, FR-WF-006 | Inspection | Clinical Simulation | HAZ-WF-003 (프로토콜 오선택) | OR Technology 400개+ 대비 기본 커버리지 |
+| MR-005 | 워크플로우 | 자주 사용하는 프로토콜에 대한 즐겨찾기(Favorites) 기능 및 사용자 맞춤형 프로토콜 설정이 가능해야 한다 | ☐ P3 | Usability | FR-WF-007, NFR-UX-002 | Test | Usability Test | HAZ-WF-003 (프로토콜 오선택) | 방사선사 개인화 니즈; UX 향상 |
+| MR-006 | 워크플로우 | 이전 촬영 영상을 현재 촬영 화면과 나란히 비교(Prior Image Comparison)할 수 있어야 한다 | ☐ P3 | Functional | FR-WF-008 | Test | Clinical Simulation | HAZ-IP-001 (진단 오류) | 영상의학과 의사 니즈; Siemens 벤치마크 |
+| MR-007 | 워크플로우 | 응급(STAT) 검사 우선순위 처리 기능을 지원해야 한다 | ☐ P3 | Functional, Safety | FR-WF-009, FR-SF-001 | Test | Clinical Simulation | HAZ-WF-004 (응급 처리 지연) | 응급 임상 환경 필수 기능 |
+| MR-008 | 워크플로우 | 이동형 장치(Mobile X-Ray)를 위한 무선 연결 기반 동일 워크플로우를 지원해야 한다 | ☐ P4 | Functional, Interface | FR-WF-010, FR-DC-001 | Test | Clinical Simulation | HAZ-WF-005 (연결 단절) | 응급실, 중환자실 이동 촬영 수요 |
+| MR-009 | 워크플로우 | 촬영 완료 후 MPPS(Modality Performed Procedure Step)를 자동으로 RIS/HIS에 보고해야 한다 | ☐ P3 | Interface, Functional | FR-WF-011, FR-DC-002 | Test | N/A | HAZ-WF-001 (환자 정보 오류) | DICOM 표준; IHE Scheduled Workflow 준수 |
+| MR-010 | 워크플로우 | 다중 디텍터(Multi-detector) 환경에서 각 디텍터의 상태를 실시간으로 표시하고 선택할 수 있어야 한다 | ☐ P3 | Functional, Interface | FR-WF-012, FR-DC-003 | Test | Demonstration | HAZ-HW-001 (디텍터 오선택) | 멀티룸 운영 환경; OR Technology 벤치마크 |
 
 ### 5.2 카테고리 2: 영상 품질 (Image Quality)
 
 | MR ID | 카테고리 | 요구사항 | 우선순위 | DI 분류 | 연결 PRD ID | 검증 방법 | 밸리데이션 방법 | 위험 참조 | 근거/출처 |
 |-------|---------|---------|---------|---------|-----------|---------|-------------|---------|---------|
-| MR-011 | 영상 품질 | 자동 이미지 최적화(Auto Image Processing)를 기본으로 제공하여 일관된 진단 품질의 영상을 보장해야 한다 | Must | Functional, Performance | FR-IP-001, FR-IP-002 | Test | Clinical Simulation | HAZ-IP-001 (진단 오류) | Carestream Eclipse Engine; Siemens DiamondView 벤치마크 |
-| MR-012 | 영상 품질 | Window/Level, Zoom, Pan 등 기본 영상 조작 기능을 촬영 직후 즉시 사용할 수 있어야 한다 | Must | Functional, Usability | FR-IP-003, NFR-UX-003 | Test | Usability Test | HAZ-IP-001 (진단 오류) | 방사선사 기본 니즈 |
-| MR-013 | 영상 품질 | Edge Enhancement, Noise Reduction 등 후처리 알고리즘을 적용하고 사전 설정(Preset)으로 저장할 수 있어야 한다 | Must | Functional | FR-IP-004, FR-IP-005 | Test | Clinical Simulation | HAZ-IP-001 (진단 오류) | Canon Advanced Edge Enhancement; Carestream Noise Cancellation |
-| MR-014 | 영상 품질 | AI 기반 노이즈 캔슬레이션(Smart Noise Cancellation)을 통해 낮은 선량에서도 진단 품질을 유지할 수 있어야 한다 | Should | Functional, Performance | FR-IP-006, FR-AI-001 | Test | Clinical Simulation | HAZ-DM-001 (과다 선량), HAZ-IP-001 | Carestream AI 기능; 선량 최소화 트렌드 |
-| MR-015 | 영상 품질 | 전신 촬영을 위한 이미지 스티칭(Image Stitching) 기능을 지원해야 한다 (최소 2장 이상) | Should | Functional | FR-IP-007 | Test | Clinical Simulation | HAZ-IP-002 (스티칭 오류) | Canon 4장 스티칭; 정형외과, 척추 전문 클리닉 수요 |
-| MR-016 | 영상 품질 | 방사선 재촬영(Reject) 시 사유를 기록하고, 이를 집계한 Reject Analysis 보고서를 제공해야 한다 | Must | Functional | FR-IP-008, FR-IP-009 | Test | N/A | HAZ-DM-001 (과다 선량) | Canon 벤치마크; 품질 관리 필수; IHE 권고 |
-| MR-017 | 영상 품질 | Scatter Correction 기능을 통해 산란 방사선으로 인한 영상 열화를 보정할 수 있어야 한다 | Should | Functional | FR-IP-010 | Test | Clinical Simulation | HAZ-IP-001 (진단 오류) | Canon Scatter Correction 벤치마크 |
-| MR-018 | 영상 품질 | 영상 품질 지표(SNR, MTF 등)를 자동으로 측정하고 기준치 미달 시 경고를 제공해야 한다 | Could | Functional, Performance | FR-IP-011, FR-AI-002 | Test | N/A | HAZ-IP-001 (진단 오류) | 품질 자동화; AI Analytics |
+| MR-011 | 영상 품질 | 자동 이미지 최적화(Auto Image Processing)를 기본으로 제공하여 일관된 진단 품질의 영상을 보장해야 한다 | ☐ P3 | Functional, Performance | FR-IP-001, FR-IP-002 | Test | Clinical Simulation | HAZ-IP-001 (진단 오류) | Carestream Eclipse Engine; Siemens DiamondView 벤치마크 |
+| MR-012 | 영상 품질 | Window/Level, Zoom, Pan 등 기본 영상 조작 기능을 촬영 직후 즉시 사용할 수 있어야 한다 | ☐ P3 | Functional, Usability | FR-IP-003, NFR-UX-003 | Test | Usability Test | HAZ-IP-001 (진단 오류) | 방사선사 기본 니즈 |
+| MR-013 | 영상 품질 | Edge Enhancement, Noise Reduction 등 후처리 알고리즘을 적용하고 사전 설정(Preset)으로 저장할 수 있어야 한다 | ☐ P3 | Functional | FR-IP-004, FR-IP-005 | Test | Clinical Simulation | HAZ-IP-001 (진단 오류) | Canon Advanced Edge Enhancement; Carestream Noise Cancellation |
+| MR-014 | 영상 품질 | AI 기반 노이즈 캔슬레이션(Smart Noise Cancellation)을 통해 낮은 선량에서도 진단 품질을 유지할 수 있어야 한다 | ☐ P4 | Functional, Performance | FR-IP-006, FR-AI-001 | Test | Clinical Simulation | HAZ-DM-001 (과다 선량), HAZ-IP-001 | Carestream AI 기능; 선량 최소화 트렌드 |
+| MR-015 | 영상 품질 | 전신 촬영을 위한 이미지 스티칭(Image Stitching) 기능을 지원해야 한다 (최소 2장 이상) | ☐ P4 | Functional | FR-IP-007 | Test | Clinical Simulation | HAZ-IP-002 (스티칭 오류) | Canon 4장 스티칭; 정형외과, 척추 전문 클리닉 수요 |
+| MR-016 | 영상 품질 | 방사선 재촬영(Reject) 시 사유를 기록하고, 이를 집계한 Reject Analysis 보고서를 제공해야 한다 | ☑ P2 | Functional | FR-IP-008, FR-IP-009 | Test | N/A | HAZ-DM-001 (과다 선량) | Canon 벤치마크; 품질 관리 필수; IHE 권고 |
+| MR-017 | 영상 품질 | Scatter Correction 기능을 통해 산란 방사선으로 인한 영상 열화를 보정할 수 있어야 한다 | ☑ P2 | Functional | FR-IP-010 | Test | Clinical Simulation | HAZ-IP-001 (진단 오류) | Canon Scatter Correction 벤치마크 |
+| MR-018 | 영상 품질 | 영상 품질 지표(SNR, MTF 등)를 자동으로 측정하고 기준치 미달 시 경고를 제공해야 한다 | ☑ P2 | Functional, Performance | FR-IP-011, FR-AI-002 | Test | N/A | HAZ-IP-001 (진단 오류) | 품질 자동화; AI Analytics |
 
 ### 5.3 카테고리 3: 통합/연동성 (Integration & Interoperability)
 
 | MR ID | 카테고리 | 요구사항 | 우선순위 | DI 분류 | 연결 PRD ID | 검증 방법 | 밸리데이션 방법 | 위험 참조 | 근거/출처 |
 |-------|---------|---------|---------|---------|-----------|---------|-------------|---------|---------|
-| MR-019 | 통합/연동 | DICOM 3.0 표준의 다음 서비스를 필수 지원해야 한다: Storage SCU (C-STORE), MWL SCU, MPPS, Storage Commitment, Query/Retrieve SCU | Must | Interface, Regulatory | FR-DC-004, FR-DC-005, FR-DC-006, NFR-RG-002 | Test | N/A | HAZ-WF-001 (환자 정보 오류) | DICOM 표준; Canon, Siemens 벤치마크 |
-| MR-020 | 통합/연동 | IHE Scheduled Workflow (SWF) 프로파일을 준수해야 한다 | Must | Interface, Regulatory | FR-DC-007, NFR-RG-003 | Inspection | N/A | HAZ-WF-001 (환자 정보 오류) | IHE 표준; 병원 구매 요구사항 |
-| MR-021 | 통합/연동 | 주요 PACS 시스템(최소 3개 벤더 이상)과의 상호운용성을 검증된 상태로 제공해야 한다 | Must | Interface | FR-DC-008 | Test | N/A | HAZ-WF-002 (진단 지연) | 병원 구매 요구사항; OR Technology 멀티벤더 벤치마크 |
-| MR-022 | 통합/연동 | HL7 FHIR 기반 EMR/HIS 연동 인터페이스를 제공해야 한다 | Should | Interface | FR-DC-009 | Test | N/A | HAZ-WF-001 (환자 정보 오류) | 디지털 전환 트렌드; 병원 통합 요구 |
-| MR-023 | 통합/연동 | 주요 DR 디텍터 제조사(최소 3개 벤더)의 디텍터와 호환되어야 한다 (Multi-vendor Detector Support) | Should | Interface | FR-DC-010 | Test | Demonstration | HAZ-HW-001 (디텍터 오선택) | OR Technology 강점 벤치마크; 벤더 락인 방지 |
-| MR-024 | 통합/연동 | DICOM Print Management를 통한 필름 출력을 지원해야 한다 | Must | Interface | FR-DC-011 | Test | N/A | N/A | 일부 지역 아직 필름 출력 요구 |
-| MR-025 | 통합/연동 | DICOM Worklist를 통해 Radiology Information System(RIS)으로부터 검사 일정을 자동 수신해야 한다 | Must | Interface, Functional | FR-DC-012, FR-WF-001 | Test | N/A | HAZ-WF-001 (환자 정보 오류) | DICOM 표준 MWL; IHE 프로파일 |
-| MR-026 | 통합/연동 | RESTful API를 통한 외부 시스템 연동 인터페이스를 제공해야 한다 | Should | Interface | FR-DC-013, NFR-EX-002 | Test | N/A | HAZ-CS-001 (비인가 접근) | Cloud/AI 통합 확장성; 미래 지향적 아키텍처 |
+| MR-019 | 통합/연동 | DICOM 3.0 표준의 다음 서비스를 필수 지원해야 한다: Storage SCU (C-STORE), MWL SCU, MPPS, Storage Commitment, Query/Retrieve SCU | ☑ P1 | Interface, Regulatory | FR-DC-004, FR-DC-005, FR-DC-006, NFR-RG-002 | Test | N/A | HAZ-WF-001 (환자 정보 오류) | DICOM 표준; Canon, Siemens 벤치마크 |
+| MR-020 | 통합/연동 | IHE Scheduled Workflow (SWF) 프로파일을 준수해야 한다 | ☑ P1 | Interface, Regulatory | FR-DC-007, NFR-RG-003 | Inspection | N/A | HAZ-WF-001 (환자 정보 오류) | IHE 표준; 병원 구매 요구사항 |
+| MR-021 | 통합/연동 | 주요 PACS 시스템(최소 3개 벤더 이상)과의 상호운용성을 검증된 상태로 제공해야 한다 | ☐ P3 | Interface | FR-DC-008 | Test | N/A | HAZ-WF-002 (진단 지연) | 병원 구매 요구사항; OR Technology 멀티벤더 벤치마크 |
+| MR-022 | 통합/연동 | HL7 FHIR 기반 EMR/HIS 연동 인터페이스를 제공해야 한다 | ☐ P4 | Interface | FR-DC-009 | Test | N/A | HAZ-WF-001 (환자 정보 오류) | 디지털 전환 트렌드; 병원 통합 요구 |
+| MR-023 | 통합/연동 | 주요 DR 디텍터 제조사(최소 3개 벤더)의 디텍터와 호환되어야 한다 (Multi-vendor Detector Support) | ☐ P3 | Interface | FR-DC-010 | Test | Demonstration | HAZ-HW-001 (디텍터 오선택) | OR Technology 강점 벤치마크; 벤더 락인 방지 |
+| MR-024 | 통합/연동 | DICOM Print Management를 통한 필름 출력을 지원해야 한다 | ☐ P3 | Interface | FR-DC-011 | Test | N/A | N/A | 일부 지역 아직 필름 출력 요구 |
+| MR-025 | 통합/연동 | DICOM Worklist를 통해 Radiology Information System(RIS)으로부터 검사 일정을 자동 수신해야 한다 | ☐ P3 | Interface, Functional | FR-DC-012, FR-WF-001 | Test | N/A | HAZ-WF-001 (환자 정보 오류) | DICOM 표준 MWL; IHE 프로파일 |
+| MR-026 | 통합/연동 | RESTful API를 통한 외부 시스템 연동 인터페이스를 제공해야 한다 | ☐ P4 | Interface | FR-DC-013, NFR-EX-002 | Test | N/A | HAZ-CS-001 (비인가 접근) | Cloud/AI 통합 확장성; 미래 지향적 아키텍처 |
 
 ### 5.4 카테고리 4: 안전성 및 선량 관리 (Safety & Dose Management)
 
 | MR ID | 카테고리 | 요구사항 | 우선순위 | DI 분류 | 연결 PRD ID | 검증 방법 | 밸리데이션 방법 | 위험 참조 | 근거/출처 |
 |-------|---------|---------|---------|---------|-----------|---------|-------------|---------|---------|
-| MR-027 | 선량 관리 | DICOM Radiation Dose Structured Report (RDSR)를 생성하여 PACS/DRL 시스템으로 전송해야 한다 | Must | Safety, Interface, Regulatory | FR-DM-001, FR-DC-014, NFR-RG-004 | Test | N/A | HAZ-DM-001 (과다 선량), HAZ-DM-002 (선량 미보고) | Canon RDSR 지원; 규제 요구 (EU 방사선 방호 지침) |
-| MR-028 | 선량 관리 | 환자 개별 선량 이력을 기록하고 DRL(Diagnostic Reference Level) 초과 시 경고를 제공해야 한다 | Must | Safety, Functional | FR-DM-002, FR-DM-003, FR-SF-002 | Test | Clinical Simulation | HAZ-DM-001 (과다 선량) | OR Dose Inspector 벤치마크; 환자 안전 |
-| MR-029 | 선량 관리 | 촬영 전 예상 선량 정보를 화면에 표시해야 한다 | Must | Safety, Usability | FR-DM-004, NFR-UX-004 | Test | Usability Test | HAZ-DM-001 (과다 선량) | 방사선사 인식 제고; 안전 요건 |
-| MR-030 | 선량 관리 | 소아 환자에 대한 별도 선량 프로토콜 및 DRL 기준을 적용해야 한다 | Must | Safety, Functional | FR-DM-005, FR-SF-003 | Test | Clinical Simulation | HAZ-DM-003 (소아 과다 선량) | Siemens 200개+ 소아 프로토콜 벤치마크; 소아 방호 규정 |
-| MR-031 | 선량 관리 | AEC(Automatic Exposure Control) 파라미터를 콘솔 SW에서 모니터링하고 설정할 수 있어야 한다 | Must | Safety, Functional | FR-DM-006, FR-SF-004 | Test | Demonstration | HAZ-DM-001 (과다 선량) | 자동화 선량 관리; 기본 안전 기능 |
-| MR-032 | 선량 관리 | 선량 트렌드 분석 및 기관별/장치별 선량 통계 보고서를 제공해야 한다 | Should | Functional, Regulatory | FR-DM-007 | Test | N/A | HAZ-DM-002 (선량 미보고) | OR Dose Inspector; 규제 보고 효율화 |
+| MR-027 | 선량 관리 | DICOM Radiation Dose Structured Report (RDSR)를 생성하여 PACS/DRL 시스템으로 전송해야 한다 | ☑ P1 | Safety, Interface, Regulatory | FR-DM-001, FR-DC-014, NFR-RG-004 | Test | N/A | HAZ-DM-001 (과다 선량), HAZ-DM-002 (선량 미보고) | Canon RDSR 지원; 규제 요구 (EU 방사선 방호 지침) |
+| MR-028 | 선량 관리 | 환자 개별 선량 이력을 기록하고 DRL(Diagnostic Reference Level) 초과 시 경고를 제공해야 한다 | ☑ P2 | Safety, Functional | FR-DM-002, FR-DM-003, FR-SF-002 | Test | Clinical Simulation | HAZ-DM-001 (과다 선량) | OR Dose Inspector 벤치마크; 환자 안전 |
+| MR-029 | 선량 관리 | 촬영 전 예상 선량 정보를 화면에 표시해야 한다 | ☑ P2 | Safety, Usability | FR-DM-004, NFR-UX-004 | Test | Usability Test | HAZ-DM-001 (과다 선량) | 방사선사 인식 제고; 안전 요건 |
+| MR-030 | 선량 관리 | 소아 환자에 대한 별도 선량 프로토콜 및 DRL 기준을 적용해야 한다 | ☑ P2 | Safety, Functional | FR-DM-005, FR-SF-003 | Test | Clinical Simulation | HAZ-DM-003 (소아 과다 선량) | Siemens 200개+ 소아 프로토콜 벤치마크; 소아 방호 규정 |
+| MR-031 | 선량 관리 | AEC(Automatic Exposure Control) 파라미터를 콘솔 SW에서 모니터링하고 설정할 수 있어야 한다 | ☑ P2 | Safety, Functional | FR-DM-006, FR-SF-004 | Test | Demonstration | HAZ-DM-001 (과다 선량) | 자동화 선량 관리; 기본 안전 기능 |
+| MR-032 | 선량 관리 | 선량 트렌드 분석 및 기관별/장치별 선량 통계 보고서를 제공해야 한다 | ☑ P2 | Functional, Regulatory | FR-DM-007 | Test | N/A | HAZ-DM-002 (선량 미보고) | OR Dose Inspector; 규제 보고 효율화 |
 
 ### 5.5 카테고리 5: 사이버보안 (Cybersecurity)
 
 | MR ID | 카테고리 | 요구사항 | 우선순위 | DI 분류 | 연결 PRD ID | 검증 방법 | 밸리데이션 방법 | 위험 참조 | 근거/출처 |
 |-------|---------|---------|---------|---------|-----------|---------|-------------|---------|---------|
-| MR-033 | 사이버보안 | Role-Based Access Control(RBAC)을 통한 사용자 권한 관리를 제공해야 한다 | Must | Safety, Regulatory | FR-CS-001, NFR-SC-001 | Test | N/A | HAZ-CS-001 (비인가 접근), HAZ-CS-002 (PHI 노출) | FDA Cybersecurity Guidance (Section 524B); Carestream SSO 벤치마크 |
-| MR-034 | 사이버보안 | 모든 PHI(Protected Health Information) 데이터를 전송 및 저장 시 AES-256 이상의 암호화로 보호해야 한다 | Must | Safety, Regulatory | FR-CS-002, NFR-SC-002 | Test, Analysis | N/A | HAZ-CS-002 (PHI 노출) | FDA 524B; HIPAA; GDPR |
-| MR-035 | 사이버보안 | 모든 사용자 액세스 및 시스템 이벤트에 대한 감사 로그(Audit Log)를 생성하고 최소 1년 이상 보관해야 한다 | Must | Safety, Regulatory | FR-CS-003, NFR-SC-003 | Test, Inspection | N/A | HAZ-CS-003 (감사 추적 불가) | FDA 사이버보안 가이드라인; Audit Logging 요건 |
-| MR-036 | 사이버보안 | 소프트웨어 구성요소 목록(SBOM: Software Bill of Materials)을 생성하고 제출할 수 있어야 한다 | Must | Regulatory | NFR-SC-004, NFR-RG-005 | Inspection | N/A | HAZ-CS-004 (취약한 컴포넌트) | FDA 524B SBOM 법적 요건 (2024~) |
-| MR-037 | 사이버보안 | 취약점 공개 정책(CVD: Coordinated Vulnerability Disclosure) 프로세스를 갖추어야 한다 | Must | Regulatory | NFR-SC-005, NFR-RG-006 | Inspection | N/A | HAZ-CS-004 (취약한 컴포넌트) | FDA Postmarket Cybersecurity Guidance |
-| MR-038 | 사이버보안 | 도메인 인증(Active Directory/LDAP) 및 Single Sign-On(SSO) 연동을 지원해야 한다 | Should | Interface, Safety | FR-CS-004, NFR-SC-006 | Test | N/A | HAZ-CS-001 (비인가 접근) | Carestream 벤치마크; 병원 IT 운영 효율화 |
-| MR-039 | 사이버보안 | 소프트웨어 무결성 검증(Code Signing, Integrity Check)을 통해 무단 변조를 방지해야 한다 | Must | Safety, Regulatory | FR-CS-005, NFR-SC-007 | Test, Analysis | N/A | HAZ-CS-005 (SW 변조) | FDA 사이버보안; 의료기기 보안 표준 |
-| MR-040 | 사이버보안 | 네트워크 격리(Network Segmentation) 환경에서도 핵심 기능이 작동해야 한다 | Should | Functional, Safety | FR-CS-006, NFR-EX-003 | Test | Demonstration | HAZ-CS-006 (네트워크 장애) | 병원 보안 정책; 오프라인 운영 연속성 |
+| MR-033 | 사이버보안 | Role-Based Access Control(RBAC)을 통한 사용자 권한 관리를 제공해야 한다 | ☑ P1 | Safety, Regulatory | FR-CS-001, NFR-SC-001 | Test | N/A | HAZ-CS-001 (비인가 접근), HAZ-CS-002 (PHI 노출) | FDA Cybersecurity Guidance (Section 524B); Carestream SSO 벤치마크 |
+| MR-034 | 사이버보안 | 모든 PHI(Protected Health Information) 데이터를 전송 및 저장 시 AES-256 이상의 암호화로 보호해야 한다 | ☑ P1 | Safety, Regulatory | FR-CS-002, NFR-SC-002 | Test, Analysis | N/A | HAZ-CS-002 (PHI 노출) | FDA 524B; HIPAA; GDPR |
+| MR-035 | 사이버보안 | 모든 사용자 액세스 및 시스템 이벤트에 대한 감사 로그(Audit Log)를 생성하고 최소 1년 이상 보관해야 한다 | ☑ P1 | Safety, Regulatory | FR-CS-003, NFR-SC-003 | Test, Inspection | N/A | HAZ-CS-003 (감사 추적 불가) | FDA 사이버보안 가이드라인; Audit Logging 요건 |
+| MR-036 | 사이버보안 | 소프트웨어 구성요소 목록(SBOM: Software Bill of Materials)을 생성하고 제출할 수 있어야 한다 | ☑ P1 | Regulatory | NFR-SC-004, NFR-RG-005 | Inspection | N/A | HAZ-CS-004 (취약한 컴포넌트) | FDA 524B SBOM 법적 요건 (2024~) |
+| MR-037 | 사이버보안 | 취약점 공개 정책(CVD: Coordinated Vulnerability Disclosure) 프로세스를 갖추어야 한다 | ☑ P1 | Regulatory | NFR-SC-005, NFR-RG-006 | Inspection | N/A | HAZ-CS-004 (취약한 컴포넌트) | FDA Postmarket Cybersecurity Guidance |
+| MR-038 | 사이버보안 | 도메인 인증(Active Directory/LDAP) 및 Single Sign-On(SSO) 연동을 지원해야 한다 | ☑ P2 | Interface, Safety | FR-CS-004, NFR-SC-006 | Test | N/A | HAZ-CS-001 (비인가 접근) | Carestream 벤치마크; 병원 IT 운영 효율화 |
+| MR-039 | 사이버보안 | 소프트웨어 무결성 검증(Code Signing, Integrity Check)을 통해 무단 변조를 방지해야 한다 | ☑ P1 | Safety, Regulatory | FR-CS-005, NFR-SC-007 | Test, Analysis | N/A | HAZ-CS-005 (SW 변조) | FDA 사이버보안; 의료기기 보안 표준 |
+| MR-040 | 사이버보안 | 네트워크 격리(Network Segmentation) 환경에서도 핵심 기능이 작동해야 한다 | ☑ P2 | Functional, Safety | FR-CS-006, NFR-EX-003 | Test | Demonstration | HAZ-CS-006 (네트워크 장애) | 병원 보안 정책; 오프라인 운영 연속성 |
 
 ### 5.6 카테고리 6: 사용성 (UX/UI)
 
 | MR ID | 카테고리 | 요구사항 | 우선순위 | DI 분류 | 연결 PRD ID | 검증 방법 | 밸리데이션 방법 | 위험 참조 | 근거/출처 |
 |-------|---------|---------|---------|---------|-----------|---------|-------------|---------|---------|
-| MR-041 | UX/UI | 터치스크린 기반 운영을 기본으로 지원하고, 마우스/키보드 운영도 병행 지원해야 한다 | Must | Usability | FR-UX-001, NFR-UX-005 | Test | Usability Test | HAZ-UX-001 (조작 오류) | Canon 터치스크린; OR Technology; 현장 환경 다양성 |
-| MR-042 | UX/UI | Nielsen 10 휴리스틱 기반 사용성 평가에서 75점 이상 (100점 기준)을 달성해야 한다 | Must | Usability, Performance | NFR-UX-006 | Test | Usability Test | HAZ-UX-001 (조작 오류), HAZ-UX-002 (사용 오류) | 현재 평균 65.41% 수준 개선 목표; VoC 연구 |
-| MR-043 | UX/UI | 방사선사가 처음 시스템을 접한 후 기본 촬영 워크플로우를 4시간 이내에 독립 수행할 수 있어야 한다 | Should | Usability, Performance | NFR-UX-007 | Test | Usability Test | HAZ-UX-002 (사용 오류) | Philips 교육시간 33~40% 절감 벤치마크 |
-| MR-044 | UX/UI | 시스템 상태(연결 상태, 촬영 준비 상태, 오류 상태)를 색상 및 아이콘으로 즉각 인지 가능하도록 표시해야 한다 | Must | Usability, Safety | FR-UX-002, NFR-UX-008 | Test | Usability Test | HAZ-UX-003 (상태 오인지), HAZ-SF-001 | Nielsen 사용성 연구; 시스템 상태 피드백 부족 문제 |
-| MR-045 | UX/UI | 다국어(최소 한국어, 영어, 중국어, 스페인어) 인터페이스를 지원해야 한다 | Should | Usability | FR-UX-003 | Inspection | N/A | HAZ-UX-002 (사용 오류) | OR Technology, Siemens 벤치마크; 글로벌 시장 진출 |
-| MR-046 | UX/UI | 주요 촬영 부위별 멀티미디어 포지셔닝 가이드를 제공해야 한다 | Could | Usability | FR-UX-004 | Inspection | Usability Test | HAZ-UX-002 (사용 오류) | OR Technology 포지셔닝 가이드 벤치마크; 신입 교육 지원 |
-| MR-047 | UX/UI | 화면 구성을 사용자별/역할별로 커스터마이징할 수 있어야 한다 | Should | Usability | FR-UX-005, NFR-UX-009 | Test | Usability Test | HAZ-UX-001 (조작 오류) | Nielsen 연구; 사용자 수준별 뷰 부재 문제 해결 |
-| MR-048 | UX/UI | 오류 메시지는 문제 원인과 해결 방법을 명확히 안내해야 하며, 기술적 코드만 표시해서는 안 된다 | Must | Usability, Safety | FR-UX-006, NFR-UX-010 | Test | Usability Test | HAZ-UX-003 (상태 오인지) | Nielsen 사용성 연구; 부적절한 에러 메시지 문제 |
-| MR-049 | UX/UI | 스마트폰/태블릿 기반 원격 제어 앱을 통해 콘솔의 기본 기능을 원격 조작할 수 있어야 한다 | Could | Functional, Usability | FR-UX-007, FR-AI-003 | Test | Usability Test | HAZ-CS-001 (비인가 접근) | OR Technology 원격 제어 앱 벤치마크 |
+| MR-041 | UX/UI | 터치스크린 기반 운영을 기본으로 지원하고, 마우스/키보드 운영도 병행 지원해야 한다 | ☐ P3 | Usability | FR-UX-001, NFR-UX-005 | Test | Usability Test | HAZ-UX-001 (조작 오류) | Canon 터치스크린; OR Technology; 현장 환경 다양성 |
+| MR-042 | UX/UI | Nielsen 10 휴리스틱 기반 사용성 평가에서 75점 이상 (100점 기준)을 달성해야 한다 | ☐ P3 | Usability, Performance | NFR-UX-006 | Test | Usability Test | HAZ-UX-001 (조작 오류), HAZ-UX-002 (사용 오류) | 현재 평균 65.41% 수준 개선 목표; VoC 연구 |
+| MR-043 | UX/UI | 방사선사가 처음 시스템을 접한 후 기본 촬영 워크플로우를 4시간 이내에 독립 수행할 수 있어야 한다 | ☐ P3 | Usability, Performance | NFR-UX-007 | Test | Usability Test | HAZ-UX-002 (사용 오류) | Philips 교육시간 33~40% 절감 벤치마크 |
+| MR-044 | UX/UI | 시스템 상태(연결 상태, 촬영 준비 상태, 오류 상태)를 색상 및 아이콘으로 즉각 인지 가능하도록 표시해야 한다 | ☑ P2 | Usability, Safety | FR-UX-002, NFR-UX-008 | Test | Usability Test | HAZ-UX-003 (상태 오인지), HAZ-SF-001 | Nielsen 사용성 연구; 시스템 상태 피드백 부족 문제 |
+| MR-045 | UX/UI | 다국어(최소 한국어, 영어, 중국어, 스페인어) 인터페이스를 지원해야 한다 | ☐ P4 | Usability | FR-UX-003 | Inspection | N/A | HAZ-UX-002 (사용 오류) | OR Technology, Siemens 벤치마크; 글로벌 시장 진출 |
+| MR-046 | UX/UI | 주요 촬영 부위별 멀티미디어 포지셔닝 가이드를 제공해야 한다 | ☐ P3 | Usability | FR-UX-004 | Inspection | Usability Test | HAZ-UX-002 (사용 오류) | OR Technology 포지셔닝 가이드 벤치마크; 신입 교육 지원 |
+| MR-047 | UX/UI | 화면 구성을 사용자별/역할별로 커스터마이징할 수 있어야 한다 | ☐ P4 | Usability | FR-UX-005, NFR-UX-009 | Test | Usability Test | HAZ-UX-001 (조작 오류) | Nielsen 연구; 사용자 수준별 뷰 부재 문제 해결 |
+| MR-048 | UX/UI | 오류 메시지는 문제 원인과 해결 방법을 명확히 안내해야 하며, 기술적 코드만 표시해서는 안 된다 | ☑ P2 | Usability, Safety | FR-UX-006, NFR-UX-010 | Test | Usability Test | HAZ-UX-003 (상태 오인지) | Nielsen 사용성 연구; 부적절한 에러 메시지 문제 |
+| MR-049 | UX/UI | 스마트폰/태블릿 기반 원격 제어 앱을 통해 콘솔의 기본 기능을 원격 조작할 수 있어야 한다 | ☐ P4 | Functional, Usability | FR-UX-007, FR-AI-003 | Test | Usability Test | HAZ-CS-001 (비인가 접근) | OR Technology 원격 제어 앱 벤치마크 |
 
 ### 5.7 카테고리 7: 규제 준수 (Regulatory Compliance)
 
 | MR ID | 카테고리 | 요구사항 | 우선순위 | DI 분류 | 연결 PRD ID | 검증 방법 | 밸리데이션 방법 | 위험 참조 | 근거/출처 |
 |-------|---------|---------|---------|---------|-----------|---------|-------------|---------|---------|
-| MR-050 | 규제 준수 | IEC 62304 Class B에 따른 소프트웨어 수명주기 프로세스를 준수하여 개발되어야 한다 | Must | Regulatory | NFR-RG-007 | Inspection | N/A | N/A | IEC 62304; FDA, CE 인증 요건 |
-| MR-051 | 규제 준수 | IEC 62366-1에 따른 사용성 공학 프로세스를 적용하여 Use Specification, Summative Evaluation을 문서화해야 한다 | Must | Regulatory, Usability | NFR-RG-008 | Inspection | Usability Test | HAZ-UX-001, HAZ-UX-002 | IEC 62366; FDA, CE 인증 요건 |
-| MR-052 | 규제 준수 | FDA 21 CFR Part 820 (QSR)/ISO 13485 기반 품질 관리 시스템하에 개발 및 검증되어야 한다 | Must | Regulatory | NFR-RG-009 | Inspection | N/A | N/A | FDA 510(k) 제출 요건 |
-| MR-053 | 규제 준수 | 모든 시장 출시 전 해당 지역 규제 승인(FDA 510(k), CE 마킹, MFDS 허가)을 획득해야 한다 | Must | Regulatory | NFR-RG-010 | Inspection | N/A | N/A | 의료기기 법규 |
-| MR-054 | 규제 준수 | DICOM Conformance Statement를 작성하여 공개해야 한다 | Must | Regulatory, Interface | NFR-RG-011 | Inspection | N/A | N/A | Canon 벤치마크; 병원 구매 요구사항 |
-| MR-055 | 규제 준수 | GDPR 및 HIPAA에 따른 개인정보 보호 기능(데이터 익명화, 삭제권, 접근 로그)을 제공해야 한다 | Must | Regulatory, Safety | FR-CS-007, NFR-RG-012 | Test, Inspection | N/A | HAZ-CS-002 (PHI 노출) | EU/미국 데이터 보호법 |
+| MR-050 | 규제 준수 | IEC 62304 Class B에 따른 소프트웨어 수명주기 프로세스를 준수하여 개발되어야 한다 | ☑ P1 | Regulatory | NFR-RG-007 | Inspection | N/A | N/A | IEC 62304; FDA, CE 인증 요건 |
+| MR-051 | 규제 준수 | IEC 62366-1에 따른 사용성 공학 프로세스를 적용하여 Use Specification, Summative Evaluation을 문서화해야 한다 | ☑ P1 | Regulatory, Usability | NFR-RG-008 | Inspection | Usability Test | HAZ-UX-001, HAZ-UX-002 | IEC 62366; FDA, CE 인증 요건 |
+| MR-052 | 규제 준수 | FDA 21 CFR Part 820 (QSR)/ISO 13485 기반 품질 관리 시스템하에 개발 및 검증되어야 한다 | ☑ P1 | Regulatory | NFR-RG-009 | Inspection | N/A | N/A | FDA 510(k) 제출 요건 |
+| MR-053 | 규제 준수 | 모든 시장 출시 전 해당 지역 규제 승인(FDA 510(k), CE 마킹, MFDS 허가)을 획득해야 한다 | ☑ P1 | Regulatory | NFR-RG-010 | Inspection | N/A | N/A | 의료기기 법규 |
+| MR-054 | 규제 준수 | DICOM Conformance Statement를 작성하여 공개해야 한다 | ☑ P1 | Regulatory, Interface | NFR-RG-011 | Inspection | N/A | N/A | Canon 벤치마크; 병원 구매 요구사항 |
+| MR-055 | 규제 준수 | GDPR 및 HIPAA에 따른 개인정보 보호 기능(데이터 익명화, 삭제권, 접근 로그)을 제공해야 한다 | ☑ P1 | Regulatory, Safety | FR-CS-007, NFR-RG-012 | Test, Inspection | N/A | HAZ-CS-002 (PHI 노출) | EU/미국 데이터 보호법 |
 
 ### 5.8 카테고리 8: 확장성 및 AI-Readiness
 
 | MR ID | 카테고리 | 요구사항 | 우선순위 | DI 분류 | 연결 PRD ID | 검증 방법 | 밸리데이션 방법 | 위험 참조 | 근거/출처 |
 |-------|---------|---------|---------|---------|-----------|---------|-------------|---------|---------|
-| MR-056 | AI-Readiness | AI 알고리즘 플러그인 아키텍처를 제공하여 제3자 FDA 승인 AI 모듈을 통합할 수 있어야 한다 | Should | Functional | FR-AI-004, NFR-EX-004 | Test | Demonstration | HAZ-AI-001 (AI 오진단 보조) | FDA AI 승인 873개+; AI 생태계 확장 전략 |
-| MR-057 | AI-Readiness | AI 기반 자동 콜리메이션(Auto Collimation) 기능을 1단계 이후 통합 가능한 아키텍처로 설계해야 한다 | Should | Functional | FR-AI-005, NFR-EX-005 | Analysis | Demonstration | HAZ-DM-001 (과다 선량) | Siemens Auto Collimation 벤치마크 |
-| MR-058 | AI-Readiness | AI 기반 환자 포지셔닝 보조 기능을 향후 통합 가능한 인터페이스를 설계해야 한다 | Could | Functional | FR-AI-006, NFR-EX-006 | Analysis | N/A | HAZ-AI-001 (AI 오진단 보조) | Siemens Smart Positioning 벤치마크 |
-| MR-059 | 확장성 | 마이크로서비스 또는 모듈형 아키텍처를 채택하여 기능별 독립 배포 및 업데이트가 가능해야 한다 | Should | Functional | NFR-EX-007 | Inspection | N/A | HAZ-CS-005 (SW 변조) | Cloud-native 트렌드; 유지보수 효율화 |
-| MR-060 | 확장성 | Cloud 기반 배포 옵션(SaaS, Hybrid)을 지원해야 한다 | Could | Functional, Interface | NFR-EX-008 | Test | N/A | HAZ-CS-001 (비인가 접근) | Philips 클라우드 벤치마크; 미래 시장 요구 |
-| MR-061 | 확장성 | 운영 데이터(처리량, 오류율, 선량 통계)를 API로 외부 Analytics 플랫폼에 제공할 수 있어야 한다 | Should | Functional, Interface | FR-AI-007, NFR-EX-009 | Test | N/A | HAZ-CS-001 (비인가 접근) | Carestream Analytics Intelligence; 데이터 기반 운영 |
-| MR-062 | 확장성 | 부서/사이트 단위의 중앙 집중식 설정 관리(Centralized Configuration Management)를 지원해야 한다 | Should | Functional | NFR-EX-010 | Test | Demonstration | HAZ-CS-001 (비인가 접근) | Philips 멀티사이트 벤치마크; 대형 병원 운영 효율화 |
+| MR-056 | AI-Readiness | AI 알고리즘 플러그인 아키텍처를 제공하여 제3자 FDA 승인 AI 모듈을 통합할 수 있어야 한다 | ☐ P4 | Functional | FR-AI-004, NFR-EX-004 | Test | Demonstration | HAZ-AI-001 (AI 오진단 보조) | FDA AI 승인 873개+; AI 생태계 확장 전략 |
+| MR-057 | AI-Readiness | AI 기반 자동 콜리메이션(Auto Collimation) 기능을 1단계 이후 통합 가능한 아키텍처로 설계해야 한다 | ☐ P4 | Functional | FR-AI-005, NFR-EX-005 | Analysis | Demonstration | HAZ-DM-001 (과다 선량) | Siemens Auto Collimation 벤치마크 |
+| MR-058 | AI-Readiness | AI 기반 환자 포지셔닝 보조 기능을 향후 통합 가능한 인터페이스를 설계해야 한다 | ☐ P4 | Functional | FR-AI-006, NFR-EX-006 | Analysis | N/A | HAZ-AI-001 (AI 오진단 보조) | Siemens Smart Positioning 벤치마크 |
+| MR-059 | 확장성 | 마이크로서비스 또는 모듈형 아키텍처를 채택하여 기능별 독립 배포 및 업데이트가 가능해야 한다 | ☐ P4 | Functional | NFR-EX-007 | Inspection | N/A | HAZ-CS-005 (SW 변조) | Cloud-native 트렌드; 유지보수 효율화 |
+| MR-060 | 확장성 | Cloud 기반 배포 옵션(SaaS, Hybrid)을 지원해야 한다 | ☐ P4 | Functional, Interface | NFR-EX-008 | Test | N/A | HAZ-CS-001 (비인가 접근) | Philips 클라우드 벤치마크; 미래 시장 요구 |
+| MR-061 | 확장성 | 운영 데이터(처리량, 오류율, 선량 통계)를 API로 외부 Analytics 플랫폼에 제공할 수 있어야 한다 | ☐ P4 | Functional, Interface | FR-AI-007, NFR-EX-009 | Test | N/A | HAZ-CS-001 (비인가 접근) | Carestream Analytics Intelligence; 데이터 기반 운영 |
+| MR-062 | 확장성 | 부서/사이트 단위의 중앙 집중식 설정 관리(Centralized Configuration Management)를 지원해야 한다 | ☐ P4 | Functional | NFR-EX-010 | Test | Demonstration | HAZ-CS-001 (비인가 접근) | Philips 멀티사이트 벤치마크; 대형 병원 운영 효율화 |
 
 ---
 
@@ -1030,17 +1046,17 @@ gantt
 
 ### 부록 C: 시장 요구사항 요약 매트릭스
 
-| 카테고리 | Must | Should | Could | 합계 |
-|---------|:----:|:------:|:-----:|:----:|
-| 워크플로우 효율성 | 6 | 4 | 0 | **10** |
-| 영상 품질 | 4 | 3 | 1 | **8** |
-| 통합/연동성 | 5 | 3 | 0 | **8** |
-| 안전성/선량 관리 | 5 | 1 | 0 | **6** |
-| 사이버보안 | 6 | 2 | 0 | **8** |
-| 사용성 (UX/UI) | 4 | 4 | 1 | **9** |
-| 규제 준수 | 6 | 0 | 0 | **6** |
-| 확장성/AI-Readiness | 0 | 5 | 2 | **7** |
-| **합계** | **36** | **22** | **4** | **62** |
+| 카테고리 | ☑ P1 | ☑ P2 | ☐ P3 | ☐ P4 | 합계 |
+|---------|:----:|:----:|:----:|:----:|:----:|
+| 워크플로우 효율성 | 0 | 0 | 9 | 1 | **10** |
+| 영상 품질 | 0 | 3 | 3 | 2 | **8** |
+| 통합/연동성 | 2 | 0 | 4 | 2 | **8** |
+| 안전성/선량 관리 | 1 | 5 | 0 | 0 | **6** |
+| 사이버보안 | 6 | 2 | 0 | 0 | **8** |
+| 사용성 (UX/UI) | 0 | 2 | 4 | 3 | **9** |
+| 규제 준수 | 6 | 0 | 0 | 0 | **6** |
+| 확장성/AI-Readiness | 0 | 0 | 0 | 7 | **7** |
+| **합계** | **15** | **12** | **20** | **15** | **62** |
 
 ---
 

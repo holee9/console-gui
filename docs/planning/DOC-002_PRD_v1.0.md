@@ -6,9 +6,10 @@
 | 항목 | 내용 |
 |------|------|
 | **문서 ID** | PRD-XRAY-GUI-001 |
-| **버전** | v1.0 |
+| **버전** | v1.2 |
 | **작성일** | 2026-03-27 |
 | **개정일** | 2026-03-27 |
+| **이전 버전** | v1.1 |
 | **작성자** | 제품 관리팀 |
 | **승인자** | (승인 대기) |
 | **상태** | Draft |
@@ -22,6 +23,23 @@
 | 버전 | 날짜 | 작성자 | 변경 내용 |
 |------|------|--------|-----------|
 | v1.0 | 2026-03-27 | 제품팀 | 최초 작성 |
+| v1.1 | 2026-03-27 | 제품팀 | MRD P1-P4 우선순위 체계 연계 반영, 체크박스 선택 형식 도입 |
+| v1.2 | 2026-03-27 | 제품팀 | MRD-PRD 우선순위 교차검증: PR-SA-060(RBAC) P3→P1, US-007/010/012 P3→P2, US-013 P3→P1 |
+
+---
+
+## 우선순위 분류 체계 (Priority Classification)
+
+MRD의 규제-위험 기반 4단계 우선순위 체계를 계승합니다.
+
+| 등급 | 명칭 | 정의 | 선택 |
+|------|------|------|------|
+| **P1** | Regulatory Mandatory | 법규/인증 필수. 미충족 시 시판 불가 | ☑ 고정 |
+| **P2** | Safety-Critical | ISO 14971 위험분석 기반 위험 제어 수단 | ☑ 고정 |
+| **P3** | Clinically Important | 임상 워크플로우/진단 품질에 중요 | ☐ 선택 가능 |
+| **P4** | Desirable | UX 향상/경쟁력 기능. 차기 릴리스 연기 가능 | ☐ 선택 가능 |
+
+> **참고**: 각 PR-xxx의 우선순위는 출처 MR-xxx의 MRD 우선순위 등급을 계승합니다. 복수의 MR에서 파생된 PR은 가장 높은 우선순위(P1 > P2 > P3 > P4)를 따릅니다.
 
 ---
 
@@ -106,7 +124,7 @@ flowchart LR
 | **출처 MR** | MRD의 MR-xxx ID (역추적용, Backward Traceability) |
 | **요구사항명** | 기능/요구사항 명칭 |
 | **상세 설명** | PR 수준의 기능 설명 (What, 구현 방법 아님) |
-| **우선순위** | P0 (필수) / P1 (중요) / P2 (희망) |
+| **우선순위** | ☑ P1 (Regulatory Mandatory) / ☑ P2 (Safety-Critical) / ☐ P3 (Clinically Important) / ☐ P4 (Desirable) |
 | **Phase** | 구현 대상 Phase (1 / 1.5 / 2) |
 | **수용 기준** | PR 수준 Acceptance Criteria (시스템 검증 기준) |
 | **파생 SWR** | 이 PR에서 파생되는 SWR-xxx ID (FRS/SRS에서 상세 정의 예정) |
@@ -329,34 +347,34 @@ journey
 
 | ID | User Story | 우선순위 | Phase |
 |----|-----------|---------|-------|
-| US-001 | As a 방사선사, I want to select a patient from the DICOM Worklist in one tap, so that I can start the exam without manual data entry. | P0 | 1 |
-| US-002 | As a 방사선사, I want the system to automatically apply the correct imaging protocol based on the selected body part, so that I minimize protocol selection errors. | P0 | 1 |
-| US-003 | As a 방사선사, I want to see the acquired image within 1 second of exposure, so that I can assess image quality and decide on retakes immediately. | P0 | 1 |
-| US-004 | As a 방사선사, I want a one-touch emergency registration mode, so that I can quickly start imaging for trauma patients without entering full demographic data. | P0 | 1 |
-| US-005 | As a 방사선사, I want the system to display real-time detector status (Ready/Busy/Error), so that I can identify equipment issues before exposure. | P0 | 1 |
-| US-006 | As a 방사선사, I want to adjust Window/Level, Zoom, and Pan with touch gestures, so that I can review images naturally and efficiently. | P0 | 1 |
-| US-007 | As a 방사선사, I want the system to warn me when the exposure dose exceeds the DRL, so that I can take corrective action to protect the patient. | P0 | 1 |
-| US-008 | As a 방사선사, I want to suspend and resume an exam session, so that I can handle interruptions (emergency calls, equipment swaps) without losing data. | P1 | 1 |
-| US-009 | As a 방사선사, I want automatic image stitching for full spine/leg-length studies (up to 4 images), so that I can produce panoramic images without manual alignment. | P1 | 1.5 |
-| US-010 | As a 방사선사, I want the system to automatically log rejected images with rejection reason, so that dose and quality metrics are maintained accurately. | P1 | 1.5 |
+| US-001 | As a 방사선사, I want to select a patient from the DICOM Worklist in one tap, so that I can start the exam without manual data entry. | ☐ P3 | 1 |
+| US-002 | As a 방사선사, I want the system to automatically apply the correct imaging protocol based on the selected body part, so that I minimize protocol selection errors. | ☐ P3 | 1 |
+| US-003 | As a 방사선사, I want to see the acquired image within 1 second of exposure, so that I can assess image quality and decide on retakes immediately. | ☐ P3 | 1 |
+| US-004 | As a 방사선사, I want a one-touch emergency registration mode, so that I can quickly start imaging for trauma patients without entering full demographic data. | ☐ P3 | 1 |
+| US-005 | As a 방사선사, I want the system to display real-time detector status (Ready/Busy/Error), so that I can identify equipment issues before exposure. | ☐ P3 | 1 |
+| US-006 | As a 방사선사, I want to adjust Window/Level, Zoom, and Pan with touch gestures, so that I can review images naturally and efficiently. | ☐ P3 | 1 |
+| US-007 | As a 방사선사, I want the system to warn me when the exposure dose exceeds the DRL, so that I can take corrective action to protect the patient. | ☑ P2 | 1 |
+| US-008 | As a 방사선사, I want to suspend and resume an exam session, so that I can handle interruptions (emergency calls, equipment swaps) without losing data. | ☐ P3 | 1 |
+| US-009 | As a 방사선사, I want automatic image stitching for full spine/leg-length studies (up to 4 images), so that I can produce panoramic images without manual alignment. | ☐ P3 | 1.5 |
+| US-010 | As a 방사선사, I want the system to automatically log rejected images with rejection reason, so that dose and quality metrics are maintained accurately. | ☑ P2 | 1.5 |
 
 #### 선임 방사선사 / 의학물리사
 
 | ID | User Story | 우선순위 | Phase |
 |----|-----------|---------|-------|
-| US-011 | As a 선임 방사선사, I want to create and edit organ programs (APR) with custom kVp/mAs defaults, so that imaging protocols are standardized across the department. | P0 | 1 |
-| US-012 | As a 의학물리사, I want to view daily dose reports and compare against DRLs, so that I can identify outliers and optimize radiation protection. | P0 | 1 |
-| US-013 | As a 의학물리사, I want the system to generate RDSR automatically after each exam, so that dose data is transmitted to the dose registry without manual effort. | P0 | 1 |
-| US-014 | As a 선임 방사선사, I want to review rejected image statistics by technologist/body part, so that I can identify training needs and reduce retake rates. | P1 | 1.5 |
+| US-011 | As a 선임 방사선사, I want to create and edit organ programs (APR) with custom kVp/mAs defaults, so that imaging protocols are standardized across the department. | ☐ P3 | 1 |
+| US-012 | As a 의학물리사, I want to view daily dose reports and compare against DRLs, so that I can identify outliers and optimize radiation protection. | ☑ P2 | 1 |
+| US-013 | As a 의학물리사, I want the system to generate RDSR automatically after each exam, so that dose data is transmitted to the dose registry without manual effort. | ☑ P1 | 1 |
+| US-014 | As a 선임 방사선사, I want to review rejected image statistics by technologist/body part, so that I can identify training needs and reduce retake rates. | ☐ P3 | 1.5 |
 
 #### BMET 엔지니어
 
 | ID | User Story | 우선순위 | Phase |
 |----|-----------|---------|-------|
-| US-015 | As a BMET, I want to perform Gain/Offset calibration through a guided wizard UI, so that detector calibration is accurate and repeatable. | P0 | 1 |
-| US-016 | As a BMET, I want to access system logs filtered by severity level, so that I can quickly diagnose issues without sifting through irrelevant entries. | P0 | 1 |
-| US-017 | As a BMET, I want to configure DICOM network settings (AE Title, IP, port) through a GUI, so that PACS/RIS integration is straightforward. | P0 | 1 |
-| US-018 | As a BMET, I want the software to support remote diagnostic access, so that issues can be resolved without an on-site visit when possible. | P1 | 2 |
+| US-015 | As a BMET, I want to perform Gain/Offset calibration through a guided wizard UI, so that detector calibration is accurate and repeatable. | ☐ P3 | 1 |
+| US-016 | As a BMET, I want to access system logs filtered by severity level, so that I can quickly diagnose issues without sifting through irrelevant entries. | ☐ P3 | 1 |
+| US-017 | As a BMET, I want to configure DICOM network settings (AE Title, IP, port) through a GUI, so that PACS/RIS integration is straightforward. | ☐ P3 | 1 |
+| US-018 | As a BMET, I want the software to support remote diagnostic access, so that issues can be resolved without an on-site visit when possible. | ☐ P3 | 2 |
 
 ---
 
@@ -372,26 +390,26 @@ journey
 
 | ID | 출처 MR | 요구사항명 | 상세 설명 | 우선순위 | Phase | 수용 기준 | 파생 SWR | 검증 수준 | 위험 참조 |
 |-------|---------|--------|-----------|---------|-------|-----------|-----------|-----------| -----------|
-| PR-PM-001 | MR-001 | 환자 수동 등록 | 성명, 환자 ID, 생년월일, 성별, 검사 의뢰 정보를 수동 입력하여 새 환자 레코드 생성 | P0 | 1 | 필수 필드(환자 ID, 성명, 성별) 미입력 시 저장 불가; 중복 ID 감지 시 경고 표시 | SWR-PM-001~004 | T, I | HAZ-DATA |
-| PR-PM-002 | MR-001 | 환자 정보 조회·수정 | 등록된 환자 정보를 조회하고 허가된 사용자가 수정 가능 | P0 | 1 | 수정 완료 후 Audit Trail에 변경자·시각·변경 내용 기록 | SWR-PM-010~013 | T, I | HAZ-DATA, HAZ-SEC |
-| PR-PM-003 | MR-001 | DICOM MWL 자동 불러오기 | RIS/HIS에서 DICOM Modality Worklist를 조회하여 검사 목록 자동 표시 | P0 | 1 | MWL C-FIND 성공 시 ≤3초 내 목록 표시; 실패 시 에러 메시지 및 수동 입력 대체 경로 제공 | SWR-PM-020~024 | T, A | HAZ-DATA |
-| PR-PM-004 | MR-001 | 응급 환자 빠른 등록 | 최소 정보(임시 ID 자동 생성, 성별, 나이 추정)만으로 즉시 촬영 가능한 응급 등록 모드 | P0 | 1 | 화면 진입부터 촬영 준비 완료까지 ≤30초; 이후 정식 정보로 업데이트 가능 | SWR-PM-030~033 | T, D | HAZ-RAD, HAZ-DATA |
-| PR-PM-005 | MR-001 | 환자 검색 | 환자 ID, 성명(부분 일치), 검사 날짜(범위)로 검색 | P0 | 1 | 검색 결과 반환 ≤0.5초; 1,000건 이상 DB에서 정상 동작 | SWR-PM-040~043 | T, A | — |
-| PR-PM-006 | MR-001 | 환자 삭제 (GDPR/개인정보) | 허가된 관리자만 환자 레코드 삭제 가능; 삭제 전 확인 대화상자 표시 | P1 | 1 | 삭제 시 연관 DICOM 파일 처리 정책(아카이브/삭제) 선택 가능; Audit Trail에 기록 | SWR-PM-050~053 | T, I | HAZ-DATA, HAZ-SEC |
+| PR-PM-001 | MR-001 | 환자 수동 등록 | 성명, 환자 ID, 생년월일, 성별, 검사 의뢰 정보를 수동 입력하여 새 환자 레코드 생성 | ☐ P3 | 1 | 필수 필드(환자 ID, 성명, 성별) 미입력 시 저장 불가; 중복 ID 감지 시 경고 표시 | SWR-PM-001~004 | T, I | HAZ-DATA |
+| PR-PM-002 | MR-001 | 환자 정보 조회·수정 | 등록된 환자 정보를 조회하고 허가된 사용자가 수정 가능 | ☐ P3 | 1 | 수정 완료 후 Audit Trail에 변경자·시각·변경 내용 기록 | SWR-PM-010~013 | T, I | HAZ-DATA, HAZ-SEC |
+| PR-PM-003 | MR-001 | DICOM MWL 자동 불러오기 | RIS/HIS에서 DICOM Modality Worklist를 조회하여 검사 목록 자동 표시 | ☐ P3 | 1 | MWL C-FIND 성공 시 ≤3초 내 목록 표시; 실패 시 에러 메시지 및 수동 입력 대체 경로 제공 | SWR-PM-020~024 | T, A | HAZ-DATA |
+| PR-PM-004 | MR-001 | 응급 환자 빠른 등록 | 최소 정보(임시 ID 자동 생성, 성별, 나이 추정)만으로 즉시 촬영 가능한 응급 등록 모드 | ☐ P3 | 1 | 화면 진입부터 촬영 준비 완료까지 ≤30초; 이후 정식 정보로 업데이트 가능 | SWR-PM-030~033 | T, D | HAZ-RAD, HAZ-DATA |
+| PR-PM-005 | MR-001 | 환자 검색 | 환자 ID, 성명(부분 일치), 검사 날짜(범위)로 검색 | ☐ P3 | 1 | 검색 결과 반환 ≤0.5초; 1,000건 이상 DB에서 정상 동작 | SWR-PM-040~043 | T, A | — |
+| PR-PM-006 | MR-001 | 환자 삭제 (GDPR/개인정보) | 허가된 관리자만 환자 레코드 삭제 가능; 삭제 전 확인 대화상자 표시 | ☐ P3 | 1 | 삭제 시 연관 DICOM 파일 처리 정책(아카이브/삭제) 선택 가능; Audit Trail에 기록 | SWR-PM-050~053 | T, I | HAZ-DATA, HAZ-SEC |
 
 ### 3.2 촬영 워크플로우 (Acquisition Workflow) — PR-WF
 
 | ID | 출처 MR | 요구사항명 | 상세 설명 | 우선순위 | Phase | 수용 기준 | 파생 SWR | 검증 수준 | 위험 참조 |
 |-------|---------|--------|-----------|---------|-------|-----------|-----------|-----------| -----------|
-| PR-WF-010 | MR-002 | APR 프로토콜 관리 | 신체 부위별 표준 촬영 프로토콜(kVp, mAs, Focus, Grid, AEC chamber) 저장·적용 | P0 | 1 | 프로토콜 선택 후 모든 파라미터가 1초 내 Generator/Detector에 자동 적용 | SWR-WF-010, SWR-WF-011, SWR-WF-012 | T, D | HAZ-RAD |
-| PR-WF-011 | MR-002 | 촬영 순서 설정·변경 | 다중 Projection(뷰)의 촬영 순서를 드래그&드롭으로 재정렬 | P0 | 1 | 순서 변경 후 즉시 시각적 반영; DICOM MPPS에 올바른 순서로 기록 | SWR-WF-013, SWR-WF-014 | T, I | HAZ-DATA |
-| PR-WF-012 | MR-002 | 촬영 조건 설정 | kVp, mAs(또는 mA + 시간), AEC 모드(chamber 선택), 포커스(large/small), SID 입력 | P0 | 1 | 범위 초과 값 입력 시 즉시 경고; Generator로 설정값 전송 확인 응답 수신 | SWR-WF-015, SWR-WF-016, SWR-WF-017 | T, A | HAZ-RAD |
-| PR-WF-013 | MR-002 | Generator 통신 및 제어 | Serial/Ethernet 기반 Generator 프로토콜 구현; 촬영 준비(Ready) 신호 수신, 노출 실행, 노출 완료(Exposure End) 이벤트 처리 | P0 | 1 | 노출 시작 명령 후 ≤200ms 내 Generator 응답 수신; 타임아웃 시 에러 코드 표시 | SWR-WF-018, SWR-WF-019, SWR-WF-020 | T, A | HAZ-RAD, HAZ-SW |
-| PR-WF-014 | MR-002 | Detector 상태 모니터링 | Detector 연결 상태(Connected/Disconnected), 준비 상태(Ready/Busy/Error), 배터리(무선), 온도 표시 | P0 | 1 | 상태 변경 시 ≤1초 내 GUI 업데이트; Critical 오류 시 경고음 + 시각적 알림 | SWR-WF-021, SWR-WF-022 | T, D | HAZ-RAD, HAZ-SW |
-| PR-WF-015 | MR-002 | 촬영 실행 및 영상 수신 | Exposure 버튼(소프트웨어) 또는 외부 핸드스위치 입력 처리; Detector에서 Raw 영상 수신 | P0 | 1 | 영상 수신 후 처리된 영상 GUI 표시까지 ≤1초; 영상 수신 실패 시 재시도 옵션 제공 | SWR-WF-023, SWR-WF-024, SWR-WF-025 | T, A | HAZ-RAD, HAZ-SW |
-| PR-WF-016 | MR-002 | Emergency/Trauma 워크플로우 | 별도 Trauma 템플릿(다중 부위 연속 촬영)을 원탭으로 실행; 촬영 중 부위 추가 가능 | P0 | 1 | Trauma 모드 진입 ≤2 터치; 각 촬영 결과 즉시 표시 후 다음 촬영으로 자동 진행 | SWR-WF-026, SWR-WF-027 | T, D | HAZ-RAD |
-| PR-WF-017 | MR-002 | Multi-study 지원 | 동일 환자의 복수 검사(study)를 하나의 세션에서 연속 수행 | P1 | 1 | Study 전환 시 이전 Study 데이터 보존; DICOM Series 분리 정확도 100% | SWR-WF-028, SWR-WF-029 | T, I | HAZ-DATA |
-| PR-WF-018 | MR-002 | Suspend/Resume Exam | 진행 중인 검사를 일시 중단하고 나중에 재개; 다른 긴급 환자 처리 후 복귀 | P1 | 1 | Suspend 시 모든 상태(촬영 순서, 획득 영상) 저장; Resume 시 동일 상태로 복귀 | SWR-WF-030, SWR-WF-031 | T, D | HAZ-DATA |
+| PR-WF-010 | MR-002 | APR 프로토콜 관리 | 신체 부위별 표준 촬영 프로토콜(kVp, mAs, Focus, Grid, AEC chamber) 저장·적용 | ☐ P3 | 1 | 프로토콜 선택 후 모든 파라미터가 1초 내 Generator/Detector에 자동 적용 | SWR-WF-010, SWR-WF-011, SWR-WF-012 | T, D | HAZ-RAD |
+| PR-WF-011 | MR-002 | 촬영 순서 설정·변경 | 다중 Projection(뷰)의 촬영 순서를 드래그&드롭으로 재정렬 | ☐ P3 | 1 | 순서 변경 후 즉시 시각적 반영; DICOM MPPS에 올바른 순서로 기록 | SWR-WF-013, SWR-WF-014 | T, I | HAZ-DATA |
+| PR-WF-012 | MR-002 | 촬영 조건 설정 | kVp, mAs(또는 mA + 시간), AEC 모드(chamber 선택), 포커스(large/small), SID 입력 | ☐ P3 | 1 | 범위 초과 값 입력 시 즉시 경고; Generator로 설정값 전송 확인 응답 수신 | SWR-WF-015, SWR-WF-016, SWR-WF-017 | T, A | HAZ-RAD |
+| PR-WF-013 | MR-002 | Generator 통신 및 제어 | Serial/Ethernet 기반 Generator 프로토콜 구현; 촬영 준비(Ready) 신호 수신, 노출 실행, 노출 완료(Exposure End) 이벤트 처리 | ☐ P3 | 1 | 노출 시작 명령 후 ≤200ms 내 Generator 응답 수신; 타임아웃 시 에러 코드 표시 | SWR-WF-018, SWR-WF-019, SWR-WF-020 | T, A | HAZ-RAD, HAZ-SW |
+| PR-WF-014 | MR-002 | Detector 상태 모니터링 | Detector 연결 상태(Connected/Disconnected), 준비 상태(Ready/Busy/Error), 배터리(무선), 온도 표시 | ☐ P3 | 1 | 상태 변경 시 ≤1초 내 GUI 업데이트; Critical 오류 시 경고음 + 시각적 알림 | SWR-WF-021, SWR-WF-022 | T, D | HAZ-RAD, HAZ-SW |
+| PR-WF-015 | MR-002 | 촬영 실행 및 영상 수신 | Exposure 버튼(소프트웨어) 또는 외부 핸드스위치 입력 처리; Detector에서 Raw 영상 수신 | ☐ P3 | 1 | 영상 수신 후 처리된 영상 GUI 표시까지 ≤1초; 영상 수신 실패 시 재시도 옵션 제공 | SWR-WF-023, SWR-WF-024, SWR-WF-025 | T, A | HAZ-RAD, HAZ-SW |
+| PR-WF-016 | MR-002 | Emergency/Trauma 워크플로우 | 별도 Trauma 템플릿(다중 부위 연속 촬영)을 원탭으로 실행; 촬영 중 부위 추가 가능 | ☐ P3 | 1 | Trauma 모드 진입 ≤2 터치; 각 촬영 결과 즉시 표시 후 다음 촬영으로 자동 진행 | SWR-WF-026, SWR-WF-027 | T, D | HAZ-RAD |
+| PR-WF-017 | MR-002 | Multi-study 지원 | 동일 환자의 복수 검사(study)를 하나의 세션에서 연속 수행 | ☐ P3 | 1 | Study 전환 시 이전 Study 데이터 보존; DICOM Series 분리 정확도 100% | SWR-WF-028, SWR-WF-029 | T, I | HAZ-DATA |
+| PR-WF-018 | MR-002 | Suspend/Resume Exam | 진행 중인 검사를 일시 중단하고 나중에 재개; 다른 긴급 환자 처리 후 복귀 | ☐ P3 | 1 | Suspend 시 모든 상태(촬영 순서, 획득 영상) 저장; Resume 시 동일 상태로 복귀 | SWR-WF-030, SWR-WF-031 | T, D | HAZ-DATA |
 
 #### 3.2.1 촬영 워크플로우 상태 머신 (State Machine)
 
@@ -444,24 +462,24 @@ stateDiagram-v2
 
 | ID | 출처 MR | 요구사항명 | 상세 설명 | 우선순위 | Phase | 수용 기준 | 파생 SWR | 검증 수준 | 위험 참조 |
 |-------|---------|--------|-----------|---------|-------|-----------|-----------|-----------| -----------|
-| PR-IP-020 | MR-003 | 실시간 영상 표시 | 촬영 완료 후 Full Resolution 처리 영상을 ≤1초 내 표시 | P0 | 1 | 5MP 영상 기준 표시 지연 ≤1000ms; Frame drop 없이 렌더링 | SWR-IP-020, SWR-IP-021 | T, A | HAZ-RAD, HAZ-SW |
-| PR-IP-021 | MR-003 | Window/Level 조정 | 마우스 드래그, 터치 제스처, 숫자 직접 입력으로 W/L 조정 | P0 | 1 | 조정 시 ≤100ms 내 영상 갱신; 사전 설정 프리셋(Bone, Chest, Soft Tissue) 제공 | SWR-IP-022, SWR-IP-023 | T, D | — |
-| PR-IP-022 | MR-003 | Zoom | 마우스 휠, 핀치-투-줌 제스처, 버튼으로 50%~2000% 확대/축소 | P0 | 1 | 확대 시 보간(bicubic) 적용; Fit-to-Screen, 1:1 단축키 제공 | SWR-IP-024, SWR-IP-025 | T, D | — |
-| PR-IP-023 | MR-003 | Pan | 마우스 드래그, 터치 슬라이드로 영상 이동 | P0 | 1 | 영상 경계 밖으로 이동 방지 옵션; 부드러운 이동(jitter 없음) | SWR-IP-026 | T, D | — |
-| PR-IP-024 | MR-003 | Rotation | 0°/90°/180°/270° 및 자유 회전(free rotation ±360°) | P0 | 1 | 회전 후 영상 품질 유지; Flip(수평/수직) 포함 | SWR-IP-027, SWR-IP-028 | T, D | — |
-| PR-IP-025 | MR-003 | Image Stitching | 동일 검사의 최대 4장 영상을 자동으로 이어붙여 파노라마 영상 생성 (전척추, 하지 전장) | P1 | 1.5 | 정합 오차 ≤1mm (기준 팬텀); 스티칭 완료 시간 ≤10초 | SWR-IP-029, SWR-IP-030, SWR-IP-031 | T, A | — |
-| PR-IP-026 | MR-003 | 거리 측정 | 두 점 간 거리를 캘리브레이션된 픽셀 크기 기준으로 측정 (mm 단위) | P0 | 1 | 측정 결과 ±1% 이내 정확도 (DICOM Pixel Spacing 기준) | SWR-IP-032, SWR-IP-033 | T, A | HAZ-SW |
-| PR-IP-027 | MR-003 | 각도 측정 | 두 선분 사이 각도 측정 | P1 | 1 | 0.1° 단위 표시 | SWR-IP-034 | T, A | — |
-| PR-IP-028 | MR-003 | 면적 측정 | ROI(관심 영역) 내 면적 및 평균 픽셀값(Hounsfield 유사값) 측정 | P1 | 1 | 원형/다각형 ROI 지원; 면적 cm² 단위 표시 | SWR-IP-035, SWR-IP-036 | T, A | — |
-| PR-IP-029 | MR-003 | Annotation | 텍스트 레이블, 화살표, 원/사각형 도형 오버레이; 영상과 함께 DICOM에 저장 | P1 | 1 | Annotation 포함 DICOM Presentation State(PR) 저장; 편집/삭제 가능 | SWR-IP-037, SWR-IP-038 | T, I | HAZ-DATA |
-| PR-IP-030 | MR-003 | Gain/Offset 보정 | Flat Field Correction: 각 픽셀에 획득된 Gain/Offset 맵 적용 | P0 | 1 | 보정 후 VNUE(Variation in Non-Uniformity) ≤1%; 보정 미적용 Raw 영상과 비교 표시 가능 | SWR-IP-039, SWR-IP-040 | T, A | HAZ-RAD, HAZ-SW |
-| PR-IP-031 | MR-003 | 노이즈 감소 (Noise Reduction) | 주파수 기반 또는 딥러닝 기반 노이즈 제거 필터 | P0 | 1 | SNR 향상 ≥3dB (vs. 미적용); 처리 시간 ≤500ms | SWR-IP-041, SWR-IP-042 | T, A | HAZ-RAD |
-| PR-IP-032 | MR-003 | Edge Enhancement | 소형 구조물(Small Structure), 골 세부(Bone Detail), 카테터(Catheter) 모드별 Edge Enhancement 알고리즘 | P0 | 1 | 각 모드별 강도 5단계 조절; 적용/미적용 토글 가능 | SWR-IP-043, SWR-IP-044 | T, D | — |
-| PR-IP-033 | MR-003 | Scatter Correction | 그리드(Grid) 없이 획득한 영상에서 산란선 제거 (SW 기반) | P1 | 1.5 | 산란선 보정 후 Contrast Ratio 향상 ≥10%; 처리 시간 ≤1초 | SWR-IP-045, SWR-IP-046 | T, A | HAZ-RAD |
-| PR-IP-034 | MR-003 | Auto-trimming/Cropping | 조사야(照射野) 바깥 영역 자동 인식 및 트리밍 | P0 | 1 | 조사야 경계 인식 정확도 ≥95%; 수동 조정 가능 | SWR-IP-047, SWR-IP-048 | T, A | — |
-| PR-IP-035 | MR-003 | Black Mask (Automatic Shutters) | 조사야 외부 영역을 검은색으로 마스킹하여 과도한 밝기 제거 | P0 | 1 | 마스크 적용/해제 토글; 마스크 경계 수동 조정 가능 | SWR-IP-049 | T, D | — |
-| PR-IP-036 | MR-003 | Contrast Optimization | 히스토그램 분석 기반 자동 Contrast 최적화 (CLAHE 등) | P0 | 1 | 자동 최적화 후 수동 Fine-tuning 가능; "Original" 복원 버튼 제공 | SWR-IP-050, SWR-IP-051 | T, D | — |
-| PR-IP-037 | MR-003 | Brightness Control | 전체 밝기(Offset) 조정 | P0 | 1 | -100%~+100% 범위; 슬라이더 + 숫자 입력 | SWR-IP-052 | T, D | — |
+| PR-IP-020 | MR-003 | 실시간 영상 표시 | 촬영 완료 후 Full Resolution 처리 영상을 ≤1초 내 표시 | ☐ P3 | 1 | 5MP 영상 기준 표시 지연 ≤1000ms; Frame drop 없이 렌더링 | SWR-IP-020, SWR-IP-021 | T, A | HAZ-RAD, HAZ-SW |
+| PR-IP-021 | MR-003 | Window/Level 조정 | 마우스 드래그, 터치 제스처, 숫자 직접 입력으로 W/L 조정 | ☐ P3 | 1 | 조정 시 ≤100ms 내 영상 갱신; 사전 설정 프리셋(Bone, Chest, Soft Tissue) 제공 | SWR-IP-022, SWR-IP-023 | T, D | — |
+| PR-IP-022 | MR-003 | Zoom | 마우스 휠, 핀치-투-줌 제스처, 버튼으로 50%~2000% 확대/축소 | ☐ P3 | 1 | 확대 시 보간(bicubic) 적용; Fit-to-Screen, 1:1 단축키 제공 | SWR-IP-024, SWR-IP-025 | T, D | — |
+| PR-IP-023 | MR-003 | Pan | 마우스 드래그, 터치 슬라이드로 영상 이동 | ☐ P3 | 1 | 영상 경계 밖으로 이동 방지 옵션; 부드러운 이동(jitter 없음) | SWR-IP-026 | T, D | — |
+| PR-IP-024 | MR-003 | Rotation | 0°/90°/180°/270° 및 자유 회전(free rotation ±360°) | ☐ P3 | 1 | 회전 후 영상 품질 유지; Flip(수평/수직) 포함 | SWR-IP-027, SWR-IP-028 | T, D | — |
+| PR-IP-025 | MR-003 | Image Stitching | 동일 검사의 최대 4장 영상을 자동으로 이어붙여 파노라마 영상 생성 (전척추, 하지 전장) | ☐ P3 | 1.5 | 정합 오차 ≤1mm (기준 팬텀); 스티칭 완료 시간 ≤10초 | SWR-IP-029, SWR-IP-030, SWR-IP-031 | T, A | — |
+| PR-IP-026 | MR-003 | 거리 측정 | 두 점 간 거리를 캘리브레이션된 픽셀 크기 기준으로 측정 (mm 단위) | ☐ P3 | 1 | 측정 결과 ±1% 이내 정확도 (DICOM Pixel Spacing 기준) | SWR-IP-032, SWR-IP-033 | T, A | HAZ-SW |
+| PR-IP-027 | MR-003 | 각도 측정 | 두 선분 사이 각도 측정 | ☐ P3 | 1 | 0.1° 단위 표시 | SWR-IP-034 | T, A | — |
+| PR-IP-028 | MR-003 | 면적 측정 | ROI(관심 영역) 내 면적 및 평균 픽셀값(Hounsfield 유사값) 측정 | ☐ P3 | 1 | 원형/다각형 ROI 지원; 면적 cm² 단위 표시 | SWR-IP-035, SWR-IP-036 | T, A | — |
+| PR-IP-029 | MR-003 | Annotation | 텍스트 레이블, 화살표, 원/사각형 도형 오버레이; 영상과 함께 DICOM에 저장 | ☐ P3 | 1 | Annotation 포함 DICOM Presentation State(PR) 저장; 편집/삭제 가능 | SWR-IP-037, SWR-IP-038 | T, I | HAZ-DATA |
+| PR-IP-030 | MR-003 | Gain/Offset 보정 | Flat Field Correction: 각 픽셀에 획득된 Gain/Offset 맵 적용 | ☐ P3 | 1 | 보정 후 VNUE(Variation in Non-Uniformity) ≤1%; 보정 미적용 Raw 영상과 비교 표시 가능 | SWR-IP-039, SWR-IP-040 | T, A | HAZ-RAD, HAZ-SW |
+| PR-IP-031 | MR-003 | 노이즈 감소 (Noise Reduction) | 주파수 기반 또는 딥러닝 기반 노이즈 제거 필터 | ☐ P3 | 1 | SNR 향상 ≥3dB (vs. 미적용); 처리 시간 ≤500ms | SWR-IP-041, SWR-IP-042 | T, A | HAZ-RAD |
+| PR-IP-032 | MR-003 | Edge Enhancement | 소형 구조물(Small Structure), 골 세부(Bone Detail), 카테터(Catheter) 모드별 Edge Enhancement 알고리즘 | ☐ P3 | 1 | 각 모드별 강도 5단계 조절; 적용/미적용 토글 가능 | SWR-IP-043, SWR-IP-044 | T, D | — |
+| PR-IP-033 | MR-003 | Scatter Correction | 그리드(Grid) 없이 획득한 영상에서 산란선 제거 (SW 기반) | ☐ P3 | 1.5 | 산란선 보정 후 Contrast Ratio 향상 ≥10%; 처리 시간 ≤1초 | SWR-IP-045, SWR-IP-046 | T, A | HAZ-RAD |
+| PR-IP-034 | MR-003 | Auto-trimming/Cropping | 조사야(照射野) 바깥 영역 자동 인식 및 트리밍 | ☐ P3 | 1 | 조사야 경계 인식 정확도 ≥95%; 수동 조정 가능 | SWR-IP-047, SWR-IP-048 | T, A | — |
+| PR-IP-035 | MR-003 | Black Mask (Automatic Shutters) | 조사야 외부 영역을 검은색으로 마스킹하여 과도한 밝기 제거 | ☐ P3 | 1 | 마스크 적용/해제 토글; 마스크 경계 수동 조정 가능 | SWR-IP-049 | T, D | — |
+| PR-IP-036 | MR-003 | Contrast Optimization | 히스토그램 분석 기반 자동 Contrast 최적화 (CLAHE 등) | ☐ P3 | 1 | 자동 최적화 후 수동 Fine-tuning 가능; "Original" 복원 버튼 제공 | SWR-IP-050, SWR-IP-051 | T, D | — |
+| PR-IP-037 | MR-003 | Brightness Control | 전체 밝기(Offset) 조정 | ☐ P3 | 1 | -100%~+100% 범위; 슬라이더 + 숫자 입력 | SWR-IP-052 | T, D | — |
 
 #### 3.3.1 영상 처리 파이프라인 (Image Processing Pipeline)
 
@@ -492,25 +510,25 @@ flowchart TD
 
 | ID | 출처 MR | 요구사항명 | 상세 설명 | 우선순위 | Phase | 수용 기준 | 파생 SWR | 검증 수준 | 위험 참조 |
 |-------|---------|--------|-----------|---------|-------|-----------|-----------|-----------| -----------|
-| PR-DM-040 | MR-004 | DAP 표시·기록 | DAP 미터에서 수신한 DAP(Dose Area Product) 값을 매 노출마다 화면 표시 및 DB 기록 | P0 | 1 | 노출 후 ≤2초 내 DAP 값 표시; μGy·cm² 단위 | SWR-DM-040, SWR-DM-041 | T, A | HAZ-RAD |
-| PR-DM-041 | MR-004 | ESD 계산 | kVp, mAs, Focus-Skin Distance(FSD), 부위 두께 기반 ESD(Entrance Surface Dose) 추정 계산 | P0 | 1 | 계산 방법 및 불확도(±20%) 사용자에게 고지 | SWR-DM-042, SWR-DM-043 | T, A | HAZ-RAD |
-| PR-DM-042 | MR-004 | RDSR 생성 | 검사 완료 후 IEC 60601-2-54 및 DICOM TID-10011 기반 RDSR(Radiation Dose Structured Report) 자동 생성 | P0 | 1 | DICOM Conformance에 정의된 IOD 완전성 100%; Dose Registry(PACS/RIS)로 자동 전송 | SWR-DM-044, SWR-DM-045, SWR-DM-046 | T, I | HAZ-RAD, HAZ-DATA |
-| PR-DM-043 | MR-004 | Exposure Index 모니터링 | IEC 62494-1 기반 EI(Exposure Index) 및 DI(Deviation Index) 계산 및 표시 | P0 | 1 | DI ±2 이상 시 색상 경고(황색/적색); 각 뷰별 EI 값 저장 | SWR-DM-047, SWR-DM-048 | T, A | HAZ-RAD |
-| PR-DM-044 | MR-004 | DRL 비교 | 국가별 진단참고준위(DRL) 데이터베이스 내장; 검사별 선량과 비교하여 초과 시 경고 | P0 | 1 | 한국 NCRP DRL 기준 내장; 병원 자체 DRL 설정 가능 | SWR-DM-049, SWR-DM-050 | T, A | HAZ-RAD |
-| PR-DM-045 | MR-004 | 전자 X-ray 로그북 | 모든 노출 데이터(환자 ID, 날짜, 부위, kVp, mAs, DAP, EI)를 자동 기록하는 전자 선량 일지 | P0 | 1 | CSV/PDF 형식 내보내기 지원; 날짜 범위·기술자별 필터링 | SWR-DM-051, SWR-DM-052 | T, I | HAZ-RAD, HAZ-DATA |
-| PR-DM-046 | MR-004 | Reject Analysis | 거부된 영상의 원인(Positioning Error, Motion, Over/Under-exposure 등)을 기록하고 통계 리포트 생성 | P1 | 1.5 | 거부 원인 카테고리 ≥10종; 주간/월간 리포트 자동 생성; 기술자별 거부율 비교 | SWR-DM-053, SWR-DM-054, SWR-DM-055 | T, A | HAZ-RAD |
+| PR-DM-040 | MR-004 | DAP 표시·기록 | DAP 미터에서 수신한 DAP(Dose Area Product) 값을 매 노출마다 화면 표시 및 DB 기록 | ☑ P2 | 1 | 노출 후 ≤2초 내 DAP 값 표시; μGy·cm² 단위 | SWR-DM-040, SWR-DM-041 | T, A | HAZ-RAD |
+| PR-DM-041 | MR-004 | ESD 계산 | kVp, mAs, Focus-Skin Distance(FSD), 부위 두께 기반 ESD(Entrance Surface Dose) 추정 계산 | ☑ P2 | 1 | 계산 방법 및 불확도(±20%) 사용자에게 고지 | SWR-DM-042, SWR-DM-043 | T, A | HAZ-RAD |
+| PR-DM-042 | MR-004 | RDSR 생성 | 검사 완료 후 IEC 60601-2-54 및 DICOM TID-10011 기반 RDSR(Radiation Dose Structured Report) 자동 생성 | ☑ P2 | 1 | DICOM Conformance에 정의된 IOD 완전성 100%; Dose Registry(PACS/RIS)로 자동 전송 | SWR-DM-044, SWR-DM-045, SWR-DM-046 | T, I | HAZ-RAD, HAZ-DATA |
+| PR-DM-043 | MR-004 | Exposure Index 모니터링 | IEC 62494-1 기반 EI(Exposure Index) 및 DI(Deviation Index) 계산 및 표시 | ☑ P2 | 1 | DI ±2 이상 시 색상 경고(황색/적색); 각 뷰별 EI 값 저장 | SWR-DM-047, SWR-DM-048 | T, A | HAZ-RAD |
+| PR-DM-044 | MR-004 | DRL 비교 | 국가별 진단참고준위(DRL) 데이터베이스 내장; 검사별 선량과 비교하여 초과 시 경고 | ☑ P2 | 1 | 한국 NCRP DRL 기준 내장; 병원 자체 DRL 설정 가능 | SWR-DM-049, SWR-DM-050 | T, A | HAZ-RAD |
+| PR-DM-045 | MR-004 | 전자 X-ray 로그북 | 모든 노출 데이터(환자 ID, 날짜, 부위, kVp, mAs, DAP, EI)를 자동 기록하는 전자 선량 일지 | ☑ P2 | 1 | CSV/PDF 형식 내보내기 지원; 날짜 범위·기술자별 필터링 | SWR-DM-051, SWR-DM-052 | T, I | HAZ-RAD, HAZ-DATA |
+| PR-DM-046 | MR-004 | Reject Analysis | 거부된 영상의 원인(Positioning Error, Motion, Over/Under-exposure 등)을 기록하고 통계 리포트 생성 | ☑ P2 | 1.5 | 거부 원인 카테고리 ≥10종; 주간/월간 리포트 자동 생성; 기술자별 거부율 비교 | SWR-DM-053, SWR-DM-054, SWR-DM-055 | T, A | HAZ-RAD |
 
 ### 3.5 DICOM 통신 (DICOM Services) — PR-DC
 
 | ID | 출처 MR | 요구사항명 | 상세 설명 | 우선순위 | Phase | 수용 기준 | 파생 SWR | 검증 수준 | 위험 참조 |
 |-------|---------|--------|-----------|---------|-------|-----------|-----------|-----------| -----------|
-| PR-DC-050 | MR-005 | Storage SCU (C-STORE) | 획득 영상을 PACS/Storage Server로 C-STORE 전송 | P0 | 1 | 전송 성공률 ≥99.9%; 전송 실패 시 자동 재시도(최대 3회) + 로컬 임시 저장 | SWR-DC-050, SWR-DC-051, SWR-DC-052 | T, A | HAZ-DATA |
-| PR-DC-051 | MR-005 | MWL SCU | RIS에서 C-FIND로 오늘의 검사 목록 조회; 자동 새로 고침(설정 가능 주기) | P0 | 1 | C-FIND 응답 ≤3초; 필터(날짜, AE Title, Modality) 지원 | SWR-DC-053, SWR-DC-054 | T, A | HAZ-DATA |
-| PR-DC-052 | MR-005 | MPPS SCU | 검사 시작(In-Progress) 및 완료(Completed)/취소(Discontinued) 상태를 RIS로 전송 | P0 | 1 | 상태 변경 후 ≤5초 내 MPPS N-CREATE/N-SET 전송 | SWR-DC-055, SWR-DC-056 | T, A | HAZ-DATA |
-| PR-DC-053 | MR-005 | Storage Commitment SCU | PACS가 영상을 안전하게 저장했음을 확인받는 N-ACTION/N-EVENT-REPORT 구현 | P0 | 1 | Commitment 확인 후 로컬 임시 파일 삭제 옵션 활성화 | SWR-DC-057, SWR-DC-058 | T, I | HAZ-DATA |
-| PR-DC-054 | MR-005 | Print SCU | DICOM Basic Grayscale Print 서비스를 통한 필름 인쇄 | P1 | 1 | 인쇄 큐 관리; 1~N Up 레이아웃 지원 | SWR-DC-059, SWR-DC-060 | T, D | — |
-| PR-DC-055 | MR-005 | Query/Retrieve SCU | PACS에서 이전 영상 조회(C-FIND) 및 가져오기(C-MOVE/C-GET) | P1 | 1 | 조회 결과 썸네일 표시; 비교 뷰어에서 표시 | SWR-DC-061, SWR-DC-062 | T, D | — |
-| PR-DC-056 | MR-005 | DICOM TLS | DICOM 통신 채널에 TLS 1.2 이상 암호화 적용 | P0 | 1 | TLS 핸드셰이크 성공 확인; 인증서 만료 30일 전 관리자 경고 | SWR-DC-063, SWR-DC-064 | T, I | HAZ-SEC |
+| PR-DC-050 | MR-005 | Storage SCU (C-STORE) | 획득 영상을 PACS/Storage Server로 C-STORE 전송 | ☐ P3 | 1 | 전송 성공률 ≥99.9%; 전송 실패 시 자동 재시도(최대 3회) + 로컬 임시 저장 | SWR-DC-050, SWR-DC-051, SWR-DC-052 | T, A | HAZ-DATA |
+| PR-DC-051 | MR-005 | MWL SCU | RIS에서 C-FIND로 오늘의 검사 목록 조회; 자동 새로 고침(설정 가능 주기) | ☐ P3 | 1 | C-FIND 응답 ≤3초; 필터(날짜, AE Title, Modality) 지원 | SWR-DC-053, SWR-DC-054 | T, A | HAZ-DATA |
+| PR-DC-052 | MR-005 | MPPS SCU | 검사 시작(In-Progress) 및 완료(Completed)/취소(Discontinued) 상태를 RIS로 전송 | ☐ P3 | 1 | 상태 변경 후 ≤5초 내 MPPS N-CREATE/N-SET 전송 | SWR-DC-055, SWR-DC-056 | T, A | HAZ-DATA |
+| PR-DC-053 | MR-005 | Storage Commitment SCU | PACS가 영상을 안전하게 저장했음을 확인받는 N-ACTION/N-EVENT-REPORT 구현 | ☐ P3 | 1 | Commitment 확인 후 로컬 임시 파일 삭제 옵션 활성화 | SWR-DC-057, SWR-DC-058 | T, I | HAZ-DATA |
+| PR-DC-054 | MR-005 | Print SCU | DICOM Basic Grayscale Print 서비스를 통한 필름 인쇄 | ☐ P3 | 1 | 인쇄 큐 관리; 1~N Up 레이아웃 지원 | SWR-DC-059, SWR-DC-060 | T, D | — |
+| PR-DC-055 | MR-005 | Query/Retrieve SCU | PACS에서 이전 영상 조회(C-FIND) 및 가져오기(C-MOVE/C-GET) | ☐ P3 | 1 | 조회 결과 썸네일 표시; 비교 뷰어에서 표시 | SWR-DC-061, SWR-DC-062 | T, D | — |
+| PR-DC-056 | MR-005 | DICOM TLS | DICOM 통신 채널에 TLS 1.2 이상 암호화 적용 | ☑ P1 | 1 | TLS 핸드셰이크 성공 확인; 인증서 만료 30일 전 관리자 경고 | SWR-DC-063, SWR-DC-064 | T, I | HAZ-SEC |
 
 #### 3.5.1 DICOM 통신 흐름 (Sequence Diagram)
 
@@ -563,26 +581,26 @@ sequenceDiagram
 
 | ID | 출처 MR | 요구사항명 | 상세 설명 | 우선순위 | Phase | 수용 기준 | 파생 SWR | 검증 수준 | 위험 참조 |
 |-------|---------|--------|-----------|---------|-------|-----------|-----------|-----------| -----------|
-| PR-SA-060 | MR-006 | 사용자 관리 (RBAC) | 역할별 접근 제어: Administrator, Technologist, Physician, Service 역할 정의; 역할별 기능 접근 권한 설정 | P0 | 1 | Administrator만 사용자 추가/삭제 가능; 권한 없는 메뉴 비활성화 또는 숨김 | SWR-SA-060, SWR-SA-061, SWR-SA-062 | T, I | HAZ-SEC |
-| PR-SA-061 | MR-006 | Organ Program/Exam Set 편집기 | 신체 부위별 촬영 프로토콜(kVp, mAs, Focus, AEC, 영상 처리 설정) 편집 GUI 제공 | P0 | 1 | 변경 사항 저장 즉시 적용; 이전 버전으로 롤백 가능; Import/Export(XML) 지원 | SWR-SA-063, SWR-SA-064 | T, D | HAZ-RAD |
-| PR-SA-062 | MR-006 | 시스템 설정 | 네트워크 설정(IP, Gateway, DNS), DICOM AE 설정, 날짜/시간, 언어, 화면 표시 설정 GUI | P0 | 1 | 설정 변경 후 재시작 필요 항목 명시; 설정 파일 백업/복원 기능 | SWR-SA-065, SWR-SA-066 | T, D | HAZ-DATA |
-| PR-SA-063 | MR-006 | 캘리브레이션 UI | Gain/Offset 캘리브레이션 위자드: 다크 영상 획득 → 플랫 영상 획득 → 보정 맵 계산 → 저장 | P0 | 1 | 위자드 완료 후 보정 품질 지표(VNUE) 자동 계산 및 Pass/Fail 판정 | SWR-SA-067, SWR-SA-068, SWR-SA-069 | T, A | HAZ-RAD, HAZ-SW |
-| PR-SA-064 | MR-006 | Defect Pixel Map 관리 | 결함 픽셀 자동 감지 및 수동 추가/제거; 결함 픽셀 맵 시각화 | P1 | 1 | 결함 픽셀 수 및 분포 통계 표시 | SWR-SA-070, SWR-SA-071 | T, A | HAZ-RAD |
-| PR-SA-065 | MR-006 | Audit Trail | 모든 임상·설정·보안 관련 이벤트(로그인/로그아웃, 설정 변경, 영상 승인/거부, 데이터 전송)를 타임스탬프와 함께 기록 | P0 | 1 | IHE ATNA 프로파일 준수; 감사 로그 변조 방지(append-only 저장); 90일 이상 보관 | SWR-SA-072, SWR-SA-073 | T, I | HAZ-SEC, HAZ-DATA |
-| PR-SA-066 | MR-006 | 로깅 시스템 | Error, Warning, Info, Debug 4단계 로그 수준; 구조화된 로그 파일 출력 | P0 | 1 | 로그 파일 자동 순환(최대 500MB, 30일); Log Level 런타임 변경 가능 | SWR-SA-074, SWR-SA-075 | T, I | HAZ-SW |
-| PR-SA-067 | MR-006 | SW 업데이트 관리 | 서명된 업데이트 패키지 검증 후 설치; 롤백 지원 | P1 | 1 | 업데이트 전 DB/설정 자동 백업; 서명 검증 실패 시 설치 차단 | SWR-SA-076, SWR-SA-077 | T, I | HAZ-SEC, HAZ-SW |
+| PR-SA-060 | MR-006 | 사용자 관리 (RBAC) | 역할별 접근 제어: Administrator, Technologist, Physician, Service 역할 정의; 역할별 기능 접근 권한 설정 | ☑ P1 | 1 | Administrator만 사용자 추가/삭제 가능; 권한 없는 메뉴 비활성화 또는 숨김 | SWR-SA-060, SWR-SA-061, SWR-SA-062 | T, I | HAZ-SEC |
+| PR-SA-061 | MR-006 | Organ Program/Exam Set 편집기 | 신체 부위별 촬영 프로토콜(kVp, mAs, Focus, AEC, 영상 처리 설정) 편집 GUI 제공 | ☐ P3 | 1 | 변경 사항 저장 즉시 적용; 이전 버전으로 롤백 가능; Import/Export(XML) 지원 | SWR-SA-063, SWR-SA-064 | T, D | HAZ-RAD |
+| PR-SA-062 | MR-006 | 시스템 설정 | 네트워크 설정(IP, Gateway, DNS), DICOM AE 설정, 날짜/시간, 언어, 화면 표시 설정 GUI | ☐ P3 | 1 | 설정 변경 후 재시작 필요 항목 명시; 설정 파일 백업/복원 기능 | SWR-SA-065, SWR-SA-066 | T, D | HAZ-DATA |
+| PR-SA-063 | MR-006 | 캘리브레이션 UI | Gain/Offset 캘리브레이션 위자드: 다크 영상 획득 → 플랫 영상 획득 → 보정 맵 계산 → 저장 | ☐ P3 | 1 | 위자드 완료 후 보정 품질 지표(VNUE) 자동 계산 및 Pass/Fail 판정 | SWR-SA-067, SWR-SA-068, SWR-SA-069 | T, A | HAZ-RAD, HAZ-SW |
+| PR-SA-064 | MR-006 | Defect Pixel Map 관리 | 결함 픽셀 자동 감지 및 수동 추가/제거; 결함 픽셀 맵 시각화 | ☐ P3 | 1 | 결함 픽셀 수 및 분포 통계 표시 | SWR-SA-070, SWR-SA-071 | T, A | HAZ-RAD |
+| PR-SA-065 | MR-006 | Audit Trail | 모든 임상·설정·보안 관련 이벤트(로그인/로그아웃, 설정 변경, 영상 승인/거부, 데이터 전송)를 타임스탬프와 함께 기록 | ☑ P1 | 1 | IHE ATNA 프로파일 준수; 감사 로그 변조 방지(append-only 저장); 90일 이상 보관 | SWR-SA-072, SWR-SA-073 | T, I | HAZ-SEC, HAZ-DATA |
+| PR-SA-066 | MR-006 | 로깅 시스템 | Error, Warning, Info, Debug 4단계 로그 수준; 구조화된 로그 파일 출력 | ☐ P3 | 1 | 로그 파일 자동 순환(최대 500MB, 30일); Log Level 런타임 변경 가능 | SWR-SA-074, SWR-SA-075 | T, I | HAZ-SW |
+| PR-SA-067 | MR-006 | SW 업데이트 관리 | 서명된 업데이트 패키지 검증 후 설치; 롤백 지원 | ☐ P3 | 1 | 업데이트 전 DB/설정 자동 백업; 서명 검증 실패 시 설치 차단 | SWR-SA-076, SWR-SA-077 | T, I | HAZ-SEC, HAZ-SW |
 
 ### 3.7 사이버보안 (Cybersecurity) — PR-CS
 
 | ID | 출처 MR | 요구사항명 | 상세 설명 | 우선순위 | Phase | 수용 기준 | 파생 SWR | 검증 수준 | 위험 참조 |
 |-------|---------|--------|-----------|---------|-------|-----------|-----------|-----------| -----------|
-| PR-CS-070 | MR-007 | 로컬 사용자 인증 | 사용자명/비밀번호 기반 로컬 인증; 비밀번호 해시(bcrypt/Argon2) 저장 | P0 | 1 | 로그인 실패 5회 시 계정 잠금(30분 또는 관리자 해제); 마지막 로그인 정보 표시 | SWR-CS-070, SWR-CS-071, SWR-CS-072 | T, I | HAZ-SEC |
-| PR-CS-071 | MR-007 | Domain 인증 (SSO) | Active Directory / LDAP 기반 도메인 인증 지원 | P1 | 1.5 | Kerberos/NTLM 지원; SSO 실패 시 로컬 계정으로 폴백 옵션 | SWR-CS-073, SWR-CS-074 | T, D | HAZ-SEC |
-| PR-CS-072 | MR-007 | 세션 관리 | 비활성 시간(설정 가능, 기본 15분) 경과 후 자동 로그아웃; 촬영 중 세션 만료 방지 | P0 | 1 | 세션 만료 3분 전 경고; 촬영 진행 중 화면 잠금 모드(Quick PIN)로 전환 | SWR-CS-075, SWR-CS-076, SWR-CS-077 | T, D | HAZ-SEC, HAZ-RAD |
-| PR-CS-073 | MR-007 | DICOM TLS 암호화 | 모든 DICOM 네트워크 통신에 TLS 1.2 이상 적용 | P0 | 1 | 인증서 기반 상호 인증(mTLS) 옵션; 암호화 비활성화 시 관리자 확인 필요 | SWR-CS-078, SWR-CS-079 | T, I | HAZ-SEC |
-| PR-CS-074 | MR-007 | PHI 보호 | 로컬 DB의 PHI 필드 암호화(AES-256); 스크린샷/화면 녹화 방지 | P0 | 1 | DB 암호화 키 분리 저장; 복호화는 애플리케이션 내부에서만 수행 | SWR-CS-080, SWR-CS-081 | T, I | HAZ-SEC |
-| PR-CS-075 | MR-007 | SBOM 관리 | 모든 Third-party 소프트웨어 컴포넌트 목록(SBOM) 생성 및 취약점 모니터링 | P0 | 1 | SPDX 또는 CycloneDX 형식 SBOM 생성; CVE 발견 시 30일 내 패치 계획 수립 | SWR-CS-082, SWR-CS-083 | T, I | HAZ-SEC |
-| PR-CS-076 | MR-007 | Secure Boot / SW 무결성 | 애플리케이션 실행 전 코드 서명 검증; 변조 감지 시 실행 차단 | P0 | 1 | 코드 서명 인증서 EV(Extended Validation) 등급 사용; 검증 실패 로그 기록 | SWR-CS-084, SWR-CS-085 | T, I | HAZ-SEC, HAZ-SW |
+| PR-CS-070 | MR-007 | 로컬 사용자 인증 | 사용자명/비밀번호 기반 로컬 인증; 비밀번호 해시(bcrypt/Argon2) 저장 | ☑ P1 | 1 | 로그인 실패 5회 시 계정 잠금(30분 또는 관리자 해제); 마지막 로그인 정보 표시 | SWR-CS-070, SWR-CS-071, SWR-CS-072 | T, I | HAZ-SEC |
+| PR-CS-071 | MR-007 | Domain 인증 (SSO) | Active Directory / LDAP 기반 도메인 인증 지원 | ☑ P1 | 1.5 | Kerberos/NTLM 지원; SSO 실패 시 로컬 계정으로 폴백 옵션 | SWR-CS-073, SWR-CS-074 | T, D | HAZ-SEC |
+| PR-CS-072 | MR-007 | 세션 관리 | 비활성 시간(설정 가능, 기본 15분) 경과 후 자동 로그아웃; 촬영 중 세션 만료 방지 | ☑ P1 | 1 | 세션 만료 3분 전 경고; 촬영 진행 중 화면 잠금 모드(Quick PIN)로 전환 | SWR-CS-075, SWR-CS-076, SWR-CS-077 | T, D | HAZ-SEC, HAZ-RAD |
+| PR-CS-073 | MR-007 | DICOM TLS 암호화 | 모든 DICOM 네트워크 통신에 TLS 1.2 이상 적용 | ☑ P1 | 1 | 인증서 기반 상호 인증(mTLS) 옵션; 암호화 비활성화 시 관리자 확인 필요 | SWR-CS-078, SWR-CS-079 | T, I | HAZ-SEC |
+| PR-CS-074 | MR-007 | PHI 보호 | 로컬 DB의 PHI 필드 암호화(AES-256); 스크린샷/화면 녹화 방지 | ☑ P1 | 1 | DB 암호화 키 분리 저장; 복호화는 애플리케이션 내부에서만 수행 | SWR-CS-080, SWR-CS-081 | T, I | HAZ-SEC |
+| PR-CS-075 | MR-007 | SBOM 관리 | 모든 Third-party 소프트웨어 컴포넌트 목록(SBOM) 생성 및 취약점 모니터링 | ☑ P1 | 1 | SPDX 또는 CycloneDX 형식 SBOM 생성; CVE 발견 시 30일 내 패치 계획 수립 | SWR-CS-082, SWR-CS-083 | T, I | HAZ-SEC |
+| PR-CS-076 | MR-007 | Secure Boot / SW 무결성 | 애플리케이션 실행 전 코드 서명 검증; 변조 감지 시 실행 차단 | ☑ P1 | 1 | 코드 서명 인증서 EV(Extended Validation) 등급 사용; 검증 실패 로그 기록 | SWR-CS-084, SWR-CS-085 | T, I | HAZ-SEC, HAZ-SW |
 
 ---
 
@@ -596,14 +614,14 @@ sequenceDiagram
 
 | ID | 출처 MR | 카테고리 | 요구사항 | 기준치 | 우선순위 | Phase | 파생 SWR | 검증 수준 | 위험 참조 |
 |--------|---------|---------|---------|--------|---------|-------|----------|-----------|-----------|
-| PR-NF-PF-001 | MR-002, MR-003 | 성능 | 영상 표시 지연 | ≤1,000ms (Full Resolution, 5MP) | P0 | 1 | SWR-NF-PF-001 | T, A | HAZ-RAD |
-| PR-NF-PF-002 | MR-001 | 성능 | 환자 검색 응답 | ≤500ms (10,000건 DB 기준) | P0 | 1 | SWR-NF-PF-002 | T, A | — |
-| PR-NF-PF-003 | MR-005 | 성능 | DICOM 전송 속도 | ≥100 Mbps (Gigabit 환경) | P0 | 1 | SWR-NF-PF-003 | T, A | HAZ-DATA |
-| PR-NF-PF-004 | MR-002, MR-003 | 성능 | GUI 응답 시간 | ≤200ms (버튼/터치 입력 → 피드백) | P0 | 1 | SWR-NF-PF-004 | T, A | — |
-| PR-NF-PF-005 | MR-006 | 성능 | 시스템 부팅 시간 | ≤60초 (BIOS POST 이후 → 로그인 화면) | P0 | 1 | SWR-NF-PF-005 | T | — |
-| PR-NF-PF-006 | MR-002 | 성능 | 동시 처리 | 최소 3개 Study 병렬 관리 | P1 | 1 | SWR-NF-PF-006 | T, A | HAZ-SW |
-| PR-NF-PF-007 | MR-005 | 성능 | MWL 새로 고침 | ≤3초 내 Worklist 업데이트 | P0 | 1 | SWR-NF-PF-007 | T, A | — |
-| PR-NF-PF-008 | MR-003 | 성능 | Image Stitching | ≤10초 (4장 5MP 기준) | P1 | 1.5 | SWR-NF-PF-008 | T, A | — |
+| PR-NF-PF-001 | MR-002, MR-003 | 성능 | 영상 표시 지연 | ≤1,000ms (Full Resolution, 5MP) | ☐ P3 | 1 | SWR-NF-PF-001 | T, A | HAZ-RAD |
+| PR-NF-PF-002 | MR-001 | 성능 | 환자 검색 응답 | ≤500ms (10,000건 DB 기준) | ☐ P3 | 1 | SWR-NF-PF-002 | T, A | — |
+| PR-NF-PF-003 | MR-005 | 성능 | DICOM 전송 속도 | ≥100 Mbps (Gigabit 환경) | ☐ P3 | 1 | SWR-NF-PF-003 | T, A | HAZ-DATA |
+| PR-NF-PF-004 | MR-002, MR-003 | 성능 | GUI 응답 시간 | ≤200ms (버튼/터치 입력 → 피드백) | ☐ P3 | 1 | SWR-NF-PF-004 | T, A | — |
+| PR-NF-PF-005 | MR-006 | 성능 | 시스템 부팅 시간 | ≤60초 (BIOS POST 이후 → 로그인 화면) | ☐ P3 | 1 | SWR-NF-PF-005 | T | — |
+| PR-NF-PF-006 | MR-002 | 성능 | 동시 처리 | 최소 3개 Study 병렬 관리 | ☐ P3 | 1 | SWR-NF-PF-006 | T, A | HAZ-SW |
+| PR-NF-PF-007 | MR-005 | 성능 | MWL 새로 고침 | ≤3초 내 Worklist 업데이트 | ☐ P3 | 1 | SWR-NF-PF-007 | T, A | — |
+| PR-NF-PF-008 | MR-003 | 성능 | Image Stitching | ≤10초 (4장 5MP 기준) | ☐ P3 | 1.5 | SWR-NF-PF-008 | T, A | — |
 
 > **벤치마크 참조**: Siemens YSIO X.pree (syngo FLC) 영상 표시 ≤800ms, Canon CXDI NE 터치 응답 ≤150ms 대비 동등 이상 성능 목표
 
@@ -611,67 +629,67 @@ sequenceDiagram
 
 | ID | 출처 MR | 카테고리 | 요구사항 | 기준치 | 우선순위 | Phase | 파생 SWR | 검증 수준 | 위험 참조 |
 |--------|---------|---------|---------|--------|---------|-------|----------|-----------|-----------|
-| PR-NF-RL-010 | MR-002 | 신뢰성 | 시스템 가용성 | ≥99.9% (운영 시간 기준, 계획된 유지보수 제외) | P0 | 1 | SWR-NF-RL-010 | T, A | HAZ-SW |
-| PR-NF-RL-011 | MR-002 | 신뢰성 | MTBF | ≥10,000시간 (SW 장애 기준) | P0 | 1 | SWR-NF-RL-011 | A | HAZ-SW |
-| PR-NF-RL-012 | MR-002, MR-005 | 신뢰성 | 데이터 무결성 | 촬영 데이터 손실 허용 0건 (전원 차단 시 Write-ahead logging 적용) | P0 | 1 | SWR-NF-RL-012 | T, A | HAZ-DATA |
-| PR-NF-RL-013 | MR-002 | 신뢰성 | 자동 복구 | SW 크래시 시 ≤30초 내 자동 재시작; 마지막 안정 상태로 복귀 | P0 | 1 | SWR-NF-RL-013 | T, D | HAZ-SW |
-| PR-NF-RL-014 | MR-005 | 신뢰성 | Graceful Degradation | 네트워크 연결 실패 시 로컬 저장 후 재연결 시 자동 전송 | P0 | 1 | SWR-NF-RL-014 | T, D | HAZ-DATA |
-| PR-NF-RL-015 | MR-002 | 신뢰성 | 장기 운영 안정성 | 72시간 연속 운영 후 메모리 누수 없음 (Heap 증가 ≤10MB/24h) | P1 | 1 | SWR-NF-RL-015 | T, A | HAZ-SW |
+| PR-NF-RL-010 | MR-002 | 신뢰성 | 시스템 가용성 | ≥99.9% (운영 시간 기준, 계획된 유지보수 제외) | ☐ P3 | 1 | SWR-NF-RL-010 | T, A | HAZ-SW |
+| PR-NF-RL-011 | MR-002 | 신뢰성 | MTBF | ≥10,000시간 (SW 장애 기준) | ☐ P3 | 1 | SWR-NF-RL-011 | A | HAZ-SW |
+| PR-NF-RL-012 | MR-002, MR-005 | 신뢰성 | 데이터 무결성 | 촬영 데이터 손실 허용 0건 (전원 차단 시 Write-ahead logging 적용) | ☑ P2 | 1 | SWR-NF-RL-012 | T, A | HAZ-DATA |
+| PR-NF-RL-013 | MR-002 | 신뢰성 | 자동 복구 | SW 크래시 시 ≤30초 내 자동 재시작; 마지막 안정 상태로 복귀 | ☐ P3 | 1 | SWR-NF-RL-013 | T, D | HAZ-SW |
+| PR-NF-RL-014 | MR-005 | 신뢰성 | Graceful Degradation | 네트워크 연결 실패 시 로컬 저장 후 재연결 시 자동 전송 | ☐ P3 | 1 | SWR-NF-RL-014 | T, D | HAZ-DATA |
+| PR-NF-RL-015 | MR-002 | 신뢰성 | 장기 운영 안정성 | 72시간 연속 운영 후 메모리 누수 없음 (Heap 증가 ≤10MB/24h) | ☐ P3 | 1 | SWR-NF-RL-015 | T, A | HAZ-SW |
 
 ### 4.3 사용성 (Usability) — PR-NF-UX
 
 | ID | 출처 MR | 카테고리 | 요구사항 | 기준치 | 우선순위 | Phase | 파생 SWR | 검증 수준 | 위험 참조 |
 |--------|---------|---------|---------|--------|---------|-------|----------|-----------|-----------|
-| PR-NF-UX-020 | MR-001, MR-002 | 사용성 | 교육 시간 | 기본 운영 ≤4시간 (Philips 교육 시간 33% 절감 벤치마크 기준) | P0 | 1 | SWR-NF-UX-020 | D, A | — |
-| PR-NF-UX-021 | MR-002 | 사용성 | 표준 검사 클릭 수 | Worklist 선택 → 촬영 완료 ≤5회 터치/클릭 | P0 | 1 | SWR-NF-UX-021 | T, D | HAZ-RAD |
-| PR-NF-UX-022 | MR-002 | 사용성 | 터치스크린 최적화 | 최소 터치 타겟 크기 44×44px (Apple HIG / WCAG 2.1 기준) | P0 | 1 | SWR-NF-UX-022 | I | — |
-| PR-NF-UX-023 | MR-001 | 사용성 | 다국어 지원 | 한국어, 영어 (Phase 1); 중국어, 일본어 추가 (Phase 2) | P0 | 1 | SWR-NF-UX-023 | T, I | — |
-| PR-NF-UX-024 | MR-001 | 사용성 | SUS 점수 | ≥70점 (Summative Usability Test, 방사선사 10명 이상 참여) | P0 | 1 | SWR-NF-UX-024 | D, A | — |
-| PR-NF-UX-025 | MR-002 | 사용성 | 오류 복구 | 사용자 오류 후 ≤3단계 내 정상 상태 복귀 가능 | P0 | 1 | SWR-NF-UX-025 | T, D | HAZ-RAD |
-| PR-NF-UX-026 | MR-002 | 사용성 | 응급 접근성 | Emergency 모드 진입 ≤2회 터치 (최상위 화면 어디서나) | P0 | 1 | SWR-NF-UX-026 | T, D | HAZ-RAD |
+| PR-NF-UX-020 | MR-001, MR-002 | 사용성 | 교육 시간 | 기본 운영 ≤4시간 (Philips 교육 시간 33% 절감 벤치마크 기준) | ☐ P3 | 1 | SWR-NF-UX-020 | D, A | — |
+| PR-NF-UX-021 | MR-002 | 사용성 | 표준 검사 클릭 수 | Worklist 선택 → 촬영 완료 ≤5회 터치/클릭 | ☐ P3 | 1 | SWR-NF-UX-021 | T, D | HAZ-RAD |
+| PR-NF-UX-022 | MR-002 | 사용성 | 터치스크린 최적화 | 최소 터치 타겟 크기 44×44px (Apple HIG / WCAG 2.1 기준) | ☐ P3 | 1 | SWR-NF-UX-022 | I | — |
+| PR-NF-UX-023 | MR-001 | 사용성 | 다국어 지원 | 한국어, 영어 (Phase 1); 중국어, 일본어 추가 (Phase 2) | ☐ P3 | 1 | SWR-NF-UX-023 | T, I | — |
+| PR-NF-UX-024 | MR-001 | 사용성 | SUS 점수 | ≥70점 (Summative Usability Test, 방사선사 10명 이상 참여) | ☐ P3 | 1 | SWR-NF-UX-024 | D, A | — |
+| PR-NF-UX-025 | MR-002 | 사용성 | 오류 복구 | 사용자 오류 후 ≤3단계 내 정상 상태 복귀 가능 | ☐ P3 | 1 | SWR-NF-UX-025 | T, D | HAZ-RAD |
+| PR-NF-UX-026 | MR-002 | 사용성 | 응급 접근성 | Emergency 모드 진입 ≤2회 터치 (최상위 화면 어디서나) | ☐ P3 | 1 | SWR-NF-UX-026 | T, D | HAZ-RAD |
 
 ### 4.4 호환성 (Compatibility) — PR-NF-CP
 
 | ID | 출처 MR | 카테고리 | 요구사항 | 기준치 | 우선순위 | Phase | 파생 SWR | 검증 수준 | 위험 참조 |
 |--------|---------|---------|---------|--------|---------|-------|----------|-----------|-----------|
-| PR-NF-CP-030 | MR-006 | 호환성 | 운영체제 | Windows 10 LTSC 2021 / Windows 11 (64-bit) | P0 | 1 | SWR-NF-CP-030 | T, I | HAZ-SW |
-| PR-NF-CP-031 | MR-002 | 호환성 | Multi-vendor Detector | FPD 제조사 ≥3개 벤더 지원 (Canon, Fujifilm, Vieworks 등) via 표준 API | P0 | 1 | SWR-NF-CP-031 | T, D | HAZ-RAD |
-| PR-NF-CP-032 | MR-002 | 호환성 | Multi-vendor Generator | Generator 제조사 ≥3개 벤더 지원 via Serial/Ethernet 프로토콜 | P0 | 1 | SWR-NF-CP-032 | T, D | HAZ-RAD |
-| PR-NF-CP-033 | MR-005 | 호환성 | PACS 호환성 | 주요 5개 벤더 PACS와 호환 검증 (Sectra, Fujifilm Synapse, Infinitt, Maroview, Impax) | P0 | 1 | SWR-NF-CP-033 | T, D | HAZ-DATA |
-| PR-NF-CP-034 | MR-003 | 호환성 | 모니터 해상도 | 3MP(2048×1536) 이상 의료용 모니터 지원; 4K(3840×2160) 지원 | P0 | 1 | SWR-NF-CP-034 | T, I | — |
-| PR-NF-CP-035 | MR-005 | 호환성 | DICOM 표준 | DICOM 2023a 이상 준수; IHE Scheduled Workflow Profile 지원 | P0 | 1 | SWR-NF-CP-035 | T, I | HAZ-DATA |
+| PR-NF-CP-030 | MR-006 | 호환성 | 운영체제 | Windows 10 LTSC 2021 / Windows 11 (64-bit) | ☐ P3 | 1 | SWR-NF-CP-030 | T, I | HAZ-SW |
+| PR-NF-CP-031 | MR-002 | 호환성 | Multi-vendor Detector | FPD 제조사 ≥3개 벤더 지원 (Canon, Fujifilm, Vieworks 등) via 표준 API | ☐ P3 | 1 | SWR-NF-CP-031 | T, D | HAZ-RAD |
+| PR-NF-CP-032 | MR-002 | 호환성 | Multi-vendor Generator | Generator 제조사 ≥3개 벤더 지원 via Serial/Ethernet 프로토콜 | ☐ P3 | 1 | SWR-NF-CP-032 | T, D | HAZ-RAD |
+| PR-NF-CP-033 | MR-005 | 호환성 | PACS 호환성 | 주요 5개 벤더 PACS와 호환 검증 (Sectra, Fujifilm Synapse, Infinitt, Maroview, Impax) | ☐ P3 | 1 | SWR-NF-CP-033 | T, D | HAZ-DATA |
+| PR-NF-CP-034 | MR-003 | 호환성 | 모니터 해상도 | 3MP(2048×1536) 이상 의료용 모니터 지원; 4K(3840×2160) 지원 | ☐ P3 | 1 | SWR-NF-CP-034 | T, I | — |
+| PR-NF-CP-035 | MR-005 | 호환성 | DICOM 표준 | DICOM 2023a 이상 준수; IHE Scheduled Workflow Profile 지원 | ☐ P3 | 1 | SWR-NF-CP-035 | T, I | HAZ-DATA |
 
 ### 4.5 보안 (Security) — PR-NF-SC
 
 | ID | 출처 MR | 카테고리 | 요구사항 | 기준치 | 우선순위 | Phase | 파생 SWR | 검증 수준 | 위험 참조 |
 |--------|---------|---------|---------|--------|---------|-------|----------|-----------|-----------|
-| PR-NF-SC-040 | MR-007 | 보안 | 규제 준수 | FDA Section 524B FD&C Act, HIPAA Security Rule | P0 | 1 | SWR-NF-SC-040 | I, A | HAZ-SEC |
-| PR-NF-SC-041 | MR-007 | 보안 | 암호화 전송 | TLS 1.2 이상 (TLS 1.0/1.1 비활성화) | P0 | 1 | SWR-NF-SC-041 | T, I | HAZ-SEC |
-| PR-NF-SC-042 | MR-007 | 보안 | 비밀번호 정책 | 최소 8자, 대소문자+숫자+특수문자 조합; 90일 만료; 이전 5개 비밀번호 재사용 금지 | P0 | 1 | SWR-NF-SC-042 | T, I | HAZ-SEC |
-| PR-NF-SC-043 | MR-007 | 보안 | 접근 제어 | RBAC; 최소 권한 원칙(Principle of Least Privilege) | P0 | 1 | SWR-NF-SC-043 | T, I | HAZ-SEC |
-| PR-NF-SC-044 | MR-007 | 보안 | 취약점 관리 | 배포 전 SAST/DAST 도구 통과; Critical/High CVE 0건 | P0 | 1 | SWR-NF-SC-044 | T, A | HAZ-SEC |
-| PR-NF-SC-045 | MR-007 | 보안 | Audit Log 보관 | ≥90일 보관; IHE ATNA 프로파일 준수 | P0 | 1 | SWR-NF-SC-045 | T, I | HAZ-SEC |
+| PR-NF-SC-040 | MR-007 | 보안 | 규제 준수 | FDA Section 524B FD&C Act, HIPAA Security Rule | ☑ P1 | 1 | SWR-NF-SC-040 | I, A | HAZ-SEC |
+| PR-NF-SC-041 | MR-007 | 보안 | 암호화 전송 | TLS 1.2 이상 (TLS 1.0/1.1 비활성화) | ☑ P1 | 1 | SWR-NF-SC-041 | T, I | HAZ-SEC |
+| PR-NF-SC-042 | MR-007 | 보안 | 비밀번호 정책 | 최소 8자, 대소문자+숫자+특수문자 조합; 90일 만료; 이전 5개 비밀번호 재사용 금지 | ☑ P1 | 1 | SWR-NF-SC-042 | T, I | HAZ-SEC |
+| PR-NF-SC-043 | MR-007 | 보안 | 접근 제어 | RBAC; 최소 권한 원칙(Principle of Least Privilege) | ☑ P1 | 1 | SWR-NF-SC-043 | T, I | HAZ-SEC |
+| PR-NF-SC-044 | MR-007 | 보안 | 취약점 관리 | 배포 전 SAST/DAST 도구 통과; Critical/High CVE 0건 | ☑ P1 | 1 | SWR-NF-SC-044 | T, A | HAZ-SEC |
+| PR-NF-SC-045 | MR-007 | 보안 | Audit Log 보관 | ≥90일 보관; IHE ATNA 프로파일 준수 | ☑ P1 | 1 | SWR-NF-SC-045 | T, I | HAZ-SEC |
 
 ### 4.6 유지보수성 (Maintainability) — PR-NF-MT
 
 | ID | 출처 MR | 카테고리 | 요구사항 | 기준치 | 우선순위 | Phase | 파생 SWR | 검증 수준 | 위험 참조 |
 |--------|---------|---------|---------|--------|---------|-------|----------|-----------|-----------|
-| PR-NF-MT-050 | MR-006 | 유지보수성 | 모듈식 아키텍처 | 각 서브시스템(환자관리, 촬영, 영상처리, DICOM)이 독립 모듈로 분리 | P0 | 1 | SWR-NF-MT-050 | I, A | HAZ-SW |
-| PR-NF-MT-051 | MR-006 | 유지보수성 | 코드 커버리지 | ≥80% 라인 커버리지 (IEC 62304 Class B) | P0 | 1 | SWR-NF-MT-051 | T, A | HAZ-SW |
-| PR-NF-MT-052 | MR-006 | 유지보수성 | API 문서화 | 내부 API 100% 문서화 (XML Doc Comments + Swagger/OpenAPI) | P1 | 1 | SWR-NF-MT-052 | I | — |
-| PR-NF-MT-053 | MR-006 | 유지보수성 | 원격 진단 | VPN 기반 원격 접속을 통한 로그 수집, 설정 변경 지원 (Phase 1.5) | P1 | 1.5 | SWR-NF-MT-053 | T, D | HAZ-SEC |
-| PR-NF-MT-054 | MR-006 | 유지보수성 | 빌드 자동화 | CI/CD 파이프라인 (GitHub Actions + NUnit/Google Test) | P0 | 1 | SWR-NF-MT-054 | I, D | — |
+| PR-NF-MT-050 | MR-006 | 유지보수성 | 모듈식 아키텍처 | 각 서브시스템(환자관리, 촬영, 영상처리, DICOM)이 독립 모듈로 분리 | ☐ P3 | 1 | SWR-NF-MT-050 | I, A | HAZ-SW |
+| PR-NF-MT-051 | MR-006 | 유지보수성 | 코드 커버리지 | ≥80% 라인 커버리지 (IEC 62304 Class B) | ☐ P3 | 1 | SWR-NF-MT-051 | T, A | HAZ-SW |
+| PR-NF-MT-052 | MR-006 | 유지보수성 | API 문서화 | 내부 API 100% 문서화 (XML Doc Comments + Swagger/OpenAPI) | ☐ P3 | 1 | SWR-NF-MT-052 | I | — |
+| PR-NF-MT-053 | MR-006 | 유지보수성 | 원격 진단 | VPN 기반 원격 접속을 통한 로그 수집, 설정 변경 지원 (Phase 1.5) | ☐ P3 | 1.5 | SWR-NF-MT-053 | T, D | HAZ-SEC |
+| PR-NF-MT-054 | MR-006 | 유지보수성 | 빌드 자동화 | CI/CD 파이프라인 (GitHub Actions + NUnit/Google Test) | ☐ P3 | 1 | SWR-NF-MT-054 | I, D | — |
 
 ### 4.7 규제 준수 (Regulatory Compliance) — PR-NF-RG
 
 | ID | 출처 MR | 카테고리 | 요구사항 | 기준치 | 우선순위 | Phase | 파생 SWR | 검증 수준 | 위험 참조 |
 |--------|---------|---------|---------|--------|---------|-------|----------|-----------|-----------|
-| PR-NF-RG-060 | MR-002 | 규제 준수 | IEC 62304 적합성 | Class B 전 단계 산출물 완비 (SDP, SRS, SAD, SDS, UT, IT, ST, V&V Reports) | P0 | 1 | SWR-NF-RG-060 | I, A | HAZ-SW |
-| PR-NF-RG-061 | MR-001, MR-002 | 규제 준수 | ISO 14971 연계 | 전체 PR/PR-NF에 위험 참조(HAZ-xxx) 매핑; Risk Control Measure 역추적 가능 | P0 | 1 | SWR-NF-RG-061 | I, A | HAZ-RAD, HAZ-SW |
-| PR-NF-RG-062 | MR-001 | 규제 준수 | IEC 62366 Usability | Summative Usability Test 완료 및 보고서 제출; 안전 관련 Task 완료율 ≥95% | P0 | 1 | SWR-NF-RG-062 | D, A | HAZ-RAD |
-| PR-NF-RG-063 | MR-007 | 규제 준수 | FDA 21 CFR 820.30 | Design Controls 전 단계 완비 (Design Input → Output → Verification → Validation → Transfer) | P0 | 1 | SWR-NF-RG-063 | I, A | HAZ-SW |
-| PR-NF-RG-064 | MR-004 | 규제 준수 | DICOM Conformance | DICOM Conformance Statement 문서 작성 및 유지; PS 3.2 준수 | P0 | 1 | SWR-NF-RG-064 | I | HAZ-DATA |
-| PR-NF-RG-065 | MR-007 | 규제 준수 | FDA 510(k) 추적성 | SRS의 모든 요구사항이 System Test 결과로 역추적 가능; RTM 완전성 100% | P0 | 1 | SWR-NF-RG-065 | I, A | — |
+| PR-NF-RG-060 | MR-002 | 규제 준수 | IEC 62304 적합성 | Class B 전 단계 산출물 완비 (SDP, SRS, SAD, SDS, UT, IT, ST, V&V Reports) | ☑ P1 | 1 | SWR-NF-RG-060 | I, A | HAZ-SW |
+| PR-NF-RG-061 | MR-001, MR-002 | 규제 준수 | ISO 14971 연계 | 전체 PR/PR-NF에 위험 참조(HAZ-xxx) 매핑; Risk Control Measure 역추적 가능 | ☑ P1 | 1 | SWR-NF-RG-061 | I, A | HAZ-RAD, HAZ-SW |
+| PR-NF-RG-062 | MR-001 | 규제 준수 | IEC 62366 Usability | Summative Usability Test 완료 및 보고서 제출; 안전 관련 Task 완료율 ≥95% | ☑ P1 | 1 | SWR-NF-RG-062 | D, A | HAZ-RAD |
+| PR-NF-RG-063 | MR-007 | 규제 준수 | FDA 21 CFR 820.30 | Design Controls 전 단계 완비 (Design Input → Output → Verification → Validation → Transfer) | ☑ P1 | 1 | SWR-NF-RG-063 | I, A | HAZ-SW |
+| PR-NF-RG-064 | MR-004 | 규제 준수 | DICOM Conformance | DICOM Conformance Statement 문서 작성 및 유지; PS 3.2 준수 | ☑ P1 | 1 | SWR-NF-RG-064 | I | HAZ-DATA |
+| PR-NF-RG-065 | MR-007 | 규제 준수 | FDA 510(k) 추적성 | SRS의 모든 요구사항이 System Test 결과로 역추적 가능; RTM 완전성 100% | ☑ P1 | 1 | SWR-NF-RG-065 | I, A | — |
 
 ---
 
@@ -1341,7 +1359,7 @@ flowchart LR
     subgraph DHF["Design History File (DHF)"]
         subgraph DI["Design Input (설계 입력)"]
             MRD["MRD\n(User Needs)\nMR-001~007"]
-            PRD_DOC["PRD v1.0\n(이 문서)\nPR-xxx / PR-NF-xxx\n시스템 수준 Design Input"]
+            PRD_DOC["PRD v1.1\n(이 문서)\nPR-xxx / PR-NF-xxx\n시스템 수준 Design Input"]
         end
 
         subgraph DO["Design Output (설계 출력)"]
@@ -1676,7 +1694,7 @@ flowchart LR
 
 ---
 
-*본 문서는 PRD-XRAY-GUI-001 v1.0이며, FDA 21 CFR 820.30 Design Controls 및 ISO 13485:2016 Clause 7.3에 따른 **시스템 수준 Design Input** 문서로서 기능합니다.*
+*본 문서는 PRD-XRAY-GUI-001 v1.1이며, FDA 21 CFR 820.30 Design Controls 및 ISO 13485:2016 Clause 7.3에 따른 **시스템 수준 Design Input** 문서로서 기능합니다.*
 
 *3단계 추적성 계층: **MR-xxx(MRD) → PR-xxx(PRD, 시스템 Design Input) → SWR-xxx(FRS/SRS, IEC 62304 §5.2 소프트웨어 요구사항)** 구조를 통해 규제 기관(FDA/CE/KFDA)의 요구사항 추적성을 완전히 충족합니다.*
 
