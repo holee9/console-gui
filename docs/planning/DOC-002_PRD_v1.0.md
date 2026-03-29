@@ -6,9 +6,9 @@
 | 항목 | 내용 |
 |------|------|
 | **문서 ID** | PRD-XRAY-GUI-001 |
-| **버전** | v3.0 |
-| **작성일** | 2026-03-16 |
-| **개정일** | 2026-03-16 |
+| **버전** | v1.0 |
+| **작성일** | 2026-03-27 |
+| **개정일** | 2026-03-27 |
 | **작성자** | 제품 관리팀 |
 | **승인자** | (승인 대기) |
 | **상태** | Draft |
@@ -20,12 +20,8 @@
 ## 개정 이력 (Revision History)
 
 | 버전 | 날짜 | 작성자 | 변경 내용 |
-|------|------|--------|-----------| 
-| v0.1 | 2026-02-10 | 제품팀 | 초안 작성 |
-| v0.9 | 2026-03-01 | 제품팀 | 내부 검토 반영 |
-| v1.0 | 2026-03-16 | 제품팀 | 최초 공식 릴리스 |
-| v2.0 | 2026-03-16 | 제품팀 | 인허가 추적성 체계(RTM) 연동을 위한 ID 체계 개편, 검증/밸리데이션 연결 추가, FDA 21 CFR 820.30 Design Controls 준수; 계층적 요구사항 ID(FR-PM/WF/IP/DM/DC/SA/CS, NFR-PF/RL/UX/CP/SC/MT/RG) 도입; 추적성 컬럼(출처 MR, 검증 방법, 검증 ID, 밸리데이션 ID, 위험 참조) 추가; 검증 전략 섹션(§10), 위험-요구사항 연결 섹션(§11), Design Input/Output 매핑 섹션(§12) 신설; 부록 A RTM 전면 개편 |
-| v3.0 | 2026-03-16 | 제품팀 | **요구사항 ID 계층 3단계 재구성**: MR-xxx(MRD) → PR-xxx(PRD, 시스템 수준 Design Input) → SWR-xxx(FRS/SRS, IEC 62304 §5.2 소프트웨어 요구사항); FR-PM/WF/IP/DM/DC/SA/CS → PR-PM/WF/IP/DM/DC/SA/CS 전면 개편; NFR-PF/RL/UX/CP/SC/MT/RG → PR-NF-PF/RL/UX/CP/SC/MT/RG 개편; 모든 PR 테이블에 "파생 SWR" 컬럼 추가(FRS에서 상세 정의 예정); §3 명칭 "기능 요구사항" → "제품 요구사항(Product Requirements)"으로 변경; §10~§12, RTM 전 참조 ID PR-xxx 기반으로 업데이트; v1.0→v2.0→v3.0 ID 매핑 테이블 추가; Design Input=PR-xxx, Design Output=SWR-xxx→SAD/SDS 구조 명시 |
+|------|------|--------|-----------|
+| v1.0 | 2026-03-27 | 제품팀 | 최초 작성 |
 
 ---
 
@@ -51,9 +47,9 @@
 
 ## 요구사항 ID 체계 안내 (Requirement ID Schema)
 
-### v3.0 계층적 3단계 ID 체계 (3-Tier Hierarchical ID Schema)
+### 계층적 3단계 ID 체계 (3-Tier Hierarchical ID Schema)
 
-본 문서 v3.0부터 MRD → PRD → SRS/FRS의 3단계 추적성 체계를 도입하여 IEC 62304 §5.2, FDA 21 CFR 820.30 Design Controls, ISO 14971 연계 요구사항을 완전히 충족한다.
+본 문서는 MRD → PRD → SRS/FRS의 3단계 추적성 체계를 도입하여 IEC 62304 §5.2, FDA 21 CFR 820.30 Design Controls, ISO 14971 연계 요구사항을 완전히 충족한다.
 
 ```mermaid
 flowchart LR
@@ -102,7 +98,7 @@ flowchart LR
 | PR-NF-MT-xxx | 유지보수성 | Maintainability |
 | PR-NF-RG-xxx | 규제 준수 | Regulatory Compliance |
 
-**요구사항 테이블 컬럼 설명 (v3.0 신규):**
+**요구사항 테이블 컬럼 설명:**
 
 | 컬럼 | 설명 |
 |------|------|
@@ -117,24 +113,24 @@ flowchart LR
 | **검증 수준** | T=Test / I=Inspection / A=Analysis / D=Demonstration |
 | **위험 참조** | 관련 위험 ID (HAZ-RAD / HAZ-SW / HAZ-SEC / HAZ-DATA) |
 
-**v1.0 → v2.0 → v3.0 ID 매핑 테이블:**
+**ID 매핑 테이블:**
 
-| v1.0 ID 범위 | v2.0 ID 범위 | v3.0 ID 범위 |
-|--------------|--------------|--------------|
-| FR-001~006 | FR-PM-001~006 | PR-PM-001~006 |
-| FR-010~018 | FR-WF-010~018 | PR-WF-010~018 |
-| FR-020~037 | FR-IP-020~037 | PR-IP-020~037 |
-| FR-040~046 | FR-DM-040~046 | PR-DM-040~046 |
-| FR-050~056 | FR-DC-050~056 | PR-DC-050~056 |
-| FR-060~067 | FR-SA-060~067 | PR-SA-060~067 |
-| FR-070~076 | FR-CS-070~076 | PR-CS-070~076 |
-| NFR-001~008 | NFR-PF-001~008 | PR-NF-PF-001~008 |
-| NFR-010~015 | NFR-RL-010~015 | PR-NF-RL-010~015 |
-| NFR-020~026 | NFR-UX-020~026 | PR-NF-UX-020~026 |
-| NFR-030~035 | NFR-CP-030~035 | PR-NF-CP-030~035 |
-| NFR-040~045 | NFR-SC-040~045 | PR-NF-SC-040~045 |
-| NFR-050~054 | NFR-MT-050~054 | PR-NF-MT-050~054 |
-| (신규) | NFR-RG-060~065 | PR-NF-RG-060~065 |
+| ID 범위 |
+|--------------|
+| PR-PM-001~006 |
+| PR-WF-010~018 |
+| PR-IP-020~037 |
+| PR-DM-040~046 |
+| PR-DC-050~056 |
+| PR-SA-060~067 |
+| PR-CS-070~076 |
+| PR-NF-PF-001~008 |
+| PR-NF-RL-010~015 |
+| PR-NF-UX-020~026 |
+| PR-NF-CP-030~035 |
+| PR-NF-SC-040~045 |
+| PR-NF-MT-050~054 |
+| PR-NF-RG-060~065 |
 
 ---
 
@@ -366,7 +362,7 @@ journey
 
 ## 3. 제품 요구사항 (Product Requirements)
 
-> **v3.0 계층 구조**: 본 섹션의 모든 요구사항은 **PR-xxx (Product Requirement)** 로 정의되며, FDA 21 CFR 820.30(c) **Design Input** 으로 기능한다. 각 PR은 하위 소프트웨어 요구사항(SWR-xxx)으로 파생되며, SWR의 상세 정의는 별도 FRS(Functional Requirements Specification) / SRS(Software Requirements Specification) 문서에서 수행된다.
+> **계층 구조**: 본 섹션의 모든 요구사항은 **PR-xxx (Product Requirement)** 로 정의되며, FDA 21 CFR 820.30(c) **Design Input** 으로 기능한다. 각 PR은 하위 소프트웨어 요구사항(SWR-xxx)으로 파생되며, SWR의 상세 정의는 별도 FRS(Functional Requirements Specification) / SRS(Software Requirements Specification) 문서에서 수행된다.
 >
 > **테이블 형식**: ID | 출처 MR | 요구사항명 | 상세 설명 | 우선순위 | Phase | 수용 기준 | 파생 SWR | 검증 수준 | 위험 참조
 >
@@ -592,7 +588,7 @@ sequenceDiagram
 
 ## 4. 비기능 제품 요구사항 (Non-Functional Product Requirements)
 
-> **v3.0 계층 구조**: 본 섹션의 모든 요구사항은 **PR-NF-xxx (Non-Functional Product Requirement)** 로 정의되며, §3의 기능 제품 요구사항(PR-xxx)과 동일하게 FDA 21 CFR 820.30(c) **Design Input** 으로 기능한다.
+> **계층 구조**: 본 섹션의 모든 요구사항은 **PR-NF-xxx (Non-Functional Product Requirement)** 로 정의되며, §3의 기능 제품 요구사항(PR-xxx)과 동일하게 FDA 21 CFR 820.30(c) **Design Input** 으로 기능한다.
 >
 > **테이블 형식**: ID | 출처 MR | 카테고리 | 요구사항 | 기준치 | 우선순위 | Phase | 파생 SWR | 검증 수준 | 위험 참조
 
@@ -1113,7 +1109,7 @@ flowchart LR
 
 ### 10.1 V-Model 기반 검증/밸리데이션 체계
 
-본 제품은 IEC 62304 Class B 분류에 따라 아래 V-Model 체계를 따른다. **v3.0에서 요구사항 계층이 3단계(MR → PR → SWR)로 재구성됨에 따라**, 각 검증 단계는 대응하는 요구사항 계층 산출물을 기준으로 수행된다.
+본 제품은 IEC 62304 Class B 분류에 따라 아래 V-Model 체계를 따른다. **요구사항 계층이 3단계(MR → PR → SWR)로 구성됨에 따라**, 각 검증 단계는 대응하는 요구사항 계층 산출물을 기준으로 수행된다.
 
 ```mermaid
 flowchart TD
@@ -1294,7 +1290,7 @@ flowchart TD
         RC_ENCRYPT["RC-SEC-02\n암호화 및 코드 서명"]
     end
 
-    subgraph Requirements["PR 제품 요구사항 (v3.0)"]
+    subgraph Requirements["PR 제품 요구사항"]
         PR_WF012["PR-WF-012\n촬영 조건 설정"]
         PR_WF013["PR-WF-013\nGenerator 제어"]
         PR_WF014["PR-WF-014\nDetector 모니터링"]
@@ -1336,16 +1332,16 @@ flowchart TD
 
 > **근거 규격**: FDA 21 CFR 820.30(c)(d)(f), ISO 13485:2016 §7.3.4~7.3.5
 
-### 12.1 Design Control 개요 (v3.0 3단계 계층)
+### 12.1 Design Control 개요 (3단계 계층)
 
-본 PRD의 모든 요구사항(PR-xxx, PR-NF-xxx)은 FDA 21 CFR 820.30 설계 제어(Design Controls) 체계에서 **Design Input**으로 기능한다. v3.0에서는 PR-xxx가 시스템 수준 Design Input이며, 이로부터 파생되는 SWR-xxx가 소프트웨어 수준 Design Output(FRS/SRS 문서)의 기반이 된다.
+본 PRD의 모든 요구사항(PR-xxx, PR-NF-xxx)은 FDA 21 CFR 820.30 설계 제어(Design Controls) 체계에서 **Design Input**으로 기능한다. PR-xxx가 시스템 수준 Design Input이며, 이로부터 파생되는 SWR-xxx가 소프트웨어 수준 Design Output(FRS/SRS 문서)의 기반이 된다.
 
 ```mermaid
 flowchart LR
     subgraph DHF["Design History File (DHF)"]
         subgraph DI["Design Input (설계 입력)"]
             MRD["MRD\n(User Needs)\nMR-001~007"]
-            PRD_DOC["PRD v3.0\n(이 문서)\nPR-xxx / PR-NF-xxx\n시스템 수준 Design Input"]
+            PRD_DOC["PRD v1.0\n(이 문서)\nPR-xxx / PR-NF-xxx\n시스템 수준 Design Input"]
         end
 
         subgraph DO["Design Output (설계 출력)"]
@@ -1398,7 +1394,7 @@ flowchart LR
     style VT fill:#145a32,color:#fff
 ```
 
-### 12.2 Design Input으로서의 PRD v3.0 역할
+### 12.2 Design Input으로서의 PRD 역할
 
 | 역할 | 설명 | FDA 참조 |
 |------|------|----------|
@@ -1438,14 +1434,14 @@ flowchart LR
 
 > **완전한 양방향 추적성 매트릭스 (Bidirectional Requirements Traceability Matrix)**  
 > FDA 21 CFR 820.30, IEC 62304 §5.2.6 준거  
-> **v3.0 신규**: PR-xxx 기반 3단계 추적성 (MR → PR → SWR) 적용
+> PR-xxx 기반 3단계 추적성 (MR → PR → SWR) 적용
 
 ### A.1 RTM 구조 및 범례
 
 | 컬럼 | 설명 |
 |------|------|
 | MR ID | MRD의 Market Requirement ID (출처) |
-| PR ID | 본 PRD의 요구사항 ID (v3.0 체계) |
+| PR ID | 본 PRD의 요구사항 ID |
 | 파생 SWR 범위 | FRS/SRS에서 상세화되는 SWR-xxx 범위 |
 | Design Element | 연결되는 설계 산출물 (SAD/SDS 참조) |
 | Verification Method | T/I/A/D (TIAD) |
@@ -1569,12 +1565,12 @@ flowchart LR
 | MR-005 | PR-NF-RG-064 | SWR-NF-RG-064 | SAD: DicomComm / Conformance | I | ST-PR-NF-RG-064 | — | HAZ-DATA | Open |
 | MR-007 | PR-NF-RG-065 | SWR-NF-RG-065 | SAD: 전체 / RTM 완전성 | I, A | ST-PR-NF-RG-065 | — | — | Open |
 
-### A.4 추적성 체인 다이어그램 (v3.0 업데이트)
+### A.4 추적성 체인 다이어그램
 
 ```mermaid
 flowchart LR
     MR["MR-xxx\n(MRD)"]
-    PR["PR-xxx / PR-NF-xxx\n(PRD v3.0)\nSystem-level Design Input"]
+    PR["PR-xxx / PR-NF-xxx\n(PRD)\nSystem-level Design Input"]
     SWR["SWR-xxx\n(FRS/SRS)\nIEC 62304 §5.2"]
     SAD_["SAD-xxx\n(Architecture)"]
     SDS_["SDS-xxx\n(Detailed Design)"]
@@ -1680,9 +1676,9 @@ flowchart LR
 
 ---
 
-*본 문서는 PRD-XRAY-GUI-001 v3.0이며, FDA 21 CFR 820.30 Design Controls 및 ISO 13485:2016 Clause 7.3에 따른 **시스템 수준 Design Input** 문서로서 기능합니다.*
+*본 문서는 PRD-XRAY-GUI-001 v1.0이며, FDA 21 CFR 820.30 Design Controls 및 ISO 13485:2016 Clause 7.3에 따른 **시스템 수준 Design Input** 문서로서 기능합니다.*
 
-*v3.0에서 도입된 3단계 추적성 계층: **MR-xxx(MRD) → PR-xxx(PRD, 시스템 Design Input) → SWR-xxx(FRS/SRS, IEC 62304 §5.2 소프트웨어 요구사항)** 구조를 통해 규제 기관(FDA/CE/KFDA)의 요구사항 추적성을 완전히 충족합니다.*
+*3단계 추적성 계층: **MR-xxx(MRD) → PR-xxx(PRD, 시스템 Design Input) → SWR-xxx(FRS/SRS, IEC 62304 §5.2 소프트웨어 요구사항)** 구조를 통해 규제 기관(FDA/CE/KFDA)의 요구사항 추적성을 완전히 충족합니다.*
 
 *모든 PR-xxx 요구사항은 하위 SWR-xxx(소프트웨어 요구사항, FRS/SRS 문서에서 상세 정의 예정)로 파생되며, 출처 MR → PR → SWR → SAD/SDS → TC → V&V의 완전한 양방향 추적성(Bidirectional Traceability)을 제공합니다.*
 

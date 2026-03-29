@@ -1,10 +1,10 @@
 # X-Ray Console GUI SW 인허가 문서 작성 마스터 플랜
-# Document Master Plan (DMP) v2.0
+# Document Master Plan (DMP) v1.0
 
 > **문서 ID**: DMP-XRAY-GUI-001
-> **버전**: v2.0
-> **작성일**: 2026-03-16
-> **최종 개정일**: 2026-03-16
+> **버전**: v1.0
+> **작성일**: 2026-03-27
+> **최종 개정일**: 2026-03-27
 > **적용 제품**: RadiConsole™ 의료용 진단 X-Ray 촬영장치 Console GUI SW
 > **적용 규격**: IEC 62304, IEC 62366, ISO 14971, ISO 13485, FDA 21 CFR 820.30, FDA Section 524B, EU MDR 2017/745
 > **인허가 대상**: FDA 510(k) / CE MDR / KFDA (식약처)
@@ -16,8 +16,7 @@
 
 | 버전 | 일자 | 개정 내용 | 작성자 |
 |------|------|-----------|--------|
-| v1.0 | 2026-03-16 | 최초 작성 (37개 문서 관리) | — |
-| v2.0 | 2026-03-16 | **주요 개정**: DOC-003(SW 개발 지침서), DOC-003a(SDP) 신규 추가; PRD v3.0 (MR→PR→SWR 3단계 계층); WBS v4.0 (Milestone 통합); §4.1 ID 체계 PR-xxx 추가; §6 교차 검증 섹션 신설; Phase Gate Checklist 추가; 문서 상태 매트릭스 42개로 확장; Mermaid 차트 전면 업데이트 | — |
+| v1.0 | 2026-03-27 | 최초 작성 | — |
 
 ---
 
@@ -26,13 +25,6 @@
 ### 1.1 목적 (Purpose)
 
 본 문서(Document Master Plan, DMP)는 **RadiConsole™** 의료용 진단 X-Ray 촬영장치 Console GUI SW의 **FDA 510(k) / CE MDR / KFDA 인허가**를 위한 전체 문서 작성 계획을 정의한다.
-
-v2.0 개정의 핵심 변경사항:
-- **42개 문서** 관리 체계 (v1.0 대비 5개 문서 추가)
-- **3단계 요구사항 계층** (MR → PR → SWR) 적용 — ID 체계 전면 업데이트
-- **§6 교차 검증 (Cross-Verification)** 섹션 신설 — 문서 간 일관성 보장
-- **Phase Gate Checklist** 강화 — 각 단계 통과 기준 명확화
-- **SW 개발 지침서 (Software Development Guideline)** 및 **SDP (Software Development Plan)** 추가
 
 구체적으로 다음 사항을 다룬다:
 - 인허가 제출에 필요한 **전체 문서 목록 및 분류 체계** (42개)
@@ -229,7 +221,7 @@ flowchart TD
 flowchart LR
     subgraph A["Phase A\n기반 문서 (Foundation)"]
         direction TB
-        MRD["MRD v2.0"]
+        MRD["MRD"]
         PRD_V3["PRD v3.0"]
         WBS_V4["WBS v4.0"]
         SDG_A["SW 개발 지침서"]
@@ -322,11 +314,11 @@ flowchart LR
 
 ### 3.1 Phase A: 기반 문서 (Foundation Documents)
 
-> 현재 완료 예정 — 후속 모든 문서의 기반이 되는 핵심 문서. **v2.0 신규**: DOC-003, DOC-003a, DOC-041 추가
+> 현재 완료 예정 — 후속 모든 문서의 기반이 되는 핵심 문서.
 
 | Phase | 문서 ID | 문서명 | 의존 문서 | 담당 | 목표 일정 | 인허가 제출 포함 |
 |-------|---------|--------|----------|------|----------|----------------|
-| A | **DOC-001** | MRD v2.0 (Market Requirements Document) | — | PM/마케팅 | 2026-03 ✅완료 | ✅ (DHF Design Input) |
+| A | **DOC-001** | MRD (Market Requirements Document) | — | PM/마케팅 | 2026-03 ✅완료 | ✅ (DHF Design Input) |
 | A | **DOC-002** | PRD v3.0 (Product Requirements Document) — MR→PR→SWR 3단계 계층 적용 | DOC-001 | PM/SE | 2026-03 ✅완료 | ✅ (DHF Design Input, eSTAR) |
 | A | **WBS-001** | WBS v4.0 (Work Breakdown Structure) — Milestone 통합 | DOC-001, DOC-002 | PM | 2026-03 ✅완료 | ✅ (DHF Design Plan) |
 | A | **DOC-003** | SW 개발 지침서 (Software Development Guideline) — **신규** | DOC-002 | Dev Lead/QA | 2026-04 | ✅ (DHF QMS, IEC 62304) |
@@ -341,7 +333,7 @@ flowchart LR
 
 ### 3.2 Phase B: 상세 설계 문서 (Detailed Design Documents)
 
-> MRD/PRD 승인 후 즉시 착수. **v2.0**: SRS는 PRD v3.0의 SWR-xxx 체계 기반으로 작성
+> MRD/PRD 승인 후 즉시 착수. SRS는 PRD v3.0의 SWR-xxx 체계 기반으로 작성
 
 | Phase | 문서 ID | 문서명 | 의존 문서 | 담당 | 목표 일정 | 인허가 제출 포함 |
 |-------|---------|--------|----------|------|----------|----------------|
@@ -393,7 +385,7 @@ flowchart LR
 
 ### 3.6 Phase F: 임상/사용성 평가 문서 (Clinical & Usability Documents)
 
-> 설계 초기부터 병행. **v2.0**: DOC-038(DICOM Conformance), DOC-040(IFU) 추가
+> 설계 초기부터 병행.
 
 | Phase | 문서 ID | 문서명 | 의존 문서 | 담당 | 목표 일정 | 인허가 제출 포함 |
 |-------|---------|--------|----------|------|----------|----------------|
@@ -423,7 +415,7 @@ flowchart LR
 
 ### 3.8 Phase H: QA 및 최종 인허가 (QA & Final Regulatory)
 
-> 모든 테스트 완료 후 최종 편찬 및 인허가 제출 준비. **v2.0**: DOC-039(KFDA) 추가
+> 모든 테스트 완료 후 최종 편찬 및 인허가 제출 준비.
 
 | Phase | 문서 ID | 문서명 | 의존 문서 | 담당 | 목표 일정 | 인허가 제출 포함 |
 |-------|---------|--------|----------|------|----------|----------------|
@@ -439,29 +431,27 @@ flowchart LR
 
 ---
 
-## 4. 추적성 체계 정의 v2.0 (Traceability System)
+## 4. 추적성 체계 정의 (Traceability System)
 
-### 4.1 문서 ID 체계 (v2.0 — MR→PR→SWR 3단계)
+### 4.1 문서 ID 체계 (MR→PR→SWR 3단계)
 
-> **v2.0 핵심 변경**: PR-xxx (Product Requirement) 계층 신설 — MRD의 시장 요구사항을 시스템 수준 제품 요구사항으로 분해
-
-| ID 접두어 | 계층 | 예시 | 생성 문서 | v2.0 변경 |
-|----------|------|------|---------|---------:|
-| **MR-xxx** | Market Requirement (시장 요구사항) | MR-001 | MRD (DOC-001) | 유지 |
-| **PR-xxx** | Product Requirement (제품 요구사항) — 시스템 수준 Design Input | PR-001 | PRD v3.0 (DOC-002) | **신규** |
-| **SWR-xxx** | Software Requirement (소프트웨어 요구사항) — IEC 62304 §5.2 | SWR-001 | SRS (DOC-005) | **신규** |
-| **FR-xxx** | Functional Requirement (기능 요구사항) | FR-001 | FRS (DOC-004) | 유지 |
-| **NFR-xxx** | Non-Functional Requirement (비기능 요구사항) | NFR-001 | PRD/SRS | 유지 |
-| **HAZ-xxx** | Hazard Identification (위험 식별) | HAZ-001 | FMEA (DOC-009) | 유지 |
-| **RC-xxx** | Risk Control Measure (위험 통제 조치) | RC-001 | FMEA (DOC-009) | 유지 |
-| **SAD-xxx** | Architecture Design Element (아키텍처 설계 요소) | SAD-001 | SAD (DOC-006) | 유지 |
-| **SDS-xxx** | Detailed Design Element (상세 설계 요소) | SDS-001 | SDS (DOC-007) | 유지 |
-| **TC-xxx** | Test Case (테스트 케이스) — 공통 접두어 | TC-001 | 각 Test Plan | **신규** |
-| **UT-xxx** | Unit Test Case | UT-001 | Unit Test Plan (DOC-012) | 유지 |
-| **IT-xxx** | Integration Test Case | IT-001 | Integration Test Plan (DOC-013) | 유지 |
-| **ST-xxx** | System Test Case | ST-001 | System Test Plan (DOC-014) | 유지 |
-| **VT-xxx** | Validation Test Case | VT-001 | Validation Plan (DOC-015) | 유지 |
-| **CS-xxx** | Cybersecurity Control (사이버보안 통제) | CS-001 | Cybersecurity Plan (DOC-016) | 유지 |
+| ID 접두어 | 계층 | 예시 | 생성 문서 |
+|----------|------|------|---------|
+| **MR-xxx** | Market Requirement (시장 요구사항) | MR-001 | MRD (DOC-001) |
+| **PR-xxx** | Product Requirement (제품 요구사항) — 시스템 수준 Design Input | PR-001 | PRD v3.0 (DOC-002) |
+| **SWR-xxx** | Software Requirement (소프트웨어 요구사항) — IEC 62304 §5.2 | SWR-001 | SRS (DOC-005) |
+| **FR-xxx** | Functional Requirement (기능 요구사항) | FR-001 | FRS (DOC-004) |
+| **NFR-xxx** | Non-Functional Requirement (비기능 요구사항) | NFR-001 | PRD/SRS |
+| **HAZ-xxx** | Hazard Identification (위험 식별) | HAZ-001 | FMEA (DOC-009) |
+| **RC-xxx** | Risk Control Measure (위험 통제 조치) | RC-001 | FMEA (DOC-009) |
+| **SAD-xxx** | Architecture Design Element (아키텍처 설계 요소) | SAD-001 | SAD (DOC-006) |
+| **SDS-xxx** | Detailed Design Element (상세 설계 요소) | SDS-001 | SDS (DOC-007) |
+| **TC-xxx** | Test Case (테스트 케이스) — 공통 접두어 | TC-001 | 각 Test Plan |
+| **UT-xxx** | Unit Test Case | UT-001 | Unit Test Plan (DOC-012) |
+| **IT-xxx** | Integration Test Case | IT-001 | Integration Test Plan (DOC-013) |
+| **ST-xxx** | System Test Case | ST-001 | System Test Plan (DOC-014) |
+| **VT-xxx** | Validation Test Case | VT-001 | Validation Plan (DOC-015) |
+| **CS-xxx** | Cybersecurity Control (사이버보안 통제) | CS-001 | Cybersecurity Plan (DOC-016) |
 
 ### 4.2 3단계 요구사항 분해 체계 (MR → PR → SWR)
 
@@ -482,13 +472,13 @@ flowchart LR
 [Verification]        UT-010, IT-010, ST-010, VT-010
 ```
 
-### 4.3 RTM v2.0 컬럼 구조 (MR→PR→SWR 반영)
+### 4.3 RTM 컬럼 구조 (MR→PR→SWR 반영)
 
 | HAZ ID | MR ID | PR ID | SWR ID | FR/NFR ID | SAD Ref | SDS Ref | Code Module | UT ID | IT ID | ST ID | VT ID | Pass/Fail | Risk Status |
 |--------|-------|-------|--------|-----------|---------|---------|-------------|-------|-------|-------|-------|-----------|-------------|
 | HAZ-001 | MR-010 | PR-010 | SWR-010 | FR-001 | SAD-101 | SDS-201 | WorkflowEngine | UT-001 | IT-001 | ST-001 | VT-001 | Pass | Residual Acceptable |
 
-### 4.4 추적성 체인 시각화 v2.0 (MR → PR → SWR)
+### 4.4 추적성 체인 시각화 (MR → PR → SWR)
 
 ```mermaid
 flowchart LR
@@ -583,16 +573,16 @@ SWR-010 → SAD-101 (WorkflowEngine Architecture)
 
 ## 5. 작성 일정 (Document Production Schedule)
 
-### 5.1 전체 인허가 문서 Gantt Chart v2.0
+### 5.1 전체 인허가 문서 Gantt Chart
 
 ```mermaid
 gantt
-    title X-Ray Console GUI SW 인허가 문서 작성 일정 v2.0 (42개 문서)
+    title X-Ray Console GUI SW 인허가 문서 작성 일정 (42개 문서)
     dateFormat  YYYY-MM
     axisFormat  %Y-%m
 
     section Phase A 기반 문서
-    DOC-001 MRD v2.0                    :done, a1, 2026-03, 1M
+    DOC-001 MRD                          :done, a1, 2026-03, 1M
     DOC-002 PRD v3.0                    :done, a2, 2026-03, 1M
     WBS-001 WBS v4.0                    :done, a3, 2026-03, 1M
     DOC-003 SW 개발 지침서              :a4, 2026-04, 1M
@@ -709,11 +699,11 @@ gantt
 
 ---
 
-## 6. 교차 검증 체계 (Cross-Verification System) — **v2.0 신설**
+## 6. 교차 검증 체계 (Cross-Verification System)
 
 ### 6.1 교차 검증 개요
 
-문서 간 **불일치(Inconsistency)**는 인허가 심사 지연 및 거절의 주요 원인이다. v2.0에서는 체계적인 교차 검증 프로세스를 통해 문서 간 일관성을 보장한다.
+문서 간 **불일치(Inconsistency)**는 인허가 심사 지연 및 거절의 주요 원인이다. 체계적인 교차 검증 프로세스를 통해 문서 간 일관성을 보장한다.
 
 **교차 검증 원칙:**
 1. **상위 → 하위 일관성**: 상위 문서의 요구사항이 하위 문서에 완전히 반영되어야 함
@@ -726,7 +716,7 @@ gantt
 ```mermaid
 flowchart TD
     subgraph TIER1["계층 1: 기반 문서"]
-        MRD_V["MRD v2.0\n(DOC-001)"]
+        MRD_V["MRD\n(DOC-001)"]
         PRD_V["PRD v3.0\n(DOC-002)"]
         SDG_V["SW 개발 지침서\n(DOC-003)"]
     end
@@ -834,7 +824,7 @@ stateDiagram-v2
 
 ---
 
-## 7. Phase Gate 체계 (Phase Gate System) — v2.0 강화
+## 7. Phase Gate 체계 (Phase Gate System)
 
 ### 7.1 Phase Gate 개요
 
@@ -864,7 +854,7 @@ flowchart LR
 
 | # | 항목 | 대응 문서 | 기준 | 완료 여부 |
 |---|------|---------|------|---------|
-| A-01 | MRD v2.0 Released 상태 | DOC-001 | Released | ☐ |
+| A-01 | MRD Released 상태 | DOC-001 | Released | ☐ |
 | A-02 | PRD v3.0 MR→PR→SWR 3단계 ID 체계 적용 완료 | DOC-002 | PR-xxx 할당 완료 | ☐ |
 | A-03 | WBS v4.0 Milestone 포함 승인 | WBS-001 | Released | ☐ |
 | A-04 | SW 개발 지침서 (DOC-003) Draft 이상 | DOC-003 | ≥ Draft | ☐ |
@@ -956,7 +946,7 @@ stateDiagram-v2
 | **기술 검토자** | Tech Reviewer | 기술적 정확성 검토, 설계/코딩 팀 |
 | **규제 검토자** | RA Reviewer | 규제 요구사항 준수 검토, RA 담당 |
 | **QA 검토자** | QA Reviewer | 품질 기준 충족 여부 검토 |
-| **교차 검증자** | CV Reviewer | 문서 간 일관성 검토 (v2.0 신규) |
+| **교차 검증자** | CV Reviewer | 문서 간 일관성 검토 |
 | **승인자** | Approver | 최종 승인, 매니지먼트 레벨 |
 
 ### 8.3 문서 유형별 검토/승인 매트릭스
@@ -985,92 +975,92 @@ stateDiagram-v2
 
 ---
 
-## 9. 문서 상태 관리 매트릭스 v2.0 (Document Status Matrix — 42개)
+## 9. 문서 상태 관리 매트릭스 (Document Status Matrix -- 42개)
 
 ### 9.1 Phase A: 기반 문서 (6개)
 
-| 문서 ID | 문서명 | 담당 | 목표일 | 현재 상태 | v2.0 변경 |
-|--------|--------|------|-------|----------|---------|
-| DOC-001 | MRD v2.0 | PM/마케팅 | 2026-03 | ✅ Released | 유지 |
-| DOC-002 | PRD v3.0 | PM/SE | 2026-03 | ✅ Released | **v3.0으로 업그레이드** |
-| WBS-001 | WBS v4.0 | PM | 2026-03 | ✅ Released | **v4.0으로 업그레이드** |
-| DOC-003 | SW 개발 지침서 | Dev Lead/QA | 2026-04 | ⬜ 미착수 | **신규** |
-| DOC-003a | SDP | PM/Dev Lead | 2026-04 | ⬜ 미착수 | **신규** |
-| DOC-041 | PM 계획서 | PM | 2026-04 | ⬜ 미착수 | **신규** |
+| 문서 ID | 문서명 | 담당 | 목표일 | 현재 상태 |
+|--------|--------|------|-------|----------|
+| DOC-001 | MRD | PM/마케팅 | 2026-03 | ✅ Released |
+| DOC-002 | PRD v3.0 | PM/SE | 2026-03 | ✅ Released |
+| WBS-001 | WBS v4.0 | PM | 2026-03 | ✅ Released |
+| DOC-003 | SW 개발 지침서 | Dev Lead/QA | 2026-04 | ⬜ 미착수 |
+| DOC-003a | SDP | PM/Dev Lead | 2026-04 | ⬜ 미착수 |
+| DOC-041 | PM 계획서 | PM | 2026-04 | ⬜ 미착수 |
 
 ### 9.2 Phase B: 상세 설계 문서 (4개)
 
-| 문서 ID | 문서명 | 담당 | 목표일 | 현재 상태 | v2.0 변경 |
-|--------|--------|------|-------|----------|---------|
-| DOC-004 | FRS | SE | 2026-05 | 📝 Draft 예정 | SWR-xxx 연계 강화 |
-| DOC-005 | SRS | SE | 2026-05 | 📝 Draft 예정 | **SWR-xxx 체계 적용** |
-| DOC-006 | SAD | Lead Dev | 2026-07 | ⬜ 미착수 | 유지 |
-| DOC-007 | SDS | Dev Team | 2026-08 | ⬜ 미착수 | 유지 |
+| 문서 ID | 문서명 | 담당 | 목표일 | 현재 상태 |
+|--------|--------|------|-------|----------|
+| DOC-004 | FRS | SE | 2026-05 | 📝 Draft 예정 |
+| DOC-005 | SRS | SE | 2026-05 | 📝 Draft 예정 |
+| DOC-006 | SAD | Lead Dev | 2026-07 | ⬜ 미착수 |
+| DOC-007 | SDS | Dev Team | 2026-08 | ⬜ 미착수 |
 
 ### 9.3 Phase C: 위험 관리 (3개)
 
-| 문서 ID | 문서명 | 담당 | 목표일 | 현재 상태 | v2.0 변경 |
-|--------|--------|------|-------|----------|---------|
-| DOC-008 | Risk Management Plan | QA/SE | 2026-05 | 📝 Draft 예정 | RC-xxx ↔ SWR-xxx 매핑 필수 |
-| DOC-009 | Software Hazard Analysis (FMEA/FTA) | SE/QA | 2026-07 | ⬜ 미착수 | RC-xxx ↔ SWR-xxx 컬럼 추가 |
-| DOC-010 | Risk Management Report | QA | 2027-01 | ⬜ 미착수 | 유지 |
+| 문서 ID | 문서명 | 담당 | 목표일 | 현재 상태 |
+|--------|--------|------|-------|----------|
+| DOC-008 | Risk Management Plan | QA/SE | 2026-05 | 📝 Draft 예정 |
+| DOC-009 | Software Hazard Analysis (FMEA/FTA) | SE/QA | 2026-07 | ⬜ 미착수 |
+| DOC-010 | Risk Management Report | QA | 2027-01 | ⬜ 미착수 |
 
 ### 9.4 Phase D: V&V 계획 (5개)
 
-| 문서 ID | 문서명 | 담당 | 목표일 | 현재 상태 | v2.0 변경 |
-|--------|--------|------|-------|----------|---------|
-| DOC-011 | V&V Master Plan | QA/SE | 2026-05 | 📝 Draft 예정 | SWR-xxx 커버리지 항목 추가 |
-| DOC-012 | Unit Test Plan | Dev/QA | 2026-07 | ⬜ 미착수 | 유지 |
-| DOC-013 | Integration Test Plan | QA | 2026-08 | ⬜ 미착수 | 유지 |
-| DOC-014 | System Test Plan | QA | 2026-08 | ⬜ 미착수 | 유지 |
-| DOC-015 | Validation Plan | QA/Clinical | 2026-08 | ⬜ 미착수 | 유지 |
+| 문서 ID | 문서명 | 담당 | 목표일 | 현재 상태 |
+|--------|--------|------|-------|----------|
+| DOC-011 | V&V Master Plan | QA/SE | 2026-05 | 📝 Draft 예정 |
+| DOC-012 | Unit Test Plan | Dev/QA | 2026-07 | ⬜ 미착수 |
+| DOC-013 | Integration Test Plan | QA | 2026-08 | ⬜ 미착수 |
+| DOC-014 | System Test Plan | QA | 2026-08 | ⬜ 미착수 |
+| DOC-015 | Validation Plan | QA/Clinical | 2026-08 | ⬜ 미착수 |
 
 ### 9.5 Phase E: 사이버보안 (4개)
 
-| 문서 ID | 문서명 | 담당 | 목표일 | 현재 상태 | v2.0 변경 |
-|--------|--------|------|-------|----------|---------|
-| DOC-016 | Cybersecurity Management Plan | Security | 2026-05 | 📝 Draft 예정 | CS-xxx ↔ SWR-xxx 매핑 |
-| DOC-017 | Threat Model & Risk Assessment | Security | 2026-06 | ⬜ 미착수 | 유지 |
-| DOC-018 | Cybersecurity Test Plan | Security/QA | 2026-08 | ⬜ 미착수 | 유지 |
-| DOC-019 | SBOM | Dev/Security | 2026-10 | ⬜ 미착수 | SOUP 자동 연동 |
+| 문서 ID | 문서명 | 담당 | 목표일 | 현재 상태 |
+|--------|--------|------|-------|----------|
+| DOC-016 | Cybersecurity Management Plan | Security | 2026-05 | 📝 Draft 예정 |
+| DOC-017 | Threat Model & Risk Assessment | Security | 2026-06 | ⬜ 미착수 |
+| DOC-018 | Cybersecurity Test Plan | Security/QA | 2026-08 | ⬜ 미착수 |
+| DOC-019 | SBOM | Dev/Security | 2026-10 | ⬜ 미착수 |
 
 ### 9.6 Phase F: 임상/사용성 (4개)
 
-| 문서 ID | 문서명 | 담당 | 목표일 | 현재 상태 | v2.0 변경 |
-|--------|--------|------|-------|----------|---------|
-| DOC-020 | Clinical Evaluation Plan | Clinical/RA | 2026-08 | ⬜ 미착수 | 유지 |
-| DOC-021 | Usability Engineering File | UX/QA | 2026-09 | ⬜ 미착수 | 유지 |
-| DOC-038 | DICOM Conformance Statement | Dev/SE | 2026-09 | ⬜ 미착수 | **신규** |
-| DOC-040 | 사용 설명서 (IFU) | UX/RA | 2026-10 | ⬜ 미착수 | **신규** |
+| 문서 ID | 문서명 | 담당 | 목표일 | 현재 상태 |
+|--------|--------|------|-------|----------|
+| DOC-020 | Clinical Evaluation Plan | Clinical/RA | 2026-08 | ⬜ 미착수 |
+| DOC-021 | Usability Engineering File | UX/QA | 2026-09 | ⬜ 미착수 |
+| DOC-038 | DICOM Conformance Statement | Dev/SE | 2026-09 | ⬜ 미착수 |
+| DOC-040 | 사용 설명서 (IFU) | UX/RA | 2026-10 | ⬜ 미착수 |
 
 ### 9.7 Phase G: 테스트 보고서 (8개)
 
-| 문서 ID | 문서명 | 담당 | 목표일 | 현재 상태 | v2.0 변경 |
-|--------|--------|------|-------|----------|---------|
-| DOC-022 | Unit Test Report | Dev/QA | 2026-12 | ⬜ 미착수 | 유지 |
-| DOC-023 | Integration Test Report | QA | 2026-12 | ⬜ 미착수 | 유지 |
-| DOC-024 | System Test Report | QA | 2027-01 | ⬜ 미착수 | 유지 |
-| DOC-025 | V&V Summary Report | QA | 2027-01 | ⬜ 미착수 | 유지 |
-| DOC-026 | Cybersecurity Test Report | Security | 2026-12 | ⬜ 미착수 | 유지 |
-| DOC-027 | Performance Test Report | QA/Dev | 2027-01 | ⬜ 미착수 | 유지 |
-| DOC-028 | Usability Test Report (Summative) | UX/Clinical | 2027-01 | ⬜ 미착수 | 유지 |
-| DOC-029 | Clinical Evaluation Report | Clinical/RA | 2027-02 | ⬜ 미착수 | 유지 |
+| 문서 ID | 문서명 | 담당 | 목표일 | 현재 상태 |
+|--------|--------|------|-------|----------|
+| DOC-022 | Unit Test Report | Dev/QA | 2026-12 | ⬜ 미착수 |
+| DOC-023 | Integration Test Report | QA | 2026-12 | ⬜ 미착수 |
+| DOC-024 | System Test Report | QA | 2027-01 | ⬜ 미착수 |
+| DOC-025 | V&V Summary Report | QA | 2027-01 | ⬜ 미착수 |
+| DOC-026 | Cybersecurity Test Report | Security | 2026-12 | ⬜ 미착수 |
+| DOC-027 | Performance Test Report | QA/Dev | 2027-01 | ⬜ 미착수 |
+| DOC-028 | Usability Test Report (Summative) | UX/Clinical | 2027-01 | ⬜ 미착수 |
+| DOC-029 | Clinical Evaluation Report | Clinical/RA | 2027-02 | ⬜ 미착수 |
 
 ### 9.8 Phase H: QA 및 인허가 (9개)
 
-| 문서 ID | 문서명 | 담당 | 목표일 | 현재 상태 | v2.0 변경 |
-|--------|--------|------|-------|----------|---------|
-| DOC-030 | QA Test Case Plan | QA | 2026-08 | ⬜ 미착수 | 유지 |
-| DOC-031 | QA Verification Report & Checklist | QA | 2027-02 | ⬜ 미착수 | 유지 |
-| DOC-032 | RTM 최종본 | QA/SE | 2027-02 | ⬜ 미착수 | **MR→PR→SWR 컬럼 추가** |
-| DOC-033 | SOUP/OTS Analysis Report | Dev/Security | 2026-10 | ⬜ 미착수 | 유지 |
-| DOC-034 | Software Release Documentation | Dev/QA | 2027-03 | ⬜ 미착수 | 유지 |
-| DOC-035 | Design History File (DHF) | RA/QA | 2027-02 | ⬜ 미착수 | 42개 문서 인덱스 업데이트 |
-| DOC-036 | 510(k) / eSTAR Package | RA | 2027-03 | ⬜ 미착수 | 유지 |
-| DOC-037 | CE Technical Documentation | RA | 2027-03 | ⬜ 미착수 | 유지 |
-| DOC-039 | KFDA 기술 문서 (식약처) | RA | 2027-04 | ⬜ 미착수 | **신규** |
+| 문서 ID | 문서명 | 담당 | 목표일 | 현재 상태 |
+|--------|--------|------|-------|----------|
+| DOC-030 | QA Test Case Plan | QA | 2026-08 | ⬜ 미착수 |
+| DOC-031 | QA Verification Report & Checklist | QA | 2027-02 | ⬜ 미착수 |
+| DOC-032 | RTM 최종본 | QA/SE | 2027-02 | ⬜ 미착수 |
+| DOC-033 | SOUP/OTS Analysis Report | Dev/Security | 2026-10 | ⬜ 미착수 |
+| DOC-034 | Software Release Documentation | Dev/QA | 2027-03 | ⬜ 미착수 |
+| DOC-035 | Design History File (DHF) | RA/QA | 2027-02 | ⬜ 미착수 |
+| DOC-036 | 510(k) / eSTAR Package | RA | 2027-03 | ⬜ 미착수 |
+| DOC-037 | CE Technical Documentation | RA | 2027-03 | ⬜ 미착수 |
+| DOC-039 | KFDA 기술 문서 (식약처) | RA | 2027-04 | ⬜ 미착수 |
 
-**v2.0 총 문서 수: 42개** (Phase A: 6개, Phase B: 4개, Phase C: 3개, Phase D: 5개, Phase E: 4개, Phase F: 4개, Phase G: 8개, Phase H: 9개, WBS: 별도 관리)
+**총 문서 수: 42개** (Phase A: 6개, Phase B: 4개, Phase C: 3개, Phase D: 5개, Phase E: 4개, Phase F: 4개, Phase G: 8개, Phase H: 9개, WBS: 별도 관리)
 
 ---
 
@@ -1163,16 +1153,16 @@ stateDiagram-v2
 
 > **Note**: 폴더 분류는 문서의 주요 용도 기준이며, 문서 번호(DOC-xxx)는 Phase 기반 일련번호를 유지한다.
 
-### 11.4 신규 문서 번호 예약 (v2.0)
+### 11.4 신규 문서 번호 예약
 
 | 예약 ID | 용도 | 비고 |
 |--------|------|------|
-| DOC-003 | SW 개발 지침서 (Software Development Guideline) | v2.0 신규 |
-| DOC-003a | SDP (Software Development Plan) | v2.0 신규 |
-| DOC-038 | DICOM Conformance Statement | v2.0 신규 |
-| DOC-039 | KFDA 기술 문서 (식약처) | v2.0 신규 |
-| DOC-040 | IFU (사용 설명서) | v2.0 신규 |
-| DOC-041 | PM 계획서 (Project Management Plan) | v2.0 신규 |
+| DOC-003 | SW 개발 지침서 (Software Development Guideline) | — |
+| DOC-003a | SDP (Software Development Plan) | — |
+| DOC-038 | DICOM Conformance Statement | — |
+| DOC-039 | KFDA 기술 문서 (식약처) | — |
+| DOC-040 | IFU (사용 설명서) | — |
+| DOC-041 | PM 계획서 (Project Management Plan) | — |
 | DOC-042~049 | 향후 확장 예비 번호 | Phase 2 (AI/Cloud) |
 
 ---
@@ -1194,55 +1184,55 @@ stateDiagram-v2
 
 ---
 
-## 부록 A. 전체 문서 목록 인덱스 v2.0 (42개)
+## 부록 A. 전체 문서 목록 인덱스 (42개)
 
-| 문서 ID | 문서명 (한국어) | 문서명 (영문) | Phase | 담당 | 목표일 | 상태 | v2.0 변경 |
-|--------|--------------|------------|-------|------|-------|------|---------|
-| DOC-001 | 시장 요구사항 문서 | Market Requirements Document (MRD) v2.0 | A | PM/마케팅 | 2026-03 | ✅ Released | 유지 |
-| DOC-002 | 제품 요구사항 문서 | Product Requirements Document (PRD) **v3.0** | A | PM/SE | 2026-03 | ✅ Released | **v3.0 업그레이드** |
-| WBS-001 | 작업 분해 구조 | Work Breakdown Structure (WBS) **v4.0** | A | PM | 2026-03 | ✅ Released | **v4.0 업그레이드** |
-| DOC-003 | SW 개발 지침서 | Software Development Guideline (SDG) | A | Dev Lead/QA | 2026-04 | ⬜ 미착수 | **신규** |
-| DOC-003a | SW 개발 계획서 | Software Development Plan (SDP) | A | PM/Dev Lead | 2026-04 | ⬜ 미착수 | **신규** |
-| DOC-041 | PM 계획서 | Project Management Plan (PMP) | A | PM | 2026-04 | ⬜ 미착수 | **신규** |
-| DOC-004 | 기능 요구사항 명세서 | Functional Requirements Specification (FRS) | B | SE | 2026-05 | 📝 Draft 예정 | SWR 연계 |
-| DOC-005 | SW 요구사항 명세서 | Software Requirements Specification (SRS) | B | SE | 2026-05 | 📝 Draft 예정 | **SWR-xxx 체계** |
-| DOC-006 | SW 아키텍처 설계서 | Software Architecture Design (SAD) | B | Lead Dev | 2026-07 | ⬜ 미착수 | 유지 |
-| DOC-007 | SW 상세 설계서 | Software Design Specification (SDS) | B | Dev Team | 2026-08 | ⬜ 미착수 | 유지 |
-| DOC-008 | 위험 관리 계획서 | Risk Management Plan (ISO 14971) | C | QA/SE | 2026-05 | 📝 Draft 예정 | RC↔SWR 매핑 |
-| DOC-009 | SW 위험 분석 | Software Hazard Analysis (FMEA/FTA) | C | SE/QA | 2026-07 | ⬜ 미착수 | RC↔SWR 컬럼 |
-| DOC-010 | 위험 관리 보고서 | Risk Management Report | C | QA | 2027-01 | ⬜ 미착수 | 유지 |
-| DOC-011 | V&V 마스터 플랜 | V&V Master Plan | D | QA/SE | 2026-05 | 📝 Draft 예정 | SWR 커버리지 |
-| DOC-012 | 단위 테스트 계획서 | Unit Test Plan | D | Dev/QA | 2026-07 | ⬜ 미착수 | 유지 |
-| DOC-013 | 통합 테스트 계획서 | Integration Test Plan | D | QA | 2026-08 | ⬜ 미착수 | 유지 |
-| DOC-014 | 시스템 테스트 계획서 | System Test Plan | D | QA | 2026-08 | ⬜ 미착수 | 유지 |
-| DOC-015 | 밸리데이션 계획서 | Validation Plan | D | QA/Clinical | 2026-08 | ⬜ 미착수 | 유지 |
-| DOC-016 | 사이버보안 관리 계획서 | Cybersecurity Management Plan | E | Security | 2026-05 | 📝 Draft 예정 | CS↔SWR 매핑 |
-| DOC-017 | 위협 모델 및 위험 평가 | Threat Model & Risk Assessment (STRIDE) | E | Security | 2026-06 | ⬜ 미착수 | 유지 |
-| DOC-018 | 사이버보안 테스트 계획서 | Cybersecurity Test Plan | E | Security/QA | 2026-08 | ⬜ 미착수 | 유지 |
-| DOC-019 | SW 자재 목록 | Software Bill of Materials (SBOM) | E | Dev/Security | 2026-10 | ⬜ 미착수 | SOUP 자동 연동 |
-| DOC-020 | 임상 평가 계획서 | Clinical Evaluation Plan | F | Clinical/RA | 2026-08 | ⬜ 미착수 | 유지 |
-| DOC-021 | 사용성 엔지니어링 파일 | Usability Engineering File (UEF, IEC 62366) | F | UX/QA | 2026-09 | ⬜ 미착수 | 유지 |
-| DOC-038 | DICOM 적합성 선언서 | DICOM Conformance Statement | F | Dev/SE | 2026-09 | ⬜ 미착수 | **신규** |
-| DOC-040 | 사용 설명서 | Instructions for Use (IFU) | F | UX/RA | 2026-10 | ⬜ 미착수 | **신규** |
-| DOC-022 | 단위 테스트 보고서 | Unit Test Report | G | Dev/QA | 2026-12 | ⬜ 미착수 | 유지 |
-| DOC-023 | 통합 테스트 보고서 | Integration Test Report | G | QA | 2026-12 | ⬜ 미착수 | 유지 |
-| DOC-024 | 시스템 테스트 보고서 | System Test Report | G | QA | 2027-01 | ⬜ 미착수 | 유지 |
-| DOC-025 | V&V 종합 보고서 | V&V Summary Report | G | QA | 2027-01 | ⬜ 미착수 | 유지 |
-| DOC-026 | 사이버보안 테스트 보고서 | Cybersecurity Test Report | G | Security | 2026-12 | ⬜ 미착수 | 유지 |
-| DOC-027 | 성능 테스트 보고서 | Performance Test Report | G | QA/Dev | 2027-01 | ⬜ 미착수 | 유지 |
-| DOC-028 | 사용성 평가 보고서 | Usability Test Report (Summative) | G | UX/Clinical | 2027-01 | ⬜ 미착수 | 유지 |
-| DOC-029 | 임상 평가 보고서 | Clinical Evaluation Report | G | Clinical/RA | 2027-02 | ⬜ 미착수 | 유지 |
-| DOC-030 | QA 테스트 케이스 계획서 | QA Test Case Plan | H | QA | 2026-08 | ⬜ 미착수 | 유지 |
-| DOC-031 | QA 검증 보고서 | QA Verification Report & Checklist | H | QA | 2027-02 | ⬜ 미착수 | 유지 |
-| DOC-032 | 요구사항 추적성 매트릭스 | Requirements Traceability Matrix (RTM) | H | QA/SE | 2027-02 | ⬜ 미착수 | **MR→PR→SWR** |
-| DOC-033 | SOUP/OTS 분석 보고서 | SOUP/OTS Analysis Report | H | Dev/Security | 2026-10 | ⬜ 미착수 | 유지 |
-| DOC-034 | SW 릴리스 문서 | Software Release Documentation | H | Dev/QA | 2027-03 | ⬜ 미착수 | 유지 |
-| DOC-035 | 설계 이력 파일 | Design History File (DHF) | H | RA/QA | 2027-02 | ⬜ 미착수 | 42개 인덱스 |
-| DOC-036 | 510(k) 기술 파일 | 510(k) Technical File / eSTAR Package | H | RA | 2027-03 | ⬜ 미착수 | 유지 |
-| DOC-037 | CE 기술 문서 | CE Technical Documentation | H | RA | 2027-03 | ⬜ 미착수 | 유지 |
-| DOC-039 | KFDA 기술 문서 | KFDA Technical File (식약처 인허가) | H | RA | 2027-04 | ⬜ 미착수 | **신규** |
+| 문서 ID | 문서명 (한국어) | 문서명 (영문) | Phase | 담당 | 목표일 | 상태 |
+|--------|--------------|------------|-------|------|-------|------|
+| DOC-001 | 시장 요구사항 문서 | Market Requirements Document (MRD) | A | PM/마케팅 | 2026-03 | ✅ Released |
+| DOC-002 | 제품 요구사항 문서 | Product Requirements Document (PRD) **v3.0** | A | PM/SE | 2026-03 | ✅ Released |
+| WBS-001 | 작업 분해 구조 | Work Breakdown Structure (WBS) **v4.0** | A | PM | 2026-03 | ✅ Released |
+| DOC-003 | SW 개발 지침서 | Software Development Guideline (SDG) | A | Dev Lead/QA | 2026-04 | ⬜ 미착수 |
+| DOC-003a | SW 개발 계획서 | Software Development Plan (SDP) | A | PM/Dev Lead | 2026-04 | ⬜ 미착수 |
+| DOC-041 | PM 계획서 | Project Management Plan (PMP) | A | PM | 2026-04 | ⬜ 미착수 |
+| DOC-004 | 기능 요구사항 명세서 | Functional Requirements Specification (FRS) | B | SE | 2026-05 | 📝 Draft 예정 |
+| DOC-005 | SW 요구사항 명세서 | Software Requirements Specification (SRS) | B | SE | 2026-05 | 📝 Draft 예정 |
+| DOC-006 | SW 아키텍처 설계서 | Software Architecture Design (SAD) | B | Lead Dev | 2026-07 | ⬜ 미착수 |
+| DOC-007 | SW 상세 설계서 | Software Design Specification (SDS) | B | Dev Team | 2026-08 | ⬜ 미착수 |
+| DOC-008 | 위험 관리 계획서 | Risk Management Plan (ISO 14971) | C | QA/SE | 2026-05 | 📝 Draft 예정 |
+| DOC-009 | SW 위험 분석 | Software Hazard Analysis (FMEA/FTA) | C | SE/QA | 2026-07 | ⬜ 미착수 |
+| DOC-010 | 위험 관리 보고서 | Risk Management Report | C | QA | 2027-01 | ⬜ 미착수 |
+| DOC-011 | V&V 마스터 플랜 | V&V Master Plan | D | QA/SE | 2026-05 | 📝 Draft 예정 |
+| DOC-012 | 단위 테스트 계획서 | Unit Test Plan | D | Dev/QA | 2026-07 | ⬜ 미착수 |
+| DOC-013 | 통합 테스트 계획서 | Integration Test Plan | D | QA | 2026-08 | ⬜ 미착수 |
+| DOC-014 | 시스템 테스트 계획서 | System Test Plan | D | QA | 2026-08 | ⬜ 미착수 |
+| DOC-015 | 밸리데이션 계획서 | Validation Plan | D | QA/Clinical | 2026-08 | ⬜ 미착수 |
+| DOC-016 | 사이버보안 관리 계획서 | Cybersecurity Management Plan | E | Security | 2026-05 | 📝 Draft 예정 |
+| DOC-017 | 위협 모델 및 위험 평가 | Threat Model & Risk Assessment (STRIDE) | E | Security | 2026-06 | ⬜ 미착수 |
+| DOC-018 | 사이버보안 테스트 계획서 | Cybersecurity Test Plan | E | Security/QA | 2026-08 | ⬜ 미착수 |
+| DOC-019 | SW 자재 목록 | Software Bill of Materials (SBOM) | E | Dev/Security | 2026-10 | ⬜ 미착수 |
+| DOC-020 | 임상 평가 계획서 | Clinical Evaluation Plan | F | Clinical/RA | 2026-08 | ⬜ 미착수 |
+| DOC-021 | 사용성 엔지니어링 파일 | Usability Engineering File (UEF, IEC 62366) | F | UX/QA | 2026-09 | ⬜ 미착수 |
+| DOC-038 | DICOM 적합성 선언서 | DICOM Conformance Statement | F | Dev/SE | 2026-09 | ⬜ 미착수 |
+| DOC-040 | 사용 설명서 | Instructions for Use (IFU) | F | UX/RA | 2026-10 | ⬜ 미착수 |
+| DOC-022 | 단위 테스트 보고서 | Unit Test Report | G | Dev/QA | 2026-12 | ⬜ 미착수 |
+| DOC-023 | 통합 테스트 보고서 | Integration Test Report | G | QA | 2026-12 | ⬜ 미착수 |
+| DOC-024 | 시스템 테스트 보고서 | System Test Report | G | QA | 2027-01 | ⬜ 미착수 |
+| DOC-025 | V&V 종합 보고서 | V&V Summary Report | G | QA | 2027-01 | ⬜ 미착수 |
+| DOC-026 | 사이버보안 테스트 보고서 | Cybersecurity Test Report | G | Security | 2026-12 | ⬜ 미착수 |
+| DOC-027 | 성능 테스트 보고서 | Performance Test Report | G | QA/Dev | 2027-01 | ⬜ 미착수 |
+| DOC-028 | 사용성 평가 보고서 | Usability Test Report (Summative) | G | UX/Clinical | 2027-01 | ⬜ 미착수 |
+| DOC-029 | 임상 평가 보고서 | Clinical Evaluation Report | G | Clinical/RA | 2027-02 | ⬜ 미착수 |
+| DOC-030 | QA 테스트 케이스 계획서 | QA Test Case Plan | H | QA | 2026-08 | ⬜ 미착수 |
+| DOC-031 | QA 검증 보고서 | QA Verification Report & Checklist | H | QA | 2027-02 | ⬜ 미착수 |
+| DOC-032 | 요구사항 추적성 매트릭스 | Requirements Traceability Matrix (RTM) | H | QA/SE | 2027-02 | ⬜ 미착수 |
+| DOC-033 | SOUP/OTS 분석 보고서 | SOUP/OTS Analysis Report | H | Dev/Security | 2026-10 | ⬜ 미착수 |
+| DOC-034 | SW 릴리스 문서 | Software Release Documentation | H | Dev/QA | 2027-03 | ⬜ 미착수 |
+| DOC-035 | 설계 이력 파일 | Design History File (DHF) | H | RA/QA | 2027-02 | ⬜ 미착수 |
+| DOC-036 | 510(k) 기술 파일 | 510(k) Technical File / eSTAR Package | H | RA | 2027-03 | ⬜ 미착수 |
+| DOC-037 | CE 기술 문서 | CE Technical Documentation | H | RA | 2027-03 | ⬜ 미착수 |
+| DOC-039 | KFDA 기술 문서 | KFDA Technical File (식약처 인허가) | H | RA | 2027-04 | ⬜ 미착수 |
 
-**총 문서 수 v2.0: 42개**
+**총 문서 수: 42개**
 - Phase A: 6개 (완료 3개, 신규 3개)
 - Phase B: 4개
 - Phase C: 3개
@@ -1298,7 +1288,7 @@ stateDiagram-v2
 
 ---
 
-> **Note 1**: 본 DMP v2.0은 WBS v4.0 (WBS-XRAY-GUI-001)과 연동하여 관리된다.
+> **Note 1**: 본 DMP는 WBS v4.0 (WBS-XRAY-GUI-001)과 연동하여 관리된다.
 >
 > **Note 2**: 모든 문서 ID (DOC-xxx)는 본 DMP의 부록 A 인덱스를 기준으로 한다. ID 신규 예약은 DMP 개정을 통해서만 가능하다.
 >

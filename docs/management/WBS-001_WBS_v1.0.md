@@ -1,9 +1,9 @@
 # 의료용 진단 X-Ray 촬영장치 Console GUI SW 개발 WBS
 
 > **문서 ID**: WBS-XRAY-GUI-001
-> **버전**: v4.0
-> **작성일**: 2026-03-18
-> **최종 개정일**: 2026-03-18
+> **버전**: v1.0
+> **작성일**: 2026-03-27
+> **최종 개정일**: 2026-03-27
 > **기준 규격**: IEC 62304:2006+AMD1:2015 (Medical Device SW Lifecycle), IEC 62366-1:2015+AMD1:2020 (Usability Engineering), IEC 60601-1-3 (Radiation Safety), ISO 14971:2019 (Risk Management), ISO 13485:2016 (QMS), FDA 21 CFR Part 820.30 (Design Controls), FDA Section 524B (Cybersecurity), EU MDR 2017/745
 > **SW Safety Class**: Class B (IEC 62304 기준)
 > **개발 전략**: Phase 1 (핵심 기능 M1-M12) → Phase 2 (고도화/AI 통합 M13-M24)
@@ -16,10 +16,7 @@
 
 | 버전 | 일자 | 개정 내용 | 작성자 |
 |------|------|-----------|--------|
-| v1.0 | 2026-02-16 | 최초 작성 | - |
-| v2.0 | 2026-03-16 | FPGA 항목 전면 제거, GUI SW 최적화, AI-ready 아키텍처, 사이버보안(FDA 524B), IEC 62366 Usability Engineering 전체 추가, Phase 1/2 구분, 경쟁사 기능 반영 | - |
-| v3.0 | 2026-03-16 | 인허가 문서 산출물 체계 반영, RTM 작업 추가, DHF 편찬 계획 포함, 신규 인허가 관련 마일스톤 추가, 인허가 문서 체계도 Mermaid 차트 추가 | - |
-| v4.0 | 2026-03-18 | MR→PR→SWR 3단계 ID 체계 반영, DevGuideline/SDP 작업 항목 신규 추가, Milestone 6단계(MS-01~MS-06) 명확화, Phase Gate 정의, 표준/규정 관리 섹션(WBS 0) 신규 추가, 각 작업 항목에 규격 조항 매핑, Mermaid 차트 전면 확대(7개+) | - |
+| v1.0 | 2026-03-27 | 최초 작성 | — |
 
 ---
 
@@ -32,12 +29,12 @@
 
 ---
 
-## v4.0 신규: ID 체계 계층 구조
+## ID 체계 계층 구조
 
 ```mermaid
 flowchart TD
-    MR["MR-xxx\nMarket Requirement\n(MRD v2.0)\n시장/고객 요구"]
-    PR["PR-xxx\nProduct Requirement\n(PRD v3.0)\n시스템 수준 Design Input\n21 CFR 820.30(c)"]
+    MR["MR-xxx\nMarket Requirement\n(MRD)\n시장/고객 요구"]
+    PR["PR-xxx\nProduct Requirement\n(PRD)\n시스템 수준 Design Input\n21 CFR 820.30(c)"]
     SWR["SWR-xxx\nSoftware Requirement\n(SRS/FRS)\nIEC 62304 §5.2\nSW 수준 요구사항"]
     SAD["SAD/SDS\nSW Architecture &\nDetailed Design\nIEC 62304 §5.3/5.4"]
     TC["TC-xxx\nTest Case\nIEC 62304 §5.5/5.6"]
@@ -70,11 +67,11 @@ flowchart TD
 
 ---
 
-## Milestone 정의 (v4.0 신규)
+## Milestone 정의
 
 | MS ID | Milestone | 목표 시기 | 주요 산출물 | Phase Gate | 관련 규격 |
 |-------|-----------|----------|-----------|-----------|---------|
-| **MS-01** | 기반 문서 승인 (Foundation Approval) | M1 | MRD v2.0, PRD v3.0, WBS v4.0, DMP v2.0, DevGuideline, SDP | DR#1 (계획 검토) | IEC 62304 §5.1, FDA 820.30(c) |
+| **MS-01** | 기반 문서 승인 (Foundation Approval) | M1 | MRD, PRD, WBS, DMP, DevGuideline, SDP | DR#1 (계획 검토) | IEC 62304 §5.1, FDA 820.30(c) |
 | **MS-02** | 요구사항 분석 완료 (Requirements Baseline) | M3 | FRS (IEC 62304), SRS, RMP, Cybersecurity Plan, Use Specification | DR#2 (설계 입력 검토) | IEC 62304 §5.2, ISO 14971 §4, IEC 62366 §5.2 |
 | **MS-03** | 설계 완료 (Design Freeze) | M5 | SAD, SDS, FMEA, Cybersecurity Architecture, RTM 중간본 | DR#3 (설계 출력 검토) | IEC 62304 §5.3/5.4, FDA 820.30(d/e) |
 | **MS-04** | 구현 완료 (Code Freeze) | M9 | 소스코드 전체, Unit Test Report, SOUP/SBOM, 코드 커버리지 ≥80% | — | IEC 62304 §5.5/5.6 |
@@ -83,18 +80,18 @@ flowchart TD
 
 ---
 
-## Phase Gate 프로세스 (v4.0 신규)
+## Phase Gate 프로세스
 
 ```mermaid
 flowchart LR
     subgraph DR1["DR#1 — 계획 검토\n(M1 종료)"]
         direction TB
-        D1A["✅ MRD v2.0 승인"]
-        D1B["✅ PRD v3.0 승인"]
-        D1C["✅ WBS v4.0 승인"]
+        D1A["✅ MRD 승인"]
+        D1B["✅ PRD 승인"]
+        D1C["✅ WBS 승인"]
         D1D["✅ DevGuideline 승인"]
         D1E["✅ SDP 승인"]
-        D1F["✅ DMP v2.0 승인"]
+        D1F["✅ DMP 승인"]
     end
 
     subgraph DR2["DR#2 — 설계 입력 검토\n(M3 종료)"]
@@ -153,11 +150,11 @@ flowchart LR
 
 ---
 
-## 전체 WBS 구조 (Mindmap — v4.0)
+## 전체 WBS 구조 (Mindmap)
 
 ```mermaid
 mindmap
-  root((X-Ray Console\nGUI SW\nv4.0))
+  root((X-Ray Console\nGUI SW))
     0.표준규정관리
       규격식별/Gap분석
       규격교육
@@ -233,15 +230,15 @@ mindmap
 
 ---
 
-## Milestone Timeline (v4.0 신규)
+## Milestone Timeline
 
 ```mermaid
 timeline
     title RadiConsole™ GUI SW 개발 Milestone Timeline (Phase 1)
     section M1 (2026-03)
         MS-01 : 기반 문서 승인 (DR#1)
-              : MRD v2.0 / PRD v3.0
-              : WBS v4.0 / DMP v2.0
+              : MRD / PRD
+              : WBS / DMP
               : DevGuideline / SDP
     section M3 (2026-05)
         MS-02 : 요구사항 분석 완료 (DR#2)
@@ -272,17 +269,17 @@ timeline
 
 ---
 
-## Phase 1/Phase 2 개발 로드맵 — v4.0 Gantt (Milestone 표시)
+## Phase 1/Phase 2 개발 로드맵 — Gantt (Milestone 표시)
 
 ```mermaid
 gantt
-    title X-Ray Console GUI SW 개발 로드맵 v4.0 (Phase 1 + Phase 2) — Milestone & Critical Path
+    title X-Ray Console GUI SW 개발 로드맵 (Phase 1 + Phase 2) — Milestone & Critical Path
     dateFormat  YYYY-MM
     axisFormat  %Y-%m
 
     section 📋 Phase 1 - 기반 문서 (Critical)
-    MRD v2.0 / PRD v3.0 확정                :crit, p1_mrd, 2026-03, 1M
-    WBS v4.0 / DMP v2.0 작성               :crit, p1_wbs, 2026-03, 1M
+    MRD / PRD 확정                :crit, p1_mrd, 2026-03, 1M
+    WBS / DMP 작성               :crit, p1_wbs, 2026-03, 1M
     DevGuideline 작성 (신규)                :crit, p1_dg,  2026-03, 1M
     SW 개발 절차서 SDP 작성 (신규)          :crit, p1_sdp, 2026-03, 1M
 
@@ -366,8 +363,8 @@ flowchart TD
     FRS["FRS\n(Functional Requirements\nSpecification)\nDOC-004"]
     SAD["SAD\n(Software Architecture\nDesign)\nDOC-006"]
     SDS["SDS\n(Software Design\nSpecification)\nDOC-007"]
-    SDP["SDP\n(SW Development Plan)\n신규 v4.0"]
-    DevGL["DevGuideline\n(SW 개발 지침서)\n신규 v4.0"]
+    SDP["SDP\n(SW Development Plan)"]
+    DevGL["DevGuideline\n(SW 개발 지침서)"]
     RMP["Risk Management Plan\n(ISO 14971)\nDOC-008"]
     FMEA["Software Hazard Analysis\n(FMEA/FTA)\nDOC-009"]
     RMR["Risk Management Report\nDOC-010"]
@@ -456,8 +453,8 @@ flowchart TD
 flowchart LR
     subgraph DHF["DHF (Design History File) — 21 CFR 820.30"]
         direction TB
-        DP["Design Plan\n・SDP (SW Dev Plan) ← v4.0 신규\n・DevGuideline ← v4.0 신규\n・WBS v4.0\n・Risk Mgmt Plan"]
-        DI["Design Input\n・MRD v2.0\n・PRD/SRS v3.0\n・FRS\n・SyRS"]
+        DP["Design Plan\n・SDP (SW Dev Plan)\n・DevGuideline\n・WBS\n・Risk Mgmt Plan"]
+        DI["Design Input\n・MRD\n・PRD/SRS\n・FRS\n・SyRS"]
         DO["Design Output\n・SAD\n・SDS\n・Source Code\n・Release Build"]
         DR["Design Review\n・ADR 기록\n・DDR 기록\n・코드 리뷰 기록"]
         DV["Design Verification\n・Unit Test Plan/Report\n・Integration Test Report\n・System Test Report"]
@@ -665,7 +662,7 @@ flowchart LR
 
 ---
 
-## 0. 표준 및 규정 관리 (Standards & Regulatory Management — v4.0 신규)
+## 0. 표준 및 규정 관리 (Standards & Regulatory Management)
 
 > **목적**: 프로젝트 전체에 걸쳐 적용 규격을 체계적으로 관리하고 외부 감사에 대응
 > **DHF 포함 문서**: 준수 체크리스트 → DHF-DC (Design Changes/Compliance)
@@ -709,7 +706,7 @@ flowchart LR
 | 1.11 | SW 유지보수 계획 수립 | SW Maintenance Plan | — | MS-01 | DR#1 | IEC 62304 §6.1 | ✅ DHF-DP | P1 |
 | 1.12 | 위험관리 계획 수립 | Risk Management Plan | DOC-008 | MS-01 | DR#1 | ISO 14971 §4.4, FDA 820.30(g) | ✅ DHF-RM | P1 |
 | 1.13 | 사이버보안 관리 계획 수립 | Cybersecurity Management Plan | DOC-016 | MS-01 | DR#1 | FDA Section 524B | ✅ DHF-DP | P1 |
-| 1.14 | 일정 및 자원 관리 | WBS v4.0 / 간트차트 / 자원배분표 | WBS-XRAY-GUI-001 | MS-01 | DR#1 | IEC 62304 §5.1.1 | ✅ DHF-DP | P1 |
+| 1.14 | 일정 및 자원 관리 | WBS / 간트차트 / 자원배분표 | WBS-XRAY-GUI-001 | MS-01 | DR#1 | IEC 62304 §5.1.1 | ✅ DHF-DP | P1 |
 | 1.15 | 정기 기술 리뷰 및 마일스톤 관리 | 회의록 / 리뷰 보고서 | — | MS-01~06 | DR#1~5 | IEC 62304 §5.1.6 | ✅ DHF-DR | P1 |
 | 1.16 | 품질보증 계획 수립 | SW Quality Assurance Plan (SQAP) | — | MS-01 | DR#1 | ISO 13485 §8, IEC 62304 §4 | ✅ DHF-DP | P1 |
 | 1.17 | Phase 2 전환 계획 수립 | Phase 2 Transition Plan | — | — | — | — | — | P1/P2 |
@@ -1321,9 +1318,9 @@ main (release — 서명된 배포 빌드)
 │   ├── feature/doc-frs                 (FRS 작성)
 │   ├── feature/doc-vv-plan             (V&V Master Plan)
 │   ├── feature/doc-rtm                 (RTM 작성/갱신)
-│   ├── feature/doc-sdp                 (SDP 작성)  ← v4.0 신규
-│   ├── feature/doc-devguideline        (DevGuideline 작성)  ← v4.0 신규
-│   ├── feature/standards-gap-analysis  (Gap Analysis)  ← v4.0 신규
+│   ├── feature/doc-sdp                 (SDP 작성)
+│   ├── feature/doc-devguideline        (DevGuideline 작성)
+│   ├── feature/standards-gap-analysis  (Gap Analysis)
 │   │
 │   └── Phase 2 기능 브랜치
 │       ├── feature/ai-image-processing (AI 기반 영상처리)
@@ -1340,7 +1337,7 @@ main (release — 서명된 배포 빌드)
 
 ---
 
-## WBS 요약 (Summary — v4.0)
+## WBS 요약 (Summary)
 
 | 대분류 | Phase 1 작업 수 | Phase 2 작업 수 | 합계 | 핵심 관심사 |
 |--------|----------------|----------------|------|------------|
@@ -1356,23 +1353,7 @@ main (release — 서명된 배포 빌드)
 | 9. 규제/인증 | 21 | 0 | 21 | RTM 최종본, DHF 편찬, eSTAR, QA |
 | 10. 릴리스 | 6 | 2 | 8 | 빌드, 문서, 배포, DHF-DT |
 | 11. 유지보수 | 7 | 1 | 8 | 필드 이슈, CVE 모니터링, SBOM 업데이트 |
-| **합계** | **238** | **33** | **271** | ← v3.0 대비 +22개 (WBS 0 신규 15개, 섹션 1 DevGuideline/SDP 7개 추가) |
-
----
-
-## v3.0 → v4.0 주요 변경사항 요약
-
-| 구분 | v3.0 | v4.0 |
-|------|------|------|
-| **ID 체계** | MR-xxx, FR-xxx 2단계 언급 | MR-xxx → PR-xxx → SWR-xxx 3단계 계층 명시, 각 WBS 항목에 반영 |
-| **신규: WBS 0** | 없음 | "표준 및 규정 관리" 섹션 신설 (15개 작업): Gap Analysis, 교육, 체크리스트, 외부 감사 대응 |
-| **신규: DevGuideline** | SDP만 언급 | WBS 1.3~1.7 DevGuideline 전용 작업 항목 5개 신규: 코딩 표준, 코드 리뷰, 형상관리, 문제해결 절차 |
-| **신규: SDP 확장** | 1.2 SDP 작성 1개 | WBS 1.8~1.10 SDP 세부 작업 3개 추가: 방법론, 라이프사이클 계획, 도구 검증 |
-| **Milestone 재정의** | M1~M8 + M_RTM/M_VV/M_DHF/M_REG 혼재 | MS-01~MS-06 6단계 명확 정의, Phase Gate DR#1~DR#5 연결 |
-| **규격 조항 매핑** | 비고 컬럼에 일부 규격 언급 | 모든 WBS 항목에 구체적 규격 조항 매핑 (IEC 62304 §X.X, FDA 820.30(x) 등) |
-| **Phase Gate 컬럼** | 없음 | 각 작업 항목에 DR#1~DR#5 Phase Gate 연결 명시 |
-| **Mermaid 차트** | 6개 (아키텍처, State Machine, V-Model, Gantt, 인허가 체계도, DHF 다이어그램) | 11개 (ID 계층도, Phase Gate 프로세스, Milestone Timeline 신규 추가) |
-| **총 작업 수** | 249개 | 271개 (+22개) |
+| **합계** | **238** | **33** | **271** | |
 
 ---
 
@@ -1428,7 +1409,7 @@ main (release — 서명된 배포 빌드)
 >
 > **Note 3**: DHF 포함 여부 컬럼의 코드: DHF-DP(Design Plan), DHF-DI(Design Input), DHF-DO(Design Output), DHF-DR(Design Review), DHF-DV(Design Verification), DHF-DAL(Design Validation), DHF-DT(Design Transfer), DHF-DC(Design Changes), DHF-RM(Risk Management), DHF-TM(Traceability Matrix)
 >
-> **Note 4**: v4.0 신규 추가된 WBS 0 (표준/규정 관리), WBS 1.3~1.10 (DevGuideline/SDP 세부 작업)은 MS-01 (기반 문서 승인) 및 DR#1 (계획 검토) 게이트 조건에 직접 연결됩니다.
+> **Note 4**: WBS 0 (표준/규정 관리), WBS 1.3~1.10 (DevGuideline/SDP 세부 작업)은 MS-01 (기반 문서 승인) 및 DR#1 (계획 검토) 게이트 조건에 직접 연결됩니다.
 >
 > **Note 5**: Phase Gate (DR#1~DR#5)는 FDA 21 CFR 820.30 Design Review 요구사항과 매핑됩니다. 각 게이트에서 독립 검토자(Independent Reviewer)의 서명이 필요합니다.
 >
