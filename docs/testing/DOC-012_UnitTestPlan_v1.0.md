@@ -8,7 +8,7 @@
 |------|------|
 | **문서 ID** | UTP-XRAY-GUI-001 |
 | **버전 (Version)** | v1.0 |
-| **제품명 (Product)** | RadiConsole™ GUI Console SW |
+| **제품명 (Product)** | HnVue Console SW |
 | **작성일 (Date)** | 2026-03-18 |
 | **작성자 (Author)** | SW 개발팀 (SW Development Team) |
 | **검토자 (Reviewer)** | SW QA 팀장 |
@@ -55,9 +55,9 @@
 
 ### 1.1 목적
 
-본 문서는 RadiConsole™ GUI Console Software의 단위 테스트 계획을 정의한다. IEC 62304:2006+AMD1:2015 §5.5 "소프트웨어 단위 검증 (Software Unit Verification)" 요구사항을 충족하기 위해 각 소프트웨어 단위(클래스, 함수, 모듈)에 대한 테스트 전략, 케이스, 합격 기준을 명시한다.
+본 문서는 HnVue Console Software의 단위 테스트 계획을 정의한다. IEC 62304:2006+AMD1:2015 §5.5 "소프트웨어 단위 검증 (Software Unit Verification)" 요구사항을 충족하기 위해 각 소프트웨어 단위(클래스, 함수, 모듈)에 대한 테스트 전략, 케이스, 합격 기준을 명시한다.
 
-**The purpose of this document** is to define the unit test plan for RadiConsole™ GUI Console Software to comply with IEC 62304 §5.5 Software Unit Verification requirements.
+**The purpose of this document** is to define the unit test plan for HnVue Console Software to comply with IEC 62304 §5.5 Software Unit Verification requirements.
 
 ### 1.2 범위
 

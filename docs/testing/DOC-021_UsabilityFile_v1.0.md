@@ -1,5 +1,5 @@
 # 사용적합성 공학 파일 (Usability Engineering File)
-## RadiConsole™ GUI Console SW
+## HnVue Console SW
 
 ---
 
@@ -8,7 +8,7 @@
 | 항목 | 내용 |
 |------|------|
 | **문서 ID** | UEF-XRAY-GUI-001 |
-| **문서명** | RadiConsole™ GUI Console SW 사용적합성 공학 파일 |
+| **문서명** | HnVue Console SW 사용적합성 공학 파일 |
 | **버전** | v1.0 |
 | **작성일** | 2026-03-18 |
 | **작성자** | Human Factors Engineering (HFE) 팀 |
@@ -46,7 +46,7 @@
 
 ### 1.1 목적 (Purpose)
 
-본 문서는 RadiConsole™ GUI Console SW에 대한 **사용적합성 공학 파일 (Usability Engineering File, UEF)**로서, IEC 62366-1:2015+AMD1:2020의 전체 사용적합성 공학 프로세스 산출물을 통합 관리한다.
+본 문서는 HnVue Console SW에 대한 **사용적합성 공학 파일 (Usability Engineering File, UEF)**로서, IEC 62366-1:2015+AMD1:2020의 전체 사용적합성 공학 프로세스 산출물을 통합 관리한다.
 
 **핵심 목표**:
 1. **사용 오류로 인한 환자 위해 방지**: 방사선 과피폭, 환자 오인, 영상 좌우 반전 등 안전 관련 사용 오류 식별 및 완화
@@ -58,7 +58,7 @@
 
 | 구분 | 내용 |
 |------|------|
-| **대상** | RadiConsole™ GUI Console SW v1.x Phase 1 |
+| **대상** | HnVue Console SW v1.x Phase 1 |
 | **인터페이스** | GUI (그래픽 사용자 인터페이스) 전체 |
 | **사용자** | 방사선사, 영상의학과 전문의, 시스템 관리자 |
 | **환경** | 병원 촬영실, 판독실, 관리실 |
@@ -123,7 +123,7 @@ flowchart TD
 
 ### 4.1 의도된 사용 (Intended Use)
 
-RadiConsole™ GUI Console SW는 **의료용 진단 X-Ray 촬영장치의 GUI Console Software**로서, 방사선사가 환자 선택, 촬영 프로토콜 설정, X-Ray 촬영 실행, 영상 확인 및 PACS 전송을 수행하는 데 사용된다.
+HnVue Console SW는 **의료용 진단 X-Ray 촬영장치의 GUI Console Software**로서, 방사선사가 환자 선택, 촬영 프로토콜 설정, X-Ray 촬영 실행, 영상 확인 및 PACS 전송을 수행하는 데 사용된다.
 
 ### 4.2 사용 환경 (Use Environment)
 

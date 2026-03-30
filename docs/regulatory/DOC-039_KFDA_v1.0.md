@@ -1,5 +1,5 @@
 # 식약처 허가 신청 문서 (KFDA Submission Document)
-## RadiConsole™ GUI Console SW
+## HnVue Console SW
 
 ---
 
@@ -8,7 +8,7 @@
 | 항목 | 내용 |
 |------|------|
 | **문서 ID** | KFDA-XRAY-GUI-001 |
-| **문서명** | RadiConsole™ GUI Console SW 식약처 허가 신청 문서 |
+| **문서명** | HnVue Console SW 식약처 허가 신청 문서 |
 | **버전** | v1.0 |
 | **작성일** | 2026-03-18 |
 | **작성자** | RA 팀 |

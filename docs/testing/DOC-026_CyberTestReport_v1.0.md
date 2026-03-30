@@ -1,5 +1,5 @@
 # 사이버보안 테스트 결과 보고서 (Cybersecurity Test Report)
-## RadiConsole™ GUI Console SW
+## HnVue Console SW
 
 ---
 
@@ -8,7 +8,7 @@
 | 항목 | 내용 |
 |------|------|
 | **문서 ID** | CSTR-XRAY-GUI-001 |
-| **문서명** | RadiConsole™ GUI Console SW 사이버보안 테스트 결과 보고서 |
+| **문서명** | HnVue Console SW 사이버보안 테스트 결과 보고서 |
 | **버전** | v1.0 |
 | **작성일** | 2026-03-18 |
 | **작성자** | 사이버보안 팀 |

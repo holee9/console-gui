@@ -1,5 +1,5 @@
 # 사용 설명서 (Instructions for Use, IFU)
-## RadiConsole™ GUI Console SW
+## HnVue Console SW
 
 ---
 
@@ -8,7 +8,7 @@
 | 항목 | 내용 |
 |------|------|
 | **문서 ID** | IFU-XRAY-GUI-001 |
-| **문서명** | RadiConsole™ GUI Console SW 사용 설명서 |
+| **문서명** | HnVue Console SW 사용 설명서 |
 | **버전** | v1.0 |
 | **작성일** | 2026-03-18 |
 | **작성자** | 기술 문서 팀 (Technical Documentation) |
@@ -22,7 +22,7 @@
 
 | 항목 | 내용 |
 |------|------|
-| **제품명** | RadiConsole™ GUI Console SW |
+| **제품명** | HnVue Console SW |
 | **모델/버전** | v1.0 (Phase 1) |
 | **분류** | 의료기기 소프트웨어 (SaMD) — IEC 62304 Class B |
 | **제조자** | [제조사명] |
@@ -33,7 +33,7 @@
 
 ## 2. 의도된 사용 (Intended Use)
 
-RadiConsole™ GUI Console SW는 의료 전문가(방사선사, 영상의학과 전문의)가 진단 X-Ray 촬영장치를 조작하여 진단 목적의 X-Ray 영상을 획득, 표시, 처리 및 전송하는 데 사용되는 소프트웨어입니다.
+HnVue Console SW는 의료 전문가(방사선사, 영상의학과 전문의)가 진단 X-Ray 촬영장치를 조작하여 진단 목적의 X-Ray 영상을 획득, 표시, 처리 및 전송하는 데 사용되는 소프트웨어입니다.
 
 ### 2.1 적응증 (Indications for Use)
 - 일반 진단 X-Ray 촬영 (흉부, 복부, 사지, 척추 등)
@@ -97,7 +97,7 @@ RadiConsole™ GUI Console SW는 의료 전문가(방사선사, 영상의학과 
 
 ### 5.1 설치 절차
 1. 설치 매체 (USB/네트워크) 삽입
-2. `RadiConsole_Setup_v1.0.exe` 실행
+2. `HnVue_Setup_v1.0.exe` 실행
 3. 설치 마법사 지시에 따라 진행
 4. DICOM 설정 구성 (AE Title, PACS IP/Port)
 5. LDAP/AD 인증 서버 설정

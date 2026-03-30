@@ -1,10 +1,10 @@
 # Console-GUI
 
-Medical Diagnostic X-Ray Console GUI Software
+HnVue - Medical Diagnostic X-Ray Console Software
 
 ## Overview
 
-IEC 62304 Class B compliant console GUI software for diagnostic X-ray imaging devices. Manages patient workflow, image acquisition/processing, DICOM communication, dose management, and cybersecurity.
+IEC 62304 Class B compliant console software for diagnostic X-ray imaging devices. Manages patient workflow, image acquisition/processing, DICOM communication, dose management, and cybersecurity.
 
 ## Documentation
 

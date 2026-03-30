@@ -1,5 +1,5 @@
 # 사이버보안 테스트 계획서 (Cybersecurity Test Plan)
-## RadiConsole™ GUI Console SW
+## HnVue Console SW
 
 ---
 
@@ -8,7 +8,7 @@
 | 항목 | 내용 |
 |------|------|
 | **문서 ID** | CSTP-XRAY-GUI-001 |
-| **문서명** | RadiConsole™ GUI Console SW 사이버보안 테스트 계획서 |
+| **문서명** | HnVue Console SW 사이버보안 테스트 계획서 |
 | **버전** | v1.0 |
 | **작성일** | 2026-03-18 |
 | **작성자** | 사이버보안 팀 (Cybersecurity Team) |
@@ -54,13 +54,13 @@
 
 ### 1.1 목적 (Purpose)
 
-본 문서는 RadiConsole™ GUI Console SW에 대한 **사이버보안 테스트 계획**을 수립한다. 위협 모델링 보고서 (TM-XRAY-GUI-001)에서 식별된 28개 위협에 대한 완화 조치의 유효성을 검증하고, FDA Section 524B 사이버보안 요구사항 충족을 실증한다.
+본 문서는 HnVue Console SW에 대한 **사이버보안 테스트 계획**을 수립한다. 위협 모델링 보고서 (TM-XRAY-GUI-001)에서 식별된 28개 위협에 대한 완화 조치의 유효성을 검증하고, FDA Section 524B 사이버보안 요구사항 충족을 실증한다.
 
 ### 1.2 범위 (Scope)
 
 | 구분 | 내용 |
 |------|------|
-| **대상** | RadiConsole™ GUI Console SW v1.x Release Candidate |
+| **대상** | HnVue Console SW v1.x Release Candidate |
 | **테스트 유형** | SAST, DAST, SCA, 침투 테스트, 퍼징 |
 | **위협 모델** | TM-XRAY-GUI-001 (28개 위협, 28개 RC) |
 | **범위 내** | GUI 애플리케이션, DICOM/HL7 인터페이스, 로컬 DB, 인증 체계 |
@@ -279,7 +279,7 @@ graph LR
 ```mermaid
 graph TB
     subgraph "격리된 테스트 네트워크 (Isolated Test Network)"
-        SUT[RadiConsole™<br/>System Under Test]
+        SUT[HnVue<br/>System Under Test]
         PACS_T[PACS 시뮬레이터<br/>dcm4chee]
         RIS_T[RIS 시뮬레이터]
         LDAP_T[LDAP 테스트 서버]
@@ -383,7 +383,7 @@ flowchart TD
 
 ## 9. OWASP Top 10 매핑 (OWASP Medical Device Mapping)
 
-| OWASP Top 10 (2021) | RadiConsole™ 관련성 | 관련 CSTC |
+| OWASP Top 10 (2021) | HnVue 관련성 | 관련 CSTC |
 |---------------------|-------------------|-----------|
 | A01: Broken Access Control | High — 역할 기반 접근 통제 | CSTC-AUTH-005, 008 |
 | A02: Cryptographic Failures | High — PHI 암호화 | CSTC-ENC-001~005 |

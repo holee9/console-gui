@@ -1,5 +1,5 @@
 # 소프트웨어 밸리데이션 계획서 (Software Validation Plan)
-## RadiConsole™ GUI Console SW
+## HnVue Console SW
 
 ---
 
@@ -8,7 +8,7 @@
 | 항목 | 내용 |
 |------|------|
 | **문서 ID** | VAL-XRAY-GUI-001 |
-| **문서명** | RadiConsole™ GUI Console SW 소프트웨어 밸리데이션 계획서 |
+| **문서명** | HnVue Console SW 소프트웨어 밸리데이션 계획서 |
 | **버전** | v1.0 |
 | **작성일** | 2026-03-18 |
 | **작성자** | SW V&V Team |
@@ -49,7 +49,7 @@
 
 ### 1.1 목적 (Purpose)
 
-본 문서는 RadiConsole™ GUI Console SW에 대한 **설계 밸리데이션 (Design Validation)** 활동의 상세 계획을 수립한다. V&V 마스터 플랜 (VVP-XRAY-GUI-001) §8의 밸리데이션 프레임워크를 구체적으로 이행하기 위한 실행 계획서이다.
+본 문서는 HnVue Console SW에 대한 **설계 밸리데이션 (Design Validation)** 활동의 상세 계획을 수립한다. V&V 마스터 플랜 (VVP-XRAY-GUI-001) §8의 밸리데이션 프레임워크를 구체적으로 이행하기 위한 실행 계획서이다.
 
 **설계 밸리데이션의 핵심 질문**: "올바른 소프트웨어를 구축했는가? (Did we build the right software?)"
 
@@ -60,7 +60,7 @@ FDA 21 CFR 820.30(g)에 따라 설계 밸리데이션은 다음을 확인한다:
 
 ### 1.2 범위 (Scope)
 
-**적용 대상**: RadiConsole™ GUI Console SW Phase 1 (M1~M12)
+**적용 대상**: HnVue Console SW Phase 1 (M1~M12)
 
 | 구분 | 내용 |
 |------|------|
@@ -175,7 +175,7 @@ flowchart TD
 ```mermaid
 graph TB
     subgraph "촬영실 시뮬레이션 (X-Ray Room Simulation)"
-        XR[X-Ray Generator<br/>시뮬레이터] --- CON[RadiConsole™<br/>GUI Console]
+        XR[X-Ray Generator<br/>시뮬레이터] --- CON[HnVue<br/>GUI Console]
         CON --- DET[Detector<br/>시뮬레이터]
     end
     subgraph "병원 네트워크 시뮬레이션 (Hospital Network)"
@@ -510,7 +510,7 @@ graph LR
 
 ```mermaid
 gantt
-    title RadiConsole™ 밸리데이션 일정
+    title HnVue 밸리데이션 일정
     dateFormat  YYYY-MM-DD
     axisFormat  %m/%d
     

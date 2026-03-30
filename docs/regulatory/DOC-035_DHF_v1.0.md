@@ -1,5 +1,5 @@
 # 설계 이력 파일 (Design History File, DHF)
-## RadiConsole™ GUI Console SW
+## HnVue Console SW
 
 ---
 
@@ -8,7 +8,7 @@
 | 항목 | 내용 |
 |------|------|
 | **문서 ID** | DHF-XRAY-GUI-001 |
-| **문서명** | RadiConsole™ GUI Console SW 설계 이력 파일 |
+| **문서명** | HnVue Console SW 설계 이력 파일 |
 | **버전** | v1.0 |
 | **작성일** | 2026-03-18 |
 | **작성자** | RA/QA 팀 |
@@ -20,7 +20,7 @@
 
 ## 1. 목적 (Purpose)
 
-본 설계 이력 파일 (DHF)은 RadiConsole™ GUI Console SW의 **설계 관리 (Design Controls)** 활동 전체 이력을 포함하며, FDA 21 CFR 820.30(j) 요구사항을 충족한다.
+본 설계 이력 파일 (DHF)은 HnVue Console SW의 **설계 관리 (Design Controls)** 활동 전체 이력을 포함하며, FDA 21 CFR 820.30(j) 요구사항을 충족한다.
 
 ---
 

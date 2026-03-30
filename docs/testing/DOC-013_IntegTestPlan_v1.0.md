@@ -8,7 +8,7 @@
 |------|------|
 | **문서 ID** | ITP-XRAY-GUI-001 |
 | **버전 (Version)** | v1.0 |
-| **제품명 (Product)** | RadiConsole™ GUI Console SW |
+| **제품명 (Product)** | HnVue Console SW |
 | **작성일 (Date)** | 2026-03-18 |
 | **작성자 (Author)** | SW 개발팀 (SW Development Team) |
 | **검토자 (Reviewer)** | SW QA 팀장 |
@@ -53,9 +53,9 @@
 
 ### 1.1 목적
 
-본 문서는 RadiConsole™ GUI Console Software의 통합 테스트 계획을 정의한다. IEC 62304:2006+AMD1:2015 §5.6 "소프트웨어 통합 및 통합 테스트 (Software Integration and Integration Testing)" 요구사항을 충족하기 위해 **모듈 간 인터페이스 (Interface between Software Units)** 의 정상 동작, 경계 조건, 오류 처리를 검증한다.
+본 문서는 HnVue Console Software의 통합 테스트 계획을 정의한다. IEC 62304:2006+AMD1:2015 §5.6 "소프트웨어 통합 및 통합 테스트 (Software Integration and Integration Testing)" 요구사항을 충족하기 위해 **모듈 간 인터페이스 (Interface between Software Units)** 의 정상 동작, 경계 조건, 오류 처리를 검증한다.
 
-**Purpose:** Define integration test plan to verify all inter-module interfaces in RadiConsole™ per IEC 62304 §5.6.
+**Purpose:** Define integration test plan to verify all inter-module interfaces in HnVue per IEC 62304 §5.6.
 
 ### 1.2 범위
 
@@ -83,7 +83,7 @@
 
 ### 3.1 보텀업 통합 전략 (Bottom-up Integration Strategy)
 
-RadiConsole™ SW는 **보텀업(Bottom-up)** 통합 전략을 채택한다. 하위 레이어 모듈(DB, 하드웨어 드라이버)을 먼저 통합하고, 점진적으로 상위 레이어 모듈과 통합한다.
+HnVue SW는 **보텀업(Bottom-up)** 통합 전략을 채택한다. 하위 레이어 모듈(DB, 하드웨어 드라이버)을 먼저 통합하고, 점진적으로 상위 레이어 모듈과 통합한다.
 
 ```
 통합 레이어 (Integration Layers):
@@ -344,7 +344,7 @@ graph LR
     subgraph "Notification"
         MPPS[MPPS\n촬영 절차 단계]
     end
-    SCU[RadiConsole\nDICOM SCU] --> CR
+    SCU[HnVue\nDICOM SCU] --> CR
     SCU --> DX
     SCU --> RDSR
     SCU --> MWL
@@ -371,7 +371,7 @@ graph LR
 ```mermaid
 graph TD
     subgraph "테스트 PC (Integration Test Host)"
-        RC[RadiConsole™ SW\nDUT]
+        RC[HnVue SW\nDUT]
         GS[Generator Sim\n:9001]
         DS[Detector Sim\n:9002]
     end

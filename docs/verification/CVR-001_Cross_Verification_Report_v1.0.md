@@ -1,4 +1,4 @@
-# RadiConsole™ X-Ray Console GUI SW
+# HnVue Console SW
 # 전체 문서 교차 검증 보고서 (Cross-Verification Audit Report)
 
 ---
@@ -8,7 +8,7 @@
 | **보고서 ID** | CVR-XRAY-GUI-001 |
 | **버전** | v1.0 |
 | **작성일** | 2026년 3월 18일 |
-| **검증 대상** | RadiConsole™ X-Ray Console GUI SW 규제 문서 전체 (13종) |
+| **검증 대상** | HnVue Console SW 규제 문서 전체 (13종) |
 | **검증 기준** | IEC 62304:2006+AMD1:2015, ISO 14971:2019, FDA 21 CFR 820.30 |
 | **작성자** | 품질보증팀 (Quality Assurance) |
 
@@ -312,7 +312,7 @@ RTM §1.1 및 §1.3에서 상위 문서를 **"MRD-XRAY-001 v1.2"** 로 기재하
 
 **검증 결과: 🟢 통과 (Pass)**
 
-13개 문서 전체에서 **"RadiConsole™ GUI Console SW"** 또는 **"RadiConsole™"** 을 일관되게 사용. ™ 기호 포함 여부의 경미한 차이는 있으나 오해를 유발하는 다른 명칭 사용 없음.
+13개 문서 전체에서 **"HnVue Console SW"** 또는 **"HnVue"** 을 일관되게 사용. ™ 기호 포함 여부의 경미한 차이는 있으나 오해를 유발하는 다른 명칭 사용 없음.
 
 ### 7.2 SW 안전 등급 (SW Safety Class)
 
@@ -554,7 +554,7 @@ PRD v3.0의 Appendix A(RTM)에서 MR-001 → PR-PM-002 → SWR-PM-004~005 매핑
 **권고 R-07**: Audit Log 보관 기간 요건 통일
 - PRD PR-SA-065 및 PR-NF-SC-045의 "90일"을 MRD MR-035 요구사항인 **"1년(12개월) 이상"** 으로 상향 조정
 - 또는 FDA Cybersecurity Guidance 및 HIPAA Security Rule (Audit Log 최소 6년 권고)을 검토하여 최적 기준 재설정 후 MRD-PRD-FRS 전 문서 일관 적용
-- **근거**: F-20 / **담당**: 규제팀 + QA팀 / **기한**: 1개월 이내
+- **근거**: F-20 / **담당**: RA파트 + QA팀 / **기한**: 1개월 이내
 
 **권고 R-08**: MRD-RMP HAZ 이중 체계 해소 (또는 체계 선택 및 통일)
 - 옵션 A: MRD의 HAZ-WF/IP/DM/CS 체계를 RMP/RTM의 HAZ-RAD/SW/DATA/SEC 체계로 통일하고 MRD 개정
@@ -583,4 +583,4 @@ PRD v3.0의 Appendix A(RTM)에서 MR-001 → PR-PM-002 → SWR-PM-004~005 매핑
 
 *본 보고서는 2026년 3월 18일 기준 제공된 13개 문서의 스냅샷을 기반으로 작성되었으며, 후속 문서 개정 시 재검토가 필요합니다.*
 
-*문서 상태: 초안 (Draft) — 규제팀 검토 후 최종 확정*
+*문서 상태: 초안 (Draft) — RA파트 검토 후 최종 확정*

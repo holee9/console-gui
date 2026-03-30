@@ -7,8 +7,8 @@
 | 항목 | 내용 |
 |---|---|
 | **문서 ID** | SAD-XRAY-GUI-001 |
-| **문서명 (Korean)** | RadiConsole™ GUI Console SW 소프트웨어 아키텍처 설계 |
-| **문서명 (English)** | Software Architecture Design for RadiConsole™ GUI Console SW |
+| **문서명 (Korean)** | RadiConsole™ HnVue Console SW 소프트웨어 아키텍처 설계 |
+| **문서명 (English)** | Software Architecture Design for RadiConsole™ HnVue Console SW |
 | **버전 (Version)** | v1.0 |
 | **작성일 (Date)** | 2026-03-18 |
 | **작성자 (Author)** | SW Architecture Team |
@@ -16,7 +16,7 @@
 | **승인자 (Approver)** | R&D Director |
 | **상태 (Status)** | Draft |
 | **기준 규격** | IEC 62304:2006+AMD1:2015 §5.3 |
-| **제품** | RadiConsole™ GUI Console SW |
+| **제품** | RadiConsole™ HnVue Console SW |
 | **SW Safety Class** | IEC 62304 Class B |
 
 ---
@@ -35,7 +35,7 @@
 
 ### 1.1 목적 (Purpose)
 
-본 문서는 IEC 62304:2006+AMD1:2015 §5.3 "소프트웨어 아키텍처 설계 (Software Architectural Design)" 요구사항을 충족하기 위해 작성된 RadiConsole™ GUI Console SW의 공식 아키텍처 설계 문서이다.
+본 문서는 IEC 62304:2006+AMD1:2015 §5.3 "소프트웨어 아키텍처 설계 (Software Architectural Design)" 요구사항을 충족하기 위해 작성된 RadiConsole™ HnVue Console SW의 공식 아키텍처 설계 문서이다.
 
 본 SAD (Software Architecture Design)는 다음 사항을 명시한다:
 
@@ -48,8 +48,8 @@
 
 ### 1.2 범위 (Scope)
 
-**대상 소프트웨어 (Target Software):** RadiConsole™ GUI Console SW  
-**용도 (Intended Use):** 의료용 진단 X-Ray 촬영장치 (Medical Diagnostic X-Ray Imaging Equipment)의 GUI 콘솔 소프트웨어  
+**대상 소프트웨어 (Target Software):** RadiConsole™ HnVue Console SW  
+**용도 (Intended Use):** 의료용 진단 X-Ray 촬영장치 (Medical Diagnostic X-Ray Imaging Equipment)의 HnVue Console SW  
 **배포 환경 (Deployment):** Windows 10/11 기반 산업용 워크스테이션  
 **SW Safety Class:** IEC 62304 Class B  
 **개발 단계:** Phase 1 (M1~M12), Phase 2 (M13~M24, AI/Cloud 기능 포함)
@@ -90,17 +90,17 @@
 
 ### 3.1 전체 시스템 컨텍스트 다이어그램 (C4 Model Level 1)
 
-다음 다이어그램은 C4 Model Level 1 (System Context) 관점에서 RadiConsole™ GUI Console SW와 외부 시스템/사용자의 상호작용을 나타낸다.
+다음 다이어그램은 C4 Model Level 1 (System Context) 관점에서 RadiConsole™ HnVue Console SW와 외부 시스템/사용자의 상호작용을 나타낸다.
 
 ```mermaid
 C4Context
-    title RadiConsole™ GUI Console SW — System Context Diagram (C4 Level 1)
+    title RadiConsole™ HnVue Console SW — System Context Diagram (C4 Level 1)
 
     Person(radiologist, "방사선사 (Radiographer)", "X-Ray 촬영 수행, 영상 확인")
     Person(admin, "시스템 관리자 (System Admin)", "사용자 관리, 시스템 구성")
     Person(physician, "판독 의사 (Radiologist/Physician)", "영상 판독, 보고서 확인")
 
-    System(radiconsole, "RadiConsole™ GUI Console SW", "진단 X-Ray 촬영 제어, 영상 처리/표시, 선량 관리, DICOM 통신")
+    System(radiconsole, "RadiConsole™ HnVue Console SW", "진단 X-Ray 촬영 제어, 영상 처리/표시, 선량 관리, DICOM 통신")
 
     System_Ext(generator, "X-Ray Generator\n(X-Ray 발생기)", "X-Ray 조사 제어 (RS-232/Ethernet)")
     System_Ext(detector, "Flat Panel Detector\n(평판 검출기)", "영상 데이터 취득 (GigE/USB3)")
@@ -153,7 +153,7 @@ C4Context
 
 ### 4.1 개요
 
-본 절은 Philippe Kruchten의 4+1 View Model을 기반으로 RadiConsole™ GUI Console SW 아키텍처를 다섯 가지 관점에서 서술한다.
+본 절은 Philippe Kruchten의 4+1 View Model을 기반으로 RadiConsole™ HnVue Console SW 아키텍처를 다섯 가지 관점에서 서술한다.
 
 | 뷰 | 관점 | 주요 대상 |
 |---|---|---|
@@ -330,7 +330,7 @@ graph TB
     subgraph "X-Ray Room (촬영실)"
         subgraph "Clinical Workstation (임상 워크스테이션)"
             subgraph "Windows 10/11 OS"
-                APP[RadiConsole™ GUI Console SW<br/>v1.0]
+                APP[RadiConsole™ HnVue Console SW<br/>v1.0]
                 subgraph "Application Components"
                     APP_GUI[GUI Process<br/>Qt 6.x]
                     APP_SVC[Background Services<br/>DICOM SCP Listener<br/>HL7 Listener]
@@ -383,7 +383,7 @@ graph TB
 
 ```mermaid
 graph TD
-    ROOT["RadiConsole™ GUI Console SW<br/>(SW System)"]
+    ROOT["RadiConsole™ HnVue Console SW<br/>(SW System)"]
     ROOT --> PM["SAD-PM-100<br/>PatientManagement"]
     ROOT --> WF["SAD-WF-200<br/>WorkflowEngine"]
     ROOT --> IP["SAD-IP-300<br/>ImageProcessing"]

@@ -1,5 +1,5 @@
 # FDA 510(k) / eSTAR 제출 문서 (FDA 510(k) / eSTAR Submission)
-## RadiConsole™ GUI Console SW
+## HnVue Console SW
 
 ---
 
@@ -8,7 +8,7 @@
 | 항목 | 내용 |
 |------|------|
 | **문서 ID** | FDA-XRAY-GUI-001 |
-| **문서명** | RadiConsole™ GUI Console SW FDA 510(k) / eSTAR 제출 문서 |
+| **문서명** | HnVue Console SW FDA 510(k) / eSTAR 제출 문서 |
 | **버전** | v1.0 |
 | **작성일** | 2026-03-18 |
 | **작성자** | RA 팀 (Regulatory Affairs) |
@@ -27,7 +27,7 @@
 | **Regulation Number** | 21 CFR 892.2050 |
 | **Classification** | Class II |
 | **Predicate Device** | [동등 기기 510(k) 번호] |
-| **Device Name** | RadiConsole™ GUI Console SW |
+| **Device Name** | HnVue Console SW |
 
 ---
 
@@ -68,7 +68,7 @@ flowchart TD
     style F fill:#01696F,color:#fff
 ```
 
-**결정**: RadiConsole™은 영상 표시 및 촬영 파라미터 제어에 관여하므로 **Moderate Level of Concern**으로 분류한다.
+**결정**: HnVue은 영상 표시 및 촬영 파라미터 제어에 관여하므로 **Moderate Level of Concern**으로 분류한다.
 
 ### 3.2 Moderate Level 필수 문서
 

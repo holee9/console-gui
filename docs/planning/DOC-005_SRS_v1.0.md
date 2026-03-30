@@ -1,4 +1,4 @@
-# 의료용 진단 X-Ray 촬영장치 GUI Console SW
+# HnVue Console SW
 # Software Requirements Specification (SRS)
 # 소프트웨어 요구사항 명세서
 
@@ -59,7 +59,7 @@
 
 ### 1.1 목적 (Purpose)
 
-본 문서는 **RadiConsole™ GUI Console SW**의 **소프트웨어 요구사항 명세서 (Software Requirements Specification, SRS)**로서, IEC 62304:2006+A1:2015 §5.2 "소프트웨어 요구사항 분석 (Software Requirements Analysis)"에서 요구하는 소프트웨어 요구사항 (Software Requirements, SWR)을 IEC 62304 §5.2의 12개 분류 체계에 따라 체계적으로 재편성한다.
+본 문서는 **RadiConsole™ HnVue Console SW**의 **소프트웨어 요구사항 명세서 (Software Requirements Specification, SRS)**로서, IEC 62304:2006+A1:2015 §5.2 "소프트웨어 요구사항 분석 (Software Requirements Analysis)"에서 요구하는 소프트웨어 요구사항 (Software Requirements, SWR)을 IEC 62304 §5.2의 12개 분류 체계에 따라 체계적으로 재편성한다.
 
 본 SRS는 FRS-XRAY-GUI-001 v1.0에서 정의된 기능 요구사항 (SWR-xxx)을 **IEC 62304 §5.2 규격 구조에 맞게 재분류·통합**하며, 다음의 목적을 수행한다:
 
@@ -150,7 +150,7 @@ flowchart TD
 
 ### 3.1 제품 설명 (Product Description)
 
-**RadiConsole™**은 의료용 진단 X-Ray 촬영장치의 **GUI Console Software**로서, 방사선사(Technologist)가 X-Ray 촬영 전반의 워크플로우를 제어·관리하는 소프트웨어 플랫폼이다. 본 SW는 IEC 62304 Class B 의료기기 소프트웨어로 분류된다.
+**RadiConsole™**은 의료용 진단 X-Ray 촬영장치의 **HnVue Console SW**로서, 방사선사(Technologist)가 X-Ray 촬영 전반의 워크플로우를 제어·관리하는 소프트웨어 플랫폼이다. 본 SW는 IEC 62304 Class B 의료기기 소프트웨어로 분류된다.
 
 **운영 환경:**
 - OS: Windows 10 LTSC 2021 / Windows 11 (64-bit)
@@ -162,7 +162,7 @@ flowchart TD
 
 ```mermaid
 graph TB
-    subgraph RadiConsole["RadiConsole™ GUI Console SW (IEC 62304 Class B)"]
+    subgraph RadiConsole["RadiConsole™ HnVue Console SW (IEC 62304 Class B)"]
         direction TB
         subgraph UI["UI Layer (WPF/MVVM)"]
             PM_UI["환자 관리 UI\nPatient Management"]

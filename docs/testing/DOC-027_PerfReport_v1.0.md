@@ -1,5 +1,5 @@
 # 성능 테스트 결과 보고서 (Performance Test Report)
-## RadiConsole™ GUI Console SW
+## HnVue Console SW
 
 ---
 
@@ -8,7 +8,7 @@
 | 항목 | 내용 |
 |------|------|
 | **문서 ID** | PTR-XRAY-GUI-001 |
-| **문서명** | RadiConsole™ GUI Console SW 성능 테스트 결과 보고서 |
+| **문서명** | HnVue Console SW 성능 테스트 결과 보고서 |
 | **버전** | v1.0 |
 | **작성일** | 2026-03-18 |
 | **작성자** | SW V&V Team |
@@ -22,7 +22,7 @@
 
 | 항목 | 값 |
 |------|-----|
-| **테스트 대상** | RadiConsole v1.0.0-RC3 |
+| **테스트 대상** | HnVue v1.0.0-RC3 |
 | **테스트 환경** | 표준 배포 사양 (i7-12700, 32GB, RTX 3060) |
 | **총 성능 항목** | 15 |
 | **Pass** | 15 (100%) |

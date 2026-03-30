@@ -1,5 +1,5 @@
 # 소프트웨어 자재 명세서 (Software Bill of Materials, SBOM)
-## RadiConsole™ GUI Console SW
+## HnVue Console SW
 
 ---
 
@@ -8,7 +8,7 @@
 | 항목 | 내용 |
 |------|------|
 | **문서 ID** | SBOM-XRAY-GUI-001 |
-| **문서명** | RadiConsole™ GUI Console SW 소프트웨어 자재 명세서 |
+| **문서명** | HnVue Console SW 소프트웨어 자재 명세서 |
 | **버전** | v1.0 |
 | **작성일** | 2026-03-18 |
 | **작성자** | SW 개발팀, 사이버보안 팀 |
@@ -44,7 +44,7 @@
 
 ### 1.1 목적 (Purpose)
 
-본 문서는 RadiConsole™ GUI Console SW에 포함된 모든 소프트웨어 구성요소의 자재 명세서 (SBOM)를 문서화한다.
+본 문서는 HnVue Console SW에 포함된 모든 소프트웨어 구성요소의 자재 명세서 (SBOM)를 문서화한다.
 
 FDA Section 524B에 따라 Cyber Device로 분류된 의료기기는 FDA 510(k) 제출 시 SBOM을 포함해야 하며, 본 문서는 다음을 제공한다:
 1. **NTIA SBOM Minimum Elements** 준수 구성요소 목록
@@ -56,7 +56,7 @@ FDA Section 524B에 따라 Cyber Device로 분류된 의료기기는 FDA 510(k) 
 
 | 구분 | 내용 |
 |------|------|
-| **대상** | RadiConsole™ GUI Console SW v1.0 Phase 1 |
+| **대상** | HnVue Console SW v1.0 Phase 1 |
 | **포함** | OS, 런타임, 프레임워크, 라이브러리, 도구 |
 | **형식** | CycloneDX 1.5 JSON (기계 판독용) + Markdown (사람 판독용) |
 
@@ -225,7 +225,7 @@ flowchart LR
 
 ```mermaid
 graph TD
-    APP[RadiConsole™<br/>GUI Console SW] --> UI[UI Layer]
+    APP[HnVue<br/>GUI Console SW] --> UI[UI Layer]
     APP --> CORE[Core Services]
     APP --> DICOM[DICOM Module]
     APP --> IMG[Image Processing]
@@ -403,9 +403,9 @@ pie title 라이선스 분포 (배포 포함 38개 구성요소)
     "tools": [{"name": "OWASP Dependency-Check", "version": "9.x"}],
     "component": {
       "type": "application",
-      "name": "RadiConsole GUI Console SW",
+      "name": "HnVue Console SW",
       "version": "1.0.0",
-      "supplier": {"name": "RadiConsole Development Team"}
+      "supplier": {"name": "HnVue Development Team"}
     }
   },
   "components": [

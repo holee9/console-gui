@@ -1,5 +1,5 @@
 # QA 테스트 케이스 계획서 / QA Verification Report / QA Checklist
-## RadiConsole™ GUI Console SW
+## HnVue Console SW
 
 ---
 
@@ -12,7 +12,7 @@
 | **승인자** | QA Manager / Regulatory Affairs |
 | **상태** | Draft |
 | **기준 규격** | IEC 62304, ISO 14971, ISO 13485, FDA 21 CFR 820.30, FDA Section 524B, EU MDR 2017/745 |
-| **대상 제품** | RadiConsole™ GUI Console SW |
+| **대상 제품** | HnVue Console SW |
 | **SW Safety Class** | IEC 62304 Class B |
 | **인허가 대상** | FDA 510(k), CE MDR, KFDA (식약처) |
 
@@ -67,7 +67,7 @@
 
 ## 1.1 목적 (Purpose)
 
-본 문서는 RadiConsole™ GUI Console SW의 Phase 1 릴리스에 대해 QA 팀이 수행할 테스트 케이스를 정의한다. FRS(Functional Requirements Specification) / PRD(Product Requirements Document)에 기반하여 체계적인 QA 검증을 수행하고, 제품이 설계 입력(Design Input) 요구사항을 충족함을 확인하는 것을 목적으로 한다.
+본 문서는 HnVue Console SW의 Phase 1 릴리스에 대해 QA 팀이 수행할 테스트 케이스를 정의한다. FRS(Functional Requirements Specification) / PRD(Product Requirements Document)에 기반하여 체계적인 QA 검증을 수행하고, 제품이 설계 입력(Design Input) 요구사항을 충족함을 확인하는 것을 목적으로 한다.
 
 **적용 규격**:
 - IEC 62304:2006+AMD1:2015 §5.6 소프트웨어 통합 및 통합 테스트
@@ -352,7 +352,7 @@
 | 항목 | 내용 |
 |------|------|
 | **보고서 ID** | QVR-XRAY-GUI-[YY][MM]-[NNN] |
-| **제품명** | RadiConsole™ GUI Console SW |
+| **제품명** | HnVue Console SW |
 | **SW 버전** | v[X.Y.Z] |
 | **테스트 기간** | YYYY-MM-DD ~ YYYY-MM-DD |
 | **테스트 환경** | [환경 명세 기재] |
@@ -837,4 +837,4 @@ flowchart TD
 ---
 
 *문서 끝 (End of Document)*  
-*QTP-XRAY-GUI-001 v1.0 | 2026-03-16 | RadiConsole™ GUI Console SW*
+*QTP-XRAY-GUI-001 v1.0 | 2026-03-16 | HnVue Console SW*

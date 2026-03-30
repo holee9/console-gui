@@ -1,5 +1,5 @@
 # DICOM 적합성 선언서 (DICOM Conformance Statement)
-## RadiConsole™ GUI Console SW
+## HnVue Console SW
 
 ---
 
@@ -8,7 +8,7 @@
 | 항목 | 내용 |
 |------|------|
 | **문서 ID** | DCS-XRAY-GUI-001 |
-| **문서명** | RadiConsole™ GUI Console SW DICOM 적합성 선언서 |
+| **문서명** | HnVue Console SW DICOM 적합성 선언서 |
 | **버전** | v1.0 |
 | **작성일** | 2026-03-18 |
 | **작성자** | DICOM 엔지니어링 팀 |
@@ -26,13 +26,13 @@
 ## 1. 개요 (Overview)
 
 ### 1.1 적용 대상
-RadiConsole™ GUI Console SW v1.0 — 의료용 진단 X-Ray 촬영장치의 GUI Console Software (IEC 62304 Class B)
+HnVue Console SW v1.0 — HnVue Console Software (IEC 62304 Class B)
 
 ### 1.2 네트워크 구성
 
 ```mermaid
 graph LR
-    RC[RadiConsole™<br/>SCU/SCP] <-->|DICOM TLS| PACS[PACS Server<br/>SCP]
+    RC[HnVue<br/>SCU/SCP] <-->|DICOM TLS| PACS[PACS Server<br/>SCP]
     RC <-->|DICOM TLS| RIS[RIS/MWL<br/>SCP]
     RC -->|MPPS| MPPS_SCP[MPPS SCP]
     RC -->|SR/RDSR| SR_SCP[SR Repository]

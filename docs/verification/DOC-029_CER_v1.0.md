@@ -1,5 +1,5 @@
 # 임상 평가 보고서 (Clinical Evaluation Report, CER)
-## RadiConsole™ GUI Console SW
+## HnVue Console SW
 
 ---
 
@@ -8,7 +8,7 @@
 | 항목 | 내용 |
 |------|------|
 | **문서 ID** | CER-XRAY-GUI-001 |
-| **문서명** | RadiConsole™ GUI Console SW 임상 평가 보고서 |
+| **문서명** | HnVue Console SW 임상 평가 보고서 |
 | **버전** | v1.0 |
 | **작성일** | 2026-03-18 |
 | **작성자** | RA/QA 팀, 임상 자문위원 |
@@ -23,7 +23,7 @@
 
 ### 1.1 목적
 
-본 임상 평가 보고서 (CER)는 RadiConsole™ GUI Console SW의 **임상적 안전성 및 성능**을 평가하며, EU MDR Article 61 요구사항 및 FDA 510(k) 제출을 위한 임상 증거를 제공한다.
+본 임상 평가 보고서 (CER)는 HnVue Console SW의 **임상적 안전성 및 성능**을 평가하며, EU MDR Article 61 요구사항 및 FDA 510(k) 제출을 위한 임상 증거를 제공한다.
 
 ### 1.2 임상 평가 전략
 
@@ -38,7 +38,7 @@ flowchart TD
     style E fill:#437A22,color:#fff
 ```
 
-> RadiConsole™은 **well-established technology** (X-Ray Digital Radiography GUI) 기반이므로, MEDDEV 2.7/1 Rev.4에 따라 **문헌 기반 임상 평가 (Literature-Based Clinical Evaluation)**로 충분하며, 별도의 임상 시험은 불필요하다.
+> HnVue은 **well-established technology** (X-Ray Digital Radiography GUI) 기반이므로, MEDDEV 2.7/1 Rev.4에 따라 **문헌 기반 임상 평가 (Literature-Based Clinical Evaluation)**로 충분하며, 별도의 임상 시험은 불필요하다.
 
 ---
 
@@ -57,7 +57,7 @@ flowchart TD
 
 ### 3.1 동등성 비교
 
-| 비교 항목 | RadiConsole™ | 동등 기기 (Predicate) |
+| 비교 항목 | HnVue | 동등 기기 (Predicate) |
 |----------|-------------|---------------------|
 | **의도된 용도** | 진단 X-Ray GUI Console | 진단 X-Ray GUI Console |
 | **기술 특성** | WPF/.NET, DICOM, PACS 연동 | 유사 GUI 플랫폼, DICOM |

@@ -1,5 +1,5 @@
 # QA 검증 보고서 (QA Verification Report)
-## RadiConsole™ GUI Console SW
+## HnVue Console SW
 
 ---
 
@@ -8,7 +8,7 @@
 | 항목 | 내용 |
 |------|------|
 | **문서 ID** | QAVR-XRAY-GUI-001 |
-| **문서명** | RadiConsole™ GUI Console SW QA 검증 보고서 |
+| **문서명** | HnVue Console SW QA 검증 보고서 |
 | **버전** | v1.0 |
 | **작성일** | 2026-03-18 |
 | **작성자** | QA 팀 |
@@ -32,7 +32,7 @@
 
 | 항목 | 값 |
 |------|-----|
-| **검증 대상** | RadiConsole™ GUI Console SW v1.0.0-Release |
+| **검증 대상** | HnVue Console SW v1.0.0-Release |
 | **검증 기간** | 2026-03-01 ~ 2026-03-18 |
 | **총 체크 항목** | 40 |
 | **Pass** | 40 (100%) |

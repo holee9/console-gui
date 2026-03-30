@@ -8,7 +8,7 @@
 |------|------|
 | **문서 ID** | STP-XRAY-GUI-001 |
 | **버전 (Version)** | v1.0 |
-| **제품명 (Product)** | RadiConsole™ GUI Console SW |
+| **제품명 (Product)** | HnVue Console SW |
 | **작성일 (Date)** | 2026-03-18 |
 | **작성자 (Author)** | SW QA팀 (SW QA Team) |
 | **검토자 (Reviewer)** | SW 개발 팀장 / RA Manager |
@@ -55,7 +55,7 @@
 
 ### 1.1 목적
 
-본 문서는 RadiConsole™ GUI Console Software의 시스템 테스트 계획을 정의한다. IEC 62304:2006+AMD1:2015 §5.7 "소프트웨어 시스템 테스트 (Software System Testing)" 요구사항을 충족하기 위해 **전체 시스템 요구사항(PRD v3.0, SRS/FRS)** 에 대한 블랙박스(Black-box) 검증을 수행한다.
+본 문서는 HnVue Console Software의 시스템 테스트 계획을 정의한다. IEC 62304:2006+AMD1:2015 §5.7 "소프트웨어 시스템 테스트 (Software System Testing)" 요구사항을 충족하기 위해 **전체 시스템 요구사항(PRD v3.0, SRS/FRS)** 에 대한 블랙박스(Black-box) 검증을 수행한다.
 
 **Purpose:** Define system test plan to verify all system-level requirements (PRD v3.0, SRS) per IEC 62304 §5.7 using Black-box testing methodology.
 
@@ -191,7 +191,7 @@ flowchart TD
 | ST-DC-001 | PR-050 / SWR-DC-010 | 자동 DICOM 전송 — 촬영 후 | 촬영 완료 시 PACS 자동 전송 | PACS 설정 완료 | 1) 촬영 수행<br>2) PACS 전송 상태 확인 | 60초 내 PACS 전송 완료, Status=SUCCESS | ☐ Pass / ☐ Fail |
 | ST-DC-002 | PR-050 / SWR-DC-020 | Worklist 자동 갱신 | 5분마다 MWL 자동 조회 | MWL 서버 연결 | 1) 새 오더 추가 (HIS Sim)<br>2) 5분 대기<br>3) MWL 화면 확인 | 새 오더 자동 반영 | ☐ Pass / ☐ Fail |
 | ST-DC-003 | PR-051 / SWR-DC-030 | DICOM 이미지 원격 조회 | 타 장치 촬영 이미지 조회 | PACS에 이미지 저장 | 1) C-FIND로 스터디 검색<br>2) C-MOVE로 이미지 가져오기<br>3) 표시 확인 | 이미지 조회 및 표시 성공 | ☐ Pass / ☐ Fail |
-| ST-DC-004 | PR-052 / SWR-DC-040 | HL7 환자 동기화 | HIS에서 환자 정보 변경 시 동기화 | HIS Sim 연결 | 1) HIS에서 환자 정보 수정<br>2) RadiConsole 확인 | 변경 사항 자동 반영 (30초 내) | ☐ Pass / ☐ Fail |
+| ST-DC-004 | PR-052 / SWR-DC-040 | HL7 환자 동기화 | HIS에서 환자 정보 변경 시 동기화 | HIS Sim 연결 | 1) HIS에서 환자 정보 수정<br>2) HnVue 확인 | 변경 사항 자동 반영 (30초 내) | ☐ Pass / ☐ Fail |
 | ST-DC-005 | PR-053 / SWR-DC-050 | DICOM Echo 연결 테스트 | 관리자 화면에서 DICOM Echo 수행 | PACS 설정 | 1) 설정 → DICOM 설정<br>2) Echo 테스트 버튼 | SUCCESS 메시지, 응답 시간 표시 | ☐ Pass / ☐ Fail |
 | ST-DC-006 | PR-054 / SWR-DC-055 | 전송 실패 자동 재전송 | 네트워크 오류 후 자동 재전송 | 네트워크 일시 차단 | 1) 네트워크 차단<br>2) 촬영 수행<br>3) 네트워크 복구<br>4) 전송 확인 | 큐에 대기 후 자동 재전송 성공 | ☐ Pass / ☐ Fail |
 | ST-DC-007 | PR-055 / SWR-DC-060 | DICOM 암호화 전송 검증 | TLS 암호화 통신 활성화 | TLS 설정 완료 | 1) 패킷 캡처 시작<br>2) 이미지 전송<br>3) 패킷 분석 | 평문 데이터 없음, TLS 1.3 협상 확인 | ☐ Pass / ☐ Fail |
@@ -345,7 +345,7 @@ graph LR
 
 ```mermaid
 graph TD
-    RC[RadiConsole™ SW] --> HW1[발생기 인터페이스\nTCP/IP 프로토콜]
+    RC[HnVue SW] --> HW1[발생기 인터페이스\nTCP/IP 프로토콜]
     RC --> HW2[검출기 인터페이스\nFPD TCP/IP]
     RC --> HW3[바코드 리더\nUSB HID]
     RC --> HW4[의료용 키보드\nUSB HID]
@@ -439,7 +439,7 @@ flowchart TD
 
 | 소프트웨어 | 버전 | 용도 |
 |-----------|------|------|
-| RadiConsole™ GUI | DUT | 테스트 대상 |
+| HnVue Console | DUT | 테스트 대상 |
 | dcm4chee-arc | 5.x (Docker) | PACS 시뮬레이터 |
 | Mirth Connect | 4.x | HL7 시뮬레이터 |
 | Wireshark | 4.x | 네트워크 패킷 분석 |
@@ -452,7 +452,7 @@ flowchart TD
 ```mermaid
 graph TD
     subgraph "테스트 네트워크 (192.168.100.0/24)"
-        DUT[RadiConsole™ DUT\n192.168.100.10]
+        DUT[HnVue DUT\n192.168.100.10]
         WS1[워크스테이션 1\n192.168.100.11]
         WS2[워크스테이션 2\n192.168.100.12]
     end

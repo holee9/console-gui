@@ -1,5 +1,5 @@
 # V&V 종합 결과 보고서 (V&V Summary Report)
-## RadiConsole™ GUI Console SW
+## HnVue Console SW
 
 ---
 
@@ -8,7 +8,7 @@
 | 항목 | 내용 |
 |------|------|
 | **문서 ID** | VVSR-XRAY-GUI-001 |
-| **문서명** | RadiConsole™ GUI Console SW V&V 종합 결과 보고서 |
+| **문서명** | HnVue Console SW V&V 종합 결과 보고서 |
 | **버전** | v1.0 |
 | **작성일** | 2026-03-18 |
 | **작성자** | SW V&V Team |
@@ -112,7 +112,7 @@ graph LR
 
 ### ✅ V&V 합격 (V&V PASSED)
 
-모든 V&V 합격 기준을 충족하였으며, 미해결 결함 0건, 추적성 완결성 확인됨. RadiConsole™ GUI Console SW v1.0 Phase 1은 **릴리스 적격**으로 판정한다.
+모든 V&V 합격 기준을 충족하였으며, 미해결 결함 0건, 추적성 완결성 확인됨. HnVue Console SW v1.0 Phase 1은 **릴리스 적격**으로 판정한다.
 
 | 승인자 | 서명 | 날짜 |
 |--------|------|------|

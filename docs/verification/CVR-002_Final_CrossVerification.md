@@ -1,11 +1,11 @@
-# RadiConsole™ GUI Console SW — 최종 교차검증 보고서 (Final Cross-Verification Report)
+# HnVue Console SW — 최종 교차검증 보고서 (Final Cross-Verification Report)
 
 | 항목 | 내용 |
 |------|------|
 | **문서 ID** | CVR-002 |
 | **버전** | v2.0 |
 | **작성일** | 2026-03-18 |
-| **제품명** | RadiConsole™ GUI Console SW v1.0 |
+| **제품명** | HnVue Console SW v1.0 |
 | **SW Safety Class** | IEC 62304 Class B |
 | **대상 문서 수** | 42개 (규제 문서 패키지 전체) |
 | **검증 범위** | 파일 존재성, ID 추적성, 문서간 참조, 규격 준수, 일관성 |
@@ -30,7 +30,7 @@
 
 ### 1.1 검증 범위 (Verification Scope)
 
-본 교차검증은 RadiConsole™ GUI Console SW의 의료기기 인허가(FDA 510(k), CE MDR, KFDA) 승인에 필요한 **전체 42개 규제 문서**를 대상으로 수행되었다.
+본 교차검증은 HnVue Console SW의 의료기기 인허가(FDA 510(k), CE MDR, KFDA) 승인에 필요한 **전체 42개 규제 문서**를 대상으로 수행되었다.
 
 ### 1.2 검증 방법 (Verification Methods)
 
@@ -297,8 +297,8 @@ graph TD
 
 | 검증 항목 | 결과 |
 |-----------|------|
-| "RadiConsole" 언급 문서 | 44/45 (98%) |
-| "RadiConsole™" (상표 포함) | 44/45 (98%) |
+| "HnVue" 언급 문서 | 44/45 (98%) |
+| "HnVue" (상표 포함) | 44/45 (98%) |
 | 제품명 불일치 | 0건 |
 | 판정 | ✅ **일관성 확인** |
 

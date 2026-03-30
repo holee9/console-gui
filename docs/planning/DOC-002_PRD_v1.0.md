@@ -1,4 +1,4 @@
-# 의료용 진단 X-Ray 촬영장치 GUI Console SW
+# HnVue Console SW
 # Product Requirements Document (PRD)
 
 ---
@@ -10,7 +10,7 @@
 | **작성일** | 2026-03-27 |
 | **개정일** | 2026-03-27 |
 | **이전 버전** | v1.1 |
-| **작성자** | 제품 관리팀 |
+| **작성자** | 전략마케팅본부 |
 | **승인자** | (승인 대기) |
 | **상태** | Draft |
 | **분류** | 내부 기밀 (Confidential) |
@@ -22,9 +22,9 @@
 
 | 버전 | 날짜 | 작성자 | 변경 내용 |
 |------|------|--------|-----------|
-| v1.0 | 2026-03-27 | 제품팀 | 최초 작성 |
-| v1.1 | 2026-03-27 | 제품팀 | MRD P1-P4 우선순위 체계 연계 반영, 체크박스 선택 형식 도입 |
-| v1.2 | 2026-03-27 | 제품팀 | MRD-PRD 우선순위 교차검증: PR-SA-060(RBAC) P3→P1, US-007/010/012 P3→P2, US-013 P3→P1 |
+| v1.0 | 2026-03-27 | 전략마케팅본부 | 최초 작성 |
+| v1.1 | 2026-03-27 | 전략마케팅본부 | MRD P1-P4 우선순위 체계 연계 반영, 체크박스 선택 형식 도입 |
+| v1.2 | 2026-03-27 | 전략마케팅본부 | MRD-PRD 우선순위 교차검증: PR-SA-060(RBAC) P3→P1, US-007/010/012 P3→P2, US-013 P3→P1 |
 
 ---
 
@@ -158,7 +158,7 @@ flowchart LR
 
 | 항목 | 내용 |
 |------|------|
-| **제품명** | RadiConsole™ GUI Console SW |
+| **제품명** | RadiConsole™ HnVue Console SW |
 | **버전** | v1.0 (Phase 1) / v2.0 (Phase 2) |
 | **대상 플랫폼** | Windows 10 / Windows 11 (64-bit) |
 | **하드웨어 대상** | 의료용 진단 고정식·이동식 DR(Digital Radiography) X-Ray 촬영장치 |
@@ -777,7 +777,7 @@ flowchart TB
     RAD([영상의학과 의사<br/>Radiologist]):::person
 
     subgraph XRaySys["X-Ray 촬영 시스템 (경계)"]
-        CON[RadiConsole™\nGUI Console SW]:::system
+        CON[RadiConsole™\nHnVue Console SW]:::system
         GEN[X-Ray Generator\nHW]:::external
         DET[Flat Panel Detector\nHW]:::external
     end

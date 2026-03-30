@@ -1,4 +1,4 @@
-# 의료용 진단 X-Ray 촬영장치 Console GUI SW 개발 WBS
+# HnVue Console SW 개발 WBS
 
 > **문서 ID**: WBS-XRAY-GUI-001
 > **버전**: v1.0
@@ -154,7 +154,7 @@ flowchart LR
 
 ```mermaid
 mindmap
-  root((X-Ray Console\nGUI SW))
+  root((HnVue\nConsole SW))
     0.표준규정관리
       규격식별/Gap분석
       규격교육
@@ -273,7 +273,7 @@ timeline
 
 ```mermaid
 gantt
-    title X-Ray Console GUI SW 개발 로드맵 (Phase 1 + Phase 2) — Milestone & Critical Path
+    title HnVue Console SW 개발 로드맵 (Phase 1 + Phase 2) — Milestone & Critical Path
     dateFormat  YYYY-MM
     axisFormat  %Y-%m
 

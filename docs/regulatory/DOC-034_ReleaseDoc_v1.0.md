@@ -1,5 +1,5 @@
 # 소프트웨어 릴리스 문서 (Software Release Document)
-## RadiConsole™ GUI Console SW v1.0.0
+## HnVue Console SW v1.0.0
 
 ---
 
@@ -8,7 +8,7 @@
 | 항목 | 내용 |
 |------|------|
 | **문서 ID** | SRD-XRAY-GUI-001 |
-| **문서명** | RadiConsole™ GUI Console SW 소프트웨어 릴리스 문서 |
+| **문서명** | HnVue Console SW 소프트웨어 릴리스 문서 |
 | **버전** | v1.0 |
 | **작성일** | 2026-03-18 |
 | **작성자** | SW 개발팀 |
@@ -22,7 +22,7 @@
 
 | 항목 | 값 |
 |------|-----|
-| **제품명** | RadiConsole™ GUI Console SW |
+| **제품명** | HnVue Console SW |
 | **릴리스 버전** | v1.0.0 |
 | **빌드 번호** | Build #2026031802-Release |
 | **빌드 해시** | SHA-256: [빌드 시 생성] |
@@ -91,10 +91,10 @@ flowchart TD
 
 | 구성요소 | 파일명 | 해시 (SHA-256) |
 |---------|--------|---------------|
-| 설치 프로그램 | RadiConsole_Setup_v1.0.0.exe | [빌드 시 생성] |
-| SBOM (CycloneDX) | RadiConsole_SBOM_v1.0.0.json | [빌드 시 생성] |
-| 사용 설명서 | RadiConsole_IFU_v1.0.pdf | [빌드 시 생성] |
-| DICOM Conformance | RadiConsole_DCS_v1.0.pdf | [빌드 시 생성] |
+| 설치 프로그램 | HnVue_Setup_v1.0.0.exe | [빌드 시 생성] |
+| SBOM (CycloneDX) | HnVue_SBOM_v1.0.0.json | [빌드 시 생성] |
+| 사용 설명서 | HnVue_IFU_v1.0.pdf | [빌드 시 생성] |
+| DICOM Conformance | HnVue_DCS_v1.0.pdf | [빌드 시 생성] |
 
 ---
 

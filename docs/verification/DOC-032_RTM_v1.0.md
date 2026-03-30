@@ -1,4 +1,4 @@
-# 의료용 진단 X-Ray 촬영장치 GUI Console SW
+# HnVue Console SW
 # Requirements Traceability Matrix (RTM)
 # 요구사항 추적성 매트릭스
 
@@ -23,7 +23,7 @@
 
 | 버전 | 날짜 | 작성자 | 변경 내용 |
 |------|------|--------|-----------|
-| v1.0 | 2026-03-18 | 제품팀 | 초안 작성 — PRD v3.0, FRS v1.0, RMP v1.0 기반 전체 RTM 수립 |
+| v1.0 | 2026-03-18 | 전략마케팅본부 | 초안 작성 — PRD v3.0, FRS v1.0, RMP v1.0 기반 전체 RTM 수립 |
 
 ---
 
@@ -51,7 +51,7 @@
 
 ### 1.1 목적 (Purpose)
 
-본 문서는 FDA 21 CFR 820.30 Design Controls 요건에 따라 RadiConsole™ GUI Console SW의 **양방향 추적성 매트릭스 (Bidirectional Requirements Traceability Matrix)** 를 정의한다.
+본 문서는 FDA 21 CFR 820.30 Design Controls 요건에 따라 HnVue Console SW의 **양방향 추적성 매트릭스 (Bidirectional Requirements Traceability Matrix)** 를 정의한다.
 
 **양방향 추적성 증명:**
 
@@ -581,7 +581,7 @@ FDA 21 CFR 820.30 및 IEC 62304 요건에 따른 RTM 완전성 기준:
 | RTM 관리 도구 | Markdown (단기) → JAMA Connect 또는 ReqIF (장기) | 초기에는 버전 관리 Git 기반 Markdown 유지 |
 | ID 자동화 | Python 스크립트 (ID 일관성 검증) | PR ↔ SWR ↔ HAZ 매핑 자동 교차 검증 |
 | 변경 이력 | Git 커밋 이력 + 문서 개정 이력 테이블 | 모든 변경 사항 추적 |
-| 주기적 검토 | 월 1회 RTM 커버리지 리뷰 미팅 | QA + 제품팀 + 규제팀 참석 |
+| 주기적 검토 | 월 1회 RTM 커버리지 리뷰 미팅 | QA + 전략마케팅본부 + RA파트 참석 |
 | DHF 통합 | RTM 최신 버전을 DHF에 등록 | FDA 심사 시 즉시 제출 가능 상태 유지 |
 
 ### 7.5 향후 Phase별 RTM 확장 계획
@@ -627,7 +627,7 @@ FDA 21 CFR 820.30 및 IEC 62304 요건에 따른 RTM 완전성 기준:
 
 > **문서 종료**
 >
-> 본 RTM은 FDA 21 CFR 820.30 Design Controls에 따라 RadiConsole™ GUI Console SW의 Design History File (DHF)의 핵심 구성 요소로 관리되며, 요구사항 변경 시 반드시 업데이트되어야 한다.
+> 본 RTM은 FDA 21 CFR 820.30 Design Controls에 따라 HnVue Console SW의 Design History File (DHF)의 핵심 구성 요소로 관리되며, 요구사항 변경 시 반드시 업데이트되어야 한다.
 >
 > | 문서 ID | RTM-XRAY-GUI-001 |
 > |---------|-----------------|

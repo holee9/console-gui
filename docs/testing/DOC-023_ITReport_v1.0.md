@@ -1,5 +1,5 @@
 # 통합 테스트 결과 보고서 (Integration Test Report)
-## RadiConsole™ GUI Console SW
+## HnVue Console SW
 
 ---
 
@@ -8,7 +8,7 @@
 | 항목 | 내용 |
 |------|------|
 | **문서 ID** | ITR-XRAY-GUI-001 |
-| **문서명** | RadiConsole™ GUI Console SW 통합 테스트 결과 보고서 |
+| **문서명** | HnVue Console SW 통합 테스트 결과 보고서 |
 | **버전** | v1.0 |
 | **작성일** | 2026-03-18 |
 | **작성자** | SW V&V Team |
@@ -33,7 +33,7 @@
 
 | 항목 | 값 |
 |------|-----|
-| **테스트 대상 빌드** | RadiConsole v1.0.0-RC2 (Build #2026031801) |
+| **테스트 대상 빌드** | HnVue v1.0.0-RC2 (Build #2026031801) |
 | **테스트 기간** | 2026-03-01 ~ 2026-03-15 |
 | **총 테스트 케이스** | 40 |
 | **Pass** | 39 (97.5%) |

@@ -1,5 +1,5 @@
 # SOUP/OTS 구성요소 평가 보고서 (SOUP/OTS Evaluation Report)
-## RadiConsole™ GUI Console SW
+## HnVue Console SW
 
 ---
 
@@ -8,7 +8,7 @@
 | 항목 | 내용 |
 |------|------|
 | **문서 ID** | SOUP-XRAY-GUI-001 |
-| **문서명** | RadiConsole™ GUI Console SW SOUP/OTS 구성요소 평가 보고서 |
+| **문서명** | HnVue Console SW SOUP/OTS 구성요소 평가 보고서 |
 | **버전** | v1.0 |
 | **작성일** | 2026-03-18 |
 | **작성자** | SW 품질 팀 (SW Quality Team) |
@@ -43,7 +43,7 @@
 
 ### 1.1 목적 (Purpose)
 
-본 문서는 RadiConsole™ GUI Console SW에 포함된 **SOUP (Software of Unknown Provenance)** 및 **OTS (Off-The-Shelf) 소프트웨어** 구성요소에 대한 평가 결과를 문서화한다.
+본 문서는 HnVue Console SW에 포함된 **SOUP (Software of Unknown Provenance)** 및 **OTS (Off-The-Shelf) 소프트웨어** 구성요소에 대한 평가 결과를 문서화한다.
 
 IEC 62304:2006+AMD1:2015의 §8 (소프트웨어 구성 관리) 및 §5.3.3 (SOUP 식별)에 따라:
 1. 모든 SOUP 구성요소의 **체계적 식별 및 분류**
@@ -55,7 +55,7 @@ IEC 62304:2006+AMD1:2015의 §8 (소프트웨어 구성 관리) 및 §5.3.3 (SOU
 
 | 구분 | 내용 |
 |------|------|
-| **대상** | RadiConsole™ GUI Console SW v1.0 Phase 1 에 포함된 모든 제3자 구성요소 |
+| **대상** | HnVue Console SW v1.0 Phase 1 에 포함된 모든 제3자 구성요소 |
 | **SBOM 참조** | SBOM-XRAY-GUI-001 (42개 구성요소 중 배포 포함 38개) |
 | **평가 대상** | 배포 포함 38개 구성요소 중 SOUP 분류 대상 전수 평가 |
 
@@ -341,7 +341,7 @@ SOUP 구성요소 업데이트 시 수행하는 영향 분석 절차:
 
 ### 9.1 결론
 
-1. RadiConsole™ GUI Console SW에 포함된 **38개 배포 구성요소** 전수 평가 완료
+1. HnVue Console SW에 포함된 **38개 배포 구성요소** 전수 평가 완료
 2. **19개 Class B SOUP** 및 **19개 Class A SOUP** 분류 완료
 3. 모든 구성요소에 대해 **수용 판정 완료** — 수용 불가 구성요소 없음
 4. 안전 관련 알려진 이상은 **모두 현재 버전에서 수정** 확인

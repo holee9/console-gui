@@ -1,6 +1,6 @@
 # 소프트웨어 상세 설계 명세서
 # Software Design Specification (SDS)
-## RadiConsole™ GUI Console SW
+## RadiConsole™ HnVue Console SW
 
 ---
 
@@ -56,7 +56,7 @@
 
 ### 1.1 목적 (Purpose)
 
-본 문서는 **RadiConsole™ GUI Console SW** (의료용 진단 X-Ray 촬영장치 GUI 콘솔 소프트웨어)의 **소프트웨어 상세 설계 명세서 (Software Design Specification, SDS)** 로서, IEC 62304:2006+AMD1:2015 **§5.4 소프트웨어 상세 설계 (Software Detailed Design)** 에서 요구하는 모든 설계 산출물을 정의한다.
+본 문서는 **RadiConsole™ HnVue Console SW** (의료용 진단 X-Ray 촬영장치 콘솔 소프트웨어)의 **소프트웨어 상세 설계 명세서 (Software Design Specification, SDS)** 로서, IEC 62304:2006+AMD1:2015 **§5.4 소프트웨어 상세 설계 (Software Detailed Design)** 에서 요구하는 모든 설계 산출물을 정의한다.
 
 본 문서의 핵심 목적은 다음과 같다:
 
@@ -2251,4 +2251,4 @@ flowchart LR
 
 *문서 끝 (End of Document)*
 
-*SDS-XRAY-GUI-001 v1.0 | IEC 62304 §5.4 | RadiConsole™ GUI Console SW*
+*SDS-XRAY-GUI-001 v1.0 | IEC 62304 §5.4 | RadiConsole™ HnVue Console SW*
