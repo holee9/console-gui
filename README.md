@@ -45,13 +45,15 @@ All project documentation is organized under `docs/`:
 
 | Doc ID | Document | Version | Description |
 |--------|----------|---------|-------------|
-| DOC-001 | MRD | v2.0 | Market Requirements (71 MR, 67 active, P1-P4) |
+| DOC-001 | MRD | v2.0 | Market Requirements — 시장/경쟁/고객/요구사항/규제 (WHAT) |
+| STRATEGY-001 | Strategy | v2.0 | 내재화 전략 — 기술스택/Phase/타임라인/인력/KPI (HOW) |
 | DOC-002 | PRD | v1.0 | Product Requirements |
 | DOC-004 | FRS | v1.0 | Functional Requirements Specification |
 | DOC-005 | SRS | v1.0 | Software Requirements Specification |
 | DOC-006 | SAD | v1.0 | Software Architecture Document |
 | DOC-007 | SDS | v1.0 | Software Design Specification |
-| STRATEGY-001 | Strategy | v2.0 | Company positioning and internalization strategy |
+
+> **MRD vs STRATEGY 역할 분리**: MRD는 "시장이 무엇을 요구하는가(WHAT)"를 정의하고, STRATEGY는 "어떻게 구현하는가(HOW)"를 정의한다.
 
 ### Research Documents
 
