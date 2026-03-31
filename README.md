@@ -260,7 +260,14 @@ HnVue Console SW는 자사 FPD(Flat Panel Detector)에 번들되는 X-ray 촬영
 | CYBERSEC-004 | 공인기관 의뢰 전 내부 자체평가 가이드 | v1.0 | `docs/planning/research/CYBERSEC-004_Internal_PreAssessment_Guide_v1.0.md` | 31개 무료 도구, 8주 Phase별 실행 계획, 31개 자체점검 체크리스트, MFDS/IG-NB/FDA 대응 |
 
 > 사이버보안 리서치는 FDA §524B, IEC 81001-5-1, MFDS 2024 개정 가이드라인을 기준으로 팩트 검증된 내용입니다.
-> 권장 전략: CYBERSEC-004(자체평가 8주) → CYBERSEC-003(KTL 공인시험 의뢰) → CYBERSEC-002(침투 테스트 독립성 입증)
+>
+> **권장 전략 A (공인기관 위탁 — 추천):**
+> CYBERSEC-004(자체평가 8주) → CYBERSEC-003(KTL 공인시험 의뢰) → 공인 성적서로 독립성/전문성 자동 충족
+>
+> **권장 전략 B (자체/프리랜서 수행 — 비용 절감):**
+> CYBERSEC-004(자체평가 8주) → CYBERSEC-002(독립성/전문성 입증 방법 참조) → 자체 리포트 작성
+>
+> 공인기관 시험 시 CYBERSEC-002는 참고용이며, 별도 독립성 입증 절차는 불필요합니다.
 
 ---
 
