@@ -85,3 +85,19 @@ All project documentation is organized under `docs/`:
 - ISO 13485 (Quality Management)
 - DICOM 3.0 / IHE SWF
 - HIPAA / GDPR
+
+---
+
+## Sync from GitHub Mirror
+
+Perplexity Computer에서 GitHub 미러에 작업한 내용을 사내 로컬 Git에 반영할 때 아래 명령어를 실행한다.
+
+```bash
+# 최초 1회: GitHub remote 추가 (이미 설정했으면 생략)
+git remote add github https://github.com/holee9/console-gui.git
+
+# 작업 반영 시 매번 실행
+git fetch github
+git merge github/main
+git push origin main
+```
