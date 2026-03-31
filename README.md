@@ -240,6 +240,8 @@ HnVue Console SW는 자사 FPD(Flat Panel Detector)에 번들되는 X-ray 촬영
 
 ### Research Documents
 
+#### Strategy
+
 | Document | Description |
 |----------|-------------|
 | STRATEGY-001 v2.0 | HnVue Console SW internalization strategy |
@@ -247,6 +249,18 @@ HnVue Console SW는 자사 FPD(Flat Panel Detector)에 번들되는 X-ray 촬영
 | FPD Console SW Market Research | FPD console SW buy/build/open-source analysis |
 | Market Research (Console) | X-ray console software competitive landscape |
 | Market Research (Imaging) | X-ray imaging software market data |
+
+#### Cybersecurity Research (사이버보안 딥리서치 시리즈)
+
+| Doc ID | Document | Version | Path | Description |
+|--------|----------|---------|------|-------------|
+| CYBERSEC-001 | 사이버보안 자체 검증 가이드 | v1.0 | `docs/planning/research/CYBERSEC-001_Self_Assessment_Guide_v1.0.md` | 29개 무료 도구, 4단계 파이프라인, 의사결정 매트릭스 (1,079줄) |
+| CYBERSEC-002 | 침투 테스트 독립성 & 기술 전문성 충족 가이드 | v1.0 | `docs/planning/research/CYBERSEC-002_Independence_Expertise_Guide_v1.0.md` | FDA 원문 팩트 기반, IEC 62443-4-1 독립성 3등급, 자격증 16종, 무료 교육 13종, 리포트 템플릿 |
+| CYBERSEC-003 | 한국 내 최소비용 침투 테스트 위탁 가이드 | v1.1 | `docs/planning/research/CYBERSEC-003_Korea_Pentest_Outsourcing_Guide_v1.1.md` | 공인기관 4곳(KTL/KTC/KTR/넴코), 전문업체 18곳, 정부 무료 프로그램 4종, 견적 비교 |
+| CYBERSEC-004 | 공인기관 의뢰 전 내부 자체평가 가이드 | v1.0 | `docs/planning/research/CYBERSEC-004_Internal_PreAssessment_Guide_v1.0.md` | 31개 무료 도구, 8주 Phase별 실행 계획, 31개 자체점검 체크리스트, MFDS/IG-NB/FDA 대응 |
+
+> 사이버보안 리서치는 FDA §524B, IEC 81001-5-1, MFDS 2024 개정 가이드라인을 기준으로 팩트 검증된 내용입니다.
+> 권장 전략: CYBERSEC-004(자체평가 8주) → CYBERSEC-003(KTL 공인시험 의뢰) → CYBERSEC-002(침투 테스트 독립성 입증)
 
 ---
 
