@@ -10,11 +10,11 @@ HnVue Console SW는 자사 FPD(Flat Panel Detector)에 번들되는 X-ray 촬영
 
 ### 내재화 단계
 
-| Phase | 범위 | 영상처리 |
-|-------|------|---------|
-| Phase 1 (12-18개월) | 콘솔 프레임워크 자체 개발, feel-DRCS 핵심 기능 대체 | 외부 SDK 구매 연동 |
-| Phase 2 (추가 12개월) | 업계 표준 달성 (Auto Stitching, 다국어, Reject Analysis 등) | 자체 엔진 내재화 |
-| Phase 3 (24개월+) | AI/Cloud 등 고급 기능 | 자체 + AI 파트너십 |
+| Phase | 예상 공수 (SW 2명 기준) | 범위 | 영상처리 |
+|-------|------------------------|------|---------|
+| Phase 1 | ~24-36 MM | 콘솔 프레임워크 자체 개발, feel-DRCS 핵심 기능 대체 | 외부 SDK 구매 연동 |
+| Phase 2 | ~18-24 MM (인력 보강 전제) | 업계 표준 달성 (Auto Stitching, 다국어, Reject Analysis 등) | 자체 엔진 내재화 |
+| Phase 3 | TBD | AI/Cloud 등 고급 기능 | 자체 + AI 파트너십 |
 
 ### 기술 스택
 
