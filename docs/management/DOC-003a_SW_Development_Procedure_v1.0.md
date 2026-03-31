@@ -2,7 +2,7 @@
 
 | 항목 | 내용 |
 |------|------|
-| **문서 ID** | SDP-RC-001 |
+| **문서 ID** | DOC-003a (SDP-RC-001) |
 | **문서 제목** | RadiConsole™ GUI Console SW 개발 업무 절차서 |
 | **버전** | v1.0 |
 | **작성일** | 2026-03-16 |
@@ -11,6 +11,7 @@
 | **승인자** | 개발본부장 |
 | **상태** | Released |
 | **기준 규격** | IEC 62304:2006+AMD1:2015, ISO 14971:2019, ISO 13485:2016 |
+| **IEC 62304 적용** | §5.1 Software Development Planning (SDP) |
 | **보안 등급** | 사내 기밀 (Confidential) |
 
 ---
@@ -22,6 +23,7 @@
 | v0.1 | 2026-01-10 | 초안 작성 | SW개발팀 | - |
 | v0.5 | 2026-02-14 | 내부 검토 반영 | SW개발팀 | QA팀장 |
 | v1.0 | 2026-03-16 | 최초 공식 릴리스 | SW개발팀 | 개발본부장 |
+| v1.1 | 2026-03-31 | 교차 검증 보완: (1) 문서 ID DOC-003a 병기 및 IEC 62304 §5.1 명시, (2) 마일스톤 기반 일정표 섹션 추가 (DMP-001 동기화), (3) 개발 도구 버전 번호 기재 (DOC-006 SAD 연계) | SW개발팀 | - |
 
 ---
 
@@ -32,6 +34,7 @@
 3. 참조 문서 (References)
 4. 조직 및 역할 정의 (Organization & Roles)
 5. SW 개발 프로세스 흐름 (Development Process Flow)
+5a. 마일스톤 기반 개발 일정표 (Milestone-based Development Schedule)
 6. 요구사항 분석 절차 (Requirements Analysis Procedure)
 7. 아키텍처 및 상세 설계 절차 (Architecture & Detailed Design Procedure)
 8. 구현 절차 (Implementation Procedure)
@@ -417,6 +420,103 @@ flowchart TD
 
 ---
 
+## 5a. 마일스톤 기반 개발 일정표 (Milestone-based Development Schedule)
+
+> **참조 문서**: DMP-001 (Document Master Plan v1.0) — 본 일정은 DMP-001과 동기화되며, Phase Gate 변경 시 상호 개정한다.
+
+### 5a.1 전체 프로젝트 마일스톤 (Project Milestones)
+
+| 마일스톤 ID | 마일스톤명 | 목표 일자 | 연계 Phase Gate | 주요 완료 기준 |
+|------------|-----------|-----------|----------------|---------------|
+| **PG-A** | Phase A Gate — 기반 문서 완료 | 2026-04-15 | PG-1 (기획 검토) | MRD, PRD v3.0, WBS, SDP(DOC-003a), SW 개발 지침서 완료 |
+| **M1** | FRS 베이스라인 확정 | 2026-05-01 | PG-2 (요구사항 검토) | FRS(DOC-004) 승인 완료 |
+| **M2** | SRS 베이스라인 (SWR-xxx 체계) | 2026-05-15 | PG-2 | SRS(DOC-005) 확정, RTM 초안 |
+| **M3** | V&V Plan 승인 | 2026-06-01 | — | V&V Master Plan(DOC-011) 서명 완료 |
+| **M4** | 아키텍처 리뷰 완료 | 2026-07-15 | PG-3 (설계 검토) | SAD(DOC-006) 리뷰 및 서명 완료 |
+| **PG-B** | Phase B Gate — 설계 문서 완료 | 2026-08-15 | PG-3 | SAD, SDS, SOUP 분석, 보안 설계 완료 |
+| **M_RTM** | RTM 베이스라인 확정 | 2026-09-01 | PG-D | MR→PR→SWR→TC 완전 추적성 확보 |
+| **PG-D** | Phase D Gate — V&V 계획 완료 | 2026-09-01 | PG-4 | 전체 테스트 계획서 승인 완료 |
+| **M_VV** | V&V 완료 | 2027-01-01 | PG-5 (검증 완료) | 통합/시스템 테스트 완료, Critical 결함 0건 |
+| **M_DHF** | DHF 초안 편찬 | 2027-02-01 | PG-6 (릴리스 준비) | Design History File 패키지 완성 |
+| **M_REG** | FDA 510(k) 인허가 제출 | 2027-03-01 | — | eSTAR 패키지 규제기관 제출 |
+| **M_KFDA** | KFDA 식약처 인허가 제출 | 2027-04-01 | — | 식약처 기술문서 제출 |
+
+### 5a.2 Phase별 문서 작성 일정 (Document Production Schedule by Phase)
+
+| Phase | 문서 ID | 문서명 | 목표 일정 | 상태 |
+|-------|---------|--------|-----------|------|
+| **A** | DOC-001 | MRD (Market Requirements Document) | 2026-03 | 완료 ✅ |
+| **A** | DOC-002 | PRD v3.0 (Product Requirements Document) | 2026-03 | 완료 ✅ |
+| **A** | WBS-001 | WBS v4.0 (Work Breakdown Structure) | 2026-03 | 완료 ✅ |
+| **A** | DOC-003 | SW 개발 지침서 (Software Development Guideline) | 2026-04 | 진행 중 |
+| **A** | DOC-003a | SDP (본 문서, IEC 62304 §5.1) | 2026-04 | 진행 중 |
+| **A** | DOC-041 | PM 계획서 (Project Management Plan) | 2026-04 | 진행 중 |
+| **B** | DOC-004 | FRS (Functional Requirements Specification) | 2026-05 | 예정 |
+| **B** | DOC-005 | SRS (Software Requirements Specification) | 2026-05 | 예정 |
+| **B** | DOC-006 | SAD (Software Architecture Design) | 2026-06 | 예정 |
+| **B** | DOC-007 | SDS (Software Design Specification) | 2026-07 | 예정 |
+| **C** | DOC-008 | Risk Management Plan (ISO 14971) | 2026-05 | 예정 |
+| **C** | DOC-009 | Software Hazard Analysis (FMEA/FTA) | 2026-06 | 예정 |
+| **C** | DOC-010 | Risk Management Report | 2027-01 | 예정 |
+| **D** | DOC-011 | V&V Master Plan | 2026-05 | 예정 |
+| **D** | DOC-012 | Unit Test Plan | 2026-07 | 예정 |
+| **D** | DOC-013 | Integration Test Plan | 2026-08 | 예정 |
+| **D** | DOC-014 | System Test Plan | 2026-08 | 예정 |
+| **E** | DOC-016 | Cybersecurity Management Plan | 2026-05 | 예정 |
+| **E** | DOC-019 | SBOM (Software Bill of Materials) | 2026-10 | 예정 |
+| **G** | DOC-022 | Unit Test Report | 2026-12 | 예정 |
+| **G** | DOC-023 | Integration Test Report | 2026-12 | 예정 |
+| **G** | DOC-024 | System Test Report | 2027-01 | 예정 |
+| **G** | DOC-025 | V&V Summary Report | 2027-01 | 예정 |
+| **H** | DOC-034 | Software Release Documentation | 2027-03 | 예정 |
+| **H** | DOC-035 | Design History File (DHF) | 2027-02 | 예정 |
+| **H** | DOC-036 | 510(k) Technical File / eSTAR Package | 2027-03 | 예정 |
+
+### 5a.3 즉시 착수 작업 일정 (Immediate Action Plan, 2026년 4~8월)
+
+```mermaid
+gantt
+    title RadiConsole™ Console SW 개발 일정 (2026년 4월~8월)
+    dateFormat  YYYY-MM-DD
+    axisFormat  %m/%d
+
+    section Phase A 기반 문서
+    DOC-003 SW 개발 지침서             :a1, 2026-04-01, 2w
+    DOC-003a SDP (본 문서)              :a2, 2026-04-01, 2w
+    DOC-041 PM 계획서                   :a3, 2026-04-01, 2w
+
+    section Phase B 설계 문서
+    FRS 초안 작성 (DOC-004)            :crit, b1, 2026-04-01, 2w
+    SRS (SWR-xxx 체계) (DOC-005)       :crit, b2, 2026-04-14, 3w
+    SAD 착수 (DOC-006)                 :crit, b3, 2026-05-01, 6w
+    SDS 착수 (DOC-007)                 :b4, 2026-06-15, 5w
+
+    section Phase C 위험 관리
+    Risk Management Plan (DOC-008)     :crit, c1, 2026-04-01, 2w
+    Software Hazard Analysis (DOC-009) :c2, 2026-05-01, 4w
+
+    section Phase D V&V 계획
+    V&V Master Plan 초안 (DOC-011)     :d1, 2026-04-01, 2w
+    Unit Test Plan (DOC-012)           :d2, 2026-06-15, 3w
+    System/Integration Test Plan       :d3, 2026-07-01, 4w
+
+    section Phase E 사이버보안
+    Cybersecurity Mgmt Plan (DOC-016)  :e1, 2026-04-01, 2w
+    Threat Model (DOC-017)             :e2, 2026-04-14, 3w
+
+    section 마일스톤
+    Phase A Gate (PG-A)                :milestone, mga, 2026-04-15, 0d
+    FRS 베이스라인 확정 (M1)           :milestone, m1, 2026-05-01, 0d
+    SRS 베이스라인 (M2)                :milestone, m2, 2026-05-15, 0d
+    V&V Plan 승인 (M3)                 :milestone, m3, 2026-06-01, 0d
+    아키텍처 리뷰 (M4)                 :milestone, m4, 2026-07-15, 0d
+    Phase B Gate (PG-B)                :milestone, mgb, 2026-08-15, 0d
+```
+
+> **DMP-001 동기화 주의**: 본 일정표는 DMP-001 (Document Master Plan) 문서의 기준 일정을 반영한다. 실제 개발 진행 상황 및 Phase Gate 결과에 따라 일정이 변경될 수 있으며, 변경 시 DMP-001과 동시 개정이 필요하다.
+
+---
+
 ## 6. 요구사항 분석 절차 (Requirements Analysis Procedure)
 
 ### 6.1 MR → PR → SWR 분해 절차
@@ -681,13 +781,15 @@ gitGraph
 
 ### 8.3 정적 분석 도구 사용 (Static Analysis Tool Usage)
 
-| 도구 (Tool) | 적용 범위 | 사용 기준 | 임계값 (Threshold) |
-|-------------|-----------|-----------|-------------------|
-| **SonarQube** | 전체 코드베이스 | CI/CD 자동 실행 | Critical: 0건, High: 5건 이하 |
-| **Roslyn Analyzers** | C# / .NET 코드 | 개발 IDE 통합 | Warning 수준 이상 해소 필수 |
-| **StyleCop** | 코드 스타일 | Pre-commit hook | 전체 통과 필수 |
-| **OWASP Dependency Check** | 라이브러리 취약점 | 주 1회 스캔 | Critical CVE 0건 |
-| **Bandit** (Python 스크립트) | Python 도구 | 커밋 시 자동 | High: 0건 |
+| 도구 (Tool) | 버전 (Version) | 적용 범위 | 사용 기준 | 임계값 (Threshold) |
+|-------------|----------------|-----------|-----------|-------------------|
+| **SonarQube** | 10.x LTS | 전체 코드베이스 | CI/CD 자동 실행 | Critical: 0건, High: 5건 이하 |
+| **Roslyn Analyzers** | .NET SDK 내장 | C# / .NET 코드 | 개발 IDE 통합 | Warning 수준 이상 해소 필수 |
+| **Clang-Tidy** | LLVM 17.x | C++ 코드 (Qt 기반) | Pre-commit hook, CI | 경고 수준 이상 해소 필수 |
+| **PVS-Studio** | 7.x | C++ 코드 전체 | 주 1회 실행 | Critical: 0건 |
+| **StyleCop** | 1.2.x | 코드 스타일 | Pre-commit hook | 전체 통과 필수 |
+| **OWASP Dependency Check** | 9.x | 라이브러리 취약점 | 주 1회 스캔 | Critical CVE 0건 |
+| **Bandit** (Python 스크립트) | 1.7.x | Python 도구 | 커밋 시 자동 | High: 0건 |
 
 **정적 분석 결함 처리 절차**:
 1. CI/CD 파이프라인에서 Critical 결함 발생 → 빌드 즉시 실패 처리
@@ -725,10 +827,57 @@ flowchart LR
 ```
 
 **빌드 환경**:
-- **CI 서버**: GitHub Actions / Jenkins
-- **빌드 도구**: MSBuild, .NET CLI
+- **CI 서버**: GitHub Actions / Jenkins (Jenkins LTS 2.x)
+- **빌드 도구**: CMake 3.25+, MSBuild (Visual Studio 2022), .NET CLI 8.x
+- **컴파일러**: MSVC 2022 (v19.3x) / GCC 12.x (크로스플랫폼 지원)
+- **표준**: C++17
 - **아티팩트 저장소**: Azure Artifacts / JFrog Artifactory
 - **빌드 번호 규칙**: `MAJOR.MINOR.PATCH.BUILD` (예: `1.0.0.2350`)
+
+### 8.5 개발 도구 목록 (Development Tool Inventory)
+
+> **참조**: DOC-006 SAD (Software Architecture Design) v1.0 — 아래 개발 도구 및 SOUP 버전은 SAD의 기술 스택 가이드를 기준으로 한다.
+
+#### 8.5.1 핵심 개발 도구 (Core Development Tools)
+
+| 도구 유형 | 도구명 | 버전 | 용도 |
+|-----------|--------|------|------|
+| **IDE** | Qt Creator | 12.x | C++/Qt GUI 개발 |
+| **IDE (보조)** | Visual Studio | 2022 (v17.x) | C++/C# 코드 편집, 정적 분석 |
+| **빌드 시스템** | CMake | 3.25+ | 크로스플랫폼 빌드 스크립트 |
+| **컴파일러** | MSVC (Visual Studio 2022) | v19.3x (C++17) | Windows 네이티브 빌드 |
+| **컴파일러 (대안)** | GCC | 12.x | 크로스플랫폼 빌드 |
+| **형상 관리** | Git | 2.x | 소스 코드 버전 관리 |
+| **CI/CD** | GitHub Actions | N/A | 자동 빌드, 테스트 파이프라인 |
+| **CI/CD (보조)** | Jenkins | LTS 2.x | 온프레미스 CI/CD |
+| **컴테이너** | Docker | 24.x+ | 빌드/테스트 환경 격리 |
+| **이슈 트래커** | Jira | 클라우드 | 결함/SWR 추적 |
+| **코드 리뷰** | GitHub Pull Request | N/A | 코드 리뷰 워크플로우 |
+
+#### 8.5.2 SOUP (Software of Unknown Provenance) 도구 목록
+
+> **참조**: IEC 62304 §5.3.3, DOC-006 SAD v1.0 §7.1 SOUP 목록
+
+| SOUP ID | 이름 | 버전 | 제조사/커뮤니티 | 용도 | Safety Class 기여 | 라이선스 |
+|---------|------|------|----------------|------|-----------------|----------|
+| SOUP-001 | Qt Framework | **6.6 LTS** | Qt Group | GUI 프레임워크, 이벤트 루프, 네트워킹 | Class B | LGPL 3.0 (상용) |
+| SOUP-002 | DCMTK | **3.6.8** | OFFIS e.V. | DICOM 프로토콜 스택 | Class B | OFFIS Source License |
+| SOUP-003 | OpenCV | **4.9.x** | OpenCV Foundation | 영상 처리 알고리즘 | Class A | Apache 2.0 |
+| SOUP-004 | SQLite | **3.45.x** | D. Richard Hipp | 로컬 데이터베이스 | Class B | Public Domain |
+| SOUP-005 | OpenSSL | **3.3.x** | OpenSSL Foundation | 암호화, TLS | Class B | Apache 2.0 |
+| SOUP-006 | zlib | **1.3.x** | zlib team | 데이터 압축 | Class A | zlib License |
+| SOUP-007 | Boost.Asio | **1.84.x** | Boost | 비동기 네트워킹 | Class B | BSL-1.0 |
+
+#### 8.5.3 테스트 도구 (Test Tools)
+
+| 도구명 | 버전 | 용도 |
+|--------|------|------|
+| Google Test (gtest) | 1.14.x | C++ 단위 테스트 프레임워크 |
+| Coverlet | 6.x | .NET 코드 커버리지 측정 |
+| Microsoft Threat Modeling Tool (TMT) | 2022 | 위협 모델링 |
+| Valgrind | 3.2x | 메모리 누수 검사 (Linux) |
+| AddressSanitizer (ASan) | GCC/LLVM 내장 | 메모리 오류 검사 |
+| Syft | 1.x | SBOM 자동 생성 (CycloneDX 형식) |
 
 ---
 
@@ -1483,4 +1632,4 @@ flowchart LR
 
 *© 2026 RadiConsole Development Team. All Rights Reserved.*
 
-*문서 ID: SDP-RC-001 | 버전: v1.0 | 작성일: 2026-03-16*
+*문서 ID: DOC-003a (SDP-RC-001) | 버전: v1.1 | 작성일: 2026-03-16 | 최종 수정: 2026-03-31*
