@@ -174,6 +174,7 @@ flowchart TD
     R --> S[생산 및 시판 후 감시\nPost-Production Monitoring\nISO 14971 §10]
     S -->|새로운 위험 발견| B
 
+    classDef default fill:#444,stroke:#666,color:#fff
     style RA fill:#e8f4fd,stroke:#2196F3
     style RE fill:#fff3e0,stroke:#FF9800
     style RC fill:#fce4ec,stroke:#E91E63
@@ -219,6 +220,7 @@ gantt
 
     section 시판 후 감시
     PMS 체계 운영                        :pms1, 2027-01, 12M
+    classDef default fill:#444,stroke:#666,color:#fff
 ```
 
 ### 3.3 역할 및 책임 (Roles and Responsibilities)
@@ -273,6 +275,7 @@ quadrantChart
     HAZ-SEC-001 초기: [0.65, 0.35]
     잔여-RAD-001: [0.65, 0.20]
     잔여-RAD-002: [0.85, 0.10]
+    classDef default fill:#444,stroke:#666,color:#fff
 ```
 
 **위험 매트릭스 상세 (Detailed Risk Matrix)**
@@ -306,6 +309,7 @@ flowchart LR
     D -->|편익 ≤ 위험| H[추가 통제 또는\n설계 변경 필요]
     H --> C
 
+    classDef default fill:#444,stroke:#666,color:#fff
     style C fill:#ffcccc,stroke:#cc0000
     style D fill:#fff3cc,stroke:#cc9900
     style E fill:#ccffcc,stroke:#009900
@@ -450,6 +454,7 @@ flowchart TD
     B -->|설계로 해결 불가| C
     C -->|방호로 해결 불가| D
 
+    classDef default fill:#444,stroke:#666,color:#fff
     style H1 fill:#ccffcc,stroke:#009900
     style H2 fill:#fff3cc,stroke:#cc9900
     style H3 fill:#ffcccc,stroke:#cc6600
@@ -534,6 +539,7 @@ pie title 잔여 위험 수준 분포 (Residual Risk Distribution)
     "수용 가능 (Acceptable)" : 10
     "ALARP" : 12
     "수용 불가 (Unacceptable)" : 0
+    classDef default fill:#444,stroke:#666,color:#fff
 ```
 
 ### 8.3 전체 잔여 위험 수용 판정 (Overall Residual Risk Acceptability)
@@ -594,6 +600,7 @@ graph LR
     D <--> I
     F <--> J
 
+    classDef default fill:#444,stroke:#666,color:#fff
     style DHF fill:#e8f4fd,stroke:#2196F3
     style RMF fill:#fce4ec,stroke:#E91E63
 ```
@@ -631,6 +638,7 @@ flowchart TD
     L --> I
     M --> I
 
+    classDef default fill:#444,stroke:#666,color:#fff
     style G fill:#fff3cc,stroke:#cc9900
     style K fill:#ffcccc,stroke:#cc0000
     style M fill:#ffaaaa,stroke:#cc0000
@@ -768,6 +776,7 @@ graph TD
     C1 -->|OR| F1["AEC 인터페이스\n타임아웃 미처리"]
     C1 -->|OR| F2["AEC 신호 디코딩\n오류 (FMEA-004)"]
 
+    classDef default fill:#444,stroke:#666,color:#fff
     style TE1 fill:#ff4444,color:#ffffff,stroke:#cc0000
     style A1 fill:#ffaaaa,stroke:#cc0000
     style A2 fill:#ffaaaa,stroke:#cc0000
@@ -813,6 +822,7 @@ graph TD
     H2 -->|OR| K1["2-step 확인\n절차 미구현"]
     H2 -->|OR| K2["바코드 스캔\n기능 부재"]
 
+    classDef default fill:#444,stroke:#666,color:#fff
     style TE2 fill:#ff4444,color:#ffffff,stroke:#cc0000
     style G1 fill:#ffaaaa,stroke:#cc0000
     style G2 fill:#ffaaaa,stroke:#cc0000
@@ -858,6 +868,7 @@ graph TD
     M1 -->|OR| P1["세션 탈취\n(FMEA-014)"]
     M1 -->|OR| P2["SQL Injection\n취약점 악용"]
 
+    classDef default fill:#444,stroke:#666,color:#fff
     style TE3 fill:#ff4444,color:#ffffff,stroke:#cc0000
     style L1 fill:#ffaaaa,stroke:#cc0000
     style L2 fill:#ffaaaa,stroke:#cc0000

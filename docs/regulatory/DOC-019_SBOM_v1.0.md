@@ -75,6 +75,7 @@ flowchart LR
     D -->|No| F[SBOM 아카이브<br/>릴리스 패키지]
     F --> G[FDA 제출용<br/>SBOM 생성]
     
+    classDef default fill:#444,stroke:#666,color:#fff
     style E fill:#A13544,color:#fff
     style G fill:#437A22,color:#fff
 ```
@@ -264,6 +265,7 @@ graph TD
     DATA --> SBOM017[MS.Data.Sqlite]
     DATA --> SBOM018[EF Core]
     
+    classDef default fill:#444,stroke:#666,color:#fff
     style APP fill:#01696F,color:#fff
     style SBOM019 fill:#A13544,color:#fff
     style SBOM020 fill:#A13544,color:#fff
@@ -295,6 +297,7 @@ flowchart TD
     M --> N[회귀 테스트]
     N --> O[SBOM 갱신]
     
+    classDef default fill:#444,stroke:#666,color:#fff
     style G fill:#A13544,color:#fff
     style I fill:#964219,color:#fff
     style O fill:#437A22,color:#fff
@@ -332,6 +335,7 @@ flowchart TD
     J --> L[상세 평가<br/>필수]
     K --> M[기본 평가<br/>충분]
     
+    classDef default fill:#444,stroke:#666,color:#fff
     style F fill:#01696F,color:#fff
     style J fill:#A13544,color:#fff
 ```
@@ -372,6 +376,7 @@ pie title 라이선스 분포 (배포 포함 38개 구성요소)
     "MPL 2.0" : 1
     "Public Domain" : 1
     "기타 (zlib, libpng)" : 2
+    classDef default fill:#444,stroke:#666,color:#fff
 ```
 
 ### 9.2 라이선스 호환성 요약

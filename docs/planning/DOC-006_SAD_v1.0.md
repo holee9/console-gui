@@ -216,6 +216,7 @@ graph TD
     BL3 --> FL4
     DA1 --> FL5
     FL1 --> FL2
+    classDef default fill:#444,stroke:#666,color:#fff
 ```
 
 ### 4.3 Process View (프로세스 뷰) — 동시성 및 스레드 모델
@@ -245,6 +246,7 @@ graph LR
     WT7 <-->|로그 큐| MT
     WT8 -->|Heartbeat 신호| WT1 & WT5
 
+    classDef default fill:#444,stroke:#666,color:#fff
     classDef safety fill:#ffcccc,stroke:#cc0000
     classDef normal fill:#cce5ff,stroke:#004085
     class WT5,WT8 safety
@@ -316,6 +318,7 @@ graph TD
             CF3[calibration/]
         end
     end
+    classDef default fill:#444,stroke:#666,color:#fff
 ```
 
 **빌드 시스템:** CMake 3.25+, C++17 표준  
@@ -361,6 +364,7 @@ graph TB
     APP_SVC <-->|HL7 v2.x| HIS
     APP_GUI <-->|LDAP over TLS| LDAP_SRV
     APP_SVC -->|DICOM RDSR / TLS| DOSE_REG
+    classDef default fill:#444,stroke:#666,color:#fff
 ```
 
 **하드웨어 최소 사양 (Minimum Hardware Specification):**
@@ -403,6 +407,7 @@ graph TD
     CS -->|의존| DB
     UI -->|의존| PM & WF & IP & DM & SA
 
+    classDef default fill:#444,stroke:#666,color:#fff
     classDef safety fill:#ffcccc,stroke:#cc0000,font-weight:bold
     classDef normal fill:#d4edda,stroke:#28a745
     class WF,DM,CS safety
@@ -701,6 +706,30 @@ graph TD
 
 ---
 
+### 5.11 SAD-CD-1000: CDDVDBurning Module (CD/DVD 버닝 모듈)
+
+| 항목 | 내용 |
+|---|---|
+| **모듈 ID** | SAD-CD-1000 |
+| **모듈명** | CDDVDBurning Module |
+| **IEC 62304 Safety Class** | Class B |
+| **Safety-Critical** | 아니오 |
+| **MR 연계** | MR-072 (Tier 2 — CD/DVD Burning with DICOM Viewer) |
+| **Phase** | Phase 1 |
+
+**책임 (Responsibilities):**
+- DICOM 영상 선택 및 CD/DVD 매체에 굽기 (Windows IMAPI2 또는 동급 라이브러리 활용)
+- 번들 DICOM Viewer (오픈소스 또는 자체 경량 뷰어) 포함 패키징
+- 이동식 미디어 PHI 보호 — 비밀번호 보호 또는 AES-256 암호화 적용
+- CD/DVD 생성 이벤트 감사 로그 기록 (환자 ID, 생성자, 생성 시각)
+- 미디어 생성 완료 후 무결성 확인 (베리파이)
+
+**접근 권한:** Admin 또는 Radiologist 역할 전용 (RBAC — SAD-CS-700 연계)  
+**의존관계:** SAD-DB-900 (DataPersistence), SAD-CS-700 (SecurityModule), SOUP(IMAPI2 또는 동급)  
+**관련 MR:** MR-072 (CD/DVD Burning — Tier 2, feel-DRCS 기본 기능, Xmaru V1 기본 기능)
+
+---
+
 ## 6. 인터페이스 정의 (Interface Definition — IEC 62304 §5.3.2)
 
 ### 6.1 모듈 간 내부 인터페이스 (Internal Module Interfaces)
@@ -731,6 +760,7 @@ graph LR
     CS <-->|"IF-CS-001<br/>Auth Check"| PM & WF & IP & DM & DC & SA
     UI <-->|"IF-UI-xxx<br/>Display/Control"| PM & WF & IP & DM & SA
     DC <-->|"IF-CS-003<br/>TLS Keys"| CS
+    classDef default fill:#444,stroke:#666,color:#fff
 ```
 
 ### 6.2 외부 인터페이스 정의 (External Interfaces)
@@ -1066,6 +1096,7 @@ flowchart TD
 
     SQLite -->|환자/검사 데이터| UI_DISP
     FS_LOG -->|감사 로그 조회| UI_DISP
+    classDef default fill:#444,stroke:#666,color:#fff
 ```
 
 ### 10.2 데이터베이스 스키마 주요 테이블

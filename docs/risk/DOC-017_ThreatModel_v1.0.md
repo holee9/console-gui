@@ -121,6 +121,7 @@ graph TB
     CON <-.->|VPN IPSec| VPN
     CON <-.->|HTTPS| UPD
     
+    classDef default fill:#444,stroke:#666,color:#fff
     style CON fill:#01696F,color:#fff
     style PACS fill:#20808D,color:#fff
     style RIS fill:#20808D,color:#fff
@@ -172,6 +173,7 @@ graph LR
     ADMIN[시스템 관리자] -->|설정 변경| RC
     RC -->|감사 로그| LOG[로그 저장소]
     
+    classDef default fill:#444,stroke:#666,color:#fff
     style RC fill:#01696F,color:#fff
 ```
 
@@ -203,6 +205,7 @@ graph TB
     P7 -->|감사 로그| DS_LOG[(Log DB)]
     P2 -->|환자 데이터| DS_DB[(Local DB)]
     
+    classDef default fill:#444,stroke:#666,color:#fff
     style P1 fill:#20808D,color:#fff
     style P3 fill:#A13544,color:#fff
     style P4 fill:#20808D,color:#fff
@@ -305,6 +308,7 @@ graph TD
     A3 --> D2[기본 계정 악용<br/>Default Credentials]
     A3 --> D3[인증서 조작<br/>Certificate Manipulation]
     
+    classDef default fill:#444,stroke:#666,color:#fff
     style ROOT fill:#A13544,color:#fff
     style B1 fill:#964219,color:#fff
     style D1 fill:#964219,color:#fff
@@ -329,6 +333,7 @@ graph TD
     A3 --> D1[SQLite DB 직접 수정<br/>프로토콜 테이블]
     A3 --> D2[백업 파일 변조<br/>복원 시 적용]
     
+    classDef default fill:#444,stroke:#666,color:#fff
     style ROOT2 fill:#A13544,color:#fff
     style B1 fill:#964219,color:#fff
     style C3 fill:#964219,color:#fff
@@ -353,6 +358,7 @@ graph TD
     A3 --> D2[메모리 누수 유발<br/>비정상 요청 반복]
     A3 --> D3[CPU 과부하<br/>복잡 쿼리 반복]
     
+    classDef default fill:#444,stroke:#666,color:#fff
     style ROOT3 fill:#A13544,color:#fff
     style C2 fill:#964219,color:#fff
     style D1 fill:#964219,color:#fff
@@ -392,6 +398,7 @@ pie title 완화 조치 유형 분포
     "입력 검증" : 5
     "모니터링/감사" : 4
     "무결성 검증" : 4
+    classDef default fill:#444,stroke:#666,color:#fff
 ```
 
 ---

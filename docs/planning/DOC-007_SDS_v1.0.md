@@ -102,6 +102,7 @@ flowchart LR
     SDS -->|구현 기준| CODE
     CODE -->|검증| UT
 
+    classDef default fill:#444,stroke:#666,color:#fff
     style SDS fill:#7d3c98,color:#fff
     style SAD fill:#1e8449,color:#fff
     style FRS fill:#1a5276,color:#fff
@@ -235,6 +236,7 @@ classDiagram
     PatientService --> EmergencyRegistrationService
     WorklistService --> WorklistItem
     PatientEntity --> StudyEntity
+    classDef default fill:#444,stroke:#666,color:#fff
 ```
 
 #### 3.1.2 주요 메서드 시그니처 (Key Method Signatures)
@@ -323,6 +325,7 @@ stateDiagram-v2
         UI 입력 잠금
         SWR-WF-019 적용
     end note
+    classDef default fill:#444,stroke:#666,color:#fff
 ```
 
 #### 3.1.5 에러 처리 상세 (Error Handling)
@@ -480,6 +483,7 @@ classDiagram
     AcquisitionController --> AcquisitionResult
     GeneratorService <|.. ShinvaGeneratorAdapter
     WorkflowStateManager --> ViewItem
+    classDef default fill:#444,stroke:#666,color:#fff
 ```
 
 #### 3.2.2 촬영 워크플로우 상태 머신 상세 (Acquisition Workflow State Machine)
@@ -530,6 +534,7 @@ stateDiagram-v2
         ④ 환자 컨텍스트 존재
         SWR-WF-023
     end note
+    classDef default fill:#444,stroke:#666,color:#fff
 ```
 
 #### 3.2.3 이벤트 처리 상세 (Event Handling)
@@ -641,6 +646,7 @@ classDiagram
     ImageProcessingPipeline --> DicomImageBuilder
     ImageProcessingPipeline --> ProcessingParams
     ImageProcessingPipeline --> ProcessedImage
+    classDef default fill:#444,stroke:#666,color:#fff
 ```
 
 #### 3.3.2 영상 처리 파이프라인 시퀀스 (Image Processing Pipeline Sequence)
@@ -788,6 +794,7 @@ classDiagram
     DrlComparer --> DrlEntry
     DrlComparer --> DrlComparisonResult
     RdsrBuilder --> DoseRecord
+    classDef default fill:#444,stroke:#666,color:#fff
 ```
 
 #### 3.4.2 DAP 계산 로직 시퀀스 (DAP Calculation Sequence)
@@ -938,6 +945,7 @@ classDiagram
     DicomCommunicationService --> DicomConfig
     StorageScuService --> DicomSendResult
     DicomConfig --> RemoteNode
+    classDef default fill:#444,stroke:#666,color:#fff
 ```
 
 #### 3.5.2 DICOM SOP Class 구현 목록 (SOP Class Implementation List)
@@ -1100,6 +1108,7 @@ classDiagram
     RbacService --> UserRole
     RbacService --> Permission
     CalibrationService --> CalibrationResult
+    classDef default fill:#444,stroke:#666,color:#fff
 ```
 
 #### 3.6.2 RBAC 권한 매트릭스 (RBAC Permission Matrix)
@@ -1248,6 +1257,7 @@ classDiagram
     SecurityService --> IntegrityChecker
     SessionManager --> SessionInfo
     AuditService --> AuditEntry
+    classDef default fill:#444,stroke:#666,color:#fff
 ```
 
 #### 3.7.2 인증 흐름 시퀀스 (Authentication Flow Sequence)
@@ -1416,6 +1426,7 @@ classDiagram
     MainViewModel --> StatusBarViewModel
     ImageDisplayViewModel --> TouchInputHandler
     PageBase --> MainViewModel
+    classDef default fill:#444,stroke:#666,color:#fff
 ```
 
 #### 3.8.2 주요 화면 레이아웃 설명 (Screen Layout Descriptions)
@@ -1513,6 +1524,7 @@ classDiagram
     TransactionManager --> DbContext
     MigrationService --> DbContext
     DbConnectionFactory --> DbContext
+    classDef default fill:#444,stroke:#666,color:#fff
 ```
 
 #### 3.9.2 트랜잭션 관리 패턴 (Transaction Management Pattern)
@@ -1625,6 +1637,7 @@ classDiagram
     DicomStudy "1" --> "1..*" DicomSeries
     DicomSeries "1" --> "1..*" DicomImage
     DicomStudy "1" --> "0..1" DicomRdsr
+    classDef default fill:#444,stroke:#666,color:#fff
 ```
 
 ### 4.2 환자/검사/영상 데이터 구조 (Patient/Study/Image Data Structures)
@@ -1721,6 +1734,7 @@ erDiagram
     SERIES ||--o{ IMAGES : "includes"
     STUDIES ||--o{ DOSE_RECORDS : "accumulates"
     IMAGES ||--o| DOSE_RECORDS : "associated"
+    classDef default fill:#444,stroke:#666,color:#fff
 ```
 
 ### 4.3 설정 데이터 구조 (Configuration Data Structure)
@@ -1902,6 +1916,7 @@ flowchart TD
     G --> H["블렌딩 (Feather Blending)\n겹침 영역 가중 평균"]
     H --> I["출력: StitchedImage\n(단일 보정 영상)"]
     I --> J["DICOM 파일 생성\n(픽셀 간격 재계산)"]
+    classDef default fill:#444,stroke:#666,color:#fff
 ```
 
 #### 5.3.2 상세 절차
@@ -2042,6 +2057,7 @@ flowchart TD
 
     MAIN -->|"세션 타임아웃\n(15분)"| LOGIN
 
+    classDef default fill:#444,stroke:#666,color:#fff
     style EMRG fill:#cc0000,color:#fff
     style LOGIN fill:#1a5276,color:#fff
     style ACQ fill:#1e8449,color:#fff
@@ -2198,6 +2214,7 @@ flowchart LR
     CODE --> UT
     CODE --> IT
 
+    classDef default fill:#444,stroke:#666,color:#fff
     style SDS fill:#7d3c98,color:#fff
     style MR fill:#1a5276,color:#fff
     style SWR fill:#1e8449,color:#fff

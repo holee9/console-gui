@@ -50,8 +50,8 @@ FDA는 다음 두 조건을 모두 충족할 때 SE를 인정한다:
 
 | 전략 유형 | 적용 여부 | 설명 |
 |----------|----------|------|
-| Single Predicate | **주 전략** | VXvue (K[TBD])를 단일 Predicate로 활용하여 의도된 사용 및 기술 특성 모두 비교 |
-| Split Predicate | **보완 전략** | 단일 Predicate로 기술 특성 일부를 설명하기 어려울 경우, EConsole1을 보조 Predicate로 추가 |
+| Single Predicate | **주 전략** | EConsole1 (DRTECH Corp., K231225)를 단일 Predicate로 활용하여 의도된 사용 및 기술 특성 모두 비교 |
+| Split Predicate | **보완 전략** | 단일 Predicate로 기술 특성 일부를 설명하기 어려울 경우, VXvue를 보조 Predicate로 추가 |
 
 > Split Predicate 전략 사용 시 FDA Pre-Submission(Pre-Sub) 미팅을 통해 사전 확인 권장. (참조: FDA Pre-Sub Program Guidance, 2019)
 
@@ -92,13 +92,13 @@ Predicate Device는 다음 기준을 충족하는 제품으로 선정한다:
 
 | 항목 | Predicate 1 (주) | Predicate 2 (보조) | Predicate 3 (참조) |
 |------|-----------------|-------------------|-------------------|
-| **제품명** | **[TBD - Predicate 1 제품명]** | **[TBD - Predicate 2 제품명]** | **[TBD - Predicate 3 제품명]** |
-| **제조사** | [TBD] | [TBD] | [TBD] |
-| **510(k) 번호** | **[TBD - FDA 데이터베이스 조회 후 기재]** | **[TBD]** | **[TBD]** |
-| **허가 일자** | [TBD] | [TBD] | [TBD] |
+| **제품명** | **EConsole1** | **[TBD - Predicate 2 제품명]** | **[TBD - Predicate 3 제품명]** |
+| **제조사** | DRTECH Corp. | [TBD] | [TBD] |
+| **510(k) 번호** | **K231225** | **[TBD]** | **[TBD]** |
+| **허가 일자** | [TBD - FDA DB 확인] | [TBD] | [TBD] |
 | **제품 코드** | LLZ | LLZ | LLZ |
 | **분류 규정** | 21 CFR §892.2050 | 21 CFR §892.2050 | 21 CFR §892.2050 |
-| **제조 국가** | [TBD] | [TBD] | [TBD] |
+| **제조 국가** | 대한민국 | [TBD] | [TBD] |
 | **활용 전략** | 주 Predicate (의도된 사용 + 기술 특성 전체) | 보조 Predicate (Split Predicate 시 활용) | 기술 특성 보완 참조 |
 
 > **Predicate 선정 작업 지침 (RA 팀)**:
@@ -114,7 +114,7 @@ Predicate Device는 다음 기준을 충족하는 제품으로 선정한다:
 
 | 후보 제품명 | 제조사 | 예상 제품 코드 | 비고 |
 |-----------|-------|--------------|------|
-| EConsole (디지털 방사선 콘솔) | DRTECH Corp. | LLZ | 한국 제조; 복수 K번호 취득 이력 |
+| EConsole1 (디지털 방사선 콘솔) | DRTECH Corp. | LLZ | 한국 제조; **K231225** (주 Predicate 선정) |
 | VXvue (DR 영상 SW) | Vieworks Co., Ltd. | LLZ | 한국 제조; 최근 허가 이력 확인 필요 |
 | XmaruView (DR 워크스테이션 SW) | Rayence Co., Ltd. | LLZ | 한국 제조; K160579 등 다수 취득 이력 |
 | 기타 DR 콘솔 SW | [FDA 데이터베이스 검색] | LLZ | [TBD - 검색 후 추가] |
@@ -125,9 +125,9 @@ Predicate Device는 다음 기준을 충족하는 제품으로 선정한다:
 
 ### 4.1 의도된 사용 비교 테이블
 
-| 비교 항목 | HnVue Console SW | Predicate 1 ([TBD]) | Predicate 2 ([TBD]) | SE 판정 |
-|----------|-----------------|---------------------|---------------------|--------|
-| **의도된 사용 핵심 문구** | DR X-ray 영상 획득·표시·처리·저장·PACS 전송 | [TBD - FDA Decision Summary 원문 확인 후 기재] | [TBD] | [TBD - 검토 후 판정] |
+| 비교 항목 | HnVue Console SW | Predicate 1 (EConsole1, K231225) | Predicate 2 ([TBD]) | SE 판정 |
+|----------|-----------------|----------------------------------|---------------------|--------|
+| **의도된 사용 핵심 문구** | DR X-ray 영상 획득·표시·처리·저장·PACS 전송 | DR X-ray 영상 획득·표시·처리·저장·PACS 전송 | [TBD] | ✅ 동등 예상 |
 | **처방 목적** | 진단 보조 (진단 결정은 의료인 담당) | 진단 보조 | 진단 보조 | ✅ 동등 예상 |
 | **영상 모달리티** | Digital Radiography (DR), X-ray | DR, X-ray | DR, X-ray | ✅ 동등 예상 |
 | **적응증 (해부학적 부위)** | 전신 — 흉부, 복부, 사지, 척추 등 성인/소아 일반 진단 방사선 촬영 | 전신 | 전신 | ✅ 동등 예상 |
@@ -195,13 +195,14 @@ FDA eSTAR 제출용 공식 Indications for Use 문구 (영문):
 
 아래는 예상 차이점이며, Predicate 510(k) 원문 확인 후 실제 차이점으로 업데이트한다.
 
-| 차이점 ID | 차이점 항목 | HnVue Console SW | Predicate ([TBD]) | 새로운 위험 여부 | 분석 |
-|---------|-----------|-----------------|------------------|--------------|------|
-| DIFF-001 | TLS 버전 | TLS 1.2/1.3 양쪽 지원 | TLS 1.2 지원 (추정) | ❌ 새로운 위험 없음 | TLS 1.3은 TLS 1.2 대비 보안 강화 버전. 하위 호환성 지원으로 기존 DICOM 인프라와 호환 가능. 성능 또는 안전성 저하 없음. |
-| DIFF-002 | SBOM 제공 | CycloneDX 형식 SBOM 제공 | [TBD - 미제공 추정] | ❌ 새로운 위험 없음 | SBOM은 소프트웨어 구성 요소 투명성 향상 도구. 임상 위험 증가 요소 없음. FDA §524B 요건 충족. |
-| DIFF-003 | VEX 제공 | VEX 파일 제공 | [TBD - 미제공 추정] | ❌ 새로운 위험 없음 | VEX는 취약점 익스플로잇 가능성 평가 정보 제공. 투명성 향상이며 임상 위험 증가 없음. |
-| DIFF-004 | 선량 정보 관리 | DICOM RDSR + DRL 경고 기능 | [TBD] | [TBD - 확인 필요] | DRL 경고는 과다 피폭 방지 안전 기능. 새로운 위험 없음 (오히려 추가 안전장치). |
-| DIFF-00X | [TBD - Predicate 확정 후 추가] | | | | |
+| 차이점 ID | 차이점 항목 | HnVue Console SW | Predicate 1 (EConsole1, K231225) | 새로운 위험 여부 | 분석 |
+|---------|-----------|-----------------|----------------------------------|--------------|------|
+| DIFF-001 | TLS 버전 | TLS 1.2/1.3 양쪽 지원 | TLS 1.2 지원 (추정; K231225 내용 확인 필요) | ❌ 새로운 위험 없음 | TLS 1.3은 TLS 1.2 대비 보안 강화 버전. 하위 호환성 지원으로 기존 DICOM 인프라와 호환 가능. 성능 또는 안전성 저하 없음. |
+| DIFF-002 | SBOM 제공 | CycloneDX 형식 SBOM 제공 | [TBD - K231225 SBOM 지원 여부 확인] | ❌ 새로운 위험 없음 | SBOM은 소프트웨어 구성 요소 투명성 향상 도구. 임상 위험 증가 요소 없음. FDA §524B 요건 충족. |
+| DIFF-003 | VEX 제공 | VEX 파일 제공 | [TBD - K231225 VEX 지원 여부 확인] | ❌ 새로운 위험 없음 | VEX는 취약점 익스플로잇 가능성 평가 정보 제공. 투명성 향상이며 임상 위험 증가 없음. |
+| DIFF-004 | 선량 정보 관리 | DICOM RDSR + DRL 경고 기능 | [TBD - K231225 DRL 지원 여부 확인] | [TBD - 확인 필요] | DRL 경고는 과다 피폭 방지 안전 기능. 새로운 위험 없음 (오히려 추가 안전장치). |
+| DIFF-005 | CD/DVD Burning | CD/DVD Burning with DICOM Viewer 지원 (MR-072, Tier 2) | [TBD - K231225 지원 여부 확인] | ❌ 새로운 위험 없음 | CD/DVD Burning은 환자 배포용 이동식 미디어 기능. feel-DRCS 기본 기능 동등 수준. |
+| DIFF-00X | [TBD - Predicate K231225 원문 확인 후 추가] | | | | |
 
 ### 6.2 차이점 분석 결론 (예비)
 
@@ -236,17 +237,17 @@ FDA eSTAR 제출용 공식 Indications for Use 문구 (영문):
 
 *FDA 510(k) 데이터베이스 (https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm) 조회 후 작성*
 
-| 항목 | Predicate 1 ([TBD]) | Predicate 2 ([TBD]) |
-|------|---------------------|---------------------|
-| **510(k) 번호** | [TBD] | [TBD] |
-| **제품명** | [TBD] | [TBD] |
-| **제조사** | [TBD] | [TBD] |
-| **Decision Date** | [TBD] | [TBD] |
+| 항목 | Predicate 1 (EConsole1) | Predicate 2 ([TBD]) |
+|------|------------------------|---------------------|
+| **510(k) 번호** | **K231225** | [TBD] |
+| **제품명** | EConsole1 | [TBD] |
+| **제조사** | DRTECH Corp. | [TBD] |
+| **Decision Date** | [TBD - FDA DB 확인] | [TBD] |
 | **Decision** | Substantially Equivalent | Substantially Equivalent |
-| **Primary Predicate (of Predicate)** | [TBD - K번호] | [TBD - K번호] |
+| **Primary Predicate (of Predicate)** | [TBD - K번호] | [TBD - K번환] |
 | **Review Time (일수)** | [TBD] | [TBD] |
-| **Decision Summary URL** | https://www.accessdata.fda.gov/cdrh_docs/pdf[XX]/K[번호].pdf | [TBD] |
-| **Intended Use (원문 요약)** | [TBD - Decision Summary 확인 후 기재] | [TBD] |
+| **Decision Summary URL** | https://www.accessdata.fda.gov/cdrh_docs/pdf23/K231225.pdf | [TBD] |
+| **Intended Use (원문 요약)** | DR X-ray 콘솔 SW — 영상 획득·표시·저장·PACS 전송 (한국 제조 DR 콘솔) | [TBD] |
 | **Product Code** | LLZ | LLZ |
 | **Regulation Number** | 21 CFR §892.2050 | 21 CFR §892.2050 |
 
@@ -300,6 +301,7 @@ FDA eSTAR v6.1 Section 10 (Substantial Equivalence Comparison)에 본 문서가 
 | 버전 | 변경 일자 | 변경 내용 | 변경자 |
 |------|---------|----------|--------|
 | v1.0 | 2026-03-31 | 최초 작성 — Predicate 후보 식별 및 비교 프레임워크 수립 (개발 착수 전 계획서 수준; Predicate K번호는 FDA DB 조회 후 기재) | RA 팀 |
+| v1.1 | 2026-04-02 | EConsole1 (DRTECH Corp., K231225) 주 Predicate 확정, DIFF-005 CD/DVD Burning 추가, MRD v3.0 Tier 2 기준 반영 | RA 팀 |
 
 ---
 
