@@ -483,7 +483,7 @@ style M fill:#444,stroke:#666,color:#fff
 
 ```mermaid
 flowchart TD
-    A[외부 연구자\n취약점 발견] --> B[security@도메인\n취약점 신고]
+    A[외부 연구자\n취약점 발견] --> B[보안 전용 메일\n취약점 신고]
     B --> C[수신 확인 발송\n추적 번호 부여\n3영업일 이내]
     C --> D[취약점 검증\nCVSS 심각도 평가\n14일 이내]
     D --> E{심각도 판정}
