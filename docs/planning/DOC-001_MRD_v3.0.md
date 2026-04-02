@@ -595,9 +595,25 @@ flowchart TD
     MR -.->|Validation| VT
     HAZ -.->|Risk Verify| ST
 
-    style DI fill:#707070,stroke:#111111,color:#FFFFFF
-    style VV fill:#707070,stroke:#111111,color:#FFFFFF
-    style RM fill:#707070,stroke:#111111,color:#FFFFFF
+    style UN fill:#444,stroke:#666,color:#fff
+    style DI fill:#444,stroke:#666,color:#fff
+    style VV fill:#444,stroke:#666,color:#fff
+    style RM fill:#444,stroke:#666,color:#fff
+    style VoC fill:#444,stroke:#666,color:#fff
+    style Reg fill:#444,stroke:#666,color:#fff
+    style Risk0 fill:#444,stroke:#666,color:#fff
+    style MR fill:#444,stroke:#666,color:#fff
+    style FR fill:#444,stroke:#666,color:#fff
+    style NFR fill:#444,stroke:#666,color:#fff
+    style SAD fill:#444,stroke:#666,color:#fff
+    style SDS fill:#444,stroke:#666,color:#fff
+    style Code fill:#444,stroke:#666,color:#fff
+    style UT fill:#444,stroke:#666,color:#fff
+    style IT fill:#444,stroke:#666,color:#fff
+    style ST fill:#444,stroke:#666,color:#fff
+    style VT fill:#444,stroke:#666,color:#fff
+    style HAZ fill:#444,stroke:#666,color:#fff
+    style RC fill:#444,stroke:#666,color:#fff
 ```
 
 ### 4a.3 V-Model에서 MRD의 위치
@@ -639,8 +655,19 @@ flowchart LR
     SRS_box -.->|"SW\nVerification"| IntT_box
     SDS_box -.->|"Unit\nVerification"| UnitT_box
 
-    style MRD_box fill:#707070,stroke:#111111,color:#FFFFFF
-    style VT_box fill:#707070,stroke:#111111,color:#FFFFFF
+    style Left fill:#444,stroke:#666,color:#fff
+    style Right fill:#444,stroke:#666,color:#fff
+    style MRD_box fill:#444,stroke:#666,color:#fff
+    style SyRS_box fill:#444,stroke:#666,color:#fff
+    style SRS_box fill:#444,stroke:#666,color:#fff
+    style SAD_box fill:#444,stroke:#666,color:#fff
+    style SDS_box fill:#444,stroke:#666,color:#fff
+    style Code_box fill:#444,stroke:#666,color:#fff
+    style VT_box fill:#444,stroke:#666,color:#fff
+    style SysT_box fill:#444,stroke:#666,color:#fff
+    style IntT_box fill:#444,stroke:#666,color:#fff
+    style UnitT_box fill:#444,stroke:#666,color:#fff
+    style Code_box2 fill:#444,stroke:#666,color:#fff
 ```
 
 ### 4a.4 Design Input 분류 정의
@@ -941,9 +968,21 @@ flowchart TD
     N --> O[Change Control]
     O --> G
 
-    style A fill:#707070,stroke:#111111,color:#FFFFFF
-    style M fill:#707070,stroke:#111111,color:#FFFFFF
-    style N fill:#707070,stroke:#111111,color:#FFFFFF
+    style A fill:#444,stroke:#666,color:#fff
+    style B fill:#444,stroke:#666,color:#fff
+    style C fill:#444,stroke:#666,color:#fff
+    style D fill:#444,stroke:#666,color:#fff
+    style E fill:#444,stroke:#666,color:#fff
+    style F fill:#444,stroke:#666,color:#fff
+    style G fill:#444,stroke:#666,color:#fff
+    style H fill:#444,stroke:#666,color:#fff
+    style I fill:#444,stroke:#666,color:#fff
+    style J fill:#444,stroke:#666,color:#fff
+    style K fill:#444,stroke:#666,color:#fff
+    style L fill:#444,stroke:#666,color:#fff
+    style M fill:#444,stroke:#666,color:#fff
+    style N fill:#444,stroke:#666,color:#fff
+    style O fill:#444,stroke:#666,color:#fff
 ```
 
 ### 7.3 지역별 규제 요약
