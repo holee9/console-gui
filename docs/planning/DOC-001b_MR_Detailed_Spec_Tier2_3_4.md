@@ -48,19 +48,19 @@
 - **고객 기대**: 병원 방사선과는 매일 수십~수백 건의 검사를 처리하며, 환자 정보를 수동 입력하면 오타·오입력으로 인한 검사 오류(Wrong Patient)가 발생한다. MWL 자동 조회는 환자 안전 및 운영 효율성의 기본 전제.
 
 #### 무엇인가 (What)
-- **기능 정의**: 콘솔 소프트웨어가 DICOM MWL SCU(Modality Worklist Service Class User) 역할을 수행하여 병원 HIS/RIS의 MWL SCP에서 당일 촬영 예약 목록을 자동으로 가져와 UI에 표시한다. 방사선사는 목록에서 환자를 선택하는 것만으로 검사를 시작할 수 있다.
+- **기능 정의**: HnVue가 DICOM MWL SCU(Modality Worklist Service Class User) 역할을 수행하여 병원 HIS/RIS의 MWL SCP에서 당일 촬영 예약 목록을 자동으로 가져와 UI에 표시한다. 방사선사는 목록에서 환자를 선택하는 것만으로 검사를 시작할 수 있다.
 - **구현 범위 (Phase 1 최소)**: MWL SCU C-FIND 요청/응답, 조회 결과 리스트 표시, 환자 선택 후 검사 세션 초기화, 10초 주기 자동 폴링, 수동 새로고침 버튼.
 - **제외 범위**: 고급 필터(날짜 범위 검색, 검사 코드 필터), 예약 취소/변경 반영 알림, 복수 MWL 서버 동시 연결은 Phase 2+로 이관.
 
 #### 어떻게 동작하는가 (How)
-- **사용 시나리오**: 방사선사가 콘솔을 시작하면 MWL 서버에 자동 연결되며, 당일 촬영 예약 환자 목록이 화면 좌측 패널에 표시된다. 방사선사는 해당 환자 행을 클릭하여 선택하면 환자 정보(이름, ID, 생년월일, 검사 부위 등)가 자동으로 검사 세션에 로딩된다.
+- **사용 시나리오**: 방사선사가 HnVue를 시작하면 MWL 서버에 자동 연결되며, 당일 촬영 예약 환자 목록이 화면 좌측 패널에 표시된다. 방사선사는 해당 환자 행을 클릭하여 선택하면 환자 정보(이름, ID, 생년월일, 검사 부위 등)가 자동으로 검사 세션에 로딩된다.
 - **기술 동작**: fo-dicom의 `DicomClient`를 활용하여 C-FIND-RQ를 10초 주기로 전송. 응답 데이터셋에서 PatientName(0010,0010), PatientID(0010,0020), StudyInstanceUID(0020,000D), ScheduledProcedureStepDescription(0040,0007) 등 핵심 태그를 파싱하여 `WorklistItem` 뷰모델 컬렉션에 바인딩. 네트워크 오류 시 Serilog로 로그 기록 후 재연결 타이머 동작.
 
 #### 워크플로우
 
 ```mermaid
 flowchart TD
-    A([콘솔 시작]) --> B[MWL 서버 자동 연결]
+    A([HnVue 시작]) --> B[MWL 서버 자동 연결]
     B --> C{연결 성공?}
     C -- 아니오 --> D[오류 표시 + 재연결 대기]
     D --> B
@@ -197,7 +197,7 @@ flowchart LR
 
 #### 어떻게 동작하는가 (How)
 - **사용 시나리오**: 방사선사가 촬영 화면에서 신체 부위 그룹(흉부, 상지, 하지, 척추, 복부 등)을 선택하면 해당 그룹의 Projection 버튼 목록이 표시된다. "흉부 PA" 버튼을 클릭하면 해당 프로토콜의 kVp, mAs, 영상처리 파라미터가 자동으로 로딩된다.
-- **기술 동작**: 앱 시작 시 SQLite `protocols` 테이블 전체를 메모리로 로딩하여 `ObservableCollection<Protocol>` 구성. 프로토콜 선택 시 해당 레코드의 파라미터를 Generator 통신 모듈 및 영상처리 SDK에 전달. 프로토콜 데이터는 앱 배포 시 migrations로 초기 데이터 시딩.
+- **기술 동작**: HnVue 시작 시 SQLite `protocols` 테이블 전체를 메모리로 로딩하여 `ObservableCollection<Protocol>` 구성. 프로토콜 선택 시 해당 레코드의 파라미터를 Generator 통신 모듈 및 영상처리 SDK에 전달. 프로토콜 데이터는 앱 배포 시 migrations로 초기 데이터 시딩.
 
 #### PRD 연결 포인트
 - PRD에 기본 탑재 프로토콜 목록(Body Part × Projection 매트릭스) 부록으로 첨부.
@@ -228,7 +228,7 @@ flowchart LR
 
 ```mermaid
 flowchart TD
-    A([콘솔 시작]) --> B[디텍터 SDK 초기화]
+    A([HnVue 시작]) --> B[디텍터 SDK 초기화]
     B --> C[디텍터 자동 검색\n상태 폴링 시작]
     C --> D{디텍터 상태}
     D -- 준비됨 --> E[초록 아이콘 표시]
@@ -385,19 +385,19 @@ flowchart LR
 - **고객 기대**: FPD + 콘솔 패키지로 구매하는 병원은 "한 벤더에서 하드웨어와 소프트웨어를 모두 지원받는다"는 편의성을 기대. 연동 문제는 AS 비용 증가로 직결.
 
 #### 무엇인가 (What)
-- **기능 정의**: 자사 FPD 디텍터와 전용 SDK를 통해 직접 통신하여 Calibration(Offset/Gain/Defect), Exposure 트리거, Raw 이미지 수신의 전체 이미지 획득 사이클을 구현한다. 자사 FPD의 전체 기능(배터리 상태, 무선 품질 등)을 콘솔에서 제어·모니터링한다.
+- **기능 정의**: 자사 FPD 디텍터와 전용 SDK를 통해 직접 통신하여 Calibration(Offset/Gain/Defect), Exposure 트리거, Raw 이미지 수신의 전체 이미지 획득 사이클을 구현한다. 자사 FPD의 전체 기능(배터리 상태, 무선 품질 등)을 HnVue에서 제어·모니터링한다.
 - **구현 범위 (Phase 1 최소)**: 자사 FPD SDK 연동, Offset/Gain/Defect Calibration 실행 기능, Exposure 준비 신호 수신 및 트리거, Raw 이미지 수신 및 버퍼링, 연결 상태 모니터링.
 - **제외 범위**: 타사 FPD 드라이버 지원(MR-022, Tier 4), 무선 FPD 전용 고급 기능(Phase 2+).
 
 #### 어떻게 동작하는가 (How)
-- **사용 시나리오**: 콘솔 시작 시 자사 FPD와 자동 연결. 방사선사가 촬영 준비 시 FPD 상태가 "Ready" 로 표시되며, X선 발생 후 FPD가 자동으로 이미지를 획득하여 콘솔로 전송. 콘솔은 이를 수신하여 영상처리 파이프라인에 전달.
+- **사용 시나리오**: HnVue 시작 시 자사 FPD와 자동 연결. 방사선사가 촬영 준비 시 FPD 상태가 "Ready" 로 표시되며, X선 발생 후 FPD가 자동으로 이미지를 획득하여 HnVue로 전송. HnVue는 이를 수신하여 영상처리 파이프라인에 전달.
 - **기술 동작**: 자사 FPD SDK DLL 참조, SDK 이벤트 콜백(OnConnected, OnExposureDetected, OnImageReady)을 구독. Raw 이미지 데이터(16-bit 배열)를 수신하여 영상처리 모듈로 전달. Calibration은 Offset Frame(차단 촬영), Gain Frame(평판 촬영), Defect Map 적용 순으로 수행.
 
 #### 워크플로우
 
 ```mermaid
 flowchart TD
-    A([콘솔 시작]) --> B[FPD SDK 초기화\n자동 연결]
+    A([HnVue 시작]) --> B[FPD SDK 초기화\n자동 연결]
     B --> C{Calibration\n필요?}
     C -- 예 --> D[Offset / Gain /\nDefect Calibration]
     D --> E[Calibration 완료]
@@ -405,7 +405,7 @@ flowchart TD
     E --> F[FPD Ready 상태]
     F --> G[방사선사 Exposure]
     G --> H[FPD Exposure 감지\n이미지 획득]
-    H --> I[Raw 이미지\n콘솔 수신]
+    H --> I[Raw 이미지\nHnVue 수신]
     I --> J[영상처리 파이프라인\nMR-011/013]
     J --> K([영상 화면 표시])
 
@@ -425,7 +425,7 @@ flowchart TD
 #### PRD 연결 포인트
 - PRD에서 지원 자사 FPD 모델 목록(모델명, 해상도, 인터페이스 방식) 명기.
 - Calibration 주기 및 트리거 조건(시작 시 자동, 수동 실행, 주기적 자동)을 사용자 설정으로 제공할지 여부 결정.
-- FPD SDK 버전 의존성 관리 정책(SDK 업데이트 시 콘솔 재검증 프로세스) 명기.
+- FPD SDK 버전 의존성 관리 정책(SDK 업데이트 시 HnVue 재검증 프로세스) 명기.
 - FPD 연결 실패 시 오프라인 모드(수동 입력) 지원 여부 결정.
 
 ---
@@ -460,7 +460,7 @@ flowchart TD
 
 #### 왜 필요한가 (Why)
 - **시장 근거**: feel-DRCS의 기본 기능으로, RIS와의 연동은 방사선 정보 시스템을 보유한 중소 이상 병원의 기본 요구사항. MWL SCU 구현(MR-001)의 연장선이지만 RIS 특화 워크플로우(검사 일정 자동 수신, 검사 완료 상태 피드백)를 별도로 정의.
-- **고객 기대**: RIS를 보유한 병원에서는 검사실 배정, 우선순위 변경 등을 RIS에서 관리하며, 콘솔이 이를 실시간으로 반영하기를 기대.
+- **고객 기대**: RIS를 보유한 병원에서는 검사실 배정, 우선순위 변경 등을 RIS에서 관리하며, HnVue가 이를 실시간으로 반영하기를 기대.
 
 #### 무엇인가 (What)
 - **기능 정의**: MR-001(MWL 자동 조회)과 동일한 DICOM MWL SCU 기술을 기반으로, RIS 특화 워크플로우인 "검사 일정 자동 수신 + 검사 완료 상태 업데이트(MPPS 연계)" 를 지원한다. Phase 1에서는 MWL SCU 기반 조회만 구현하며 MPPS(MR-009)는 Phase 2+.
@@ -468,7 +468,7 @@ flowchart TD
 - **제외 범위**: MPPS(MR-009, Phase 2+), RIS에 검사 결과 자동 통보.
 
 #### 어떻게 동작하는가 (How)
-- **사용 시나리오**: RIS에서 검사가 예약되면 콘솔 워크리스트에 자동으로 표시. 방사선사가 해당 검사를 선택하여 촬영. RIS의 검사 상태는 MPPS가 구현되기 전까지 수동으로 업데이트.
+- **사용 시나리오**: RIS에서 검사가 예약되면 HnVue 워크리스트에 자동으로 표시. 방사선사가 해당 검사를 선택하여 촬영. RIS의 검사 상태는 MPPS가 구현되기 전까지 수동으로 업데이트.
 - **기술 동작**: MR-001 MWL SCU 모듈을 공유하되, 설정 파일에서 HIS AE Title과 RIS AE Title을 구분하여 연결 대상 선택 가능하도록 구성. `appsettings.json`에 `WorklistSource: "HIS" | "RIS" | "BOTH"` 설정 추가.
 
 #### PRD 연결 포인트
@@ -483,16 +483,16 @@ flowchart TD
 **카테고리**: Generator 통합 / 촬영 파라미터
 
 #### 왜 필요한가 (Why)
-- **시장 근거**: feel-DRCS는 Generator와 연동하여 kVp, mAs, mA, Time 파라미터를 콘솔에서 표시·설정하는 기능을 기본 제공. Generator 연동 없이는 "콘솔에서 촬영 파라미터를 확인도 못 한다"는 비교 열위 발생.
-- **고객 기대**: 방사선사가 프로토콜을 선택하면 권장 kVp/mAs가 Generator에 자동으로 설정되고, 실제 사용된 Exposure 파라미터가 콘솔에 표시되어야 함. 이는 선량 관리 및 품질보증(QA)의 기본 데이터.
+- **시장 근거**: feel-DRCS는 Generator와 연동하여 kVp, mAs, mA, Time 파라미터를 HnVue에서 표시·설정하는 기능을 기본 제공. Generator 연동 없이는 "HnVue에서 촬영 파라미터를 확인도 못 한다"는 비교 열위 발생.
+- **고객 기대**: 방사선사가 프로토콜을 선택하면 권장 kVp/mAs가 Generator에 자동으로 설정되고, 실제 사용된 Exposure 파라미터가 HnVue에 표시되어야 함. 이는 선량 관리 및 품질보증(QA)의 기본 데이터.
 
 #### 무엇인가 (What)
-- **기능 정의**: Generator와 시리얼(RS-232/RS-485) 또는 이더넷 통신으로 연결하여 AEC(Automatic Exposure Control) 파라미터(kVp, mAs, mA, Exposure Time)를 콘솔에서 모니터링하고, 프로토콜에 사전 정의된 APR(Anatomical Programmed Radiography) 값을 Generator에 전송한다.
+- **기능 정의**: Generator와 시리얼(RS-232/RS-485) 또는 이더넷 통신으로 연결하여 AEC(Automatic Exposure Control) 파라미터(kVp, mAs, mA, Exposure Time)를 HnVue에서 모니터링하고, 프로토콜에 사전 정의된 APR(Anatomical Programmed Radiography) 값을 Generator에 전송한다.
 - **구현 범위 (Phase 1 최소)**: Generator 통신 드라이버(자사 Generator 또는 표준 인터페이스), 실제 Exposure 파라미터 수신 및 화면 표시, APR 값 Generator 전송, Exposure 완료 신호 수신.
 - **제외 범위**: 타사 Generator 프로토콜 지원(Phase 2+), AEC 자동 최적화 알고리즘(Phase 2+).
 
 #### 어떻게 동작하는가 (How)
-- **사용 시나리오**: 방사선사가 "흉부 PA" 프로토콜을 선택하면 콘솔이 Generator에 80kVp/12mAs APR 값을 자동 전송. Generator 패널에 해당 값이 설정됨. 촬영 후 실제 사용된 파라미터(예: 78kVp/11.2mAs)가 콘솔에 표시되어 영상과 함께 기록됨.
+- **사용 시나리오**: 방사선사가 "흉부 PA" 프로토콜을 선택하면 HnVue가 Generator에 80kVp/12mAs APR 값을 자동 전송. Generator 패널에 해당 값이 설정됨. 촬영 후 실제 사용된 파라미터(예: 78kVp/11.2mAs)가 HnVue에 표시되어 영상과 함께 기록됨.
 - **기술 동작**: SerialPort 또는 TcpClient를 통해 Generator와 연결. Generator 벤더별 프로토콜(ASCII 커맨드 또는 바이너리 프레임)로 APR 전송 및 Exposure 완료 이벤트 수신. 수신된 파라미터는 DICOM 태그(0018,0060 kVp, 0018,1152 Exposure 등)에 기록하여 PACS 전송 시 포함.
 
 #### 워크플로우
@@ -504,7 +504,7 @@ flowchart TD
     C --> D[방사선사 Exposure\nReady 확인]
     D --> E[X선 발생\nExposure]
     E --> F[실제 파라미터 수신\n실측 kVp / mAs / Time]
-    F --> G[콘솔 화면 표시]
+    F --> G[HnVue 화면 표시]
     G --> H[DICOM 태그 기록\nPACS 전송 포함]
     H --> I([촬영 완료])
 
@@ -523,7 +523,7 @@ flowchart TD
 - PRD에서 Phase 1 지원 Generator 모델 목록(자사 Generator 우선) 명기.
 - Generator 통신 인터페이스(시리얼 vs 이더넷) 및 프로토콜 규격을 아키텍처 문서에 기술.
 - Exposure 파라미터가 기록되는 DICOM 태그 목록(0018,0060 kVp 등) 명기(IEC 62304 추적성).
-- Generator 연결 실패 시 콘솔 동작 정의(수동 파라미터 입력 폴백 또는 촬영 차단).
+- Generator 연결 실패 시 HnVue 동작 정의(수동 파라미터 입력 폴백 또는 촬영 차단).
 
 ---
 
@@ -561,12 +561,12 @@ flowchart TD
 - **고객 기대**: 국내 납품 시 전체 UI 한국어 표시 필수. 수출·FDA 제출 시 영어 전환 가능해야 함. 외국인 방사선사가 있는 병원(국제 병원, 외국인 환자 비중 높은 병원)에서 영어 지원 요구.
 
 #### 무엇인가 (What)
-- **기능 정의**: 설정 화면에서 언어를 한국어/영어로 전환하면 전체 UI(메뉴, 버튼, 레이블, 상태 메시지, 오류 메시지)가 해당 언어로 즉시 전환된다. 콘솔 재시작 없이 런타임 전환 가능하거나 재시작으로 적용.
+- **기능 정의**: 설정 화면에서 언어를 한국어/영어로 전환하면 전체 UI(메뉴, 버튼, 레이블, 상태 메시지, 오류 메시지)가 해당 언어로 즉시 전환된다. HnVue 재시작 없이 런타임 전환 가능하거나 재시작으로 적용.
 - **구현 범위 (Phase 1 최소)**: .NET WPF 리소스 파일(.resx) 기반 한국어/영어 문자열 분리, 언어 설정 화면, 설정 저장(SQLite 또는 appsettings.json), 다음 시작 시 설정 언어로 로드.
 - **제외 범위**: 런타임 즉시 전환(재시작 방식으로 대체 가능), 3개 이상 언어(Phase 2+), RTL 언어 지원.
 
 #### 어떻게 동작하는가 (How)
-- **사용 시나리오**: 관리자 설정 화면에서 언어 드롭다운(한국어/English)을 선택하고 저장. 다음 콘솔 시작 시 선택된 언어로 전체 UI가 표시됨.
+- **사용 시나리오**: 관리자 설정 화면에서 언어 드롭다운(한국어/English)을 선택하고 저장. 다음 HnVue 시작 시 선택된 언어로 전체 UI가 표시됨.
 - **기술 동작**: `ResourceDictionary`에 언어별 문자열 파일(ko-KR.resx, en-US.resx) 분리. `CultureInfo.CurrentUICulture` 설정으로 리소스 로딩. 모든 UI 문자열을 리소스 키로만 참조하여 하드코딩 금지. 설정값을 SQLite `settings` 테이블의 `language` 컬럼에 저장.
 
 #### PRD 연결 포인트
@@ -608,7 +608,7 @@ flowchart TD
 
 #### 왜 필요한가 (Why)
 - **시장 근거**: feel-DRCS와 Xmaru V1의 기본 기능. 한국 병원에서 환자가 타 병원으로 전원하거나 검사 결과를 지참할 때 CD 배포가 일반적 방식. 일부 병원에서는 보험 청구를 위해 영상 CD 제공이 필수.
-- **고객 기대**: 방사선사가 콘솔에서 환자를 선택하고 버튼 하나로 CD를 구울 수 있어야 함. 환자가 CD를 집에서 열어볼 수 있도록 자동실행 DICOM 뷰어 포함 필수.
+- **고객 기대**: 방사선사가 HnVue에서 환자를 선택하고 버튼 하나로 CD를 구울 수 있어야 함. 환자가 CD를 집에서 열어볼 수 있도록 자동실행 DICOM 뷰어 포함 필수.
 
 #### 무엇인가 (What)
 - **기능 정의**: 선택한 환자의 DICOM 영상을 DICOMDIR 구조로 정리하고, 자동실행(Autorun) 경량 DICOM 뷰어를 함께 포함하여 CD/DVD에 굽는다. 환자가 CD를 PC에 넣으면 뷰어가 자동 실행되어 영상을 볼 수 있다.
@@ -773,7 +773,7 @@ flowchart TD
 
 ### MR-038: SSO/AD
 **Tier**: Tier 3 (있으면 좋고, Phase 2+)
-- **Why**: 대형 병원의 Active Directory(AD)와 통합하여 병원 계정으로 콘솔 로그인(Single Sign-On) 지원.
+- **Why**: 대형 병원의 Active Directory(AD)와 통합하여 병원 계정으로 HnVue 로그인(Single Sign-On) 지원.
 - **What**: LDAP/AD 인증 연동, 역할 기반 접근 제어(RBAC) 통합.
 - **Phase 2+ 이유**: 100병상 이상 대형 병원 전용 요구사항. 중소 병원(Phase 1 주 타겟)은 로컬 계정으로 충분. AD 연동 구현 복잡도 및 병원별 AD 설정 다양성으로 Phase 2+.
 
@@ -805,7 +805,7 @@ flowchart TD
 
 ### MR-043: 4시간 독립 수행
 **Tier**: Tier 3 (있으면 좋고, Phase 2+)
-- **Why**: 방사선사가 별도 교육 없이 4시간 이내에 콘솔을 독립적으로 운용할 수 있는 자가 학습성 달성.
+- **Why**: 방사선사가 별도 교육 없이 4시간 이내에 HnVue를 독립적으로 운용할 수 있는 자가 학습성 달성.
 - **What**: 인앱 튜토리얼, 컨텍스트 도움말, 사용자 매뉴얼 통합.
 - **Phase 2+ 이유**: Phase 1은 교육 매뉴얼 + 현장 교육으로 대응. 인앱 온보딩 튜토리얼은 Phase 2+ UX 개선 과제. 교육 효과 측정 프로그램 전제.
 

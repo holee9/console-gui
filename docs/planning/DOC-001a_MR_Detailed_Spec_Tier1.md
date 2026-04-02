@@ -208,7 +208,7 @@ style D fill:#444,stroke:#666,color:#fff
 
 ```mermaid
 flowchart TD
-    A[앱 시작] --> B[로그인 화면]
+    A[HnVue 시작] --> B[로그인 화면]
     B --> C[사용자명 / 비밀번호 입력]
     C --> D[자격증명 검증\nbcrypt 해싱 비교]
     D --> E{인증 성공?}
