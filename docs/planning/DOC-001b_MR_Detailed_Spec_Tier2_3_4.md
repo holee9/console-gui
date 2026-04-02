@@ -6,7 +6,7 @@
 | **제목** | MR 상세 설명서 Part 2 — Tier 2 + Tier 3/4 |
 | **버전** | v1.0 |
 | **작성일** | 2026-04-02 |
-| **제품** | RadiConsole™ (X-ray 촬영 콘솔 SW) |
+| **제품** | HnVue (X-ray 촬영 콘솔 SW) |
 | **기술 스택** | WPF .NET 8, fo-dicom 5.x, SQLite, Serilog |
 | **규제 등급** | IEC 62304 Class B |
 | **관련 문서** | DOC-001a (Tier 1 MR), FDA K231225 (Predicate) |
@@ -15,7 +15,7 @@
 
 ## 개요
 
-본 문서는 RadiConsole™의 Market Requirements(MR)를 Tier 2(시장 진입 필수, Phase 1 포함), Tier 3(있으면 좋고, Phase 2+), Tier 4(비현실적 또는 제외)로 분류하여 상세 기술한다.
+본 문서는 HnVue의 Market Requirements(MR)를 Tier 2(시장 진입 필수, Phase 1 포함), Tier 3(있으면 좋고, Phase 2+), Tier 4(비현실적 또는 제외)로 분류하여 상세 기술한다.
 
 - **Tier 2**: 17개 MR — 각 MR당 Why/What/How/워크플로우/PRD 연결 포인트 상세 기술
 - **Tier 3**: 25개 MR — 각 MR당 3–5줄 간략 기술
@@ -361,7 +361,7 @@ flowchart LR
 - **고객 기대**: "우리 병원 PACS(InfinittPACS)와 되나요?" 라는 질문에 검증 이력으로 답할 수 있어야 영업 장벽 제거. 3개 이상 PACS 벤더 검증은 국내 병원 시장 커버리지 기준.
 
 #### 무엇인가 (What)
-- **기능 정의**: RadiConsole™이 DICOM Conformance Statement를 공식 발행하고, 국내 주요 PACS 벤더(InfinittPACS, Maroview, DCM4CHEE 오픈소스) 최소 3개와 C-STORE, C-FIND, C-MOVE 서비스 상호운용성 테스트를 수행하여 검증 보고서를 작성한다.
+- **기능 정의**: HnVue이 DICOM Conformance Statement를 공식 발행하고, 국내 주요 PACS 벤더(InfinittPACS, Maroview, DCM4CHEE 오픈소스) 최소 3개와 C-STORE, C-FIND, C-MOVE 서비스 상호운용성 테스트를 수행하여 검증 보고서를 작성한다.
 - **구현 범위 (Phase 1 최소)**: DICOM Conformance Statement 문서 작성(fo-dicom 기반), DCM4CHEE(오픈소스)와 개발환경 연동 검증, 추가 1-2개 상용 PACS와 테스트(InfinittPACS 또는 Maroview), 상호운용성 테스트 보고서 작성.
 - **제외 범위**: 전 세계 모든 PACS 벤더 검증(Phase 2+), DICOM TLS 암호화 검증(Phase 2+).
 
@@ -381,7 +381,7 @@ flowchart LR
 **카테고리**: 하드웨어 통합 / 핵심 기능
 
 #### 왜 필요한가 (Why)
-- **시장 근거**: RadiConsole™의 핵심 비즈니스 모델은 자사 FPD 디텍터 + 콘솔 SW 번들 패키지 판매. FPD 없이 콘솔만 판매할 경우 경쟁 우위 소멸. 자사 FPD 연동이 곧 제품의 존재 이유.
+- **시장 근거**: HnVue의 핵심 비즈니스 모델은 자사 FPD 디텍터 + 콘솔 SW 번들 패키지 판매. FPD 없이 콘솔만 판매할 경우 경쟁 우위 소멸. 자사 FPD 연동이 곧 제품의 존재 이유.
 - **고객 기대**: FPD + 콘솔 패키지로 구매하는 병원은 "한 벤더에서 하드웨어와 소프트웨어를 모두 지원받는다"는 편의성을 기대. 연동 문제는 AS 비용 증가로 직결.
 
 #### 무엇인가 (What)
@@ -949,7 +949,7 @@ flowchart TD
 
 ### MR-059: 3D 단층 촬영(Tomosynthesis)
 **Tier**: 제외
-- **사유**: Tomosynthesis는 별도 하드웨어(선형 이동 X-ray 튜브) 및 3D 재구성 알고리즘이 필요한 독립 제품 범주. RadiConsole™(2D 디지털 방사선 콘솔) 제품 정의 외부.
+- **사유**: Tomosynthesis는 별도 하드웨어(선형 이동 X-ray 튜브) 및 3D 재구성 알고리즘이 필요한 독립 제품 범주. HnVue(2D 디지털 방사선 콘솔) 제품 정의 외부.
 
 ---
 

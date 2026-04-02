@@ -1,5 +1,5 @@
 # 소프트웨어 위험 분석서 (Software Hazard Analysis — SW FMEA/FTA)
-## RadiConsole™ GUI Console SW
+## HnVue GUI Console SW
 
 ---
 
@@ -13,7 +13,7 @@
 | **승인자** | 의료기기 규제 책임자 (Regulatory Affairs Manager) |
 | **상태** | 초안 (Draft) |
 | **기준 규격** | ISO 14971:2019, IEC 62304:2006+AMD1:2015, IEC 60812:2018, IEC 61025:2006, IEC 80002-1:2009 |
-| **적용 제품** | RadiConsole™ GUI Console SW |
+| **적용 제품** | HnVue GUI Console SW |
 | **SW 안전 등급** | IEC 62304 Class B |
 | **인허가 대상** | FDA 510(k), CE MDR 2017/745, KFDA (식약처) |
 | **상위 문서** | RMP-XRAY-GUI-001 (위험 관리 계획서 v1.0) |
@@ -51,7 +51,7 @@
 
 ### 1.1 목적 (Purpose)
 
-본 소프트웨어 위험 분석서 (Software Hazard Analysis, 이하 SHA)는 RadiConsole™ GUI Console SW에 대하여 IEC 60812:2018 (고장 모드 및 영향 분석, FMEA)과 IEC 61025:2006 (결함 수목 분석, FTA) 방법론을 적용하여 소프트웨어 구성요소의 잠재적 고장 모드, 고장 영향, 원인 및 위험 우선순위를 체계적으로 분석하고, 위험 통제 조치와의 연계성을 확립한다.
+본 소프트웨어 위험 분석서 (Software Hazard Analysis, 이하 SHA)는 HnVue GUI Console SW에 대하여 IEC 60812:2018 (고장 모드 및 영향 분석, FMEA)과 IEC 61025:2006 (결함 수목 분석, FTA) 방법론을 적용하여 소프트웨어 구성요소의 잠재적 고장 모드, 고장 영향, 원인 및 위험 우선순위를 체계적으로 분석하고, 위험 통제 조치와의 연계성을 확립한다.
 
 본 분석서는 다음을 목적으로 한다:
 
@@ -906,10 +906,10 @@ graph LR
 
 ---
 
-*본 문서 (SHA-XRAY-GUI-001)는 ISO 14971:2019 §5 위험 분석 요구사항 및 IEC 62304:2006 §7.1 SW 위험 관리 활동을 이행하기 위해 작성되었으며, RadiConsole™ GUI Console SW 위험 관리 파일 (Risk Management File)의 핵심 구성 문서입니다.*
+*본 문서 (SHA-XRAY-GUI-001)는 ISO 14971:2019 §5 위험 분석 요구사항 및 IEC 62304:2006 §7.1 SW 위험 관리 활동을 이행하기 위해 작성되었으며, HnVue GUI Console SW 위험 관리 파일 (Risk Management File)의 핵심 구성 문서입니다.*
 
 *위험 관리 계획서 (RMP-XRAY-GUI-001) 및 소프트웨어 요구사항 명세서 (SRS-XRAY-GUI-001)와 연계하여 읽어야 합니다.*
 
 *문서 관리: 본 문서의 최신본은 문서 관리 시스템 (Document Control System)에서 관리됩니다.*
 
-*© 2026 RadiConsole™ 개발팀. All rights reserved.*
+*© 2026 HnVue 개발팀. All rights reserved.*

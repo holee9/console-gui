@@ -1,9 +1,9 @@
-# CYBERSEC-001: HnVue Console SW (RadiConsole™) 사이버보안 자체 검증 종합 가이드
+# CYBERSEC-001: HnVue Console SW (HnVue) 사이버보안 자체 검증 종합 가이드
 
 **문서 번호**: CYBERSEC-001  
 **버전**: 1.0  
 **작성일**: 2026-03-31  
-**적용 제품**: HnVue Console SW (RadiConsole™)  
+**적용 제품**: HnVue Console SW (HnVue)  
 **시스템**: HnX-R1 (Detector + Console SW 번들)  
 **분류**: 내부 기술 문서 (사이버보안 검증 가이드)
 
@@ -29,13 +29,13 @@
 
 ### 1.1 목적
 
-본 가이드는 HnVue Console SW (RadiConsole™)의 FDA 510(k), EU MDR Class IIa, MFDS 2등급 인허가 신청을 위해 사이버보안 검증을 최소 비용으로 자체 수행하기 위한 실무 가이드다. IEC 62304 Class B, §524B cyber device 해당 제품으로서 규제 기관이 요구하는 수준의 증거(Evidence)를 생성하는 것을 목표로 한다.
+본 가이드는 HnVue Console SW (HnVue)의 FDA 510(k), EU MDR Class IIa, MFDS 2등급 인허가 신청을 위해 사이버보안 검증을 최소 비용으로 자체 수행하기 위한 실무 가이드다. IEC 62304 Class B, §524B cyber device 해당 제품으로서 규제 기관이 요구하는 수준의 증거(Evidence)를 생성하는 것을 목표로 한다.
 
 ### 1.2 대상 제품 정보
 
 | 항목 | 내용 |
 |------|------|
-| 제품명 | HnVue Console SW (RadiConsole™) |
+| 제품명 | HnVue Console SW (HnVue) |
 | 시스템 | HnX-R1 (X-ray Detector + Console SW 번들) |
 | 기술스택 | WPF .NET 8, fo-dicom 5.x, SQLite, Serilog |
 | 프로토콜 | DICOM 3.0, PACS 연동 (DIMSE over TCP/IP) |
@@ -91,7 +91,7 @@ FDA는 2025년 6월 27일 "Cybersecurity in Medical Devices: Quality System Cons
 | Fuzz Testing (입력 오남용 케이스) | Guidance §V.A | DVTk, Radamsa, AFL++ 활용 |
 | 취약점 공개 정책 (CVD) | §524B(b)(1) | 보안 취약점 신고 채널 수립 |
 
-> **중요**: 2025 최종 가이던스는 소프트웨어를 포함하면 네트워크 연결 여부와 무관하게 모든 기기를 "cyber device"로 분류한다. RadiConsole™이 PACS 네트워크에 연결되므로 고위험 cyber device에 해당한다.
+> **중요**: 2025 최종 가이던스는 소프트웨어를 포함하면 네트워크 연결 여부와 무관하게 모든 기기를 "cyber device"로 분류한다. HnVue이 PACS 네트워크에 연결되므로 고위험 cyber device에 해당한다.
 
 ### 2.2 EU MDR Class IIa — MDCG 2019-16 사이버보안 가이던스
 
@@ -180,7 +180,7 @@ FDA는 **제3자 외부 업체를 명시적으로 의무화하지 않는다**. I
 | 도구 | URL | 라이선스 | 용도 | HnVue 적용 방법 | FDA/MDR/MFDS 수용성 |
 |------|-----|----------|------|-----------------|---------------------|
 | **Security Code Scan** | https://security-code-scan.github.io | MIT | .NET/.NET Core Roslyn 기반 SAST, 인젝션·XXE·암호화 취약점 탐지 | `dotnet add package SecurityCodeScan.VS2019`, CI/CD (GitHub Actions) 통합, 빌드 시 자동 실행 | ✅ FDA SPDF의 SAST 요건 충족, MFDS 보안 시험 Evidence 제출 가능 |
-| **Roslyn Security Guard** | https://dotnet-security-guard.github.io | LGPL-2.1 | Roslyn 분석기, 28종 취약점 패턴 68 시그니처 (SQLi, XSS, Path Traversal 등) | Visual Studio 확장 설치 + MSBuild 통합, 리포트 자동 생성 | ✅ C# SQLite 인젝션 탐지 — RadiConsole SQLite 쿼리 직접 스캔 |
+| **Roslyn Security Guard** | https://dotnet-security-guard.github.io | LGPL-2.1 | Roslyn 분석기, 28종 취약점 패턴 68 시그니처 (SQLi, XSS, Path Traversal 등) | Visual Studio 확장 설치 + MSBuild 통합, 리포트 자동 생성 | ✅ C# SQLite 인젝션 탐지 — HnVue SQLite 쿼리 직접 스캔 |
 | **DevSkim (Microsoft)** | https://github.com/microsoft/DevSkim | MIT | VS Code/Visual Studio 확장, C#/C++/Python 멀티언어, 하드코딩 시크릿 탐지 | VS 확장 설치 후 실시간 분석, CLI: `devskim analyze ./src` | ✅ 하드코딩 자격증명 탐지 — PACS 비밀번호 하드코딩 방지 |
 | **SonarQube Community** | https://www.sonarsource.com/products/sonarqube | LGPL-3.0 | 다국어 SAST, C# 포함, 기술 부채·보안 취약점 통합 분석 | Docker: `docker run -p 9000:9000 sonarqube:community`, `sonar-scanner` CI 통합 | ✅ FDA Guidance SAST 요건, MFDS Evidence 보고서 생성 가능 |
 | **Semgrep OSS** | https://semgrep.dev | LGPL-2.1 | 오픈소스 SAST, 커스텀 룰 지원, OWASP Top 10 룰셋 제공 | `semgrep --config=p/csharp src/`, fo-dicom 파싱 코드 커스텀 룰 작성 가능 | ✅ 커스텀 DICOM 처리 코드 취약점 패턴 정의 가능 |
@@ -386,7 +386,7 @@ grype sbom:./artifacts/sbom-hnvue-v1.0-cyclonedx.json --output json > artifacts/
 ```
 [테스트 네트워크 VLAN]
 │
-├── HnX-R1 Console PC (RadiConsole™ 설치)  ←── 스캔 대상
+├── HnX-R1 Console PC (HnVue 설치)  ←── 스캔 대상
 │     IP: 192.168.100.10
 │
 ├── Orthanc DICOM 서버 (PACS 시뮬레이터)    ←── 시뮬레이션 PACS
@@ -464,7 +464,7 @@ findscu -W -k "PatientName=*" -k "PatientID=*" \
 # Wireshark CLI (tshark) — DICOM 트래픽 캡처
 tshark -i eth0 -f "port 104" -w captures/dicom-traffic.pcap
 
-# RadiConsole에서 DICOM C-STORE 전송 수행 후 캡처 분석
+# HnVue에서 DICOM C-STORE 전송 수행 후 캡처 분석
 tshark -r captures/dicom-traffic.pcap -Y "dicom" \
   -T fields -e dicom.PatientName -e dicom.PatientID
 
@@ -594,10 +594,10 @@ logging.info(f"크래시 파일: {len([f for f in os.listdir('reports') if 'cras
 python3 dicom_fuzzer.py
 
 # fo-dicom 파일 파싱 퍼징 (네트워크 전송 없이 파서 직접 퍼징)
-# 악의적인 DICOM 파일을 RadiConsole에서 직접 열기 테스트
+# 악의적인 DICOM 파일을 HnVue에서 직접 열기 테스트
 for f in fuzz_output/fuzzed_*.dcm; do
   radamsa sample.dcm > "$f"
-  # RadiConsole에서 파일 열기 자동화 (UI 테스트 도구 활용)
+  # HnVue에서 파일 열기 자동화 (UI 테스트 도구 활용)
 done
 ```
 
@@ -630,7 +630,7 @@ done
 - 개발 참여 여부: 없음 (서명 확인)
 
 ## 2. 테스트 범위 (Scope)
-- 대상 시스템: HnVue Console SW v1.0 (RadiConsole™)
+- 대상 시스템: HnVue Console SW v1.0 (HnVue)
 - 대상 IP: 192.168.100.10
 - 대상 포트: 104 (DICOM), 2762 (DICOM TLS), 1433 (SQLite N/A)
 - 제외 범위: 외부 PACS 서버 (실제 병원 시스템)
@@ -689,10 +689,10 @@ ds.save_as("test_sqli_payload.dcm")
 print("SQL 인젝션 테스트 DICOM 파일 생성 완료")
 EOF
 
-# RadiConsole에서 해당 파일 C-STORE로 전송
+# HnVue에서 해당 파일 C-STORE로 전송
 dcmsend 192.168.100.10 104 test_sqli_payload.dcm -aec HNVUE_SCP
 
-# 결과: RadiConsole DB에서 쿼리 오류 또는 비정상 동작 확인
+# 결과: HnVue DB에서 쿼리 오류 또는 비정상 동작 확인
 # SQLite DB 파일 직접 확인
 sqlite3 /path/to/hnvue.db "SELECT * FROM patients WHERE name LIKE '%DROP TABLE%'"
 ```
@@ -1073,7 +1073,7 @@ EOF
 
 ---
 
-*본 문서는 HnVue Console SW (RadiConsole™) 사이버보안 자체 검증을 위한 내부 실무 가이드다. 인허가 제출 전 최신 FDA/EU MDR/MFDS 가이던스와 대조하여 업데이트할 것을 권장한다.*
+*본 문서는 HnVue Console SW (HnVue) 사이버보안 자체 검증을 위한 내부 실무 가이드다. 인허가 제출 전 최신 FDA/EU MDR/MFDS 가이던스와 대조하여 업데이트할 것을 권장한다.*
 
 *최종 업데이트: 2026-03-31*  
 *다음 검토 예정: 인허가 제출 6개월 전 또는 주요 규제 변경 시*

@@ -6,7 +6,7 @@
 > **작성자**: 사이버보안 팀 (Cybersecurity Team)
 > **검토자**: SW 아키텍트, QA 팀장
 > **승인자**: 의료기기 RA/QA 책임자
-> **제품**: HnVue Console SW (RadiConsole™)
+> **제품**: HnVue Console SW (HnVue)
 > **회사**: HnVue (가칭)
 > **분류**: ⭐ 리스크 최소화 (FDA 2026 mandatory) | ✅ EU MDR | ⭐ MFDS
 > **적용 시장**: FDA 510(k) (필수), EU MDR Class IIa (필수), MFDS 2등급 (권장)
@@ -38,7 +38,7 @@
 
 | 항목 | 내용 |
 |---|---|
-| 제품명 | HnVue Console SW (RadiConsole™) |
+| 제품명 | HnVue Console SW (HnVue) |
 | 회사명 | HnVue (가칭) |
 | SW 버전 | v1.0 (개발 예정) |
 | IEC 62304 SW 클래스 | Class B |

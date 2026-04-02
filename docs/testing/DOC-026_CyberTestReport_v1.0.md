@@ -222,7 +222,7 @@
 
 **[TBD - 침투 테스트 수행 및 모든 Critical/High 취약점 해결 확인 후 작성]**
 
-> 본 침투 테스트 결과, HnVue Console SW v[TBD] (RadiConsole™)에 대해 발견된 Medium 취약점 2건(PENTEST-001, PENTEST-002)은 해결되었으며 재테스트를 통해 제거가 확인되었다. 수용(Accept) 처리된 Low 취약점 3건(PENTEST-003, PENTEST-004, PENTEST-005)은 임상 위험이 낮으며(DOC-047 보안 위험 평가 참조), 병원 운영 환경에서 실제 익스플로잇 가능성이 극히 낮고, v1.1 릴리즈에서 영구 해결 예정이다. Critical 및 High 취약점은 발견되지 않았다. 현재 상태의 HnVue Console SW는 의도된 배포 환경(병원 내부 폐쇄망)에서 허용 가능한 보안 수준을 유지한다고 판단한다.
+> 본 침투 테스트 결과, HnVue Console SW v[TBD] (HnVue)에 대해 발견된 Medium 취약점 2건(PENTEST-001, PENTEST-002)은 해결되었으며 재테스트를 통해 제거가 확인되었다. 수용(Accept) 처리된 Low 취약점 3건(PENTEST-003, PENTEST-004, PENTEST-005)은 임상 위험이 낮으며(DOC-047 보안 위험 평가 참조), 병원 운영 환경에서 실제 익스플로잇 가능성이 극히 낮고, v1.1 릴리즈에서 영구 해결 예정이다. Critical 및 High 취약점은 발견되지 않았다. 현재 상태의 HnVue Console SW는 의도된 배포 환경(병원 내부 폐쇄망)에서 허용 가능한 보안 수준을 유지한다고 판단한다.
 >
 > 확인자(침투 테스트 수행 기관): [TBD] | 일자: [TBD]  
 > 확인자(HnVue 사이버보안 담당): [TBD] | 일자: [TBD]  

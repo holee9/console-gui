@@ -6,7 +6,7 @@
 > **작성자**: [작성 필요]  
 > **검토자**: [작성 필요]  
 > **승인자**: [작성 필요]  
-> **제품**: HnVue Console SW (RadiConsole™)  
+> **제품**: HnVue Console SW (HnVue)  
 > **회사**: HnVue (가칭)  
 > **분류**: ✅ 최소 필수  
 > **적용 시장**: FDA 510(k) ✅ / MFDS 2등급 ✅ / EU MDR Class IIa △ (참조 활용)  
@@ -53,7 +53,7 @@
 
 ## 1. 목적
 
-본 문서는 FDA 510(k) 심사, MFDS 인허가, 또는 GMP Inspection(현장 감사) 요청 시 허가된 버전의 HnVue Console SW (RadiConsole™)를 정확히 재현할 수 있도록 소스코드 위치와 빌드 환경 전체를 문서화한다.
+본 문서는 FDA 510(k) 심사, MFDS 인허가, 또는 GMP Inspection(현장 감사) 요청 시 허가된 버전의 HnVue Console SW (HnVue)를 정확히 재현할 수 있도록 소스코드 위치와 빌드 환경 전체를 문서화한다.
 
 소스코드 자체를 포함하지 않으며, 소스코드의 위치·접근 방법·재현 가능한 빌드 절차의 명세서로서 기능한다.
 
@@ -72,7 +72,7 @@
 
 | 항목 | 내용 |
 |------|------|
-| 적용 SW | HnVue Console SW (RadiConsole™) v[TBD - 개발 완료 후 작성] |
+| 적용 SW | HnVue Console SW (HnVue) v[TBD - 개발 완료 후 작성] |
 | 적용 대상 | 소스코드, 빌드 도구, 의존성(SOUP/NuGet), 빌드 스크립트, 코드서명 환경, CI/CD 파이프라인 |
 | 적용 시장 | FDA 510(k) (필수) / MFDS 2등급 (필수) / EU MDR Class IIa (참조 활용) |
 | 소스코드 자체 | 본 문서에 포함하지 않음 — 위치 및 접근 방법만 기재 |
@@ -114,7 +114,7 @@
 
 | 항목 | 내용 |
 |------|------|
-| 저장소 위치 (URL) | [작성 필요 — 예: https://github.com/hnvue/radiconsole] |
+| 저장소 위치 (URL) | [작성 필요 — 예: https://github.com/hnvue/hnvue] |
 | 접근 권한 | 내부 인원만 접근 (비공개 저장소, 역할 기반 권한 부여) |
 | 허가 제출 버전 태그 | [TBD - 개발 완료 후 작성] (예: `v1.0.0`) |
 | 허가 제출 버전 Commit SHA | [TBD - 개발 완료 후 작성] (40자 SHA-1 해시) |
@@ -122,31 +122,31 @@
 
 #### 4.2.2 디렉토리 구조 개요
 
-RadiConsole™의 소스코드 구조는 IEC 62304 §5.3 아키텍처 설계(DOC-006)에 정의된 SW 아이템 분해를 따른다.
+HnVue의 소스코드 구조는 IEC 62304 §5.3 아키텍처 설계(DOC-006)에 정의된 SW 아이템 분해를 따른다.
 
 ```
-RadiConsole/
+HnVue/
 ├── src/
-│   ├── RadiConsole.UI/              # UI Module (WPF .NET 8, MahApps.Metro, CommunityToolkit.Mvvm)
-│   ├── RadiConsole.DICOM/           # DICOM Engine (fo-dicom 5.1.3, DCMTK 3.6.8)
-│   ├── RadiConsole.Imaging/         # Image Processing Module (OpenCvSharp4 4.9.0, ITK.NET 5.3.0)
-│   ├── RadiConsole.Security/        # Security Module (BouncyCastle 2.3.0, OpenSSL 3.2.1)
-│   ├── RadiConsole.Data/            # Data Layer (SQLite 3.45.1, Entity Framework Core 8.0.2)
-│   ├── RadiConsole.Worklist/        # Worklist Manager (NHapi 3.2.0, fo-dicom MWL)
-│   ├── RadiConsole.Dose/            # Dose Management Module
-│   ├── RadiConsole.Audit/           # Audit Log Module (Serilog 3.1.1)
-│   └── RadiConsole.Common/          # 공통 유틸리티 (MediatR, Polly, FluentValidation)
+│   ├── HnVue.UI/              # UI Module (WPF .NET 8, MahApps.Metro, CommunityToolkit.Mvvm)
+│   ├── HnVue.DICOM/           # DICOM Engine (fo-dicom 5.1.3, DCMTK 3.6.8)
+│   ├── HnVue.Imaging/         # Image Processing Module (OpenCvSharp4 4.9.0, ITK.NET 5.3.0)
+│   ├── HnVue.Security/        # Security Module (BouncyCastle 2.3.0, OpenSSL 3.2.1)
+│   ├── HnVue.Data/            # Data Layer (SQLite 3.45.1, Entity Framework Core 8.0.2)
+│   ├── HnVue.Worklist/        # Worklist Manager (NHapi 3.2.0, fo-dicom MWL)
+│   ├── HnVue.Dose/            # Dose Management Module
+│   ├── HnVue.Audit/           # Audit Log Module (Serilog 3.1.1)
+│   └── HnVue.Common/          # 공통 유틸리티 (MediatR, Polly, FluentValidation)
 ├── tests/
-│   ├── RadiConsole.Unit/            # 단위 시험 (xUnit 2.7.0, Moq 4.20.70)
-│   └── RadiConsole.Integration/     # 통합 시험
+│   ├── HnVue.Unit/            # 단위 시험 (xUnit 2.7.0, Moq 4.20.70)
+│   └── HnVue.Integration/     # 통합 시험
 ├── build/
-│   ├── RadiConsole.sln              # Visual Studio 솔루션 파일
+│   ├── HnVue.sln              # Visual Studio 솔루션 파일
 │   ├── Directory.Build.props        # 전역 빌드 속성 (버전 번호 포함)
 │   └── scripts/
 │       ├── build-release.ps1        # 릴리즈 빌드 자동화 스크립트 (PowerShell)
 │       └── sign-package.ps1         # 코드서명 스크립트
 ├── installer/
-│   └── RadiConsoleSetup.wixproj     # WiX Toolset MSI 설치 패키지 프로젝트
+│   └── HnVueSetup.wixproj     # WiX Toolset MSI 설치 패키지 프로젝트
 ├── docs/                            # 규제 산출물 문서
 │   ├── management/
 │   ├── planning/
@@ -257,7 +257,7 @@ SBOM의 상세 목록은 DOC-019 (SBOM-XRAY-GUI-001)를 참조한다. 아래는 
 
 _옵션 A. Docker 이미지 (권장)_:
 ```
-이미지명: radiconsole-build:[버전] (예: radiconsole-build:1.0.0)
+이미지명: hnvue-build:[버전] (예: hnvue-build:1.0.0)
 저장 위치: [Docker Registry URL — TBD - 개발 완료 후 작성]
 이미지 SHA-256: [TBD - 개발 완료 후 작성]
 기반 이미지: mcr.microsoft.com/dotnet/sdk:8.0-windowsservercore-ltsc2022
@@ -265,7 +265,7 @@ _옵션 A. Docker 이미지 (권장)_:
 
 _옵션 B. VM 스냅샷_:
 ```
-스냅샷명: RadiConsole-Build-v[버전]
+스냅샷명: HnVue-Build-v[버전]
 저장 위치: [TBD - 개발 완료 후 작성]
 스냅샷 생성일: [TBD - 개발 완료 후 작성]
 하이퍼바이저: [Hyper-V / VMware ESXi — 작성 필요]
@@ -280,37 +280,37 @@ _옵션 B. VM 스냅샷_:
 ```powershell
 # 1. 저장소 클론 (특정 릴리즈 태그)
 git clone [저장소 URL]
-cd RadiConsole
+cd HnVue
 git checkout v1.0.0    # 허가 제출 버전 태그
 
 # 2. 의존성 복원 (버전 잠금 모드)
 dotnet restore --locked-mode
 
 # 3. 빌드 실행 (Release 모드, x64)
-dotnet build RadiConsole.sln --configuration Release --no-incremental
+dotnet build HnVue.sln --configuration Release --no-incremental
 
 # 또는 MSBuild 직접 사용:
-# msbuild RadiConsole.sln /p:Configuration=Release /p:Platform=x64 /p:RestoreLockedMode=true
+# msbuild HnVue.sln /p:Configuration=Release /p:Platform=x64 /p:RestoreLockedMode=true
 
 # 4. 단위 테스트 실행 (빌드 품질 확인)
-dotnet test tests/RadiConsole.Unit --configuration Release --no-build --collect:"XPlat Code Coverage"
+dotnet test tests/HnVue.Unit --configuration Release --no-build --collect:"XPlat Code Coverage"
 
 # 5. 설치 패키지(MSI) 생성 (WiX Toolset)
-dotnet build installer/RadiConsoleSetup.wixproj --configuration Release
+dotnet build installer/HnVueSetup.wixproj --configuration Release
 
 # 또는:
 # [TBD - WiX v4 명령어 — 개발 완료 후 작성]
 
 # 6. 코드서명 (MSI)
 signtool sign /fd SHA256 /tr [타임스탬프 서버 URL — 작성 필요] /td SHA256 `
-    installer/bin/Release/RadiConsole-v1.0.0-setup.msi
+    installer/bin/Release/HnVue-v1.0.0-setup.msi
 
 # 7. SHA-256 해시 생성 및 기록
-certutil -hashfile installer/bin/Release/RadiConsole-v1.0.0-setup.msi SHA256
+certutil -hashfile installer/bin/Release/HnVue-v1.0.0-setup.msi SHA256
 # → §4.6 빌드 결과물 표에 해시값 기록
 
 # 8. 코드서명 검증
-signtool verify /pa installer/bin/Release/RadiConsole-v1.0.0-setup.msi
+signtool verify /pa installer/bin/Release/HnVue-v1.0.0-setup.msi
 ```
 
 > **주의**: 위 명령어는 실제 빌드 환경에 맞게 개발 완료 후 수정한다.  
@@ -335,8 +335,8 @@ signtool verify /pa installer/bin/Release/RadiConsole-v1.0.0-setup.msi
 
 | 산출물명 | 파일명 | SW 버전 | 빌드 날짜 | SHA-256 해시 | 비고 |
 |---------|--------|---------|----------|------------|------|
-| 실행 파일 | RadiConsole.exe | [TBD - 개발 완료 후 작성] | [TBD] | [TBD] | .NET 8 자체 포함 실행 파일 |
-| MSI 설치 패키지 | RadiConsole-v[X.X.X]-setup.msi | [TBD - 개발 완료 후 작성] | [TBD] | [TBD] | EV Code Signing 적용 |
+| 실행 파일 | HnVue.exe | [TBD - 개발 완료 후 작성] | [TBD] | [TBD] | .NET 8 자체 포함 실행 파일 |
+| MSI 설치 패키지 | HnVue-v[X.X.X]-setup.msi | [TBD - 개발 완료 후 작성] | [TBD] | [TBD] | EV Code Signing 적용 |
 | 코드서명 검증 결과 | — | — | [TBD] | — | `signtool verify /pa` 결과 |
 | 단위 테스트 결과 | TestResults_[날짜].xml | — | [TBD] | — | xUnit 결과 (전체 Pass 필요) |
 | 코드 커버리지 보고서 | coverage_[날짜].xml | — | [TBD] | — | Coverlet 생성 (목표: ≥ 80%) |
@@ -359,7 +359,7 @@ signtool verify /pa installer/bin/Release/RadiConsole-v1.0.0-setup.msi
 
 | 항목 | 내용 |
 |------|------|
-| 보존 방법 | Docker 이미지 태그 고정 (`radiconsole-build:[버전]`) 또는 VM 스냅샷 |
+| 보존 방법 | Docker 이미지 태그 고정 (`hnvue-build:[버전]`) 또는 VM 스냅샷 |
 | 이미지/스냅샷 저장 위치 | [TBD - 개발 완료 후 작성] |
 | 보존 기간 | 최소 허가 유효기간 + 5년 (수명주기 종료 후 폐기 전 RA 승인 필요) |
 | 과거 버전 재빌드 보장 | 각 릴리즈 태그(`v[버전]`)에 대응하는 빌드 환경 스냅샷/이미지 유지 |

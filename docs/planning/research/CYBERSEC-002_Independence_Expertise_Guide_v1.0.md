@@ -5,7 +5,7 @@
 | **문서 ID** | CYBERSEC-002 |
 | **버전** | v1.0 |
 | **작성일** | 2026-03-31 |
-| **프로젝트** | HnX-R1 RadiConsole™ |
+| **프로젝트** | HnX-R1 HnVue |
 | **목적** | FDA 침투 테스트 2대 요건(독립성 + 기술 전문성) 충족을 위한 전수 조사 결과 |
 
 ---
@@ -316,7 +316,7 @@ FDA는 특정 자격증을 요구하지 않으므로, 다음 방법으로도 "te
 
 ---
 
-## 5. HnX-R1 RadiConsole™에 대한 권장 전략
+## 5. HnX-R1 HnVue에 대한 권장 전략
 
 ### 5.1 제품 특성 분석
 
@@ -399,7 +399,7 @@ Step 4: 의료기기 특화 (위와 동일)
 
 ```markdown
 # Penetration Test Report
-## [제품명] — RadiConsole™ v1.0
+## [제품명] — HnVue v1.0
 
 ### 1. Executive Summary
 - 테스트 기간: YYYY-MM-DD ~ YYYY-MM-DD
@@ -423,7 +423,7 @@ Step 4: 의료기기 특화 (위와 동일)
 - 추가 역량: [CTF 실적, Bug Bounty 이력 등]
 
 ### 3. Scope
-- 테스트 대상: [RadiConsole™ WPF 클라이언트, DICOM 통신 모듈, ...]
+- 테스트 대상: [HnVue WPF 클라이언트, DICOM 통신 모듈, ...]
 - 테스트 환경: [테스트 장비/네트워크 구성]
 - 테스트 접근 방식: [블랙박스/그레이박스/화이트박스]
 - 제외 항목: [테스트하지 않은 항목 및 사유]

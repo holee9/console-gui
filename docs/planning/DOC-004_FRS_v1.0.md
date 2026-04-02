@@ -56,7 +56,7 @@
 
 ### 1.1 목적 (Purpose)
 
-본 문서는 **RadiConsole™ HnVue Console SW**의 **기능 요구사항 명세서 (Functional Requirements Specification, FRS)** 로서, IEC 62304:2006+A1:2015 §5.2 "소프트웨어 요구사항 분석 (Software Requirements Analysis)" 에서 요구하는 소프트웨어 요구사항 (Software Requirements, SWR)을 정의한다.
+본 문서는 **HnVue HnVue Console SW**의 **기능 요구사항 명세서 (Functional Requirements Specification, FRS)** 로서, IEC 62304:2006+A1:2015 §5.2 "소프트웨어 요구사항 분석 (Software Requirements Analysis)" 에서 요구하는 소프트웨어 요구사항 (Software Requirements, SWR)을 정의한다.
 
 본 문서의 핵심 목적은 다음과 같다:
 
@@ -96,7 +96,7 @@ flowchart LR
 
 ## 2. 적용 범위 (Scope)
 
-본 FRS는 **RadiConsole™ Phase 1 (v1.0)** 기능 범위에 해당하는 모든 소프트웨어 요구사항을 정의한다.
+본 FRS는 **HnVue Phase 1 (v1.0)** 기능 범위에 해당하는 모든 소프트웨어 요구사항을 정의한다.
 
 ### Phase 1 포함 도메인 및 SWR 범위
 
@@ -192,7 +192,7 @@ SWR-[도메인]-[번호]
 | SWR-PM-001 | PR-PM-001 | 환자 등록 UI — 입력 필드 | 환자 등록 화면은 다음 입력 필드를 제공해야 한다: ① 환자 ID (Patient ID): 영숫자(a-z, A-Z, 0-9, 하이픈, 밑줄) ≤64자, 필수; ② 성명 (Patient Name): 유니코드 지원 ≤256자 (DICOM PN VR 형식: Last^First^Middle^Prefix^Suffix), 필수; ③ 생년월일 (DOB): YYYY-MM-DD 형식 달력 입력 위젯; ④ 성별 (Sex): M/F/O 라디오 버튼 또는 드롭다운, 필수; ⑤ 검사 의뢰 정보 (Referring Physician, Accession Number, Study Description): 선택 입력; ⑥ 검사 부위 (Body Part Examined): 드롭다운 선택. 모든 필드는 DICOM 데이터 딕셔너리 VR(Value Representation) 규칙을 준수해야 한다. | Functional | 6개 필수/선택 입력 필드가 UI에 정확히 렌더링됨; DICOM VR 위반 입력(예: 64자 초과 ID) 시 즉시 오류 표시 | T, I | UT-PM-001, IT-PM-001 | HAZ-DATA |
 | SWR-PM-002 | PR-PM-001 | 필수 필드 유효성 검사 | 환자 등록 저장(Save) 버튼 클릭 시: ① 필수 필드(환자 ID, 성명, 성별) 중 하나라도 비어 있으면 저장 동작 차단 및 해당 필드를 적색(#FF3B30) 테두리로 하이라이트; ② 환자 ID 형식이 허용 문자 패턴(^[A-Za-z0-9_\\-]{1,64}$)에 맞지 않으면 인라인 오류 메시지 "환자 ID는 영숫자, 하이픈, 밑줄 1~64자만 허용됩니다" 표시; ③ 생년월일이 미래 날짜이면 경고 메시지 표시 후 저장 가능(차단 아님); ④ 성명 길이가 256자 초과 시 저장 차단. 유효성 검사는 저장 버튼 클릭 시점과 포커스 이탈(on-blur) 시점 모두 실행된다. | Functional | 필수 필드 미입력 시 저장 버튼 비활성화 또는 차단 확인; 오류 필드 적색 하이라이트 100% 표시 | T | UT-PM-002, IT-PM-002 | HAZ-DATA |
 | SWR-PM-003 | PR-PM-001 | 중복 환자 ID 감지 | 저장 버튼 클릭 시 입력된 환자 ID를 로컬 SQLite DB의 `patients` 테이블에 대해 Case-Insensitive SELECT 쿼리로 중복 여부 확인. 중복 발견 시: ① "중복 환자 ID (Duplicate Patient ID): [ID값]이(가) 이미 등록되어 있습니다. 기존 환자 정보를 조회하시겠습니까?" 다이얼로그 표시; ② [기존 환자 조회 / 다른 ID 입력 / 저장 강제 진행] 3가지 선택지 제공; ③ "저장 강제 진행" 선택 시 Audit Trail에 중복 허용 사유 기록 필요 (코멘트 필드 표시). 중복 체크 DB 조회는 UI 스레드를 차단하지 않도록 비동기(async/await)로 실행. | Safety-related | 중복 ID 등록 시 100% 경고 다이얼로그 표시; 10,000건 DB에서 중복 체크 응답 ≤200ms | T, A | UT-PM-003, IT-PM-003 | HAZ-DATA |
-| SWR-PM-004 | PR-PM-001 | 환자 등록 데이터 저장 | 유효성 검사 통과 후 환자 데이터를 SQLite(로컬) 또는 PostgreSQL(네트워크) DB에 ACID 트랜잭션으로 저장: ① BEGIN TRANSACTION → INSERT INTO patients → INSERT INTO studies (검사 의뢰 정보) → COMMIT; ② 트랜잭션 실패 시 ROLLBACK 후 사용자에게 오류 메시지 표시; ③ 저장 성공 시 새로 생성된 환자 레코드 PK(UUID v4)를 반환하여 이후 검사 생성에 사용; ④ DB 파일 저장 경로: `%ProgramData%\RadiConsole\Data\patients.db`; ⑤ 환자 등록 이벤트를 Audit Trail에 기록 (사용자 ID, 타임스탬프, 환자 ID). 저장 중 전원 차단 보호를 위해 WAL(Write-Ahead Logging) 모드 활성화. | Safety-related | 저장 완료 후 DB 조회 시 입력 데이터 100% 일치; WAL 활성화 확인; 트랜잭션 실패 시 ROLLBACK 확인 | T, I | UT-PM-004, IT-PM-004 | HAZ-DATA |
+| SWR-PM-004 | PR-PM-001 | 환자 등록 데이터 저장 | 유효성 검사 통과 후 환자 데이터를 SQLite(로컬) 또는 PostgreSQL(네트워크) DB에 ACID 트랜잭션으로 저장: ① BEGIN TRANSACTION → INSERT INTO patients → INSERT INTO studies (검사 의뢰 정보) → COMMIT; ② 트랜잭션 실패 시 ROLLBACK 후 사용자에게 오류 메시지 표시; ③ 저장 성공 시 새로 생성된 환자 레코드 PK(UUID v4)를 반환하여 이후 검사 생성에 사용; ④ DB 파일 저장 경로: `%ProgramData%\HnVue\Data\patients.db`; ⑤ 환자 등록 이벤트를 Audit Trail에 기록 (사용자 ID, 타임스탬프, 환자 ID). 저장 중 전원 차단 보호를 위해 WAL(Write-Ahead Logging) 모드 활성화. | Safety-related | 저장 완료 후 DB 조회 시 입력 데이터 100% 일치; WAL 활성화 확인; 트랜잭션 실패 시 ROLLBACK 확인 | T, I | UT-PM-004, IT-PM-004 | HAZ-DATA |
 
 #### PR-PM-002: 환자 정보 조회·수정 → SWR-PM-010~013
 
@@ -402,7 +402,7 @@ flowchart TD
 | SWR-DM-042 | PR-DM-041 | ESD 계산 알고리즘 | `DoseService.CalculateESD(kvp, mas, fsd, thickness, bpe)`: ① ESD 공식: ESD = k × kVp^n × mAs × (FSD₀/FSD)² × BSF; ② 파라미터: k=환경 보정계수, n=1.8~2.0, BSF=후방산란계수(신체 부위별); ③ FSD = SID - 환자두께/2; ④ 결과 단위: mGy; ⑤ 계산 불확도 ±20% 사용자 표시 (PR-DM-041 수용 기준). | Safety-related | ESD 계산값 참조값 대비 ±20% 이내 확인; 불확도 표시 확인 | T, A | UT-DM-042 | HAZ-RAD |
 | SWR-DM-043 | PR-DM-041 | ESD 경고 및 고지 | ESD 계산 결과 화면 표시: ① ESD 값 + "±20% 추정값" 표시; ② DRL 기준 대비 비율 표시 (%); ③ ESD가 DRL 초과 시 황색 경고; ④ ESD가 DRL의 2배 초과 시 적색 경고 + 확인 필요 다이얼로그. | Safety-related | DRL 초과 시 황색/적색 경고 100% 표시 확인 | T, A | UT-DM-043 | HAZ-RAD |
 | SWR-DM-044 | PR-DM-042 | RDSR 자동 생성 | 검사 완료(MPPS Completed) 이벤트 후 DICOM RDSR 자동 생성: ① fo-dicom으로 DICOM TID 10011 (X-Ray Radiation Dose) Structured Report 생성; ② 포함 데이터: 환자 정보, 검사 정보, 각 노출의 kVp/mAs/DAP/ESD/EI/DI/FSD/필터, RDSR 생성 일시; ③ SOP Class UID: 1.2.840.10008.5.1.4.1.1.88.67 (Enhanced SR); ④ 생성 완료 후 SWR-DC-050(C-STORE)으로 PACS/Dose Registry 전송. | Safety-related | RDSR DICOM IOD 완전성 100%; C-STORE 전송 성공 확인 | T, I | UT-DM-044, IT-DM-044 | HAZ-RAD, HAZ-DATA |
-| SWR-DM-045 | PR-DM-042 | RDSR 생성 실패 처리 | RDSR 생성 또는 전송 실패 시: ① "RDSR 생성 실패 (RDSR Generation Failed)" 오류 알림; ② 로컬 파일 시스템에 RDSR 백업 저장: `%ProgramData%\RadiConsole\RDSR\`; ③ 전송 큐에 추가하여 네트워크 복구 시 자동 재전송 (SWR-DC-051 연동); ④ 미전송 RDSR 개수를 상태 바에 표시. | Safety-related | RDSR 실패 시 로컬 백업 저장 확인; 재전송 큐 동작 확인 | T | UT-DM-045 | HAZ-RAD, HAZ-DATA |
+| SWR-DM-045 | PR-DM-042 | RDSR 생성 실패 처리 | RDSR 생성 또는 전송 실패 시: ① "RDSR 생성 실패 (RDSR Generation Failed)" 오류 알림; ② 로컬 파일 시스템에 RDSR 백업 저장: `%ProgramData%\HnVue\RDSR\`; ③ 전송 큐에 추가하여 네트워크 복구 시 자동 재전송 (SWR-DC-051 연동); ④ 미전송 RDSR 개수를 상태 바에 표시. | Safety-related | RDSR 실패 시 로컬 백업 저장 확인; 재전송 큐 동작 확인 | T | UT-DM-045 | HAZ-RAD, HAZ-DATA |
 | SWR-DM-046 | PR-DM-042 | RDSR 수동 재생성/재전송 | 관리자/의학물리사가 완료된 검사에 대해 RDSR을 수동으로 재생성하고 전송하는 기능: ① 검사 목록에서 검사 선택 → [RDSR 재전송] 버튼; ② 재생성 후 Audit Trail에 수동 재전송 기록; ③ 재전송 대상 PACS/Dose Registry AE 선택 가능. | Functional | 수동 재생성/재전송 동작 확인; Audit Trail 기록 확인 | T | UT-DM-046 | HAZ-DATA |
 | SWR-DM-047 | PR-DM-043 | Exposure Index 계산 | IEC 62494-1 기반 EI/DI 계산: ① EI (Exposure Index) = c × q̄_def (설정 대상 영역 평균 픽셀값 기반 계산); ② DI (Deviation Index) = 10 × log10(EI / EI_target); ③ EI_target: 신체 부위별 표준값 (예: Chest PA = 800); ④ 각 Projection 완료 시 자동 계산; ⑤ 계산 결과를 `dose_records` DB 저장. | Safety-related | DI 계산 공식 정확도 ±0.1 확인; IEC 62494-1 기준치 대비 검증 | T, A | UT-DM-047 | HAZ-RAD |
 | SWR-DM-048 | PR-DM-043 | EI/DI 경고 시스템 | DI 값에 따른 색상 경고: ① DI < -2: 황색 경고 + "노출 부족 (Under-Exposure)" 메시지; ② DI > +2: 황색 경고 + "노출 과다 (Over-Exposure)" 메시지; ③ DI < -3 또는 > +3: 적색 경고 + 관리자 알림; ④ 경고 시 재촬영 권고 메시지 표시; ⑤ 모든 DI 이상값 DB에 기록. | Safety-related | DI ±2 이상 시 황색, ±3 이상 시 적색 경고 100% 표시 확인 | T, A | UT-DM-048 | HAZ-RAD |
@@ -423,7 +423,7 @@ flowchart TD
 | SWR ID | 출처 PR | 요구사항명 | 상세 기술 사양 | IEC 62304 분류 | 수용 기준 | 검증 방법(TIAD) | 검증 TC | 위험 참조 |
 |--------|---------|-----------|--------------|----------------|----------|----------------|---------|----------|
 | SWR-DC-050 | PR-DC-050 | C-STORE SCU 구현 | fo-dicom `DicomCStoreRequest` 기반 C-STORE SCU: ① Transfer Syntax: Implicit VR Little Endian, Explicit VR Little Endian, JPEG Lossless (지원 협상); ② SOP Class: Digital X-Ray Image Storage (1.2.840.10008.5.1.4.1.1.1.1), Secondary Capture (1.2.840.10008.5.1.4.1.1.7); ③ Association 관리: 최대 동시 Association 5개; ④ 전송 성공률 ≥99.9% (PR-DC-050 수용 기준). | Functional | 전송 성공률 ≥99.9% 1,000회 전송 테스트 확인 | T, A | UT-DC-050, IT-DC-050 | HAZ-DATA |
-| SWR-DC-051 | PR-DC-050 | C-STORE 실패 재시도 큐 | C-STORE 실패 시 자동 재시도: ① 즉시 재시도 1회 → 30초 후 재시도 1회 → 5분 후 재시도 1회 (총 3회, PR-DC-050); ② 3회 모두 실패 시 로컬 임시 저장 (`%ProgramData%\RadiConsole\OutboxQueue\`); ③ 전송 큐는 SQLite `dicom_outbox` 테이블로 관리; ④ 네트워크 복구 시 자동 재전송 (주기적 체크 60초); ⑤ 미전송 건수 상태 바 표시. | Safety-related | 3회 재시도 동작 확인; 로컬 저장 후 네트워크 복구 시 자동 전송 확인 | T | UT-DC-051, IT-DC-051 | HAZ-DATA |
+| SWR-DC-051 | PR-DC-050 | C-STORE 실패 재시도 큐 | C-STORE 실패 시 자동 재시도: ① 즉시 재시도 1회 → 30초 후 재시도 1회 → 5분 후 재시도 1회 (총 3회, PR-DC-050); ② 3회 모두 실패 시 로컬 임시 저장 (`%ProgramData%\HnVue\OutboxQueue\`); ③ 전송 큐는 SQLite `dicom_outbox` 테이블로 관리; ④ 네트워크 복구 시 자동 재전송 (주기적 체크 60초); ⑤ 미전송 건수 상태 바 표시. | Safety-related | 3회 재시도 동작 확인; 로컬 저장 후 네트워크 복구 시 자동 전송 확인 | T | UT-DC-051, IT-DC-051 | HAZ-DATA |
 | SWR-DC-052 | PR-DC-050 | DICOM 전송 진행 표시 | C-STORE 전송 중 UI 표시: ① 상태 바에 "PACS 전송 중 (Sending to PACS): [환자명] [n/N]"; ② 전송 완료 후 "PACS 전송 완료 (PACS Send Complete)" Toast 메시지 (3초 후 자동 닫힘); ③ 전송 실패 시 "PACS 전송 실패 (PACS Send Failed): [오류 코드]" 상태 바 영구 표시 (수동 확인 전까지). | Functional | 전송 진행 표시 동작 확인; 실패 시 영구 오류 표시 확인 | T | UT-DC-052 | — |
 | SWR-DC-053 | PR-DC-051 | MWL C-FIND SCU 구현 | SWR-PM-020(상세) 참조. fo-dicom `DicomCFindRequest` 기반 MWL 조회. C-FIND 응답 ≤3초 (PR-DC-051). | Functional | C-FIND 응답 ≤3초 확인 | T, A | UT-DC-053, IT-DC-053 | HAZ-DATA |
 | SWR-DC-054 | PR-DC-051 | MWL 필터링 기능 | C-FIND 요청에 적용 가능한 필터: ① 조회 날짜 범위 (오늘/어제/이번 주/사용자 지정); ② AE Title 필터 (특정 장비만 조회); ③ Modality 필터 (DX/CR 선택); ④ 검색 키워드 (환자명/ID 부분 일치). 필터는 C-FIND Query Dataset에 포함되어 서버 측 필터링 유도. | Functional | 각 필터 적용 후 정확한 C-FIND 결과 확인 | T | UT-DC-054 | — |
@@ -455,15 +455,15 @@ flowchart TD
 | SWR-SA-066 | PR-SA-062 | 설정 파일 백업 및 복원 | 시스템 설정 백업/복원: ① [설정 백업 (Backup)] 버튼: 현재 설정(DICOM AE, 프로토콜, 네트워크, 사용자 설정)을 암호화된 ZIP 파일로 내보내기; ② [설정 복원 (Restore)] 버튼: 백업 파일 선택 후 복원 (현재 설정 덮어쓰기 확인 후); ③ 암호화: AES-256으로 백업 파일 암호화; ④ 백업 파일에 버전 정보 포함 (구버전 백업 복원 시 마이그레이션 처리). | Functional | 백업/복원 왕복 테스트 통과; 암호화 백업 파일 생성 확인 | T | UT-SA-066 | HAZ-DATA |
 | SWR-SA-067 | PR-SA-063 | 캘리브레이션 위자드 단계 | Gain/Offset 캘리브레이션 위자드 (4단계): ① 1단계 — Dark 영상 획득: X-Ray 없이 Detector 여러 장 (기본 10장) 촬영 → 평균 Dark 맵 생성; ② 2단계 — Flat Field 영상 획득: 균일한 X-Ray 조사 (설정된 kVp/mAs)로 여러 장 촬영 → 평균 Flat 맵 생성; ③ 3단계 — 보정 맵 계산: `Gain = FlatAvg / (FlatAvg - DarkAvg)`, `Offset = DarkAvg`; ④ 4단계 — 품질 검증: VNUE 자동 계산 및 Pass(≤1%)/Fail 판정 표시. 각 단계 진행률 바 표시. | Safety-related | 4단계 위자드 완료 후 Gain/Offset 맵 파일 생성 확인; VNUE 계산 정확도 확인 | T, A | UT-SA-067, IT-SA-067 | HAZ-RAD, HAZ-SW |
 | SWR-SA-068 | PR-SA-063 | 캘리브레이션 품질 검증 (VNUE) | `CalibrationQualityChecker.CalculateVNUE(flatField)`: ① VNUE (Variation in Non-Uniformity) 계산: 보정 영상의 표준편차/평균 × 100%; ② Pass 기준: VNUE ≤1% (PR-IP-030 참조); ③ Fail 시 위자드 저장 버튼 비활성화 + "품질 기준 미달 — 재캘리브레이션이 필요합니다" 메시지; ④ 캘리브레이션 날짜/시간/VNUE 값을 DB에 기록. | Safety-related | VNUE 계산 정확도 확인; Fail 시 저장 차단 100% 확인 | T, A | UT-SA-068 | HAZ-RAD, HAZ-SW |
-| SWR-SA-069 | PR-SA-063 | 캘리브레이션 파일 관리 | 캘리브레이션 파일 저장 경로: `%ProgramData%\RadiConsole\Calibration\` ① Gain 맵: `gain_YYYYMMDD.bin` (16-bit float 배열); ② Offset(Dark) 맵: `offset_YYYYMMDD.bin`; ③ 이전 캘리브레이션 파일 최대 5세트 보관 (롤백 지원); ④ 캘리브레이션 파일 무결성 검증: CRC32 체크섬 파일 동반 저장. | Safety-related | 파일 CRC32 검증 통과; 이전 캘리브레이션 롤백 동작 확인 | T, I | UT-SA-069 | HAZ-RAD |
+| SWR-SA-069 | PR-SA-063 | 캘리브레이션 파일 관리 | 캘리브레이션 파일 저장 경로: `%ProgramData%\HnVue\Calibration\` ① Gain 맵: `gain_YYYYMMDD.bin` (16-bit float 배열); ② Offset(Dark) 맵: `offset_YYYYMMDD.bin`; ③ 이전 캘리브레이션 파일 최대 5세트 보관 (롤백 지원); ④ 캘리브레이션 파일 무결성 검증: CRC32 체크섬 파일 동반 저장. | Safety-related | 파일 CRC32 검증 통과; 이전 캘리브레이션 롤백 동작 확인 | T, I | UT-SA-069 | HAZ-RAD |
 | SWR-SA-070 | PR-SA-064 | Defect Pixel Map 자동 감지 | 캘리브레이션 데이터에서 결함 픽셀 자동 감지: ① Dark 영상에서 임계값(±3σ) 초과 픽셀 검출; ② Flat 영상에서 평균 대비 ±20% 이탈 픽셀 검출; ③ 결함 픽셀 위치(x, y) 목록을 `defect_pixel_map.bin`으로 저장; ④ 결함 픽셀 분포 Heatmap으로 시각화 표시; ⑤ 결함 픽셀 수 및 밀도 통계 표시 (PR-SA-064 수용 기준). | Safety-related | 감지된 결함 픽셀 위치 정확도 확인; Heatmap 표시 확인 | T, A | UT-SA-070 | HAZ-RAD |
 | SWR-SA-071 | PR-SA-064 | Defect Pixel Map 수동 편집 | 결함 픽셀 맵 수동 편집 UI: ① Heatmap에서 픽셀 클릭으로 결함 픽셀 추가/제거; ② 수동 추가 시 좌표 직접 입력도 지원; ③ 변경 사항은 즉시 미리보기 영상에 반영; ④ [저장] 후 새 Defect Pixel Map 파일 생성 (기존 파일 버전 보관). | Safety-related | 수동 추가/제거 동작 확인; 저장 후 처리 영상 반영 확인 | T | UT-SA-071 | HAZ-RAD |
 | SWR-SA-072 | PR-SA-065 | Audit Trail 이벤트 기록 | 다음 이벤트를 `audit_trail` 테이블에 자동 기록: ① 인증 이벤트: 로그인 성공/실패, 로그아웃, 계정 잠금; ② 환자 데이터 이벤트: 환자 등록/수정/삭제, 영상 승인/거부/삭제; ③ 설정 변경 이벤트: 시스템 설정 변경, RBAC 변경, 프로토콜 편집; ④ 임상 이벤트: 검사 시작/완료/취소, RDSR 전송; ⑤ 보안 이벤트: 권한 없는 접근 시도, 비밀번호 변경. 각 기록: 이벤트 유형, 사용자 ID, 타임스탬프(UTC), 대상 객체 ID, IP 주소, 결과(성공/실패). | Security-related | 정의된 이벤트 100% 기록 확인; IHE ATNA 프로파일 준수 확인 | T, I | UT-SA-072, IT-SA-072 | HAZ-SEC, HAZ-DATA |
 | SWR-SA-073 | PR-SA-065 | Audit Trail 변조 방지 및 보관 | Audit Trail 데이터 무결성 보장: ① `audit_trail` 테이블은 INSERT 전용 (UPDATE/DELETE 트리거로 차단); ② 각 레코드에 HMAC-SHA256 서명 (서명 키는 TPM 또는 별도 키 파일에 저장); ③ 90일 이상 보관 (PR-SA-065 수용 기준); ④ 90일 초과 데이터는 아카이브 테이블로 이동 (물리 삭제 불가, 규제 요건); ⑤ 감사 로그 조회 UI: 날짜/사용자/이벤트 유형 필터 + CSV 내보내기. | Security-related | INSERT 전용 정책 확인; 90일 보관 확인; HMAC 서명 검증 확인 | T, I | UT-SA-073, IT-SA-073 | HAZ-SEC |
-| SWR-SA-074 | PR-SA-066 | 구조화된 로그 기록 시스템 | NLog 또는 Serilog 기반 구조화 로깅: ① 로그 레벨: ERROR, WARN, INFO, DEBUG; ② 로그 형식: JSON 구조화 (타임스탬프 UTC, 레벨, 메시지, 소스 파일, 라인, 스레드 ID, 예외 스택 트레이스); ③ 로그 대상: 로컬 파일 + 선택적 원격 로그 서버(Syslog/Graylog); ④ 파일 경로: `%ProgramData%\RadiConsole\Logs\app-YYYYMMDD.log`; ⑤ 파일 롤링: 일별 로테이션, 최대 500MB/파일, 30일 보관 (PR-SA-066 수용 기준). | Functional | JSON 구조화 로그 출력 확인; 파일 롤링 동작 확인; 30일 보관 확인 | T, I | UT-SA-074 | HAZ-SW |
+| SWR-SA-074 | PR-SA-066 | 구조화된 로그 기록 시스템 | NLog 또는 Serilog 기반 구조화 로깅: ① 로그 레벨: ERROR, WARN, INFO, DEBUG; ② 로그 형식: JSON 구조화 (타임스탬프 UTC, 레벨, 메시지, 소스 파일, 라인, 스레드 ID, 예외 스택 트레이스); ③ 로그 대상: 로컬 파일 + 선택적 원격 로그 서버(Syslog/Graylog); ④ 파일 경로: `%ProgramData%\HnVue\Logs\app-YYYYMMDD.log`; ⑤ 파일 롤링: 일별 로테이션, 최대 500MB/파일, 30일 보관 (PR-SA-066 수용 기준). | Functional | JSON 구조화 로그 출력 확인; 파일 롤링 동작 확인; 30일 보관 확인 | T, I | UT-SA-074 | HAZ-SW |
 | SWR-SA-075 | PR-SA-066 | 로그 레벨 런타임 변경 | 관리자가 시스템 설정 UI에서 로그 레벨을 재시작 없이 변경 가능: ① 설정 화면에서 로그 레벨 드롭다운 (ERROR/WARN/INFO/DEBUG); ② 변경 즉시 적용 (런타임 리로드); ③ 기본값: INFO; ④ DEBUG 레벨 활성화 시 보안 경고 표시 ("DEBUG 모드에서는 민감한 정보가 로그에 포함될 수 있습니다"). | Functional | 런타임 로그 레벨 변경 즉시 적용 확인 | T | UT-SA-075 | — |
 | SWR-SA-076 | PR-SA-067 | SW 업데이트 패키지 서명 검증 | `UpdateManager.VerifySignature(packagePath)`: ① 업데이트 패키지(.exe/.msi) EV 코드 서명 인증서 검증; ② SHA-256 해시 검증 (패키지 동반 `.sha256` 파일 비교); ③ 서명 검증 실패 시 설치 프로세스 즉시 중단 + "서명 검증 실패 (Signature Verification Failed): 업데이트를 중단합니다" 경고; ④ 검증 결과 Security 레벨 로그 기록. | Security-related | 유효 서명 패키지 설치 허용 확인; 손상/위조 패키지 설치 차단 100% 확인 | T, I | UT-SA-076 | HAZ-SEC, HAZ-SW |
-| SWR-SA-077 | PR-SA-067 | SW 업데이트 전 백업 및 롤백 | 업데이트 설치 전 자동 처리: ① DB 및 설정 파일 자동 백업 (`%ProgramData%\RadiConsole\Backup\update_YYYYMMDD\`); ② 현재 SW 버전 실행 파일 백업; ③ 설치 실패 시 자동 롤백: 백업에서 이전 버전 복원; ④ 업데이트 완료 후 백업 7일 보관 후 자동 삭제; ⑤ 업데이트 이력 (버전, 날짜, 결과) DB 기록. | Functional | 업데이트 전 백업 생성 확인; 설치 실패 시 자동 롤백 확인 | T | UT-SA-077, IT-SA-077 | HAZ-SEC, HAZ-SW |
+| SWR-SA-077 | PR-SA-067 | SW 업데이트 전 백업 및 롤백 | 업데이트 설치 전 자동 처리: ① DB 및 설정 파일 자동 백업 (`%ProgramData%\HnVue\Backup\update_YYYYMMDD\`); ② 현재 SW 버전 실행 파일 백업; ③ 설치 실패 시 자동 롤백: 백업에서 이전 버전 복원; ④ 업데이트 완료 후 백업 7일 보관 후 자동 삭제; ⑤ 업데이트 이력 (버전, 날짜, 결과) DB 기록. | Functional | 업데이트 전 백업 생성 확인; 설치 실패 시 자동 롤백 확인 | T | UT-SA-077, IT-SA-077 | HAZ-SEC, HAZ-SW |
 
 ---
 
@@ -527,7 +527,7 @@ stateDiagram-v2
 | SWR-NF-PF-002 | PR-NF-PF-002 | 환자 검색 응답 ≤500ms | `PatientService.SearchAsync()` 응답 시간 ≤500ms (10,000건 SQLite DB, BTREE 인덱스 활성화 기준). 측정: 쿼리 호출 ~ 결과 바인딩 완료. | ≤500ms @ 10,000건 | T, A | ST-NF-PF-002 |
 | SWR-NF-PF-003 | PR-NF-PF-003 | DICOM 전송 속도 ≥100Mbps | Gigabit 네트워크 환경에서 C-STORE 전송 처리량 ≥100Mbps. 측정: 100개 DICOM 파일(각 10MB) 전송 총 시간 기반 계산. | ≥100Mbps @ Gigabit | T, A | ST-NF-PF-003 |
 | SWR-NF-PF-004 | PR-NF-PF-004 | GUI 응답 시간 ≤200ms | 버튼/터치 입력 이벤트 발생 ~ 첫 시각적 피드백 표시까지 ≤200ms. WPF UI 스레드 차단 금지 (모든 I/O 및 처리는 비동기). | ≤200ms 입력→피드백 | T, A | ST-NF-PF-004 |
-| SWR-NF-PF-005 | PR-NF-PF-005 | 시스템 부팅 시간 ≤60초 | BIOS POST 완료 후 → RadiConsole 로그인 화면 표시까지 ≤60초. 최적화: 지연 로딩(Lazy Loading), 백그라운드 초기화, 앱 시작 프로파일링. | ≤60초 (BIOS POST 이후) | T | ST-NF-PF-005 |
+| SWR-NF-PF-005 | PR-NF-PF-005 | 시스템 부팅 시간 ≤60초 | BIOS POST 완료 후 → HnVue 로그인 화면 표시까지 ≤60초. 최적화: 지연 로딩(Lazy Loading), 백그라운드 초기화, 앱 시작 프로파일링. | ≤60초 (BIOS POST 이후) | T | ST-NF-PF-005 |
 | SWR-NF-PF-006 | PR-NF-PF-006 | 동시 Study 3개 병렬 관리 | 최소 3개 Study 동시 관리 시 각 Study의 응답 시간 기준치(SWR-NF-PF-001~004) 10% 이내 저하. 구현: Study별 독
 ### 6.2 신뢰성 요구사항 — SWR-NF-RL
 
@@ -537,7 +537,7 @@ stateDiagram-v2
 | SWR-NF-RL-011 | PR-NF-RL-011 | MTBF ≥10,000시간 | SW 장애 기준 MTBF: 장애 없이 연속 운영 시간 기대값 ≥10,000시간. 달성 방법: ① 메모리 누수 방지(SWR-NF-RL-015); ② 예외 처리 전 범위 적용; ③ 크리티컬 스레드 와치독(Watchdog) 타이머 적용; ④ 72시간 소크 테스트(Soak Test) 실시. | MTBF ≥10,000h (분석 기반) | A | ST-NF-RL-011 |
 | SWR-NF-RL-012 | PR-NF-RL-012 | 데이터 무결성 (WAL) | SQLite WAL(Write-Ahead Logging) 모드 활성화로 전원 차단 시 데이터 손실 방지: ① `PRAGMA journal_mode=WAL;` 설정; ② `PRAGMA synchronous=FULL;` 설정 (안전 최우선); ③ 모든 촬영 데이터 트랜잭션 커밋 완료 후 UI 업데이트; ④ 앱 재시작 시 미완료 트랜잭션 자동 롤백. | 전원 차단 시나리오에서 데이터 손실 0건 | T, A | ST-NF-RL-012 |
 | SWR-NF-RL-013 | PR-NF-RL-013 | SW 크래시 자동 복구 | 비정상 종료(Crash) 감지 및 자동 재시작: ① Windows Service Watchdog 또는 별도 Guardian 프로세스로 메인 앱 모니터링(1초 주기); ② 앱 비응답(5초 이상) 또는 프로세스 소멸 감지 시 자동 재시작 명령; ③ 재시작 후 마지막 안정 상태(환자 선택, 촬영 순서 위치) 복원: Suspend 상태로 저장 (SWR-WF-030 연동); ④ 재시작까지 총 소요 시간 ≤30초. | 크래시 후 ≤30초 자동 재시작 100% 확인; 마지막 상태 복원 확인 | T, D | ST-NF-RL-013 |
-| SWR-NF-RL-014 | PR-NF-RL-014 | Graceful Degradation (오프라인 큐) | 네트워크 연결 실패 시 처리: ① PACS C-STORE 실패 → 로컬 임시 저장소(`%APPDATA%\RadiConsole\LocalStore\`)에 DICOM 파일 큐잉; ② 네트워크 복구 감지 시 자동 큐 처리(FIFO 순서); ③ 로컬 저장소 용량 경고: 사용 가능 공간 ≤10GB 시 경고; ④ MWL 조회 실패 시 마지막 성공 목록 캐시(30분) 표시 + \"연결 중 (Connecting...)\" 인디케이터. | 네트워크 복구 후 큐 자동 전송 확인; 오프라인 캐시 표시 확인 | T, D | ST-NF-RL-014 |
+| SWR-NF-RL-014 | PR-NF-RL-014 | Graceful Degradation (오프라인 큐) | 네트워크 연결 실패 시 처리: ① PACS C-STORE 실패 → 로컬 임시 저장소(`%APPDATA%\HnVue\LocalStore\`)에 DICOM 파일 큐잉; ② 네트워크 복구 감지 시 자동 큐 처리(FIFO 순서); ③ 로컬 저장소 용량 경고: 사용 가능 공간 ≤10GB 시 경고; ④ MWL 조회 실패 시 마지막 성공 목록 캐시(30분) 표시 + \"연결 중 (Connecting...)\" 인디케이터. | 네트워크 복구 후 큐 자동 전송 확인; 오프라인 캐시 표시 확인 | T, D | ST-NF-RL-014 |
 | SWR-NF-RL-015 | PR-NF-RL-015 | 장기 운영 메모리 관리 | 72시간 연속 운영 후 메모리 누수 방지: ① Managed Heap 증가 ≤10MB/24h(PR-NF-RL-015 기준); ② Native C++ 힙 모니터링(VLD 또는 AddressSanitizer 적용); ③ 영상 처리 버퍼 풀(Object Pool 패턴) 재사용으로 GC 압력 최소화; ④ DICOM 파일 핸들 해제 보장(using 패턴/RAII); ⑤ 72시간 소크 테스트 통과 필수. | 72h 후 Heap 증가 ≤10MB/24h | T, A | ST-NF-RL-015 |
 
 ### 6.3 사용성 요구사항 — SWR-NF-UX
@@ -620,7 +620,7 @@ stateDiagram-v2
 
 ```mermaid
 flowchart TD
-    subgraph Console["RadiConsole™ (SCU)"]
+    subgraph Console["HnVue (SCU)"]
         direction TB
         MWL_SCU["MWL SCU\n(C-FIND)\nSWR-DC-053~054"]
         MPPS_SCU["MPPS SCU\n(N-CREATE/N-SET)\nSWR-DC-055~056"]

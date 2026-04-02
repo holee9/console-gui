@@ -1,5 +1,5 @@
 # Predicate Device 비교표 (Substantial Equivalence Comparison)
-## HnVue Console SW (RadiConsole™) — FDA 510(k) Premarket Notification
+## HnVue Console SW (HnVue) — FDA 510(k) Premarket Notification
 
 ---
 
@@ -13,7 +13,7 @@
 | **작성자** | RA 팀 (Regulatory Affairs) |
 | **검토자** | 임상/RA 선임, SW 아키텍트 |
 | **승인자** | 의료기기 RA/QA 책임자 |
-| **제품** | HnVue Console SW (RadiConsole™) |
+| **제품** | HnVue Console SW (HnVue) |
 | **회사** | HnVue (가칭) |
 | **분류** | 필수 — FDA 510(k) 심사에서 실질적 동등성(SE) 입증의 핵심 문서 |
 | **적용 시장** | FDA 510(k) 전용 |
@@ -61,7 +61,7 @@ FDA는 다음 두 조건을 모두 충족할 때 SE를 인정한다:
 
 | 항목 | 내용 |
 |------|------|
-| **제품명** | HnVue Console SW (RadiConsole™) |
+| **제품명** | HnVue Console SW (HnVue) |
 | **제조사** | HnVue (가칭) |
 | **제조 국가** | 대한민국 |
 | **제품 코드** | LLZ (Picture Archiving and Communications System) |
@@ -70,7 +70,7 @@ FDA는 다음 두 조건을 모두 충족할 때 SE를 인정한다:
 | **제출 유형** | 510(k) Premarket Notification |
 | **SW 안전 분류** | IEC 62304 Class B / FDA Moderate Level of Concern (DOC-036 §3 참조) |
 | **SW 버전** | [TBD - 개발 완료 후 작성] |
-| **의도된 사용 (Intended Use)** | HnVue Console SW (RadiConsole™)는 면허를 보유한 의료 전문가(방사선사, 영상의학과 전문의)가 디지털 방사선(Digital Radiography, DR) 검출기(FPD: Flat Panel Detector)로 취득한 진단용 X-ray 영상을 획득, 표시, 처리(후처리 기능), 저장 및 PACS로 전송하기 위한 처방용(Rx Only) 의료기기 소프트웨어이다. |
+| **의도된 사용 (Intended Use)** | HnVue Console SW (HnVue)는 면허를 보유한 의료 전문가(방사선사, 영상의학과 전문의)가 디지털 방사선(Digital Radiography, DR) 검출기(FPD: Flat Panel Detector)로 취득한 진단용 X-ray 영상을 획득, 표시, 처리(후처리 기능), 저장 및 PACS로 전송하기 위한 처방용(Rx Only) 의료기기 소프트웨어이다. |
 | **의도된 사용 (Indications for Use)** | 일반 진단 X-ray 촬영 (흉부, 복부, 사지, 척추 등); 성인 및 소아 환자; 병원 촬영실(촬영용) 및 영상 판독실(판독용) 환경 |
 | **연계 하드웨어** | HnVue FPD (Flat Panel Detector) 번들; X-ray Generator 제어 인터페이스 |
 
@@ -143,11 +143,11 @@ Predicate Device는 다음 기준을 충족하는 제품으로 선정한다:
 
 FDA eSTAR 제출용 공식 Intended Use 문구 (영문):
 
-> *"HnVue Console SW (RadiConsole™) is a prescription-use-only medical device software intended for use by licensed healthcare professionals (radiologic technologists and radiologists) to acquire, display, process (including post-processing functions), store, and transmit diagnostic digital radiography (DR) X-ray images to a Picture Archiving and Communication System (PACS). The device is intended for use in hospital radiology departments for general diagnostic X-ray imaging of the chest, abdomen, extremities, and spine in adult and pediatric patients."*
+> *"HnVue Console SW (HnVue) is a prescription-use-only medical device software intended for use by licensed healthcare professionals (radiologic technologists and radiologists) to acquire, display, process (including post-processing functions), store, and transmit diagnostic digital radiography (DR) X-ray images to a Picture Archiving and Communication System (PACS). The device is intended for use in hospital radiology departments for general diagnostic X-ray imaging of the chest, abdomen, extremities, and spine in adult and pediatric patients."*
 
 FDA eSTAR 제출용 공식 Indications for Use 문구 (영문):
 
-> *"HnVue Console SW (RadiConsole™) is indicated for use as a digital radiography acquisition and display console software, designed to interface with flat panel detector (FPD)-based X-ray imaging systems. The software acquires, displays, processes, archives, and transmits diagnostic-quality X-ray images. It is intended for use by licensed radiologic technologists and radiologists for general diagnostic radiographic examinations in adults and pediatric patients in a hospital or clinical environment."*
+> *"HnVue Console SW (HnVue) is indicated for use as a digital radiography acquisition and display console software, designed to interface with flat panel detector (FPD)-based X-ray imaging systems. The software acquires, displays, processes, archives, and transmits diagnostic-quality X-ray images. It is intended for use by licensed radiologic technologists and radiologists for general diagnostic radiographic examinations in adults and pediatric patients in a hospital or clinical environment."*
 
 ---
 
@@ -228,7 +228,7 @@ FDA eSTAR 제출용 공식 Indications for Use 문구 (영문):
 >
 > **영문 (eSTAR 제출용)**:
 >
-> *"HnVue Console SW (RadiConsole™) has the same intended use as [Predicate 1 제품명] ([Predicate 1 K번호]) [and [Predicate 2 제품명] ([Predicate 2 K번호])]. The differences in technological characteristics do not raise new questions of safety and effectiveness, as supported by the comparative analysis above. The technological differences represent enhancements in cybersecurity (TLS 1.3 support, SBOM provision) and do not adversely affect the safety or effectiveness of the device. Therefore, HnVue Console SW (RadiConsole™) is Substantially Equivalent to the predicate device(s)."*"
+> *"HnVue Console SW (HnVue) has the same intended use as [Predicate 1 제품명] ([Predicate 1 K번호]) [and [Predicate 2 제품명] ([Predicate 2 K번호])]. The differences in technological characteristics do not raise new questions of safety and effectiveness, as supported by the comparative analysis above. The technological differences represent enhancements in cybersecurity (TLS 1.3 support, SBOM provision) and do not adversely affect the safety or effectiveness of the device. Therefore, HnVue Console SW (HnVue) is Substantially Equivalent to the predicate device(s)."*"
 
 ---
 
@@ -347,4 +347,4 @@ RA 팀이 FDA 510(k) 제출 전 수행해야 할 Predicate 선정 및 본 문서
 ---
 
 *문서 끝 (End of Document)*
-*DOC-050 | HnVue Console SW (RadiConsole™) | Predicate Device Comparison | v1.0 | 2026-03-31*
+*DOC-050 | HnVue Console SW (HnVue) | Predicate Device Comparison | v1.0 | 2026-03-31*

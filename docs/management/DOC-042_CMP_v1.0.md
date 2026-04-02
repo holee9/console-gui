@@ -6,7 +6,7 @@
 > **작성자**: [작성 필요]  
 > **검토자**: [작성 필요]  
 > **승인자**: [작성 필요]  
-> **제품**: HnVue Console SW (RadiConsole™)  
+> **제품**: HnVue Console SW (HnVue)  
 > **회사**: HnVue (가칭)  
 > **분류**: ✅ 최소 필수  
 > **적용 시장**: FDA 510(k) ✅ / MFDS 2등급 ✅ / EU MDR Class IIa ✅  
@@ -53,7 +53,7 @@
 
 ## 1. 목적
 
-본 문서는 HnVue Console SW (RadiConsole™) 및 모든 관련 산출물의 버전 관리, 변경 제어, 베이스라인 설정, 추적성을 보장하는 형상 관리 프로세스를 정의한다.
+본 문서는 HnVue Console SW (HnVue) 및 모든 관련 산출물의 버전 관리, 변경 제어, 베이스라인 설정, 추적성을 보장하는 형상 관리 프로세스를 정의한다.
 
 "언제든 FDA 510(k) 제출 버전의 SW를 동일하게 재현할 수 있음"을 증명하기 위한 핵심 프로세스 문서로, 허가 후 감사(GMP Inspection) 대응의 근거가 된다.
 
@@ -70,7 +70,7 @@
 
 | 항목 | 내용 |
 |------|------|
-| 적용 SW | HnVue Console SW (RadiConsole™) v[TBD - 개발 완료 후 작성] |
+| 적용 SW | HnVue Console SW (HnVue) v[TBD - 개발 완료 후 작성] |
 | 적용 대상 | 소스코드, 설계 문서, 시험 케이스, 빌드 스크립트, 설치 패키지, SOUP(제3자 라이브러리), 코드서명 인증서 |
 | 적용 시기 | SW 개발 착수(2026년) ~ 수명주기 종료(유지보수 포함) |
 | 적용 제외 | 개발 환경 OS 자체(Windows 10/11 설치 미디어), 임시 작업 파일(.tmp, 로컬 캐시) |
@@ -102,13 +102,13 @@
 
 | CI ID | 형상 항목명 | 유형 | 저장 위치 | 식별자 체계 |
 |-------|------------|------|----------|------------|
-| CI-001 | RadiConsole™ 소스코드 | 소스코드 | Git 저장소 (비공개) | Git commit SHA + 버전 태그 (v[MAJOR.MINOR.PATCH]) |
+| CI-001 | HnVue 소스코드 | 소스코드 | Git 저장소 (비공개) | Git commit SHA + 버전 태그 (v[MAJOR.MINOR.PATCH]) |
 | CI-002 | 설계 문서 (SDP, SRS, SAD 등) | 문서 | 문서 저장소 (docs/) | 문서번호(DOC-XXX) + 버전(v[X.X]) |
 | CI-003 | 시험 케이스 및 결과서 | 문서 | 문서 저장소 (docs/) | 문서번호(DOC-XXX) + 버전(v[X.X]) |
 | CI-004 | 빌드 스크립트 및 CI/CD 워크플로우 | 소스코드 | Git 저장소 (.github/workflows/) | Git commit SHA |
 | CI-005 | SOUP (제3자 라이브러리) | 바이너리/소스 | NuGet 피드 / 아티팩트 저장소 | 패키지명 + 고정 버전 번호 (packages.lock.json) |
 | CI-006 | 검출기 드라이버 SDK | 바이너리 | 아티팩트 저장소 | 공급사명 + 버전 번호 |
-| CI-007 | 설치 패키지 (MSI) | 바이너리 | 아티팩트 저장소 | RadiConsole-v[X.X.X]-setup.msi + SHA-256 해시 |
+| CI-007 | 설치 패키지 (MSI) | 바이너리 | 아티팩트 저장소 | HnVue-v[X.X.X]-setup.msi + SHA-256 해시 |
 | CI-008 | 코드서명 인증서 | 파일 | 보안 저장소 (HSM 또는 암호화 볼트) | 발급기관 + 시리얼 번호 + 유효기간 |
 | CI-009 | NuGet 의존성 잠금 파일 | 소스코드 | Git 저장소 (packages.lock.json) | Git commit SHA |
 | CI-010 | IFU / 라벨 문서 | 문서 | 문서 저장소 | 문서번호 + 버전 |
@@ -137,7 +137,7 @@
 
 #### 4.3.1 버전 번호 체계
 
-RadiConsole™은 Semantic Versioning 2.0.0 (semver.org) 기반 버전 번호 체계를 따른다.
+HnVue은 Semantic Versioning 2.0.0 (semver.org) 기반 버전 번호 체계를 따른다.
 
 ```
 MAJOR.MINOR.PATCH
@@ -200,7 +200,7 @@ MAJOR.MINOR.PATCH
 
 #### 4.4.1 CI/CD 파이프라인 개요
 
-RadiConsole™ 빌드 파이프라인은 재현 가능한 빌드(Reproducible Build)를 보장하기 위해 고정된 빌드 환경에서 실행된다. (상세: DOC-043)
+HnVue 빌드 파이프라인은 재현 가능한 빌드(Reproducible Build)를 보장하기 위해 고정된 빌드 환경에서 실행된다. (상세: DOC-043)
 
 ```
 [코드 Push / PR 생성]

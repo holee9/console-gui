@@ -7,7 +7,7 @@
 | 항목 | 내용 |
 |------|------|
 | **문서 ID** | CMP-XRAY-GUI-001 |
-| **문서명** | RadiConsole™ GUI Console SW 사이버보안 관리 계획서 |
+| **문서명** | HnVue GUI Console SW 사이버보안 관리 계획서 |
 | **버전** | v1.0 |
 | **작성일** | 2026-03-16 |
 | **작성자** | 사이버보안 팀 (Cybersecurity Team) |
@@ -28,7 +28,7 @@
 
 ### 1.1 목적 (Purpose)
 
-본 문서는 RadiConsole™ GUI Console SW(이하 "제품")에 대한 사이버보안 관리 계획(Cybersecurity Management Plan, CMP)을 수립함으로써 다음 목적을 달성하기 위해 작성되었다.
+본 문서는 HnVue GUI Console SW(이하 "제품")에 대한 사이버보안 관리 계획(Cybersecurity Management Plan, CMP)을 수립함으로써 다음 목적을 달성하기 위해 작성되었다.
 
 1. **FDA Section 524B (Omnibus 법안, 2022) 준수**: 의료기기 사이버보안 요구사항 충족을 위한 체계적 관리 계획 문서화
 2. **FDA Premarket Cybersecurity Guidance (2023) 적용**: SBOM 제출, 취약점 공개 정책(VDP), 지속적 사이버보안 모니터링 이행
@@ -41,7 +41,7 @@
 본 계획의 적용 범위는 아래와 같다.
 
 **대상 제품**:
-- RadiConsole™ GUI Console SW v1.x (IEC 62304 Class B)
+- HnVue GUI Console SW v1.x (IEC 62304 Class B)
 - 운영 플랫폼: Windows 10/11 IoT Enterprise (의료기기 전용)
 - 연결 인터페이스: DICOM (PACS/RIS), HL7 (HIS), X-Ray Generator Control, LDAP/AD
 
@@ -62,7 +62,7 @@ FDA Section 524B에 따르면 아래 조건을 충족하는 의료기기는 "Cyb
 
 > *"a device that includes software validated, installed, or authorized by the sponsor as a device or in a device; or a device that has the ability to connect to the internet"*
 
-RadiConsole™은 다음 근거에 의해 Cyber Device로 분류된다:
+HnVue은 다음 근거에 의해 Cyber Device로 분류된다:
 
 | 분류 기준 | 해당 여부 | 근거 |
 |----------|---------|------|
@@ -99,7 +99,7 @@ RadiConsole™은 다음 근거에 의해 Cyber Device로 분류된다:
 
 ### 3.1 네트워크 토폴로지 (Network Topology)
 
-RadiConsole™은 병원 내부 네트워크(Hospital Intranet)에 배치되며, 인터넷(Internet)과는 직접 연결되지 않는다. 단, 병원 네트워크가 인터넷에 연결될 수 있어 간접적 위협 경로가 존재한다.
+HnVue은 병원 내부 네트워크(Hospital Intranet)에 배치되며, 인터넷(Internet)과는 직접 연결되지 않는다. 단, 병원 네트워크가 인터넷에 연결될 수 있어 간접적 위협 경로가 존재한다.
 
 ```mermaid
 graph TB
@@ -115,7 +115,7 @@ graph TB
 
     subgraph Hospital_Network["병원 내부 네트워크 (Hospital Intranet)"]
         subgraph Medical_VLAN["의료기기 VLAN (VLAN 10)"]
-            RC[🖥️ RadiConsole™<br/>GUI Console SW]
+            RC[🖥️ HnVue<br/>GUI Console SW]
             XRAY[X-Ray Generator<br/>X선 발생장치]
             DR[DR Detector<br/>디지털 검출기]
         end
@@ -159,7 +159,7 @@ graph TB
 graph LR
     subgraph TZ1["신뢰 영역 1: 물리적 보호 구역<br/>(Trust Zone 1: Physically Secured Area)"]
         OP[촬영실 운영자<br/>Operator]
-        RC[RadiConsole™]
+        RC[HnVue]
         XRAY[X-Ray 장치]
     end
 
@@ -195,10 +195,10 @@ graph LR
 
 | 신뢰 경계 | 교차 지점 | 적용 통제 |
 |----------|----------|---------|
-| TB-1 | 운영자 ↔ RadiConsole™ | 사용자 인증 (MFA), RBAC, 세션 타임아웃 |
-| TB-2 | RadiConsole™ ↔ 임상 서버 | TLS 1.2+ 암호화, 서버 인증서 검증, DICOM TLS |
-| TB-3 | 외부 원격 ↔ RadiConsole™ | VPN 터널, MFA, 접속 로그, 시간 제한 |
-| TB-4 | X-Ray 장치 ↔ RadiConsole™ | 전용 프로토콜 서명 검증, 물리적 네트워크 분리 |
+| TB-1 | 운영자 ↔ HnVue | 사용자 인증 (MFA), RBAC, 세션 타임아웃 |
+| TB-2 | HnVue ↔ 임상 서버 | TLS 1.2+ 암호화, 서버 인증서 검증, DICOM TLS |
+| TB-3 | 외부 원격 ↔ HnVue | VPN 터널, MFA, 접속 로그, 시간 제한 |
+| TB-4 | X-Ray 장치 ↔ HnVue | 전용 프로토콜 서명 검증, 물리적 네트워크 분리 |
 
 ### 3.3 데이터 흐름도 (Data Flow Diagram, DFD) with 보안 영역
 
@@ -210,7 +210,7 @@ flowchart TD
         VENDOR_ENG["제조사 엔지니어<br/>(Vendor Engineer)"]
     end
 
-    subgraph RC_Process["RadiConsole™ 처리 프로세스"]
+    subgraph RC_Process["HnVue 처리 프로세스"]
         P1["P1: 사용자 인증<br/>(Authentication)"]
         P2["P2: 환자 정보 처리<br/>(Patient Data Processing)"]
         P3["P3: 촬영 파라미터 제어<br/>(Acquisition Control)"]
@@ -301,7 +301,7 @@ flowchart TD
 
 ```mermaid
 mindmap
-  root((STRIDE 위협<br/>RadiConsole™))
+  root((STRIDE 위협<br/>HnVue))
     Spoofing 스푸핑
       THR-001: 사용자 인증 우회
       THR-002: X-Ray 장치 위장
@@ -488,7 +488,7 @@ quadrantChart
 ```mermaid
 sequenceDiagram
     participant PS as 패치 서버<br/>(Patch Server)
-    participant RC as RadiConsole™
+    participant RC as HnVue
     participant VA as 검증 모듈<br/>(Validation Module)
     participant OS as OS/실행환경
 
@@ -514,7 +514,7 @@ sequenceDiagram
 
 ### 6.1 SBOM 개요 (SBOM Overview)
 
-FDA Premarket Cybersecurity Guidance (2023)는 "Software Bill of Materials (SBOM)"을 사전 제출 요구사항으로 명시한다. RadiConsole™의 SBOM은 다음 원칙에 따라 관리된다.
+FDA Premarket Cybersecurity Guidance (2023)는 "Software Bill of Materials (SBOM)"을 사전 제출 요구사항으로 명시한다. HnVue의 SBOM은 다음 원칙에 따라 관리된다.
 
 ### 6.2 SBOM 형식 (SBOM Format)
 
@@ -716,7 +716,7 @@ graph TB
     end
 
     subgraph Test_Medical_VLAN["테스트 의료기기 VLAN"]
-        RC_TEST[RadiConsole™<br/>테스트 인스턴스]
+        RC_TEST[HnVue<br/>테스트 인스턴스]
         XRAY_SIM[X-Ray 장치<br/>시뮬레이터]
         DR_SIM[DR 검출기<br/>시뮬레이터]
     end
@@ -994,17 +994,17 @@ ISO/IEC 29147 및 FDA 권고에 따른 VDP를 수립하여 보안 연구자 및 
     ],
     "authors": [
       {
-        "name": "RadiConsole™ Cybersecurity Team",
+        "name": "HnVue Cybersecurity Team",
         "email": "security@[company].com"
       }
     ],
     "component": {
       "type": "application",
-      "bom-ref": "radiconsole-gui-sw",
+      "bom-ref": "hnvue-gui-sw",
       "supplier": {
         "name": "[Company Name]"
       },
-      "name": "RadiConsole™ GUI Console SW",
+      "name": "HnVue GUI Console SW",
       "version": "1.0.0",
       "description": "Medical X-Ray Imaging Console Software",
       "licenses": [
@@ -1017,7 +1017,7 @@ ISO/IEC 29147 및 FDA 권고에 따른 VDP를 수립하여 보안 연구자 및 
       "externalReferences": [
         {
           "type": "website",
-          "url": "https://[company].com/radiconsole"
+          "url": "https://[company].com/hnvue"
         }
       ]
     }
@@ -1082,7 +1082,7 @@ ISO/IEC 29147 및 FDA 권고에 따른 VDP를 수립하여 보안 연구자 및 
   ],
   "dependencies": [
     {
-      "ref": "radiconsole-gui-sw",
+      "ref": "hnvue-gui-sw",
       "dependsOn": [
         "comp-001",
         "comp-002",
@@ -1241,7 +1241,7 @@ ISO/IEC 29147 및 FDA 권고에 따른 VDP를 수립하여 보안 연구자 및 
 
 **문서 번호**: CTR-XRAY-GUI-[YYYYMMDD]  
 **보고서 유형**: [ ] SAST  [ ] DAST  [ ] 침투 테스트  [ ] 퍼즈 테스트  [ ] 네트워크 보안  
-**제품명**: RadiConsole™ GUI Console SW  
+**제품명**: HnVue GUI Console SW  
 **테스트 대상 버전**: v___________  
 **테스트 기간**: __________ ~ __________  
 **테스트 수행자**: __________  
@@ -1376,5 +1376,5 @@ Low:      ██       N건
 ---
 
 **문서 끝 (End of Document)**  
-CMP-XRAY-GUI-001 v1.0 | RadiConsole™ GUI Console SW 사이버보안 관리 계획서  
+CMP-XRAY-GUI-001 v1.0 | HnVue GUI Console SW 사이버보안 관리 계획서  
 © [Company Name] — 대외비 (Confidential)

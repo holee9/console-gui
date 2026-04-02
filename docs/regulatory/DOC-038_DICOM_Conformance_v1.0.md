@@ -49,10 +49,10 @@ graph LR
 
 | 항목 | 값 |
 |------|-----|
-| **AE Title** | RADICONSOLE (기본값, 설정 변경 가능) |
+| **AE Title** | HNVUE (기본값, 설정 변경 가능) |
 | **Maximum PDU Size** | 16,384 bytes (수신), 16,384 bytes (송신) |
 | **Implementation Class UID** | 1.2.840.xxxxx.1.1.1 |
-| **Implementation Version** | RADICONSOLE_V10 |
+| **Implementation Version** | HNVUE_V10 |
 
 ### 2.2 지원 전송 구문 (Transfer Syntaxes)
 

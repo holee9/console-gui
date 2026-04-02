@@ -6,7 +6,7 @@
 > **작성자**: 사이버보안 팀 (Cybersecurity Team)
 > **검토자**: 위험 관리 담당자, QA 팀장
 > **승인자**: 의료기기 RA/QA 책임자
-> **제품**: HnVue Console SW (RadiConsole™)
+> **제품**: HnVue Console SW (HnVue)
 > **회사**: HnVue (가칭)
 > **분류**: ✅ 최소 필수
 > **적용 시장**: FDA 510(k) (필수), EU MDR Class IIa (필수), MFDS 2등급 (권장)
@@ -40,7 +40,7 @@
 
 | 항목 | 내용 |
 |---|---|
-| 제품명 | HnVue Console SW (RadiConsole™) |
+| 제품명 | HnVue Console SW (HnVue) |
 | 회사명 | HnVue (가칭) |
 | SW 버전 | v1.0 (개발 예정) |
 | IEC 62304 SW 클래스 | Class B |
@@ -65,8 +65,8 @@
 
 | 항목 | 내용 |
 |---|---|
-| 평가 대상 SW | HnVue Console SW (RadiConsole™) v1.0 |
-| 포함 인터페이스 | DR Detector ↔ RadiConsole™, RadiConsole™ ↔ PACS, RadiConsole™ ↔ HIS/RIS, 로컬 사용자 인터페이스, X-Ray Generator 제어, LDAP/AD |
+| 평가 대상 SW | HnVue Console SW (HnVue) v1.0 |
+| 포함 인터페이스 | DR Detector ↔ HnVue, HnVue ↔ PACS, HnVue ↔ HIS/RIS, 로컬 사용자 인터페이스, X-Ray Generator 제어, LDAP/AD |
 | 입력 문서 | DOC-017 위협 모델 TM-S-001 ~ TM-E-004 (총 28개 위협) |
 | 제외 범위 | 병원 네트워크 인프라, DR Detector 하드웨어 내부, X-Ray Generator 하드웨어 |
 

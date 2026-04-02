@@ -1,5 +1,5 @@
 # 시판 후 관리 계획서 (Post-Market Surveillance Plan)
-## RadiConsole™ GUI Console SW
+## HnVue GUI Console SW
 
 ---
 
@@ -8,7 +8,7 @@
 | 항목 | 내용 |
 |------|------|
 | **문서 ID** | PMS-XRAY-GUI-001 |
-| **문서명** | RadiConsole™ GUI Console SW 시판 후 관리 계획서 |
+| **문서명** | HnVue GUI Console SW 시판 후 관리 계획서 |
 | **버전** | v1.0 |
 | **작성일** | 2026-03-18 |
 | **작성자** | 품질 관리 팀 (Quality Management Team) |
@@ -22,7 +22,7 @@
 
 ### 1.1 목적
 
-본 문서는 RadiConsole™ GUI Console SW의 **시판 후 관리 (Post-Market Surveillance, PMS)** 활동을 계획하며, EU MDR Article 83-85 및 FDA 시판 후 요구사항을 준수한다.
+본 문서는 HnVue GUI Console SW의 **시판 후 관리 (Post-Market Surveillance, PMS)** 활동을 계획하며, EU MDR Article 83-85 및 FDA 시판 후 요구사항을 준수한다.
 
 ### 1.2 PMS 프로세스
 

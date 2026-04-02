@@ -1,6 +1,6 @@
 # 소프트웨어 상세 설계 명세서
 # Software Design Specification (SDS)
-## RadiConsole™ HnVue Console SW
+## HnVue HnVue Console SW
 
 ---
 
@@ -56,7 +56,7 @@
 
 ### 1.1 목적 (Purpose)
 
-본 문서는 **RadiConsole™ HnVue Console SW** (의료용 진단 X-Ray 촬영장치 콘솔 소프트웨어)의 **소프트웨어 상세 설계 명세서 (Software Design Specification, SDS)** 로서, IEC 62304:2006+AMD1:2015 **§5.4 소프트웨어 상세 설계 (Software Detailed Design)** 에서 요구하는 모든 설계 산출물을 정의한다.
+본 문서는 **HnVue HnVue Console SW** (의료용 진단 X-Ray 촬영장치 콘솔 소프트웨어)의 **소프트웨어 상세 설계 명세서 (Software Design Specification, SDS)** 로서, IEC 62304:2006+AMD1:2015 **§5.4 소프트웨어 상세 설계 (Software Detailed Design)** 에서 요구하는 모든 설계 산출물을 정의한다.
 
 본 문서의 핵심 목적은 다음과 같다:
 
@@ -67,7 +67,7 @@
 
 ### 1.2 범위 (Scope)
 
-본 SDS는 **RadiConsole™ Phase 1 (v1.0)** 의 다음 9개 소프트웨어 모듈을 대상으로 한다:
+본 SDS는 **HnVue Phase 1 (v1.0)** 의 다음 9개 소프트웨어 모듈을 대상으로 한다:
 
 | 모듈 ID | 모듈명 | SAD 참조 |
 |---------|--------|---------|
@@ -1554,7 +1554,7 @@ public async Task<T> ExecuteInTransactionAsync<T>(Func<Task<T>> operation)
 | 캐시 크기 | PRAGMA cache_size=-64000 | 64MB 메모리 캐시 |
 | 동기화 모드 | PRAGMA synchronous=NORMAL | WAL + NORMAL = 안전+성능 균형 |
 | 암호화 | SQLCipher AES-256 | PHI 보호 (SWR-CS-080) |
-| 연결 문자열 경로 | %ProgramData%\RadiConsole\Data\radidb.db | 고정 경로 |
+| 연결 문자열 경로 | %ProgramData%\HnVue\Data\radidb.db | 고정 경로 |
 
 ---
 
@@ -2053,7 +2053,7 @@ flowchart TD
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
-│  [RadiConsole™]  [환자명: 홍길동 (M/45)]  [Status: READY]    [EMRG]  │  ← 상단 타이틀바 (64px)
+│  [HnVue]  [환자명: 홍길동 (M/45)]  [Status: READY]    [EMRG]  │  ← 상단 타이틀바 (64px)
 ├──────────────┬────────────────────────────────┬─────────────────────┤
 │              │                                │                     │
 │ 환자 패널    │         영상 뷰어              │   촬영 제어 패널    │
@@ -2251,4 +2251,4 @@ flowchart LR
 
 *문서 끝 (End of Document)*
 
-*SDS-XRAY-GUI-001 v1.0 | IEC 62304 §5.4 | RadiConsole™ HnVue Console SW*
+*SDS-XRAY-GUI-001 v1.0 | IEC 62304 §5.4 | HnVue HnVue Console SW*

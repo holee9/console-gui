@@ -1,5 +1,5 @@
 # GSPR 체크리스트 (General Safety and Performance Requirements Checklist)
-## HnVue Console SW (RadiConsole™)
+## HnVue Console SW (HnVue)
 
 ---
 
@@ -15,7 +15,7 @@
 | **검토자** | SW 아키텍트, 사이버보안 팀, QA 팀장 |
 | **승인자** | 의료기기 RA/QA 책임자 |
 | **상태** | 초안 (Draft) |
-| **제품명** | HnVue Console SW (RadiConsole™) |
+| **제품명** | HnVue Console SW (HnVue) |
 | **제품 분류** | EU MDR 2017/745 Class IIa (Rule 11 — 진단 목적 SW) |
 | **회사명** | HnVue (가칭) |
 | **기준 규격** | EU MDR 2017/745 Annex I (GSPR), MDCG 2019-16, MDCG 2019-11 |
@@ -49,7 +49,7 @@
 
 ### 1.1 문서 목적
 
-본 문서는 EU MDR 2017/745 Annex I에 규정된 **일반 안전성 및 성능 요건 (General Safety and Performance Requirements, GSPR)** 전체 23개 조항에 대해 HnVue Console SW (RadiConsole™)의 적용 여부, 준수 증거 표준, 증빙 문서(DOC-XXX), 준수 상태를 체계적으로 매핑하여 Notified Body(NB) 기술 문서 심사의 기준 문서로 제공한다.
+본 문서는 EU MDR 2017/745 Annex I에 규정된 **일반 안전성 및 성능 요건 (General Safety and Performance Requirements, GSPR)** 전체 23개 조항에 대해 HnVue Console SW (HnVue)의 적용 여부, 준수 증거 표준, 증빙 문서(DOC-XXX), 준수 상태를 체계적으로 매핑하여 Notified Body(NB) 기술 문서 심사의 기준 문서로 제공한다.
 
 본 문서는 DOC-037(CE 기술 문서)에서 부분 커버하던 8개 GSPR 조항을 포함하여, Annex I 전체 23개 조항에 대한 완전한 독립 GSPR 체크리스트 문서로서 기능한다.
 
@@ -57,7 +57,7 @@
 
 | 항목 | 내용 |
 |------|------|
-| 제품명 | HnVue Console SW (RadiConsole™) |
+| 제품명 | HnVue Console SW (HnVue) |
 | 제품 유형 | 의료기기 소프트웨어 (SaMD — Software as a Medical Device) |
 | SW 안전 등급 | IEC 62304 Class B |
 | 의도된 용도 | 디지털 방사선 촬영(DR) 워크스테이션 제어 및 영상 취득·처리·전송 |
@@ -250,7 +250,7 @@ HnVue Console SW는 **SW 전용 의료기기(SaMD — Software as a Medical Devi
 
 > **[TBD - EU MDR CE 마킹 취득 전 최종 버전으로 교체]**
 
-HnVue(가칭)는 HnVue Console SW (RadiConsole™) v[TBD]이 EU MDR 2017/745 Annex I에 규정된 일반 안전성 및 성능 요건(GSPR)의 모든 적용 조항에 대해 위 체크리스트에 따라 준수함을 선언한다. N/A로 처리된 조항은 SW 전용 의료기기의 특성에 근거하여 적용 제외하였으며, 해당 근거는 §5 N/A 처리 사유 요약에 기술되어 있다.
+HnVue(가칭)는 HnVue Console SW (HnVue) v[TBD]이 EU MDR 2017/745 Annex I에 규정된 일반 안전성 및 성능 요건(GSPR)의 모든 적용 조항에 대해 위 체크리스트에 따라 준수함을 선언한다. N/A로 처리된 조항은 SW 전용 의료기기의 특성에 근거하여 적용 제외하였으며, 해당 근거는 §5 N/A 처리 사유 요약에 기술되어 있다.
 
 사이버보안 조항(§21)에 대해서는 IEC 81001-5-1:2021 Full Compliance 목표로 수명주기 전체에 걸쳐 보안 활동을 수행하며, 구체적 증빙은 DOC-016, DOC-046, DOC-049 및 관련 문서를 통해 제공한다.
 

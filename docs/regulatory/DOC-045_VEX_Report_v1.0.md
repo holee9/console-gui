@@ -6,7 +6,7 @@
 > **작성자**: 사이버보안 팀 (Cybersecurity Team)
 > **검토자**: SW 아키텍트, QA 팀장
 > **승인자**: 의료기기 RA/QA 책임자
-> **제품**: HnVue Console SW (RadiConsole™)
+> **제품**: HnVue Console SW (HnVue)
 > **회사**: HnVue (가칭)
 > **분류**: ⭐ 리스크 최소화 (FDA 강력 권장) | ⭐ EU MDR 권장
 > **적용 시장**: FDA 510(k) (강력 권장), EU MDR Class IIa (권장), MFDS 2등급 (해당 없음)
@@ -39,7 +39,7 @@
 
 | 항목 | 내용 |
 |---|---|
-| 제품명 | HnVue Console SW (RadiConsole™) |
+| 제품명 | HnVue Console SW (HnVue) |
 | 회사명 | HnVue (가칭) |
 | SW 버전 | v1.0 (개발 예정) |
 | 기준 SBOM 문서 | DOC-019 (SBOM-XRAY-GUI-001) v1.0 |

@@ -7,8 +7,8 @@
 | 항목 | 내용 |
 |---|---|
 | **문서 ID** | SAD-XRAY-GUI-001 |
-| **문서명 (Korean)** | RadiConsole™ HnVue Console SW 소프트웨어 아키텍처 설계 |
-| **문서명 (English)** | Software Architecture Design for RadiConsole™ HnVue Console SW |
+| **문서명 (Korean)** | HnVue HnVue Console SW 소프트웨어 아키텍처 설계 |
+| **문서명 (English)** | Software Architecture Design for HnVue HnVue Console SW |
 | **버전 (Version)** | v1.0 |
 | **작성일 (Date)** | 2026-03-18 |
 | **작성자 (Author)** | SW Architecture Team |
@@ -16,7 +16,7 @@
 | **승인자 (Approver)** | R&D Director |
 | **상태 (Status)** | Draft |
 | **기준 규격** | IEC 62304:2006+AMD1:2015 §5.3 |
-| **제품** | RadiConsole™ HnVue Console SW |
+| **제품** | HnVue HnVue Console SW |
 | **SW Safety Class** | IEC 62304 Class B |
 
 ---
@@ -35,7 +35,7 @@
 
 ### 1.1 목적 (Purpose)
 
-본 문서는 IEC 62304:2006+AMD1:2015 §5.3 "소프트웨어 아키텍처 설계 (Software Architectural Design)" 요구사항을 충족하기 위해 작성된 RadiConsole™ HnVue Console SW의 공식 아키텍처 설계 문서이다.
+본 문서는 IEC 62304:2006+AMD1:2015 §5.3 "소프트웨어 아키텍처 설계 (Software Architectural Design)" 요구사항을 충족하기 위해 작성된 HnVue HnVue Console SW의 공식 아키텍처 설계 문서이다.
 
 본 SAD (Software Architecture Design)는 다음 사항을 명시한다:
 
@@ -48,7 +48,7 @@
 
 ### 1.2 범위 (Scope)
 
-**대상 소프트웨어 (Target Software):** RadiConsole™ HnVue Console SW  
+**대상 소프트웨어 (Target Software):** HnVue HnVue Console SW  
 **용도 (Intended Use):** 의료용 진단 X-Ray 촬영장치 (Medical Diagnostic X-Ray Imaging Equipment)의 HnVue Console SW  
 **배포 환경 (Deployment):** Windows 10/11 기반 산업용 워크스테이션  
 **SW Safety Class:** IEC 62304 Class B  
@@ -90,17 +90,17 @@
 
 ### 3.1 전체 시스템 컨텍스트 다이어그램 (C4 Model Level 1)
 
-다음 다이어그램은 C4 Model Level 1 (System Context) 관점에서 RadiConsole™ HnVue Console SW와 외부 시스템/사용자의 상호작용을 나타낸다.
+다음 다이어그램은 C4 Model Level 1 (System Context) 관점에서 HnVue HnVue Console SW와 외부 시스템/사용자의 상호작용을 나타낸다.
 
 ```mermaid
 C4Context
-    title RadiConsole™ HnVue Console SW — System Context Diagram (C4 Level 1)
+    title HnVue HnVue Console SW — System Context Diagram (C4 Level 1)
 
     Person(radiologist, "방사선사 (Radiographer)", "X-Ray 촬영 수행, 영상 확인")
     Person(admin, "시스템 관리자 (System Admin)", "사용자 관리, 시스템 구성")
     Person(physician, "판독 의사 (Radiologist/Physician)", "영상 판독, 보고서 확인")
 
-    System(radiconsole, "RadiConsole™ HnVue Console SW", "진단 X-Ray 촬영 제어, 영상 처리/표시, 선량 관리, DICOM 통신")
+    System(hnvue, "HnVue HnVue Console SW", "진단 X-Ray 촬영 제어, 영상 처리/표시, 선량 관리, DICOM 통신")
 
     System_Ext(generator, "X-Ray Generator\n(X-Ray 발생기)", "X-Ray 조사 제어 (RS-232/Ethernet)")
     System_Ext(detector, "Flat Panel Detector\n(평판 검출기)", "영상 데이터 취득 (GigE/USB3)")
@@ -111,18 +111,18 @@ C4Context
     System_Ext(dose, "Dose Registry\n(선량 레지스트리)", "선량 데이터 보고 (DICOM RDSR)")
     System_Ext(ldap, "LDAP/AD Server\n(인증 서버)", "사용자 인증 (LDAP)")
 
-    Rel(radiologist, radiconsole, "촬영 작업 수행", "GUI 인터랙션")
-    Rel(admin, radiconsole, "시스템 관리", "GUI 인터랙션")
-    Rel(physician, radiconsole, "영상 조회/판독", "GUI 인터랙션")
+    Rel(radiologist, hnvue, "촬영 작업 수행", "GUI 인터랙션")
+    Rel(admin, hnvue, "시스템 관리", "GUI 인터랙션")
+    Rel(physician, hnvue, "영상 조회/판독", "GUI 인터랙션")
 
-    Rel(radiconsole, generator, "촬영 파라미터 전송/제어", "RS-232 / TCP/IP")
-    Rel(radiconsole, detector, "영상 데이터 수신/제어", "GigE Vision / USB3")
-    Rel(radiconsole, pacs, "DICOM 영상 전송/조회", "DICOM PS3")
-    Rel(radiconsole, ris, "환자/오더 정보 수신", "HL7 v2.x / FHIR R4")
-    Rel(radiconsole, worklist, "DICOM MWL 조회", "DICOM C-FIND")
-    Rel(radiconsole, mpps, "수행 상태 보고", "DICOM N-CREATE/N-SET")
-    Rel(radiconsole, dose, "선량 보고서 전송", "DICOM RDSR")
-    Rel(radiconsole, ldap, "사용자 인증", "LDAP / Active Directory")
+    Rel(hnvue, generator, "촬영 파라미터 전송/제어", "RS-232 / TCP/IP")
+    Rel(hnvue, detector, "영상 데이터 수신/제어", "GigE Vision / USB3")
+    Rel(hnvue, pacs, "DICOM 영상 전송/조회", "DICOM PS3")
+    Rel(hnvue, ris, "환자/오더 정보 수신", "HL7 v2.x / FHIR R4")
+    Rel(hnvue, worklist, "DICOM MWL 조회", "DICOM C-FIND")
+    Rel(hnvue, mpps, "수행 상태 보고", "DICOM N-CREATE/N-SET")
+    Rel(hnvue, dose, "선량 보고서 전송", "DICOM RDSR")
+    Rel(hnvue, ldap, "사용자 인증", "LDAP / Active Directory")
 ```
 
 ### 3.2 SW 시스템 경계 정의 (Software System Boundary)
@@ -153,7 +153,7 @@ C4Context
 
 ### 4.1 개요
 
-본 절은 Philippe Kruchten의 4+1 View Model을 기반으로 RadiConsole™ HnVue Console SW 아키텍처를 다섯 가지 관점에서 서술한다.
+본 절은 Philippe Kruchten의 4+1 View Model을 기반으로 HnVue HnVue Console SW 아키텍처를 다섯 가지 관점에서 서술한다.
 
 | 뷰 | 관점 | 주요 대상 |
 |---|---|---|
@@ -268,7 +268,7 @@ graph LR
 
 ```mermaid
 graph TD
-    subgraph "RadiConsole™ SW Repository"
+    subgraph "HnVue SW Repository"
         subgraph "src/"
             subgraph "modules/"
                 M1[patient_management/<br/>SAD-PM-100]
@@ -330,7 +330,7 @@ graph TB
     subgraph "X-Ray Room (촬영실)"
         subgraph "Clinical Workstation (임상 워크스테이션)"
             subgraph "Windows 10/11 OS"
-                APP[RadiConsole™ HnVue Console SW<br/>v1.0]
+                APP[HnVue HnVue Console SW<br/>v1.0]
                 subgraph "Application Components"
                     APP_GUI[GUI Process<br/>Qt 6.x]
                     APP_SVC[Background Services<br/>DICOM SCP Listener<br/>HL7 Listener]
@@ -383,7 +383,7 @@ graph TB
 
 ```mermaid
 graph TD
-    ROOT["RadiConsole™ HnVue Console SW<br/>(SW System)"]
+    ROOT["HnVue HnVue Console SW<br/>(SW System)"]
     ROOT --> PM["SAD-PM-100<br/>PatientManagement"]
     ROOT --> WF["SAD-WF-200<br/>WorkflowEngine"]
     ROOT --> IP["SAD-IP-300<br/>ImageProcessing"]

@@ -7,7 +7,7 @@
 | **문서 ID** | MRD-PRIORITY-REASSESS-001 |
 | **버전** | v1.0 |
 | **작성일** | 2026-04-02 |
-| **프로젝트** | HnX-R1 RadiConsole™ |
+| **프로젝트** | HnX-R1 HnVue |
 | **작성자** | 전략마케팅본부 |
 | **적용 대상** | MRD v2.0 → v3.0 우선순위 체계 전환 |
 | **분류** | 대외비 (Confidential) |

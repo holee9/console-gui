@@ -5,7 +5,7 @@
 | **문서 ID** | DOC-001a |
 | **버전** | v1.0 |
 | **날짜** | 2026-04-02 |
-| **제품** | RadiConsole™ (X-ray 촬영 콘솔 SW) |
+| **제품** | HnVue (X-ray 촬영 콘솔 SW) |
 | **목적** | Tier 1(인허가 필수) MR 13개에 대한 상세 기능 정의 및 구현 가이드 제공 |
 | **기술 스택** | WPF .NET 8, fo-dicom 5.x, SQLite, Serilog |
 | **규제 등급** | IEC 62304 Class B, FDA §524B cyber device |
@@ -44,7 +44,7 @@
 - **인허가 영향**: DICOM C-STORE SCU 및 MWL SCU가 없으면 PACS 연동 불가 → 병원 환경에서 동작하지 않는 기기로 판정 → MFDS 기술문서 및 FDA 510(k) 모두 거절 가능
 
 #### 무엇인가 (What)
-- **기능 정의**: RadiConsole™이 병원 PACS/RIS와 DICOM 표준 프로토콜로 통신하는 기능이다. 촬영된 영상을 PACS에 전송하고(C-STORE), RIS로부터 촬영 예약 환자 목록을 조회하며(MWL), 촬영 진행 상태를 PACS에 보고한다(MPPS). Storage Commitment으로 PACS의 영상 보관 확인을 수신하고, Query/Retrieve SCU로 기존 영상을 조회·다운로드한다.
+- **기능 정의**: HnVue이 병원 PACS/RIS와 DICOM 표준 프로토콜로 통신하는 기능이다. 촬영된 영상을 PACS에 전송하고(C-STORE), RIS로부터 촬영 예약 환자 목록을 조회하며(MWL), 촬영 진행 상태를 PACS에 보고한다(MPPS). Storage Commitment으로 PACS의 영상 보관 확인을 수신하고, Query/Retrieve SCU로 기존 영상을 조회·다운로드한다.
 - **구현 범위 (Phase 1 최소)**:
   - **C-STORE SCU**: 촬영 완료 영상을 PACS로 전송 (필수)
   - **MWL SCU (C-FIND)**: RIS/PACS에서 예약 환자 목록 조회 (필수)
@@ -56,7 +56,7 @@
 
 #### 어떻게 동작하는가 (How)
 - **사용 시나리오**:
-  1. 방사선사가 RadiConsole™을 실행하면 자동으로 MWL SCU가 RIS에 당일 예약 환자 목록을 조회한다.
+  1. 방사선사가 HnVue을 실행하면 자동으로 MWL SCU가 RIS에 당일 예약 환자 목록을 조회한다.
   2. 방사선사가 목록에서 환자를 선택하면 환자 정보(Patient ID, Accession Number 등)가 자동으로 채워진다.
   3. 촬영 완료 후 영상이 DICOM 형식으로 생성되고, C-STORE SCU가 설정된 PACS AE Title로 영상을 자동 전송한다.
   4. PACS 전송 성공/실패 상태가 UI에 표시된다.
@@ -123,7 +123,7 @@ style N fill:#444,stroke:#666,color:#fff
 - **인허가 영향**: IHE SWF 미준수 시 병원 IT 환경과의 상호운용성 결여를 이유로 MFDS 심사에서 추가 소명 요구 가능; 유럽 CE 마킹 심사에서도 IHE 준수는 상호운용성 선언의 핵심 근거임
 
 #### 무엇인가 (What)
-- **기능 정의**: IHE(Integrating the Healthcare Enterprise) Radiology Technical Framework의 Scheduled Workflow(SWF) 프로파일에 정의된 트랜잭션 순서와 액터 역할을 준수한다. RadiConsole™은 SWF 프로파일에서 Modality 액터 역할을 수행하며, Ordering/Scheduling 시스템(RIS)과 Image Manager/Archive(PACS) 간의 표준화된 워크플로우를 따른다.
+- **기능 정의**: IHE(Integrating the Healthcare Enterprise) Radiology Technical Framework의 Scheduled Workflow(SWF) 프로파일에 정의된 트랜잭션 순서와 액터 역할을 준수한다. HnVue은 SWF 프로파일에서 Modality 액터 역할을 수행하며, Ordering/Scheduling 시스템(RIS)과 Image Manager/Archive(PACS) 간의 표준화된 워크플로우를 따른다.
 - **구현 범위 (Phase 1 최소)**:
   - **SWF Basic 준수**: MWL 조회(RAD-5 트랜잭션) + 영상 저장(RAD-8 트랜잭션) 구현
   - Modality 액터로서의 동작: MWL SCU(RAD-5) → 영상 획득 → C-STORE SCU(RAD-8)
@@ -135,8 +135,8 @@ style N fill:#444,stroke:#666,color:#fff
 
 #### 어떻게 동작하는가 (How)
 - **사용 시나리오**:
-  1. 방사선사가 RIS에서 촬영 예약을 생성하면 RadiConsole™이 MWL(RAD-5)로 조회한다.
-  2. 환자 선택 후 촬영을 진행하면 RadiConsole™이 SWF 트랜잭션 순서에 따라 영상을 PACS에 전송한다.
+  1. 방사선사가 RIS에서 촬영 예약을 생성하면 HnVue이 MWL(RAD-5)로 조회한다.
+  2. 환자 선택 후 촬영을 진행하면 HnVue이 SWF 트랜잭션 순서에 따라 영상을 PACS에 전송한다.
   3. 전체 워크플로우가 IHE SWF에 정의된 순서를 벗어나지 않아, 어떤 IHE 호환 PACS/RIS와도 정상 동작한다.
 - **기술 동작**:
   - **RAD-5 (MWL Query)**: `DicomCFindRequest`로 `ModalityWorklistInformationModelFind` SOP Class 사용, 요청/응답 Dataset은 IHE SWF Profile Table에 정의된 필수 속성 포함
@@ -149,7 +149,7 @@ style N fill:#444,stroke:#666,color:#fff
 ```mermaid
 flowchart LR
     A[Order Placer\nRIS] -->|RAD-4 Order Filler에 예약 전달| B[Order Filler\nRIS/Scheduler]
-    B -->|RAD-5 MWL 응답| C[RadiConsole™\nModality 액터]
+    B -->|RAD-5 MWL 응답| C[HnVue\nModality 액터]
     C -->|RAD-5 MWL 조회 요청| B
     C -->|RAD-8 영상 저장 C-STORE| D[Image Manager\nPACS]
     D -->|RAD-8 저장 응답| C
@@ -181,7 +181,7 @@ style D fill:#444,stroke:#666,color:#fff
 - **인허가 영향**: RBAC 미구현 시 FDA 사이버보안 제출물(SBD, Security Bill of Design) 누락으로 510(k) 처리 지연; MFDS 사이버보안 35개 항목 불충족으로 기술문서 보완 요청 발생
 
 #### 무엇인가 (What)
-- **기능 정의**: 사용자의 역할(Role)에 따라 RadiConsole™의 기능 및 데이터에 대한 접근 권한을 제한하는 시스템이다. 각 사용자는 하나 이상의 역할에 할당되며, 역할에 정의된 권한 집합(Permission Set)만 행사할 수 있다. 권한 없는 기능 접근 시 UI 레벨 및 서비스 레벨 모두에서 차단된다.
+- **기능 정의**: 사용자의 역할(Role)에 따라 HnVue의 기능 및 데이터에 대한 접근 권한을 제한하는 시스템이다. 각 사용자는 하나 이상의 역할에 할당되며, 역할에 정의된 권한 집합(Permission Set)만 행사할 수 있다. 권한 없는 기능 접근 시 UI 레벨 및 서비스 레벨 모두에서 차단된다.
 - **구현 범위 (Phase 1 최소)**:
   - **Admin 역할**: 사용자 계정 관리, 시스템 설정, 모든 기능 접근, 감사 로그 조회
   - **Technologist(방사선사) 역할**: 환자 목록 조회(MWL), 촬영 실행, 영상 전송, 본인 작업 내역 조회 (시스템 설정 접근 불가)
@@ -414,7 +414,7 @@ style M fill:#444,stroke:#666,color:#fff
 - **인허가 영향**: SBOM 미제출 시 FDA §524B 법적 요건 직접 위반으로 510(k) 제출 불가 (자동 거절 사유); MFDS 기술문서 보완 요청
 
 #### 무엇인가 (What)
-- **기능 정의**: RadiConsole™을 구성하는 모든 소프트웨어 컴포넌트(NuGet 패키지, 오픈소스 라이브러리, 타사 SOUP)의 목록을 기계 가독 형식(CycloneDX 또는 SPDX)으로 자동 생성한다. 각 컴포넌트의 이름, 버전, 공급자, 라이선스, 알려진 취약점(CVE) 정보를 포함한다.
+- **기능 정의**: HnVue을 구성하는 모든 소프트웨어 컴포넌트(NuGet 패키지, 오픈소스 라이브러리, 타사 SOUP)의 목록을 기계 가독 형식(CycloneDX 또는 SPDX)으로 자동 생성한다. 각 컴포넌트의 이름, 버전, 공급자, 라이선스, 알려진 취약점(CVE) 정보를 포함한다.
 - **구현 범위 (Phase 1 최소)**:
   - **CycloneDX for .NET CLI** (`cyclonedx-dotnet`) 빌드 파이프라인 통합 — 빌드 시 자동으로 SBOM.json 생성
   - 생성 형식: CycloneDX JSON (FDA 선호 형식) 및 SPDX JSON 동시 생성
@@ -430,10 +430,10 @@ style M fill:#444,stroke:#666,color:#fff
   - 릴리스 담당자가 SBOM 파일과 취약점 보고서를 확인하여 심각 취약점(CVSS 7.0+) 여부를 판단한다.
   - 인허가 제출 시 해당 버전의 SBOM 파일을 FDA/MFDS 제출 패키지에 포함한다.
 - **기술 동작**:
-  - 빌드 스크립트에 `dotnet CycloneDX ./RadiConsole.sln -o ./sbom/ -j` 명령 추가
+  - 빌드 스크립트에 `dotnet CycloneDX ./HnVue.sln -o ./sbom/ -j` 명령 추가
   - 생성된 `bom.json`을 SPDX 변환 도구(`spdx-tools`)로 SPDX JSON으로도 변환
   - NVD API (api.nvd.nist.gov)로 각 컴포넌트 CVE 조회 및 취약점 CSV 보고서 생성
-  - SBOM 파일명 규칙: `RadiConsole_v{version}_SBOM_{date}.json`으로 버전-날짜 연계 보관
+  - SBOM 파일명 규칙: `HnVue_v{version}_SBOM_{date}.json`으로 버전-날짜 연계 보관
 
 #### 인허가 제출물 연결
 - **FDA §524B(b)(1) SBOM 제출**: CycloneDX JSON 형식 SBOM 파일을 510(k) 사이버보안 섹션에 첨부
@@ -467,7 +467,7 @@ style M fill:#444,stroke:#666,color:#fff
 
 #### 어떻게 동작하는가 (How)
 - **사용 시나리오 (CVD)**:
-  1. 외부 보안 연구자가 RadiConsole™에서 취약점을 발견하고 security@[회사도메인]으로 신고한다.
+  1. 외부 보안 연구자가 HnVue에서 취약점을 발견하고 security@[회사도메인]으로 신고한다.
   2. 보안 담당자가 3영업일 내 수신 확인 이메일을 발송하고 추적 번호를 부여한다.
   3. SW 팀이 14일 내 취약점을 검증하고 심각도(CVSS 점수)를 평가한다.
   4. 패치를 개발하고 테스트 후 안전한 업데이트(MR-039)로 배포한다.
@@ -574,12 +574,12 @@ style M fill:#444,stroke:#666,color:#fff
 #### 어떻게 동작하는가 (How)
 - **사용 시나리오**:
   - **Code Signing**: 빌드 엔지니어가 릴리스 빌드를 완료하면 CI 파이프라인이 자동으로 `signtool.exe`를 실행하여 모든 실행 파일에 서명한다. 병원 설치 시 Windows SmartScreen이 서명을 확인하고 "검증된 게시자" 표시를 보여준다.
-  - **업데이트**: 관리자가 새 버전 업데이트 패키지를 수령하면 RadiConsole™ 업데이트 도구를 실행한다. 도구가 패키지 서명과 해시를 검증하고, 현재 버전을 백업한 후, 새 버전을 설치한다. 검증 실패 시 "무결성 검증 실패 — 설치가 중단되었습니다"를 표시하고 패키지를 삭제한다.
+  - **업데이트**: 관리자가 새 버전 업데이트 패키지를 수령하면 HnVue 업데이트 도구를 실행한다. 도구가 패키지 서명과 해시를 검증하고, 현재 버전을 백업한 후, 새 버전을 설치한다. 검증 실패 시 "무결성 검증 실패 — 설치가 중단되었습니다"를 표시하고 패키지를 삭제한다.
 - **기술 동작**:
   - **Code Signing**: `signtool.exe sign /tr http://timestamp.sectigo.com /td sha256 /fd sha256 /a <파일들>` — 타임스탬프 포함하여 인증서 만료 후에도 서명 유효
   - **업데이트 패키지**: 업데이트 .zip 내 `manifest.json`에 각 파일의 SHA-256 해시 목록 포함, manifest.json 자체는 공개키 서명
   - **서명 검증**: `AuthenticodeSignatureHelper` 또는 P/Invoke `WinVerifyTrust()` API로 설치 전 검증
-  - **롤백**: 현재 설치 디렉토리를 `%PROGRAMDATA%\RadiConsole\Backup\v{current_version}\`에 복사 후 업데이트 시작; 실패 시 백업 디렉토리에서 복원
+  - **롤백**: 현재 설치 디렉토리를 `%PROGRAMDATA%\HnVue\Backup\v{current_version}\`에 복사 후 업데이트 시작; 실패 시 백업 디렉토리에서 복원
 
 #### 워크플로우
 
@@ -643,7 +643,7 @@ style Q fill:#444,stroke:#666,color:#fff
 - **인허가 영향**: IEC 62304 SW 수명주기 프로세스 산출물이 없으면 MFDS, FDA, CE 마킹 모든 인허가 경로가 차단됨. 위협 모델링 산출물 부재 시 IEC 81001-5-1 불충족으로 FDA 사이버보안 제출물 미완성
 
 #### 무엇인가 (What)
-- **기능 정의**: RadiConsole™ SW 개발 전 과정에 IEC 62304 Class B 수명주기 프로세스를 적용하고, 그 산출물(계획서, 요구사항 명세, 설계서, 검증 계획/보고서, 유지보수 계획 등)을 문서화한다. 별도로 STRIDE 방법론을 적용하여 시스템의 모든 인터페이스와 데이터 흐름에 대한 위협을 식별하고, 각 위협에 대한 보안 통제를 매핑한다.
+- **기능 정의**: HnVue SW 개발 전 과정에 IEC 62304 Class B 수명주기 프로세스를 적용하고, 그 산출물(계획서, 요구사항 명세, 설계서, 검증 계획/보고서, 유지보수 계획 등)을 문서화한다. 별도로 STRIDE 방법론을 적용하여 시스템의 모든 인터페이스와 데이터 흐름에 대한 위협을 식별하고, 각 위협에 대한 보안 통제를 매핑한다.
 - **구현 범위 (Phase 1 최소)**:
   - **IEC 62304 산출물**:
     - SW 개발 계획서 (SWDP): 수명주기 모델, 인원, 도구, 형상 관리 방법 기술
@@ -683,7 +683,7 @@ style Q fill:#444,stroke:#666,color:#fff
 - **인허가 영향**: 사용성 공학 산출물(Use Specification, Summative Evaluation) 미제출 시 MFDS 및 FDA 심사에서 Human Factors 섹션 보완 요청; 방사선사의 사용 오류로 인한 안전 위해가 발생할 경우 인허가 철회 근거가 됨
 
 #### 무엇인가 (What)
-- **기능 정의**: IEC 62366-1 프로세스에 따라 RadiConsole™의 의도된 사용 방식을 정의하고, 잠재적 사용 오류를 분석하며, 대표 사용자(방사선사)를 대상으로 사용성 평가를 수행하여 안전하고 효과적인 UI를 보장한다.
+- **기능 정의**: IEC 62366-1 프로세스에 따라 HnVue의 의도된 사용 방식을 정의하고, 잠재적 사용 오류를 분석하며, 대표 사용자(방사선사)를 대상으로 사용성 평가를 수행하여 안전하고 효과적인 UI를 보장한다.
 - **구현 범위 (Phase 1 최소)**:
   - **Use Specification (의도된 사용 명세)**: 의도된 사용자(방사선사), 의도된 사용 환경(방사선실), 의도된 용도(X-ray 촬영 콘솔 조작) 정의
   - **사용 관련 위험 분석**: 잠재적 사용 오류(잘못된 환자 선택, 촬영 파라미터 오설정 등)와 안전 위해 연결
@@ -693,7 +693,7 @@ style Q fill:#444,stroke:#666,color:#fff
   - 시선 추적, 생체 신호 측정 등 고급 사용성 측정: Phase 2
 
 #### 어떻게 동작하는가 (How)
-- **사용 시나리오**: 개발 단계에서 방사선사 3명을 모집하여 RadiConsole™ 프로토타입으로 실제 촬영 워크플로우(MWL 조회 → 환자 선택 → 파라미터 설정 → 촬영 → 영상 확인)를 수행하게 한다. 사용 오류 발생 시 원인을 분석하고 UI를 개선한다. 최종 평가 결과를 Summative Evaluation Report에 기록한다.
+- **사용 시나리오**: 개발 단계에서 방사선사 3명을 모집하여 HnVue 프로토타입으로 실제 촬영 워크플로우(MWL 조회 → 환자 선택 → 파라미터 설정 → 촬영 → 영상 확인)를 수행하게 한다. 사용 오류 발생 시 원인을 분석하고 UI를 개선한다. 최종 평가 결과를 Summative Evaluation Report에 기록한다.
 - **기술 동작**: SW 기능 구현이 아닌 사용성 프로세스 산출물. 평가 도구로 화면 녹화 소프트웨어 및 관찰 체크리스트 활용.
 
 #### 인허가 제출물 연결
@@ -715,7 +715,7 @@ style Q fill:#444,stroke:#666,color:#fff
 - **인허가 영향**: QMS 미구축 시 MFDS 제조업 허가 불가 → 모든 제품 허가 신청 불가; FDA QSR 미준수 시 Warning Letter, 제품 리콜, 판매 중지 행정 조치 가능
 
 #### 무엇인가 (What)
-- **기능 정의**: ISO 13485 및 21 CFR Part 820 요건에 따라 RadiConsole™의 설계-개발-검증-밸리데이션 전 과정을 품질경영시스템(QMS) 하에서 수행하고, 설계 이력 파일(DHF: Design History File)을 구축한다.
+- **기능 정의**: ISO 13485 및 21 CFR Part 820 요건에 따라 HnVue의 설계-개발-검증-밸리데이션 전 과정을 품질경영시스템(QMS) 하에서 수행하고, 설계 이력 파일(DHF: Design History File)을 구축한다.
 - **구현 범위 (Phase 1 최소)**:
   - **설계 관리 (Design Controls)**: 설계 입력(Design Input), 설계 출력(Design Output), 설계 검토(Design Review), 설계 검증(Design Verification), 설계 밸리데이션(Design Validation) 각 단계 수행 및 문서화
   - **DHF (Design History File)**: 설계 이력의 모든 산출물을 DHF로 편철 관리
@@ -781,7 +781,7 @@ style Q fill:#444,stroke:#666,color:#fff
 - **인허가 영향**: Conformance Statement 미제출 시 MFDS 기술문서 보완 요청; 병원 구매 시 의료 IT 부서에서 Conformance Statement를 필수 제출 서류로 요구하므로 상업적 판매 장애
 
 #### 무엇인가 (What)
-- **기능 정의**: RadiConsole™이 구현한 DICOM 서비스(SOP Class, 트랜잭션, Transfer Syntax, 보안 옵션 등)를 DICOM PS3.2 Annex A 표준 템플릿에 맞춰 기술한 공식 문서다. PACS 벤더, 병원 IT 부서, 규제기관이 RadiConsole™과의 DICOM 연동 가능 여부를 판단하는 기준 문서가 된다.
+- **기능 정의**: HnVue이 구현한 DICOM 서비스(SOP Class, 트랜잭션, Transfer Syntax, 보안 옵션 등)를 DICOM PS3.2 Annex A 표준 템플릿에 맞춰 기술한 공식 문서다. PACS 벤더, 병원 IT 부서, 규제기관이 HnVue과의 DICOM 연동 가능 여부를 판단하는 기준 문서가 된다.
 - **구현 범위 (Phase 1 최소)**:
   - **Conformance Statement 문서 작성**: DICOM PS3.2 Annex A 구조에 따라 작성
     - Application Entity (AE) 명세: AE Title, 지원 역할(SCU/SCP), 관련 SOP Class
@@ -795,7 +795,7 @@ style Q fill:#444,stroke:#666,color:#fff
 
 #### 어떻게 동작하는가 (How)
 - **사용 시나리오**:
-  - 병원 구매 담당자가 "RadiConsole™이 우리 PACS(Vendor X)와 연동되는가?" 확인 시 Conformance Statement를 제공한다.
+  - 병원 구매 담당자가 "HnVue이 우리 PACS(Vendor X)와 연동되는가?" 확인 시 Conformance Statement를 제공한다.
   - 병원 IT 엔지니어가 Conformance Statement를 보고 PACS AE Title, 포트, SOP Class 설정을 구성한다.
   - MFDS/FDA 심사관이 DICOM 구현 범위를 확인 시 Conformance Statement를 참조한다.
 - **기술 동작**: SW 기능 구현이 아닌 문서 산출물. 최신 구현 상태와 Conformance Statement 내용이 항상 일치하도록 버전 관리 필요.
@@ -812,4 +812,4 @@ style Q fill:#444,stroke:#666,color:#fff
 
 | 버전 | 날짜 | 변경 내용 | 작성자 |
 |---|---|---|---|
-| v1.0 | 2026-04-02 | 최초 작성 — Tier 1 MR 13개 (MR-019, 020, 033~037, 039, 050~054) | RadiConsole SW팀 |
+| v1.0 | 2026-04-02 | 최초 작성 — Tier 1 MR 13개 (MR-019, 020, 033~037, 039, 050~054) | HnVue SW팀 |

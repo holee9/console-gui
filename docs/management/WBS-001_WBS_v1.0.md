@@ -234,7 +234,7 @@ mindmap
 
 ```mermaid
 timeline
-    title RadiConsole™ GUI SW 개발 Milestone Timeline (Phase 1)
+    title HnVue GUI SW 개발 Milestone Timeline (Phase 1)
     section M1 (2026-03)
         MS-01 : 기반 문서 승인 (DR#1)
               : MRD / PRD

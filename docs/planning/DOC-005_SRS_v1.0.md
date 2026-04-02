@@ -59,7 +59,7 @@
 
 ### 1.1 목적 (Purpose)
 
-본 문서는 **RadiConsole™ HnVue Console SW**의 **소프트웨어 요구사항 명세서 (Software Requirements Specification, SRS)**로서, IEC 62304:2006+A1:2015 §5.2 "소프트웨어 요구사항 분석 (Software Requirements Analysis)"에서 요구하는 소프트웨어 요구사항 (Software Requirements, SWR)을 IEC 62304 §5.2의 12개 분류 체계에 따라 체계적으로 재편성한다.
+본 문서는 **HnVue HnVue Console SW**의 **소프트웨어 요구사항 명세서 (Software Requirements Specification, SRS)**로서, IEC 62304:2006+A1:2015 §5.2 "소프트웨어 요구사항 분석 (Software Requirements Analysis)"에서 요구하는 소프트웨어 요구사항 (Software Requirements, SWR)을 IEC 62304 §5.2의 12개 분류 체계에 따라 체계적으로 재편성한다.
 
 본 SRS는 FRS-XRAY-GUI-001 v1.0에서 정의된 기능 요구사항 (SWR-xxx)을 **IEC 62304 §5.2 규격 구조에 맞게 재분류·통합**하며, 다음의 목적을 수행한다:
 
@@ -76,13 +76,13 @@
 | 분류 기준 | 내용 |
 |----------|------|
 | Safety Class | **Class B** (심각한 부상 가능성, 치명적 부상 가능성 없음) |
-| 분류 근거 | RadiConsole™ SW 오작동 시 방사선 노출 오류, 오진단 등 심각한 부상(Serious Injury) 가능성 존재. 그러나 별도 하드웨어 인터록(Generator HW 안전 회로)이 존재하여 직접 치명적(Class C) 영향은 완화됨 |
+| 분류 근거 | HnVue SW 오작동 시 방사선 노출 오류, 오진단 등 심각한 부상(Serious Injury) 가능성 존재. 그러나 별도 하드웨어 인터록(Generator HW 안전 회로)이 존재하여 직접 치명적(Class C) 영향은 완화됨 |
 | 적용 요구사항 | IEC 62304 §5.2 전체, §5.3, §5.4, §5.5, §5.6, §5.7, §6.1, §7.1~§7.3, §8 적용 |
 | 해당 도메인 | 모든 Safety-related SWR (SWR-WF, SWR-DM, SWR-IP, SWR-PM 일부) |
 
 ### 1.3 적용 범위 (Scope)
 
-본 SRS는 **RadiConsole™ Phase 1 (v1.0)** 기능 범위에 해당하는 약 180개의 소프트웨어 요구사항을 IEC 62304 §5.2 분류에 따라 정의한다.
+본 SRS는 **HnVue Phase 1 (v1.0)** 기능 범위에 해당하는 약 180개의 소프트웨어 요구사항을 IEC 62304 §5.2 분류에 따라 정의한다.
 
 ```mermaid
 flowchart TD
@@ -150,7 +150,7 @@ flowchart TD
 
 ### 3.1 제품 설명 (Product Description)
 
-**RadiConsole™**은 의료용 진단 X-Ray 촬영장치의 **HnVue Console SW**로서, 방사선사(Technologist)가 X-Ray 촬영 전반의 워크플로우를 제어·관리하는 소프트웨어 플랫폼이다. 본 SW는 IEC 62304 Class B 의료기기 소프트웨어로 분류된다.
+**HnVue**은 의료용 진단 X-Ray 촬영장치의 **HnVue Console SW**로서, 방사선사(Technologist)가 X-Ray 촬영 전반의 워크플로우를 제어·관리하는 소프트웨어 플랫폼이다. 본 SW는 IEC 62304 Class B 의료기기 소프트웨어로 분류된다.
 
 **운영 환경:**
 - OS: Windows 10 LTSC 2021 / Windows 11 (64-bit)
@@ -162,7 +162,7 @@ flowchart TD
 
 ```mermaid
 graph TB
-    subgraph RadiConsole["RadiConsole™ HnVue Console SW (IEC 62304 Class B)"]
+    subgraph HnVue["HnVue HnVue Console SW (IEC 62304 Class B)"]
         direction TB
         subgraph UI["UI Layer (WPF/MVVM)"]
             PM_UI["환자 관리 UI\nPatient Management"]
@@ -214,7 +214,7 @@ graph TB
     DC_SVC --> PRINT
     CS_SVC -->|"LDAPS"| AD
 
-    style RadiConsole fill:#1a2e45,color:#fff
+    style HnVue fill:#1a2e45,color:#fff
     style UI fill:#1e8449,color:#fff
     style BL fill:#7d3c98,color:#fff
     style DAL fill:#1a5276,color:#fff
@@ -223,7 +223,7 @@ graph TB
 
 ### 3.3 SW 아키텍처 개요
 
-RadiConsole™은 다음 7개 독립 모듈로 구성된다:
+HnVue은 다음 7개 독립 모듈로 구성된다:
 
 | 모듈 | 책임 | 관련 SWR |
 |------|------|---------|
@@ -433,7 +433,7 @@ flowchart LR
         I5["Hand Switch\nUSB HID"]
     end
 
-    subgraph RadiConsole["RadiConsole™ SW"]
+    subgraph HnVue["HnVue SW"]
         direction TB
         PROC["영상 처리 엔진\n(C++ / OpenCV)"]
         BIZ["비즈니스 로직\n(C# / WPF)"]
@@ -462,7 +462,7 @@ flowchart LR
     BIZ --> O4
     DB_INT --> O5
 
-    style RadiConsole fill:#1a2e45,color:#fff
+    style HnVue fill:#1a2e45,color:#fff
     style Inputs fill:#1e8449,color:#fff
     style Outputs fill:#7d3c98,color:#fff
 ```
