@@ -71,6 +71,7 @@
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     A[방사선사 로그인] --> B[MWL SCU\nRIS에 환자 목록 조회]
     B --> C{조회 성공?}
     C -- 예 --> D[예약 환자 목록 표시]
@@ -87,20 +88,6 @@ flowchart TD
     M -- 예 --> K
     M -- 아니오 --> N[전송 실패 알림\n로컬 큐에 보관]
 
-style A fill:#444,stroke:#666,color:#fff
-style B fill:#444,stroke:#666,color:#fff
-style C fill:#444,stroke:#666,color:#fff
-style D fill:#444,stroke:#666,color:#fff
-style E fill:#444,stroke:#666,color:#fff
-style F fill:#444,stroke:#666,color:#fff
-style G fill:#444,stroke:#666,color:#fff
-style H fill:#444,stroke:#666,color:#fff
-style I fill:#444,stroke:#666,color:#fff
-style J fill:#444,stroke:#666,color:#fff
-style K fill:#444,stroke:#666,color:#fff
-style L fill:#444,stroke:#666,color:#fff
-style M fill:#444,stroke:#666,color:#fff
-style N fill:#444,stroke:#666,color:#fff
 ```
 
 #### 인허가 제출물 연결
@@ -148,16 +135,13 @@ style N fill:#444,stroke:#666,color:#fff
 
 ```mermaid
 flowchart LR
+    classDef default fill:#444,stroke:#666,color:#fff
     A[Order Placer\nRIS] -->|RAD-4 Order Filler에 예약 전달| B[Order Filler\nRIS/Scheduler]
     B -->|RAD-5 MWL 응답| C[HnVue\nModality 액터]
     C -->|RAD-5 MWL 조회 요청| B
     C -->|RAD-8 영상 저장 C-STORE| D[Image Manager\nPACS]
     D -->|RAD-8 저장 응답| C
 
-style A fill:#444,stroke:#666,color:#fff
-style B fill:#444,stroke:#666,color:#fff
-style C fill:#444,stroke:#666,color:#fff
-style D fill:#444,stroke:#666,color:#fff
 ```
 
 #### 인허가 제출물 연결
@@ -208,6 +192,7 @@ style D fill:#444,stroke:#666,color:#fff
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     A[HnVue 시작] --> B[로그인 화면]
     B --> C[사용자명 / 비밀번호 입력]
     C --> D[자격증명 검증\nbcrypt 해싱 비교]
@@ -226,22 +211,6 @@ flowchart TD
     N -- 통과 --> O[기능 실행]
     N -- 차단 --> P[접근 거부 알림\n감사 로그 기록]
 
-style A fill:#444,stroke:#666,color:#fff
-style B fill:#444,stroke:#666,color:#fff
-style C fill:#444,stroke:#666,color:#fff
-style D fill:#444,stroke:#666,color:#fff
-style E fill:#444,stroke:#666,color:#fff
-style F fill:#444,stroke:#666,color:#fff
-style G fill:#444,stroke:#666,color:#fff
-style H fill:#444,stroke:#666,color:#fff
-style I fill:#444,stroke:#666,color:#fff
-style J fill:#444,stroke:#666,color:#fff
-style K fill:#444,stroke:#666,color:#fff
-style L fill:#444,stroke:#666,color:#fff
-style M fill:#444,stroke:#666,color:#fff
-style N fill:#444,stroke:#666,color:#fff
-style O fill:#444,stroke:#666,color:#fff
-style P fill:#444,stroke:#666,color:#fff
 ```
 
 #### 인허가 제출물 연결
@@ -292,6 +261,7 @@ style P fill:#444,stroke:#666,color:#fff
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     A[PHI 생성\n환자 입력 또는 MWL 조회] --> B{데이터 유형}
     B -- DB 저장 --> C[SQLCipher AES-256\n페이지 암호화]
     B -- 네트워크 전송 --> D[DICOM TLS 1.2+\n세션 암호화]
@@ -304,17 +274,6 @@ flowchart TD
     K --> C
     K --> H
 
-style A fill:#444,stroke:#666,color:#fff
-style B fill:#444,stroke:#666,color:#fff
-style C fill:#444,stroke:#666,color:#fff
-style D fill:#444,stroke:#666,color:#fff
-style E fill:#444,stroke:#666,color:#fff
-style F fill:#444,stroke:#666,color:#fff
-style G fill:#444,stroke:#666,color:#fff
-style H fill:#444,stroke:#666,color:#fff
-style I fill:#444,stroke:#666,color:#fff
-style J fill:#444,stroke:#666,color:#fff
-style K fill:#444,stroke:#666,color:#fff
 ```
 
 #### 인허가 제출물 연결
@@ -367,6 +326,7 @@ style K fill:#444,stroke:#666,color:#fff
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     A[보안 이벤트 발생\n로그인/PHI접근/설정변경] --> B[Serilog\n이벤트 캡처]
     B --> C[구조화 로그 포맷\nJSON 직렬화]
     C --> D[append-only 파일 기록\n일별 롤링]
@@ -379,19 +339,6 @@ flowchart TD
     K -- 화면 조회 --> L[필터링된 이벤트 목록 표시]
     K -- 내보내기 --> M[CSV / PDF 내보내기]
 
-style A fill:#444,stroke:#666,color:#fff
-style B fill:#444,stroke:#666,color:#fff
-style C fill:#444,stroke:#666,color:#fff
-style D fill:#444,stroke:#666,color:#fff
-style E fill:#444,stroke:#666,color:#fff
-style F fill:#444,stroke:#666,color:#fff
-style G fill:#444,stroke:#666,color:#fff
-style H fill:#444,stroke:#666,color:#fff
-style I fill:#444,stroke:#666,color:#fff
-style J fill:#444,stroke:#666,color:#fff
-style K fill:#444,stroke:#666,color:#fff
-style L fill:#444,stroke:#666,color:#fff
-style M fill:#444,stroke:#666,color:#fff
 ```
 
 #### 인허가 제출물 연결
@@ -483,6 +430,7 @@ style M fill:#444,stroke:#666,color:#fff
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     A[외부 연구자\n취약점 발견] --> B[보안 전용 메일\n취약점 신고]
     B --> C[수신 확인 발송\n추적 번호 부여\n3영업일 이내]
     C --> D[취약점 검증\nCVSS 심각도 평가\n14일 이내]
@@ -495,22 +443,13 @@ flowchart TD
     H --> I
     I --> J[CVE 번호 취득\n공개 취약점 공지 발행]
 
-style A fill:#444,stroke:#666,color:#fff
-style B fill:#444,stroke:#666,color:#fff
-style C fill:#444,stroke:#666,color:#fff
-style D fill:#444,stroke:#666,color:#fff
-style E fill:#444,stroke:#666,color:#fff
-style F fill:#444,stroke:#666,color:#fff
-style G fill:#444,stroke:#666,color:#fff
-style H fill:#444,stroke:#666,color:#fff
-style I fill:#444,stroke:#666,color:#fff
-style J fill:#444,stroke:#666,color:#fff
 ```
 
 #### 워크플로우 (인시던트 대응 프로세스)
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     A[보안 이벤트 탐지\n감사 로그 알림] --> B[초기 분류\n심각도 판정]
     B --> C{Level 판정}
     C -- Level 1 낮음 --> D[일반 이슈 처리\n로그 기록]
@@ -525,19 +464,6 @@ flowchart TD
     K --> L[사후 분석\nPost-Incident Review]
     L --> M[재발 방지 조치\n문서 업데이트]
 
-style A fill:#444,stroke:#666,color:#fff
-style B fill:#444,stroke:#666,color:#fff
-style C fill:#444,stroke:#666,color:#fff
-style D fill:#444,stroke:#666,color:#fff
-style E fill:#444,stroke:#666,color:#fff
-style F fill:#444,stroke:#666,color:#fff
-style G fill:#444,stroke:#666,color:#fff
-style H fill:#444,stroke:#666,color:#fff
-style I fill:#444,stroke:#666,color:#fff
-style J fill:#444,stroke:#666,color:#fff
-style K fill:#444,stroke:#666,color:#fff
-style L fill:#444,stroke:#666,color:#fff
-style M fill:#444,stroke:#666,color:#fff
 ```
 
 #### 인허가 제출물 연결
@@ -585,6 +511,7 @@ style M fill:#444,stroke:#666,color:#fff
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     A[신규 버전 빌드 완료] --> B[signtool.exe\n모든 실행파일 Code Signing]
     B --> C[업데이트 패키지 생성\nmanifest.json 해시 포함]
     C --> D[패키지 자체 서명\nSHA-256 해시 생성]
@@ -603,23 +530,6 @@ flowchart TD
     O -- 예 --> P[설치 완료\n재시작 요청]
     O -- 아니오 --> Q[자동 롤백\n이전 버전 복원]
 
-style A fill:#444,stroke:#666,color:#fff
-style B fill:#444,stroke:#666,color:#fff
-style C fill:#444,stroke:#666,color:#fff
-style D fill:#444,stroke:#666,color:#fff
-style E fill:#444,stroke:#666,color:#fff
-style F fill:#444,stroke:#666,color:#fff
-style G fill:#444,stroke:#666,color:#fff
-style H fill:#444,stroke:#666,color:#fff
-style I fill:#444,stroke:#666,color:#fff
-style J fill:#444,stroke:#666,color:#fff
-style K fill:#444,stroke:#666,color:#fff
-style L fill:#444,stroke:#666,color:#fff
-style M fill:#444,stroke:#666,color:#fff
-style N fill:#444,stroke:#666,color:#fff
-style O fill:#444,stroke:#666,color:#fff
-style P fill:#444,stroke:#666,color:#fff
-style Q fill:#444,stroke:#666,color:#fff
 ```
 
 #### 인허가 제출물 연결

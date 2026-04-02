@@ -60,6 +60,7 @@
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     A([HnVue 시작]) --> B[MWL 서버 자동 연결]
     B --> C{연결 성공?}
     C -- 아니오 --> D[오류 표시 + 재연결 대기]
@@ -71,16 +72,6 @@ flowchart TD
     H --> I[검사 세션 초기화\n환자 정보 자동 로딩]
     I --> J([촬영 진행])
 
-    style A fill:#444,stroke:#666,color:#fff
-    style B fill:#444,stroke:#666,color:#fff
-    style C fill:#444,stroke:#666,color:#fff
-    style D fill:#444,stroke:#666,color:#fff
-    style E fill:#444,stroke:#666,color:#fff
-    style F fill:#444,stroke:#666,color:#fff
-    style G fill:#444,stroke:#666,color:#fff
-    style H fill:#444,stroke:#666,color:#fff
-    style I fill:#444,stroke:#666,color:#fff
-    style J fill:#444,stroke:#666,color:#fff
 ```
 
 #### PRD 연결 포인트
@@ -112,6 +103,7 @@ flowchart TD
 
 ```mermaid
 flowchart LR
+    classDef default fill:#444,stroke:#666,color:#fff
     A([Exposure]) --> B[Raw 이미지 수신\nFPD SDK]
     B --> C[영상처리 SDK\n비동기 호출]
     C --> D[DICOM 인스턴스\n생성]
@@ -121,14 +113,6 @@ flowchart LR
     F -- 아니오 --> H[재시도\n최대 3회]
     H --> E
 
-    style A fill:#444,stroke:#666,color:#fff
-    style B fill:#444,stroke:#666,color:#fff
-    style C fill:#444,stroke:#666,color:#fff
-    style D fill:#444,stroke:#666,color:#fff
-    style E fill:#444,stroke:#666,color:#fff
-    style F fill:#444,stroke:#666,color:#fff
-    style G fill:#444,stroke:#666,color:#fff
-    style H fill:#444,stroke:#666,color:#fff
 ```
 
 #### PRD 연결 포인트
@@ -160,18 +144,13 @@ flowchart LR
 
 ```mermaid
 flowchart LR
+    classDef default fill:#444,stroke:#666,color:#fff
     A([①환자 선택\n클릭 1]) --> B([②프로토콜 선택\n클릭 2])
     B --> C([③Exposure\n클릭 3])
     C --> D([④영상 확인\n클릭 4])
     D --> E([⑤다음 환자\n클릭 5])
     D --> F[PACS 자동 전송\n클릭 없음]
 
-    style A fill:#444,stroke:#666,color:#fff
-    style B fill:#444,stroke:#666,color:#fff
-    style C fill:#444,stroke:#666,color:#fff
-    style D fill:#444,stroke:#666,color:#fff
-    style E fill:#444,stroke:#666,color:#fff
-    style F fill:#444,stroke:#666,color:#fff
 ```
 
 #### PRD 연결 포인트
@@ -228,6 +207,7 @@ flowchart LR
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     A([HnVue 시작]) --> B[디텍터 SDK 초기화]
     B --> C[디텍터 자동 검색\n상태 폴링 시작]
     C --> D{디텍터 상태}
@@ -238,16 +218,6 @@ flowchart TD
     H --> I[활성 디텍터 전환]
     I --> J([촬영 준비 완료])
 
-    style A fill:#444,stroke:#666,color:#fff
-    style B fill:#444,stroke:#666,color:#fff
-    style C fill:#444,stroke:#666,color:#fff
-    style D fill:#444,stroke:#666,color:#fff
-    style E fill:#444,stroke:#666,color:#fff
-    style F fill:#444,stroke:#666,color:#fff
-    style G fill:#444,stroke:#666,color:#fff
-    style H fill:#444,stroke:#666,color:#fff
-    style I fill:#444,stroke:#666,color:#fff
-    style J fill:#444,stroke:#666,color:#fff
 ```
 
 #### PRD 연결 포인트
@@ -279,6 +249,7 @@ flowchart TD
 
 ```mermaid
 flowchart LR
+    classDef default fill:#444,stroke:#666,color:#fff
     A([Raw 이미지\nFPD 수신]) --> B[영상처리 SDK\nProcess 호출]
     B --> C[프로토콜 파라미터\n자동 적용]
     C --> D[W/L 자동 조정]
@@ -286,13 +257,6 @@ flowchart LR
     E --> F[Noise Reduction]
     F --> G([최적화 영상\n화면 표시])
 
-    style A fill:#444,stroke:#666,color:#fff
-    style B fill:#444,stroke:#666,color:#fff
-    style C fill:#444,stroke:#666,color:#fff
-    style D fill:#444,stroke:#666,color:#fff
-    style E fill:#444,stroke:#666,color:#fff
-    style F fill:#444,stroke:#666,color:#fff
-    style G fill:#444,stroke:#666,color:#fff
 ```
 
 #### PRD 연결 포인트
@@ -397,6 +361,7 @@ flowchart LR
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     A([HnVue 시작]) --> B[FPD SDK 초기화\n자동 연결]
     B --> C{Calibration\n필요?}
     C -- 예 --> D[Offset / Gain /\nDefect Calibration]
@@ -409,17 +374,6 @@ flowchart TD
     I --> J[영상처리 파이프라인\nMR-011/013]
     J --> K([영상 화면 표시])
 
-    style A fill:#444,stroke:#666,color:#fff
-    style B fill:#444,stroke:#666,color:#fff
-    style C fill:#444,stroke:#666,color:#fff
-    style D fill:#444,stroke:#666,color:#fff
-    style E fill:#444,stroke:#666,color:#fff
-    style F fill:#444,stroke:#666,color:#fff
-    style G fill:#444,stroke:#666,color:#fff
-    style H fill:#444,stroke:#666,color:#fff
-    style I fill:#444,stroke:#666,color:#fff
-    style J fill:#444,stroke:#666,color:#fff
-    style K fill:#444,stroke:#666,color:#fff
 ```
 
 #### PRD 연결 포인트
@@ -499,6 +453,7 @@ flowchart TD
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     A([프로토콜 선택]) --> B[APR 파라미터\nGenerator 전송\nkVp / mAs]
     B --> C[Generator 설정 완료]
     C --> D[방사선사 Exposure\nReady 확인]
@@ -508,15 +463,6 @@ flowchart TD
     G --> H[DICOM 태그 기록\nPACS 전송 포함]
     H --> I([촬영 완료])
 
-    style A fill:#444,stroke:#666,color:#fff
-    style B fill:#444,stroke:#666,color:#fff
-    style C fill:#444,stroke:#666,color:#fff
-    style D fill:#444,stroke:#666,color:#fff
-    style E fill:#444,stroke:#666,color:#fff
-    style F fill:#444,stroke:#666,color:#fff
-    style G fill:#444,stroke:#666,color:#fff
-    style H fill:#444,stroke:#666,color:#fff
-    style I fill:#444,stroke:#666,color:#fff
 ```
 
 #### PRD 연결 포인트
@@ -623,6 +569,7 @@ flowchart TD
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     A([환자 선택]) --> B[CD 굽기 버튼 클릭]
     B --> C[포함 영상 확인\n기본: 전체 선택]
     C --> D[DICOMDIR 생성\nfo-dicom]
@@ -633,16 +580,6 @@ flowchart TD
     H -- 예 --> I([완료 알림\n환자 전달])
     H -- 아니오 --> J[오류 안내\n디스크 재시도]
 
-    style A fill:#444,stroke:#666,color:#fff
-    style B fill:#444,stroke:#666,color:#fff
-    style C fill:#444,stroke:#666,color:#fff
-    style D fill:#444,stroke:#666,color:#fff
-    style E fill:#444,stroke:#666,color:#fff
-    style F fill:#444,stroke:#666,color:#fff
-    style G fill:#444,stroke:#666,color:#fff
-    style H fill:#444,stroke:#666,color:#fff
-    style I fill:#444,stroke:#666,color:#fff
-    style J fill:#444,stroke:#666,color:#fff
 ```
 
 #### PRD 연결 포인트
