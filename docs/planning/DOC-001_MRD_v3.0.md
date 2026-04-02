@@ -595,9 +595,9 @@ flowchart TD
     MR -.->|Validation| VT
     HAZ -.->|Risk Verify| ST
 
-    style DI fill:#D4E9FF,stroke:#0066CC
-    style VV fill:#D4FFD4,stroke:#006600
-    style RM fill:#FFE8D4,stroke:#CC4400
+    style DI fill:#707070,stroke:#111111,color:#FFFFFF
+    style VV fill:#707070,stroke:#111111,color:#FFFFFF
+    style RM fill:#707070,stroke:#111111,color:#FFFFFF
 ```
 
 ### 4a.3 V-Model에서 MRD의 위치
@@ -639,8 +639,8 @@ flowchart LR
     SRS_box -.->|"SW\nVerification"| IntT_box
     SDS_box -.->|"Unit\nVerification"| UnitT_box
 
-    style MRD_box fill:#D4E9FF,stroke:#0066CC,color:#003366
-    style VT_box fill:#D4FFD4,stroke:#006600
+    style MRD_box fill:#707070,stroke:#111111,color:#FFFFFF
+    style VT_box fill:#707070,stroke:#111111,color:#FFFFFF
 ```
 
 ### 4a.4 Design Input 분류 정의
@@ -941,9 +941,9 @@ flowchart TD
     N --> O[Change Control]
     O --> G
 
-    style A fill:#4A90D9,color:#fff
-    style M fill:#27AE60,color:#fff
-    style N fill:#E74C3C,color:#fff
+    style A fill:#707070,stroke:#111111,color:#FFFFFF
+    style M fill:#707070,stroke:#111111,color:#FFFFFF
+    style N fill:#707070,stroke:#111111,color:#FFFFFF
 ```
 
 ### 7.3 지역별 규제 요약
