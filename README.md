@@ -96,7 +96,7 @@ HnVue Console SW는 자사 FPD(Flat Panel Detector)에 번들되는 X-ray 촬영
 
 | Doc ID | Document | Version | Path |
 |--------|----------|---------|------|
-| DOC-001 | MRD (Market Requirements) | v2.0 | `docs/planning/DOC-001_MRD_v2.0.md` |
+| DOC-001 | MRD (Market Requirements) | **v3.0** | `docs/planning/DOC-001_MRD_v3.0.md` |
 | DOC-002 | PRD (Product Requirements) | v1.0 | `docs/planning/DOC-002_PRD_v1.0.md` |
 | DOC-004 | FRS (Functional Requirements) | v1.0 | `docs/planning/DOC-004_FRS_v1.0.md` |
 | DOC-005 | SRS (Software Requirements) | v1.0 | `docs/planning/DOC-005_SRS_v1.0.md` |
@@ -225,16 +225,16 @@ HnVue Console SW는 자사 FPD(Flat Panel Detector)에 번들되는 X-ray 촬영
 
 ---
 
-### MRD v2.0 Priority Summary
+### MRD v3.0 Priority Summary (4-Tier)
 
-| Priority | Count | Description |
-|----------|:-----:|-------------|
-| P1 Regulatory Mandatory | 15 | MFDS certification blockers |
-| P2 Safety-Critical | 15 | ISO 14971 risk control |
-| P3 Clinically Important | 19 | feel-DRCS baseline replacement |
-| P4 Desirable | 13 | Phase 2+ deferrable |
-| Excluded | 4 | Permanently removed |
-| **Active Total** | **67** | |
+| Tier | Count | 의미 | Phase |
+|------|:-----:|------|-------|
+| Tier 1 (인허가 필수) | 13 | MFDS/FDA/IEC 필수 | Phase 1 |
+| Tier 2 (시장 진입 필수) | 18 | feel-DRCS 동등 + 고객 최소 기대 | Phase 1 |
+| Tier 3 (있으면 좋고) | 25 | 경쟁 차별화, EConsole1 미포함 | Phase 2+ |
+| Tier 4 (비현실적) | 12 | 2명 조직 불가, AI/Cloud 등 | Phase 3+ |
+| 제외 | 4 | v2.0에서 이미 제외 | - |
+| **합계** | **72** | **Phase 1 = Tier 1+2 = 31개** | |
 
 ---
 
