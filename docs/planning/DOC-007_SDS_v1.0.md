@@ -87,13 +87,13 @@
 
 ```mermaid
 flowchart LR
-    MRD["MR-xxx\n(MRD v2.0)\n시장 요구사항"]
-    PRD["PR-xxx\n(PRD v3.0)\nDesign Input\n21 CFR 820.30(c)"]
-    FRS["SWR-xxx\n(FRS v1.0)\nIEC 62304 §5.2"]
-    SAD["SAD-xxx\n(SAD v1.0)\nIEC 62304 §5.3"]
-    SDS["SDS-xxx\n(SDS v1.0 — 이 문서)\nIEC 62304 §5.4"]
-    CODE["소스 코드\n(Implementation)"]
-    UT["단위 테스트\n(Unit Test)"]
+    MRD["MR-xxx\n（MRD v2.0）\n시장 요구사항"]
+    PRD["PR-xxx\n（PRD v3.0）\nDesign Input\n21 CFR 820.30（c）"]
+    FRS["SWR-xxx\n（FRS v1.0）\nIEC 62304 §5.2"]
+    SAD["SAD-xxx\n（SAD v1.0）\nIEC 62304 §5.3"]
+    SDS["SDS-xxx\n（SDS v1.0 — 이 문서）\nIEC 62304 §5.4"]
+    CODE["소스 코드\n（Implementation）"]
+    UT["단위 테스트\n（Unit Test）"]
 
     MRD -->|분해| PRD
     PRD -->|SW 요구사항 도출| FRS
@@ -1907,15 +1907,15 @@ where:
 
 ```mermaid
 flowchart TD
-    A["입력: 다중 보정 영상 목록\n(List~CorrectedImage~)"] --> B["특징점 검출\n(SIFT/ORB Feature Detection)"]
-    B --> C["특징점 매칭\n(Brute-Force + Lowe's Ratio Test)"]
+    A["입력: 다중 보정 영상 목록\n（List~CorrectedImage~）"] --> B["특징점 검출\n（SIFT/ORB Feature Detection）"]
+    B --> C["특징점 매칭\n（Brute-Force + Lowe's Ratio Test）"]
     C --> D{"매칭점 수 ≥ 10?"}
     D -->|No| E["스티칭 실패\n→ 개별 영상 유지\n+ 수동 정렬 모드"]
-    D -->|Yes| F["호모그래피 행렬 계산\n(RANSAC 알고리즘)"]
-    F --> G["원근 변환 적용\n(WarpPerspective)"]
-    G --> H["블렌딩 (Feather Blending)\n겹침 영역 가중 평균"]
-    H --> I["출력: StitchedImage\n(단일 보정 영상)"]
-    I --> J["DICOM 파일 생성\n(픽셀 간격 재계산)"]
+    D -->|Yes| F["호모그래피 행렬 계산\n（RANSAC 알고리즘）"]
+    F --> G["원근 변환 적용\n（WarpPerspective）"]
+    G --> H["블렌딩 （Feather Blending）\n겹침 영역 가중 평균"]
+    H --> I["출력: StitchedImage\n（단일 보정 영상）"]
+    I --> J["DICOM 파일 생성\n（픽셀 간격 재계산）"]
     classDef default fill:#444,stroke:#666,color:#fff
 ```
 
@@ -2018,19 +2018,19 @@ DI (Deviation Index):
 
 ```mermaid
 flowchart TD
-    SPLASH["스플래시 화면\n(Splash Screen)\n시스템 무결성 검사"]
-    LOGIN["로그인 화면\n(Login View)\nSDS-CS-701"]
-    MAIN["메인 화면\n(Main View)\nSDS-UI-801"]
-    PT_LIST["환자 목록\n(Patient List)\nSDS-UI-810"]
-    PT_REG["환자 등록\n(Patient Registration)\nSDS-UI-811"]
-    PT_DETAIL["환자 상세\n(Patient Detail)\nSDS-UI-812"]
-    WL_LIST["워크리스트\n(Worklist)\nSDS-UI-815"]
-    PROTO["프로토콜 선택\n(Protocol Selection)\nSDS-UI-820"]
-    ACQ["촬영 화면\n(Acquisition)\nSDS-UI-825"]
-    IMG_VIEW["영상 뷰어\n(Image Viewer)\nSDS-UI-830"]
-    DOSE_RPT["선량 보고서\n(Dose Report)\nSDS-UI-840"]
-    SETTINGS["시스템 설정\n(Settings)\nSDS-UI-850"]
-    EMRG["응급 등록\n(Emergency)\nSDS-UI-860"]
+    SPLASH["스플래시 화면\n（Splash Screen）\n시스템 무결성 검사"]
+    LOGIN["로그인 화면\n（Login View）\nSDS-CS-701"]
+    MAIN["메인 화면\n（Main View）\nSDS-UI-801"]
+    PT_LIST["환자 목록\n（Patient List）\nSDS-UI-810"]
+    PT_REG["환자 등록\n（Patient Registration）\nSDS-UI-811"]
+    PT_DETAIL["환자 상세\n（Patient Detail）\nSDS-UI-812"]
+    WL_LIST["워크리스트\n（Worklist）\nSDS-UI-815"]
+    PROTO["프로토콜 선택\n（Protocol Selection）\nSDS-UI-820"]
+    ACQ["촬영 화면\n（Acquisition）\nSDS-UI-825"]
+    IMG_VIEW["영상 뷰어\n（Image Viewer）\nSDS-UI-830"]
+    DOSE_RPT["선량 보고서\n（Dose Report）\nSDS-UI-840"]
+    SETTINGS["시스템 설정\n（Settings）\nSDS-UI-850"]
+    EMRG["응급 등록\n（Emergency）\nSDS-UI-860"]
 
     SPLASH -->|"무결성 OK"| LOGIN
     SPLASH -->|"무결성 실패"| SPLASH
@@ -2193,15 +2193,15 @@ flowchart TD
 
 ```mermaid
 flowchart LR
-    MR["MR-xxx\n(MRD v2.0)"]
-    PR["PR-xxx\n(PRD v3.0)"]
-    SWR["SWR-xxx\n(FRS v1.0)"]
-    SAD["SAD-xxx\n(SAD v1.0)"]
-    SDS["SDS-xxx\n(이 문서)"]
+    MR["MR-xxx\n（MRD v2.0）"]
+    PR["PR-xxx\n（PRD v3.0）"]
+    SWR["SWR-xxx\n（FRS v1.0）"]
+    SAD["SAD-xxx\n（SAD v1.0）"]
+    SDS["SDS-xxx\n（이 문서）"]
     CODE["소스코드"]
-    UT["단위 테스트\n(UT-xxx)"]
-    IT["통합 테스트\n(IT-xxx)"]
-    TC["TC-xxx\n(V&V Plan)"]
+    UT["단위 테스트\n（UT-xxx）"]
+    IT["통합 테스트\n（IT-xxx）"]
+    TC["TC-xxx\n（V&V Plan）"]
 
     MR --> PR
     PR --> SWR

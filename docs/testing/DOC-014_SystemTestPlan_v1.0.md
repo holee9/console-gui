@@ -313,7 +313,7 @@ graph LR
         CPU[CPU < 70%]
         MEM[Memory < 80%]
         NET[Network < 80%]
-        DB2[(DB 응답 < 1s)]
+        DB2[（DB 응답 < 1s）]
     end
     U1 --> CPU
     U2 --> MEM
@@ -465,7 +465,7 @@ graph TD
         PACS[PACS 서버\ndcm4chee :11112]
         HL7SIM[HL7 Sim\n:2575]
         LDAP2[LDAP Server\n:389]
-        DB3[(PostgreSQL\n:5432)]
+        DB3[（PostgreSQL\n:5432）]
     end
     subgraph "시뮬레이터 (로컬)"
         GenSim[Generator Sim\n:9001]

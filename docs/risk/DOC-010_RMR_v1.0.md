@@ -131,21 +131,21 @@ flowchart TD
     classDef default fill:#444,stroke:#666,color:#fff
     A([위험 관리 계획 수립\nRMP-XRAY-GUI-001 v1.0\n2026-01-10 승인]) --> B
 
-    subgraph ANALYSIS["위험 분석 (Risk Analysis) — 완료"]
+    subgraph ANALYSIS["위험 분석 （Risk Analysis） — 완료"]
         B[PHA 수행\n2026-02 ~ 2026-03\n전체 위험 영역 스캔]
         B --> C[SW FMEA 수행\n2026-02 ~ 2026-04\nRMA-XRAY-GUI-001]
         C --> D[FTA 수행\n2026-03 ~ 2026-04\nTE-001/002/003]
         D --> E[위험 추정 완료\nHAZ 22개 식별\n심각도 × 확률 매트릭스]
     end
 
-    subgraph EVAL["위험 평가 (Risk Evaluation) — 완료"]
+    subgraph EVAL["위험 평가 （Risk Evaluation） — 완료"]
         E --> F{위험 수용 기준 적용\n5×5 Risk Matrix}
         F -->|수용 불가 7개| G[위험 통제 필수]
         F -->|ALARP 15개| H[위험 통제 검토]
         F -->|수용 가능 0개| I[문서화]
     end
 
-    subgraph CTRL["위험 통제 (Risk Control) — 구현 예정"]
+    subgraph CTRL["위험 통제 （Risk Control） — 구현 예정"]
         G --> J[RC 설계\nRC-001 ~ RC-036\n총 36개 통제 조치]
         H --> J
         J --> K[RC 구현\nSWR 요구사항 반영]
@@ -154,7 +154,7 @@ flowchart TD
         M -->|수용 불가 0개| N[전체 잔여 위험 평가]
     end
 
-    subgraph REPORT["위험 관리 보고 (ISO 14971 §9) — 본 문서"]
+    subgraph REPORT["위험 관리 보고 （ISO 14971 §9） — 본 문서"]
         N --> O[편익-위험 분석\n§8 분석]
         O --> P([전체 잔여 위험 수용 가능\n판정 및 본 보고서 작성])
     end
@@ -450,18 +450,18 @@ ISO 14971:2019 §8에 따라 의도된 사용에 따른 HnVue GUI Console SW의 
 ```mermaid
 flowchart LR
     classDef default fill:#444,stroke:#666,color:#fff
-    subgraph B["임상적 편익 (Clinical Benefits)"]
-        B1["진단 정확도 향상\n(Improved Diagnosis)"]
+    subgraph B["임상적 편익 （Clinical Benefits）"]
+        B1["진단 정확도 향상\n（Improved Diagnosis）"]
         B2["방사선 선량 저감\n30~50% 감소"]
         B3["워크플로우 효율화\n20~30% 시간 단축"]
-        B4["선량 이력 관리\n(Dose History)"]
-        B5["사이버보안 강화\n(Cybersecurity)"]
+        B4["선량 이력 관리\n（Dose History）"]
+        B5["사이버보안 강화\n（Cybersecurity）"]
     end
 
-    subgraph R["관리된 잔여 위험 (Managed Residual Risks)"]
-        R1["ALARP 12개\n(모두 P1 수준)"]
-        R2["수용 가능 10개\n(추가 통제 불필요)"]
-        R3["수용 불가 0개\n(완전 해소)"]
+    subgraph R["관리된 잔여 위험 （Managed Residual Risks）"]
+        R1["ALARP 12개\n（모두 P1 수준）"]
+        R2["수용 가능 10개\n（추가 통제 불필요）"]
+        R3["수용 불가 0개\n（완전 해소）"]
     end
 
     B --> C{편익 vs 위험}

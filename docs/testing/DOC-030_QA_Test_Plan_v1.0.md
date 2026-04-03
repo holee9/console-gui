@@ -708,13 +708,13 @@ flowchart TD
 ```mermaid
 graph LR
     classDef default fill:#444,stroke:#666,color:#fff
-    subgraph Requirements["요구사항 계층 (Requirements Hierarchy)"]
-        MR["MR-xxx\n마켓 요구사항\n(MRD)"]
-        PR["PR-xxx\n제품 요구사항\n(PRD)"]
-        SWR["SWR-xxx\nSW 요구사항\n(FRS/SRS)"]
+    subgraph Requirements["요구사항 계층 （Requirements Hierarchy）"]
+        MR["MR-xxx\n마켓 요구사항\n（MRD）"]
+        PR["PR-xxx\n제품 요구사항\n（PRD）"]
+        SWR["SWR-xxx\nSW 요구사항\n（FRS/SRS）"]
     end
 
-    subgraph Testing["테스트 레벨 (Test Levels)"]
+    subgraph Testing["테스트 레벨 （Test Levels）"]
         UT["단위 테스트\nUnit Test\nCoverage ≥80%"]
         IT["통합 테스트\nIntegration Test\n인터페이스 전체"]
         ST["시스템 테스트\nSystem Test\n133 TC"]

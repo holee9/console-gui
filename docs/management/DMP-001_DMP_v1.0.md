@@ -92,7 +92,7 @@ flowchart TD
     CTP["Cybersecurity Test Plan\nDOC-018"]
     SBOM["SBOM\nDOC-019"]
     CEP["Clinical Evaluation Plan\nDOC-020"]
-    UEF["Usability Engineering\nFile (IEC 62366) — DOC-021"]
+    UEF["Usability Engineering\nFile （IEC 62366） — DOC-021"]
     UTR["Unit Test Report — DOC-022"]
     ITR["Integration Test Report — DOC-023"]
     STR["System Test Report — DOC-024"]
@@ -112,7 +112,7 @@ flowchart TD
     WBS["WBS v4.0\nWork Breakdown Structure\nWBS-001"]
     DCS["DICOM Conformance\nStatement — DOC-038"]
     KFDA_DOC["KFDA 기술 문서\nKFDA Technical File\nDOC-039"]
-    IFU["사용 설명서\nInstructions for Use (IFU)\nDOC-040"]
+    IFU["사용 설명서\nInstructions for Use （IFU）\nDOC-040"]
     PM_PLAN["PM 계획서\nProject Management Plan\nDOC-041"]
 
     MRD --> PRD
@@ -221,7 +221,7 @@ flowchart TD
 ```mermaid
 flowchart LR
     classDef default fill:#444,stroke:#666,color:#fff
-    subgraph A["Phase A\n기반 문서 (Foundation)"]
+    subgraph A["Phase A\n기반 문서 （Foundation）"]
         direction TB
         MRD["MRD"]
         PRD_V3["PRD v3.0"]
@@ -231,7 +231,7 @@ flowchart LR
         PM_A["PM 계획서"]
     end
 
-    subgraph B["Phase B\n상세 설계 문서 (Design)"]
+    subgraph B["Phase B\n상세 설계 문서 （Design）"]
         direction TB
         FRS_B["FRS"]
         SRS_B["SRS"]
@@ -239,14 +239,14 @@ flowchart LR
         SDS_B["SDS"]
     end
 
-    subgraph C["Phase C\n위험 관리 (Risk Mgmt)"]
+    subgraph C["Phase C\n위험 관리 （Risk Mgmt）"]
         direction TB
         RMP_C["Risk Mgmt Plan"]
         FMEA_C["FMEA / FTA"]
         RMR_C["Risk Mgmt Report"]
     end
 
-    subgraph D["Phase D\nV&V 계획 (V&V Plan)"]
+    subgraph D["Phase D\nV&V 계획 （V&V Plan）"]
         direction TB
         VVP_D["V&V Master Plan"]
         UTP_D["Unit Test Plan"]
@@ -255,7 +255,7 @@ flowchart LR
         VALP_D["Validation Plan"]
     end
 
-    subgraph E["Phase E\n사이버보안 (Cybersecurity)"]
+    subgraph E["Phase E\n사이버보안 （Cybersecurity）"]
         direction TB
         CMP_E["Cybersecurity Plan"]
         SBOM_E["SBOM"]
@@ -263,7 +263,7 @@ flowchart LR
         CTP_E["Cyber Test Plan"]
     end
 
-    subgraph F["Phase F\n임상/사용성 (Clinical/UX)"]
+    subgraph F["Phase F\n임상/사용성 （Clinical/UX）"]
         direction TB
         CEP_F["Clinical Eval Plan"]
         UEF_F["Usability File"]
@@ -271,7 +271,7 @@ flowchart LR
         DCS_F["DICOM Conformance"]
     end
 
-    subgraph G["Phase G\n테스트 보고서 (Test Reports)"]
+    subgraph G["Phase G\n테스트 보고서 （Test Reports）"]
         direction TB
         VVR_G["V&V Summary Report"]
         CTR_G["Cyber Test Report"]
@@ -280,11 +280,11 @@ flowchart LR
         PTR_G["Performance Report"]
     end
 
-    subgraph H["Phase H\nQA 및 인허가 (QA & Regulatory)"]
+    subgraph H["Phase H\nQA 및 인허가 （QA & Regulatory）"]
         direction TB
         RTM_H["RTM 최종본"]
         DHF_H["DHF"]
-        ESTAR_H["510(k) / eSTAR"]
+        ESTAR_H["510（k） / eSTAR"]
         CE_H["CE Technical Doc"]
         KFDA_H["KFDA 기술 문서"]
     end
@@ -485,37 +485,37 @@ flowchart LR
 ```mermaid
 flowchart LR
     classDef default fill:#444,stroke:#666,color:#fff
-    subgraph MKT["시장 계층 (Market Layer)"]
+    subgraph MKT["시장 계층 （Market Layer）"]
         direction TB
-        MR["MR-xxx\nMarket Requirement\n(MRD DOC-001)"]
+        MR["MR-xxx\nMarket Requirement\n（MRD DOC-001）"]
     end
 
-    subgraph PROD["제품 계층 (Product Layer)"]
+    subgraph PROD["제품 계층 （Product Layer）"]
         direction TB
-        PR["PR-xxx\nProduct Requirement\n(PRD v3.0 DOC-002)"]
-        HAZ["HAZ-xxx\nHazard\n(FMEA DOC-009)"]
-        RC["RC-xxx\nRisk Control\n(FMEA DOC-009)"]
+        PR["PR-xxx\nProduct Requirement\n（PRD v3.0 DOC-002）"]
+        HAZ["HAZ-xxx\nHazard\n（FMEA DOC-009）"]
+        RC["RC-xxx\nRisk Control\n（FMEA DOC-009）"]
     end
 
-    subgraph SW["SW 계층 (Software Layer)"]
+    subgraph SW["SW 계층 （Software Layer）"]
         direction TB
-        SWR["SWR-xxx\nSW Requirement\n(SRS DOC-005 IEC62304§5.2)"]
-        FR["FR-xxx / NFR-xxx\nFunctional/Non-Functional\n(FRS DOC-004)"]
+        SWR["SWR-xxx\nSW Requirement\n（SRS DOC-005 IEC62304§5.2）"]
+        FR["FR-xxx / NFR-xxx\nFunctional/Non-Functional\n（FRS DOC-004）"]
     end
 
-    subgraph DESIGN["설계 출력 (Design Output)"]
+    subgraph DESIGN["설계 출력 （Design Output）"]
         direction TB
-        SAD["SAD-xxx\nArchitecture Element\n(SAD DOC-006)"]
-        SDS["SDS-xxx\nDesign Element\n(SDS DOC-007)"]
+        SAD["SAD-xxx\nArchitecture Element\n（SAD DOC-006）"]
+        SDS["SDS-xxx\nDesign Element\n（SDS DOC-007）"]
         CODE["코드 모듈\nSource Code"]
     end
 
-    subgraph TEST["검증/밸리데이션 (V&V)"]
+    subgraph TEST["검증/밸리데이션 （V&V）"]
         direction TB
-        UT["UT-xxx\nUnit Test\n(DOC-012/022)"]
-        IT["IT-xxx\nIntegration Test\n(DOC-013/023)"]
-        ST["ST-xxx\nSystem Test\n(DOC-014/024)"]
-        VT["VT-xxx\nValidation Test\n(DOC-015/025)"]
+        UT["UT-xxx\nUnit Test\n（DOC-012/022）"]
+        IT["IT-xxx\nIntegration Test\n（DOC-013/023）"]
+        ST["ST-xxx\nSystem Test\n（DOC-014/024）"]
+        VT["VT-xxx\nValidation Test\n（DOC-015/025）"]
     end
 
     MR -->|"분해\n(Decompose)"| PR
@@ -720,35 +720,35 @@ gantt
 flowchart TD
     classDef default fill:#444,stroke:#666,color:#fff
     subgraph TIER1["계층 1: 기반 문서"]
-        MRD_V["MRD\n(DOC-001)"]
-        PRD_V["PRD v3.0\n(DOC-002)"]
-        SDG_V["SW 개발 지침서\n(DOC-003)"]
+        MRD_V["MRD\n（DOC-001）"]
+        PRD_V["PRD v3.0\n（DOC-002）"]
+        SDG_V["SW 개발 지침서\n（DOC-003）"]
     end
 
     subgraph TIER2["계층 2: 설계 문서"]
-        FRS_V["FRS\n(DOC-004)"]
-        SRS_V["SRS\n(DOC-005)"]
-        RMP_V["Risk Mgmt Plan\n(DOC-008)"]
-        CMP_V["Cybersecurity Plan\n(DOC-016)"]
+        FRS_V["FRS\n（DOC-004）"]
+        SRS_V["SRS\n（DOC-005）"]
+        RMP_V["Risk Mgmt Plan\n（DOC-008）"]
+        CMP_V["Cybersecurity Plan\n（DOC-016）"]
     end
 
     subgraph TIER3["계층 3: 상세 설계"]
-        SAD_V["SAD\n(DOC-006)"]
-        SDS_V["SDS\n(DOC-007)"]
-        FMEA_V["FMEA\n(DOC-009)"]
-        TMA_V["Threat Model\n(DOC-017)"]
+        SAD_V["SAD\n（DOC-006）"]
+        SDS_V["SDS\n（DOC-007）"]
+        FMEA_V["FMEA\n（DOC-009）"]
+        TMA_V["Threat Model\n（DOC-017）"]
     end
 
     subgraph TIER4["계층 4: V&V 계획"]
-        VVP_V["V&V Master Plan\n(DOC-011)"]
-        STP_V["System Test Plan\n(DOC-014)"]
-        CTP_V["Cyber Test Plan\n(DOC-018)"]
+        VVP_V["V&V Master Plan\n（DOC-011）"]
+        STP_V["System Test Plan\n（DOC-014）"]
+        CTP_V["Cyber Test Plan\n（DOC-018）"]
     end
 
     subgraph TIER5["계층 5: 보고서/최종"]
-        VVR_V["V&V Summary\n(DOC-025)"]
-        RMR_V["Risk Mgmt Report\n(DOC-010)"]
-        RTM_V["RTM 최종본\n(DOC-032)"]
+        VVR_V["V&V Summary\n（DOC-025）"]
+        RMR_V["Risk Mgmt Report\n（DOC-010）"]
+        RTM_V["RTM 최종본\n（DOC-032）"]
     end
 
     MRD_V <-->|"CV-01\nMR ↔ PR 일관성"| PRD_V

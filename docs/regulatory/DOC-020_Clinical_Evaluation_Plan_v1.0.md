@@ -78,17 +78,17 @@
 ```mermaid
 flowchart LR
     classDef default fill:#444,stroke:#666,color:#fff
-    A["방사선사\n(Radiologic Technologist)"] --> B["HnVue\nGUI SW\n(워크플로우 제어)"]
-    B --> C["X-Ray 발생장치\n(X-Ray Generator)"]
-    B --> D["디지털 디텍터\n(Digital Detector)"]
-    B --> E["PACS / HIS\n(DICOM 전송)"]
-    B --> F["영상 표시\n(Image Display)"]
-    F --> G["영상의학과 의사\n(Radiologist)\n최종 진단"]
+    A["방사선사\n（Radiologic Technologist）"] --> B["HnVue\nGUI SW\n（워크플로우 제어）"]
+    B --> C["X-Ray 발생장치\n（X-Ray Generator）"]
+    B --> D["디지털 디텍터\n（Digital Detector）"]
+    B --> E["PACS / HIS\n（DICOM 전송）"]
+    B --> F["영상 표시\n（Image Display）"]
+    F --> G["영상의학과 의사\n（Radiologist）\n최종 진단"]
     
     style B fill:#4A90D9,color:#fff,stroke:#2C5F8A
     style G fill:#E8F5E9,stroke:#388E3C
     
-    note1["HnVue는 진단 보조(Diagnostic Aid)로서\n최종 진단은 영상의학과 의사가 수행"]
+    note1["HnVue는 진단 보조（Diagnostic Aid）로서\n최종 진단은 영상의학과 의사가 수행"]
 ```
 
 ---
@@ -261,7 +261,7 @@ flowchart TD
     A["임상 평가 전략 결정\nClinical Evaluation Strategy"] --> B{신규 임상시험\n필요 여부?}
     B -- "No\n(동등 기기 데이터 충분)" --> C["동등성 입증 경로\nEquivalence Route\nMEDDEV 2.7/1 Rev.4"]
     B -- "Yes\n(혁신 기기, 데이터 부족)" --> D["임상 시험 경로\nClinical Investigation\nISO 14155"]
-    C --> E["Predicate Device 선정\n(FDA 510(k) 동시 활용)"]
+    C --> E["Predicate Device 선정\n（FDA 510（k） 동시 활용）"]
     E --> F["기술적 동등성\nTechnical Equivalence"]
     E --> G["임상적 동등성\nClinical Equivalence"]
     F --> H["동등성 충족 확인\nEquivalence Confirmed"]

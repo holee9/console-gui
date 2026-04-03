@@ -202,8 +202,8 @@ graph TB
     P5 <-->|DICOM| EXT_PACS[PACS]
     P6 -->|RDSR| P5
     P7 -->|설정| P1
-    P7 -->|감사 로그| DS_LOG[(Log DB)]
-    P2 -->|환자 데이터| DS_DB[(Local DB)]
+    P7 -->|감사 로그| DS_LOG[（Log DB）]
+    P2 -->|환자 데이터| DS_DB[（Local DB）]
     
     classDef default fill:#444,stroke:#666,color:#fff
     style P1 fill:#20808D,color:#fff

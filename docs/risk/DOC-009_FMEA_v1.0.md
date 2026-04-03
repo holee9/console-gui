@@ -88,9 +88,9 @@ graph TD
     classDef default fill:#444,stroke:#666,color:#fff
     A["RMP-XRAY-GUI-001\n위험 관리 계획서\nISO 14971:2019"]
     B["SHA-XRAY-GUI-001\n본 문서\nSW FMEA / FTA"]
-    C["SRS-XRAY-GUI-001\nSW 요구사항 명세서\n(SWR 정의)"]
-    D["SAD-XRAY-GUI-001\nSW 아키텍처 설계서\n(모듈 정의)"]
-    E["VVP-XRAY-GUI-001\nV&V 계획서\n(TC 연계)"]
+    C["SRS-XRAY-GUI-001\nSW 요구사항 명세서\n（SWR 정의）"]
+    D["SAD-XRAY-GUI-001\nSW 아키텍처 설계서\n（모듈 정의）"]
+    E["VVP-XRAY-GUI-001\nV&V 계획서\n（TC 연계）"]
     F["RMR-XRAY-GUI-001\n위험 관리 보고서"]
 
     A --> B
@@ -145,13 +145,13 @@ IEC 60812:2018에 따른 SW FMEA는 다음 7단계 절차로 수행한다:
 ```mermaid
 flowchart LR
     classDef default fill:#444,stroke:#666,color:#fff
-    S1["①\nFMEA 범위 정의\n(Scope)"] --> S2
-    S2["②\n기능 블록 분해\n(Functional Block\nDecomposition)"] --> S3
-    S3["③\n고장 모드 식별\n(Failure Mode\nIdentification)"] --> S4
-    S4["④\n고장 영향 분석\n(Effects Analysis:\nLocal/System/Patient)"] --> S5
-    S5["⑤\n원인 및 현재\n통제수단 분석\n(Cause & Controls)"] --> S6
-    S6["⑥\nRPN 산정\n(S × O × D)"] --> S7
-    S7["⑦\n권장 조치 및\n추적성 수립\n(Recommended\nActions & Links)"]
+    S1["①\nFMEA 범위 정의\n（Scope）"] --> S2
+    S2["②\n기능 블록 분해\n（Functional Block\nDecomposition）"] --> S3
+    S3["③\n고장 모드 식별\n（Failure Mode\nIdentification）"] --> S4
+    S4["④\n고장 영향 분석\n（Effects Analysis:\nLocal/System/Patient）"] --> S5
+    S5["⑤\n원인 및 현재\n통제수단 분석\n（Cause & Controls）"] --> S6
+    S6["⑥\nRPN 산정\n（S × O × D）"] --> S7
+    S7["⑦\n권장 조치 및\n추적성 수립\n（Recommended\nActions & Links）"]
 
     style S1 fill:#e3f2fd,stroke:#1565C0
     style S2 fill:#e3f2fd,stroke:#1565C0
@@ -349,29 +349,29 @@ graph TD
     TE1 -- OR --> IE2
     TE1 -- OR --> IE3
 
-    IE1["IE-1: SW 오명령\n+ Generator 실행\n(AND)"]
-    IE2["IE-2: AEC 제어 실패\n+ SW 미감지\n(AND)"]
-    IE3["IE-3: 사용자 오조작\n+ 경고 미제공\n(AND)"]
+    IE1["IE-1: SW 오명령\n+ Generator 실행\n（AND）"]
+    IE2["IE-2: AEC 제어 실패\n+ SW 미감지\n（AND）"]
+    IE3["IE-3: 사용자 오조작\n+ 경고 미제공\n（AND）"]
 
-    IE1 -- AND --> BE1["BE-1: kVp/mAs\n범위 초과 값 전송\n(FMEA-W01)"]
+    IE1 -- AND --> BE1["BE-1: kVp/mAs\n범위 초과 값 전송\n（FMEA-W01）"]
     IE1 -- AND --> BE2["BE-2: Generator\nHW 인터록\n미작동"]
 
-    IE2 -- AND --> BE3["BE-3: AEC 종료\n신호 미수신 처리\n(FMEA-W03)"]
+    IE2 -- AND --> BE3["BE-3: AEC 종료\n신호 미수신 처리\n（FMEA-W03）"]
     IE2 -- AND --> IE4
 
-    IE4["IE-4: SW Watchdog\n미작동\n(AND)"]
-    IE4 -- AND --> BE4["BE-4: Watchdog\n응답 없음 처리 실패\n(FMEA-W05)"]
+    IE4["IE-4: SW Watchdog\n미작동\n（AND）"]
+    IE4 -- AND --> BE4["BE-4: Watchdog\n응답 없음 처리 실패\n（FMEA-W05）"]
     IE4 -- AND --> BE5["BE-5: HW 독립\n인터록 미구현"]
 
     IE3 -- AND --> IE5
-    IE3 -- AND --> BE6["BE-6: 선량 경고\n미표시\n(FMEA-D04)"]
+    IE3 -- AND --> BE6["BE-6: 선량 경고\n미표시\n（FMEA-D04）"]
 
-    IE5["IE-5: 소아 프로토콜\n미적용\n(OR)"]
-    IE5 -- OR --> BE7["BE-7: 체중/나이 기반\n프로토콜 자동 변환\n로직 누락\n(FMEA-P04)"]
-    IE5 -- OR --> BE8["BE-8: 소아 경고\n배너 미표시\n(FMEA-P04)"]
+    IE5["IE-5: 소아 프로토콜\n미적용\n（OR）"]
+    IE5 -- OR --> BE7["BE-7: 체중/나이 기반\n프로토콜 자동 변환\n로직 누락\n（FMEA-P04）"]
+    IE5 -- OR --> BE8["BE-8: 소아 경고\n배너 미표시\n（FMEA-P04）"]
 
     BE1 -- OR --> BE9["BE-9: 입력값\n경계 검사 미적용"]
-    BE1 -- OR --> BE10["BE-10: 프로토콜 DB\n손상\n(FMEA-A02)"]
+    BE1 -- OR --> BE10["BE-10: 프로토콜 DB\n손상\n（FMEA-A02）"]
 
     style TE1 fill:#c62828,color:#ffffff,stroke:#b71c1c,stroke-width:3px
     style IE1 fill:#ef9a9a,stroke:#c62828
@@ -415,17 +415,17 @@ graph TD
     TE2 -- OR --> IE7
     TE2 -- OR --> IE8
 
-    IE6["IE-6: 오환자 영상\n+ 미확인 판독\n(AND)"]
-    IE7["IE-7: 영상 처리 오류\n+ 오류 미검출\n(AND)"]
-    IE8["IE-8: DICOM 데이터 손상\n+ 수신 측 무결성\n미검증\n(AND)"]
+    IE6["IE-6: 오환자 영상\n+ 미확인 판독\n（AND）"]
+    IE7["IE-7: 영상 처리 오류\n+ 오류 미검출\n（AND）"]
+    IE8["IE-8: DICOM 데이터 손상\n+ 수신 측 무결성\n미검증\n（AND）"]
 
     IE6 -- AND --> IE9
-    IE6 -- AND --> BE11["BE-11: 촬영 전\n환자 확인 절차\n미수행 (사용자 오류)"]
+    IE6 -- AND --> BE11["BE-11: 촬영 전\n환자 확인 절차\n미수행 （사용자 오류）"]
 
-    IE9["IE-9: 오환자\n데이터 로드\n(OR)"]
-    IE9 -- OR --> BE12["BE-12: MWL 중복\n오더 처리 오류\n(FMEA-C03)"]
-    IE9 -- OR --> BE13["BE-13: 환자 이름\n잘림 오류\n(FMEA-P03)"]
-    IE9 -- OR --> BE14["BE-14: DB Race\nCondition 환자\n데이터 혼동\n(FMEA-P05)"]
+    IE9["IE-9: 오환자\n데이터 로드\n（OR）"]
+    IE9 -- OR --> BE12["BE-12: MWL 중복\n오더 처리 오류\n（FMEA-C03）"]
+    IE9 -- OR --> BE13["BE-13: 환자 이름\n잘림 오류\n（FMEA-P03）"]
+    IE9 -- OR --> BE14["BE-14: DB Race\nCondition 환자\n데이터 혼동\n（FMEA-P05）"]
 
     BE11 -- OR --> BE15["BE-15: 2-step\n확인 절차\n미구현"]
     BE11 -- OR --> BE16["BE-16: 바코드/QR\n스캔 기능\n부재"]
@@ -433,12 +433,12 @@ graph TD
     IE7 -- AND --> IE10
     IE7 -- AND --> BE17["BE-17: 영상 처리\n결과 자동\n검증 부재"]
 
-    IE10["IE-10: 영상 처리\n오류 발생\n(OR)"]
-    IE10 -- OR --> BE18["BE-18: Orientation\n플래그 오적용\n(FMEA-I01)"]
-    IE10 -- OR --> BE19["BE-19: LUT 오버플로우\n(FMEA-I02)"]
-    IE10 -- OR --> BE20["BE-20: 픽셀 보간\nArtifact\n(FMEA-I03)"]
+    IE10["IE-10: 영상 처리\n오류 발생\n（OR）"]
+    IE10 -- OR --> BE18["BE-18: Orientation\n플래그 오적용\n（FMEA-I01）"]
+    IE10 -- OR --> BE19["BE-19: LUT 오버플로우\n（FMEA-I02）"]
+    IE10 -- OR --> BE20["BE-20: 픽셀 보간\nArtifact\n（FMEA-I03）"]
 
-    IE8 -- AND --> BE21["BE-21: DICOM 태그\n손실 전송\n(FMEA-C01)"]
+    IE8 -- AND --> BE21["BE-21: DICOM 태그\n손실 전송\n（FMEA-C01）"]
     IE8 -- AND --> BE22["BE-22: 수신 측\n태그 무결성\n검증 미수행"]
 
     style TE2 fill:#c62828,color:#ffffff,stroke:#b71c1c,stroke-width:3px
@@ -485,23 +485,23 @@ graph TD
     TE3 -- OR --> IE12
     TE3 -- OR --> IE13
 
-    IE11["IE-11: 스토리지\n장애 + 백업 실패\n(AND)"]
-    IE12["IE-12: DICOM 전송\n실패 + 재전송 불가\n(AND)"]
-    IE13["IE-13: 랜섬웨어 암호화\n+ 복구 불가\n(AND)"]
+    IE11["IE-11: 스토리지\n장애 + 백업 실패\n（AND）"]
+    IE12["IE-12: DICOM 전송\n실패 + 재전송 불가\n（AND）"]
+    IE13["IE-13: 랜섬웨어 암호화\n+ 복구 불가\n（AND）"]
 
-    IE11 -- AND --> BE23["BE-23: HDD/SSD\n장애 발생\n(FMEA-A04)"]
+    IE11 -- AND --> BE23["BE-23: HDD/SSD\n장애 발생\n（FMEA-A04）"]
     IE11 -- AND --> BE24["BE-24: 이중화\n스토리지 미구현"]
 
     BE23 -- OR --> BE25["BE-25: SMART\n모니터링 미구현"]
     BE23 -- OR --> BE26["BE-26: RAID\n미구성"]
 
-    IE12 -- AND --> BE27["BE-27: 네트워크\n오류로 픽셀 데이터\n손상 전송\n(FMEA-C02)"]
+    IE12 -- AND --> BE27["BE-27: 네트워크\n오류로 픽셀 데이터\n손상 전송\n（FMEA-C02）"]
     IE12 -- AND --> BE28["BE-28: 자동 재전송\n로직 미구현"]
 
     BE27 -- OR --> BE29["BE-29: 체크섬\n검증 없는 전송"]
     BE27 -- OR --> BE30["BE-30: TCP 재전송\n타임아웃 부적절"]
 
-    IE13 -- AND --> BE31["BE-31: Application\n화이트리스트 미적용\n(FMEA-S04)"]
+    IE13 -- AND --> BE31["BE-31: Application\n화이트리스트 미적용\n（FMEA-S04）"]
     IE13 -- AND --> BE32["BE-32: 오프라인\n백업 부재"]
 
     BE31 -- OR --> BE33["BE-33: 네트워크\n격리 미실시"]
@@ -549,24 +549,24 @@ graph TD
     TE4 -- OR --> IE15
     TE4 -- OR --> IE16
 
-    IE14["IE-14: SW 치명적 충돌\n+ 자동 복구 실패\n(AND)"]
-    IE15["IE-15: 랜섬웨어 감염\n+ 시스템 암호화\n(AND)"]
-    IE16["IE-16: Generator\n통신 완전 단절\n+ 백업 경로 없음\n(AND)"]
+    IE14["IE-14: SW 치명적 충돌\n+ 자동 복구 실패\n（AND）"]
+    IE15["IE-15: 랜섬웨어 감염\n+ 시스템 암호화\n（AND）"]
+    IE16["IE-16: Generator\n통신 완전 단절\n+ 백업 경로 없음\n（AND）"]
 
-    IE14 -- AND --> BE35["BE-35: 처리되지 않은\n예외 발생\n(SW 치명 오류)"]
-    IE14 -- AND --> BE36["BE-36: 자동 재시작\n및 Watchdog\n복구 실패\n(FMEA-W05)"]
+    IE14 -- AND --> BE35["BE-35: 처리되지 않은\n예외 발생\n（SW 치명 오류）"]
+    IE14 -- AND --> BE36["BE-36: 자동 재시작\n및 Watchdog\n복구 실패\n（FMEA-W05）"]
 
     BE35 -- OR --> BE37["BE-37: NULL\n포인터 역참조"]
-    BE35 -- OR --> BE38["BE-38: 메모리 부족\n(Out of Memory)"]
+    BE35 -- OR --> BE38["BE-38: 메모리 부족\n（Out of Memory）"]
     BE35 -- OR --> BE39["BE-39: DB 연결\n풀 고갈"]
 
-    BE36 -- OR --> BE40["BE-40: Watchdog\n타이머 로직\n결함\n(FMEA-W05)"]
+    BE36 -- OR --> BE40["BE-40: Watchdog\n타이머 로직\n결함\n（FMEA-W05）"]
     BE36 -- OR --> BE41["BE-41: 복구 스크립트\n실행 실패"]
 
-    IE15 -- AND --> BE42["BE-42: 랜섬웨어\n프로세스 실행 허가\n(FMEA-S04)"]
+    IE15 -- AND --> BE42["BE-42: 랜섬웨어\n프로세스 실행 허가\n（FMEA-S04）"]
     IE15 -- AND --> BE43["BE-43: 시스템\n격리 및 차단\n지연"]
 
-    IE16 -- AND --> BE44["BE-44: Heartbeat\n미전송으로 단절\n미감지\n(FMEA-W08)"]
+    IE16 -- AND --> BE44["BE-44: Heartbeat\n미전송으로 단절\n미감지\n（FMEA-W08）"]
     IE16 -- AND --> BE45["BE-45: 네트워크\n이중화 경로\n미구성"]
 
     style TE4 fill:#c62828,color:#ffffff,stroke:#b71c1c,stroke-width:3px
@@ -609,28 +609,28 @@ graph TD
     TE5 -- OR --> IE18
     TE5 -- OR --> IE19
 
-    IE17["IE-17: 인증 우회\n+ 권한 획득\n(AND)"]
-    IE18["IE-18: 악성 SW 설치\n+ 실행 성공\n(AND)"]
-    IE19["IE-19: 세션 탈취\n+ 원격 제어\n(AND)"]
+    IE17["IE-17: 인증 우회\n+ 권한 획득\n（AND）"]
+    IE18["IE-18: 악성 SW 설치\n+ 실행 성공\n（AND）"]
+    IE19["IE-19: 세션 탈취\n+ 원격 제어\n（AND）"]
 
     IE17 -- AND --> IE20
-    IE17 -- AND --> BE46["BE-46: MFA\n미적용\n(파라미터 변경)"]
+    IE17 -- AND --> BE46["BE-46: MFA\n미적용\n（파라미터 변경）"]
 
-    IE20["IE-20: 인증 우회\n수단\n(OR)"]
-    IE20 -- OR --> BE47["BE-47: RBAC\n에스컬레이션\n(FMEA-S02)"]
+    IE20["IE-20: 인증 우회\n수단\n（OR）"]
+    IE20 -- OR --> BE47["BE-47: RBAC\n에스컬레이션\n（FMEA-S02）"]
     IE20 -- OR --> BE48["BE-48: SQL Injection\n취약점 미패치"]
     IE20 -- OR --> BE49["BE-49: 기본 계정\n비밀번호 미변경"]
 
     IE18 -- AND --> IE21
-    IE18 -- AND --> BE50["BE-50: 코드 서명\n검증 없는\n설치 허가\n(FMEA-A03)"]
+    IE18 -- AND --> BE50["BE-50: 코드 서명\n검증 없는\n설치 허가\n（FMEA-A03）"]
 
-    IE21["IE-21: 악성 SW\n유입 경로\n(OR)"]
+    IE21["IE-21: 악성 SW\n유입 경로\n（OR）"]
     IE21 -- OR --> BE51["BE-51: 비서명\n업데이트 패키지"]
     IE21 -- OR --> BE52["BE-52: USB 매체\n통한 악성코드"]
     IE21 -- OR --> BE53["BE-53: 네트워크\n통한 다운로드"]
 
-    IE19 -- AND --> BE54["BE-54: 세션 토큰\n만료 미처리\n(FMEA-S03)"]
-    IE19 -- AND --> BE55["BE-55: 암호화되지\n않은 세션 전송\n(FMEA-S01)"]
+    IE19 -- AND --> BE54["BE-54: 세션 토큰\n만료 미처리\n（FMEA-S03）"]
+    IE19 -- AND --> BE55["BE-55: 암호화되지\n않은 세션 전송\n（FMEA-S01）"]
 
     style TE5 fill:#c62828,color:#ffffff,stroke:#b71c1c,stroke-width:3px
     style IE17 fill:#ef9a9a,stroke:#c62828
@@ -817,16 +817,16 @@ flowchart TD
 ```mermaid
 graph LR
     classDef default fill:#444,stroke:#666,color:#fff
-    subgraph HAZ["위험 요인 (22개 HAZ)"]
-        H1["HAZ-RAD\n(4개)"]
-        H2["HAZ-SW\n(5개)"]
-        H3["HAZ-DATA\n(4개)"]
-        H4["HAZ-SEC\n(4개)"]
-        H5["HAZ-UI\n(3개)"]
-        H6["HAZ-NET\n(2개)"]
+    subgraph HAZ["위험 요인 （22개 HAZ）"]
+        H1["HAZ-RAD\n（4개）"]
+        H2["HAZ-SW\n（5개）"]
+        H3["HAZ-DATA\n（4개）"]
+        H4["HAZ-SEC\n（4개）"]
+        H5["HAZ-UI\n（3개）"]
+        H6["HAZ-NET\n（2개）"]
     end
 
-    subgraph FMEA_BOX["SW FMEA (40개)"]
+    subgraph FMEA_BOX["SW FMEA （40개）"]
         F1["PM: 5개"]
         F2["WF: 8개"]
         F3["IP: 5개"]
@@ -834,16 +834,16 @@ graph LR
         F5["DC: 5개"]
         F6["SA: 5개"]
         F7["CS: 5개"]
-        F8["GEN: 5개(+공유 2)"]
+        F8["GEN: 5개（+공유 2）"]
     end
 
-    subgraph RC["위험 통제 (36개 RC)"]
-        R1["Design\n(20개)"]
-        R2["Protective\n(13개)"]
-        R3["Information\n(3개)"]
+    subgraph RC["위험 통제 （36개 RC）"]
+        R1["Design\n（20개）"]
+        R2["Protective\n（13개）"]
+        R3["Information\n（3개）"]
     end
 
-    subgraph SWR_BOX["SW 요구사항 (36개 SWR)"]
+    subgraph SWR_BOX["SW 요구사항 （36개 SWR）"]
         S1["SWR-WF/PM\n/IP/DM"]
         S2["SWR-DC/SA\n/CS/NF"]
     end

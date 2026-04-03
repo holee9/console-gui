@@ -338,7 +338,7 @@ graph TB
                     APP_GUI[GUI Process<br/>Qt 6.x]
                     APP_SVC[Background Services<br/>DICOM SCP Listener<br/>HL7 Listener]
                 end
-                DB[(SQLite Local DB<br/>환자/검사 데이터)]
+                DB[（SQLite Local DB<br/>환자/검사 데이터）]
                 FS[/Local File Storage\<br/>DICOM 영상 캐시/]
             end
         end
@@ -348,9 +348,9 @@ graph TB
     end
 
     subgraph "Hospital Network (병원 네트워크)"
-        PACS[(PACS Server<br/>영상 저장전송)]
-        RIS[(RIS Server<br/>방사선정보시스템)]
-        HIS[(HIS Server<br/>병원정보시스템)]
+        PACS[（PACS Server<br/>영상 저장전송）]
+        RIS[（RIS Server<br/>방사선정보시스템）]
+        HIS[（HIS Server<br/>병원정보시스템）]
         LDAP_SRV[LDAP/AD Server<br/>인증 서버]
         DOSE_REG[Dose Registry<br/>선량 레지스트리]
     end
@@ -387,7 +387,7 @@ graph TB
 
 ```mermaid
 graph TD
-    ROOT["HnVue HnVue Console SW<br/>(SW System)"]
+    ROOT["HnVue HnVue Console SW<br/>（SW System）"]
     ROOT --> PM["SAD-PM-100<br/>PatientManagement"]
     ROOT --> WF["SAD-WF-200<br/>WorkflowEngine"]
     ROOT --> IP["SAD-IP-300<br/>ImageProcessing"]
@@ -1062,7 +1062,7 @@ flowchart TD
     end
 
     subgraph "Local Storage (로컬 저장소)"
-        SQLite[(SQLite DB<br/>환자/검사/선량/설정)]
+        SQLite[（SQLite DB<br/>환자/검사/선량/설정）]
         FS_DICOM[/DICOM File Store\<br/>영상 파일/]
         FS_LOG[/Audit Log Store\<br/>감사 로그/]
     end

@@ -70,14 +70,14 @@
 
 ```mermaid
 flowchart LR
-    MR["MR-xxx\n(MRD)\n시장·사용자 요구사항"]
-    PR["PR-xxx\n(PRD v3.0)\n시스템 수준 Design Input\n21 CFR 820.30(c)"]
-    SWR["SWR-xxx\n(FRS — 이 문서)\nIEC 62304 §5.2\nDesign Output\n21 CFR 820.30(d)"]
-    SAD["SAD-xxx\n(소프트웨어 아키텍처)"]
-    SDS["SDS-xxx\n(상세 설계)"]
-    CODE["소스 코드\n(Implementation)"]
-    UT["단위 테스트\n(Unit Test)"]
-    IT["통합 테스트\n(Integration Test)"]
+    MR["MR-xxx\n（MRD）\n시장·사용자 요구사항"]
+    PR["PR-xxx\n（PRD v3.0）\n시스템 수준 Design Input\n21 CFR 820.30（c）"]
+    SWR["SWR-xxx\n（FRS — 이 문서）\nIEC 62304 §5.2\nDesign Output\n21 CFR 820.30（d）"]
+    SAD["SAD-xxx\n（소프트웨어 아키텍처）"]
+    SDS["SDS-xxx\n（상세 설계）"]
+    CODE["소스 코드\n（Implementation）"]
+    UT["단위 테스트\n（Unit Test）"]
+    IT["통합 테스트\n（Integration Test）"]
 
     MR -->|"분해"| PR
     PR -->|"SW 요구사항 도출"| SWR
@@ -357,23 +357,23 @@ SWR-[도메인]-[번호]
 
 ```mermaid
 flowchart TD
-    subgraph Pipeline["영상 처리 파이프라인 (SWR-IP-039~052)"]
-        A["Raw 16-bit Detector 영상\n(SWR-IP-039 입력)"]
-        B["SWR-IP-039\nDefect Pixel 보정\n(결함 픽셀 맵 적용)"]
-        C["SWR-IP-039\nGain Correction\n(Flat Field Gain Map)"]
-        D["SWR-IP-040\nOffset/Dark Correction\n(Dark Map 감산)"]
+    subgraph Pipeline["영상 처리 파이프라인 （SWR-IP-039~052）"]
+        A["Raw 16-bit Detector 영상\n（SWR-IP-039 입력）"]
+        B["SWR-IP-039\nDefect Pixel 보정\n（결함 픽셀 맵 적용）"]
+        C["SWR-IP-039\nGain Correction\n（Flat Field Gain Map）"]
+        D["SWR-IP-040\nOffset/Dark Correction\n（Dark Map 감산）"]
         E{"Grid 사용?"}
-        F["SWR-IP-045\nScatter Correction\n(SW 기반 산란선 제거)"]
-        G["Anti-banding Filter\n(그리드 모아레 제거)"]
-        H["SWR-IP-041\nNoise Reduction\n(주파수 기반/DL 기반)"]
-        I["SWR-IP-042\n노이즈 파라미터 적용\n(강도 1~5단계)"]
-        J["SWR-IP-047\nAuto-trimming\n(조사야 자동 인식)"]
-        K["SWR-IP-049\nBlack Mask\n(Automatic Shutters)"]
-        L["SWR-IP-050\nContrast Optimization\n(CLAHE 기반)"]
-        M["SWR-IP-043\nEdge Enhancement\n(Small Struct/Bone/Cath)"]
-        N["SWR-IP-052\nBrightness Control\n(전체 밝기 오프셋)"]
-        O["SWR-IP-022\nWindow/Level LUT\n(8-bit 변환)"]
-        P["SWR-IP-020\nDisplay Output\n(≤1초 내 화면 표시)"]
+        F["SWR-IP-045\nScatter Correction\n（SW 기반 산란선 제거）"]
+        G["Anti-banding Filter\n（그리드 모아레 제거）"]
+        H["SWR-IP-041\nNoise Reduction\n（주파수 기반/DL 기반）"]
+        I["SWR-IP-042\n노이즈 파라미터 적용\n（강도 1~5단계）"]
+        J["SWR-IP-047\nAuto-trimming\n（조사야 자동 인식）"]
+        K["SWR-IP-049\nBlack Mask\n（Automatic Shutters）"]
+        L["SWR-IP-050\nContrast Optimization\n（CLAHE 기반）"]
+        M["SWR-IP-043\nEdge Enhancement\n（Small Struct/Bone/Cath）"]
+        N["SWR-IP-052\nBrightness Control\n（전체 밝기 오프셋）"]
+        O["SWR-IP-022\nWindow/Level LUT\n（8-bit 변환）"]
+        P["SWR-IP-020\nDisplay Output\n（≤1초 내 화면 표시）"]
     end
 
     A --> B --> C --> D --> E
@@ -644,23 +644,23 @@ stateDiagram-v2
 ```mermaid
 flowchart TD
     classDef default fill:#444,stroke:#666,color:#fff
-    subgraph Console["HnVue (SCU)"]
+    subgraph Console["HnVue （SCU）"]
         direction TB
-        MWL_SCU["MWL SCU\n(C-FIND)\nSWR-DC-053~054"]
-        MPPS_SCU["MPPS SCU\n(N-CREATE/N-SET)\nSWR-DC-055~056"]
-        STOR_SCU["Storage SCU\n(C-STORE)\nSWR-DC-050~052"]
-        COMMIT_SCU["Storage Commitment SCU\n(N-ACTION)\nSWR-DC-057~058"]
-        QR_SCU["Q/R SCU\n(C-FIND/C-MOVE)\nSWR-DC-061~062"]
+        MWL_SCU["MWL SCU\n（C-FIND）\nSWR-DC-053~054"]
+        MPPS_SCU["MPPS SCU\n（N-CREATE/N-SET）\nSWR-DC-055~056"]
+        STOR_SCU["Storage SCU\n（C-STORE）\nSWR-DC-050~052"]
+        COMMIT_SCU["Storage Commitment SCU\n（N-ACTION）\nSWR-DC-057~058"]
+        QR_SCU["Q/R SCU\n（C-FIND/C-MOVE）\nSWR-DC-061~062"]
         RDSR_SCU["RDSR C-STORE SCU\nSWR-DM-044~046"]
         PRINT_SCU["Print SCU\nSWR-DC-059~060"]
         TLS["TLS 1.2/1.3\n암호화 레이어\nSWR-DC-063~064"]
     end
 
     subgraph External["외부 시스템"]
-        RIS["RIS/HIS\n(MWL SCP, MPPS SCP)"]
-        PACS["PACS\n(Storage SCP, Q/R SCP, Commit SCP)"]
-        DOSE_REG["선량 레지스트리\n(Storage SCP)"]
-        PRINT_SRV["Print Server\n(Print SCP)"]
+        RIS["RIS/HIS\n（MWL SCP, MPPS SCP）"]
+        PACS["PACS\n（Storage SCP, Q/R SCP, Commit SCP）"]
+        DOSE_REG["선량 레지스트리\n（Storage SCP）"]
+        PRINT_SRV["Print Server\n（Print SCP）"]
     end
 
     MWL_SCU -->|"C-FIND REQ"| RIS
@@ -1013,9 +1013,9 @@ flowchart TD
 
 ```mermaid
 flowchart LR
-    MR["MR-xxx\n(MRD v3.0)\n시장·사용자 요구사항"]
-    PR["PR-xxx\n(PRD v3.0)\n시스템 수준 Design Input"]
-    SWR_doc["SWR-xxx\n(FRS — 이 문서)\nIEC 62304 §5.2"]
+    MR["MR-xxx\n（MRD v3.0）\n시장·사용자 요구사항"]
+    PR["PR-xxx\n（PRD v3.0）\n시스템 수준 Design Input"]
+    SWR_doc["SWR-xxx\n（FRS — 이 문서）\nIEC 62304 §5.2"]
     SAD_["SAD-xxx\n아키텍처 설계"]
     TC["UT/IT/ST\n테스트 케이스"]
     VT_["VT-UX/CL/SEC\n밸리데이션"]

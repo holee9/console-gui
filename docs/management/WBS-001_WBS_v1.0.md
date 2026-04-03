@@ -34,9 +34,9 @@
 ```mermaid
 flowchart TD
     classDef default fill:#444,stroke:#666,color:#fff
-    MR["MR-xxx\nMarket Requirement\n(MRD)\n시장/고객 요구"]
-    PR["PR-xxx\nProduct Requirement\n(PRD)\n시스템 수준 Design Input\n21 CFR 820.30(c)"]
-    SWR["SWR-xxx\nSoftware Requirement\n(SRS/FRS)\nIEC 62304 §5.2\nSW 수준 요구사항"]
+    MR["MR-xxx\nMarket Requirement\n（MRD）\n시장/고객 요구"]
+    PR["PR-xxx\nProduct Requirement\n（PRD）\n시스템 수준 Design Input\n21 CFR 820.30（c）"]
+    SWR["SWR-xxx\nSoftware Requirement\n（SRS/FRS）\nIEC 62304 §5.2\nSW 수준 요구사항"]
     SAD["SAD/SDS\nSW Architecture &\nDetailed Design\nIEC 62304 §5.3/5.4"]
     TC["TC-xxx\nTest Case\nIEC 62304 §5.5/5.6"]
     VV["V&V Report\n검증/밸리데이션\nIEC 62304 §5.7"]
@@ -48,8 +48,8 @@ flowchart TD
     TC -->|"실행 결과"| VV
     VV -->|"RTM 역추적"| MR
 
-    HAZ["HAZ-xxx\nHazard ID\n(ISO 14971)"]
-    RC["RC-xxx\nRisk Control\n(ISO 14971 §6)"]
+    HAZ["HAZ-xxx\nHazard ID\n（ISO 14971）"]
+    RC["RC-xxx\nRisk Control\n（ISO 14971 §6）"]
 
     MR -.->|"위험 식별"| HAZ
     HAZ -.->|"위험 통제"| RC
@@ -86,7 +86,7 @@ flowchart TD
 ```mermaid
 flowchart LR
     classDef default fill:#444,stroke:#666,color:#fff
-    subgraph DR1["DR#1 — 계획 검토\n(M1 종료)"]
+    subgraph DR1["DR#1 — 계획 검토\n（M1 종료）"]
         direction TB
         D1A["✅ MRD 승인"]
         D1B["✅ PRD 승인"]
@@ -96,7 +96,7 @@ flowchart LR
         D1F["✅ DMP 승인"]
     end
 
-    subgraph DR2["DR#2 — 설계 입력 검토\n(M3 종료)"]
+    subgraph DR2["DR#2 — 설계 입력 검토\n（M3 종료）"]
         direction TB
         D2A["✅ FRS 베이스라인 확정"]
         D2B["✅ SRS 승인"]
@@ -105,7 +105,7 @@ flowchart LR
         D2E["✅ Cybersecurity Plan 승인"]
     end
 
-    subgraph DR3["DR#3 — 설계 출력 검토\n(M5 종료)"]
+    subgraph DR3["DR#3 — 설계 출력 검토\n（M5 종료）"]
         direction TB
         D3A["✅ SAD 승인"]
         D3B["✅ SDS 승인"]
@@ -114,7 +114,7 @@ flowchart LR
         D3E["✅ Formative Usability 완료"]
     end
 
-    subgraph DR4["DR#4 — 검증/밸리데이션 검토\n(M11 종료)"]
+    subgraph DR4["DR#4 — 검증/밸리데이션 검토\n（M11 종료）"]
         direction TB
         D4A["✅ Unit/통합/시스템 Test 통과"]
         D4B["✅ V&V Summary Report 완성"]
@@ -123,11 +123,11 @@ flowchart LR
         D4E["✅ 잔여위험 수용 가능"]
     end
 
-    subgraph DR5["DR#5 — 인허가 게이트\n(M12 종료)"]
+    subgraph DR5["DR#5 — 인허가 게이트\n（M12 종료）"]
         direction TB
         D5A["✅ DHF 최종 승인"]
         D5B["✅ RTM 최종본 검증"]
-        D5C["✅ eSTAR/510(k) 패키지 완성"]
+        D5C["✅ eSTAR/510（k） 패키지 완성"]
         D5D["✅ CE Technical Doc 완성"]
         D5E["✅ SBOM 최종본 제출"]
     end
@@ -361,15 +361,15 @@ gantt
 ```mermaid
 flowchart TD
     classDef default fill:#444,stroke:#666,color:#fff
-    MRD["MRD\n(Market Requirements\nDocument)\nDOC-001"]
-    PRD["PRD / SRS\n(Product Requirements Doc)\nDOC-002 / DOC-005"]
-    FRS["FRS\n(Functional Requirements\nSpecification)\nDOC-004"]
-    SAD["SAD\n(Software Architecture\nDesign)\nDOC-006"]
-    SDS["SDS\n(Software Design\nSpecification)\nDOC-007"]
-    SDP["SDP\n(SW Development Plan)"]
-    DevGL["DevGuideline\n(SW 개발 지침서)"]
-    RMP["Risk Management Plan\n(ISO 14971)\nDOC-008"]
-    FMEA["Software Hazard Analysis\n(FMEA/FTA)\nDOC-009"]
+    MRD["MRD\n（Market Requirements\nDocument）\nDOC-001"]
+    PRD["PRD / SRS\n（Product Requirements Doc）\nDOC-002 / DOC-005"]
+    FRS["FRS\n（Functional Requirements\nSpecification）\nDOC-004"]
+    SAD["SAD\n（Software Architecture\nDesign）\nDOC-006"]
+    SDS["SDS\n（Software Design\nSpecification）\nDOC-007"]
+    SDP["SDP\n（SW Development Plan）"]
+    DevGL["DevGuideline\n（SW 개발 지침서）"]
+    RMP["Risk Management Plan\n（ISO 14971）\nDOC-008"]
+    FMEA["Software Hazard Analysis\n（FMEA/FTA）\nDOC-009"]
     RMR["Risk Management Report\nDOC-010"]
     VVPlan["V&V Master Plan\nDOC-011"]
     UTP["Unit Test Plan\nDOC-012"]
@@ -455,9 +455,9 @@ flowchart TD
 ```mermaid
 flowchart LR
     classDef default fill:#444,stroke:#666,color:#fff
-    subgraph DHF["DHF (Design History File) — 21 CFR 820.30"]
+    subgraph DHF["DHF （Design History File） — 21 CFR 820.30"]
         direction TB
-        DP["Design Plan\n・SDP (SW Dev Plan)\n・DevGuideline\n・WBS\n・Risk Mgmt Plan"]
+        DP["Design Plan\n・SDP （SW Dev Plan）\n・DevGuideline\n・WBS\n・Risk Mgmt Plan"]
         DI["Design Input\n・MRD\n・PRD/SRS\n・FRS\n・SyRS"]
         DO["Design Output\n・SAD\n・SDS\n・Source Code\n・Release Build"]
         DR["Design Review\n・ADR 기록\n・DDR 기록\n・코드 리뷰 기록"]
@@ -498,60 +498,60 @@ flowchart LR
 ```mermaid
 flowchart TB
     classDef default fill:#444,stroke:#666,color:#fff
-    subgraph UI["UI Layer (Presentation)"]
+    subgraph UI["UI Layer （Presentation）"]
         direction LR
-        MainUI["메인 프레임\n(Main Frame)"]
+        MainUI["메인 프레임\n（Main Frame）"]
         PatientUI["환자 관리 UI"]
-        AcqUI["촬영 조건 UI\n(kVp/mAs/APR)"]
-        ViewerUI["영상 뷰어\n(Viewer)"]
-        DoseUI["선량 관리 UI\n(Dose Mgmt)"]
+        AcqUI["촬영 조건 UI\n（kVp/mAs/APR）"]
+        ViewerUI["영상 뷰어\n（Viewer）"]
+        DoseUI["선량 관리 UI\n（Dose Mgmt）"]
         SettingsUI["시스템 설정 UI"]
         AnalyticsUI["Analytics\nDashboard [P2]"]
     end
 
     subgraph App["Application Layer"]
         direction LR
-        WorkflowEngine["촬영 워크플로우 엔진\n(State Machine)"]
+        WorkflowEngine["촬영 워크플로우 엔진\n（State Machine）"]
         PatientMgr["환자 관리 모듈"]
-        SessionMgr["검사 세션 관리\n(Multi-study)"]
-        DoseMgr["선량 계산 모듈\n(DAP/ESD/RDSR)"]
-        AuditLog["감사 추적 로그\n(Audit Trail)"]
+        SessionMgr["검사 세션 관리\n（Multi-study）"]
+        DoseMgr["선량 계산 모듈\n（DAP/ESD/RDSR）"]
+        AuditLog["감사 추적 로그\n（Audit Trail）"]
         AlertMgr["에러/알람 관리"]
     end
 
     subgraph Proc["Processing Layer"]
         direction LR
-        ImgPipeline["영상 처리 파이프라인\n(Image Pipeline)"]
-        PreProc["전처리\n(Gain/Offset/Bad Pixel)"]
-        PostProc["후처리\n(NR/EE/Scatter/LUT)"]
+        ImgPipeline["영상 처리 파이프라인\n（Image Pipeline）"]
+        PreProc["전처리\n（Gain/Offset/Bad Pixel）"]
+        PostProc["후처리\n（NR/EE/Scatter/LUT）"]
         AIInterface["AI 모듈 인터페이스\n[Phase 2]"]
         ImgStitch["Image Stitching\n& Auto-trimming"]
-        MeasureTool["측정 도구\n(Annotation)"]
+        MeasureTool["측정 도구\n（Annotation）"]
     end
 
     subgraph Comm["Communication Layer"]
         direction LR
-        DICOMSvc["DICOM 서비스\n(Storage/MWL/MPPS/\nPrint/SC/Q-R)"]
+        DICOMSvc["DICOM 서비스\n（Storage/MWL/MPPS/\nPrint/SC/Q-R）"]
         GeneratorIF["Generator 인터페이스"]
-        DetectorIF["Detector 인터페이스\n(Multi-vendor)"]
+        DetectorIF["Detector 인터페이스\n（Multi-vendor）"]
         HL7FHIR["HL7/FHIR 연동 [P2]"]
         CloudConn["Cloud Connectivity [P2]"]
     end
 
     subgraph Sec["Security Layer"]
         direction TB
-        AuthAC["인증/접근제어\n(Auth & Access Control)"]
-        Encrypt["암호화\n(PHI Encryption)"]
+        AuthAC["인증/접근제어\n（Auth & Access Control）"]
+        Encrypt["암호화\n（PHI Encryption）"]
         SBOM["SBOM 관리"]
-        VulnMgmt["취약점 관리\n(Vulnerability Mgmt)"]
+        VulnMgmt["취약점 관리\n（Vulnerability Mgmt）"]
         PatchMgr["패치/OTA 관리 [P2]"]
     end
 
     subgraph Infra["Infrastructure Layer"]
         direction LR
-        DB["로컬 DB\n(환자/영상 데이터)"]
-        FileStore["파일 스토리지\n(DICOM Files)"]
-        ConfigMgr["설정 관리\n(Configuration)"]
+        DB["로컬 DB\n（환자/영상 데이터）"]
+        FileStore["파일 스토리지\n（DICOM Files）"]
+        ConfigMgr["설정 관리\n（Configuration）"]
         LogSys["로깅 시스템"]
     end
 
@@ -630,20 +630,20 @@ stateDiagram-v2
 ```mermaid
 flowchart LR
     classDef default fill:#444,stroke:#666,color:#fff
-    subgraph LEFT["개발 단계 (좌)"]
+    subgraph LEFT["개발 단계 （좌）"]
         direction TB
-        SyRS["1. 시스템 요구사항\nSyRS / SRS\n(IEC 62304 §5.2)"]
-        SADD["2. SW 아키텍처 설계\nSADD\n(IEC 62304 §5.3)"]
-        DD["3. 상세 설계\nDetailed Design\n(IEC 62304 §5.4)"]
-        CODE["4. 구현\nUnit Implementation\n(IEC 62304 §5.5)"]
+        SyRS["1. 시스템 요구사항\nSyRS / SRS\n（IEC 62304 §5.2）"]
+        SADD["2. SW 아키텍처 설계\nSADD\n（IEC 62304 §5.3）"]
+        DD["3. 상세 설계\nDetailed Design\n（IEC 62304 §5.4）"]
+        CODE["4. 구현\nUnit Implementation\n（IEC 62304 §5.5）"]
     end
 
-    subgraph RIGHT["검증/밸리데이션 단계 (우)"]
+    subgraph RIGHT["검증/밸리데이션 단계 （우）"]
         direction TB
-        SysTest["8. 시스템 테스트\n& 밸리데이션\n(IEC 62304 §5.7)"]
-        IntTest["7. SW 통합 테스트\n(IEC 62304 §5.6)"]
-        UnitTest["6. Unit 검증\n(IEC 62304 §5.5)"]
-        CODE2["5. 구현 (기준)"]
+        SysTest["8. 시스템 테스트\n& 밸리데이션\n（IEC 62304 §5.7）"]
+        IntTest["7. SW 통합 테스트\n（IEC 62304 §5.6）"]
+        UnitTest["6. Unit 검증\n（IEC 62304 §5.5）"]
+        CODE2["5. 구현 （기준）"]
     end
 
     SyRS -->|요구사항 정의| SADD
@@ -659,7 +659,7 @@ flowchart LR
     UnitTest -->|통과 후| IntTest
     IntTest -->|통과 후| SysTest
 
-    SysTest --- VAL["사용성 평가\n(IEC 62366 Summative)\n임상 시뮬레이션\n사이버보안 침투 테스트"]
+    SysTest --- VAL["사용성 평가\n（IEC 62366 Summative）\n임상 시뮬레이션\n사이버보안 침투 테스트"]
 
     style LEFT fill:#EBF5FB,stroke:#2980B9
     style RIGHT fill:#EAF7EA,stroke:#27AE60

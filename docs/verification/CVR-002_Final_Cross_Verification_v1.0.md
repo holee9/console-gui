@@ -117,9 +117,9 @@
 ```mermaid
 graph LR
     classDef default fill:#444,stroke:#666,color:#fff
-    MR["MR-xxx<br/>시장 요구사항<br/>(62개)"] --> PR["PR-DOM-xxx<br/>제품 요구사항<br/>(62개)"]
-    PR --> SWR["SWR-DOM-xxx<br/>SW 요구사항<br/>(97~171개)"]
-    SWR --> TC["TC-DOM-xxx<br/>테스트 케이스<br/>(36+개)"]
+    MR["MR-xxx<br/>시장 요구사항<br/>（62개）"] --> PR["PR-DOM-xxx<br/>제품 요구사항<br/>（62개）"]
+    PR --> SWR["SWR-DOM-xxx<br/>SW 요구사항<br/>（97~171개）"]
+    SWR --> TC["TC-DOM-xxx<br/>테스트 케이스<br/>（36+개）"]
     
     MR --> |"MRD<br/>DOC-001"| PR
     PR --> |"PRD<br/>DOC-002"| SWR
@@ -245,9 +245,9 @@ graph TD
 graph TD
     classDef default fill:#444,stroke:#666,color:#fff
     subgraph "IEC 62304 SW 수명주기 프로세스"
-        A["§5.1 SW 개발 계획<br/>DOC-003, DOC-003a, DMP-001"] --> B["§5.2 SW 요구사항 분석<br/>DOC-005 (SRS)"]
-        B --> C["§5.3 SW 아키텍처 설계<br/>DOC-006 (SAD)"]
-        C --> D["§5.4 SW 상세 설계<br/>DOC-007 (SDS)"]
+        A["§5.1 SW 개발 계획<br/>DOC-003, DOC-003a, DMP-001"] --> B["§5.2 SW 요구사항 분석<br/>DOC-005 （SRS）"]
+        B --> C["§5.3 SW 아키텍처 설계<br/>DOC-006 （SAD）"]
+        C --> D["§5.4 SW 상세 설계<br/>DOC-007 （SDS）"]
         D --> E["§5.5 SW 단위 구현 및 검증"]
         E --> F["§5.6 SW 통합 및 통합 시험<br/>DOC-013, DOC-023"]
         F --> G["§5.7 SW 시스템 시험<br/>DOC-014, DOC-024"]

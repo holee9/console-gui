@@ -87,12 +87,12 @@
 
 ```mermaid
 flowchart TD
-    subgraph DocChain["문서 계층 (Document Hierarchy)"]
-        MR["MR-xxx\n(MRD v3.0)\n시장·사용자 요구사항\n[21 CFR 820.30(a)]"]
-        PR["PR-xxx\n(PRD v3.0)\n시스템 수준 Design Input\n[21 CFR 820.30(c)]"]
-        SRS_doc["SWR-xxx\n(SRS — 이 문서)\nIEC 62304 §5.2\nDesign Output\n[21 CFR 820.30(d)]"]
-        FRS["FRS-XRAY-GUI-001 v2.0\n(기능 요구사항 명세서)\n원본 SWR 정의"]
-        RMP["RMP-XRAY-GUI-001 v1.0\n(위험 관리 계획)\nHAZ-xxx 정의"]
+    subgraph DocChain["문서 계층 （Document Hierarchy）"]
+        MR["MR-xxx\n（MRD v3.0）\n시장·사용자 요구사항\n[21 CFR 820.30（a）]"]
+        PR["PR-xxx\n（PRD v3.0）\n시스템 수준 Design Input\n[21 CFR 820.30（c）]"]
+        SRS_doc["SWR-xxx\n（SRS — 이 문서）\nIEC 62304 §5.2\nDesign Output\n[21 CFR 820.30（d）]"]
+        FRS["FRS-XRAY-GUI-001 v2.0\n（기능 요구사항 명세서）\n원본 SWR 정의"]
+        RMP["RMP-XRAY-GUI-001 v1.0\n（위험 관리 계획）\nHAZ-xxx 정의"]
         SAD["SAD-xxx\n소프트웨어 아키텍처"]
         TC["UT/IT/ST\n테스트 케이스"]
     end
@@ -165,9 +165,9 @@ flowchart TD
 ```mermaid
 graph TB
     classDef default fill:#444,stroke:#666,color:#fff
-    subgraph HnVue["HnVue HnVue Console SW (IEC 62304 Class B)"]
+    subgraph HnVue["HnVue HnVue Console SW （IEC 62304 Class B）"]
         direction TB
-        subgraph UI["UI Layer (WPF/MVVM)"]
+        subgraph UI["UI Layer （WPF/MVVM）"]
             PM_UI["환자 관리 UI\nPatient Management"]
             WF_UI["촬영 워크플로우 UI\nAcquisition Workflow"]
             IP_UI["영상 뷰어 UI\nImage Viewer"]
@@ -178,7 +178,7 @@ graph TB
         subgraph BL["Business Logic Layer"]
             PM_SVC["PatientService\nSWR-PM"]
             WF_SVC["WorkflowService\nSWR-WF"]
-            IP_SVC["ImageProcessingService\nSWR-IP (C++)"]
+            IP_SVC["ImageProcessingService\nSWR-IP （C++）"]
             DM_SVC["DoseService\nSWR-DM"]
             DC_SVC["DicomService\nSWR-DC"]
             CS_SVC["SecurityService\nSWR-CS/SA"]
@@ -190,17 +190,17 @@ graph TB
             LOG["System Log\nSWR-SA-074~075"]
         end
 
-        subgraph HAL["Hardware Abstraction Layer (HAL)"]
+        subgraph HAL["Hardware Abstraction Layer （HAL）"]
             GEN_DRV["Generator Driver\nIGeneratorDriver\nSWR-WF-018~020"]
             DET_DRV["Detector Driver\nIDetectorDriver\nSWR-WF-021~025"]
         end
     end
 
     subgraph External["외부 시스템 / Hardware"]
-        GEN["X-Ray Generator\n(Siemens/Shimadzu/GMM)"]
-        DET["FPD Detector\n(Canon/Fujifilm/Vieworks)"]
-        PACS["PACS\n(C-STORE/Q-R/Commit)"]
-        RIS["RIS/HIS\n(MWL/MPPS/HL7)"]
+        GEN["X-Ray Generator\n（Siemens/Shimadzu/GMM）"]
+        DET["FPD Detector\n（Canon/Fujifilm/Vieworks）"]
+        PACS["PACS\n（C-STORE/Q-R/Commit）"]
+        RIS["RIS/HIS\n（MWL/MPPS/HL7）"]
         DOSE_REG["선량 레지스트리\nDose Registry"]
         PRINT["Print Server"]
         AD["AD/LDAP\n도메인 서버"]
@@ -434,7 +434,7 @@ HnVue은 다음 7개 독립 모듈로 구성된다:
 ```mermaid
 flowchart LR
     classDef default fill:#444,stroke:#666,color:#fff
-    subgraph Inputs["입력 (Inputs)"]
+    subgraph Inputs["입력 （Inputs）"]
         direction TB
         I1["FPD 영상\nGigE Vision"]
         I2["Generator\n이벤트+DAP"]
@@ -445,12 +445,12 @@ flowchart LR
 
     subgraph HnVue["HnVue SW"]
         direction TB
-        PROC["영상 처리 엔진\n(C++ / OpenCV)"]
-        BIZ["비즈니스 로직\n(C# / WPF)"]
-        DB_INT["DB 계층\n(SQLite/SQLCipher)"]
+        PROC["영상 처리 엔진\n（C++ / OpenCV）"]
+        BIZ["비즈니스 로직\n（C# / WPF）"]
+        DB_INT["DB 계층\n（SQLite/SQLCipher）"]
     end
 
-    subgraph Outputs["출력 (Outputs)"]
+    subgraph Outputs["출력 （Outputs）"]
         direction TB
         O1["PACS\nC-STORE"]
         O2["RIS/HIS\nMPPS / HL7"]
@@ -764,15 +764,15 @@ erDiagram
 ```mermaid
 graph LR
     classDef default fill:#444,stroke:#666,color:#fff
-    subgraph Hazards["위험 요소 (Hazards)"]
-        HAZ_RAD["HAZ-RAD\n방사선 과다/과소 노출\n(Radiation Dose Error)"]
-        HAZ_DATA["HAZ-DATA\n환자 데이터 오류/분실\n(Patient Data Error)"]
-        HAZ_SEC["HAZ-SEC\n무권한 접근/데이터 유출\n(Unauthorized Access)"]
-        HAZ_SW["HAZ-SW\nSW 오작동/크래시\n(Software Failure)"]
-        HAZ_HW["HAZ-HW\n하드웨어 인터페이스 오류\n(HW Interface Error)"]
+    subgraph Hazards["위험 요소 （Hazards）"]
+        HAZ_RAD["HAZ-RAD\n방사선 과다/과소 노출\n（Radiation Dose Error）"]
+        HAZ_DATA["HAZ-DATA\n환자 데이터 오류/분실\n（Patient Data Error）"]
+        HAZ_SEC["HAZ-SEC\n무권한 접근/데이터 유출\n（Unauthorized Access）"]
+        HAZ_SW["HAZ-SW\nSW 오작동/크래시\n（Software Failure）"]
+        HAZ_HW["HAZ-HW\n하드웨어 인터페이스 오류\n（HW Interface Error）"]
     end
 
-    subgraph Controls["위험 통제 SWR (Risk Control SWR)"]
+    subgraph Controls["위험 통제 SWR （Risk Control SWR）"]
         RC_RAD["SWR-WF-012/015/017\n촬영 조건 유효성 검사\nSWR-DM-043/048/049\nESD/DI/DRL 경고\nSWR-IP-039/SA-067/068\n캘리브레이션 관리"]
         RC_DATA["SWR-PM-003/004/012\n중복 감지, ACID 저장, Audit\nSWR-DC-051/052/057\n태그 완전성, 전송 성공률\nSWR-NF-RL-012 WAL 무결성"]
         RC_SEC["SWR-CS-070~085\n인증/세션/암호화\nSWR-SA-060/062\nRBAC/Audit Trail\nSWR-NF-SC-040~045\n보안 규제 준수"]

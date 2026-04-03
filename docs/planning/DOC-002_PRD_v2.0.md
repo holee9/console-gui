@@ -74,9 +74,9 @@ MRD v3.0의 4-Tier 분류 체계를 계승합니다. 벤치마크: FDA K231225 (
 ```mermaid
 flowchart LR
     classDef default fill:#444,stroke:#666,color:#fff
-    MR["MR-xxx\n(Market Requirement)\nMRD에서 정의\n시장·사용자 요구"]
-    PR["PR-xxx\n(Product Requirement)\nPRD에서 정의\n시스템 수준 Design Input"]
-    SWR["SWR-xxx\n(Software Requirement)\nFRS/SRS에서 상세화\nIEC 62304 §5.2"]
+    MR["MR-xxx\n（Market Requirement）\nMRD에서 정의\n시장·사용자 요구"]
+    PR["PR-xxx\n（Product Requirement）\nPRD에서 정의\n시스템 수준 Design Input"]
+    SWR["SWR-xxx\n（Software Requirement）\nFRS/SRS에서 상세화\nIEC 62304 §5.2"]
 
     MR -->|"분해/상세화\n(Decomposition)"| PR
     PR -->|"소프트웨어 요구사항 도출\n(Derivation)"| SWR
@@ -292,7 +292,7 @@ flowchart TD
 
     subgraph UC_IMAGE["영상 관리"]
         UC10[UC-10: 영상 표시 및 처리]
-        UC11[UC-11: 영상 전송(PACS)]
+        UC11[UC-11: 영상 전송（PACS）]
         UC12[UC-12: 이전 영상 조회]
         UC13[UC-13: 영상 인쇄]
         UC22[UC-22: CD/DVD Burning]
@@ -738,8 +738,8 @@ sequenceDiagram
 ```mermaid
 flowchart TD
     classDef default fill:#444,stroke:#666,color:#fff
-    subgraph MainWindow["메인 윈도우 (1920×1080 이상)"]
-        subgraph TopBar["상단 툴바 (Header, 60px)"]
+    subgraph MainWindow["메인 윈도우 （1920×1080 이상）"]
+        subgraph TopBar["상단 툴바 （Header, 60px）"]
             T1[시스템 로고]
             T2[현재 환자/검사 정보]
             T3[시스템 상태 표시기\nDetector/Generator/Network]
@@ -747,26 +747,26 @@ flowchart TD
             T5[응급 등록 버튼\nPR-PM-004 / PR-NF-UX-026]
         end
 
-        subgraph LeftPanel["좌측 패널 (320px)\n환자·검사 관리"]
+        subgraph LeftPanel["좌측 패널 （320px）\n환자·검사 관리"]
             L1[MWL Worklist\n검사 목록\nPR-PM-003]
             L2[환자 검색\nPR-PM-005]
             L3[촬영 순서 목록\nView List\nPR-WF-011]
         end
 
-        subgraph CenterPanel["중앙 뷰어 (가변 너비)\n영상 표시 영역"]
+        subgraph CenterPanel["중앙 뷰어 （가변 너비）\n영상 표시 영역"]
             C1[영상 표시\nImage Viewport\nPR-IP-020]
             C2[이미지 툴바\nW/L, Zoom, Pan, Rotate, Flip\nPR-IP-021~024]
             C3[측정/Annotation 도구\nPR-IP-026~029]
         end
 
-        subgraph RightPanel["우측 패널 (280px)\n촬영 제어"]
+        subgraph RightPanel["우측 패널 （280px）\n촬영 제어"]
             R1[촬영 파라미터\nkVp / mAs / AEC\nPR-WF-012]
             R2[프로토콜 선택\nAPR 트리\nPR-WF-010]
             R3[Detector 상태\n배터리/온도\nPR-WF-014]
             R4[선량 표시\nDAP / EI / DI\nPR-DM-040~043]
         end
 
-        subgraph BottomBar["하단 상태바 (30px)"]
+        subgraph BottomBar["하단 상태바 （30px）"]
             B1[DICOM 전송 상태\nPR-DC-050]
             B2[로그 메시지\nPR-SA-066]
             B3[저장 공간 표시]
@@ -800,7 +800,7 @@ flowchart TB
     ADMIN([시스템 관리자<br/>BMET/Admin]):::person
     RAD([영상의학과 의사<br/>Radiologist]):::person
 
-    subgraph XRaySys["X-Ray 촬영 시스템 (경계)"]
+    subgraph XRaySys["X-Ray 촬영 시스템 （경계）"]
         CON[HnVue<br/>Console SW]:::system
         GEN[X-Ray Generator\nHW]:::external
         DET[자사 Flat Panel Detector\nHW + SDK]:::external
@@ -1011,7 +1011,7 @@ classDiagram
 ```mermaid
 flowchart LR
     classDef default fill:#444,stroke:#666,color:#fff
-    subgraph LeftSide["개발 단계 (좌측)"]
+    subgraph LeftSide["개발 단계 （좌측）"]
         A1[사용자 요구사항\nUser Requirements\nMR-xxx]
         A2[제품 요구사항\nProduct Requirements - PRD\nPR-xxx / PR-NF-xxx]
         A3[소프트웨어 요구사항\nSW Requirements - SRS\nSWR-xxx]
@@ -1020,7 +1020,7 @@ flowchart LR
         A6[구현\nImplementation]
     end
 
-    subgraph RightSide["검증 단계 (우측)"]
+    subgraph RightSide["검증 단계 （우측）"]
         B1[임상 유효성 평가\nClinical Validation]
         B2[시스템 테스트\nSystem Test]
         B3[통합 테스트\nSW Integration Test]
@@ -1175,25 +1175,25 @@ flowchart LR
 ```mermaid
 flowchart TD
     classDef default fill:#444,stroke:#666,color:#fff
-    subgraph Design["설계 단계 (Design Phase)"]
-        UN["사용자 요구사항\n(User Needs / MRD v3.0)\nMR-001~072"]
-        PRD_["제품 요구사항\n(PRD = Design Input)\nPR-PM/WF/IP/DM/DC/SA/CS\nPR-NF-PF/RL/UX/CP/SC/MT/RG"]
-        SRS_["SW 요구사항 명세\n(SRS/FRS)\nSWR-xxx\nIEC 62304 §5.2"]
-        SAD["아키텍처 설계\n(SAD)\nSAD-xxx"]
-        SDS["상세 설계\n(SDS)\nSDS-xxx"]
-        CODE["구현 (Code)\n소스 코드"]
+    subgraph Design["설계 단계 （Design Phase）"]
+        UN["사용자 요구사항\n（User Needs / MRD v3.0）\nMR-001~072"]
+        PRD_["제품 요구사항\n（PRD = Design Input）\nPR-PM/WF/IP/DM/DC/SA/CS\nPR-NF-PF/RL/UX/CP/SC/MT/RG"]
+        SRS_["SW 요구사항 명세\n（SRS/FRS）\nSWR-xxx\nIEC 62304 §5.2"]
+        SAD["아키텍처 설계\n（SAD）\nSAD-xxx"]
+        SDS["상세 설계\n（SDS）\nSDS-xxx"]
+        CODE["구현 （Code）\n소스 코드"]
     end
 
-    subgraph Verification["검증 단계 (Verification)"]
-        UT["단위 테스트\n(Unit Test)\nUT-PM/WF/IP/DM/DC/SA/CS-xxx"]
-        IT["통합 테스트\n(Integration Test)\nIT-PM/WF/IP/DM/DC/SA/CS-xxx"]
-        ST["시스템 테스트\n(System Test)\nST-PR-PM/WF/IP/DM/DC/SA/CS-xxx\nST-PR-NF-PF/RL/UX/CP/SC/MT/RG-xxx"]
+    subgraph Verification["검증 단계 （Verification）"]
+        UT["단위 테스트\n（Unit Test）\nUT-PM/WF/IP/DM/DC/SA/CS-xxx"]
+        IT["통합 테스트\n（Integration Test）\nIT-PM/WF/IP/DM/DC/SA/CS-xxx"]
+        ST["시스템 테스트\n（System Test）\nST-PR-PM/WF/IP/DM/DC/SA/CS-xxx\nST-PR-NF-PF/RL/UX/CP/SC/MT/RG-xxx"]
     end
 
-    subgraph Validation["밸리데이션 단계 (Validation)"]
-        VT_UX["사용성 밸리데이션\n(Usability Validation)\nVT-UX-001~003"]
-        VT_CL["임상 시뮬레이션\n(Clinical Simulation)\nVT-CL-001~002"]
-        VT_SEC["보안 밸리데이션\n(Security Validation)\nVT-SEC-001"]
+    subgraph Validation["밸리데이션 단계 （Validation）"]
+        VT_UX["사용성 밸리데이션\n（Usability Validation）\nVT-UX-001~003"]
+        VT_CL["임상 시뮬레이션\n（Clinical Simulation）\nVT-CL-001~002"]
+        VT_SEC["보안 밸리데이션\n（Security Validation）\nVT-SEC-001"]
     end
 
     UN -->|"Design Input 분해"| PRD_
@@ -1342,14 +1342,14 @@ flowchart TD
 ```mermaid
 flowchart TD
     classDef default fill:#444,stroke:#666,color:#fff
-    subgraph Hazards["위험 식별 (ISO 14971)"]
+    subgraph Hazards["위험 식별 （ISO 14971）"]
         HAZ_RAD["HAZ-RAD\n방사선 위험"]
         HAZ_SW["HAZ-SW\nSW 오류 위험"]
         HAZ_DATA["HAZ-DATA\n데이터 무결성"]
         HAZ_SEC["HAZ-SEC\n보안 위험"]
     end
 
-    subgraph Controls["위험 통제 조치 (Risk Control)"]
+    subgraph Controls["위험 통제 조치 （Risk Control）"]
         RC_INTERLOCK["RC-RAD-01\n노출 인터락 및 범위 검증"]
         RC_DOSE_ALERT["RC-RAD-02\nDRL/EI 경고 시스템"]
         RC_RECOVERY["RC-SW-01\n자동 복구 및 WAL"]
@@ -1414,16 +1414,16 @@ flowchart TD
 ```mermaid
 flowchart LR
     classDef default fill:#444,stroke:#666,color:#fff
-    subgraph DHF["Design History File (DHF)"]
-        subgraph DI["Design Input (설계 입력)"]
-            MRD["MRD v3.0\n(User Needs)\nMR-001~072"]
-            PRD_DOC["PRD v2.0\n(이 문서)\nPR-xxx / PR-NF-xxx\n시스템 수준 Design Input"]
+    subgraph DHF["Design History File （DHF）"]
+        subgraph DI["Design Input （설계 입력）"]
+            MRD["MRD v3.0\n（User Needs）\nMR-001~072"]
+            PRD_DOC["PRD v2.0\n（이 문서）\nPR-xxx / PR-NF-xxx\n시스템 수준 Design Input"]
         end
 
-        subgraph DO["Design Output (설계 출력)"]
-            FRS["FRS/SRS\n(Software Requirements)\nSWR-xxx\nIEC 62304 §5.2"]
-            SAD["SAD\n(Architecture)\nSAD-xxx"]
-            SDS["SDS\n(Detailed Design)\nSDS-xxx"]
+        subgraph DO["Design Output （설계 출력）"]
+            FRS["FRS/SRS\n（Software Requirements）\nSWR-xxx\nIEC 62304 §5.2"]
+            SAD["SAD\n（Architecture）\nSAD-xxx"]
+            SDS["SDS\n（Detailed Design）\nSDS-xxx"]
             CODE["Source Code\n& Build"]
         end
 
@@ -1438,7 +1438,7 @@ flowchart LR
         end
 
         subgraph DR["Design Review"]
-            DR1["PRD Review\n(이 문서)"]
+            DR1["PRD Review\n（이 문서）"]
             DR2["SRS/FRS Review"]
             DR3["SAD Review"]
             DR4["SDS Review"]
@@ -1654,16 +1654,16 @@ flowchart LR
 ```mermaid
 flowchart LR
     classDef default fill:#444,stroke:#666,color:#fff
-    MR["MR-xxx\n(MRD)"]
-    PR["PR-xxx / PR-NF-xxx\n(PRD)\nSystem-level Design Input"]
-    SWR["SWR-xxx\n(FRS/SRS)\nIEC 62304 §5.2"]
-    SAD_["SAD-xxx\n(Architecture)"]
-    SDS_["SDS-xxx\n(Detailed Design)"]
+    MR["MR-xxx\n（MRD）"]
+    PR["PR-xxx / PR-NF-xxx\n（PRD）\nSystem-level Design Input"]
+    SWR["SWR-xxx\n（FRS/SRS）\nIEC 62304 §5.2"]
+    SAD_["SAD-xxx\n（Architecture）"]
+    SDS_["SDS-xxx\n（Detailed Design）"]
     CODE_["Code\nModule"]
-    UT_["UT-xxx\n(Unit Test)"]
-    IT_["IT-xxx\n(Integration Test)"]
-    ST_["ST-xxx\n(System Test)"]
-    VT_["VT-xxx\n(Validation)"]
+    UT_["UT-xxx\n（Unit Test）"]
+    IT_["IT-xxx\n（Integration Test）"]
+    ST_["ST-xxx\n（System Test）"]
+    VT_["VT-xxx\n（Validation）"]
 
     MR -->|"출처 MR\n(Backward Trace)"| PR
     PR -->|"파생 SWR\n(FRS 상세화)"| SWR

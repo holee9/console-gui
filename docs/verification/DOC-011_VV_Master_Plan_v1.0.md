@@ -140,21 +140,21 @@ HnVue V&V는 IEC 62304 및 FDA 권장 방법론에 따라 **V-Model** 기반 전
 ```mermaid
 graph LR
     classDef default fill:#444,stroke:#666,color:#fff
-    subgraph 개발 계층["개발 계층 (Development)"]
-        A["🔷 사용자 요구사항\n(User Needs / MRD)"]
-        B["🔷 시스템 요구사항\n(PRD / System Requirements)"]
-        C["🔷 SW 요구사항\n(FRS / SWR-xxx)"]
-        D["🔷 SW 아키텍처 설계\n(SAD)"]
-        E["🔷 SW 상세 설계\n(SDS)"]
-        F["🔸 소스코드 구현\n(Source Code)"]
+    subgraph 개발 계층["개발 계층 （Development）"]
+        A["🔷 사용자 요구사항\n（User Needs / MRD）"]
+        B["🔷 시스템 요구사항\n（PRD / System Requirements）"]
+        C["🔷 SW 요구사항\n（FRS / SWR-xxx）"]
+        D["🔷 SW 아키텍처 설계\n（SAD）"]
+        E["🔷 SW 상세 설계\n（SDS）"]
+        F["🔸 소스코드 구현\n（Source Code）"]
     end
 
-    subgraph VV 계층["V&V 계층 (Verification & Validation)"]
-        G["✅ 단위 테스트\n(Unit Test / Level 1)"]
-        H["✅ 통합 테스트\n(Integration Test / Level 2)"]
-        I["✅ 시스템 테스트\n(System Test / Level 3)"]
-        J["✅ 설계 밸리데이션\n(Design Validation / Level 4)"]
-        K["✅ 사용자 수용 테스트\n(UAT)"]
+    subgraph VV 계층["V&V 계층 （Verification & Validation）"]
+        G["✅ 단위 테스트\n（Unit Test / Level 1）"]
+        H["✅ 통합 테스트\n（Integration Test / Level 2）"]
+        I["✅ 시스템 테스트\n（System Test / Level 3）"]
+        J["✅ 설계 밸리데이션\n（Design Validation / Level 4）"]
+        K["✅ 사용자 수용 테스트\n（UAT）"]
     end
 
     A --> B --> C --> D --> E --> F
@@ -231,17 +231,17 @@ mindmap
 ```mermaid
 flowchart TB
     classDef default fill:#444,stroke:#666,color:#fff
-    subgraph L4["Level 4: Design Validation (밸리데이션)"]
-        L4A["입력: 출시 빌드 (Release Build)\n기준: MRD, User Needs\n출력: Design Validation Report\n도구: 실사용 환경, UAT 환경"]
+    subgraph L4["Level 4: Design Validation （밸리데이션）"]
+        L4A["입력: 출시 빌드 （Release Build）\n기준: MRD, User Needs\n출력: Design Validation Report\n도구: 실사용 환경, UAT 환경"]
     end
-    subgraph L3["Level 3: System Test (시스템 테스트)"]
-        L3A["입력: 통합 SW\n기준: FRS, PRD (PR-xxx)\n출력: ST Report\n도구: 시스템 테스트 환경, DICOM 시뮬레이터"]
+    subgraph L3["Level 3: System Test （시스템 테스트）"]
+        L3A["입력: 통합 SW\n기준: FRS, PRD （PR-xxx）\n출력: ST Report\n도구: 시스템 테스트 환경, DICOM 시뮬레이터"]
     end
-    subgraph L2["Level 2: Integration Test (통합 테스트)"]
+    subgraph L2["Level 2: Integration Test （통합 테스트）"]
         L2A["입력: SW 모듈\n기준: SAD\n출력: IT Report\n도구: 자동화 프레임워크, Mock HW"]
     end
-    subgraph L1["Level 1: Unit Test (단위 테스트)"]
-        L1A["입력: 소스코드\n기준: SDS\n출력: UT Report\n도구: GTest/GMock (C++), pytest (Python)"]
+    subgraph L1["Level 1: Unit Test （단위 테스트）"]
+        L1A["입력: 소스코드\n기준: SDS\n출력: UT Report\n도구: GTest/GMock （C++）, pytest （Python）"]
     end
 
     L1A --> L2A --> L3A --> L4A
@@ -296,9 +296,9 @@ flowchart TB
 flowchart LR
     classDef default fill:#444,stroke:#666,color:#fff
     subgraph CPP["C++ 단위 테스트"]
-        GT["Google Test\n(GTest)"]
-        GM["Google Mock\n(GMock)"]
-        GC["gcov / lcov\n(커버리지 측정)"]
+        GT["Google Test\n（GTest）"]
+        GM["Google Mock\n（GMock）"]
+        GC["gcov / lcov\n（커버리지 측정）"]
         GT --> GM
         GM --> GC
     end
@@ -306,14 +306,14 @@ flowchart LR
     subgraph PY["Python 단위 테스트"]
         PT["pytest"]
         PMK["pytest-mock /\nunittest.mock"]
-        COV["pytest-cov\n(커버리지 측정)"]
+        COV["pytest-cov\n（커버리지 측정）"]
         PT --> PMK
         PMK --> COV
     end
 
     subgraph CI["CI 파이프라인"]
         JK["Jenkins /\nGitHub Actions"]
-        RP["테스트 결과 리포트\n(JUnit XML)"]
+        RP["테스트 결과 리포트\n（JUnit XML）"]
         JK --> RP
     end
 
@@ -639,23 +639,23 @@ OWASP Top 10 (2021) 기반 점검 항목:
 ```mermaid
 flowchart TB
     classDef default fill:#444,stroke:#666,color:#fff
-    subgraph PROD["운영 환경 (Production Environment)"]
-        PROD_HW["실제 X-Ray 시스템\n(Generator + FPD)"]
-        PROD_SW["HnVue Release Build\n(Final Version)"]
-        PROD_NET["병원 네트워크\n(PACS, HIS, RIS)"]
+    subgraph PROD["운영 환경 （Production Environment）"]
+        PROD_HW["실제 X-Ray 시스템\n（Generator + FPD）"]
+        PROD_SW["HnVue Release Build\n（Final Version）"]
+        PROD_NET["병원 네트워크\n（PACS, HIS, RIS）"]
     end
 
-    subgraph STAGE["스테이징 환경 (Staging / UAT Environment)"]
-        STAGE_HW["HW 시뮬레이터\n(Generator Sim + Detector Sim)"]
-        STAGE_SW["HnVue Candidate Build\n(Release Candidate)"]
-        STAGE_NET["테스트 PACS/DICOM 서버\n(Orthanc, dcm4chee)"]
+    subgraph STAGE["스테이징 환경 （Staging / UAT Environment）"]
+        STAGE_HW["HW 시뮬레이터\n（Generator Sim + Detector Sim）"]
+        STAGE_SW["HnVue Candidate Build\n（Release Candidate）"]
+        STAGE_NET["테스트 PACS/DICOM 서버\n（Orthanc, dcm4chee）"]
         STAGE_MWL["HL7 MWL 시뮬레이터"]
     end
 
-    subgraph DEV["개발 환경 (Development / CI Environment)"]
+    subgraph DEV["개발 환경 （Development / CI Environment）"]
         DEV_SW["HnVue Dev Build"]
         DEV_MOCK["Mock HW Drivers"]
-        DEV_DB["In-Memory DB\n(SQLite)"]
+        DEV_DB["In-Memory DB\n（SQLite）"]
         DEV_DICOM["DCMTK 로컬 DICOM 서버"]
     end
 

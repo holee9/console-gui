@@ -114,7 +114,7 @@ HnVue SW는 **보텀업(Bottom-up)** 통합 전략을 채택한다. 하위 레�
 graph TB
     classDef default fill:#444,stroke:#666,color:#fff
     subgraph "Phase 1: Layer 1-2 기반 통합"
-        DB[(Database\nPostgreSQL)]
+        DB[（Database\nPostgreSQL）]
         DBR[DB Repository\nLayer]
         HWSim[HW Simulator\n발생기/검출기]
         DB --> DBR
@@ -382,7 +382,7 @@ graph TD
         PACS[dcm4chee PACS\n:11112]
         HL7[Mirth Connect\nHL7 Sim :2575]
         LDAP[OpenLDAP\nAuth :389]
-        DB[(PostgreSQL\n:5432)]
+        DB[（PostgreSQL\n:5432）]
     end
     RC -->|TCP/IP| GS
     RC -->|TCP/IP| DS

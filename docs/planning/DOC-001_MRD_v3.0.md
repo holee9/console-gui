@@ -544,16 +544,16 @@ FDA 21 CFR 820.30(c) Design Input 조항에 따라, 본 MRD(Market Requirements 
 flowchart TD
     classDef default fill:#444,stroke:#666,color:#fff
     subgraph UN["User Needs"]
-        VoC["VoC / Market Research\n(Section 4.2)"]
-        Reg["Regulatory Requirements\n(IEC 62304/62366, FDA)"]
-        Risk0["Risk Analysis Input\n(ISO 14971)"]
+        VoC["VoC / Market Research\n（Section 4.2）"]
+        Reg["Regulatory Requirements\n（IEC 62304/62366, FDA）"]
+        Risk0["Risk Analysis Input\n（ISO 14971）"]
     end
 
-    subgraph DI["Design Input (MRD)"]
+    subgraph DI["Design Input （MRD）"]
         MR["MR-001 ~ MR-072\nMarket Requirements"]
     end
 
-    subgraph SyRS_PRD["System/Software Requirements (PRD)"]
+    subgraph SyRS_PRD["System/Software Requirements （PRD）"]
         FR["FR-xxx\nFunctional Req."]
         NFR["NFR-xxx\nNon-Functional Req."]
     end
@@ -568,7 +568,7 @@ flowchart TD
         UT["UT-xxx\nUnit Test"]
         IT["IT-xxx\nIntegration Test"]
         ST["ST-xxx\nSystem Test"]
-        VT["VT-xxx\nValidation Test\n(Usability/Clinical)"]
+        VT["VT-xxx\nValidation Test\n（Usability/Clinical）"]
     end
 
     subgraph RM["Risk Management"]
@@ -627,7 +627,7 @@ flowchart LR
 
     subgraph Right["Verification and Validation"]
         direction TB
-        VT_box["Validation Test\n(Usability/Clinical)"]
+        VT_box["Validation Test\n（Usability/Clinical）"]
         SysT_box["System Test"]
         IntT_box["Integration Test"]
         UnitT_box["Unit Test"]

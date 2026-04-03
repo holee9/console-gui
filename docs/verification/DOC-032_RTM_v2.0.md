@@ -151,18 +151,18 @@
 
 ```mermaid
 flowchart LR
-    MR["MR-xxx\n시장 요구사항\n(MRD v3.0)\nTier 1~4"]
-    PR["PR-xxx\n제품 요구사항\n(PRD v2.0)\nDesign Input"]
-    SWR["SWR-xxx\nSW 요구사항\n(FRS v2.0)\nDesign Output"]
-    SAD["SAD Ref\n아키텍처 설계\n(작성 예정)"]
-    SDS["SDS Ref\n상세 설계\n(작성 예정)"]
-    UT["UT-xxx\n단위 테스트\n(UTP 작성 예정)"]
-    IT["IT-xxx\n통합 테스트\n(ITP 작성 예정)"]
-    ST["ST-xxx\n시스템 테스트\n(STP 작성 예정)"]
-    VT["VT-xxx\n밸리데이션\n(VP 작성 예정)"]
+    MR["MR-xxx\n시장 요구사항\n（MRD v3.0）\nTier 1~4"]
+    PR["PR-xxx\n제품 요구사항\n（PRD v2.0）\nDesign Input"]
+    SWR["SWR-xxx\nSW 요구사항\n（FRS v2.0）\nDesign Output"]
+    SAD["SAD Ref\n아키텍처 설계\n（작성 예정）"]
+    SDS["SDS Ref\n상세 설계\n（작성 예정）"]
+    UT["UT-xxx\n단위 테스트\n（UTP 작성 예정）"]
+    IT["IT-xxx\n통합 테스트\n（ITP 작성 예정）"]
+    ST["ST-xxx\n시스템 테스트\n（STP 작성 예정）"]
+    VT["VT-xxx\n밸리데이션\n（VP 작성 예정）"]
 
-    HAZ["HAZ-xxx\n위험 식별\n(RMP v1.0)"]
-    RC["RC-xxx\n위험 통제\n(RMP v1.0)"]
+    HAZ["HAZ-xxx\n위험 식별\n（RMP v1.0）"]
+    RC["RC-xxx\n위험 통제\n（RMP v1.0）"]
 
     MR -->|"분해 Decomposition"| PR
     PR -->|"파생 Derivation\nIEC 62304 §5.2"| SWR
@@ -189,9 +189,9 @@ flowchart LR
 
 ```mermaid
 flowchart TB
-    subgraph FWD["▶ Forward Traceability (순방향 추적성)"]
+    subgraph FWD["▶ Forward Traceability （순방향 추적성）"]
         direction LR
-        F1["MR-001\n환자 관리\n(Tier 2)"] --> F2["PR-PM-001\n환자 수동 등록"]
+        F1["MR-001\n환자 관리\n（Tier 2）"] --> F2["PR-PM-001\n환자 수동 등록"]
         F2 --> F3["SWR-PM-001~004\nUI/유효성검사/중복/저장"]
         F3 --> F4["UT-PM-001~004\n단위 테스트"]
         F4 --> F5["IT-PM-001~004\n통합 테스트"]
@@ -199,7 +199,7 @@ flowchart TB
         F6 --> F7["VT-PM-xxx\n밸리데이션"]
     end
 
-    subgraph BWD["◀ Backward Traceability (역방향 추적성)"]
+    subgraph BWD["◀ Backward Traceability （역방향 추적성）"]
         direction RL
         B7["VT 결과 Pass"] --> B6["ST 테스트 통과"]
         B6 --> B5["IT 통과"]
@@ -209,7 +209,7 @@ flowchart TB
         B2 --> B1["MR-001 만족 확인"]
     end
 
-    subgraph RISK["⚠ Risk Traceability (위험 추적성)"]
+    subgraph RISK["⚠ Risk Traceability （위험 추적성）"]
         direction LR
         R1["HAZ-DATA\n환자 데이터 혼동"] --> R2["RC-008\n환자 ID 이중 확인"]
         R2 --> R3["SWR-PM-010\n환자 데이터 로드"]
@@ -438,13 +438,13 @@ pie title Forward Traceability 커버리지 (PR 기준)
 
 ```mermaid
 flowchart RL
-    VT["VT 결과\n(Validation Report)"]
-    ST["ST 결과\n(System Test Report)"]
-    IT["IT 결과\n(Integration Test Report)"]
-    UT["UT 결과\n(Unit Test Report)"]
-    SWR["SWR-xxx\n(FRS v2.0 — 구현 완료 기준)"]
-    PR["PR-xxx\n(PRD v2.0 — Design Input 충족)"]
-    MR["MR-xxx\n(User Need 만족)\nTier 1~4"]
+    VT["VT 결과\n（Validation Report）"]
+    ST["ST 결과\n（System Test Report）"]
+    IT["IT 결과\n（Integration Test Report）"]
+    UT["UT 결과\n（Unit Test Report）"]
+    SWR["SWR-xxx\n（FRS v2.0 — 구현 완료 기준）"]
+    PR["PR-xxx\n（PRD v2.0 — Design Input 충족）"]
+    MR["MR-xxx\n（User Need 만족）\nTier 1~4"]
 
     VT -->|"역추적 PR 충족 확인"| PR
     ST -->|"역추적 SWR 검증 확인"| SWR
@@ -568,16 +568,16 @@ RTM은 다음 이벤트 발생 시 반드시 업데이트되어야 한다:
 
 ```mermaid
 flowchart LR
-    A["요구사항 변경\n(PRD/FRS/RMP 개정)"] --> B["변경 영향 분석\nImpact Analysis"]
+    A["요구사항 변경\n（PRD/FRS/RMP 개정）"] --> B["변경 영향 분석\nImpact Analysis"]
     B --> C{"RTM 변경\n필요 여부"}
-    C -- Yes --> D["RTM 초안 수정\n(Draft)"]
-    D --> E["QA 검토\n(Review)"]
+    C -- Yes --> D["RTM 초안 수정\n（Draft）"]
+    D --> E["QA 검토\n（Review）"]
     E --> F{"검토\n통과?"}
     F -- No --> D
-    F -- Yes --> G["버전 승인\n(Approved)"]
-    G --> H["DHF 등록\n(Design History File)"]
-    C -- No --> I["변경 불필요\n(No Impact)"]
-    I --> J["변경 기록 메모\n(Change Note)"]
+    F -- Yes --> G["버전 승인\n（Approved）"]
+    G --> H["DHF 등록\n（Design History File）"]
+    C -- No --> I["변경 불필요\n（No Impact）"]
+    I --> J["변경 기록 메모\n（Change Note）"]
 
     classDef default fill:#444,stroke:#666,color:#fff
 ```

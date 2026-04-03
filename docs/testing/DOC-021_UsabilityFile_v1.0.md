@@ -387,7 +387,7 @@ graph TB
 flowchart LR
     classDef default fill:#444,stroke:#666,color:#fff
     subgraph "형성적 평가 (Formative)"
-        F1[전문가 휴리스틱<br/>평가 (Round 1)]
+        F1[전문가 휴리스틱<br/>평가 （Round 1）]
         F2[인지 워크스루<br/>Cognitive Walkthrough]
         F3[프로토타입<br/>사용자 테스트]
     end
