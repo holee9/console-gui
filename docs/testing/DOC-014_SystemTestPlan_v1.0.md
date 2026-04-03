@@ -498,30 +498,31 @@ graph TD
 
 ```mermaid
 gantt
-    title 시스템 테스트 일정 (System Test Schedule)
+    title 시스템 테스트 일정
     dateFormat  YYYY-MM
-    section 준비 (Preparation)
+    section 준비
     테스트 환경 구성           :done, env, 2026-08, 2w
     테스트 데이터 준비         :done, data, 2026-08, 3w
     테스트 도구 검증           :done, tool, 2026-08, 2w
 
-    section 1차 실행 (Round 1)
-    PM 기능 테스트 (10개)      :active, pm, 2026-09, 1w
-    WF 기능 테스트 (10개)      :wf, 2026-09, 1w
-    IP 기능 테스트 (8개)       :ip, after wf, 1w
-    DC 기능 테스트 (7개)       :dc, after ip, 1w
-    DM 기능 테스트 (5개)       :dm, after dc, 1w
-    SA/CS 기능 테스트 (10개)   :cs, after dm, 1w
+    section 1차 실행
+    PM 기능 테스트      :active, pm, 2026-09, 1w
+    WF 기능 테스트      :wf, 2026-09, 1w
+    IP 기능 테스트       :ip, after wf, 1w
+    DC 기능 테스트       :dc, after ip, 1w
+    DM 기능 테스트       :dm, after dc, 1w
+    SA/CS 기능 테스트   :cs, after dm, 1w
 
-    section 2차 실행 (Round 2)
-    성능/비기능 테스트 (20개)  :perf, 2026-10, 2w
-    안전성 테스트 (15개)       :safety, after perf, 2w
+    section 2차 실행
+    성능/비기능 테스트  :perf, 2026-10, 2w
+    안전성 테스트       :safety, after perf, 2w
     스트레스/부하 테스트       :stress, after safety, 1w
 
-    section 마무리 (Closure)
+    section 마무리
     결함 수정 및 회귀 테스트   :regress, 2026-11, 2w
     최종 승인 및 서명          :approve, after regress, 1w
     V&V 보고서 작성            :report, after approve, 1w
+
 ```
 
 ### 10.3 테스트 역할 및 책임

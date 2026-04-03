@@ -185,35 +185,36 @@ ISO 14971:2019 §9a에 따라 RMP-XRAY-GUI-001의 계획 항목 이행 여부를
 
 ```mermaid
 gantt
-    title 위험 관리 활동 실행 일정 (Risk Management Activity Timeline)
+    title 위험 관리 활동 실행 일정
     dateFormat  YYYY-MM
     axisFormat  %Y-%m
 
     section 계획 수립
-    RMP 작성 및 승인 (RMP-XRAY-GUI-001)  :done, rmp1, 2026-01, 1M
+    RMP 작성 및 승인  :done, rmp1, 2026-01, 1M
 
     section 위험 분석
     PHA 수행                              :done, pha1, 2026-02, 1M
     SW FMEA 초안 작성                     :done, fmea1, 2026-02, 2M
-    FTA 수행 (TE-001/002/003)             :done, fta1, 2026-03, 1M
+    FTA 수행             :done, fta1, 2026-03, 1M
     HAZ 22개 최종 확정                    :done, haz1, 2026-03, 1M
 
     section 위험 통제 설계
     RC-001–036 설계 확정                  :done, rc1, 2026-03, 1M
     SRS/SDS 위험 통제 반영                :done, sw1, 2026-03, 2M
 
-    section 구현 및 검증 (예정)
-    RC 구현 (코딩)                        :active, impl1, 2026-04, 3M
-    위험 통제 검증 테스트 (V&V)           :vv1, 2026-07, 2M
+    section 구현 및 검증
+    RC 구현                        :active, impl1, 2026-04, 3M
+    위험 통제 검증 테스트           :vv1, 2026-07, 2M
     잔여 위험 최종 평가                   :rr1, 2026-09, 1M
 
     section 보고서 완성
-    위험 관리 보고서 초안 (본 문서)       :done, rmr1, 2026-03, 1M
+    위험 관리 보고서 초안       :done, rmr1, 2026-03, 1M
     위험 관리 보고서 최종본               :rmr2, 2026-10, 1M
     인허가 제출 패키지                    :sub1, 2026-11, 1M
 
     section 시판 후
     PMS 체계 운영                         :pms1, 2027-01, 12M
+
 ```
 
 ### 3.4 참여 조직 및 역할 (Organization and Roles)

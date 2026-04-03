@@ -1067,7 +1067,7 @@ gantt
     dateFormat  YYYY-MM
     axisFormat  %Y-%m
 
-    section Phase 1 (v1.0) - Tier 1+2 기능
+    section Phase 1 - Tier 1+2 기능
     요구사항 분석 및 SRS 작성        :done, req1, 2026-01, 2026-03
     SW 아키텍처 설계                 :done, arch1, 2026-02, 2026-04
     STRIDE 위협 모델링              :active, stride1, 2026-03, 2026-04
@@ -1083,7 +1083,7 @@ gantt
     인허가 서류 준비                  :reg1, 2026-07, 2026-11
     v1.0 릴리스                      :milestone, m1, 2027-03, 0d
 
-    section Phase 2 (v2.0) - Tier 3 기능
+    section Phase 2 - Tier 3 기능
     MPPS/Q/R/Commitment 개발         :dev8, 2027-04, 2027-07
     RDSR/선량관리 강화               :dev9, 2027-04, 2027-07
     Image Stitching 개발             :dev10, 2027-05, 2027-08
@@ -1091,10 +1091,11 @@ gantt
     안정화 및 성능 최적화            :opt1, 2027-06, 2027-09
     v2.0 릴리스                      :milestone, m2, 2027-09, 0d
 
-    section Phase 3+ (v3.0+) - Tier 4
+    section Phase 3+ - Tier 4
     AI 통합 연구/개발               :ai1, 2027-10, 2028-06
     Cloud 연동 개발                  :cloud1, 2028-01, 2028-09
     v3.0 통합 테스트 및 릴리스       :milestone, m3, 2028-09, 0d
+
 ```
 
 ### 8.3 Phase 1 세부 마일스톤

@@ -871,11 +871,11 @@ flowchart TD
 
 ```mermaid
 gantt
-    title HnVue V&V 마스터 일정 (Phase 1: M1-M12)
+    title HnVue V&V 마스터 일정
     dateFormat  YYYY-MM
     axisFormat  %Y-%m
 
-    section 준비 (Preparation)
+    section 준비
     V&V 계획 수립 및 승인          :done,    vvp,   2025-09, 2025-10
     테스트 환경 구축               :done,    env,   2025-09, 2025-11
     테스트 케이스 설계             :done,    tcd,   2025-10, 2025-12
@@ -887,7 +887,7 @@ gantt
     UT 보고서 작성                  :         utrpt, 2026-04, 2026-05
 
     section Level 2 - 통합 테스트
-    IT 환경 준비 (Mock HW)          :done,    ite,   2025-12, 2026-02
+    IT 환경 준비          :done,    ite,   2025-12, 2026-02
     모듈 통합 테스트 실행           :active,  itex,  2026-02, 2026-06
     DICOM 통합 테스트              :         dcit,  2026-03, 2026-06
     IT 보고서 작성                  :         itrpt, 2026-05, 2026-06
@@ -902,15 +902,16 @@ gantt
 
     section Level 4 - 밸리데이션
     사용성 테스트 준비              :         utp,   2026-08, 2026-09
-    총괄 사용성 평가 (IEC 62366)   :         ute,   2026-09, 2026-10
+    총괄 사용성 평가   :         ute,   2026-09, 2026-10
     임상 시뮬레이션 테스트         :         cst,   2026-09, 2026-10
     UAT 실행                        :         uat,   2026-10, 2026-11
     V&V 최종 보고서                 :         vvrpt, 2026-10, 2026-11
 
     section 인허가 준비
-    510(k) 제출 패키지 준비         :         fda,   2026-11, 2026-12
+    510 제출 패키지 준비         :         fda,   2026-11, 2026-12
     CE MDR 기술 문서 완성          :         ce,    2026-11, 2026-12
     Phase 1 완료 마일스톤           :milestone, m1,  2026-12, 0d
+
 ```
 
 ### 13.2 주요 마일스톤 (Key Milestones)

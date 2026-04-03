@@ -580,7 +580,7 @@ SWR-010 → SAD-101 (WorkflowEngine Architecture)
 
 ```mermaid
 gantt
-    title HnVue Console SW 인허가 문서 작성 일정 (42개 문서)
+    title HnVue Console SW 인허가 문서 작성 일정
     dateFormat  YYYY-MM
     axisFormat  %Y-%m
 
@@ -594,7 +594,7 @@ gantt
 
     section Phase B 설계 문서
     DOC-004 FRS                         :b1, 2026-04, 1M
-    DOC-005 SRS (SWR-xxx 체계)         :b2, 2026-04, 1M
+    DOC-005 SRS         :b2, 2026-04, 1M
     DOC-006 SAD                         :b3, 2026-05, 2M
     DOC-007 SDS                         :b4, 2026-07, 1M
 
@@ -620,7 +620,7 @@ gantt
     DOC-020 Clinical Evaluation Plan    :f1, 2026-08, 1M
     DOC-021 Usability Engineering File  :f2, 2026-05, 4M
     DOC-038 DICOM Conformance           :f3, 2026-09, 1M
-    DOC-040 IFU (사용 설명서)           :f4, 2026-10, 1M
+    DOC-040 IFU           :f4, 2026-10, 1M
 
     section Phase G 테스트 보고서
     DOC-022 Unit Test Report            :g1, 2026-11, 1M
@@ -643,7 +643,7 @@ gantt
     DOC-037 CE Technical Documentation  :h8, 2027-03, 1M
     DOC-039 KFDA 기술 문서              :h9, 2027-04, 1M
 
-    section 인허가 마일스톤 (Milestones)
+    section 인허가 마일스톤
     PG-A Phase A Gate                   :milestone, mga, 2026-04, 0d
     M1 SRS 베이스라인                   :milestone, m1, 2026-05, 0d
     M2 아키텍처 리뷰 완료              :milestone, m2, 2026-07, 0d
@@ -654,50 +654,52 @@ gantt
     M_DHF DHF 초안 편찬                :milestone, mDHF, 2027-02, 0d
     M_REG FDA 인허가 제출              :milestone, mREG, 2027-03, 0d
     M_KFDA KFDA 인허가 제출            :milestone, mKFDA, 2027-04, 0d
+
 ```
 
 ### 5.2 PRD 승인 후 즉시 착수 작업 (2026년 4–8월)
 
 ```mermaid
 gantt
-    title PRD v3.0 승인 후 즉시 착수 작업 (2026년 4–8월)
+    title PRD v3.0 승인 후 즉시 착수 작업
     dateFormat  YYYY-MM-DD
     axisFormat  %m/%d
 
     section Week 1-2 즉시 착수
     DOC-003 SW 개발 지침서             :a1, 2026-04-01, 2w
-    FRS 초안 작성 (DOC-004)            :crit, n1, 2026-04-01, 2w
-    Risk Management Plan (DOC-008)     :crit, n2, 2026-04-01, 2w
-    Cybersecurity Mgmt Plan (DOC-016)  :n3, 2026-04-01, 2w
-    V&V Master Plan 초안 (DOC-011)     :n4, 2026-04-01, 2w
+    FRS 초안 작성            :crit, n1, 2026-04-01, 2w
+    Risk Management Plan     :crit, n2, 2026-04-01, 2w
+    Cybersecurity Mgmt Plan  :n3, 2026-04-01, 2w
+    V&V Master Plan 초안     :n4, 2026-04-01, 2w
     DOC-003a SDP                       :a2, 2026-04-01, 2w
 
     section 2주 후 착수
-    SRS (SWR-xxx 체계) (DOC-005)       :crit, n5, 2026-04-14, 3w
-    Threat Model (DOC-017)             :n6, 2026-04-14, 3w
+    SRS       :crit, n5, 2026-04-14, 3w
+    Threat Model             :n6, 2026-04-14, 3w
     Use Specification / UEF 착수       :n7, 2026-04-14, 4w
 
     section 4주 후 착수
-    SAD 착수 (DOC-006)                 :crit, n8, 2026-05-01, 6w
-    Software Hazard Analysis (DOC-009) :n9, 2026-05-01, 4w
-    Clinical Evaluation Plan (DOC-020) :n10, 2026-05-01, 3w
+    SAD 착수                 :crit, n8, 2026-05-01, 6w
+    Software Hazard Analysis :n9, 2026-05-01, 4w
+    Clinical Evaluation Plan :n10, 2026-05-01, 3w
 
     section 6-8주 후 착수
-    SDS 착수 (DOC-007)                 :n11, 2026-06-15, 5w
-    Unit Test Plan (DOC-012)           :n12, 2026-06-15, 3w
-    Cybersecurity Test Plan (DOC-018)  :n13, 2026-06-15, 3w
-    SBOM 작성 착수 (DOC-019)           :n14, 2026-06-15, 8w
-    QA Test Case Plan (DOC-030)        :n15, 2026-07-01, 4w
+    SDS 착수                 :n11, 2026-06-15, 5w
+    Unit Test Plan           :n12, 2026-06-15, 3w
+    Cybersecurity Test Plan  :n13, 2026-06-15, 3w
+    SBOM 작성 착수           :n14, 2026-06-15, 8w
+    QA Test Case Plan        :n15, 2026-07-01, 4w
     System/Integration Test Plan       :n16, 2026-07-01, 4w
-    IFU 초안 (DOC-040)                 :n17, 2026-07-01, 3w
+    IFU 초안                 :n17, 2026-07-01, 3w
 
     section 마일스톤
     Phase A Gate                       :milestone, mga, 2026-04-15, 0d
     FRS 베이스라인 확정                :milestone, m1, 2026-05-01, 0d
-    SRS 베이스라인 (M1)                :milestone, m2, 2026-05-15, 0d
+    SRS 베이스라인                :milestone, m2, 2026-05-15, 0d
     V&V Plan 승인                      :milestone, m3, 2026-06-01, 0d
-    아키텍처 리뷰 (M2)                 :milestone, m4, 2026-07-15, 0d
+    아키텍처 리뷰                 :milestone, m4, 2026-07-15, 0d
     Phase B Gate                       :milestone, mgb, 2026-08-15, 0d
+
 ```
 
 ---

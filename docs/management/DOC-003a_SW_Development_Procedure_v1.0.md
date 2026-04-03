@@ -478,41 +478,42 @@ flowchart TD
 
 ```mermaid
 gantt
-    title HnVue Console SW 개발 일정 (2026년 4월~8월)
+    title HnVue Console SW Phase 1 일정
     dateFormat  YYYY-MM-DD
     axisFormat  %m/%d
 
     section Phase A 기반 문서
     DOC-003 SW 개발 지침서             :a1, 2026-04-01, 2w
-    DOC-003a SDP (본 문서)              :a2, 2026-04-01, 2w
+    DOC-003a SDP              :a2, 2026-04-01, 2w
     DOC-041 PM 계획서                   :a3, 2026-04-01, 2w
 
     section Phase B 설계 문서
-    FRS 초안 작성 (DOC-004)            :crit, b1, 2026-04-01, 2w
-    SRS (SWR-xxx 체계) (DOC-005)       :crit, b2, 2026-04-14, 3w
-    SAD 착수 (DOC-006)                 :crit, b3, 2026-05-01, 6w
-    SDS 착수 (DOC-007)                 :b4, 2026-06-15, 5w
+    FRS 초안 작성            :crit, b1, 2026-04-01, 2w
+    SRS       :crit, b2, 2026-04-14, 3w
+    SAD 착수                 :crit, b3, 2026-05-01, 6w
+    SDS 착수                 :b4, 2026-06-15, 5w
 
     section Phase C 위험 관리
-    Risk Management Plan (DOC-008)     :crit, c1, 2026-04-01, 2w
-    Software Hazard Analysis (DOC-009) :c2, 2026-05-01, 4w
+    Risk Management Plan     :crit, c1, 2026-04-01, 2w
+    Software Hazard Analysis :c2, 2026-05-01, 4w
 
     section Phase D V&V 계획
-    V&V Master Plan 초안 (DOC-011)     :d1, 2026-04-01, 2w
-    Unit Test Plan (DOC-012)           :d2, 2026-06-15, 3w
+    V&V Master Plan 초안     :d1, 2026-04-01, 2w
+    Unit Test Plan           :d2, 2026-06-15, 3w
     System/Integration Test Plan       :d3, 2026-07-01, 4w
 
     section Phase E 사이버보안
-    Cybersecurity Mgmt Plan (DOC-016)  :e1, 2026-04-01, 2w
-    Threat Model (DOC-017)             :e2, 2026-04-14, 3w
+    Cybersecurity Mgmt Plan  :e1, 2026-04-01, 2w
+    Threat Model             :e2, 2026-04-14, 3w
 
     section 마일스톤
-    Phase A Gate (PG-A)                :milestone, mga, 2026-04-15, 0d
-    FRS 베이스라인 확정 (M1)           :milestone, m1, 2026-05-01, 0d
-    SRS 베이스라인 (M2)                :milestone, m2, 2026-05-15, 0d
-    V&V Plan 승인 (M3)                 :milestone, m3, 2026-06-01, 0d
-    아키텍처 리뷰 (M4)                 :milestone, m4, 2026-07-15, 0d
-    Phase B Gate (PG-B)                :milestone, mgb, 2026-08-15, 0d
+    Phase A Gate                :milestone, mga, 2026-04-15, 0d
+    FRS 베이스라인 확정           :milestone, m1, 2026-05-01, 0d
+    SRS 베이스라인                :milestone, m2, 2026-05-15, 0d
+    V&V Plan 승인                 :milestone, m3, 2026-06-01, 0d
+    아키텍처 리뷰                 :milestone, m4, 2026-07-15, 0d
+    Phase B Gate                :milestone, mgb, 2026-08-15, 0d
+
 ```
 
 > **DMP-001 동기화 주의**: 본 일정표는 DMP-001 (Document Master Plan) 문서의 기준 일정을 반영한다. 실제 개발 진행 상황 및 Phase Gate 결과에 따라 일정이 변경될 수 있으며, 변경 시 DMP-001과 동시 개정이 필요하다.

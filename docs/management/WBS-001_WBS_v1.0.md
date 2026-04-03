@@ -275,38 +275,38 @@ timeline
 
 ```mermaid
 gantt
-    title HnVue Console SW 개발 로드맵 (Phase 1 + Phase 2) — Milestone & Critical Path
+    title HnVue Console SW 개발 로드맵
     dateFormat  YYYY-MM
     axisFormat  %Y-%m
 
-    section 📋 Phase 1 - 기반 문서 (Critical)
+    section Phase 1 - 기반 문서
     MRD / PRD 확정                :crit, p1_mrd, 2026-03, 1M
     WBS / DMP 작성               :crit, p1_wbs, 2026-03, 1M
-    DevGuideline 작성 (신규)                :crit, p1_dg,  2026-03, 1M
-    SW 개발 절차서 SDP 작성 (신규)          :crit, p1_sdp, 2026-03, 1M
+    DevGuideline 작성                :crit, p1_dg,  2026-03, 1M
+    SW 개발 절차서 SDP 작성          :crit, p1_sdp, 2026-03, 1M
 
-    section 📋 Phase 1 - 요구사항 (Critical)
-    요구사항 분석 (FRS/SRS — IEC 62304 §5.2) :crit, p1_req, 2026-03, 2M
+    section Phase 1 - 요구사항
+    요구사항 분석 :crit, p1_req, 2026-03, 2M
     IEC 62366 Use Specification              :p1_ue,  2026-04, 1M
-    사이버보안 요구사항 (FDA 524B)           :p1_cs,  2026-04, 1M
-    RTM 초안 작성 (MR→PR→SWR)              :crit, p1_rtm, 2026-04, 1M
-    Risk Management Plan (ISO 14971)         :crit, p1_rmp, 2026-04, 1M
+    사이버보안 요구사항           :p1_cs,  2026-04, 1M
+    RTM 초안 작성              :crit, p1_rtm, 2026-04, 1M
+    Risk Management Plan         :crit, p1_rmp, 2026-04, 1M
 
-    section 📋 Phase 1 - 설계 (Critical)
+    section Phase 1 - 설계
     FRS 작성 베이스라인 확정                 :crit, p1_frs, 2026-05, 1M
-    시스템/SW 아키텍처 설계 (SAD)           :crit, p1_arch,2026-05, 2M
+    시스템/SW 아키텍처 설계           :crit, p1_arch,2026-05, 2M
     GUI/UX 상세 설계 & Wireframe             :p1_ui,  2026-06, 2M
     영상처리/DICOM 상세 설계                :p1_img, 2026-06, 2M
     SDS 작성 및 FMEA 초안                   :crit, p1_sds, 2026-07, 1M
 
-    section 📋 Phase 1 - V&V 계획 문서
-    V&V Master Plan (DOC-011)                :p1_vvp, 2026-05, 1M
-    Cybersecurity Mgmt Plan (DOC-016)        :p1_cmp, 2026-05, 1M
+    section Phase 1 - V&V 계획 문서
+    V&V Master Plan                :p1_vvp, 2026-05, 1M
+    Cybersecurity Mgmt Plan        :p1_cmp, 2026-05, 1M
     Unit/Integration/System Test Plans       :p1_tp,  2026-07, 2M
-    Cybersecurity Test Plan (DOC-018)        :p1_cstp,2026-08, 1M
-    Clinical Evaluation Plan (DOC-020)       :p1_cep, 2026-08, 1M
+    Cybersecurity Test Plan        :p1_cstp,2026-08, 1M
+    Clinical Evaluation Plan       :p1_cep, 2026-08, 1M
 
-    section 📋 Phase 1 - 구현 (Critical)
+    section Phase 1 - 구현
     GUI 핵심 모듈 구현                       :crit, p1_dev1,2026-08, 3M
     영상처리/Viewer 구현                    :crit, p1_dev2,2026-08, 3M
     DICOM 서비스 구현                        :crit, p1_dev3,2026-09, 2M
@@ -314,20 +314,20 @@ gantt
     Dose Management 구현                     :p1_dev5,2026-10, 1M
     SBOM 작성 및 SOUP Analysis              :p1_sbom,2026-10, 1M
 
-    section 📋 Phase 1 - 검증/보고서 (Critical)
+    section Phase 1 - 검증/보고서
     Unit/통합 테스트 실행                    :crit, p1_test,2026-11, 2M
     Cybersecurity 침투 테스트               :p1_pen, 2026-11, 1M
     사용성 평가 Summative                   :p1_ue2, 2026-12, 1M
     SW V&V 실행                              :crit, p1_vv,  2027-01, 1M
     V&V Summary Report 작성                  :crit, p1_vvr, 2027-01, 1M
 
-    section 📋 Phase 1 - DHF/인허가 (Critical)
-    RTM 최종본 작성 및 검증 (DOC-032)       :crit, p1_rtmf,2027-02, 1M
-    DHF 편찬 (DOC-035)                       :crit, p1_dhf, 2027-02, 1M
+    section Phase 1 - DHF/인허가
+    RTM 최종본 작성 및 검증       :crit, p1_rtmf,2027-02, 1M
+    DHF 편찬                       :crit, p1_dhf, 2027-02, 1M
     규제 문서 패키지 완성                    :crit, p1_reg, 2027-02, 1M
-    eSTAR/510(k) 제출 준비 (DOC-036)        :crit, p1_estar,2027-03, 1M
+    eSTAR/510 제출 준비        :crit, p1_estar,2027-03, 1M
 
-    section 🏁 Milestone — Phase 1
+    section Phase 1 Milestone
     MS-01: 기반 문서 승인 (DR#1)            :milestone, ms01, 2026-03, 0d
     MS-02: 요구사항 완료 (DR#2)             :milestone, ms02, 2026-05, 0d
     MS-03: 설계 완료 (DR#3)                 :milestone, ms03, 2026-07, 0d
@@ -335,10 +335,10 @@ gantt
     MS-05: V&V 완료 (DR#4)                  :milestone, ms05, 2027-01, 0d
     MS-06: 인허가 제출 (DR#5)               :milestone, ms06, 2027-03, 0d
 
-    section 🚀 Phase 2 - AI/고도화
+    section Phase 2 - AI/고도화
     AI 모듈 인터페이스 정의                  :p2_ai1, 2027-04, 2M
     Smart Image Processing 구현              :p2_img, 2027-06, 3M
-    AI 통합 (Smart Positioning 등)           :p2_ai2, 2027-07, 3M
+    AI 통합           :p2_ai2, 2027-07, 3M
     Cloud Connectivity 구현                  :p2_cld, 2027-07, 3M
     Analytics Dashboard 구현                 :p2_ana, 2027-09, 2M
     OTA Update 아키텍처 구현                 :p2_ota, 2027-10, 2M
@@ -347,9 +347,10 @@ gantt
     AI 임상 유효성 검증                      :p2_val, 2028-01, 2M
     Phase 2 규제 업데이트                    :p2_reg, 2028-02, 1M
 
-    section 🏁 Milestone — Phase 2
+    section Phase 2 Milestone
     MS-P2-1: AI 통합 완료                   :milestone, msp21, 2027-10, 0d
     MS-P2-2: Phase 2 릴리스                 :milestone, msp22, 2028-03, 0d
+
 ```
 
 ---

@@ -521,7 +521,7 @@ gantt
     dateFormat  YYYY-MM-DD
     axisFormat  %m/%d
     
-    section 준비 (Preparation)
+    section 준비
     밸리데이션 환경 구축       :v1, 2026-07-01, 14d
     테스트 데이터 준비         :v2, 2026-07-08, 7d
     밸리데이션 팀 교육         :v3, 2026-07-15, 3d
@@ -544,6 +544,7 @@ gantt
     section 최종
     밸리데이션 보고서 작성      :v13, 2026-08-25, 5d
     검토 및 승인               :v14, 2026-08-30, 3d
+
 ```
 
 ### 11.2 마일스톤

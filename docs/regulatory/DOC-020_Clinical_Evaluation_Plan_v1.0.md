@@ -615,30 +615,31 @@ gantt
     dateFormat  YYYY-MM
     axisFormat  %Y-%m
 
-    section 임상 평가 계획 (CEP)
+    section 임상 평가 계획
     CEP 초안 작성           :done, cep1, 2026-01, 2M
     CEP 검토 및 승인         :done, cep2, 2026-03, 1M
 
     section 문헌 검색 및 평가
     데이터베이스 검색        :active, lit1, 2026-04, 1M
-    문헌 스크리닝 (1차)      :lit2, after lit1, 1M
+    문헌 스크리닝      :lit2, after lit1, 1M
     전문 검토 및 평가        :lit3, after lit2, 2M
     MAUDE / FSN 분석         :lit4, 2026-04, 2M
 
     section 사용성 평가
-    형성 평가 1차 (M3)       :done, ue1, 2026-03, 1M
-    형성 평가 2차 (M6)       :ue2, 2026-06, 1M
-    총괄 평가 (M11)          :ue3, 2026-11, 1M
+    형성 평가 1차       :done, ue1, 2026-03, 1M
+    형성 평가 2차       :ue2, 2026-06, 1M
+    총괄 평가          :ue3, 2026-11, 1M
 
     section CER 작성
     CER 초안 작성            :cer1, after lit3, 2M
-    내부 검토 (QA, RA)       :cer2, after cer1, 1M
+    내부 검토       :cer2, after cer1, 1M
     외부 전문가 검토         :cer3, after cer2, 1M
     CER 최종본 승인          :milestone, cerFinal, after cer3, 0d
 
     section 규제 제출
     CE MDR 기술 문서 제출    :reg1, after cerFinal, 1M
-    FDA 510(k) 제출          :reg2, after cerFinal, 1M
+    FDA 510 제출          :reg2, after cerFinal, 1M
+
 ```
 
 ---

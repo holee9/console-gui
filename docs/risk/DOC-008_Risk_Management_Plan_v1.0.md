@@ -190,24 +190,24 @@ gantt
     axisFormat  %Y-%m
 
     section 위험 관리 계획
-    RMP 수립 (RMP-XRAY-GUI-001)         :rm1, 2026-01, 1M
+    RMP 수립         :rm1, 2026-01, 1M
 
     section 위험 분석
-    PHA (Preliminary Hazard Analysis)    :rm2, 2026-02, 2M
+    PHA    :rm2, 2026-02, 2M
     SW FMEA 초안 작성                    :rm3, 2026-02, 3M
     FTA 수행                             :rm4, 2026-03, 2M
 
-    section SW 요구사항 (IEC 62304 §5.2)
+    section SW 요구사항
     SRS 작성 및 위험 연계                :sw1, 2026-02, 2M
     위험 통제 요구사항 반영              :sw2, 2026-03, 2M
 
-    section SW 설계 (IEC 62304 §5.3–5.4)
+    section SW 설계
     SAD / SDS 작성                       :sw3, 2026-04, 2M
     위험 통제 설계 반영 검토             :sw4, 2026-04, 2M
 
     section 위험 통제 구현 및 검증
-    RC 구현 (코딩)                       :rc1, 2026-05, 3M
-    통제 조치 검증 테스트 (V&V)          :rc2, 2026-07, 2M
+    RC 구현                       :rc1, 2026-05, 3M
+    통제 조치 검증 테스트          :rc2, 2026-07, 2M
     잔여 위험 평가                       :rc3, 2026-08, 1M
 
     section 시스템 검증
@@ -220,6 +220,7 @@ gantt
 
     section 시판 후 감시
     PMS 체계 운영                        :pms1, 2027-01, 12M
+
 ```
 
 ### 3.3 역할 및 책임 (Roles and Responsibilities)
