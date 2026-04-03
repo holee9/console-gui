@@ -268,6 +268,44 @@ MR (72개) → PR (65개) → SWR (176+개) → TC → HAZ
 
 ---
 
+## Document Sync & Revision Roadmap
+
+### 자동 동기화 스크립트
+
+MRD 개정 시 전체 문서의 버전 참조/제품명/Mermaid 오류를 자동 동기화합니다.
+
+```bash
+# 검증만 (수정 안 함)
+python scripts/sync_docs.py --check --verbose
+
+# 실행 (자동 수정)
+python scripts/sync_docs.py
+```
+
+동기화 대상:
+- 구 버전 참조 → 현행 버전으로 교체
+- RadiConsole → HnVue 제품명 통일
+- HnVue HnVue 중복 제거
+- Mermaid 비flowchart classDef 제거
+
+> 현행 버전은 `scripts/sync_docs.py` 의 `CURRENT_VERSIONS` 딕셔너리에 정의되어 있습니다.
+> MRD/PRD 개정 시 이 딕셔너리를 업데이트한 후 스크립트를 실행하면 됩니다.
+
+### Phase별 문서 개정 로드맵
+
+| 시점 | 대상 문서 | 개정 내용 |
+|------|----------|----------|
+| **지금 (완료)** | MRD, PRD, FRS, SRS, RTM (핵심 5개) | 4-Tier, MR-072, 추적성 완보 |
+| **Phase 1 착수 시** | SAD, SDS, DMP, SDP, WBS | Tier 반영, 실제 설계 반영 |
+| **Phase 1 구현 완료 시** | UTP, ITP, STP, CyberTest, Usability | 실제 테스트 케이스 작성 |
+| **Phase 1 검증 완료 시** | UTR, ITR, STR, V&V Summary, QA | 실제 테스트 결과 기입 |
+| **인허가 제출 전** | eSTAR, DHF, DICOM Conf, IFU, GSPR | 최종 버전 확정 |
+| **시판 후** | PMS, PMCF, CER | 실제 데이터 반영 |
+
+> 각 시점에 해당 문서를 개정하면 됩니다. 지금 전체를 개정할 필요는 없습니다.
+
+---
+
 ## Sync from GitHub Mirror
 
 Perplexity Computer에서 GitHub 미러에 작업한 내용을 사내 로컬 Git에 반영할 때 아래 명령어를 실행한다.

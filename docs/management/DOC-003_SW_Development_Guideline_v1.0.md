@@ -215,7 +215,7 @@ graph LR
 |------|------|
 | **입력 (Input)** | MRD (Market Requirements Document), 이해관계자 요구사항, 위험 관리 계획 |
 | **활동** | 시스템 요구사항 도출, 초기 위험 식별, SOUP 식별 |
-| **출력 (Output)** | PRD v1.0 (PR-xxx), 초기 위험 목록, 개발 계획서 |
+| **출력 (Output)** | PRD v2.0 (PR-xxx), 초기 위험 목록, 개발 계획서 |
 | **Phase Gate** | PRD 검토 회의(Design Review #1) 통과 |
 
 #### Phase 2: SW 요구사항 분석
