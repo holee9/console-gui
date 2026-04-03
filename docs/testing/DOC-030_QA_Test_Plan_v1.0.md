@@ -502,10 +502,12 @@ SC:  [____%]
 <a name="part-3"></a>
 # Part 3: QA Checklist — 릴리스 전 체크리스트 (Pre-Release QA Checklist)
 
-> **문서 ID**: QTP-XRAY-GUI-001 Part 3  
-> **버전**: v1.0  
-> **작성일**: 2026-03-16  
-> **용도**: Phase 1 릴리스 전 QA 완료 기준 검증
+| 항목 | 내용 |
+|------|------|
+| **문서 ID** | QTP-XRAY-GUI-001 Part 3 |
+| **버전** | v1.0 |
+| **작성일** | 2026-03-16 |
+| **용도** | Phase 1 릴리스 전 QA 완료 기준 검증 |
 
 ---
 
