@@ -246,13 +246,13 @@ gantt
 ### 4.2 위험 범주별 분포 (Hazard Category Distribution)
 
 ```mermaid
-pie title 위험 범주별 HAZ 분포 (Hazard Category Distribution — 22 HAZ)
-    "방사선 피폭 (Radiation)" : 4
-    "SW 오류 (Software Error)" : 5
-    "데이터 무결성 (Data Integrity)" : 4
-    "사이버보안 (Cybersecurity)" : 4
-    "사용성 오류 (Usability)" : 3
-    "네트워크 통신 (Network)" : 2
+pie title 위험 범주별 HAZ 분포 (Hazard Category Distribution - 22 HAZ)
+    "방사선 피폭 （Radiation）" : 4
+    "SW 오류 （Software Error）" : 5
+    "데이터 무결성 （Data Integrity）" : 4
+    "사이버보안 （Cybersecurity）" : 4
+    "사용성 오류 （Usability）" : 3
+    "네트워크 통신 （Network）" : 2
 ```
 
 ### 4.3 초기 위험 수준 분포 (Initial Risk Level Distribution)
@@ -270,7 +270,7 @@ pie title 위험 범주별 HAZ 분포 (Hazard Category Distribution — 22 HAZ)
 
 ```mermaid
 xychart-beta
-    title "위험 범주별 초기 위험 수준 분포 (HAZ 수)"
+    title "위험 범주별 초기 위험 수준 분포 （HAZ 수）"
     x-axis ["방사선", "SW 오류", "데이터", "사이버보안", "사용성", "네트워크"]
     y-axis "HAZ 수" 0 --> 5
     bar [4, 5, 4, 4, 3, 2]
@@ -324,9 +324,9 @@ xychart-beta
 
 ```mermaid
 quadrantChart
-    title 잔여 위험 매트릭스 (Residual Risk Matrix) — ISO 14971:2019
-    x-axis 심각도 낮음 (Low Severity S1-S2) --> 심각도 높음 (High Severity S4-S5)
-    y-axis 확률 낮음 (Low P1) --> 확률 높음 (High P2-P3)
+    title 잔여 위험 매트릭스 （Residual Risk Matrix） - ISO 14971:2019
+    x-axis 심각도 낮음 （Low Severity S1-S2） --> 심각도 높음 （High Severity S4-S5）
+    y-axis 확률 낮음 （Low P1） --> 확률 높음 （High P2-P3）
     quadrant-1 고잔여위험 영역 (ALARP 집중 관리)
     quadrant-2 중잔여위험 영역 (ALARP 관리)
     quadrant-3 저잔여위험 영역 (수용 가능)
@@ -378,10 +378,10 @@ quadrantChart
 ### 5.3 잔여 위험 수준 분포 (Residual Risk Level Distribution)
 
 ```mermaid
-pie title 잔여 위험 수준 분포 (Residual Risk Distribution — 22 HAZ)
-    "수용 가능 (Acceptable)" : 10
+pie title 잔여 위험 수준 분포 (Residual Risk Distribution - 22 HAZ)
+    "수용 가능 （Acceptable）" : 10
     "ALARP" : 12
-    "수용 불가 (Unacceptable)" : 0
+    "수용 불가 （Unacceptable）" : 0
 ```
 
 **핵심 결과**:

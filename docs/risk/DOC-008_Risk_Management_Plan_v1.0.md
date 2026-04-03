@@ -262,9 +262,9 @@ gantt
 
 ```mermaid
 quadrantChart
-    title 위험 수준 매트릭스 (Risk Matrix) — ISO 14971:2019
-    x-axis 심각도 낮음 (Low Severity) --> 심각도 높음 (High Severity)
-    y-axis 확률 낮음 (Low Probability) --> 확률 높음 (High Probability)
+    title 위험 수준 매트릭스 （Risk Matrix） - ISO 14971:2019
+    x-axis 심각도 낮음 （Low Severity） --> 심각도 높음 （High Severity）
+    y-axis 확률 낮음 （Low Probability） --> 확률 높음 （High Probability）
     quadrant-1 수용 불가 (Unacceptable)
     quadrant-2 ALARP 검토
     quadrant-3 수용 가능 (Acceptable)
@@ -535,9 +535,9 @@ flowchart TD
 
 ```mermaid
 pie title 잔여 위험 수준 분포 (Residual Risk Distribution)
-    "수용 가능 (Acceptable)" : 10
+    "수용 가능 （Acceptable）" : 10
     "ALARP" : 12
-    "수용 불가 (Unacceptable)" : 0
+    "수용 불가 （Unacceptable）" : 0
 ```
 
 ### 8.3 전체 잔여 위험 수용 판정 (Overall Residual Risk Acceptability)

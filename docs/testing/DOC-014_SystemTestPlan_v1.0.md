@@ -272,9 +272,9 @@ flowchart TD
 
 ```mermaid
 xychart-beta
-    title "주요 기능 응답 시간 목표 (초)"
+    title "주요 기능 응답 시간 목표 （초）"
     x-axis ["이미지표시", "WL조작", "환자검색", "시스템시작", "DICOM전송", "로그인"]
-    y-axis "응답 시간 (초)" 0 --> 65
+    y-axis "응답 시간 （초）" 0 --> 65
     bar [3, 0.1, 2, 60, 5, 3]
 ```
 

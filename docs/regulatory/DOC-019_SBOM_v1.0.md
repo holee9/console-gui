@@ -375,7 +375,7 @@ pie title 라이선스 분포 (배포 포함 38개 구성요소)
     "MS-PL" : 1
     "MPL 2.0" : 1
     "Public Domain" : 1
-    "기타 (zlib, libpng)" : 2
+    "기타 （zlib, libpng）" : 2
 ```
 
 ### 9.2 라이선스 호환성 요약

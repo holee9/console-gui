@@ -44,8 +44,8 @@
 
 ```mermaid
 pie title 통합 테스트 결과
-    "Pass (39)" : 39
-    "Not Run - Phase 2 (1)" : 1
+    "Pass （39）" : 39
+    "Not Run - Phase 2 （1）" : 1
 ```
 
 ---

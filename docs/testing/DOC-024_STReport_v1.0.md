@@ -46,8 +46,8 @@
 
 ```mermaid
 pie title 시스템 테스트 결과 (85 TC)
-    "Pass (83)" : 83
-    "Not Run - Phase 2 (2)" : 2
+    "Pass （83）" : 83
+    "Not Run - Phase 2 （2）" : 2
 ```
 
 | 도메인 | TC 수 | Pass | Fail | Not Run |

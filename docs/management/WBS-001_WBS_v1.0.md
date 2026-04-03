@@ -236,33 +236,33 @@ mindmap
 
 ```mermaid
 timeline
-    title HnVue GUI SW 개발 Milestone Timeline (Phase 1)
-    section M1 (2026-03)
+    title HnVue GUI SW 개발 Milestone Timeline （Phase 1）
+    section M1 （2026-03）
         MS-01 : 기반 문서 승인 (DR#1)
               : MRD / PRD
               : WBS / DMP
               : DevGuideline / SDP
-    section M3 (2026-05)
+    section M3 （2026-05）
         MS-02 : 요구사항 분석 완료 (DR#2)
               : FRS / SRS (IEC 62304)
               : RMP / Cybersecurity Plan
               : Use Specification
-    section M5 (2026-07)
+    section M5 （2026-07）
         MS-03 : 설계 완료 (DR#3)
               : SAD / SDS
               : FMEA 초안
               : RTM 중간본
-    section M9 (2026-11)
+    section M9 （2026-11）
         MS-04 : 구현 완료
               : 소스코드 전체
               : Unit Test Report
               : SOUP / SBOM
-    section M11 (2027-01)
+    section M11 （2027-01）
         MS-05 : V&V 완료 (DR#4)
               : 모든 Test Report
               : V&V Summary Report
               : Summative Usability
-    section M12 (2027-03)
+    section M12 （2027-03）
         MS-06 : 인허가 제출 (DR#5)
               : DHF / RTM 최종본
               : 510(k)/eSTAR

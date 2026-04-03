@@ -94,22 +94,22 @@
 
 ```mermaid
 C4Context
-    title HnVue HnVue Console SW — System Context Diagram (C4 Level 1)
+    title HnVue HnVue Console SW - System Context Diagram （C4 Level 1）
 
-    Person(radiologist, "방사선사 (Radiographer)", "X-Ray 촬영 수행, 영상 확인")
-    Person(admin, "시스템 관리자 (System Admin)", "사용자 관리, 시스템 구성")
-    Person(physician, "판독 의사 (Radiologist/Physician)", "영상 판독, 보고서 확인")
+    Person(radiologist, "방사선사 （Radiographer）", "X-Ray 촬영 수행, 영상 확인")
+    Person(admin, "시스템 관리자 （System Admin）", "사용자 관리, 시스템 구성")
+    Person(physician, "판독 의사 （Radiologist/Physician）", "영상 판독, 보고서 확인")
 
     System(hnvue, "HnVue HnVue Console SW", "진단 X-Ray 촬영 제어, 영상 처리/표시, 선량 관리, DICOM 통신")
 
-    System_Ext(generator, "X-Ray Generator\n(X-Ray 발생기)", "X-Ray 조사 제어 (RS-232/Ethernet)")
-    System_Ext(detector, "Flat Panel Detector\n(평판 검출기)", "영상 데이터 취득 (GigE/USB3)")
-    System_Ext(pacs, "PACS Server\n(의료영상 저장전송시스템)", "DICOM 영상 저장/조회 (DICOM C-STORE/C-FIND)")
-    System_Ext(ris, "RIS/HIS\n(방사선정보/병원정보시스템)", "환자 정보, 검사 오더 (HL7 v2.x/FHIR)")
-    System_Ext(worklist, "DICOM Worklist\nProvider (MWL)", "촬영 오더 조회 (DICOM C-FIND)")
-    System_Ext(mpps, "MPPS Server", "수행 완료 보고 (DICOM N-SET)")
-    System_Ext(dose, "Dose Registry\n(선량 레지스트리)", "선량 데이터 보고 (DICOM RDSR)")
-    System_Ext(ldap, "LDAP/AD Server\n(인증 서버)", "사용자 인증 (LDAP)")
+    System_Ext(generator, "X-Ray Generator\n（X-Ray 발생기）", "X-Ray 조사 제어 （RS-232/Ethernet）")
+    System_Ext(detector, "Flat Panel Detector\n（평판 검출기）", "영상 데이터 취득 （GigE/USB3）")
+    System_Ext(pacs, "PACS Server\n（의료영상 저장전송시스템）", "DICOM 영상 저장/조회 （DICOM C-STORE/C-FIND）")
+    System_Ext(ris, "RIS/HIS\n（방사선정보/병원정보시스템）", "환자 정보, 검사 오더 （HL7 v2.x/FHIR）")
+    System_Ext(worklist, "DICOM Worklist\nProvider （MWL）", "촬영 오더 조회 （DICOM C-FIND）")
+    System_Ext(mpps, "MPPS Server", "수행 완료 보고 （DICOM N-SET）")
+    System_Ext(dose, "Dose Registry\n（선량 레지스트리）", "선량 데이터 보고 （DICOM RDSR）")
+    System_Ext(ldap, "LDAP/AD Server\n（인증 서버）", "사용자 인증 （LDAP）")
 
     Rel(radiologist, hnvue, "촬영 작업 수행", "GUI 인터랙션")
     Rel(admin, hnvue, "시스템 관리", "GUI 인터랙션")

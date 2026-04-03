@@ -332,7 +332,7 @@ flowchart TD
 
 ```mermaid
 journey
-    title 표준 X-Ray 촬영 워크플로우 (방사선사)
+    title 표준 X-Ray 촬영 워크플로우 （방사선사）
     section 검사 준비
         Worklist에서 환자 선택: 5: 방사선사
         촬영 부위/프로토콜 확인: 4: 방사선사

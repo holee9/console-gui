@@ -382,9 +382,9 @@ C4Context
         Component(sa_mod, "SA Module", "시스템 관리")
     }
 
-    System_Ext(hw_gen, "X-Ray Generator\n(HW Simulator)", "발생기 시뮬레이터")
-    System_Ext(hw_det, "Flat Panel Detector\n(HW Simulator)", "검출기 시뮬레이터")
-    System_Ext(dicom_sim, "DICOM Simulator\n(Orthanc)", "PACS 시뮬레이터")
+    System_Ext(hw_gen, "X-Ray Generator\n（HW Simulator）", "발생기 시뮬레이터")
+    System_Ext(hw_det, "Flat Panel Detector\n（HW Simulator）", "검출기 시뮬레이터")
+    System_Ext(dicom_sim, "DICOM Simulator\n（Orthanc）", "PACS 시뮬레이터")
     System_Ext(mwl_sim, "HL7 MWL Simulator", "워크리스트 서버")
 
     Rel(pm_mod, wf_mod, "환자 컨텍스트 전달")
@@ -455,9 +455,9 @@ C4Context
 
 ```mermaid
 xychart-beta
-    title "시스템 성능 요구사항 (응답 시간 기준)"
+    title "시스템 성능 요구사항 （응답 시간 기준）"
     x-axis ["영상 표시", "환자 검색", "DICOM Store", "시스템 부팅", "프로토콜 로드", "W/L 조정"]
-    y-axis "응답 시간 기준 (초)" 0 --> 35
+    y-axis "응답 시간 기준 （초）" 0 --> 35
     bar [3, 2, 10, 30, 1, 0.1]
 ```
 

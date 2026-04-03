@@ -577,13 +577,13 @@ flowchart LR
 ```mermaid
 erDiagram
     PATIENTS {
-        string patient_id PK "환자 ID (≤64자, 영숫자, UNIQUE)"
-        string patient_name "성명 (AES-256-GCM 암호화)"
-        date patient_dob "생년월일 (AES-256-GCM 암호화)"
-        char patient_sex "성별 (M/F/O)"
-        string referring_physician "의뢰의사 (AES-256-GCM 암호화)"
-        datetime created_at "등록일시 (UTC)"
-        string created_by FK "등록자 (User ID)"
+        string patient_id PK "환자 ID （≤64자, 영숫자, UNIQUE）"
+        string patient_name "성명 （AES-256-GCM 암호화）"
+        date patient_dob "생년월일 （AES-256-GCM 암호화）"
+        char patient_sex "성별 （M/F/O）"
+        string referring_physician "의뢰의사 （AES-256-GCM 암호화）"
+        datetime created_at "등록일시 （UTC）"
+        string created_by FK "등록자 （User ID）"
         bool is_emergency "응급 등록 여부"
         bool is_deleted "소프트 삭제 플래그"
     }
@@ -591,15 +591,15 @@ erDiagram
         string study_instance_uid PK "DICOM Study UID"
         string patient_id FK "환자 ID"
         string accession_number "접수 번호"
-        datetime study_date "검사 일시 (UTC)"
-        string status "상태 (In-Progress/Completed/Suspended)"
+        datetime study_date "검사 일시 （UTC）"
+        string status "상태 （In-Progress/Completed/Suspended）"
         string technologist_id FK "담당 방사선사"
     }
     IMAGES {
         string sop_instance_uid PK "DICOM SOP Instance UID"
         string series_instance_uid FK "Series UID"
         string file_path "로컬 DICOM 파일 경로"
-        string transfer_status "전송 상태 (Local/Sent/Committed)"
+        string transfer_status "전송 상태 （Local/Sent/Committed）"
         float kvp "촬영 kVp"
         float mas "촬영 mAs"
         bool is_rejected "거부 여부"
@@ -607,19 +607,19 @@ erDiagram
     DOSE_RECORDS {
         int id PK "선량 레코드 ID"
         string sop_instance_uid FK "영상 SOP UID"
-        float dap_value "DAP (μGy·cm²)"
-        float esd_estimated "ESD (μGy)"
-        float exposure_index "EI (IEC 62494-1)"
-        float deviation_index "DI (IEC 62494-1)"
+        float dap_value "DAP （μGy·cm²）"
+        float esd_estimated "ESD （μGy）"
+        float exposure_index "EI （IEC 62494-1）"
+        float deviation_index "DI （IEC 62494-1）"
         string rdsr_file_path "RDSR 파일 경로"
         bool rdsr_sent "RDSR 전송 여부"
     }
     AUDIT_TRAIL {
-        int id PK "감사 로그 ID (auto-increment)"
-        datetime event_time "이벤트 시각 (UTC)"
+        int id PK "감사 로그 ID （auto-increment）"
+        datetime event_time "이벤트 시각 （UTC）"
         string user_id "사용자 ID"
         string event_type "이벤트 유형"
-        string event_detail "상세 (JSON)"
+        string event_detail "상세 （JSON）"
         string hash "이전 레코드와의 해시 체인"
     }
     PROTOCOLS {
@@ -628,7 +628,7 @@ erDiagram
         string view_position "촬영 방향"
         float default_kvp "기본 kVp"
         float default_mas "기본 mAs"
-        string focus "Focus (Small/Large)"
+        string focus "Focus （Small/Large）"
         string aec_chamber "AEC 챔버"
         datetime modified_at "수정일시"
         string modified_by FK "수정자"

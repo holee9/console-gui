@@ -1643,11 +1643,11 @@ classDiagram
 ```mermaid
 erDiagram
     PATIENTS {
-        string patient_id PK "환자 ID (UUID 또는 사용자 입력, ≤64자)"
-        string patient_name "성명 — AES-256 암호화"
-        date patient_dob "생년월일 — AES-256 암호화"
+        string patient_id PK "환자 ID （UUID 또는 사용자 입력, ≤64자）"
+        string patient_name "성명 - AES-256 암호화"
+        date patient_dob "생년월일 - AES-256 암호화"
         char patient_sex "M / F / O"
-        string referring_physician "의뢰 의사 — AES-256 암호화"
+        string referring_physician "의뢰 의사 - AES-256 암호화"
         string department "진료과"
         datetime created_at "등록일시 UTC"
         datetime updated_at "수정일시 UTC"
@@ -1661,7 +1661,7 @@ erDiagram
     STUDIES {
         string study_instance_uid PK "DICOM Study UID"
         string patient_id FK "환자 ID"
-        string accession_number "접수번호 (MWL)"
+        string accession_number "접수번호 （MWL）"
         string study_description "검사 설명"
         string body_part_examined "검사 부위"
         date study_date "검사일"
@@ -1691,38 +1691,38 @@ erDiagram
         string file_path "DICOM 파일 경로"
         float kvp "실제 kVp"
         float mas "실제 mAs"
-        float dap "DAP 값 (Gy·cm²)"
-        float exposure_index "EI (IEC 62494-1)"
+        float dap "DAP 값 （Gy·cm²）"
+        float exposure_index "EI （IEC 62494-1）"
         string transfer_status "PENDING/SENT/COMMITTED/FAILED"
         datetime acquired_at "촬영일시 UTC"
         string acquired_by "촬영자 User ID"
     }
 
     DOSE_RECORDS {
-        string dose_record_id PK "선량 기록 ID (UUID)"
+        string dose_record_id PK "선량 기록 ID （UUID）"
         string study_instance_uid FK "DICOM Study UID"
         string sop_instance_uid FK "대응 영상 SOP UID"
-        float dap_gy_cm2 "DAP (Gy·cm²)"
+        float dap_gy_cm2 "DAP （Gy·cm²）"
         float actual_kvp "실제 kVp"
         float actual_mas "실제 mAs"
-        float sid_cm "SID (cm)"
+        float sid_cm "SID （cm）"
         string body_part "검사 부위"
         string view_position "View Position"
-        float esd_gy "ESD 추정값 (Gy)"
+        float esd_gy "ESD 추정값 （Gy）"
         string drl_status "NORMAL/WARNING/CRITICAL"
         float drl_ratio "DRL 비율"
         datetime exposure_datetime "노출 일시 UTC"
     }
 
     AUDIT_TRAIL {
-        string audit_id PK "감사 ID (UUID)"
+        string audit_id PK "감사 ID （UUID）"
         string event_type "이벤트 유형"
         string user_id "사용자 ID"
-        string target_id "대상 ID (환자 ID 등)"
-        string details "상세 내용 (JSON)"
+        string target_id "대상 ID （환자 ID 등）"
+        string details "상세 내용 （JSON）"
         datetime timestamp "발생일시 UTC"
         string ip_address "IP 주소"
-        string session_token "세션 토큰 (해시)"
+        string session_token "세션 토큰 （해시）"
         bool is_alert "보안 경보 플래그"
         string hmac_signature "무결성 서명"
     }

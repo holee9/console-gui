@@ -49,8 +49,8 @@
 
 ```mermaid
 pie title V&V 전체 테스트 결과 (286 TC)
-    "Pass (281)" : 281
-    "Not Run - Phase 2 (5)" : 5
+    "Pass （281）" : 281
+    "Not Run - Phase 2 （5）" : 5
 ```
 
 ---

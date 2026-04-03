@@ -164,9 +164,9 @@ flowchart TD
 
 ```mermaid
 xychart-beta
-    title "모듈별 목표 Statement Coverage (%)"
+    title "모듈별 목표 Statement Coverage （%）"
     x-axis [PM, WF, IP, DM, DC, SA, CS, DB]
-    y-axis "Coverage (%)" 0 --> 100
+    y-axis "Coverage （%）" 0 --> 100
     bar [80, 85, 80, 100, 80, 80, 85, 80]
     line [80, 80, 80, 80, 80, 80, 80, 80]
 ```

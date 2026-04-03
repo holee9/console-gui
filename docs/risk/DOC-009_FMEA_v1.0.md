@@ -667,10 +667,10 @@ graph TD
 
 ```mermaid
 pie title SW FMEA RPN 등급 분포 (40개 항목)
-    "높음 RPN≥36 (즉각 조치)" : 4
-    "중간 RPN 18–35 (통제 검토)" : 18
-    "낮음 RPN 8–17 (ALARP)" : 14
-    "수용 가능 RPN<8 (모니터링)" : 4
+    "높음 RPN≥36 （즉각 조치）" : 4
+    "중간 RPN 18–35 （통제 검토）" : 18
+    "낮음 RPN 8–17 （ALARP）" : 14
+    "수용 가능 RPN<8 （모니터링）" : 4
 ```
 
 ### 7.2 모듈별 최고 RPN 요약
@@ -700,8 +700,8 @@ pie title SW FMEA RPN 등급 분포 (40개 항목)
 
 ```mermaid
 xychart-beta
-    title "FMEA 고장 모드 유형 분포 (FM Type Distribution)"
-    x-axis ["FM-OMS\n(누락)", "FM-VAL\n(값 오류)", "FM-COM\n(오실행)", "FM-TIM\n(타이밍)", "FM-INT\n(무결성)", "FM-SEQ\n(순서)"]
+    title "FMEA 고장 모드 유형 분포 （FM Type Distribution）"
+    x-axis ["FM-OMS\n（누락）", "FM-VAL\n（값 오류）", "FM-COM\n（오실행）", "FM-TIM\n（타이밍）", "FM-INT\n（무결성）", "FM-SEQ\n（순서）"]
     y-axis "항목 수" 0 --> 15
     bar [14, 13, 7, 3, 2, 1]
 ```

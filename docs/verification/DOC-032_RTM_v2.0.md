@@ -393,9 +393,9 @@ flowchart TB
 
 ```mermaid
 pie title Forward Traceability 커버리지 (PR 기준)
-    "매핑 완료 (MR→PR→SWR)" : 90
-    "SWR 미정의 (TBD)" : 0
-    "TC 미작성 (계획 중)" : 90
+    "매핑 완료 （MR→PR→SWR）" : 90
+    "SWR 미정의 （TBD）" : 0
+    "TC 미작성 （계획 중）" : 90
 ```
 
 > **참고**: 현재 단계 (PRD v2.0 + FRS v2.0 완성) 기준으로 MR→PR→SWR 체인은 100% 수립됨.  
@@ -520,7 +520,7 @@ flowchart RL
 
 ```mermaid
 pie title Safety-Critical RTM 검증 상태 (RC 기준, 36개 통제 조치)
-    "Pending (설계 예정)" : 36
+    "Pending （설계 예정）" : 36
     "Pass" : 0
     "Fail" : 0
 ```

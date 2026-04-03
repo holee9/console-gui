@@ -357,7 +357,7 @@ mindmap
 
 ```mermaid
 quadrantChart
-    title 위협 위험 매트릭스 (Threat Risk Matrix)
+    title 위협 위험 매트릭스 （Threat Risk Matrix）
     x-axis 발생 가능성 낮음 --> 발생 가능성 높음
     y-axis 영향 낮음 --> 영향 높음
     quadrant-1 즉각 대응 필요
