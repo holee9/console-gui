@@ -1,17 +1,19 @@
 # 형상관리 계획서 (Configuration Management Plan)
 
-> **문서 번호**: DOC-042  
-> **버전**: v1.0 (Draft)  
-> **작성일**: 2026-03-31  
-> **작성자**: [작성 필요]  
-> **검토자**: [작성 필요]  
-> **승인자**: [작성 필요]  
-> **제품**: HnVue Console SW (HnVue)  
-> **회사**: HnVue (가칭)  
-> **분류**: ✅ 최소 필수  
-> **적용 시장**: FDA 510(k) ✅ / MFDS 2등급 ✅ / EU MDR Class IIa ✅  
-> **근거 규격**: IEC 62304:2006+AMD1:2015 §8.1, §8.3, FDA SW Guidance (2019) Section IV-G, ISO 13485:2016 §4.2.3, §7.3.8  
-> **IEC 62304 Class**: B (Basic Level)
+| 항목 | 내용 |
+|------|------|
+| **문서 번호** | DOC-042 |
+| **버전** | v1.0 (Draft) |
+| **작성일** | 2026-03-31 |
+| **작성자** | [작성 필요] |
+| **검토자** | [작성 필요] |
+| **승인자** | [작성 필요] |
+| **제품** | HnVue Console SW (HnVue) |
+| **회사** | HnVue (가칭) |
+| **분류** | ✅ 최소 필수 |
+| **적용 시장** | FDA 510(k) ✅ / MFDS 2등급 ✅ / EU MDR Class IIa ✅ |
+| **근거 규격** | IEC 62304:2006+AMD1:2015 §8.1, §8.3, FDA SW Guidance (2019) Section IV-G, ISO 13485:2016 §4.2.3, §7.3.8 |
+| **IEC 62304 Class** | B (Basic Level) |
 
 ---
 

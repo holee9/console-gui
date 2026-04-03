@@ -57,7 +57,7 @@
 
 ### 1.1 목적 (Purpose)
 
-본 문서는 **HnVue HnVue Console SW**의 **기능 요구사항 명세서 (Functional Requirements Specification, FRS)** 로서, IEC 62304:2006+A1:2015 §5.2 "소프트웨어 요구사항 분석 (Software Requirements Analysis)" 에서 요구하는 소프트웨어 요구사항 (Software Requirements, SWR)을 정의한다.
+본 문서는 **HnVue Console SW**의 **기능 요구사항 명세서 (Functional Requirements Specification, FRS)** 로서, IEC 62304:2006+A1:2015 §5.2 "소프트웨어 요구사항 분석 (Software Requirements Analysis)" 에서 요구하는 소프트웨어 요구사항 (Software Requirements, SWR)을 정의한다.
 
 본 문서의 핵심 목적은 다음과 같다:
 

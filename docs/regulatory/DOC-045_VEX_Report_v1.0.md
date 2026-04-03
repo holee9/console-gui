@@ -1,17 +1,19 @@
 # VEX 리포트 (Vulnerability Exploitability eXchange Report)
 
-> **문서 번호**: DOC-045
-> **버전**: 1.0 (계획서)
-> **작성일**: 2026-03-31
-> **작성자**: 사이버보안 팀 (Cybersecurity Team)
-> **검토자**: SW 아키텍트, QA 팀장
-> **승인자**: 의료기기 RA/QA 책임자
-> **제품**: HnVue Console SW (HnVue)
-> **회사**: HnVue (가칭)
-> **분류**: ⭐ 리스크 최소화 (FDA 강력 권장) | ⭐ EU MDR 권장
-> **적용 시장**: FDA 510(k) (강력 권장), EU MDR Class IIa (권장), MFDS 2등급 (해당 없음)
-> **근거 규격**: FDA Cybersecurity Guidance (Feb 2026), FDA Top Deficiency 대응, CISA VEX 가이드라인, CycloneDX VEX 1.5, OpenVEX v0.2.0
-> **IEC 62304 클래스**: Class B
+| 항목 | 내용 |
+|------|------|
+| **문서 번호** | DOC-045 |
+| **버전** | 1.0 (계획서) |
+| **작성일** | 2026-03-31 |
+| **작성자** | 사이버보안 팀 (Cybersecurity Team) |
+| **검토자** | SW 아키텍트, QA 팀장 |
+| **승인자** | 의료기기 RA/QA 책임자 |
+| **제품** | HnVue Console SW (HnVue) |
+| **회사** | HnVue (가칭) |
+| **분류** | ⭐ 리스크 최소화 (FDA 강력 권장) | ⭐ EU MDR 권장 |
+| **적용 시장** | FDA 510(k) (강력 권장), EU MDR Class IIa (권장), MFDS 2등급 (해당 없음) |
+| **근거 규격** | FDA Cybersecurity Guidance (Feb 2026), FDA Top Deficiency 대응, CISA VEX 가이드라인, CycloneDX VEX 1.5, OpenVEX v0.2.0 |
+| **IEC 62304 클래스** | Class B |
 
 ---
 

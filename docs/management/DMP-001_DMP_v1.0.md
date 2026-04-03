@@ -1,14 +1,16 @@
 # HnVue Console SW 인허가 문서 작성 마스터 플랜
 # Document Master Plan (DMP) v1.0
 
-> **문서 ID**: DMP-XRAY-GUI-001
-> **버전**: v1.0
-> **작성일**: 2026-03-27
-> **최종 개정일**: 2026-03-27
-> **적용 제품**: HnVue HnVue Console SW
-> **적용 규격**: IEC 62304, IEC 62366, ISO 14971, ISO 13485, FDA 21 CFR 820.30, FDA Section 524B, EU MDR 2017/745
-> **인허가 대상**: FDA 510(k) / CE MDR / KFDA (식약처)
-> **SW Safety Class**: IEC 62304 Class B
+| 항목 | 내용 |
+|------|------|
+| **문서 ID** | DMP-XRAY-GUI-001 |
+| **버전** | v1.0 |
+| **작성일** | 2026-03-27 |
+| **최종 개정일** | 2026-03-27 |
+| **적용 제품** | HnVue Console SW |
+| **적용 규격** | IEC 62304, IEC 62366, ISO 14971, ISO 13485, FDA 21 CFR 820.30, FDA Section 524B, EU MDR 2017/745 |
+| **인허가 대상** | FDA 510(k) / CE MDR / KFDA (식약처) |
+| **SW Safety Class** | IEC 62304 Class B |
 
 ---
 
@@ -39,7 +41,7 @@
 
 | 항목 | 내용 |
 |------|------|
-| **제품명** | HnVue HnVue Console SW |
+| **제품명** | HnVue Console SW |
 | **SW Safety Class** | IEC 62304 Class B |
 | **인허가 대상 시장** | 미국 (FDA 510(k)), 유럽 (CE MDR), 한국 (KFDA 식약처) |
 | **개발 Phase** | Phase 1 (M1-M12 핵심 기능, 인허가 대상) / Phase 2 (M13-M24 AI/Cloud 고도화) |

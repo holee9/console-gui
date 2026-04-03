@@ -1,17 +1,19 @@
 # 취약점 관리 계획 (Vulnerability Management Plan)
 
-> **문서 번호**: DOC-048
-> **버전**: 1.0 (계획서)
-> **작성일**: 2026-03-31
-> **작성자**: 사이버보안 팀 (Cybersecurity Team)
-> **검토자**: SW 아키텍트, QA 팀장
-> **승인자**: 의료기기 RA/QA 책임자
-> **제품**: HnVue Console SW (HnVue)
-> **회사**: HnVue (가칭)
-> **분류**: ✅ 최소 필수
-> **적용 시장**: FDA 510(k) (필수), EU MDR Class IIa (필수), MFDS 2등급 (권장)
-> **근거 규격**: FD&C Act §524B(b)(1)(b)(4), FDA Cybersecurity Guidance (Feb 2026) §V (Post-Market), MDCG 2019-16, ISO/IEC 29147 (취약점 공개), ISO/IEC 30111 (취약점 처리), IEC 62304 §6.2
-> **IEC 62304 클래스**: Class B
+| 항목 | 내용 |
+|------|------|
+| **문서 번호** | DOC-048 |
+| **버전** | 1.0 (계획서) |
+| **작성일** | 2026-03-31 |
+| **작성자** | 사이버보안 팀 (Cybersecurity Team) |
+| **검토자** | SW 아키텍트, QA 팀장 |
+| **승인자** | 의료기기 RA/QA 책임자 |
+| **제품** | HnVue Console SW (HnVue) |
+| **회사** | HnVue (가칭) |
+| **분류** | ✅ 최소 필수 |
+| **적용 시장** | FDA 510(k) (필수), EU MDR Class IIa (필수), MFDS 2등급 (권장) |
+| **근거 규격** | FD&C Act §524B(b)(1)(b)(4), FDA Cybersecurity Guidance (Feb 2026) §V (Post-Market), MDCG 2019-16, ISO/IEC 29147 (취약점 공개), ISO/IEC 30111 (취약점 처리), IEC 62304 §6.2 |
+| **IEC 62304 클래스** | Class B |
 
 ---
 

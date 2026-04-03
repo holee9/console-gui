@@ -1,16 +1,18 @@
 # 사이버보안 핵심 통제 명세서 (Cybersecurity Controls Specification)
 
-> **문서 번호**: DOC-046
-> **버전**: 1.0 (계획서)
-> **작성일**: 2026-03-31
-> **작성자**: 사이버보안 팀 (Cybersecurity Team)
-> **검토자**: SW 아키텍트, QA 팀장
-> **승인자**: 의료기기 RA/QA 책임자
-> **제품**: HnVue Console SW (HnVue)
-> **회사**: HnVue (가칭)
-> **분류**: ⭐ 리스크 최소화 (FDA 2026 mandatory) | ✅ EU MDR | ⭐ MFDS
-> **적용 시장**: FDA 510(k) (필수), EU MDR Class IIa (필수), MFDS 2등급 (권장)
-> **근거 규격**: FDA Cybersecurity Guidance (Feb 2026) §IV Appendix 1, FD&C Act §524B(b)(2), NIST SP 800-213, NIST SP 800-82 Rev.3, IEC 81001-5-1:2021
+| 항목 | 내용 |
+|------|------|
+| **문서 번호** | DOC-046 |
+| **버전** | 1.0 (계획서) |
+| **작성일** | 2026-03-31 |
+| **작성자** | 사이버보안 팀 (Cybersecurity Team) |
+| **검토자** | SW 아키텍트, QA 팀장 |
+| **승인자** | 의료기기 RA/QA 책임자 |
+| **제품** | HnVue Console SW (HnVue) |
+| **회사** | HnVue (가칭) |
+| **분류** | ⭐ 리스크 최소화 (FDA 2026 mandatory) | ✅ EU MDR | ⭐ MFDS |
+| **적용 시장** | FDA 510(k) (필수), EU MDR Class IIa (필수), MFDS 2등급 (권장) |
+| **근거 규격** | FDA Cybersecurity Guidance (Feb 2026) §IV Appendix 1, FD&C Act §524B(b)(2), NIST SP 800-213, NIST SP 800-82 Rev.3, IEC 81001-5-1:2021 |
 
 ---
 

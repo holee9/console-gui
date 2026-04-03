@@ -1,14 +1,16 @@
 # HnVue Console SW 개발 WBS
 
-> **문서 ID**: WBS-XRAY-GUI-001
-> **버전**: v1.0
-> **작성일**: 2026-03-27
-> **최종 개정일**: 2026-03-27
-> **기준 규격**: IEC 62304:2006+AMD1:2015 (Medical Device SW Lifecycle), IEC 62366-1:2015+AMD1:2020 (Usability Engineering), IEC 60601-1-3 (Radiation Safety), ISO 14971:2019 (Risk Management), ISO 13485:2016 (QMS), FDA 21 CFR Part 820.30 (Design Controls), FDA Section 524B (Cybersecurity), EU MDR 2017/745
-> **SW Safety Class**: Class B (IEC 62304 기준)
-> **개발 전략**: Phase 1 (핵심 기능 M1-M12) → Phase 2 (고도화/AI 통합 M13-M24)
-> **경쟁사 벤치마크**: Carestream ImageView, Siemens syngo FLC, Canon CXDI Control NE, Fujifilm FDX Console, OR Technology dicomPACS DX-R
-> **ID 체계**: MR-xxx (MRD) → PR-xxx (PRD) → SWR-xxx (SRS/FRS) — 3단계 계층
+| 항목 | 내용 |
+|------|------|
+| **문서 ID** | WBS-XRAY-GUI-001 |
+| **버전** | v1.0 |
+| **작성일** | 2026-03-27 |
+| **최종 개정일** | 2026-03-27 |
+| **기준 규격** | IEC 62304:2006+AMD1:2015 (Medical Device SW Lifecycle), IEC 62366-1:2015+AMD1:2020 (Usability Engineering), IEC 60601-1-3 (Radiation Safety), ISO 14971:2019 (Risk Management), ISO 13485:2016 (QMS), FDA 21 CFR Part 820.30 (Design Controls), FDA Section 524B (Cybersecurity), EU MDR 2017/745 |
+| **SW Safety Class** | Class B (IEC 62304 기준) |
+| **개발 전략** | Phase 1 (핵심 기능 M1-M12) → Phase 2 (고도화/AI 통합 M13-M24) |
+| **경쟁사 벤치마크** | Carestream ImageView, Siemens syngo FLC, Canon CXDI Control NE, Fujifilm FDX Console, OR Technology dicomPACS DX-R |
+| **ID 체계** | MR-xxx (MRD) → PR-xxx (PRD) → SWR-xxx (SRS/FRS) — 3단계 계층 |
 
 ---
 
