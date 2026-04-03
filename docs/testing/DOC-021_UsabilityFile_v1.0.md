@@ -139,9 +139,9 @@ HnVue Console SW는 **의료용 진단 X-Ray 촬영장치의 GUI Console Softwar
 
 | 사용자 | 사용 빈도 | 1회 세션 시간 | 일일 사용 횟수 |
 |--------|----------|-------------|--------------|
-| 방사선사 | 매일 (교대 근무) | 8~12시간 연속 | 40~80회 촬영 |
-| 영상의학과 전문의 | 필요 시 (판독) | 가변 (영상 확인) | 10~30회 확인 |
-| 시스템 관리자 | 주 1~2회 | 30분~1시간 | 불규칙 |
+| 방사선사 | 매일 (교대 근무) | 8–12시간 연속 | 40–80회 촬영 |
+| 영상의학과 전문의 | 필요 시 (판독) | 가변 (영상 확인) | 10–30회 확인 |
+| 시스템 관리자 | 주 1–2회 | 30분~1시간 | 불규칙 |
 
 ---
 
@@ -153,7 +153,7 @@ HnVue Console SW는 **의료용 진단 X-Ray 촬영장치의 GUI Console Softwar
 graph TB
     classDef default fill:#444,stroke:#666,color:#fff
     subgraph "1차 사용자 (Primary Users)"
-        RT[방사선사<br/>Radiologic Technologist<br/>경력 1~30년<br/>기술 친숙도: 높음]
+        RT[방사선사<br/>Radiologic Technologist<br/>경력 1–30년<br/>기술 친숙도: 높음]
         RD[영상의학과 전문의<br/>Radiologist<br/>전문의 자격<br/>기술 친숙도: 중간]
     end
     subgraph "2차 사용자 (Secondary Users)"
@@ -534,11 +534,11 @@ graph LR
 
 | 사용자 요구 | MR | PR | UI Spec | UT TC | HRUS |
 |------------|-----|-----|---------|-------|------|
-| 빠른 환자 선택 | MR-001~003 | PR-001~003 | Worklist UI | UT-002 | HRUS-001 |
-| 안전한 촬영 | MR-010~015 | PR-010~015 | Acquisition UI | UT-003~006 | HRUS-002~005 |
-| 정확한 영상 | MR-020~027 | PR-020~027 | Viewer UI | UT-005, 010~011 | HRUS-007 |
-| 선량 관리 | MR-040~044 | PR-040~044 | Dose Panel | UT-008, 013 | HRUS-006 |
-| 쉬운 관리 | MR-060~063 | PR-060~063 | Admin UI | UT-014~015 | — |
+| 빠른 환자 선택 | MR-001–003 | PR-001–003 | Worklist UI | UT-002 | HRUS-001 |
+| 안전한 촬영 | MR-010–015 | PR-010–015 | Acquisition UI | UT-003–006 | HRUS-002–005 |
+| 정확한 영상 | MR-020–027 | PR-020–027 | Viewer UI | UT-005, 010–011 | HRUS-007 |
+| 선량 관리 | MR-040–044 | PR-040–044 | Dose Panel | UT-008, 013 | HRUS-006 |
+| 쉬운 관리 | MR-060–063 | PR-060–063 | Admin UI | UT-014–015 | — |
 
 ---
 

@@ -407,7 +407,7 @@ flowchart LR
 | G | **DOC-022** | Unit Test Report | DOC-012, 구현 완료 | Dev/QA | 2026-12 | ✅ (DHF DV) |
 | G | **DOC-023** | Integration Test Report | DOC-013, DOC-022 | QA | 2026-12 | ✅ (DHF DV, eSTAR) |
 | G | **DOC-024** | System Test Report | DOC-014, DOC-023 | QA | 2027-01 | ✅ (DHF DV, eSTAR) |
-| G | **DOC-025** | V&V Summary Report | DOC-022~024, DOC-010 | QA | 2027-01 | ✅ (DHF DV, eSTAR 필수) |
+| G | **DOC-025** | V&V Summary Report | DOC-022–024, DOC-010 | QA | 2027-01 | ✅ (DHF DV, eSTAR 필수) |
 | G | **DOC-026** | Cybersecurity Test Report | DOC-018, 침투 테스트 | Security | 2026-12 | ✅ (DHF DV, eSTAR) |
 | G | **DOC-027** | Performance Test Report | DOC-014, 성능 테스트 | QA/Dev | 2027-01 | ✅ (DHF DAL) |
 | G | **DOC-028** | Usability Test Report (Summative) | DOC-021, DOC-015 | UX/Clinical | 2027-01 | ✅ (DHF DAL, eSTAR/CE) |
@@ -656,11 +656,11 @@ gantt
     M_KFDA KFDA 인허가 제출            :milestone, mKFDA, 2027-04, 0d
 ```
 
-### 5.2 PRD 승인 후 즉시 착수 작업 (2026년 4~8월)
+### 5.2 PRD 승인 후 즉시 착수 작업 (2026년 4–8월)
 
 ```mermaid
 gantt
-    title PRD v3.0 승인 후 즉시 착수 작업 (2026년 4~8월)
+    title PRD v3.0 승인 후 즉시 착수 작업 (2026년 4–8월)
     dateFormat  YYYY-MM-DD
     axisFormat  %m/%d
 
@@ -801,7 +801,7 @@ flowchart TD
 | 도구 | 목적 | 대상 문서 쌍 | 구현 방법 |
 |------|------|------------|---------|
 | **RTM Consistency Checker** | MR→PR→SWR 체인 단절 탐지 | DOC-001, 002, 005, 032 | Python 스크립트, CI/CD 연동 |
-| **Coverage Analyzer** | FR/SWR 대비 테스트 케이스 커버리지 | DOC-004/005 ↔ 012~015 | JIRA/TestRail 리포트 |
+| **Coverage Analyzer** | FR/SWR 대비 테스트 케이스 커버리지 | DOC-004/005 ↔ 012–015 | JIRA/TestRail 리포트 |
 | **Risk-Requirement Mapper** | RC-xxx ↔ SWR-xxx 미매핑 탐지 | DOC-009 ↔ DOC-005 | Python 스크립트 |
 | **SBOM Diff Tool** | SBOM 변경 시 SOUP 보고서 자동 알림 | DOC-019 ↔ DOC-033 | GitHub Actions 연동 |
 | **Doc Delta Reporter** | 문서 개정 시 영향 문서 자동 목록화 | 전체 문서 | DMS 연동 스크립트 |
@@ -1151,7 +1151,7 @@ stateDiagram-v2
 | `planning/` | Phase A (기획) + Phase B (설계) | DOC-001 (MRD), DOC-002 (PRD), DOC-004 (FRS), DOC-005 (SRS), DOC-006 (SAD), DOC-007 (SDS) | 설계 핵심 문서 |
 | `management/` | Phase A (관리) | DMP-001 (DMP), DOC-003 (SDG), DOC-003a (SDP), DOC-016 (Cyber Plan), DOC-041 (PM Plan), WBS-001 (WBS) | 프로젝트 관리 문서 |
 | `risk/` | Phase C | DOC-008 (Risk Plan), DOC-009 (FMEA), DOC-010 (RMR), DOC-017 (Threat Model) | 위험 관리 문서 |
-| `testing/` | Phase D·E·F·G | DOC-012~014 (Test Plans), DOC-018 (Cyber Test Plan), DOC-021 (Usability), DOC-022~028 (Test Reports), DOC-030~031 (QA) | 시험 계획 및 보고서 |
+| `testing/` | Phase D·E·F·G | DOC-012–014 (Test Plans), DOC-018 (Cyber Test Plan), DOC-021 (Usability), DOC-022–028 (Test Reports), DOC-030–031 (QA) | 시험 계획 및 보고서 |
 | `verification/` | Phase D·G | DOC-011 (VV Master Plan), DOC-015 (Validation Plan), DOC-025 (VV Summary), DOC-029 (CER), DOC-032 (RTM), DOC-033 (SOUP), CVR-001/002 | 검증·확인 문서 |
 | `regulatory/` | Phase F·H | DOC-019 (SBOM), DOC-020 (Clinical Eval), DOC-034 (Release), DOC-035 (DHF), DOC-036 (510k), DOC-037 (CE), DOC-038 (DICOM), DOC-039 (KFDA), DOC-040 (IFU) | 인허가 제출 문서 |
 | `planning/archive/` | — | 구버전 문서, opus4_6 초안 | 아카이브 전용 |
@@ -1168,7 +1168,7 @@ stateDiagram-v2
 | DOC-039 | KFDA 기술 문서 (식약처) | — |
 | DOC-040 | IFU (사용 설명서) | — |
 | DOC-041 | PM 계획서 (Project Management Plan) | — |
-| DOC-042~049 | 향후 확장 예비 번호 | Phase 2 (AI/Cloud) |
+| DOC-042–049 | 향후 확장 예비 번호 | Phase 2 (AI/Cloud) |
 
 ---
 
@@ -1177,7 +1177,7 @@ stateDiagram-v2
 | 리스크 | 영향도 | 발생 가능성 | 대응 방안 |
 |--------|--------|-----------|---------|
 | FRS 작성 지연 → 모든 후속 문서 지연 | 높음 | 중간 | FRS를 최우선 착수, 전담 SE 배정 |
-| RTM 미완성 (MR→PR→SWR 단절)으로 인허가 거절 | 높음 | 높음 | RTM 자동화 스크립트 조기 구축, CV-01~04 주간 실행 |
+| RTM 미완성 (MR→PR→SWR 단절)으로 인허가 거절 | 높음 | 높음 | RTM 자동화 스크립트 조기 구축, CV-01–04 주간 실행 |
 | SBOM 자동화 미구축 → 수동 작업 부담 | 중간 | 중간 | CI/CD에 SBOM 자동 생성 파이프라인 Phase A Gate 전 완료 |
 | Cybersecurity Test 환경 구축 지연 | 높음 | 중간 | 테스트 환경 구축을 2026-08 이전 완료 목표 |
 | Clinical Evaluation 근거 부족 (CE MDR) | 높음 | 중간 | 동등성 기기 조기 식별, 문헌 검색 즉시 착수 |

@@ -201,7 +201,7 @@ gantt
     SRS 작성 및 위험 연계                :sw1, 2026-02, 2M
     위험 통제 요구사항 반영              :sw2, 2026-03, 2M
 
-    section SW 설계 (IEC 62304 §5.3~5.4)
+    section SW 설계 (IEC 62304 §5.3–5.4)
     SAD / SDS 작성                       :sw3, 2026-04, 2M
     위험 통제 설계 반영 검토             :sw4, 2026-04, 2M
 
@@ -345,15 +345,15 @@ flowchart LR
 | 고장 모드 (Failure Mode) | 기능이 실패하는 방식 |
 | 고장 영향 (Effect) | 지역적, 시스템적, 최종 영향 |
 | 원인 (Cause) | SW 결함, HW 인터페이스, 사용자 오류 |
-| 심각도 (Severity, S) | S1~S5 |
-| 발생 가능성 (Occurrence, O) | P1~P5 |
-| 검출 가능성 (Detection, D) | D1~D5 |
+| 심각도 (Severity, S) | S1–S5 |
+| 발생 가능성 (Occurrence, O) | P1–P5 |
+| 검출 가능성 (Detection, D) | D1–D5 |
 | RPN = S × O × D | 위험 우선순위 지수 |
 | 통제 조치 (RC ID) | 연결 RC 참조 |
 
 **RPN 임계값**:
 - RPN ≥ 36: 즉각적 위험 통제 조치 필수
-- RPN 18~35: 위험 통제 조치 검토 필요
+- RPN 18–35: 위험 통제 조치 검토 필요
 - RPN < 18: 수용 가능 (모니터링)
 
 ### 5.3 결함 수목 분석 (Fault Tree Analysis, FTA)
@@ -477,7 +477,7 @@ flowchart TD
 | **RC-011** | HAZ-SW-002 | Design (Inherent Safety) | 영상 처리 알고리즘 출력 검증: 히스토그램 분포 이상 감지 시 원본 영상 보존 및 경고 | SWR-IP-020 | ST-IP-001 | TBD |
 | **RC-012** | HAZ-SW-002 | Protective Measure | 좌우/상하 반전 처리 시 Orientation Marker (L/R) 자동 삽입 및 DICOM SR 기록 | SWR-IP-027 | ST-IP-005 | TBD |
 | **RC-013** | HAZ-SW-003 | Design (Inherent Safety) | DAP 계산 단위 표준화 (μGy·cm², mGy·cm²) 및 단위 변환 함수 단위 테스트 100% 커버리지 | SWR-DM-040 | ST-DM-001 | TBD |
-| **RC-014** | HAZ-SW-003 | Protective Measure | DAP 표시값이 물리적 허용 범위 (0~100,000 μGy·cm²) 초과 시 N/A 표시 및 경고 로그 | SWR-DM-041 | ST-DM-002 | TBD |
+| **RC-014** | HAZ-SW-003 | Protective Measure | DAP 표시값이 물리적 허용 범위 (0–100,000 μGy·cm²) 초과 시 N/A 표시 및 경고 로그 | SWR-DM-041 | ST-DM-002 | TBD |
 | **RC-015** | HAZ-SW-004 | Design (Inherent Safety) | 촬영 제어 모듈을 Watchdog Timer와 연계: SW 응답 없음 감지 시 Generator 긴급 정지 신호 발행 | SWR-WF-030 | ST-SAF-030 | TBD |
 | **RC-016** | HAZ-SW-004 | Protective Measure | X-Ray 발생 중 SW 예외 발생 시 독립 HW 인터록 트리거 (별도 MCU 제어) | SWR-WF-031 | ST-SAF-031 | TBD |
 | **RC-017** | HAZ-SW-005 | Design (Inherent Safety) | 재부팅 시 마지막 정상 파라미터 대신 기관별 최소 안전 기본값으로 초기화 | SWR-SA-065 | ST-SA-001 | TBD |
@@ -551,7 +551,7 @@ pie title 잔여 위험 수준 분포 (Residual Risk Distribution)
 | 편익 항목 | 내용 |
 |----------|------|
 | 진단 정확도 향상 | 디지털 X-Ray를 통한 영상 품질 향상으로 진단 정확도 향상 |
-| 방사선 선량 최적화 | AEC 및 프로토콜 표준화로 환자 선량 저감 (아날로그 대비 평균 30~50% 감소) |
+| 방사선 선량 최적화 | AEC 및 프로토콜 표준화로 환자 선량 저감 (아날로그 대비 평균 30–50% 감소) |
 | 워크플로우 효율화 | DICOM/RIS 연동으로 촬영 오류 감소 및 판독 시간 단축 |
 | 데이터 무결성 보장 | 디지털 보관으로 필름 분실/손상 위험 제거 |
 
@@ -740,7 +740,7 @@ ISO 14971:2019 §9 준거
 
 **RPN 분포 요약**:
 - RPN ≥ 36 (즉각 조치): 4건 (FMEA-001, 005, 011 수준, 018)
-- RPN 18~35 (검토 필요): 10건
+- RPN 18–35 (검토 필요): 10건
 - RPN < 18 (수용 가능): 8건
 
 ---

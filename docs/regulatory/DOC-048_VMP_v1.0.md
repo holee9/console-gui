@@ -28,7 +28,7 @@
 | 문서 ID | 문서명 | 관계 |
 |---------|--------|------|
 | DOC-016 | 사이버보안 관리 계획서 (Cybersecurity Management Plan) | 상위 사이버보안 전략 — VDP 정책, 모니터링 계획 연계 |
-| DOC-019 | 소프트웨어 자재 명세서 (SBOM) | VMP 대상 컴포넌트 목록 (SBOM-001~038) |
+| DOC-019 | 소프트웨어 자재 명세서 (SBOM) | VMP 대상 컴포넌트 목록 (SBOM-001–038) |
 | DOC-045 | VEX 리포트 | VMP 프로세스의 핵심 출력물 — 취약점 발견 시 VEX 업데이트 |
 | DOC-046 | 사이버보안 핵심 통제 명세서 | 완화 조치 기준 참조 |
 | DOC-047 | 보안 위험 평가 (Security Risk Assessment) | 취약점 대응 시 위험 재평가 기준 참조 |
@@ -368,7 +368,7 @@ HnVue 기술 지원팀
 | 검토 결과물 | VMP 개정판 또는 "변경 없음" 확인 기록 |
 | 담당자 | [TBD] |
 
-> **ISO 13485 연간 관리 검토 통합**: VMP 연간 검토는 ISO 13485 연간 관리 검토(Management Review) 및 EU MDR Article 83~86 시판 후 감시(PMS) 연간 검토와 통합하여 관리 부담을 최소화한다.
+> **ISO 13485 연간 관리 검토 통합**: VMP 연간 검토는 ISO 13485 연간 관리 검토(Management Review) 및 EU MDR Article 83–86 시판 후 감시(PMS) 연간 검토와 통합하여 관리 부담을 최소화한다.
 
 ---
 
@@ -393,7 +393,7 @@ HnVue 기술 지원팀
 
 ## 12. EU MDR PMS(Post-Market Surveillance) 연계
 
-본 VMP는 EU MDR Article 83~86에서 요구하는 시판 후 감시(PMS) 계획의 사이버보안 특화 절차서로 기능한다. EU MDR PMS Plan과 다음과 같이 연계된다.
+본 VMP는 EU MDR Article 83–86에서 요구하는 시판 후 감시(PMS) 계획의 사이버보안 특화 절차서로 기능한다. EU MDR PMS Plan과 다음과 같이 연계된다.
 
 | EU MDR PMS 요건 | VMP 대응 절차 |
 |---|---|

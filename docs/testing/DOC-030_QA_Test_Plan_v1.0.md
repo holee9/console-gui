@@ -286,7 +286,7 @@
 
 ### ▶ 도메인 8: 비기능 요구사항 (Non-Functional Requirements) — TC-QA-NF
 
-> **관련 SWR**: SWR-NF-PF-001~008, SWR-NF-RL-010~015, SWR-NF-UX-020~026, SWR-NF-CP-030~035, SWR-NF-SC-040~045, SWR-NF-MT-050~054, SWR-NF-RG-060~065 | **관련 PR**: PR-NF-PF/RL/UX/CP/SC/MT/RG
+> **관련 SWR**: SWR-NF-PF-001–008, SWR-NF-RL-010–015, SWR-NF-UX-020–026, SWR-NF-CP-030–035, SWR-NF-SC-040–045, SWR-NF-MT-050–054, SWR-NF-RG-060–065 | **관련 PR**: PR-NF-PF/RL/UX/CP/SC/MT/RG
 
 | TC ID | 출처 SWR | 테스트명 | 사전 조건 | 테스트 단계 | 예상 결과 | 실제 결과 | Pass/Fail | 비고 |
 |-------|----------|----------|-----------|-------------|-----------|-----------|-----------|------|
@@ -812,15 +812,15 @@ flowchart TD
 
 | 도메인 | TC ID 범위 | TC 수 | Safety-Critical 포함 |
 |--------|-----------|-------|----------------------|
-| 환자 관리 (Patient Management) | TC-QA-PM-001~020 | 20 | PM-002, PM-007, PM-013 |
-| 촬영 워크플로우 (Acquisition Workflow) | TC-QA-WF-001~020 | 20 | WF-003, WF-004, WF-012, WF-014 |
-| 영상 처리 (Image Processing) | TC-QA-IP-001~015 | 15 | - |
-| 선량 관리 (Dose Management) | TC-QA-DM-001~010 | 10 | DM-002, DM-006 |
-| DICOM/통신 (DICOM) | TC-QA-DC-001~015 | 15 | DC-007 |
-| 시스템 관리 (System Admin) | TC-QA-SA-001~010 | 10 | - |
-| 사이버보안 (Cybersecurity) | TC-QA-CS-001~015 | 15 | CS-005, CS-006, CS-009 |
-| 비기능 (Non-Functional) | TC-QA-NF-001~015 | 15 | - |
-| Safety-Critical (전용) | TC-QA-SC-001~013 | 13 | 전체 13건 |
+| 환자 관리 (Patient Management) | TC-QA-PM-001–020 | 20 | PM-002, PM-007, PM-013 |
+| 촬영 워크플로우 (Acquisition Workflow) | TC-QA-WF-001–020 | 20 | WF-003, WF-004, WF-012, WF-014 |
+| 영상 처리 (Image Processing) | TC-QA-IP-001–015 | 15 | - |
+| 선량 관리 (Dose Management) | TC-QA-DM-001–010 | 10 | DM-002, DM-006 |
+| DICOM/통신 (DICOM) | TC-QA-DC-001–015 | 15 | DC-007 |
+| 시스템 관리 (System Admin) | TC-QA-SA-001–010 | 10 | - |
+| 사이버보안 (Cybersecurity) | TC-QA-CS-001–015 | 15 | CS-005, CS-006, CS-009 |
+| 비기능 (Non-Functional) | TC-QA-NF-001–015 | 15 | - |
+| Safety-Critical (전용) | TC-QA-SC-001–013 | 13 | 전체 13건 |
 | **합계** | | **133** | **25건 이상** |
 
 ---

@@ -52,7 +52,7 @@
 **용도 (Intended Use):** 의료용 진단 X-Ray 촬영장치 (Medical Diagnostic X-Ray Imaging Equipment)의 HnVue Console SW  
 **배포 환경 (Deployment):** Windows 10/11 기반 산업용 워크스테이션  
 **SW Safety Class:** IEC 62304 Class B  
-**개발 단계:** Phase 1 (M1~M12), Phase 2 (M13~M24, AI/Cloud 기능 포함)
+**개발 단계:** Phase 1 (M1–M12), Phase 2 (M13–M24, AI/Cloud 기능 포함)
 
 본 문서는 Phase 1 핵심 기능 아키텍처를 주요 대상으로 하며, Phase 2 확장 가능성을 고려한 설계를 포함한다.
 
@@ -443,7 +443,7 @@ graph TD
 | IF-PM-005 | 요구 (Required) | HL7 Adapter | HL7 ADT/ORM 수신 |
 
 **의존관계:** SAD-DB-900, SAD-DC-500, SAD-CS-700  
-**관련 SWR:** SWR-PM-001~SWR-PM-030 (환자 관리 요구사항)
+**관련 SWR:** SWR-PM-001–SWR-PM-030 (환자 관리 요구사항)
 
 ---
 
@@ -493,7 +493,7 @@ graph TD
 | IF-WF-007 | 요구 (Required) | SAD-DB-900 | 검사 기록 저장 |
 
 **의존관계:** SAD-DM-400, SAD-IP-300, SAD-DC-500, SAD-DB-900, Generator/Detector Interface  
-**관련 SWR:** SWR-WF-001~SWR-WF-050 (촬영 워크플로우 요구사항)
+**관련 SWR:** SWR-WF-001–SWR-WF-050 (촬영 워크플로우 요구사항)
 
 ---
 
@@ -527,7 +527,7 @@ graph TD
 | IF-IP-005 | 제공 (Provided) | SAD-DC-500 | DICOM 이미지 객체 |
 
 **의존관계:** SAD-DB-900, SOUP(OpenCV)  
-**관련 SWR:** SWR-IP-001~SWR-IP-040 (영상 처리 요구사항)
+**관련 SWR:** SWR-IP-001–SWR-IP-040 (영상 처리 요구사항)
 
 ---
 
@@ -559,7 +559,7 @@ graph TD
 | IF-DM-005 | 제공 (Provided) | SAD-WF-200 | 실시간 선량 이벤트 콜백 |
 
 **의존관계:** SAD-DB-900, SAD-DC-500  
-**관련 SWR:** SWR-DM-001~SWR-DM-025 (선량 관리 요구사항)
+**관련 SWR:** SWR-DM-001–SWR-DM-025 (선량 관리 요구사항)
 
 ---
 
@@ -591,7 +591,7 @@ graph TD
 | IF-DC-005 | 외부 | PACS/Worklist/MPPS/RDSR | DICOM 네트워크 통신 |
 
 **의존관계:** SAD-CS-700, SAD-DB-900, SOUP(DCMTK)  
-**관련 SWR:** SWR-DC-001~SWR-DC-035 (DICOM 통신 요구사항)
+**관련 SWR:** SWR-DC-001–SWR-DC-035 (DICOM 통신 요구사항)
 
 ---
 
@@ -622,7 +622,7 @@ graph TD
 | IF-SA-003 | 요구 (Required) | SAD-DB-900 | 설정/사용자 데이터 저장 |
 
 **의존관계:** SAD-CS-700, SAD-DB-900  
-**관련 SWR:** SWR-SA-001~SWR-SA-020 (시스템 관리 요구사항)
+**관련 SWR:** SWR-SA-001–SWR-SA-020 (시스템 관리 요구사항)
 
 ---
 
@@ -656,7 +656,7 @@ graph TD
 | IF-CS-005 | 요구 (Required) | SOUP: OpenSSL | 암호화/TLS |
 
 **의존관계:** SAD-DB-900, SOUP(OpenSSL), LDAP Server  
-**관련 SWR:** SWR-CS-001~SWR-CS-030 (사이버보안 요구사항)
+**관련 SWR:** SWR-CS-001–SWR-CS-030 (사이버보안 요구사항)
 
 ---
 
@@ -679,7 +679,7 @@ graph TD
 - 스플래시 화면, 로딩 인디케이터
 
 **의존관계:** 모든 비즈니스 로직 모듈, SOUP(Qt Framework)  
-**관련 SWR:** SWR-UI-001~SWR-UI-020 (UI 프레임워크 요구사항)
+**관련 SWR:** SWR-UI-001–SWR-UI-020 (UI 프레임워크 요구사항)
 
 ---
 
@@ -702,7 +702,7 @@ graph TD
 - 데이터 아카이빙
 
 **의존관계:** SOUP(SQLite3)  
-**관련 SWR:** SWR-DB-001~SWR-DB-015 (데이터 영속화 요구사항)
+**관련 SWR:** SWR-DB-001–SWR-DB-015 (데이터 영속화 요구사항)
 
 ---
 
@@ -994,7 +994,7 @@ sequenceDiagram
 **세션 관리 정책:**
 - 세션 토큰: JWT (JSON Web Token), HMAC-SHA256 서명
 - 세션 유효 시간: 8시간 (로그아웃 시 즉시 무효화)
-- 비활성 자동 잠금: 15분 (구성 가능, 1~60분)
+- 비활성 자동 잠금: 15분 (구성 가능, 1–60분)
 - 동시 로그인: 1 세션/사용자 (이전 세션 자동 무효화)
 - 실패 잠금: 5회 연속 실패 시 계정 30분 잠금
 

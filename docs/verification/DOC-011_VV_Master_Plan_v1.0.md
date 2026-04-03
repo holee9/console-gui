@@ -72,7 +72,7 @@
 
 ### 1.2 범위 (Scope)
 
-**적용 대상**: HnVue Console SW **Phase 1** (M1~M12 핵심 기능)
+**적용 대상**: HnVue Console SW **Phase 1** (M1–M12 핵심 기능)
 
 Phase 1 범위 내 소프트웨어 도메인:
 
@@ -87,7 +87,7 @@ Phase 1 범위 내 소프트웨어 도메인:
 | CS | Cybersecurity (사이버보안) | 인증, 암호화, 감사 로그 |
 
 **제외 범위 (Out of Scope)**:
-- Phase 2 기능: AI Integration, Cloud 연동 (M13~M24)
+- Phase 2 기능: AI Integration, Cloud 연동 (M13–M24)
 - 하드웨어 X-Ray Generator 및 Detector 자체 검증 (별도 HW 검증 계획 적용)
 - PACS/HIS 서버 소프트웨어 자체 검증
 
@@ -268,7 +268,7 @@ flowchart TB
 | §5.5.3 | SW 단위 검증 (Unit Verification) | Level 1 | Required |
 | §5.6.1 | SW 통합 테스트 (Integration Testing) | Level 2 | Required |
 | §5.7.1 | SW 시스템 테스트 (System Testing) | Level 3 | Required |
-| §5.7.2 | 회귀 테스트 (Regression Testing) | Level 1~3 | Required |
+| §5.7.2 | 회귀 테스트 (Regression Testing) | Level 1–3 | Required |
 | §8 | SW 검증 계획 (Verification Plan) | All Levels | Required |
 
 ---
@@ -442,13 +442,13 @@ C4Context
 
 | 도메인 | 테스트 항목 | 관련 PRD 요구사항 | TC 수 |
 |--------|-----------|----------------|------|
-| PM | 환자 등록, 검색, 편집, 삭제, 워크리스트 조회 | PR-001~010 | 25 |
-| WF | 촬영 프로토콜 선택, 노출 실행, 재촬영 | PR-011~025 | 30 |
-| IP | 영상 표시, W/L 조정, 노이즈 필터, 확대/축소 | PR-026~040 | 35 |
-| DM | 선량 표시, DRL 경보, 누적 선량 보고서 | PR-041~050 | 20 |
-| DC | DICOM 전송/조회, HL7 연동, 프린트 | PR-051~060 | 25 |
-| SA | 사용자 관리, 로그 조회, 설정, 업데이트 | PR-061~075 | 30 |
-| CS | 로그인, 권한 제어, 감사 로그 | PR-076~085 | 20 |
+| PM | 환자 등록, 검색, 편집, 삭제, 워크리스트 조회 | PR-001–010 | 25 |
+| WF | 촬영 프로토콜 선택, 노출 실행, 재촬영 | PR-011–025 | 30 |
+| IP | 영상 표시, W/L 조정, 노이즈 필터, 확대/축소 | PR-026–040 | 35 |
+| DM | 선량 표시, DRL 경보, 누적 선량 보고서 | PR-041–050 | 20 |
+| DC | DICOM 전송/조회, HL7 연동, 프린트 | PR-051–060 | 25 |
+| SA | 사용자 관리, 로그 조회, 설정, 업데이트 | PR-061–075 | 30 |
+| CS | 로그인, 권한 제어, 감사 로그 | PR-076–085 | 20 |
 | **합계** | | | **185** |
 
 ### 7.3 성능 테스트 (Performance Test)

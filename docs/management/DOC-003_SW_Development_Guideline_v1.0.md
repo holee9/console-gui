@@ -376,13 +376,13 @@ graph TD
     PRD["📄 PRD<br/>Product Requirements Document<br/>（PR-001 ~ PR-xxx）<br/>시스템 수준 Design Input"]
     SRS["📝 SRS/FRS<br/>Software Requirements Specification<br/>（SWR-001 ~ SWR-xxx）<br/>IEC 62304 §5.2"]
 
-    DOMAIN_PM["PM: 환자 관리<br/>MR-001~006"]
-    DOMAIN_WF["WF: 촬영 워크플로우<br/>MR-010~018"]
-    DOMAIN_IP["IP: 영상 처리<br/>MR-020~037"]
-    DOMAIN_DM["DM: 선량 관리<br/>MR-040~046"]
-    DOMAIN_DC["DC: DICOM 통신<br/>MR-050~056"]
-    DOMAIN_SA["SA: 시스템 관리<br/>MR-060~067"]
-    DOMAIN_CS["CS: 사이버보안<br/>MR-070~076"]
+    DOMAIN_PM["PM: 환자 관리<br/>MR-001–006"]
+    DOMAIN_WF["WF: 촬영 워크플로우<br/>MR-010–018"]
+    DOMAIN_IP["IP: 영상 처리<br/>MR-020–037"]
+    DOMAIN_DM["DM: 선량 관리<br/>MR-040–046"]
+    DOMAIN_DC["DC: DICOM 통신<br/>MR-050–056"]
+    DOMAIN_SA["SA: 시스템 관리<br/>MR-060–067"]
+    DOMAIN_CS["CS: 사이버보안<br/>MR-070–076"]
 
     MRD --> DOMAIN_PM & DOMAIN_WF & DOMAIN_IP & DOMAIN_DM & DOMAIN_DC & DOMAIN_SA & DOMAIN_CS
     DOMAIN_PM & DOMAIN_WF & DOMAIN_IP & DOMAIN_DM & DOMAIN_DC & DOMAIN_SA & DOMAIN_CS --> PRD
@@ -524,7 +524,7 @@ flowchart TD
 
 | 문서 | ID | 내용 |
 |-----|-----|------|
-| 시장 요구사항 문서 | MRD | 고객/시장 요구사항 (MR-001~076) |
+| 시장 요구사항 문서 | MRD | 고객/시장 요구사항 (MR-001–076) |
 | 제품 요구사항 문서 | PRD | 시스템 수준 요구사항 (PR-xxx) |
 | SW 요구사항 사양서 | SRS | SW 기능/비기능 요구사항 (SWR-xxx) |
 | 인터페이스 요구사항 | IRS | 외부 시스템 인터페이스 정의 |

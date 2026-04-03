@@ -46,7 +46,7 @@
 
 ### 1.3 IEC 81001-5-1 Clause별 자체 수행 가능성 판단
 
-IEC 81001-5-1의 9개 Clause (Clause 4~9) 중 자체 수행 가능한 항목과 공인기관에 맡겨야 하는 항목을 다음과 같이 구분한다.
+IEC 81001-5-1의 9개 Clause (Clause 4–9) 중 자체 수행 가능한 항목과 공인기관에 맡겨야 하는 항목을 다음과 같이 구분한다.
 
 | Clause | 내용 | 자체 수행 가능 | 비고 |
 |--------|------|:------------:|------|
@@ -489,7 +489,7 @@ nmap -p- [target_ip]
 
 | 번호 | 문서/출처 | URL |
 |------|-----------|-----|
-| 1 | IEC 81001-5-1:2021 원문 (Clause 4~9) | https://www.iec.ch/homepage |
+| 1 | IEC 81001-5-1:2021 원문 (Clause 4–9) | https://www.iec.ch/homepage |
 | 2 | MITRE Medical Device Threat Modeling Playbook | https://www.mitre.org/sites/default/files/2021-11/Playbook-for-Threat-Modeling-Medical-Devices.pdf |
 | 3 | IG-NB Cybersecurity Questionnaire (OpenRegulatory) | https://openregulatory.com/document_templates/questionnaire-cybersecurity-for-medical-devices-technical-documentation |
 | 4 | Greenlight Guru Cybersecurity GAP Assessment Checklist | https://www.greenlight.guru/downloads/cybersecurity-gap-assessment-checklist |

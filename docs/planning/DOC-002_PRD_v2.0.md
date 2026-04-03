@@ -41,7 +41,7 @@ MRD v3.0의 4-Tier 분류 체계를 계승합니다. 벤치마크: FDA K231225 (
 | **Tier 4** | 비현실적 | 2명 조직 비현실적 | Phase 3+ |
 | **제외** | 취소됨 | v2.0에서 제외 | - |
 
-> **참고**: v1.x의 P1~P4 분류 체계는 v2.0에서 폐기되고 MRD v3.0의 4-Tier 체계로 대체됩니다. 각 PR-xxx의 Tier는 출처 MR-xxx의 MRD v3.0 Tier를 계승합니다. 복수의 MR에서 파생된 PR은 가장 높은 Tier(Tier 1 > Tier 2 > Tier 3 > Tier 4)를 따릅니다.
+> **참고**: v1.x의 P1–P4 분류 체계는 v2.0에서 폐기되고 MRD v3.0의 4-Tier 체계로 대체됩니다. 각 PR-xxx의 Tier는 출처 MR-xxx의 MRD v3.0 Tier를 계승합니다. 복수의 MR에서 파생된 PR은 가장 높은 Tier(Tier 1 > Tier 2 > Tier 3 > Tier 4)를 따릅니다.
 
 ---
 
@@ -139,20 +139,20 @@ flowchart LR
 
 | ID 범위 |
 |--------------|
-| PR-PM-001~006 |
-| PR-WF-010~019 |
-| PR-IP-020~037 |
-| PR-DM-040~046 |
-| PR-DC-050~057 |
-| PR-SA-060~067 |
-| PR-CS-070~076 |
-| PR-NF-PF-001~008 |
-| PR-NF-RL-010~015 |
-| PR-NF-UX-020~026 |
-| PR-NF-CP-030~035 |
-| PR-NF-SC-040~045 |
-| PR-NF-MT-050~054 |
-| PR-NF-RG-060~065 |
+| PR-PM-001–006 |
+| PR-WF-010–019 |
+| PR-IP-020–037 |
+| PR-DM-040–046 |
+| PR-DC-050–057 |
+| PR-SA-060–067 |
+| PR-CS-070–076 |
+| PR-NF-PF-001–008 |
+| PR-NF-RL-010–015 |
+| PR-NF-UX-020–026 |
+| PR-NF-CP-030–035 |
+| PR-NF-SC-040–045 |
+| PR-NF-MT-050–054 |
+| PR-NF-RG-060–065 |
 
 ---
 
@@ -233,7 +233,7 @@ flowchart LR
 | **기술 수준** | 중급 IT 리터러시 (의료기기 전문성 보유) |
 | **주요 목표** | 정확하고 신속한 영상 획득, 환자 안전 확보 |
 | **Pain Points** | 복잡한 프로토콜 선택, 과도한 클릭 수, 이전 영상 조회 지연 |
-| **사용 빈도** | 1일 40~150 검사 (고용량 병원 기준) |
+| **사용 빈도** | 1일 40–150 검사 (고용량 병원 기준) |
 | **환경** | 방사선 방어 구역 (납 유리 너머), 터치스크린 또는 마우스+키보드 |
 
 #### 페르소나 2: 의학물리사 / 방사선사 선임 (Chief RT / Medical Physicist)
@@ -244,7 +244,7 @@ flowchart LR
 | **기술 수준** | 고급 IT 리터러시, DICOM/의료기기 지식 보유 |
 | **주요 목표** | 선량 최적화, 프로토콜 표준화, QC 수행 |
 | **Pain Points** | 캘리브레이션 복잡성, 선량 보고서 수동 작성 |
-| **사용 빈도** | 월 1~4회 설정 변경, 일 1~2회 QC |
+| **사용 빈도** | 월 1–4회 설정 변경, 일 1–2회 QC |
 
 #### 페르소나 3: IT/바이오메디컬 엔지니어 (BMET)
 
@@ -402,12 +402,12 @@ journey
 
 | ID | 출처 MR | 요구사항명 | 상세 설명 | Tier | Phase | 수용 기준 | 파생 SWR | 검증 수준 | 위험 참조 | MR 추적 |
 |-------|---------|--------|-----------|------|-------|-----------|-----------|-----------| -----------|---------|
-| PR-PM-001 | MR-001, MR-025 | 환자 수동 등록 | 성명, 환자 ID, 생년월일, 성별, 검사 의뢰 정보를 수동 입력하여 새 환자 레코드 생성 | Tier 2 | 1 | 필수 필드(환자 ID, 성명, 성별) 미입력 시 저장 불가; 중복 ID 감지 시 경고 표시 | SWR-PM-001~004 | T, I | HAZ-DATA | MR-001, MR-025 |
-| PR-PM-002 | MR-001 | 환자 정보 조회·수정 | 등록된 환자 정보를 조회하고 허가된 사용자가 수정 가능 | Tier 2 | 1 | 수정 완료 후 Audit Trail에 변경자·시각·변경 내용 기록 | SWR-PM-010~013 | T, I | HAZ-DATA, HAZ-SEC | MR-001 |
-| PR-PM-003 | MR-001, MR-025 | DICOM MWL 자동 불러오기 | RIS/HIS에서 DICOM Modality Worklist를 10초 주기 폴링으로 조회하여 검사 목록 자동 표시; fo-dicom 5.x DicomClient 사용 | Tier 2 | 1 | MWL C-FIND 성공 시 ≤3초 내 목록 표시; 실패 시 에러 메시지 및 수동 입력 대체 경로 제공; 10초 자동 폴링 동작 확인 | SWR-PM-020~024 | T, A | HAZ-DATA | MR-001, MR-025 |
-| PR-PM-004 | MR-001 | 응급 환자 빠른 등록 | 최소 정보(임시 ID 자동 생성, 성별, 나이 추정)만으로 즉시 촬영 가능한 응급 등록 모드 | Tier 2 | 1 | 화면 진입부터 촬영 준비 완료까지 ≤30초; 이후 정식 정보로 업데이트 가능 | SWR-PM-030~033 | T, D | HAZ-RAD, HAZ-DATA | MR-001 |
-| PR-PM-005 | MR-001 | 환자 검색 | 환자 ID, 성명(부분 일치), 검사 날짜(범위)로 검색 | Tier 2 | 1 | 검색 결과 반환 ≤0.5초; 1,000건 이상 DB에서 정상 동작 | SWR-PM-040~043 | T, A | — | MR-001 |
-| PR-PM-006 | MR-001 | 환자 삭제 (GDPR/개인정보) | 허가된 관리자만 환자 레코드 삭제 가능; 삭제 전 확인 대화상자 표시 | Tier 2 | 1 | 삭제 시 연관 DICOM 파일 처리 정책(아카이브/삭제) 선택 가능; Audit Trail에 기록 | SWR-PM-050~053 | T, I | HAZ-DATA, HAZ-SEC | MR-001 |
+| PR-PM-001 | MR-001, MR-025 | 환자 수동 등록 | 성명, 환자 ID, 생년월일, 성별, 검사 의뢰 정보를 수동 입력하여 새 환자 레코드 생성 | Tier 2 | 1 | 필수 필드(환자 ID, 성명, 성별) 미입력 시 저장 불가; 중복 ID 감지 시 경고 표시 | SWR-PM-001–004 | T, I | HAZ-DATA | MR-001, MR-025 |
+| PR-PM-002 | MR-001 | 환자 정보 조회·수정 | 등록된 환자 정보를 조회하고 허가된 사용자가 수정 가능 | Tier 2 | 1 | 수정 완료 후 Audit Trail에 변경자·시각·변경 내용 기록 | SWR-PM-010–013 | T, I | HAZ-DATA, HAZ-SEC | MR-001 |
+| PR-PM-003 | MR-001, MR-025 | DICOM MWL 자동 불러오기 | RIS/HIS에서 DICOM Modality Worklist를 10초 주기 폴링으로 조회하여 검사 목록 자동 표시; fo-dicom 5.x DicomClient 사용 | Tier 2 | 1 | MWL C-FIND 성공 시 ≤3초 내 목록 표시; 실패 시 에러 메시지 및 수동 입력 대체 경로 제공; 10초 자동 폴링 동작 확인 | SWR-PM-020–024 | T, A | HAZ-DATA | MR-001, MR-025 |
+| PR-PM-004 | MR-001 | 응급 환자 빠른 등록 | 최소 정보(임시 ID 자동 생성, 성별, 나이 추정)만으로 즉시 촬영 가능한 응급 등록 모드 | Tier 2 | 1 | 화면 진입부터 촬영 준비 완료까지 ≤30초; 이후 정식 정보로 업데이트 가능 | SWR-PM-030–033 | T, D | HAZ-RAD, HAZ-DATA | MR-001 |
+| PR-PM-005 | MR-001 | 환자 검색 | 환자 ID, 성명(부분 일치), 검사 날짜(범위)로 검색 | Tier 2 | 1 | 검색 결과 반환 ≤0.5초; 1,000건 이상 DB에서 정상 동작 | SWR-PM-040–043 | T, A | — | MR-001 |
+| PR-PM-006 | MR-001 | 환자 삭제 (GDPR/개인정보) | 허가된 관리자만 환자 레코드 삭제 가능; 삭제 전 확인 대화상자 표시 | Tier 2 | 1 | 삭제 시 연관 DICOM 파일 처리 정책(아카이브/삭제) 선택 가능; Audit Trail에 기록 | SWR-PM-050–053 | T, I | HAZ-DATA, HAZ-SEC | MR-001 |
 
 ### 3.2 촬영 워크플로우 (Acquisition Workflow) — PR-WF
 
@@ -467,7 +467,7 @@ stateDiagram-v2
         노이즈 감소
         Edge Enhancement
         Auto-trim
-        PR-IP-030~037 적용
+        PR-IP-030–037 적용
     end note
 ```
 
@@ -542,7 +542,7 @@ flowchart TD
 | PR-DC-051 | MR-001, MR-025 | MWL SCU | fo-dicom 5.x로 RIS에서 C-FIND로 오늘의 검사 목록 조회; IHE RAD-5 트랜잭션 구현; 10초 주기 자동 폴링 | Tier 2 | 1 | C-FIND 응답 ≤3초; PatientName/PatientID/StudyInstanceUID 등 핵심 태그 파싱 확인; 폴링 동작 로그 확인 | SWR-DC-053, SWR-DC-054 | T, A | HAZ-DATA | MR-001, MR-025 |
 | PR-DC-052 | MR-009 | MPPS SCU | 검사 시작(In-Progress) 및 완료(Completed)/취소(Discontinued) 상태를 RIS로 전송 | Tier 3 | 2 | 상태 변경 후 ≤5초 내 MPPS N-CREATE/N-SET 전송 | SWR-DC-055, SWR-DC-056 | T, A | HAZ-DATA | MR-009 |
 | PR-DC-053 | MR-019 | Storage Commitment SCU | PACS가 영상을 안전하게 저장했음을 확인받는 N-ACTION/N-EVENT-REPORT 구현 | Tier 3 | 2 | Commitment 확인 후 로컬 임시 파일 삭제 옵션 활성화 | SWR-DC-057, SWR-DC-058 | T, I | HAZ-DATA | MR-019 |
-| PR-DC-054 | MR-024 | Print SCU | fo-dicom 5.x 기반 DICOM Basic Grayscale Print 서비스를 통한 필름 인쇄; feel-DRCS 동등 기능 | Tier 2 | 1 | 인쇄 큐 관리; 1~N Up 레이아웃 지원; 인쇄 성공/실패 상태 표시 | SWR-DC-059, SWR-DC-060 | T, D | — | MR-024 |
+| PR-DC-054 | MR-024 | Print SCU | fo-dicom 5.x 기반 DICOM Basic Grayscale Print 서비스를 통한 필름 인쇄; feel-DRCS 동등 기능 | Tier 2 | 1 | 인쇄 큐 관리; 1–N Up 레이아웃 지원; 인쇄 성공/실패 상태 표시 | SWR-DC-059, SWR-DC-060 | T, D | — | MR-024 |
 | PR-DC-055 | MR-019 | Query/Retrieve SCU | PACS에서 이전 영상 조회(C-FIND) 및 가져오기(C-MOVE/C-GET) | Tier 3 | 2 | 조회 결과 썸네일 표시; 비교 뷰어에서 표시 | SWR-DC-061, SWR-DC-062 | T, D | — | MR-019 |
 | PR-DC-056 | MR-034 | DICOM TLS | DICOM 통신 채널에 TLS 1.2 이상 암호화 적용; 인증서 기반 상호 인증(mTLS) 옵션 | Tier 1 | 1 | TLS 핸드셰이크 성공 확인; 인증서 만료 30일 전 관리자 경고; TLS 1.0/1.1 비활성화 확인 | SWR-DC-063, SWR-DC-064 | T, I | HAZ-SEC | MR-034 |
 | PR-DC-057 | MR-054 | DICOM Conformance Statement | 지원 SOP Class, Transfer Syntax, AE Title 정보를 DICOM Conformance Statement 문서로 작성 및 공개 | Tier 1 | 1 | DICOM PS3.2 기준 Conformance Statement 완전성 확인; IHE Integration Statement 포함 | SWR-DC-065 | I | HAZ-DATA | MR-054 |
@@ -755,15 +755,15 @@ flowchart TD
 
         subgraph CenterPanel["중앙 뷰어 （가변 너비）\n영상 표시 영역"]
             C1[영상 표시\nImage Viewport\nPR-IP-020]
-            C2[이미지 툴바\nW/L, Zoom, Pan, Rotate, Flip\nPR-IP-021~024]
-            C3[측정/Annotation 도구\nPR-IP-026~029]
+            C2[이미지 툴바\nW/L, Zoom, Pan, Rotate, Flip\nPR-IP-021–024]
+            C3[측정/Annotation 도구\nPR-IP-026–029]
         end
 
         subgraph RightPanel["우측 패널 （280px）\n촬영 제어"]
             R1[촬영 파라미터\nkVp / mAs / AEC\nPR-WF-012]
             R2[프로토콜 선택\nAPR 트리\nPR-WF-010]
             R3[Detector 상태\n배터리/온도\nPR-WF-014]
-            R4[선량 표시\nDAP / EI / DI\nPR-DM-040~043]
+            R4[선량 표시\nDAP / EI / DI\nPR-DM-040–043]
         end
 
         subgraph BottomBar["하단 상태바 （30px）"]
@@ -997,9 +997,9 @@ classDiagram
 | 단위 테스트 (Unit Test) | 코드 커버리지 ≥80% | xUnit, NUnit, Google Test |
 | 통합 테스트 (Integration Test) | 모든 인터페이스 시나리오 | 자동화 테스트 스크립트 |
 | 시스템 테스트 (System Test) | 모든 PR/PR-NF 검증 | 테스트 케이스 매뉴얼 |
-| Usability Test (Formative) | 설계 반복 개선 | 방사선사 5~8명 |
+| Usability Test (Formative) | 설계 반복 개선 | 방사선사 5–8명 |
 | Usability Test (Summative) | SUS ≥70, 안전 관련 Task 완료율 ≥95% | 방사선사 ≥10명 |
-| 성능 테스트 | PR-NF-PF-001~008 모든 기준치 만족; PACS 전송 ≤30초 | JMeter, 자체 도구 |
+| 성능 테스트 | PR-NF-PF-001–008 모든 기준치 만족; PACS 전송 ≤30초 | JMeter, 자체 도구 |
 | 보안 테스트 | Critical CVE 0건, 침투 테스트 통과 | OWASP ZAP, Veracode |
 | 회귀 테스트 | 릴리스마다 전체 자동화 Suite 실행 | CI/CD 파이프라인 |
 | 코드 리뷰 | Safety-critical 모듈 100% | Peer Review + Checklist |
@@ -1166,7 +1166,7 @@ flowchart LR
 
 ## 10. 검증 전략 (Verification & Validation Strategy)
 
-> **근거 규격**: FDA 21 CFR 820.30(f)(g), IEC 62304 §5.5~5.7, ISO 14971 §10
+> **근거 규격**: FDA 21 CFR 820.30(f)(g), IEC 62304 §5.5–5.7, ISO 14971 §10
 
 ### 10.1 V-Model 기반 검증/밸리데이션 체계
 
@@ -1176,7 +1176,7 @@ flowchart LR
 flowchart TD
     classDef default fill:#444,stroke:#666,color:#fff
     subgraph Design["설계 단계 （Design Phase）"]
-        UN["사용자 요구사항\n（User Needs / MRD v3.0）\nMR-001~072"]
+        UN["사용자 요구사항\n（User Needs / MRD v3.0）\nMR-001–072"]
         PRD_["제품 요구사항\n（PRD = Design Input）\nPR-PM/WF/IP/DM/DC/SA/CS\nPR-NF-PF/RL/UX/CP/SC/MT/RG"]
         SRS_["SW 요구사항 명세\n（SRS/FRS）\nSWR-xxx\nIEC 62304 §5.2"]
         SAD["아키텍처 설계\n（SAD）\nSAD-xxx"]
@@ -1191,8 +1191,8 @@ flowchart TD
     end
 
     subgraph Validation["밸리데이션 단계 （Validation）"]
-        VT_UX["사용성 밸리데이션\n（Usability Validation）\nVT-UX-001~003"]
-        VT_CL["임상 시뮬레이션\n（Clinical Simulation）\nVT-CL-001~002"]
+        VT_UX["사용성 밸리데이션\n（Usability Validation）\nVT-UX-001–003"]
+        VT_CL["임상 시뮬레이션\n（Clinical Simulation）\nVT-CL-001–002"]
         VT_SEC["보안 밸리데이션\n（Security Validation）\nVT-SEC-001"]
     end
 
@@ -1235,9 +1235,9 @@ flowchart TD
 | **단위 테스트 (Unit Test)** | 모든 SWR (소프트웨어 기능 단위) | UT-PM/WF/IP/DM/DC/SA/CS-xxx | xUnit, NUnit, Google Test |
 | **통합 테스트 (Integration Test)** | 모든 SWR (인터페이스 시나리오) + PR-NF-RL, PR-NF-CP | IT-PM/WF/IP/DM/DC/SA/CS-xxx | 자동화 테스트 스크립트, HW 시뮬레이터 |
 | **시스템 테스트 (System Test)** | 모든 PR + 전 PR-NF (수용 기준 직접 검증) | ST-PR-xxx (전 범주) | 테스트 케이스 매뉴얼, JMeter, OWASP ZAP |
-| **사용성 밸리데이션 (VT-UX)** | PR-NF-UX-020~026, PR-PM-004, PR-WF-016 | VT-UX-001~003 | SUS 설문, Task 시나리오, 방사선사 ≥10명 |
-| **임상 시뮬레이션 (VT-CL)** | PR-DM-040~046, PR-WF-010~016, PR-IP-020~036 | VT-CL-001~002 | 팬텀 테스트, 임상 시나리오 시뮬레이션 |
-| **보안 밸리데이션 (VT-SEC)** | PR-CS-070~077, PR-NF-SC-040~045 | VT-SEC-001 | 침투 테스트, Veracode, OWASP ZAP, CycloneDX |
+| **사용성 밸리데이션 (VT-UX)** | PR-NF-UX-020–026, PR-PM-004, PR-WF-016 | VT-UX-001–003 | SUS 설문, Task 시나리오, 방사선사 ≥10명 |
+| **임상 시뮬레이션 (VT-CL)** | PR-DM-040–046, PR-WF-010–016, PR-IP-020–036 | VT-CL-001–002 | 팬텀 테스트, 임상 시나리오 시뮬레이션 |
+| **보안 밸리데이션 (VT-SEC)** | PR-CS-070–077, PR-NF-SC-040–045 | VT-SEC-001 | 침투 테스트, Veracode, OWASP ZAP, CycloneDX |
 
 ### 10.3 밸리데이션 테스트 상세
 
@@ -1246,7 +1246,7 @@ flowchart TD
 | VT-UX-001 | 기본 워크플로우 사용성 평가 (Summative) | 방사선사 ≥10명 | SUS ≥70점; 표준 검사 Task ≤5회 터치 (PR-NF-UX-021, PR-NF-UX-024) |
 | VT-UX-002 | 응급/안전 관련 Task 완료율 평가 | 방사선사 ≥10명 | 안전 Task 완료율 ≥95%; Emergency 진입 ≤2터치 (PR-NF-UX-026) |
 | VT-UX-003 | 초보 사용자 교육 시간 평가 | 신규 방사선사 5명 | 기본 운영 교육 ≤4시간 (PR-NF-UX-020) |
-| VT-CL-001 | 임상 시나리오 시뮬레이션 (표준 촬영) | 방사선사 5명, 의학물리사 1명 | 전 워크플로우 오류 없이 완료; PACS 전송 ≤30초; 선량 기록 100% (PR-DM-040~045) |
+| VT-CL-001 | 임상 시나리오 시뮬레이션 (표준 촬영) | 방사선사 5명, 의학물리사 1명 | 전 워크플로우 오류 없이 완료; PACS 전송 ≤30초; 선량 기록 100% (PR-DM-040–045) |
 | VT-CL-002 | 측정 정확도 밸리데이션 | 의학물리사 1명 | 거리 측정 ±1% (PR-IP-026) |
 | VT-SEC-001 | 보안 침투 테스트 및 취약점 밸리데이션 | 외부 보안 전문가 | Critical/High CVE 0건; PHI 무단 노출 0건 (PR-CS-073, PR-CS-074, PR-NF-SC-044) |
 
@@ -1405,7 +1405,7 @@ flowchart TD
 
 ## 12. Design Input/Output 매핑 (Design Control Mapping)
 
-> **근거 규격**: FDA 21 CFR 820.30(c)(d)(f), ISO 13485:2016 §7.3.4~7.3.5
+> **근거 규격**: FDA 21 CFR 820.30(c)(d)(f), ISO 13485:2016 §7.3.4–7.3.5
 
 ### 12.1 Design Control 개요 (3단계 계층)
 
@@ -1416,7 +1416,7 @@ flowchart LR
     classDef default fill:#444,stroke:#666,color:#fff
     subgraph DHF["Design History File （DHF）"]
         subgraph DI["Design Input （설계 입력）"]
-            MRD["MRD v3.0\n（User Needs）\nMR-001~072"]
+            MRD["MRD v3.0\n（User Needs）\nMR-001–072"]
             PRD_DOC["PRD v2.0\n（이 문서）\nPR-xxx / PR-NF-xxx\n시스템 수준 Design Input"]
         end
 
@@ -1490,13 +1490,13 @@ flowchart LR
 
 | PRD 요구사항 범주 | 파생 SWR 범위 | 연결되는 SAD 요소 | 연결되는 SDS 요소 | 연결되는 코드 모듈 |
 |----------------|--------------|----------------|----------------|----------------|
-| PR-PM (환자 관리) | SWR-PM-001~014 | SAD: PatientManagementSubsystem | SDS: PatientService, WorklistService | PatientModule/, WorklistModule/ |
-| PR-WF (촬영 워크플로우) | SWR-WF-010~034 | SAD: AcquisitionSubsystem | SDS: GeneratorService, DetectorService, ProtocolService, CDWriter | AcquisitionModule/, HardwareAbstraction/, CDModule/ |
-| PR-IP (영상 처리) | SWR-IP-020~052 | SAD: ImageProcessingSubsystem | SDS: ImageProcessor, DisplayRenderer | ImageProcessing/, DisplayEngine/ |
-| PR-DM (선량 관리) | SWR-DM-040~055 | SAD: DoseManagementSubsystem | SDS: DoseService, RDSRGenerator | DoseModule/, RDSRModule/ |
-| PR-DC (DICOM 통신) | SWR-DC-050~065 | SAD: DicomCommunicationSubsystem | SDS: StorageSCU, MWL_SCU, PrintSCU, DicomConformance | DicomModule/ |
-| PR-SA (시스템 관리) | SWR-SA-060~077 | SAD: SystemAdminSubsystem | SDS: UserService, AuditTrailService, UpdateManager, Logger | AdminModule/, SecurityModule/ |
-| PR-CS (사이버보안) | SWR-CS-070~087 | SAD: SecuritySubsystem | SDS: AuthService, EncryptionService, SBOMManager, CVDPolicy | SecurityModule/, CryptoModule/ |
+| PR-PM (환자 관리) | SWR-PM-001–014 | SAD: PatientManagementSubsystem | SDS: PatientService, WorklistService | PatientModule/, WorklistModule/ |
+| PR-WF (촬영 워크플로우) | SWR-WF-010–034 | SAD: AcquisitionSubsystem | SDS: GeneratorService, DetectorService, ProtocolService, CDWriter | AcquisitionModule/, HardwareAbstraction/, CDModule/ |
+| PR-IP (영상 처리) | SWR-IP-020–052 | SAD: ImageProcessingSubsystem | SDS: ImageProcessor, DisplayRenderer | ImageProcessing/, DisplayEngine/ |
+| PR-DM (선량 관리) | SWR-DM-040–055 | SAD: DoseManagementSubsystem | SDS: DoseService, RDSRGenerator | DoseModule/, RDSRModule/ |
+| PR-DC (DICOM 통신) | SWR-DC-050–065 | SAD: DicomCommunicationSubsystem | SDS: StorageSCU, MWL_SCU, PrintSCU, DicomConformance | DicomModule/ |
+| PR-SA (시스템 관리) | SWR-SA-060–077 | SAD: SystemAdminSubsystem | SDS: UserService, AuditTrailService, UpdateManager, Logger | AdminModule/, SecurityModule/ |
+| PR-CS (사이버보안) | SWR-CS-070–087 | SAD: SecuritySubsystem | SDS: AuthService, EncryptionService, SBOMManager, CVDPolicy | SecurityModule/, CryptoModule/ |
 
 ### 12.4 Design Output에서 PRD로의 Backward Traceability
 
@@ -1535,70 +1535,70 @@ flowchart LR
 
 | MR ID | Tier | PR ID | 파생 SWR 범위 | Design Element | Verification Method | Test Case ID | Validation ID | HAZ ID | Status |
 |-------|------|-------|--------------|----------------|---------------------|--------------|---------------|--------|--------|
-| MR-001 | Tier 2 | PR-PM-001 | SWR-PM-001~004 | SAD: PatientMgmt / SDS: PatientService.Register() | T, I | ST-PR-PM-001 | VT-UX-001 | HAZ-DATA | Open |
-| MR-001 | Tier 2 | PR-PM-002 | SWR-PM-010~013 | SAD: PatientMgmt / SDS: PatientService.Update() | T, I | ST-PR-PM-002 | VT-UX-001 | HAZ-DATA, HAZ-SEC | Open |
-| MR-001, MR-025 | Tier 2 | PR-PM-003 | SWR-PM-020~024 | SAD: DicomComm / SDS: MWL_SCU.CFindQuery() | T, A | ST-PR-PM-003 | VT-UX-001 | HAZ-DATA | Open |
-| MR-001 | Tier 2 | PR-PM-004 | SWR-PM-030~033 | SAD: PatientMgmt / SDS: EmergencyRegistration() | T, D | ST-PR-PM-004 | VT-UX-002, VT-CL-001 | HAZ-RAD, HAZ-DATA | Open |
-| MR-001 | Tier 2 | PR-PM-005 | SWR-PM-040~043 | SAD: PatientMgmt / SDS: PatientService.Search() | T, A | ST-PR-PM-005 | VT-UX-001 | — | Open |
-| MR-001 | Tier 2 | PR-PM-006 | SWR-PM-050~053 | SAD: PatientMgmt / SDS: PatientService.Delete() | T, I | ST-PR-PM-006 | VT-UX-001 | HAZ-DATA, HAZ-SEC | Open |
-| MR-004 | Tier 2 | PR-WF-010 | SWR-WF-010~012 | SAD: Acquisition / SDS: ProtocolService.Apply() | T, D | ST-PR-WF-010 | VT-CL-001, VT-UX-002 | HAZ-RAD | Open |
-| MR-003 | Tier 2 | PR-WF-011 | SWR-WF-013~014 | SAD: Acquisition / SDS: StudyManager.ReorderViews() | T, I | ST-PR-WF-011 | VT-UX-002 | HAZ-DATA | Open |
-| MR-004, MR-031 | Tier 2 | PR-WF-012 | SWR-WF-015~017 | SAD: HW_HAL / SDS: GeneratorService.SetParams() | T, A | ST-PR-WF-012 | VT-CL-001 | HAZ-RAD | Open |
-| MR-002 | Tier 2 | PR-WF-013 | SWR-WF-018~020 | SAD: HW_HAL / SDS: GeneratorService.Expose() | T, A | ST-PR-WF-013 | VT-CL-001 | HAZ-RAD, HAZ-SW | Open |
-| MR-010 | Tier 2 | PR-WF-014 | SWR-WF-021~022 | SAD: HW_HAL / SDS: DetectorService.GetStatus() | T, D | ST-PR-WF-014 | VT-CL-001, VT-UX-002 | HAZ-RAD, HAZ-SW | Open |
-| MR-003, MR-010 | Tier 2 | PR-WF-015 | SWR-WF-023~025 | SAD: Acquisition / SDS: AcquisitionController.Execute() | T, A | ST-PR-WF-015 | VT-CL-001 | HAZ-RAD, HAZ-SW | Open |
-| MR-003 | Tier 2 | PR-WF-016 | SWR-WF-026~027 | SAD: Acquisition / SDS: TraumaWorkflow.Execute() | T, D | ST-PR-WF-016 | VT-CL-001, VT-UX-002 | HAZ-RAD | Open |
-| MR-003 | Tier 2 | PR-WF-017 | SWR-WF-028~029 | SAD: Acquisition / SDS: StudyManager.MultiStudy() | T, I | ST-PR-WF-017 | VT-UX-002 | HAZ-DATA | Open |
-| MR-003 | Tier 2 | PR-WF-018 | SWR-WF-030~031 | SAD: Acquisition / SDS: SessionManager.Suspend() | T, D | ST-PR-WF-018 | VT-UX-002 | HAZ-DATA | Open |
-| MR-072 | Tier 2 | PR-WF-019 | SWR-WF-032~035 | SAD: Acquisition / SDS: CDburner.Burn() | T, D | ST-PR-WF-019 | VT-CL-001, VT-UX-002 | HAZ-DATA | Open |
-| MR-011, MR-023 | Tier 2 | PR-IP-020 | SWR-IP-020~021 | SAD: ImageProc / SDS: DisplayRenderer.Render() | T, A | ST-PR-IP-020 | VT-CL-001, VT-UX-002 | HAZ-RAD, HAZ-SW | Open |
-| MR-012 | Tier 2 | PR-IP-021 | SWR-IP-022~023 | SAD: ImageProc / SDS: WindowLevelController.Adjust() | T, D | ST-PR-IP-021 | VT-UX-002 | — | Open |
-| MR-012 | Tier 2 | PR-IP-022 | SWR-IP-024~025 | SAD: ImageProc / SDS: ZoomController.Apply() | T, D | ST-PR-IP-022 | VT-UX-002 | — | Open |
+| MR-001 | Tier 2 | PR-PM-001 | SWR-PM-001–004 | SAD: PatientMgmt / SDS: PatientService.Register() | T, I | ST-PR-PM-001 | VT-UX-001 | HAZ-DATA | Open |
+| MR-001 | Tier 2 | PR-PM-002 | SWR-PM-010–013 | SAD: PatientMgmt / SDS: PatientService.Update() | T, I | ST-PR-PM-002 | VT-UX-001 | HAZ-DATA, HAZ-SEC | Open |
+| MR-001, MR-025 | Tier 2 | PR-PM-003 | SWR-PM-020–024 | SAD: DicomComm / SDS: MWL_SCU.CFindQuery() | T, A | ST-PR-PM-003 | VT-UX-001 | HAZ-DATA | Open |
+| MR-001 | Tier 2 | PR-PM-004 | SWR-PM-030–033 | SAD: PatientMgmt / SDS: EmergencyRegistration() | T, D | ST-PR-PM-004 | VT-UX-002, VT-CL-001 | HAZ-RAD, HAZ-DATA | Open |
+| MR-001 | Tier 2 | PR-PM-005 | SWR-PM-040–043 | SAD: PatientMgmt / SDS: PatientService.Search() | T, A | ST-PR-PM-005 | VT-UX-001 | — | Open |
+| MR-001 | Tier 2 | PR-PM-006 | SWR-PM-050–053 | SAD: PatientMgmt / SDS: PatientService.Delete() | T, I | ST-PR-PM-006 | VT-UX-001 | HAZ-DATA, HAZ-SEC | Open |
+| MR-004 | Tier 2 | PR-WF-010 | SWR-WF-010–012 | SAD: Acquisition / SDS: ProtocolService.Apply() | T, D | ST-PR-WF-010 | VT-CL-001, VT-UX-002 | HAZ-RAD | Open |
+| MR-003 | Tier 2 | PR-WF-011 | SWR-WF-013–014 | SAD: Acquisition / SDS: StudyManager.ReorderViews() | T, I | ST-PR-WF-011 | VT-UX-002 | HAZ-DATA | Open |
+| MR-004, MR-031 | Tier 2 | PR-WF-012 | SWR-WF-015–017 | SAD: HW_HAL / SDS: GeneratorService.SetParams() | T, A | ST-PR-WF-012 | VT-CL-001 | HAZ-RAD | Open |
+| MR-002 | Tier 2 | PR-WF-013 | SWR-WF-018–020 | SAD: HW_HAL / SDS: GeneratorService.Expose() | T, A | ST-PR-WF-013 | VT-CL-001 | HAZ-RAD, HAZ-SW | Open |
+| MR-010 | Tier 2 | PR-WF-014 | SWR-WF-021–022 | SAD: HW_HAL / SDS: DetectorService.GetStatus() | T, D | ST-PR-WF-014 | VT-CL-001, VT-UX-002 | HAZ-RAD, HAZ-SW | Open |
+| MR-003, MR-010 | Tier 2 | PR-WF-015 | SWR-WF-023–025 | SAD: Acquisition / SDS: AcquisitionController.Execute() | T, A | ST-PR-WF-015 | VT-CL-001 | HAZ-RAD, HAZ-SW | Open |
+| MR-003 | Tier 2 | PR-WF-016 | SWR-WF-026–027 | SAD: Acquisition / SDS: TraumaWorkflow.Execute() | T, D | ST-PR-WF-016 | VT-CL-001, VT-UX-002 | HAZ-RAD | Open |
+| MR-003 | Tier 2 | PR-WF-017 | SWR-WF-028–029 | SAD: Acquisition / SDS: StudyManager.MultiStudy() | T, I | ST-PR-WF-017 | VT-UX-002 | HAZ-DATA | Open |
+| MR-003 | Tier 2 | PR-WF-018 | SWR-WF-030–031 | SAD: Acquisition / SDS: SessionManager.Suspend() | T, D | ST-PR-WF-018 | VT-UX-002 | HAZ-DATA | Open |
+| MR-072 | Tier 2 | PR-WF-019 | SWR-WF-032–035 | SAD: Acquisition / SDS: CDburner.Burn() | T, D | ST-PR-WF-019 | VT-CL-001, VT-UX-002 | HAZ-DATA | Open |
+| MR-011, MR-023 | Tier 2 | PR-IP-020 | SWR-IP-020–021 | SAD: ImageProc / SDS: DisplayRenderer.Render() | T, A | ST-PR-IP-020 | VT-CL-001, VT-UX-002 | HAZ-RAD, HAZ-SW | Open |
+| MR-012 | Tier 2 | PR-IP-021 | SWR-IP-022–023 | SAD: ImageProc / SDS: WindowLevelController.Adjust() | T, D | ST-PR-IP-021 | VT-UX-002 | — | Open |
+| MR-012 | Tier 2 | PR-IP-022 | SWR-IP-024–025 | SAD: ImageProc / SDS: ZoomController.Apply() | T, D | ST-PR-IP-022 | VT-UX-002 | — | Open |
 | MR-012 | Tier 2 | PR-IP-023 | SWR-IP-026 | SAD: ImageProc / SDS: PanController.Apply() | T, D | ST-PR-IP-023 | VT-UX-002 | — | Open |
-| MR-012 | Tier 2 | PR-IP-024 | SWR-IP-027~028 | SAD: ImageProc / SDS: RotationController.Apply() | T, D | ST-PR-IP-024 | VT-UX-002 | — | Open |
-| MR-015 | Tier 3 | PR-IP-025 | SWR-IP-029~031 | SAD: ImageProc / SDS: StitchingEngine.Stitch() | T, A | ST-PR-IP-025 | VT-CL-002 | — | Open |
-| MR-012 | Tier 2 | PR-IP-026 | SWR-IP-032~033 | SAD: ImageProc / SDS: MeasurementTool.Distance() | T, A | ST-PR-IP-026 | VT-CL-002 | HAZ-SW | Open |
+| MR-012 | Tier 2 | PR-IP-024 | SWR-IP-027–028 | SAD: ImageProc / SDS: RotationController.Apply() | T, D | ST-PR-IP-024 | VT-UX-002 | — | Open |
+| MR-015 | Tier 3 | PR-IP-025 | SWR-IP-029–031 | SAD: ImageProc / SDS: StitchingEngine.Stitch() | T, A | ST-PR-IP-025 | VT-CL-002 | — | Open |
+| MR-012 | Tier 2 | PR-IP-026 | SWR-IP-032–033 | SAD: ImageProc / SDS: MeasurementTool.Distance() | T, A | ST-PR-IP-026 | VT-CL-002 | HAZ-SW | Open |
 | MR-012 | Tier 2 | PR-IP-027 | SWR-IP-034 | SAD: ImageProc / SDS: MeasurementTool.Angle() | T, A | ST-PR-IP-027 | VT-CL-002 | — | Open |
-| MR-012 | Tier 2 | PR-IP-028 | SWR-IP-035~036 | SAD: ImageProc / SDS: MeasurementTool.Area() | T, A | ST-PR-IP-028 | VT-CL-002 | — | Open |
-| MR-012 | Tier 2 | PR-IP-029 | SWR-IP-037~038 | SAD: ImageProc / SDS: AnnotationService.Save() | T, I | ST-PR-IP-029 | VT-UX-002 | HAZ-DATA | Open |
-| MR-011, MR-023 | Tier 2 | PR-IP-030 | SWR-IP-039~040 | SAD: ImageProc / SDS: GainOffsetCorrection.Apply() | T, A | ST-PR-IP-030 | VT-CL-001 | HAZ-RAD, HAZ-SW | Open |
-| MR-013 | Tier 2 | PR-IP-031 | SWR-IP-041~042 | SAD: ImageProc / SDS: NoiseReduction.Apply() | T, A | ST-PR-IP-031 | VT-CL-001 | HAZ-RAD | Open |
-| MR-013 | Tier 2 | PR-IP-032 | SWR-IP-043~044 | SAD: ImageProc / SDS: EdgeEnhancement.Apply() | T, D | ST-PR-IP-032 | VT-CL-001 | — | Open |
-| MR-017 | Tier 3 | PR-IP-033 | SWR-IP-045~046 | SAD: ImageProc / SDS: ScatterCorrection.Apply() | T, A | ST-PR-IP-033 | VT-CL-001 | HAZ-RAD | Open |
-| MR-013 | Tier 2 | PR-IP-034 | SWR-IP-047~048 | SAD: ImageProc / SDS: AutoTrimming.Apply() | T, A | ST-PR-IP-034 | VT-CL-001 | — | Open |
+| MR-012 | Tier 2 | PR-IP-028 | SWR-IP-035–036 | SAD: ImageProc / SDS: MeasurementTool.Area() | T, A | ST-PR-IP-028 | VT-CL-002 | — | Open |
+| MR-012 | Tier 2 | PR-IP-029 | SWR-IP-037–038 | SAD: ImageProc / SDS: AnnotationService.Save() | T, I | ST-PR-IP-029 | VT-UX-002 | HAZ-DATA | Open |
+| MR-011, MR-023 | Tier 2 | PR-IP-030 | SWR-IP-039–040 | SAD: ImageProc / SDS: GainOffsetCorrection.Apply() | T, A | ST-PR-IP-030 | VT-CL-001 | HAZ-RAD, HAZ-SW | Open |
+| MR-013 | Tier 2 | PR-IP-031 | SWR-IP-041–042 | SAD: ImageProc / SDS: NoiseReduction.Apply() | T, A | ST-PR-IP-031 | VT-CL-001 | HAZ-RAD | Open |
+| MR-013 | Tier 2 | PR-IP-032 | SWR-IP-043–044 | SAD: ImageProc / SDS: EdgeEnhancement.Apply() | T, D | ST-PR-IP-032 | VT-CL-001 | — | Open |
+| MR-017 | Tier 3 | PR-IP-033 | SWR-IP-045–046 | SAD: ImageProc / SDS: ScatterCorrection.Apply() | T, A | ST-PR-IP-033 | VT-CL-001 | HAZ-RAD | Open |
+| MR-013 | Tier 2 | PR-IP-034 | SWR-IP-047–048 | SAD: ImageProc / SDS: AutoTrimming.Apply() | T, A | ST-PR-IP-034 | VT-CL-001 | — | Open |
 | MR-013 | Tier 2 | PR-IP-035 | SWR-IP-049 | SAD: ImageProc / SDS: BlackMask.Apply() | T, D | ST-PR-IP-035 | VT-UX-002 | — | Open |
-| MR-011 | Tier 2 | PR-IP-036 | SWR-IP-050~051 | SAD: ImageProc / SDS: ContrastOptimization.Apply() | T, D | ST-PR-IP-036 | VT-CL-001 | — | Open |
+| MR-011 | Tier 2 | PR-IP-036 | SWR-IP-050–051 | SAD: ImageProc / SDS: ContrastOptimization.Apply() | T, D | ST-PR-IP-036 | VT-CL-001 | — | Open |
 | MR-012 | Tier 2 | PR-IP-037 | SWR-IP-052 | SAD: ImageProc / SDS: BrightnessController.Apply() | T, D | ST-PR-IP-037 | VT-UX-002 | — | Open |
-| MR-027 | Tier 3 | PR-DM-040 | SWR-DM-040~041 | SAD: DoseMgmt / SDS: DoseService.RecordDAP() | T, A | ST-PR-DM-040 | VT-CL-001 | HAZ-RAD | Open |
-| MR-027 | Tier 3 | PR-DM-041 | SWR-DM-042~043 | SAD: DoseMgmt / SDS: DoseService.CalculateESD() | T, A | ST-PR-DM-041 | VT-CL-001 | HAZ-RAD | Open |
-| MR-027 | Tier 3 | PR-DM-042 | SWR-DM-044~046 | SAD: DoseMgmt / SDS: RDSRGenerator.Generate() | T, I | ST-PR-DM-042 | VT-CL-001 | HAZ-RAD, HAZ-DATA | Open |
-| MR-028, MR-031 | Tier 3 | PR-DM-043 | SWR-DM-047~048 | SAD: DoseMgmt / SDS: ExposureIndexMonitor.Check() | T, A | ST-PR-DM-043 | VT-CL-001, VT-UX-002 | HAZ-RAD | Open |
-| MR-028 | Tier 3 | PR-DM-044 | SWR-DM-049~050 | SAD: DoseMgmt / SDS: DRLComparator.Alert() | T, A | ST-PR-DM-044 | VT-CL-001 | HAZ-RAD | Open |
-| MR-027 | Tier 3 | PR-DM-045 | SWR-DM-051~052 | SAD: DoseMgmt / SDS: DoseLogBook.Record() | T, I | ST-PR-DM-045 | VT-CL-001 | HAZ-RAD, HAZ-DATA | Open |
-| MR-016 | Tier 3 | PR-DM-046 | SWR-DM-053~055 | SAD: DoseMgmt / SDS: RejectAnalysis.Report() | T, A | ST-PR-DM-046 | VT-CL-002 | HAZ-RAD | Open |
-| MR-019, MR-002 | Tier 1/2 | PR-DC-050 | SWR-DC-050~052 | SAD: DicomComm / SDS: StorageSCU.CStore() | T, A | ST-PR-DC-050 | VT-CL-001 | HAZ-DATA | Open |
-| MR-001, MR-025 | Tier 2 | PR-DC-051 | SWR-DC-053~054 | SAD: DicomComm / SDS: MWL_SCU.QueryWorklist() | T, A | ST-PR-DC-051 | VT-UX-001 | HAZ-DATA | Open |
-| MR-009 | Tier 3 | PR-DC-052 | SWR-DC-055~056 | SAD: DicomComm / SDS: MPPS_SCU.SendStatus() | T, A | ST-PR-DC-052 | VT-CL-001 | HAZ-DATA | Open |
-| MR-019 | Tier 1 | PR-DC-053 | SWR-DC-057~058 | SAD: DicomComm / SDS: StorageCommitSCU.Confirm() | T, I | ST-PR-DC-053 | VT-CL-001 | HAZ-DATA | Open |
-| MR-024 | Tier 2 | PR-DC-054 | SWR-DC-059~060 | SAD: DicomComm / SDS: PrintSCU.Print() | T, D | ST-PR-DC-054 | VT-UX-002 | — | Open |
-| MR-021 | Tier 2 | PR-DC-055 | SWR-DC-061~062 | SAD: DicomComm / SDS: QueryRetrieveSCU.Fetch() | T, D | ST-PR-DC-055 | VT-UX-002 | — | Open |
-| MR-034, MR-019 | Tier 1/2 | PR-DC-056 | SWR-DC-063~064 | SAD: DicomComm / SDS: TLSManager.Handshake() | T, I | ST-PR-DC-056 | VT-SEC-001 | HAZ-SEC | Open |
-| MR-033 | Tier 1 | PR-SA-060 | SWR-SA-060~062 | SAD: SystemAdmin / SDS: UserService.ManageRBAC() | T, I | ST-PR-SA-060 | VT-SEC-001 | HAZ-SEC | Open |
-| MR-004 | Tier 2 | PR-SA-061 | SWR-SA-063~064 | SAD: SystemAdmin / SDS: ProtocolEditor.Edit() | T, D | ST-PR-SA-061 | VT-UX-002 | HAZ-RAD | Open |
-| MR-044 | Tier 2 | PR-SA-062 | SWR-SA-065~066 | SAD: SystemAdmin / SDS: SystemConfig.Set() | T, D | ST-PR-SA-062 | VT-UX-002 | HAZ-DATA | Open |
-| MR-023 | Tier 2 | PR-SA-063 | SWR-SA-067~069 | SAD: SystemAdmin / SDS: CalibrationWizard.Run() | T, A | ST-PR-SA-063 | VT-CL-001 | HAZ-RAD, HAZ-SW | Open |
-| MR-023 | Tier 2 | PR-SA-064 | SWR-SA-070~071 | SAD: SystemAdmin / SDS: DefectPixelMap.Manage() | T, A | ST-PR-SA-064 | VT-CL-001 | HAZ-RAD | Open |
-| MR-035 | Tier 1 | PR-SA-065 | SWR-SA-072~073 | SAD: SystemAdmin / SDS: AuditTrailService.Log() | T, I | ST-PR-SA-065 | VT-SEC-001 | HAZ-SEC, HAZ-DATA | Open |
-| MR-044 | Tier 2 | PR-SA-066 | SWR-SA-074~075 | SAD: SystemAdmin / SDS: LoggingService.Write() | T, I | ST-PR-SA-066 | VT-UX-002 | HAZ-SW | Open |
-| MR-039 | Tier 1 | PR-SA-067 | SWR-SA-076~077 | SAD: SystemAdmin / SDS: UpdateManager.Install() | T, I | ST-PR-SA-067 | VT-SEC-001 | HAZ-SEC, HAZ-SW | Open |
-| MR-033 | Tier 1 | PR-CS-070 | SWR-CS-070~072 | SAD: Security / SDS: AuthService.Login() | T, I | ST-PR-CS-070 | VT-SEC-001 | HAZ-SEC | Open |
-| MR-038 | Tier 3 | PR-CS-071 | SWR-CS-073~074 | SAD: Security / SDS: DomainAuthService.Authenticate() | T, D | ST-PR-CS-071 | VT-SEC-001 | HAZ-SEC | Open |
-| MR-033 | Tier 1 | PR-CS-072 | SWR-CS-075~077 | SAD: Security / SDS: SessionManager.Monitor() | T, D | ST-PR-CS-072 | VT-SEC-001 | HAZ-SEC, HAZ-RAD | Open |
-| MR-034 | Tier 1 | PR-CS-073 | SWR-CS-078~079 | SAD: Security / SDS: TLSManager.Configure() | T, I | ST-PR-CS-073 | VT-SEC-001 | HAZ-SEC | Open |
-| MR-034 | Tier 1 | PR-CS-074 | SWR-CS-080~081 | SAD: Security / SDS: EncryptionService.EncryptPHI() | T, I | ST-PR-CS-074 | VT-SEC-001 | HAZ-SEC | Open |
-| MR-036 | Tier 1 | PR-CS-075 | SWR-CS-082~083 | SAD: Security / SDS: SBOMManager.Monitor() | T, I | ST-PR-CS-075 | VT-SEC-001 | HAZ-SEC | Open |
-| MR-039 | Tier 1 | PR-CS-076 | SWR-CS-084~085 | SAD: Security / SDS: IntegrityVerifier.Verify() | T, I | ST-PR-CS-076 | VT-SEC-001 | HAZ-SEC, HAZ-SW | Open |
-| MR-037 | Tier 1 | PR-CS-077 | SWR-CS-086~088 | SAD: Security / SDS: IncidentResponse.Handle() | T, I | ST-PR-CS-077 | VT-SEC-001 | HAZ-SEC | Open |
+| MR-027 | Tier 3 | PR-DM-040 | SWR-DM-040–041 | SAD: DoseMgmt / SDS: DoseService.RecordDAP() | T, A | ST-PR-DM-040 | VT-CL-001 | HAZ-RAD | Open |
+| MR-027 | Tier 3 | PR-DM-041 | SWR-DM-042–043 | SAD: DoseMgmt / SDS: DoseService.CalculateESD() | T, A | ST-PR-DM-041 | VT-CL-001 | HAZ-RAD | Open |
+| MR-027 | Tier 3 | PR-DM-042 | SWR-DM-044–046 | SAD: DoseMgmt / SDS: RDSRGenerator.Generate() | T, I | ST-PR-DM-042 | VT-CL-001 | HAZ-RAD, HAZ-DATA | Open |
+| MR-028, MR-031 | Tier 3 | PR-DM-043 | SWR-DM-047–048 | SAD: DoseMgmt / SDS: ExposureIndexMonitor.Check() | T, A | ST-PR-DM-043 | VT-CL-001, VT-UX-002 | HAZ-RAD | Open |
+| MR-028 | Tier 3 | PR-DM-044 | SWR-DM-049–050 | SAD: DoseMgmt / SDS: DRLComparator.Alert() | T, A | ST-PR-DM-044 | VT-CL-001 | HAZ-RAD | Open |
+| MR-027 | Tier 3 | PR-DM-045 | SWR-DM-051–052 | SAD: DoseMgmt / SDS: DoseLogBook.Record() | T, I | ST-PR-DM-045 | VT-CL-001 | HAZ-RAD, HAZ-DATA | Open |
+| MR-016 | Tier 3 | PR-DM-046 | SWR-DM-053–055 | SAD: DoseMgmt / SDS: RejectAnalysis.Report() | T, A | ST-PR-DM-046 | VT-CL-002 | HAZ-RAD | Open |
+| MR-019, MR-002 | Tier 1/2 | PR-DC-050 | SWR-DC-050–052 | SAD: DicomComm / SDS: StorageSCU.CStore() | T, A | ST-PR-DC-050 | VT-CL-001 | HAZ-DATA | Open |
+| MR-001, MR-025 | Tier 2 | PR-DC-051 | SWR-DC-053–054 | SAD: DicomComm / SDS: MWL_SCU.QueryWorklist() | T, A | ST-PR-DC-051 | VT-UX-001 | HAZ-DATA | Open |
+| MR-009 | Tier 3 | PR-DC-052 | SWR-DC-055–056 | SAD: DicomComm / SDS: MPPS_SCU.SendStatus() | T, A | ST-PR-DC-052 | VT-CL-001 | HAZ-DATA | Open |
+| MR-019 | Tier 1 | PR-DC-053 | SWR-DC-057–058 | SAD: DicomComm / SDS: StorageCommitSCU.Confirm() | T, I | ST-PR-DC-053 | VT-CL-001 | HAZ-DATA | Open |
+| MR-024 | Tier 2 | PR-DC-054 | SWR-DC-059–060 | SAD: DicomComm / SDS: PrintSCU.Print() | T, D | ST-PR-DC-054 | VT-UX-002 | — | Open |
+| MR-021 | Tier 2 | PR-DC-055 | SWR-DC-061–062 | SAD: DicomComm / SDS: QueryRetrieveSCU.Fetch() | T, D | ST-PR-DC-055 | VT-UX-002 | — | Open |
+| MR-034, MR-019 | Tier 1/2 | PR-DC-056 | SWR-DC-063–064 | SAD: DicomComm / SDS: TLSManager.Handshake() | T, I | ST-PR-DC-056 | VT-SEC-001 | HAZ-SEC | Open |
+| MR-033 | Tier 1 | PR-SA-060 | SWR-SA-060–062 | SAD: SystemAdmin / SDS: UserService.ManageRBAC() | T, I | ST-PR-SA-060 | VT-SEC-001 | HAZ-SEC | Open |
+| MR-004 | Tier 2 | PR-SA-061 | SWR-SA-063–064 | SAD: SystemAdmin / SDS: ProtocolEditor.Edit() | T, D | ST-PR-SA-061 | VT-UX-002 | HAZ-RAD | Open |
+| MR-044 | Tier 2 | PR-SA-062 | SWR-SA-065–066 | SAD: SystemAdmin / SDS: SystemConfig.Set() | T, D | ST-PR-SA-062 | VT-UX-002 | HAZ-DATA | Open |
+| MR-023 | Tier 2 | PR-SA-063 | SWR-SA-067–069 | SAD: SystemAdmin / SDS: CalibrationWizard.Run() | T, A | ST-PR-SA-063 | VT-CL-001 | HAZ-RAD, HAZ-SW | Open |
+| MR-023 | Tier 2 | PR-SA-064 | SWR-SA-070–071 | SAD: SystemAdmin / SDS: DefectPixelMap.Manage() | T, A | ST-PR-SA-064 | VT-CL-001 | HAZ-RAD | Open |
+| MR-035 | Tier 1 | PR-SA-065 | SWR-SA-072–073 | SAD: SystemAdmin / SDS: AuditTrailService.Log() | T, I | ST-PR-SA-065 | VT-SEC-001 | HAZ-SEC, HAZ-DATA | Open |
+| MR-044 | Tier 2 | PR-SA-066 | SWR-SA-074–075 | SAD: SystemAdmin / SDS: LoggingService.Write() | T, I | ST-PR-SA-066 | VT-UX-002 | HAZ-SW | Open |
+| MR-039 | Tier 1 | PR-SA-067 | SWR-SA-076–077 | SAD: SystemAdmin / SDS: UpdateManager.Install() | T, I | ST-PR-SA-067 | VT-SEC-001 | HAZ-SEC, HAZ-SW | Open |
+| MR-033 | Tier 1 | PR-CS-070 | SWR-CS-070–072 | SAD: Security / SDS: AuthService.Login() | T, I | ST-PR-CS-070 | VT-SEC-001 | HAZ-SEC | Open |
+| MR-038 | Tier 3 | PR-CS-071 | SWR-CS-073–074 | SAD: Security / SDS: DomainAuthService.Authenticate() | T, D | ST-PR-CS-071 | VT-SEC-001 | HAZ-SEC | Open |
+| MR-033 | Tier 1 | PR-CS-072 | SWR-CS-075–077 | SAD: Security / SDS: SessionManager.Monitor() | T, D | ST-PR-CS-072 | VT-SEC-001 | HAZ-SEC, HAZ-RAD | Open |
+| MR-034 | Tier 1 | PR-CS-073 | SWR-CS-078–079 | SAD: Security / SDS: TLSManager.Configure() | T, I | ST-PR-CS-073 | VT-SEC-001 | HAZ-SEC | Open |
+| MR-034 | Tier 1 | PR-CS-074 | SWR-CS-080–081 | SAD: Security / SDS: EncryptionService.EncryptPHI() | T, I | ST-PR-CS-074 | VT-SEC-001 | HAZ-SEC | Open |
+| MR-036 | Tier 1 | PR-CS-075 | SWR-CS-082–083 | SAD: Security / SDS: SBOMManager.Monitor() | T, I | ST-PR-CS-075 | VT-SEC-001 | HAZ-SEC | Open |
+| MR-039 | Tier 1 | PR-CS-076 | SWR-CS-084–085 | SAD: Security / SDS: IntegrityVerifier.Verify() | T, I | ST-PR-CS-076 | VT-SEC-001 | HAZ-SEC, HAZ-SW | Open |
+| MR-037 | Tier 1 | PR-CS-077 | SWR-CS-086–088 | SAD: Security / SDS: IncidentResponse.Handle() | T, I | ST-PR-CS-077 | VT-SEC-001 | HAZ-SEC | Open |
 
 ### A.3 비기능 제품 요구사항 RTM
 
@@ -1757,7 +1757,7 @@ flowchart LR
 | Cross-product UI | 공통 UI | — | 공통 GUI | — | — | 단일 UI |
 | 교육 시간 절감 | 지원 | — | 지원 | 간결한 단계 | — | ≤4시간 목표 (PR-NF-UX-020) |
 | 보안 인증 | Domain Auth, SSO | — | — | — | — | Local + Domain (PR-CS-070, PR-CS-071) |
-| 선량 관리 | Analytics 대시보드 | — | RDSR, MPPS | RDSR 지원 | OR dose inspector | AEC+Status+Logbook (PR-DM-040~046) |
+| 선량 관리 | Analytics 대시보드 | — | RDSR, MPPS | RDSR 지원 | OR dose inspector | AEC+Status+Logbook (PR-DM-040–046) |
 | 사이버보안 | RBAC, TLS, SBOM | RBAC, TLS | RBAC | RBAC | — | RBAC+PHI암호화+감사로그+SBOM+CVD+무결성 |
 
 ---

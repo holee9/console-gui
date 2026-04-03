@@ -564,7 +564,7 @@ flowchart TD
   - **위협 모델링 산출물**:
     - DFD(Data Flow Diagram): 시스템 경계 및 데이터 흐름 다이어그램
     - STRIDE 위협 분석 테이블: 각 인터페이스별 Spoofing, Tampering, Repudiation, Information Disclosure, Denial of Service, Elevation of Privilege 위협 식별
-    - 위협-통제 매핑 테이블: 각 위협에 대한 MR-033~039 보안 통제 연결
+    - 위협-통제 매핑 테이블: 각 위협에 대한 MR-033–039 보안 통제 연결
 
 #### 어떻게 동작하는가 (How)
 - **사용 시나리오**:
@@ -661,7 +661,7 @@ flowchart TD
 #### 무엇인가 (What)
 - **기능 정의**: MFDS, FDA, CE 마킹의 인허가 신청부터 승인까지의 전체 프로세스를 관리하고, 각 단계에서 요구하는 기술문서 및 행정 서류를 준비 및 제출한다.
 - **구현 범위 (Phase 1 최소)**:
-  - **MFDS 의료기기 허가 신청**: 기술문서 패키지(MR-050~054 산출물 포함) 작성 및 제출
+  - **MFDS 의료기기 허가 신청**: 기술문서 패키지(MR-050–054 산출물 포함) 작성 및 제출
   - **FDA 510(k) 제출**: 실질적 동등성 비교, SW 문서, 사이버보안 문서 포함 510(k) 패키지 제출
   - 허가 심사 대응: 보완 요청(Deficiency Letter) 수신 시 기한 내 응답
 - **제외 범위 (Phase 1 제외)**:
@@ -673,7 +673,7 @@ flowchart TD
 - **기술 동작**: 규제 프로세스 및 문서 제출 — SW 기능 구현 없음.
 
 #### 인허가 제출물 연결
-- **MFDS 기술문서 패키지**: DOC-001~007 시리즈 + SBOM + 사이버보안 문서 포함
+- **MFDS 기술문서 패키지**: DOC-001–007 시리즈 + SBOM + 사이버보안 문서 포함
 - **FDA 510(k) 패키지**: Cover Letter, Device Description, SW Documentation (per 2023 guidance), Cybersecurity (SBD, SBOM) 포함
 - **CE MDR Technical Documentation**: Annex II/III 요건에 따른 기술 문서 (Phase 2)
 
@@ -722,4 +722,4 @@ flowchart TD
 
 | 버전 | 날짜 | 변경 내용 | 작성자 |
 |---|---|---|---|
-| v1.0 | 2026-04-02 | 최초 작성 — Tier 1 MR 13개 (MR-019, 020, 033~037, 039, 050~054) | HnVue SW팀 |
+| v1.0 | 2026-04-02 | 최초 작성 — Tier 1 MR 13개 (MR-019, 020, 033–037, 039, 050–054) | HnVue SW팀 |

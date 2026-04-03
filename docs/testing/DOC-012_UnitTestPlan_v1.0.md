@@ -264,7 +264,7 @@ class TestDoseCalculation:
 | UT-WF-007 | WF | `WorkflowStateмашин::transition()` | 워크플로우 상태 전이 — IDLE → PATIENT_SELECTED | 환자 선택 이벤트 | State=PATIENT_SELECTED | SWR-WF-010 |
 | UT-WF-008 | WF | `WorkflowStateMachine::transition()` | 워크플로우 상태 전이 — EXPOSING → COMPLETE | 촬영 완료 이벤트 | State=COMPLETE, 영상 처리 요청 | SWR-WF-010 |
 | UT-WF-009 | WF | `WorkflowStateMachine::transition()` | 워크플로우 상태 전이 — EXPOSING → ERROR (Safety-Critical) | 촬영 오류 이벤트 | State=ERROR, 인터락 활성화, 경고 표시 | SWR-WF-010 |
-| UT-WF-010 | WF | `BodyPartSelector::getDefaultParams()` | 신체 부위별 기본 파라미터 조회 — 흉부 | bodyPart="CHEST_AP" | kV=70~80, mAs=2~5 범위 내 | SWR-WF-004 |
+| UT-WF-010 | WF | `BodyPartSelector::getDefaultParams()` | 신체 부위별 기본 파라미터 조회 — 흉부 | bodyPart="CHEST_AP" | kV=70–80, mAs=2–5 범위 내 | SWR-WF-004 |
 | UT-WF-011 | WF | `BodyPartSelector::getDefaultParams()` | 신체 부위별 기본 파라미터 조회 — 알 수 없는 부위 | bodyPart="UNKNOWN" | 기본값 반환, 경고 로그 | SWR-WF-004 |
 | UT-WF-012 | WF | `AEDController::sendExposureCommand()` | AED 제어 명령 전송 — 정상 전송 | ExposureParams 유효 | 명령 전송 성공, ACK 수신 | SWR-WF-005 |
 | UT-WF-013 | WF | `AEDController::sendExposureCommand()` | AED 제어 명령 전송 — 타임아웃 처리 | ACK 응답 없음 (5초) | `TimeoutException`, 재시도 1회 후 실패 | SWR-WF-005 |
@@ -481,10 +481,10 @@ graph TD
 |-------|--------|---------|-------------|
 | UT-PM-001, 002 | SWR-PM-001 | 신규 환자 등록 | Statement |
 | UT-PM-006, 007 | SWR-PM-010 | 환자 ID 검증 | Branch (Safety) |
-| UT-WF-001~003 | SWR-WF-001 | 촬영 파라미터 검증 | Branch (Safety) |
+| UT-WF-001–003 | SWR-WF-001 | 촬영 파라미터 검증 | Branch (Safety) |
 | UT-WF-006 | SWR-WF-003 | 검출기 상태 검증 | Branch (Safety) |
-| UT-DM-002~004 | SWR-DM-010 | Dose Interlock | Branch (Safety) 100% |
-| UT-CS-001~003 | SWR-CS-001~002 | 사용자 인증/잠금 | Branch (Safety) |
+| UT-DM-002–004 | SWR-DM-010 | Dose Interlock | Branch (Safety) 100% |
+| UT-CS-001–003 | SWR-CS-001–002 | 사용자 인증/잠금 | Branch (Safety) |
 | UT-DC-003, 004 | SWR-DC-010 | C-STORE 전송 | Statement |
 | UT-DB-002 | SWR-DB-010 | SQL 인젝션 방지 | Branch |
 

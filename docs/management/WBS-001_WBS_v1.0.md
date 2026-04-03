@@ -713,7 +713,7 @@ flowchart LR
 | 1.12 | 위험관리 계획 수립 | Risk Management Plan | DOC-008 | MS-01 | DR#1 | ISO 14971 §4.4, FDA 820.30(g) | ✅ DHF-RM | P1 |
 | 1.13 | 사이버보안 관리 계획 수립 | Cybersecurity Management Plan | DOC-016 | MS-01 | DR#1 | FDA Section 524B | ✅ DHF-DP | P1 |
 | 1.14 | 일정 및 자원 관리 | WBS / 간트차트 / 자원배분표 | WBS-XRAY-GUI-001 | MS-01 | DR#1 | IEC 62304 §5.1.1 | ✅ DHF-DP | P1 |
-| 1.15 | 정기 기술 리뷰 및 마일스톤 관리 | 회의록 / 리뷰 보고서 | — | MS-01~06 | DR#1~5 | IEC 62304 §5.1.6 | ✅ DHF-DR | P1 |
+| 1.15 | 정기 기술 리뷰 및 마일스톤 관리 | 회의록 / 리뷰 보고서 | — | MS-01–06 | DR#1–5 | IEC 62304 §5.1.6 | ✅ DHF-DR | P1 |
 | 1.16 | 품질보증 계획 수립 | SW Quality Assurance Plan (SQAP) | — | MS-01 | DR#1 | ISO 13485 §8, IEC 62304 §4 | ✅ DHF-DP | P1 |
 | 1.17 | Phase 2 전환 계획 수립 | Phase 2 Transition Plan | — | — | — | — | — | P1/P2 |
 
@@ -1380,13 +1380,13 @@ main (release — 서명된 배포 빌드)
 | | §8 SW 형상관리 | WBS 1.6 |
 | | §9 SW 문제해결 | WBS 1.7, 11 |
 | IEC 62366-1:2015+AMD1:2020 | §5.1 사용 명세 | WBS 2.4 |
-| | §5.2~5.4 사용자 분석 | WBS 2.4 |
+| | §5.2–5.4 사용자 분석 | WBS 2.4 |
 | | §5.5 안전 관련 Use Scenario | WBS 4.1.7 |
 | | §5.6 UI 설계 | WBS 4.1 |
 | | §5.7 Formative 평가 | WBS 4.1.12 |
 | | §5.9 Summative 평가 | WBS 7.2 |
 | ISO 14971:2019 | §4 위험관리 계획 | WBS 1.12, 8.1 |
-| | §5 위험 분석 | WBS 8.1~8.3 |
+| | §5 위험 분석 | WBS 8.1–8.3 |
 | | §6 위험 평가 및 통제 | WBS 8.5 |
 | | §7 잔여 위험 | WBS 8.6 |
 | | §9 Risk Management Report | WBS 8.7 |
@@ -1415,11 +1415,11 @@ main (release — 서명된 배포 빌드)
 >
 > **Note 3**: DHF 포함 여부 컬럼의 코드: DHF-DP(Design Plan), DHF-DI(Design Input), DHF-DO(Design Output), DHF-DR(Design Review), DHF-DV(Design Verification), DHF-DAL(Design Validation), DHF-DT(Design Transfer), DHF-DC(Design Changes), DHF-RM(Risk Management), DHF-TM(Traceability Matrix)
 >
-> **Note 4**: WBS 0 (표준/규정 관리), WBS 1.3~1.10 (DevGuideline/SDP 세부 작업)은 MS-01 (기반 문서 승인) 및 DR#1 (계획 검토) 게이트 조건에 직접 연결됩니다.
+> **Note 4**: WBS 0 (표준/규정 관리), WBS 1.3–1.10 (DevGuideline/SDP 세부 작업)은 MS-01 (기반 문서 승인) 및 DR#1 (계획 검토) 게이트 조건에 직접 연결됩니다.
 >
-> **Note 5**: Phase Gate (DR#1~DR#5)는 FDA 21 CFR 820.30 Design Review 요구사항과 매핑됩니다. 각 게이트에서 독립 검토자(Independent Reviewer)의 서명이 필요합니다.
+> **Note 5**: Phase Gate (DR#1–DR#5)는 FDA 21 CFR 820.30 Design Review 요구사항과 매핑됩니다. 각 게이트에서 독립 검토자(Independent Reviewer)의 서명이 필요합니다.
 >
-> **Note 6**: Milestone MS-01~MS-06의 목표 시기(M1~M12)는 2026-03 시작 기준입니다. MS-01(M1) = 2026-03, MS-02(M3) = 2026-05, MS-03(M5) = 2026-07, MS-04(M9) = 2026-11, MS-05(M11) = 2027-01, MS-06(M12) = 2027-03.
+> **Note 6**: Milestone MS-01–MS-06의 목표 시기(M1–M12)는 2026-03 시작 기준입니다. MS-01(M1) = 2026-03, MS-02(M3) = 2026-05, MS-03(M5) = 2026-07, MS-04(M9) = 2026-11, MS-05(M11) = 2027-01, MS-06(M12) = 2027-03.
 >
 > **Note 7**: Phase 2 항목은 Phase 1 출시 이후 착수 예정이며, 시장 피드백 및 규제 환경 변화에 따라 일정과 범위가 조정될 수 있습니다.
 >

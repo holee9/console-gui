@@ -388,7 +388,7 @@ flowchart TD
 
 | 항목 | 내용 |
 |------|------|
-| **입력 (Input)** | MRD (MR-001~076), PRD 초안, 위험 관리 계획서, 기존 시스템 분석 결과 |
+| **입력 (Input)** | MRD (MR-001–076), PRD 초안, 위험 관리 계획서, 기존 시스템 분석 결과 |
 | **활동 (Activity)** | MR→PR 분해, PR→SWR 분해, 요구사항 검토 회의, 추적성 매트릭스 작성 |
 | **출력 (Output)** | 확정된 SRS (SWR-xxx), 요구사항 추적성 매트릭스 (RTM) |
 | **검토/승인 기준** | 모든 MR이 최소 1개 SWR로 추적, 모호한 요구사항 0건, QA/RA 서명 완료 |
@@ -474,7 +474,7 @@ flowchart TD
 | **H** | DOC-035 | Design History File (DHF) | 2027-02 | 예정 |
 | **H** | DOC-036 | 510(k) Technical File / eSTAR Package | 2027-03 | 예정 |
 
-### 5a.3 즉시 착수 작업 일정 (Immediate Action Plan, 2026년 4~8월)
+### 5a.3 즉시 착수 작업 일정 (Immediate Action Plan, 2026년 4–8월)
 
 ```mermaid
 gantt
@@ -545,7 +545,7 @@ flowchart LR
 
 #### 6.1.1 MR → PR 분해 절차
 
-**입력**: MRD (MR-001~076)  
+**입력**: MRD (MR-001–076)  
 **활동**:
 1. 각 MR을 분석하여 시스템 수준 설계 요구사항 (System Design Requirements)으로 분해
 2. PR-xxx 번호 부여 (범주별: PM/WF/IP/DM/DC/SA/CS)
@@ -987,7 +987,7 @@ flowchart TD
 1. UX 디자이너 + Clinical Affairs 공동 주관
 2. 테스트 대상 사용자: 방사선사 (Radiologic Technologist), 영상의학과 의사
 3. 테스트 유형:
-   - **형성적 평가 (Formative Evaluation)**: 개발 중 반복 수행 (Phase 3~4)
+   - **형성적 평가 (Formative Evaluation)**: 개발 중 반복 수행 (Phase 3–4)
    - **총괄적 평가 (Summative Evaluation)**: 릴리스 전 최종 수행 (Phase 6)
 4. 테스트 시나리오: 대표적 사용 시나리오 (Task Analysis 기반)
 5. 참가자: 최소 15명 (다양한 경험 수준)

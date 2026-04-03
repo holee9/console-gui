@@ -390,14 +390,14 @@ flowchart TD
 | OWASP Top 10 (2021) | HnVue 관련성 | 관련 CSTC |
 |---------------------|-------------------|-----------|
 | A01: Broken Access Control | High — 역할 기반 접근 통제 | CSTC-AUTH-005, 008 |
-| A02: Cryptographic Failures | High — PHI 암호화 | CSTC-ENC-001~005 |
-| A03: Injection | High — SQL, LDAP, Command | CSTC-INJ-001~006 |
+| A02: Cryptographic Failures | High — PHI 암호화 | CSTC-ENC-001–005 |
+| A03: Injection | High — SQL, LDAP, Command | CSTC-INJ-001–006 |
 | A04: Insecure Design | Medium — 위협 모델 기반 | TM-XRAY-GUI-001 전체 |
 | A05: Security Misconfiguration | Medium — 기본 계정/설정 | CSTC-AUTH-002, 006 |
 | A06: Vulnerable Components | High — SOUP/OTS CVE | SCA 스캔 전체 |
-| A07: Auth Failures | High — 인증 메커니즘 | CSTC-AUTH-001~004 |
-| A08: SW/Data Integrity Failures | Critical — 업데이트 무결성 | CSTC-UPD-001~003 |
-| A09: Security Logging Failures | Medium — 감사 추적 | CSTC-LOG-001~004 |
+| A07: Auth Failures | High — 인증 메커니즘 | CSTC-AUTH-001–004 |
+| A08: SW/Data Integrity Failures | Critical — 업데이트 무결성 | CSTC-UPD-001–003 |
+| A09: Security Logging Failures | Medium — 감사 추적 | CSTC-LOG-001–004 |
 | A10: SSRF | Low — 서버 기능 제한적 | N/A |
 
 ---

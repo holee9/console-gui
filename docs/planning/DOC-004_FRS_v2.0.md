@@ -26,7 +26,7 @@
 |------|------|--------|-----------|
 | v0.1 | 2026-03-16 | SW 개발팀 | 초안 작성 — PRD v3.0 기반 SWR 분해 초안 |
 | v1.0 | 2026-03-16 | SW 개발팀 | 최초 공식 릴리스 — 전 도메인 SWR 완성, 인터페이스/DB/SOUP 요구사항 추가 |
-| v2.0 | 2026-04-02 | SW 개발팀 | MRD v3.0 4-Tier 우선순위 체계 반영 (P0/P1/P2 → Tier 1/2/3/4 전면 교체); MR-072 CD/DVD Burning 기능 요건 추가 (SWR-WF-032~034, PR-WF-019); 보완 3건 반영 — MR-037 인시던트 대응 (SWR-CS-086~087, PR-CS-077), MR-039 SW 업데이트 메커니즘 (SWR-SA-076~077/SWR-CS-084~085 보강, PR-CS-076/SA-067), MR-050 STRIDE 위협 모델링 (SWR-NF-RG-060 보강); 각 FR에 MR 추적 추가; 참조 문서 버전 업데이트 (MRD v3.0, PRD v2.0) |
+| v2.0 | 2026-04-02 | SW 개발팀 | MRD v3.0 4-Tier 우선순위 체계 반영 (P0/P1/P2 → Tier 1/2/3/4 전면 교체); MR-072 CD/DVD Burning 기능 요건 추가 (SWR-WF-032–034, PR-WF-019); 보완 3건 반영 — MR-037 인시던트 대응 (SWR-CS-086–087, PR-CS-077), MR-039 SW 업데이트 메커니즘 (SWR-SA-076–077/SWR-CS-084–085 보강, PR-CS-076/SA-067), MR-050 STRIDE 위협 모델링 (SWR-NF-RG-060 보강); 각 FR에 MR 추적 추가; 참조 문서 버전 업데이트 (MRD v3.0, PRD v2.0) |
 
 ---
 
@@ -104,13 +104,13 @@ flowchart LR
 
 | 도메인 | SWR 접두사 | 출처 PR 범위 | Phase |
 |--------|-----------|-------------|-------|
-| 환자 관리 (Patient Management) | SWR-PM | PR-PM-001~006 | 1 |
-| 촬영 워크플로우 (Acquisition Workflow) | SWR-WF | PR-WF-010~019 | 1 (일부 v2.0 신규) |
-| 영상 표시/처리 (Image Display & Processing) | SWR-IP | PR-IP-020~037 | 1 (일부 1.5) |
-| 선량 관리 (Dose Management) | SWR-DM | PR-DM-040~046 | 1 (일부 1.5) |
-| DICOM/통신 (DICOM/Communication) | SWR-DC | PR-DC-050~056 | 1 |
-| 시스템 관리 (System Administration) | SWR-SA | PR-SA-060~067 | 1 |
-| 사이버보안 (Cybersecurity) | SWR-CS | PR-CS-070~076 | 1 (일부 1.5) |
+| 환자 관리 (Patient Management) | SWR-PM | PR-PM-001–006 | 1 |
+| 촬영 워크플로우 (Acquisition Workflow) | SWR-WF | PR-WF-010–019 | 1 (일부 v2.0 신규) |
+| 영상 표시/처리 (Image Display & Processing) | SWR-IP | PR-IP-020–037 | 1 (일부 1.5) |
+| 선량 관리 (Dose Management) | SWR-DM | PR-DM-040–046 | 1 (일부 1.5) |
+| DICOM/통신 (DICOM/Communication) | SWR-DC | PR-DC-050–056 | 1 |
+| 시스템 관리 (System Administration) | SWR-SA | PR-SA-060–067 | 1 |
+| 사이버보안 (Cybersecurity) | SWR-CS | PR-CS-070–076 | 1 (일부 1.5) |
 | 비기능 요구사항 (Non-Functional) | SWR-NF-xxx | PR-NF-PF/RL/UX/CP/SC/MT/RG | 1 |
 
 **제외 범위**: Phase 2 AI 기능 (PR-AI-xxx), 클라우드 스토리지 직접 전송, 모바일 앱
@@ -152,20 +152,20 @@ SWR-[도메인]-[번호]
 
 | 도메인 코드 | 도메인명 | SWR 번호 범위 |
 |------------|---------|--------------|
-| PM | Patient Management (환자 관리) | 001~099 |
-| WF | Acquisition Workflow (촬영 워크플로우) | 010~099 |
-| IP | Image Display & Processing (영상 처리) | 020~099 |
-| DM | Dose Management (선량 관리) | 040~099 |
-| DC | DICOM/Communication (DICOM/통신) | 050~099 |
-| SA | System Administration (시스템 관리) | 060~099 |
-| CS | Cybersecurity (사이버보안) | 070~099 |
-| NF-PF | Non-Functional: Performance (성능) | 001~099 |
-| NF-RL | Non-Functional: Reliability (신뢰성) | 010~099 |
-| NF-UX | Non-Functional: Usability (사용성) | 020~099 |
-| NF-CP | Non-Functional: Compatibility (호환성) | 030~099 |
-| NF-SC | Non-Functional: Security (보안) | 040~099 |
-| NF-MT | Non-Functional: Maintainability (유지보수성) | 050~099 |
-| NF-RG | Non-Functional: Regulatory (규제 준수) | 060~099 |
+| PM | Patient Management (환자 관리) | 001–099 |
+| WF | Acquisition Workflow (촬영 워크플로우) | 010–099 |
+| IP | Image Display & Processing (영상 처리) | 020–099 |
+| DM | Dose Management (선량 관리) | 040–099 |
+| DC | DICOM/Communication (DICOM/통신) | 050–099 |
+| SA | System Administration (시스템 관리) | 060–099 |
+| CS | Cybersecurity (사이버보안) | 070–099 |
+| NF-PF | Non-Functional: Performance (성능) | 001–099 |
+| NF-RL | Non-Functional: Reliability (신뢰성) | 010–099 |
+| NF-UX | Non-Functional: Usability (사용성) | 020–099 |
+| NF-CP | Non-Functional: Compatibility (호환성) | 030–099 |
+| NF-SC | Non-Functional: Security (보안) | 040–099 |
+| NF-MT | Non-Functional: Maintainability (유지보수성) | 050–099 |
+| NF-RG | Non-Functional: Regulatory (규제 준수) | 060–099 |
 
 ### 4.3 SWR 테이블 컬럼 설명
 
@@ -188,16 +188,16 @@ SWR-[도메인]-[번호]
 
 ### 5.1 환자 관리 (Patient Management) — SWR-PM
 
-#### PR-PM-001: 환자 수동 등록 → SWR-PM-001~004
+#### PR-PM-001: 환자 수동 등록 → SWR-PM-001–004
 
 | SWR ID | 출처 PR | 요구사항명 | 상세 기술 사양 | IEC 62304 분류 | 수용 기준 | 검증 방법(TIAD) | 검증 TC | 위험 참조 |
 |--------|---------|-----------|--------------|----------------|----------|----------------|---------|----------|
 | SWR-PM-001 | PR-PM-001 | 환자 등록 UI — 입력 필드 | 환자 등록 화면은 다음 입력 필드를 제공해야 한다: ① 환자 ID (Patient ID): 영숫자(a-z, A-Z, 0-9, 하이픈, 밑줄) ≤64자, 필수; ② 성명 (Patient Name): 유니코드 지원 ≤256자 (DICOM PN VR 형식: Last^First^Middle^Prefix^Suffix), 필수; ③ 생년월일 (DOB): YYYY-MM-DD 형식 달력 입력 위젯; ④ 성별 (Sex): M/F/O 라디오 버튼 또는 드롭다운, 필수; ⑤ 검사 의뢰 정보 (Referring Physician, Accession Number, Study Description): 선택 입력; ⑥ 검사 부위 (Body Part Examined): 드롭다운 선택. 모든 필드는 DICOM 데이터 딕셔너리 VR(Value Representation) 규칙을 준수해야 한다. | Functional | 6개 필수/선택 입력 필드가 UI에 정확히 렌더링됨; DICOM VR 위반 입력(예: 64자 초과 ID) 시 즉시 오류 표시 | T, I | UT-PM-001, IT-PM-001 | HAZ-DATA |
-| SWR-PM-002 | PR-PM-001 | 필수 필드 유효성 검사 | 환자 등록 저장(Save) 버튼 클릭 시: ① 필수 필드(환자 ID, 성명, 성별) 중 하나라도 비어 있으면 저장 동작 차단 및 해당 필드를 적색(#FF3B30) 테두리로 하이라이트; ② 환자 ID 형식이 허용 문자 패턴(^[A-Za-z0-9_\\-]{1,64}$)에 맞지 않으면 인라인 오류 메시지 "환자 ID는 영숫자, 하이픈, 밑줄 1~64자만 허용됩니다" 표시; ③ 생년월일이 미래 날짜이면 경고 메시지 표시 후 저장 가능(차단 아님); ④ 성명 길이가 256자 초과 시 저장 차단. 유효성 검사는 저장 버튼 클릭 시점과 포커스 이탈(on-blur) 시점 모두 실행된다. | Functional | 필수 필드 미입력 시 저장 버튼 비활성화 또는 차단 확인; 오류 필드 적색 하이라이트 100% 표시 | T | UT-PM-002, IT-PM-002 | HAZ-DATA |
+| SWR-PM-002 | PR-PM-001 | 필수 필드 유효성 검사 | 환자 등록 저장(Save) 버튼 클릭 시: ① 필수 필드(환자 ID, 성명, 성별) 중 하나라도 비어 있으면 저장 동작 차단 및 해당 필드를 적색(#FF3B30) 테두리로 하이라이트; ② 환자 ID 형식이 허용 문자 패턴(^[A-Za-z0-9_\\-]{1,64}$)에 맞지 않으면 인라인 오류 메시지 "환자 ID는 영숫자, 하이픈, 밑줄 1–64자만 허용됩니다" 표시; ③ 생년월일이 미래 날짜이면 경고 메시지 표시 후 저장 가능(차단 아님); ④ 성명 길이가 256자 초과 시 저장 차단. 유효성 검사는 저장 버튼 클릭 시점과 포커스 이탈(on-blur) 시점 모두 실행된다. | Functional | 필수 필드 미입력 시 저장 버튼 비활성화 또는 차단 확인; 오류 필드 적색 하이라이트 100% 표시 | T | UT-PM-002, IT-PM-002 | HAZ-DATA |
 | SWR-PM-003 | PR-PM-001 | 중복 환자 ID 감지 | 저장 버튼 클릭 시 입력된 환자 ID를 로컬 SQLite DB의 `patients` 테이블에 대해 Case-Insensitive SELECT 쿼리로 중복 여부 확인. 중복 발견 시: ① "중복 환자 ID (Duplicate Patient ID): [ID값]이(가) 이미 등록되어 있습니다. 기존 환자 정보를 조회하시겠습니까?" 다이얼로그 표시; ② [기존 환자 조회 / 다른 ID 입력 / 저장 강제 진행] 3가지 선택지 제공; ③ "저장 강제 진행" 선택 시 Audit Trail에 중복 허용 사유 기록 필요 (코멘트 필드 표시). 중복 체크 DB 조회는 UI 스레드를 차단하지 않도록 비동기(async/await)로 실행. | Safety-related | 중복 ID 등록 시 100% 경고 다이얼로그 표시; 10,000건 DB에서 중복 체크 응답 ≤200ms | T, A | UT-PM-003, IT-PM-003 | HAZ-DATA |
 | SWR-PM-004 | PR-PM-001 | 환자 등록 데이터 저장 | 유효성 검사 통과 후 환자 데이터를 SQLite(로컬) 또는 PostgreSQL(네트워크) DB에 ACID 트랜잭션으로 저장: ① BEGIN TRANSACTION → INSERT INTO patients → INSERT INTO studies (검사 의뢰 정보) → COMMIT; ② 트랜잭션 실패 시 ROLLBACK 후 사용자에게 오류 메시지 표시; ③ 저장 성공 시 새로 생성된 환자 레코드 PK(UUID v4)를 반환하여 이후 검사 생성에 사용; ④ DB 파일 저장 경로: `%ProgramData%\HnVue\Data\patients.db`; ⑤ 환자 등록 이벤트를 Audit Trail에 기록 (사용자 ID, 타임스탬프, 환자 ID). 저장 중 전원 차단 보호를 위해 WAL(Write-Ahead Logging) 모드 활성화. | Safety-related | 저장 완료 후 DB 조회 시 입력 데이터 100% 일치; WAL 활성화 확인; 트랜잭션 실패 시 ROLLBACK 확인 | T, I | UT-PM-004, IT-PM-004 | HAZ-DATA |
 
-#### PR-PM-002: 환자 정보 조회·수정 → SWR-PM-010~013
+#### PR-PM-002: 환자 정보 조회·수정 → SWR-PM-010–013
 
 | SWR ID | 출처 PR | 요구사항명 | 상세 기술 사양 | IEC 62304 분류 | 수용 기준 | 검증 방법(TIAD) | 검증 TC | 위험 참조 |
 |--------|---------|-----------|--------------|----------------|----------|----------------|---------|----------|
@@ -206,17 +206,17 @@ SWR-[도메인]-[번호]
 | SWR-PM-012 | PR-PM-002 | 환자 정보 수정 저장 및 감사 기록 | 수정된 환자 정보 저장 시: ① 변경 전 값과 변경 후 값을 모두 Audit Trail 테이블에 기록 (변경 필드명, 이전값, 신값, 수정자 ID, 수정 일시 UTC); ② UPDATE 트랜잭션은 환자 ID를 제외한 모든 필드 수정 허용 (환자 ID 수정 불가, 변경 필요 시 삭제 후 재등록); ③ 수정 완료 후 "환자 정보가 성공적으로 업데이트되었습니다" Toast 메시지 표시; ④ 수정 취소 시 변경 사항 롤백 및 Lock 해제. | Safety-related | Audit Trail에 변경 전/후 값 모두 기록됨 확인; 환자 ID 수정 시도 시 차단 확인 | T, I | UT-PM-012, IT-PM-012 | HAZ-DATA, HAZ-SEC |
 | SWR-PM-013 | PR-PM-002 | 환자 등록 상태 표시 | 환자 목록에서 각 환자 항목에 상태 배지(Badge) 표시: ① Active (녹색): 현재 검사 진행 중; ② Pending (황색): Worklist에서 가져왔으나 촬영 미시작; ③ Completed (회색): 모든 검사 완료 및 PACS 전송 완료; ④ Emergency (적색): 응급 등록 환자. 상태는 검사 워크플로우 이벤트 발생 시 자동 갱신 (이벤트 드리븐 업데이트). | Functional | 상태 배지 4가지 색상/레이블 정확히 표시; 워크플로우 이벤트에 따른 자동 갱신 확인 | T | UT-PM-013 | — |
 
-#### PR-PM-003: DICOM MWL 자동 불러오기 → SWR-PM-020~024
+#### PR-PM-003: DICOM MWL 자동 불러오기 → SWR-PM-020–024
 
 | SWR ID | 출처 PR | 요구사항명 | 상세 기술 사양 | IEC 62304 분류 | 수용 기준 | 검증 방법(TIAD) | 검증 TC | 위험 참조 |
 |--------|---------|-----------|--------------|----------------|----------|----------------|---------|----------|
 | SWR-PM-020 | PR-PM-003 | MWL C-FIND 요청 생성 | RIS/HIS DICOM Worklist SCP에 C-FIND 요청 전송: ① Query Key: Scheduled Procedure Step Start Date (오늘 날짜 기본값, 범위 선택 가능), Modality = "DX" or "CR", Scheduled Station AE Title (설정 가능); ② Request Dataset 포함 필드: Patient Name (0010,0010), Patient ID (0010,0020), Accession Number (0008,0050), Requested Procedure Description (0032,1060), Scheduled Procedure Step Start Date/Time (0040,0001/0002), Modality (0008,0060), Scheduled Station AE Title (0040,0001); ③ fo-dicom 라이브러리의 `DicomCFindRequest` 클래스 사용; ④ DICOM AE Title, IP, Port는 시스템 설정(SWR-SA-065)에서 읽어온다. | Functional | C-FIND 요청 Dataset 필드 완전성 100%; fo-dicom API 정상 호출 확인 | T, I | UT-DC-053, IT-DC-053 | HAZ-DATA |
 | SWR-PM-021 | PR-PM-003 | MWL 응답 파싱 및 목록 표시 | C-FIND 응답 Dataset 파싱 후 Worklist UI 컴포넌트에 바인딩: ① 응답 항목을 `WorklistItemModel` 객체로 매핑 (C# POCO); ② 표시 컬럼: 환자명, 환자 ID, 검사 부위, 검사 설명, 예약 시간, 의뢰 의사명; ③ 응답 ≤3초 이내에 목록 갱신 (타이머 측정); ④ 목록 정렬: 예약 시간 오름차순 기본; ⑤ MWL 결과는 로컬 메모리 캐시(5분 TTL)에 보관하여 재조회 시 즉시 표시. | Functional | C-FIND 성공 시 ≤3초 내 목록 렌더링; 100건 이상 응답 처리 시 UI Freeze 없음 | T, A | UT-PM-021, IT-PM-021 | HAZ-DATA |
-| SWR-PM-022 | PR-PM-003 | MWL 자동 새로 고침 | Worklist는 설정 가능한 주기(기본값 5분, 범위 1~60분)로 자동 새로 고침. 자동 새로 고침 동작: ① Background 타이머 스레드에서 C-FIND 재실행; ② 촬영 중인 검사(Exposing 상태)에서는 자동 갱신이 현재 검사를 간섭하지 않음; ③ 새로 추가된 항목은 목록 상단에 신규 배지(New) 표시; ④ [새로 고침 (Refresh)] 버튼으로 수동 즉시 갱신 가능. | Functional | 설정 주기마다 C-FIND 자동 실행 확인; 촬영 중 자동 갱신 간섭 없음 확인 | T | UT-PM-022 | — |
+| SWR-PM-022 | PR-PM-003 | MWL 자동 새로 고침 | Worklist는 설정 가능한 주기(기본값 5분, 범위 1–60분)로 자동 새로 고침. 자동 새로 고침 동작: ① Background 타이머 스레드에서 C-FIND 재실행; ② 촬영 중인 검사(Exposing 상태)에서는 자동 갱신이 현재 검사를 간섭하지 않음; ③ 새로 추가된 항목은 목록 상단에 신규 배지(New) 표시; ④ [새로 고침 (Refresh)] 버튼으로 수동 즉시 갱신 가능. | Functional | 설정 주기마다 C-FIND 자동 실행 확인; 촬영 중 자동 갱신 간섭 없음 확인 | T | UT-PM-022 | — |
 | SWR-PM-023 | PR-PM-003 | MWL 연결 실패 처리 | C-FIND 요청 실패(Connection Timeout, DICOM DIMSE 오류, 네트워크 단절) 시: ① 상태 바에 "Worklist 서버 연결 실패 (Connection Failed): [오류 코드]" 경고 표시; ② Toast 알림으로 사용자에게 통지; ③ 수동 입력(환자 직접 등록) 버튼 강조 표시로 대체 경로 제공; ④ 연결 재시도: 30초 간격 자동 재시도 최대 3회; ⑤ 3회 실패 시 IT 담당자 연락 안내 메시지. Connection Timeout은 설정 가능(기본값 10초). | Safety-related | 연결 실패 시 100% 오류 메시지 표시; 수동 입력 경로 정상 동작 확인 | T, D | UT-PM-023, IT-PM-023 | HAZ-DATA |
 | SWR-PM-024 | PR-PM-003 | MWL 항목 선택 및 검사 시작 | 방사선사가 Worklist 항목을 더블클릭하거나 [검사 시작 (Start Exam)] 버튼 클릭 시: ① 선택된 항목의 데이터를 현재 활성 환자/검사 컨텍스트로 설정; ② 환자 정보가 로컬 DB에 없으면 MWL 데이터를 기반으로 자동 환자 레코드 생성 (SWR-PM-004 재사용); ③ DICOM MPPS In-Progress 메시지 전송 (SWR-DC-055 연동); ④ 촬영 프로토콜 선택 화면으로 자동 전환. | Functional | MWL 선택에서 프로토콜 화면 전환까지 ≤1초; MPPS In-Progress 전송 확인 | T, D | UT-PM-024, IT-PM-024 | HAZ-DATA |
 
-#### PR-PM-004: 응급 환자 빠른 등록 → SWR-PM-030~033
+#### PR-PM-004: 응급 환자 빠른 등록 → SWR-PM-030–033
 
 | SWR ID | 출처 PR | 요구사항명 | 상세 기술 사양 | IEC 62304 분류 | 수용 기준 | 검증 방법(TIAD) | 검증 TC | 위험 참조 |
 |--------|---------|-----------|--------------|----------------|----------|----------------|---------|----------|
@@ -225,7 +225,7 @@ SWR-[도메인]-[번호]
 | SWR-PM-032 | PR-PM-004 | 응급 검사 Trauma 프로토콜 자동 로드 | 응급 등록 완료 즉시 Trauma 기본 프로토콜(다중 부위 세트: Chest PA, Pelvis AP, Spine Lateral)을 자동으로 촬영 순서 목록에 로드. 사용자는 즉시 촬영 시작 가능. Trauma 프로토콜은 SWR-SA-063(Organ Program 편집기)에서 커스터마이징 가능. | Safety-related | 응급 등록 완료 후 ≤3초 내 Trauma 프로토콜 로드; 촬영 버튼 즉시 활성화 확인 | T, D | UT-PM-032 | HAZ-RAD |
 | SWR-PM-033 | PR-PM-004 | 응급 환자 정보 사후 보완 | 응급 촬영 완료 후 또는 이후 시점에 응급 환자 레코드에 정식 환자 정보(실명, 정식 환자 ID, 정확한 생년월일)를 업데이트하는 기능: ① [환자 정보 업데이트] 버튼을 통해 SWR-PM-012(환자 수정) 플로우 연동; ② 정식 환자 ID로 업데이트 시 기존 영상에 연결된 DICOM 태그(Patient ID, Patient Name)도 일괄 업데이트; ③ 변경 이력 Audit Trail 자동 기록; ④ 미보완 응급 레코드는 검사 목록에서 주황색으로 표시. | Safety-related | 정보 업데이트 후 DICOM 태그 일괄 변경 확인; 미보완 레코드 시각적 구분 확인 | T, I | UT-PM-033, IT-PM-033 | HAZ-DATA |
 
-#### PR-PM-005: 환자 검색 → SWR-PM-040~043
+#### PR-PM-005: 환자 검색 → SWR-PM-040–043
 
 | SWR ID | 출처 PR | 요구사항명 | 상세 기술 사양 | IEC 62304 분류 | 수용 기준 | 검증 방법(TIAD) | 검증 TC | 위험 참조 |
 |--------|---------|-----------|--------------|----------------|----------|----------------|---------|----------|
@@ -234,7 +234,7 @@ SWR-[도메인]-[번호]
 | SWR-PM-042 | PR-PM-005 | 검색 결과 표시 및 선택 | 검색 결과 목록 각 항목: ① 환자 ID, 성명, 생년월일, 성별, 최근 검사 날짜, 검사 건수 표시; ② 항목 클릭 시 상세 정보 패널 표시 (SWR-PM-010 연동); ③ 항목 더블클릭 시 검사 컨텍스트 설정 및 촬영 준비 화면으로 전환; ④ 검색 결과 없음(0건) 시 "검색 결과가 없습니다. 신규 등록하시겠습니까?" 메시지와 [신규 등록] 버튼 표시. | Functional | 검색 결과 표시 정확도 100%; 0건 시 신규 등록 경로 표시 확인 | T | UT-PM-042 | — |
 | SWR-PM-043 | PR-PM-005 | 최근 검사 환자 빠른 접근 | 메인 화면에 최근 검사 환자 목록(Recent Patients) 표시: ① 최근 검사 순으로 최대 10명; ② 각 항목에 환자명, 마지막 검사 날짜, 검사 상태 표시; ③ 메모리 캐시로 관리, 앱 시작 시 DB에서 로드. | Functional | 최근 10명 목록 정확히 표시; 앱 시작 시 ≤500ms 내 로드 | T | UT-PM-043 | — |
 
-#### PR-PM-006: 환자 삭제 → SWR-PM-050~053
+#### PR-PM-006: 환자 삭제 → SWR-PM-050–053
 
 | SWR ID | 출처 PR | 요구사항명 | 상세 기술 사양 | IEC 62304 분류 | 수용 기준 | 검증 방법(TIAD) | 검증 TC | 위험 참조 |
 |--------|---------|-----------|--------------|----------------|----------|----------------|---------|----------|
@@ -247,30 +247,30 @@ SWR-[도메인]-[번호]
 
 ### 5.2 촬영 워크플로우 (Acquisition Workflow) — SWR-WF
 
-#### PR-WF-010: APR 프로토콜 관리 → SWR-WF-010~012
+#### PR-WF-010: APR 프로토콜 관리 → SWR-WF-010–012
 
 | SWR ID | 출처 PR | 요구사항명 | 상세 기술 사양 | IEC 62304 분류 | 수용 기준 | 검증 방법(TIAD) | 검증 TC | 위험 참조 |
 |--------|---------|-----------|--------------|----------------|----------|----------------|---------|----------|
-| SWR-WF-010 | PR-WF-010 | APR 프로토콜 데이터 구조 | APR (Anatomical Programmed Radiography) 프로토콜은 계층 구조로 관리: Level 1: 신체 부위 그룹 (예: Chest, Abdomen, Extremity); Level 2: 검사 부위 (예: Chest PA, Chest Lateral, Spine AP); Level 3: Projection 파라미터 세트. 각 Projection 파라미터: ① kVp (킬로볼트피크): 40~150kVp, 1kVp 단위; ② mAs (밀리암페어초): 0.1~500mAs, 0.1mAs 단위 (또는 mA + 초 분리 입력); ③ Focus 크기: Large / Small; ④ Grid 사용 여부: Yes/No; ⑤ AEC 모드: Off / Left / Center / Right / All; ⑥ SID (Source-Image Distance): 100~200cm; ⑦ 영상 처리 프리셋 참조 ID (Noise, Edge Enhancement, W/L 기본값). 프로토콜 데이터는 XML 직렬화 파일 및 SQLite DB 이중 저장. | Safety-related | 프로토콜 계층 구조 정확히 저장/로드; XML 파일과 DB 간 데이터 일치 확인 | T, I | UT-WF-010, IT-WF-010 | HAZ-RAD |
+| SWR-WF-010 | PR-WF-010 | APR 프로토콜 데이터 구조 | APR (Anatomical Programmed Radiography) 프로토콜은 계층 구조로 관리: Level 1: 신체 부위 그룹 (예: Chest, Abdomen, Extremity); Level 2: 검사 부위 (예: Chest PA, Chest Lateral, Spine AP); Level 3: Projection 파라미터 세트. 각 Projection 파라미터: ① kVp (킬로볼트피크): 40–150kVp, 1kVp 단위; ② mAs (밀리암페어초): 0.1–500mAs, 0.1mAs 단위 (또는 mA + 초 분리 입력); ③ Focus 크기: Large / Small; ④ Grid 사용 여부: Yes/No; ⑤ AEC 모드: Off / Left / Center / Right / All; ⑥ SID (Source-Image Distance): 100–200cm; ⑦ 영상 처리 프리셋 참조 ID (Noise, Edge Enhancement, W/L 기본값). 프로토콜 데이터는 XML 직렬화 파일 및 SQLite DB 이중 저장. | Safety-related | 프로토콜 계층 구조 정확히 저장/로드; XML 파일과 DB 간 데이터 일치 확인 | T, I | UT-WF-010, IT-WF-010 | HAZ-RAD |
 | SWR-WF-011 | PR-WF-010 | 프로토콜 선택 및 자동 적용 | 방사선사가 APR 트리에서 Projection을 선택 시: ① 해당 Projection의 kVp, mAs, AEC 설정값을 촬영 제어 패널에 즉시 표시; ② `IGeneratorService.SetParameters(kvp, mas, focus, aec)` 호출로 Generator에 파라미터 전송; ③ `IDetectorService.ConfigureAcquisition(sid, aec)` 호출로 Detector 설정 구성; ④ 전송 성공 응답 수신 후 파라미터 표시 색상 변경 (회색 → 녹색); ⑤ 전체 파라미터 적용 시간 ≤1초 (PR-WF-010 수용 기준). | Safety-related | 프로토콜 선택 후 ≤1초 내 Generator/Detector 파라미터 적용 확인; 적용 실패 시 오류 표시 확인 | T, D | UT-WF-011, IT-WF-011 | HAZ-RAD |
 | SWR-WF-012 | PR-WF-010 | 프로토콜 기반 DICOM 태그 자동 설정 | 프로토콜 선택 시 해당 DICOM Series 메타데이터 자동 설정: ① Body Part Examined (0018,0015); ② View Position (0018,5101): AP/PA/LAT/OBLIQUE; ③ Protocol Name (0018,1030): 선택된 프로토콜명; ④ Requested Procedure Code Sequence (0032,1064); ⑤ Series Description (0008,103E). 이 태그들은 DICOM 파일 생성 시 자동 포함되어 PACS 검색 및 분류에 활용. | Functional | DICOM 파일의 메타데이터 태그 자동 설정 확인; fo-dicom DICOM File 검증 통과 | T, I | UT-WF-012, IT-WF-012 | — |
 
-#### PR-WF-011: 촬영 순서 설정·변경 → SWR-WF-013~014
+#### PR-WF-011: 촬영 순서 설정·변경 → SWR-WF-013–014
 
 | SWR ID | 출처 PR | 요구사항명 | 상세 기술 사양 | IEC 62304 분류 | 수용 기준 | 검증 방법(TIAD) | 검증 TC | 위험 참조 |
 |--------|---------|-----------|--------------|----------------|----------|----------------|---------|----------|
 | SWR-WF-013 | PR-WF-011 | 촬영 순서 드래그&드롭 재정렬 | 좌측 View List 패널에서 Projection 항목을 드래그&드롭으로 재정렬: ① ItemsControl에 DragDrop 이벤트 핸들러 구현 (WPF DragDrop.DoDragDrop); ② 터치스크린 지원: TouchDelta 이벤트 기반 드래그; ③ 재정렬 후 즉각적인 시각적 반영 (Transition 애니메이션 150ms); ④ 재정렬 시 순서 번호(#1, #2, …) 자동 업데이트; ⑤ 항목 추가/삭제 버튼도 제공. | Functional | 드래그&드롭 재정렬 동작 확인; 터치 드래그 정상 동작; 순서 번호 자동 갱신 확인 | T, D | UT-WF-013 | HAZ-DATA |
 | SWR-WF-014 | PR-WF-011 | 촬영 순서의 DICOM Instance Number 반영 | 촬영 순서는 DICOM Series/Instance 생성 시 Instance Number (0020,0013) 및 Image Comments (0020,4000)에 반영: ① 드래그&드롭 후 변경된 순서가 DICOM 파일의 Instance Number에 정확히 기록; ② MPPS (Modality Performed Procedure Step)에 촬영 완료된 순서 정보 포함 (Performed Series Sequence). | Functional | DICOM 파일 Instance Number와 UI 순서 100% 일치 확인 | T, I | UT-WF-014, IT-WF-014 | HAZ-DATA |
 
-#### PR-WF-012: 촬영 조건 설정 → SWR-WF-015~017
+#### PR-WF-012: 촬영 조건 설정 → SWR-WF-015–017
 
 | SWR ID | 출처 PR | 요구사항명 | 상세 기술 사양 | IEC 62304 분류 | 수용 기준 | 검증 방법(TIAD) | 검증 TC | 위험 참조 |
 |--------|---------|-----------|--------------|----------------|----------|----------------|---------|----------|
-| SWR-WF-015 | PR-WF-012 | 촬영 조건 수동 입력 UI | 촬영 제어 패널에서 직접 파라미터 수동 입력: ① kVp 스피너: 40~150, 1단위, NumericUpDown 컨트롤; ② mAs 모드 선택: [mAs 직접 입력] 또는 [mA + 시간 분리 입력]; ③ AEC 챔버 선택: 아이콘형 버튼 그룹 (Left/Center/Right/All/Off); ④ Focus 토글: Large(대초점) / Small(소초점); ⑤ SID 입력: 100~200cm 슬라이더 + 숫자 입력; ⑥ 자동완성: APR 프로토콜 선택값이 기본값으로 사전 입력. 각 컨트롤 타겟 크기 ≥44×44px. | Safety-related | 6가지 파라미터 입력 컨트롤 정상 렌더링; 터치 타겟 크기 기준 충족 확인 | T, I | UT-WF-015 | HAZ-RAD |
-| SWR-WF-016 | PR-WF-012 | 촬영 파라미터 범위 검증 및 경고 | 사용자가 파라미터를 입력하거나 포커스 이탈 시 즉시 범위 검증: ① kVp 범위 위반 (< 40 또는 > 150): 적색 테두리 + "kVp는 40~150 범위여야 합니다" 인라인 오류; ② mAs 범위 위반 (< 0.1 또는 > 500): 동일 오류 처리; ③ kVp × mAs 조합이 Generator 최대 출력(kW) 초과 시 황색 경고 "Generator 최대 출력 [X]kW 초과 가능성"; ④ 범위 위반 상태에서 촬영 버튼 비활성화; ⑤ APR 기준값 대비 ±20% 이상 이탈 시 황색 경고 "프로토콜 기준값과 크게 다릅니다 (기준: kVp [X], mAs [Y])". | Safety-related | 범위 위반 입력 시 즉시 오류 표시; 범위 위반 시 촬영 버튼 100% 비활성화 | T | UT-WF-016, IT-WF-016 | HAZ-RAD |
+| SWR-WF-015 | PR-WF-012 | 촬영 조건 수동 입력 UI | 촬영 제어 패널에서 직접 파라미터 수동 입력: ① kVp 스피너: 40–150, 1단위, NumericUpDown 컨트롤; ② mAs 모드 선택: [mAs 직접 입력] 또는 [mA + 시간 분리 입력]; ③ AEC 챔버 선택: 아이콘형 버튼 그룹 (Left/Center/Right/All/Off); ④ Focus 토글: Large(대초점) / Small(소초점); ⑤ SID 입력: 100–200cm 슬라이더 + 숫자 입력; ⑥ 자동완성: APR 프로토콜 선택값이 기본값으로 사전 입력. 각 컨트롤 타겟 크기 ≥44×44px. | Safety-related | 6가지 파라미터 입력 컨트롤 정상 렌더링; 터치 타겟 크기 기준 충족 확인 | T, I | UT-WF-015 | HAZ-RAD |
+| SWR-WF-016 | PR-WF-012 | 촬영 파라미터 범위 검증 및 경고 | 사용자가 파라미터를 입력하거나 포커스 이탈 시 즉시 범위 검증: ① kVp 범위 위반 (< 40 또는 > 150): 적색 테두리 + "kVp는 40–150 범위여야 합니다" 인라인 오류; ② mAs 범위 위반 (< 0.1 또는 > 500): 동일 오류 처리; ③ kVp × mAs 조합이 Generator 최대 출력(kW) 초과 시 황색 경고 "Generator 최대 출력 [X]kW 초과 가능성"; ④ 범위 위반 상태에서 촬영 버튼 비활성화; ⑤ APR 기준값 대비 ±20% 이상 이탈 시 황색 경고 "프로토콜 기준값과 크게 다릅니다 (기준: kVp [X], mAs [Y])". | Safety-related | 범위 위반 입력 시 즉시 오류 표시; 범위 위반 시 촬영 버튼 100% 비활성화 | T | UT-WF-016, IT-WF-016 | HAZ-RAD |
 | SWR-WF-017 | PR-WF-012 | 파라미터 Generator 전송 확인 | 촬영 버튼 누름 전 파라미터 전송 상태 확인: ① `IGeneratorService.SetParameters()` 반환값에서 Generator ACK(Acknowledge) 확인; ② ACK 수신 실패 시 "Generator 설정 전송 실패: [오류 코드]" 경고 및 촬영 중단; ③ 전송 성공 확인 후에만 촬영 버튼 활성화; ④ 파라미터 변경 후 미전송 상태(Pending)를 UI 인디케이터로 표시 (노란색 점등). | Safety-related | Generator ACK 미수신 시 촬영 버튼 비활성화 100% 확인; ACK 수신 후 활성화 확인 | T, A | UT-WF-017, IT-WF-017 | HAZ-RAD |
 
-#### PR-WF-013: Generator 통신 및 제어 → SWR-WF-018~020
+#### PR-WF-013: Generator 통신 및 제어 → SWR-WF-018–020
 
 | SWR ID | 출처 PR | 요구사항명 | 상세 기술 사양 | IEC 62304 분류 | 수용 기준 | 검증 방법(TIAD) | 검증 TC | 위험 참조 |
 |--------|---------|-----------|--------------|----------------|----------|----------------|---------|----------|
@@ -278,29 +278,29 @@ SWR-[도메인]-[번호]
 | SWR-WF-019 | PR-WF-013 | 노출 명령 및 응답 처리 | 노출 실행 시퀀스: ① `ExposeAsync()` 호출 후 ≤200ms 내 Generator Ready 확인 (PR-WF-013 수용 기준); ② 타임아웃(200ms) 초과 시 `ExposureTimeoutException` 발생 → "Generator 응답 없음 (Timeout): 촬영이 중단되었습니다" 오류 팝업; ③ 노출 진행 중 UI: [촬영 중 (X-Ray Exposing)] 오버레이 표시, 키보드/마우스 입력 잠금 (안전); ④ 노출 완료 이벤트(`ExposureCompleted`) 수신 시 DAP 값, 실제 kVp/mAs 값을 이벤트 데이터에서 추출하여 선량 모듈에 전달. | Safety-related | ≤200ms 이내 Generator Ready 응답 확인; 노출 중 UI 잠금 동작 확인; 타임아웃 시 오류 표시 확인 | T, A | UT-WF-019, IT-WF-019 | HAZ-RAD, HAZ-SW |
 | SWR-WF-020 | PR-WF-013 | Generator 오류 코드 처리 | Generator로부터 오류 코드 수신 시 처리 매핑 테이블: ① FILAMENT_ERROR (필라멘트 오류) → 즉시 촬영 중단 + "Generator 필라멘트 오류: 서비스 엔지니어에게 문의하세요" Critical 알림; ② KVP_OUT_OF_RANGE → 재설정 유도 알림; ③ OVERHEATING → 10분 쿨다운 대기 안내; ④ 그 외 알 수 없는 오류 → 오류 코드 + 원시 메시지 표시 + 시스템 로그 기록. 모든 Generator 오류는 Error Level로 로그 파일에 기록. | Safety-related | 각 오류 코드별 정확한 알림 메시지 표시; 모든 오류 로그 기록 확인 | T | UT-WF-020 | HAZ-RAD, HAZ-SW |
 
-#### PR-WF-014: Detector 상태 모니터링 → SWR-WF-021~022
+#### PR-WF-014: Detector 상태 모니터링 → SWR-WF-021–022
 
 | SWR ID | 출처 PR | 요구사항명 | 상세 기술 사양 | IEC 62304 분류 | 수용 기준 | 검증 방법(TIAD) | 검증 TC | 위험 참조 |
 |--------|---------|-----------|--------------|----------------|----------|----------------|---------|----------|
-| SWR-WF-021 | PR-WF-014 | Detector 상태 폴링 및 UI 업데이트 | Detector 상태는 100ms 주기 폴링으로 실시간 모니터링: ① `IDetectorService.GetStatusAsync()` 비동기 폴링; ② 상태 변경 감지 시 ≤1초 내 GUI 업데이트 (상태 변경 이벤트 기반); ③ 표시 항목: 연결 상태(Connected/Disconnected 녹색/적색), 준비 상태(Ready/Busy/Warming/Error), 배터리 레벨(무선 FPD, 0~100% 게이지), 온도 (°C, 임계값 초과 시 황색/적색), 파일 버퍼 사용률; ④ Disconnected 상태에서 자동 재연결 시도 (5초 주기, 최대 5회). | Safety-related | 상태 변경 시 ≤1초 내 UI 갱신 확인; 배터리/온도 표시 정확성 확인 | T, D | UT-WF-021, IT-WF-021 | HAZ-RAD, HAZ-SW |
+| SWR-WF-021 | PR-WF-014 | Detector 상태 폴링 및 UI 업데이트 | Detector 상태는 100ms 주기 폴링으로 실시간 모니터링: ① `IDetectorService.GetStatusAsync()` 비동기 폴링; ② 상태 변경 감지 시 ≤1초 내 GUI 업데이트 (상태 변경 이벤트 기반); ③ 표시 항목: 연결 상태(Connected/Disconnected 녹색/적색), 준비 상태(Ready/Busy/Warming/Error), 배터리 레벨(무선 FPD, 0–100% 게이지), 온도 (°C, 임계값 초과 시 황색/적색), 파일 버퍼 사용률; ④ Disconnected 상태에서 자동 재연결 시도 (5초 주기, 최대 5회). | Safety-related | 상태 변경 시 ≤1초 내 UI 갱신 확인; 배터리/온도 표시 정확성 확인 | T, D | UT-WF-021, IT-WF-021 | HAZ-RAD, HAZ-SW |
 | SWR-WF-022 | PR-WF-014 | Detector Critical 오류 알림 | Detector에서 Critical 오류 이벤트 수신 시: ① 시각적 알림: 화면 전체 적색 테두리 플래시 (500ms 간격 3회); ② 청각 알림: 시스템 경고음 (Beep 3회, 1kHz); ③ 팝업 메시지: 오류 유형별 한국어 설명 + 권장 조치; ④ Ready 상태가 아닌 경우 촬영 버튼 비활성화 보장; ⑤ 오류 이벤트 Error Level 로그 기록. Critical 오류 유형: 메모리 포화(Memory Full), 검출기 고장(Detector Malfunction), 통신 단절(Communication Lost). | Safety-related | Critical 오류 시 시각/청각 알림 100% 동작; 촬영 버튼 비활성화 확인 | T, D | UT-WF-022 | HAZ-RAD, HAZ-SW |
 
-#### PR-WF-015: 촬영 실행 및 영상 수신 → SWR-WF-023~025
+#### PR-WF-015: 촬영 실행 및 영상 수신 → SWR-WF-023–025
 
 | SWR ID | 출처 PR | 요구사항명 | 상세 기술 사양 | IEC 62304 분류 | 수용 기준 | 검증 방법(TIAD) | 검증 TC | 위험 참조 |
 |--------|---------|-----------|--------------|----------------|----------|----------------|---------|----------|
 | SWR-WF-023 | PR-WF-015 | 소프트웨어 촬영 버튼 및 외부 핸드스위치 | 촬영 트리거 2가지 방식: ① GUI 촬영 버튼 (Expose Button): 크기 120×60px, 적색 배경; ② 외부 핸드스위치: USB HID 또는 GPIO 신호 수신. 두 방식 모두 동일한 `AcquisitionController.TriggerExposure()` 메서드 호출. 촬영 조건: Detector Ready + Generator ACK + 환자 컨텍스트 설정 + 파라미터 범위 정상 → 모든 조건 충족 시에만 촬영 트리거 허용. | Safety-related | GUI 버튼과 핸드스위치 동일 동작 확인; 조건 미충족 시 트리거 차단 확인 | T, D | UT-WF-023, IT-WF-023 | HAZ-RAD, HAZ-SW |
-| SWR-WF-024 | PR-WF-015 | Raw 영상 수신 파이프라인 | 노출 완료 이벤트 후 Detector에서 Raw 영상 수신: ① `IDetectorService.AcquireImageAsync()` 호출; ② Raw 데이터 형식: 16-bit Grayscale, 크기 최대 3072×3072 (약 18MB); ③ 수신 중 프로그레스 인디케이터 표시; ④ 수신 완료 후 이미지 처리 파이프라인(SWR-IP-039~052)으로 즉시 전달; ⑤ 처리된 영상의 GUI 표시까지 전체 시간 ≤1초 (PR-WF-015 수용 기준); ⑥ Raw 영상은 처리 완료 전 임시 버퍼에 보관. | Safety-related | 수신에서 GUI 표시까지 ≤1,000ms 확인; 18MB 영상 처리 성능 확인 | T, A | UT-WF-024, IT-WF-024 | HAZ-RAD, HAZ-SW |
+| SWR-WF-024 | PR-WF-015 | Raw 영상 수신 파이프라인 | 노출 완료 이벤트 후 Detector에서 Raw 영상 수신: ① `IDetectorService.AcquireImageAsync()` 호출; ② Raw 데이터 형식: 16-bit Grayscale, 크기 최대 3072×3072 (약 18MB); ③ 수신 중 프로그레스 인디케이터 표시; ④ 수신 완료 후 이미지 처리 파이프라인(SWR-IP-039–052)으로 즉시 전달; ⑤ 처리된 영상의 GUI 표시까지 전체 시간 ≤1초 (PR-WF-015 수용 기준); ⑥ Raw 영상은 처리 완료 전 임시 버퍼에 보관. | Safety-related | 수신에서 GUI 표시까지 ≤1,000ms 확인; 18MB 영상 처리 성능 확인 | T, A | UT-WF-024, IT-WF-024 | HAZ-RAD, HAZ-SW |
 | SWR-WF-025 | PR-WF-015 | 영상 수신 실패 재시도 | 영상 수신 실패(Timeout, CRC 오류, 전송 오류) 시: ① "영상 수신 실패 (Image Acquisition Failed): [오류 상세]" 경고 팝업; ② [재시도 (Retry) / 취소 (Cancel)] 버튼 제공; ③ 재시도 선택 시 `IDetectorService.RetryAcquisition()` 호출; ④ 최대 2회 자동 재시도 후 최종 실패 시 "영상 수신에 실패했습니다. 재촬영을 진행해주세요" 안내; ⑤ 실패 이벤트 Error 레벨 로그 기록. | Safety-related | 영상 수신 실패 시 재시도 옵션 100% 제공; 최대 2회 재시도 후 최종 실패 메시지 표시 확인 | T | UT-WF-025 | HAZ-RAD, HAZ-SW |
 
-#### PR-WF-016: Emergency/Trauma 워크플로우 → SWR-WF-026~027
+#### PR-WF-016: Emergency/Trauma 워크플로우 → SWR-WF-026–027
 
 | SWR ID | 출처 PR | 요구사항명 | 상세 기술 사양 | IEC 62304 분류 | 수용 기준 | 검증 방법(TIAD) | 검증 TC | 위험 참조 |
 |--------|---------|-----------|--------------|----------------|----------|----------------|---------|----------|
 | SWR-WF-026 | PR-WF-016 | Trauma 템플릿 원탭 실행 | Trauma 버튼 탭 시 사전 정의된 Trauma 프로토콜 세트 즉시 로드: ① Trauma 프로토콜은 복수의 Projection으로 구성 (예: Chest PA, Pelvis AP, Spine Lateral, Both Extremity); ② 원탭으로 모든 Projection을 촬영 순서 목록에 추가 (개별 선택 불필요); ③ Trauma 모드 진입 ≤2 터치 확인 (PR-WF-016 수용 기준); ④ 모드 진입 시 화면 상단에 "TRAUMA MODE" 적색 배너 표시. | Safety-related | Trauma 프로토콜 로드 ≤2 터치 확인; TRAUMA MODE 배너 표시 확인 | T, D | UT-WF-026 | HAZ-RAD |
 | SWR-WF-027 | PR-WF-016 | Trauma 연속 촬영 자동 진행 | 각 Trauma Projection 촬영 완료 후 자동으로 다음 Projection으로 진행: ① 영상 수신 및 처리 완료 후 3초 대기 (설정 가능) → 다음 Projection 자동 로드; ② 촬영 중 추가 부위 삽입: [부위 추가 (+)] 버튼으로 현재 촬영 순서에 Projection 추가 가능; ③ 각 촬영 결과는 즉시 섬네일 스트립에 표시; ④ 모든 Projection 완료 시 "Trauma 검사 완료 — PACS 전송하시겠습니까?" 확인 팝업. | Safety-related | 연속 자동 진행 동작 확인; 촬영 중 부위 추가 기능 확인 | T, D | UT-WF-027, IT-WF-027 | HAZ-RAD |
 
-#### PR-WF-017~018: Multi-study, Suspend/Resume → SWR-WF-028~031
+#### PR-WF-017–018: Multi-study, Suspend/Resume → SWR-WF-028–031
 
 > **[v2.0 Note]** PR-WF-019 CD/DVD Burning (MR-072, Tier 2) 요건은 아래 별도 섹션에서 정의됩니다.
 
@@ -311,20 +311,20 @@ SWR-[도메인]-[번호]
 | SWR-WF-030 | PR-WF-018 | 검사 Suspend (일시 중단) | [Suspend Exam] 버튼 또는 단축키(Ctrl+P) 클릭 시: ① 현재 촬영 순서, 완료된 영상, 미완료 Projection 목록을 `ExamSession` 직렬화 객체로 SQLite DB에 저장; ② 현재 Detector 설정 파라미터 저장; ③ DICOM MPPS 상태를 "Suspended"로 업데이트 (비표준, 내부 상태); ④ Worklist 화면으로 복귀; ⑤ Suspended 검사는 Worklist에서 "일시 중단" 아이콘으로 식별. | Safety-related | Suspend 시 모든 상태(촬영 순서, 획득 영상) DB 저장 확인 | T, D | UT-WF-030, IT-WF-030 | HAZ-DATA |
 | SWR-WF-031 | PR-WF-018 | 검사 Resume (재개) | Worklist에서 Suspended 검사 선택 후 [Resume] 클릭 시: ① `ExamSession` 객체 DB에서 로드; ② 이전 촬영 순서, 완료 영상, 미완료 Projection 정확히 복원; ③ Detector 설정 파라미터 복원 및 Generator에 재전송; ④ 미완료 Projection 중 첫 번째 항목으로 자동 포커스; ⑤ Audit Trail에 "검사 재개 (Exam Resumed)" 기록. | Safety-related | Resume 시 이전 상태 100% 복원 확인; 미완료 Projection 자동 포커스 확인 | T, D | UT-WF-031, IT-WF-031 | HAZ-DATA |
 
-#### PR-WF-019: CD/DVD Burning with DICOM Viewer → SWR-WF-032~034
+#### PR-WF-019: CD/DVD Burning with DICOM Viewer → SWR-WF-032–034
 **[v2.0 신규 — MR-072, Tier 2]** MRD v3.0 MR-072 기반 신규 기능 요건. feel-DRCS 기본 기능 동등 수준.
 
 | SWR ID | 출처 PR | MR 추적 | 요구사항명 | 상세 기술 사양 | IEC 62304 분류 | 수용 기준 | 검증 방법(TIAD) | 검증 TC | 위험 참조 |
 |--------|---------|---------|-----------|--------------|----------------|----------|----------------|---------|----------|
 | SWR-WF-032 | PR-WF-019 | MR-072 | CD/DVD 버닝 UI 및 미디어 선택 | 촬영 완료 영상을 CD/DVD로 굽는 UI: ① 검사 목록에서 Study 선택 → [CD/DVD 굽기] 버튼 (Technologist 이상 역할); ② 지원 미디어: CD-R/RW (700MB), DVD-R/RW (4.7GB); ③ 드라이브 선택 드롭다운 (시스템에 연결된 광학 드라이브 자동 감지); ④ 굽기 대상 영상 선택: 전체 Study 또는 개별 Series 선택; ⑤ 예상 용량 표시 및 미디어 용량 초과 시 경고; ⑥ DICOMDIR 구조 + 내장 DICOM 뷰어(.exe) + ISO 이미지 생성 후 기록. | Functional | 드라이브 감지 및 UI 표시 정상 확인; 용량 초과 경고 동작 확인 | T, D | UT-WF-032, IT-WF-032 | HAZ-DATA |
 | SWR-WF-033 | PR-WF-019 | MR-072 | DICOMDIR 생성 및 ISO 이미지 구성 | DICOMDIR 및 ISO 이미지 생성: ① DICOM PS3.11 DICOMDIR 파일 자동 생성 (fo-dicom 기반); ② 디렉토리 구조: `/DICOM/PATIENT_ID/STUDY_DATE/SERIES_N/IMAGE_N.dcm`; ③ ISO 9660 이미지 생성 (ImgBurn API 또는 Windows IMAPI2 COM 인터페이스 활용); ④ 내장 DICOM 뷰어 실행 파일 포함 (라이선스 없이 환자가 직접 열람 가능한 무료/오픈소스 뷰어, 예: dwv(DICOM Web Viewer) 또는 MicroDicom viewer); ⑤ 체크섬 파일(SHA-256) 동봉하여 데이터 무결성 검증 지원; ⑥ ISO 이미지 생성 완료 후 기록 전 내부 DICOM 파일 무결성 검증 (SOP Instance UID 검증). | Safety-related | DICOMDIR 파일 DICOM 표준 준수 확인; ISO 이미지 내 모든 DICOM 파일 무결성 검증; 내장 뷰어 실행 확인 | T, I | UT-WF-033, IT-WF-033 | HAZ-DATA |
-| SWR-WF-034 | PR-WF-019 | MR-072 | 미디어 기록 실행 및 오류 처리 | 미디어 기록 실행: ① 기록 중 프로그레스 바 표시 (0~100%); ② 기록 속도 자동 최적화 (안정성 우선); ③ 기록 완료 후 베리파이(Verify): 기록된 데이터와 원본 체크섬 비교; ④ 기록 성공 시 "CD/DVD 굽기 완료 (Burn Complete)" Toast 메시지 + Audit Trail 기록 (사용자 ID, 타임스탬프, 환자 ID, 미디어 종류); ⑤ 기록 실패 시: "미디어 기록 오류 (Burn Error): [오류 상세]" 경고 + 재시도 옵션; ⑥ 기록 실패 원인: 미디어 불량, 드라이브 오류, 용량 초과 — 각 원인별 명확한 오류 메시지 표시; ⑦ 기록 중 취소 가능: [취소] 버튼으로 중단 후 미완성 미디어 폐기 안내. | Functional | 기록 완료 후 베리파이 통과 확인; 실패 시 재시도 옵션 제공 확인; Audit Trail 기록 확인 | T, D | UT-WF-034, IT-WF-034 | HAZ-DATA |
+| SWR-WF-034 | PR-WF-019 | MR-072 | 미디어 기록 실행 및 오류 처리 | 미디어 기록 실행: ① 기록 중 프로그레스 바 표시 (0–100%); ② 기록 속도 자동 최적화 (안정성 우선); ③ 기록 완료 후 베리파이(Verify): 기록된 데이터와 원본 체크섬 비교; ④ 기록 성공 시 "CD/DVD 굽기 완료 (Burn Complete)" Toast 메시지 + Audit Trail 기록 (사용자 ID, 타임스탬프, 환자 ID, 미디어 종류); ⑤ 기록 실패 시: "미디어 기록 오류 (Burn Error): [오류 상세]" 경고 + 재시도 옵션; ⑥ 기록 실패 원인: 미디어 불량, 드라이브 오류, 용량 초과 — 각 원인별 명확한 오류 메시지 표시; ⑦ 기록 중 취소 가능: [취소] 버튼으로 중단 후 미완성 미디어 폐기 안내. | Functional | 기록 완료 후 베리파이 통과 확인; 실패 시 재시도 옵션 제공 확인; Audit Trail 기록 확인 | T, D | UT-WF-034, IT-WF-034 | HAZ-DATA |
 
 ---
 
 ### 5.3 영상 표시/처리 (Image Display & Processing) — SWR-IP
 
-#### PR-IP-020~024: 실시간 표시, W/L, Zoom, Pan, Rotation
+#### PR-IP-020–024: 실시간 표시, W/L, Zoom, Pan, Rotation
 
 | SWR ID | 출처 PR | 요구사항명 | 상세 기술 사양 | IEC 62304 분류 | 수용 기준 | 검증 방법(TIAD) | 검증 TC | 위험 참조 |
 |--------|---------|-----------|--------------|----------------|----------|----------------|---------|----------|
@@ -338,26 +338,26 @@ SWR-[도메인]-[번호]
 | SWR-IP-027 | PR-IP-024 | Rotation 고정 각도 | 툴바 버튼: ① 90° 시계 방향 (CW); ② 90° 반시계 방향 (CCW); ③ 180° 반전. Flip: ④ 수평 Flip (좌우 반전); ⑤ 수직 Flip (상하 반전). 회전 후 영상 품질 유지: Bilinear 회전 보간. 회전/Flip 상태는 DICOM Presentation State (PR SOP Class)에 저장 가능. | Functional | 4가지 고정 회전 및 2가지 Flip 동작 확인 | T, D | UT-IP-027 | — |
 | SWR-IP-028 | PR-IP-024 | 자유 회전 (Free Rotation) | 마우스 우클릭+드래그 특정 구역에서 자유 회전 또는 별도 회전 슬라이더: ① -180°~+180° 범위; ② 1° 단위 표시; ③ 슬라이더 또는 숫자 직접 입력; ④ [0° 초기화] 버튼. | Functional | -180°~+180° 자유 회전 확인; 1° 단위 정확도 확인 | T, D | UT-IP-028 | — |
 
-#### PR-IP-025~029: Image Stitching, 측정, Annotation
+#### PR-IP-025–029: Image Stitching, 측정, Annotation
 
 | SWR ID | 출처 PR | 요구사항명 | 상세 기술 사양 | IEC 62304 분류 | 수용 기준 | 검증 방법(TIAD) | 검증 TC | 위험 참조 |
 |--------|---------|-----------|--------------|----------------|----------|----------------|---------|----------|
-| SWR-IP-029 | PR-IP-025 | Image Stitching 트리거 | 동일 Study의 2~4장 영상 선택 후 [이미지 스티칭 (Image Stitching)] 버튼 클릭으로 스티칭 실행: ① 스티칭 대상 영상 선택 UI (체크박스 방식); ② 스티칭 방향 선택: 수직(Vertical, 척추/하지) / 수평(Horizontal); ③ 스티칭 처리는 별도 백그라운드 스레드 (`StitchingEngine`); ④ 처리 중 프로그레스 바 표시; ⑤ 완료까지 ≤10초 (4장 5MP 기준, PR-IP-025/PR-NF-PF-008 준수). | Functional | 4장 5MP 스티칭 ≤10초 확인; 방향 선택 옵션 동작 확인 | T, A | UT-IP-029, IT-IP-029 | — |
+| SWR-IP-029 | PR-IP-025 | Image Stitching 트리거 | 동일 Study의 2–4장 영상 선택 후 [이미지 스티칭 (Image Stitching)] 버튼 클릭으로 스티칭 실행: ① 스티칭 대상 영상 선택 UI (체크박스 방식); ② 스티칭 방향 선택: 수직(Vertical, 척추/하지) / 수평(Horizontal); ③ 스티칭 처리는 별도 백그라운드 스레드 (`StitchingEngine`); ④ 처리 중 프로그레스 바 표시; ⑤ 완료까지 ≤10초 (4장 5MP 기준, PR-IP-025/PR-NF-PF-008 준수). | Functional | 4장 5MP 스티칭 ≤10초 확인; 방향 선택 옵션 동작 확인 | T, A | UT-IP-029, IT-IP-029 | — |
 | SWR-IP-030 | PR-IP-025 | OpenCV 기반 스티칭 알고리즘 | C++ 스티칭 엔진 (`StitchingEngine.dll`): ① OpenCV `Stitcher` 클래스 또는 커스텀 Feature-based 정합; ② 알고리즘: SIFT 또는 ORB 특징점 검출 → FLANN 매칭 → RANSAC 호모그래피 추정 → Warp → Blending; ③ 정합 오차 ≤1mm (기준 팬텀, DICOM Pixel Spacing 기준, PR-IP-025 수용 기준); ④ 스티칭 결과는 새 DICOM Series로 저장. | Functional | 정합 오차 ≤1mm 팬텀 테스트 통과; 결과 DICOM Series 생성 확인 | T, A | UT-IP-030 | — |
 | SWR-IP-031 | PR-IP-025 | 스티칭 결과 검토 및 수동 조정 | 스티칭 결과 표시 후 수동 조정 UI 제공: ① 스티칭 이음새(Seam) 위치 슬라이더로 수동 조정; ② [승인 (Accept)] 클릭 시 결과 DICOM 파일 저장; ③ [재시도 (Retry)] 클릭 시 파라미터 변경 후 재처리; ④ [취소 (Cancel)] 클릭 시 원본 영상 유지. | Functional | 수동 조정 UI 동작 확인; 승인/취소 동작 확인 | T, D | UT-IP-031 | — |
 | SWR-IP-032 | PR-IP-026 | 거리 측정 도구 | 거리 측정 도구 (Distance Tool): ① 마우스 두 클릭으로 시작점-끝점 지정; ② 측정값 = √((x2-x1)² + (y2-y1)²) × Pixel Spacing (mm/pixel); ③ Pixel Spacing은 DICOM 태그 (0028,0030) 또는 캘리브레이션 값 사용; ④ 측정 결과: mm 단위, 소수점 1자리 표시; ⑤ 정확도 ±1% (PR-IP-026 수용 기준). | Safety-related | 알려진 거리(팬텀) 측정 오차 ≤1% 확인 | T, A | UT-IP-032 | HAZ-SW |
 | SWR-IP-033 | PR-IP-026 | 측정값 DICOM SR 저장 | 모든 측정값(거리, 각도, 면적)은 선택적으로 DICOM Structured Report (SR, SOP Class 1.2.840.10008.5.1.4.1.1.88.11) 또는 DICOM Presentation State (PR)에 저장: ① 측정 오버레이 DICOM Presentation State로 저장; ② PACS 전송 시 선택적으로 SR 동시 전송; ③ 저장된 측정값은 동일 영상 재열람 시 복원. | Functional | DICOM Presentation State 생성 및 저장 확인 | T, I | UT-IP-033, IT-IP-033 | — |
 | SWR-IP-034 | PR-IP-027 | 각도 측정 도구 | 각도 측정 도구 (Angle Tool): ① 3개 클릭으로 꼭짓점-끝점1-끝점2 지정; ② 두 직선 사이 각도 계산: atan2 함수 사용, 0°~180° 범위; ③ 표시: 0.1° 단위 (PR-IP-027 수용 기준); ④ 척추 측만증 Cobb 각도 측정 지원 모드. | Functional | 각도 측정값 0.1° 단위 표시; ±0.5° 정확도 확인 | T, A | UT-IP-034 | — |
 | SWR-IP-035 | PR-IP-028 | 면적 측정 도구 (ROI) | ROI 면적 측정: ① 원형 ROI: 중심점 클릭 후 반경 드래그; ② 다각형 ROI: 다중 클릭 후 시작점 클릭으로 닫기; ③ 면적 = 픽셀 수 × Pixel Spacing² (cm²); ④ 내부 통계: 평균 픽셀값, 표준편차, 최소/최대값 표시. | Functional | 원형/다각형 ROI 면적 계산 정확도 ±2% 확인 | T, A | UT-IP-035 | — |
-| SWR-IP-036 | PR-IP-028 | ROI 내 픽셀 통계 | ROI 선택 후 Histogram 팝업 표시: ① X축: 픽셀값 (0~65535, 16-bit); ② Y축: 빈도; ③ 통계 수치: Mean, SD, Median, Min, Max, Pixel Count; ④ 히스토그램 영상 위 오버레이 또는 별도 팝업 창. | Functional | 히스토그램 수치 정확도 ±1% 확인 | T, A | UT-IP-036 | — |
-| SWR-IP-037 | PR-IP-029 | Annotation 도구 | Annotation 도구 팔레트: ① 텍스트 레이블: 임의 위치 클릭 후 텍스트 입력; ② 화살표: 시작점→끝점 드래그; ③ 원형: 중심+반경 드래그; ④ 사각형: 두 꼭짓점 드래그. Annotation 스타일: 색상 선택 (기본 황색), 선 굵기 1~5px. | Functional | 4가지 Annotation 도구 정상 동작 확인 | T, D | UT-IP-037 | HAZ-DATA |
+| SWR-IP-036 | PR-IP-028 | ROI 내 픽셀 통계 | ROI 선택 후 Histogram 팝업 표시: ① X축: 픽셀값 (0–65535, 16-bit); ② Y축: 빈도; ③ 통계 수치: Mean, SD, Median, Min, Max, Pixel Count; ④ 히스토그램 영상 위 오버레이 또는 별도 팝업 창. | Functional | 히스토그램 수치 정확도 ±1% 확인 | T, A | UT-IP-036 | — |
+| SWR-IP-037 | PR-IP-029 | Annotation 도구 | Annotation 도구 팔레트: ① 텍스트 레이블: 임의 위치 클릭 후 텍스트 입력; ② 화살표: 시작점→끝점 드래그; ③ 원형: 중심+반경 드래그; ④ 사각형: 두 꼭짓점 드래그. Annotation 스타일: 색상 선택 (기본 황색), 선 굵기 1–5px. | Functional | 4가지 Annotation 도구 정상 동작 확인 | T, D | UT-IP-037 | HAZ-DATA |
 | SWR-IP-038 | PR-IP-029 | Annotation DICOM 저장 및 편집 | Annotation은 DICOM Presentation State (PR SOP Class)로 저장: ① [Annotation 저장] 버튼 클릭 시 DICOM PR 파일 생성; ② 저장된 Annotation은 동일 영상 재열람 시 자동 복원; ③ 개별 Annotation 선택 후 이동/수정/삭제 가능; ④ [전체 삭제 (Clear All)] 버튼; ⑤ PACS 전송 시 PR SOP Class 동시 전송 옵션. | Functional | Annotation DICOM PR 저장 및 복원 확인 | T, I | UT-IP-038, IT-IP-038 | HAZ-DATA |
 
-#### PR-IP-030~037: 영상 처리 파이프라인
+#### PR-IP-030–037: 영상 처리 파이프라인
 
 ```mermaid
 flowchart TD
-    subgraph Pipeline["영상 처리 파이프라인 （SWR-IP-039~052）"]
+    subgraph Pipeline["영상 처리 파이프라인 （SWR-IP-039–052）"]
         A["Raw 16-bit Detector 영상\n（SWR-IP-039 입력）"]
         B["SWR-IP-039\nDefect Pixel 보정\n（결함 픽셀 맵 적용）"]
         C["SWR-IP-039\nGain Correction\n（Flat Field Gain Map）"]
@@ -366,7 +366,7 @@ flowchart TD
         F["SWR-IP-045\nScatter Correction\n（SW 기반 산란선 제거）"]
         G["Anti-banding Filter\n（그리드 모아레 제거）"]
         H["SWR-IP-041\nNoise Reduction\n（주파수 기반/DL 기반）"]
-        I["SWR-IP-042\n노이즈 파라미터 적용\n（강도 1~5단계）"]
+        I["SWR-IP-042\n노이즈 파라미터 적용\n（강도 1–5단계）"]
         J["SWR-IP-047\nAuto-trimming\n（조사야 자동 인식）"]
         K["SWR-IP-049\nBlack Mask\n（Automatic Shutters）"]
         L["SWR-IP-050\nContrast Optimization\n（CLAHE 기반）"]
@@ -394,27 +394,27 @@ flowchart TD
 | SWR-IP-041 | PR-IP-031 | Noise Reduction 필터 | C++ `NoiseReduction.Apply()`: ① 주파수 기반: 가우시안 블러 + 언샤프 마스킹 조합; ② 딥러닝 기반(선택적): ONNX Runtime으로 사전 훈련 모델 적용; ③ SNR 향상 ≥3dB vs. 미적용 (PR-IP-031 수용 기준); ④ 처리 시간 ≤500ms. | Safety-related | SNR 향상 ≥3dB 측정 확인; 처리 시간 ≤500ms 확인 | T, A | UT-IP-041 | HAZ-RAD |
 | SWR-IP-042 | PR-IP-031 | Noise Reduction 강도 조절 | UI에서 노이즈 감소 강도 5단계 (1=약 ~ 5=강) 슬라이더 제공. 강도 변경 시 즉시 재처리 (≤500ms). 강도 0 = 비활성화. | Functional | 5단계 강도 각각 적용 후 SNR 변화 확인 | T, D | UT-IP-042 | — |
 | SWR-IP-043 | PR-IP-032 | Edge Enhancement 모드 | C++ `EdgeEnhancement.Apply(mode, intensity)`: ① Small Structure (소형 구조물): 고주파 강조 필터; ② Bone Detail (골 세부): 미세 골 구조 강조; ③ Catheter (카테터): 선형 구조물 강조. 각 모드 독립적인 커널 파라미터. | Functional | 3가지 모드 각각 시각적 효과 확인; 모드 전환 ≤500ms | T, D | UT-IP-043 | — |
-| SWR-IP-044 | PR-IP-032 | Edge Enhancement 강도 및 토글 | Edge Enhancement 강도: 1~5단계 슬라이더. [On/Off] 토글로 즉시 적용/해제. 적용/해제 시 ≤500ms 재처리. | Functional | 5단계 강도 및 On/Off 토글 동작 확인 | T, D | UT-IP-044 | — |
+| SWR-IP-044 | PR-IP-032 | Edge Enhancement 강도 및 토글 | Edge Enhancement 강도: 1–5단계 슬라이더. [On/Off] 토글로 즉시 적용/해제. 적용/해제 시 ≤500ms 재처리. | Functional | 5단계 강도 및 On/Off 토글 동작 확인 | T, D | UT-IP-044 | — |
 | SWR-IP-045 | PR-IP-033 | Scatter Correction (SW 기반) | C++ `ScatterCorrection.Apply()` (Grid 미사용 시 자동 활성): ① Monte Carlo 시뮬레이션 기반 scatter kernel 또는 주파수 도메인 필터; ② 처리 후 Contrast Ratio 향상 ≥10% (PR-IP-033); ③ 처리 시간 ≤1초; ④ Phase 1.5 기능 — 플래그로 활성화/비활성화 가능. | Functional | Contrast Ratio ≥10% 향상 팬텀 테스트 확인; 처리 시간 ≤1초 확인 | T, A | UT-IP-045 | HAZ-RAD |
 | SWR-IP-046 | PR-IP-033 | Grid/No-Grid 자동 감지 | APR 프로토콜 설정의 Grid 사용 여부(SWR-WF-010)에 따라 Scatter Correction 자동 활성화: Grid=No이면 SWR-IP-045 활성화, Grid=Yes이면 Anti-banding 필터 활성화. | Functional | Grid 설정에 따른 자동 필터 전환 확인 | T, I | UT-IP-046 | HAZ-RAD |
 | SWR-IP-047 | PR-IP-034 | Auto-trimming 조사야 인식 | C++ `AutoTrimming.Detect()`: ① 영상 히스토그램 분석으로 조사야(照射野) 경계 자동 감지; ② 알고리즘: Edge detection + Hough Transform (직사각형 검출); ③ 감지 정확도 ≥95% (PR-IP-034 수용 기준); ④ 감지된 경계를 반투명 오버레이로 시각화. | Safety-related | 조사야 경계 감지 정확도 ≥95% 팬텀 테스트 확인 | T, A | UT-IP-047 | — |
 | SWR-IP-048 | PR-IP-034 | Auto-trimming 수동 조정 | 자동 감지 후 사용자가 조사야 경계를 드래그로 수동 조정: ① 8개 핸들(상하좌우 + 대각선 모서리)로 경계 드래그; ② [Reset] 버튼으로 자동 감지값 복원; ③ 조사야 외부 영역에 Black Mask 자동 적용 (SWR-IP-049 연동). | Functional | 드래그 수동 조정 동작 확인; Reset 버튼 동작 확인 | T, D | UT-IP-048 | — |
 | SWR-IP-049 | PR-IP-035 | Black Mask (Automatic Shutters) | Auto-trimming 경계 기반으로 조사야 외부 영역을 픽셀값 0(검정)으로 마스킹: ① [Black Mask On/Off] 토글; ② 마스크 경계는 SWR-IP-048의 조사야 경계와 연동; ③ 마스크 적용/해제 ≤100ms; ④ 마스크 영역의 W/L 계산에서 제외 (Black 영역이 W/L에 영향 주지 않음). | Functional | Black Mask On/Off 토글 동작 확인; W/L 계산 마스크 영역 제외 확인 | T, D | UT-IP-049 | — |
 | SWR-IP-050 | PR-IP-036 | CLAHE Contrast Optimization | C++ `ContrastOptimization.ApplyCLAHE()`: ① CLAHE (Contrast Limited Adaptive Histogram Equalization) 알고리즘 적용; ② 파라미터: clipLimit (기본 2.0), tileGridSize (8×8); ③ 자동 최적화 후 사용자 Fine-tuning 슬라이더 제공; ④ [Original 복원] 버튼으로 원본 복귀. | Functional | CLAHE 적용 후 영상 대비 향상 시각적 확인; Original 복원 버튼 동작 확인 | T, D | UT-IP-050 | — |
-| SWR-IP-051 | PR-IP-036 | Contrast 수동 Fine-tuning | CLAHE 적용 후 추가 Contrast 조정: ① Gamma 보정 슬라이더 (0.5~2.5); ② Contrast 강도 슬라이더 (-100%~+100%); ③ 변경 시 ≤200ms 재처리. | Functional | 슬라이더 조정 ≤200ms 재처리 확인 | T | UT-IP-051 | — |
+| SWR-IP-051 | PR-IP-036 | Contrast 수동 Fine-tuning | CLAHE 적용 후 추가 Contrast 조정: ① Gamma 보정 슬라이더 (0.5–2.5); ② Contrast 강도 슬라이더 (-100%~+100%); ③ 변경 시 ≤200ms 재처리. | Functional | 슬라이더 조정 ≤200ms 재처리 확인 | T | UT-IP-051 | — |
 | SWR-IP-052 | PR-IP-037 | Brightness Control | 전체 밝기(Offset) 조정: ① 슬라이더: -100%~+100%; ② 숫자 직접 입력; ③ 변경 시 ≤100ms 재처리; ④ 디폴트(0%) 복원 버튼. 내부 구현: 16-bit 픽셀에 오프셋 덧셈/뺄셈 (클리핑 처리). | Functional | -100%~+100% 전 범위 동작 확인; ≤100ms 재처리 확인 | T, D | UT-IP-052 | — |
 
 ---
 
 ### 5.4 선량 관리 (Dose Management) — SWR-DM
 
-#### PR-DM-040~046: 선량 관리 전체
+#### PR-DM-040–046: 선량 관리 전체
 
 | SWR ID | 출처 PR | 요구사항명 | 상세 기술 사양 | IEC 62304 분류 | 수용 기준 | 검증 방법(TIAD) | 검증 TC | 위험 참조 |
 |--------|---------|-----------|--------------|----------------|----------|----------------|---------|----------|
 | SWR-DM-040 | PR-DM-040 | DAP 데이터 수신 | Generator의 노출 완료 이벤트(`ExposureCompleteEventArgs`)에서 DAP 값 추출: ① DAP 단위: μGy·cm²; ② DAP 미터 없는 Generator의 경우 kVp × mAs × 보정계수로 추정; ③ DAP 값을 `DoseRecord` 모델에 저장; ④ 노출 후 ≤2초 내 화면 표시 (PR-DM-040 수용 기준). | Safety-related | 노출 후 ≤2초 내 DAP 표시 확인; μGy·cm² 단위 표시 확인 | T, A | UT-DM-040, IT-DM-040 | HAZ-RAD |
 | SWR-DM-041 | PR-DM-040 | DAP 누적 표시 | 검사(Study) 단위 누적 DAP 표시: ① 각 Projection별 DAP 개별 표시; ② 검사 전체 누적 DAP 합산 표시; ③ 우측 패널에 실시간 업데이트; ④ 누적 DAP 값을 DB `dose_records` 테이블에 기록. | Safety-related | 누적 DAP 계산 정확도 확인; DB 기록 확인 | T, A | UT-DM-041, IT-DM-041 | HAZ-RAD |
-| SWR-DM-042 | PR-DM-041 | ESD 계산 알고리즘 | `DoseService.CalculateESD(kvp, mas, fsd, thickness, bpe)`: ① ESD 공식: ESD = k × kVp^n × mAs × (FSD₀/FSD)² × BSF; ② 파라미터: k=환경 보정계수, n=1.8~2.0, BSF=후방산란계수(신체 부위별); ③ FSD = SID - 환자두께/2; ④ 결과 단위: mGy; ⑤ 계산 불확도 ±20% 사용자 표시 (PR-DM-041 수용 기준). | Safety-related | ESD 계산값 참조값 대비 ±20% 이내 확인; 불확도 표시 확인 | T, A | UT-DM-042 | HAZ-RAD |
+| SWR-DM-042 | PR-DM-041 | ESD 계산 알고리즘 | `DoseService.CalculateESD(kvp, mas, fsd, thickness, bpe)`: ① ESD 공식: ESD = k × kVp^n × mAs × (FSD₀/FSD)² × BSF; ② 파라미터: k=환경 보정계수, n=1.8–2.0, BSF=후방산란계수(신체 부위별); ③ FSD = SID - 환자두께/2; ④ 결과 단위: mGy; ⑤ 계산 불확도 ±20% 사용자 표시 (PR-DM-041 수용 기준). | Safety-related | ESD 계산값 참조값 대비 ±20% 이내 확인; 불확도 표시 확인 | T, A | UT-DM-042 | HAZ-RAD |
 | SWR-DM-043 | PR-DM-041 | ESD 경고 및 고지 | ESD 계산 결과 화면 표시: ① ESD 값 + "±20% 추정값" 표시; ② DRL 기준 대비 비율 표시 (%); ③ ESD가 DRL 초과 시 황색 경고; ④ ESD가 DRL의 2배 초과 시 적색 경고 + 확인 필요 다이얼로그. | Safety-related | DRL 초과 시 황색/적색 경고 100% 표시 확인 | T, A | UT-DM-043 | HAZ-RAD |
 | SWR-DM-044 | PR-DM-042 | RDSR 자동 생성 | 검사 완료(MPPS Completed) 이벤트 후 DICOM RDSR 자동 생성: ① fo-dicom으로 DICOM TID 10011 (X-Ray Radiation Dose) Structured Report 생성; ② 포함 데이터: 환자 정보, 검사 정보, 각 노출의 kVp/mAs/DAP/ESD/EI/DI/FSD/필터, RDSR 생성 일시; ③ SOP Class UID: 1.2.840.10008.5.1.4.1.1.88.67 (Enhanced SR); ④ 생성 완료 후 SWR-DC-050(C-STORE)으로 PACS/Dose Registry 전송. | Safety-related | RDSR DICOM IOD 완전성 100%; C-STORE 전송 성공 확인 | T, I | UT-DM-044, IT-DM-044 | HAZ-RAD, HAZ-DATA |
 | SWR-DM-045 | PR-DM-042 | RDSR 생성 실패 처리 | RDSR 생성 또는 전송 실패 시: ① "RDSR 생성 실패 (RDSR Generation Failed)" 오류 알림; ② 로컬 파일 시스템에 RDSR 백업 저장: `%ProgramData%\HnVue\RDSR\`; ③ 전송 큐에 추가하여 네트워크 복구 시 자동 재전송 (SWR-DC-051 연동); ④ 미전송 RDSR 개수를 상태 바에 표시. | Safety-related | RDSR 실패 시 로컬 백업 저장 확인; 재전송 큐 동작 확인 | T | UT-DM-045 | HAZ-RAD, HAZ-DATA |
@@ -422,7 +422,7 @@ flowchart TD
 | SWR-DM-047 | PR-DM-043 | Exposure Index 계산 | IEC 62494-1 기반 EI/DI 계산: ① EI (Exposure Index) = c × q̄_def (설정 대상 영역 평균 픽셀값 기반 계산); ② DI (Deviation Index) = 10 × log10(EI / EI_target); ③ EI_target: 신체 부위별 표준값 (예: Chest PA = 800); ④ 각 Projection 완료 시 자동 계산; ⑤ 계산 결과를 `dose_records` DB 저장. | Safety-related | DI 계산 공식 정확도 ±0.1 확인; IEC 62494-1 기준치 대비 검증 | T, A | UT-DM-047 | HAZ-RAD |
 | SWR-DM-048 | PR-DM-043 | EI/DI 경고 시스템 | DI 값에 따른 색상 경고: ① DI < -2: 황색 경고 + "노출 부족 (Under-Exposure)" 메시지; ② DI > +2: 황색 경고 + "노출 과다 (Over-Exposure)" 메시지; ③ DI < -3 또는 > +3: 적색 경고 + 관리자 알림; ④ 경고 시 재촬영 권고 메시지 표시; ⑤ 모든 DI 이상값 DB에 기록. | Safety-related | DI ±2 이상 시 황색, ±3 이상 시 적색 경고 100% 표시 확인 | T, A | UT-DM-048 | HAZ-RAD |
 | SWR-DM-049 | PR-DM-044 | DRL 데이터베이스 내장 | 한국 NCRP 및 EU EUREF DRL 기준값 내장 DB: ① 신체 부위별 DRL 값 (ESD 또는 DAP 기준); ② DB 형식: SQLite `drl_reference` 테이블; ③ 한국 DRL: 식약처 고시 기준; ④ 병원 자체 DRL 설정 추가 가능 (최대 500개). | Functional | 내장 DRL 데이터베이스 로드 정상 확인; 병원 자체 DRL 저장/로드 확인 | T, I | UT-DM-049 | HAZ-RAD |
-| SWR-DM-050 | PR-DM-044 | DRL 비교 경고 | 각 노출 후 현재 선량 vs DRL 자동 비교: ① DRL 80~100%: 황색 인디케이터; ② DRL 초과: 적색 인디케이터 + "DRL 초과 (DRL Exceeded): 현재 선량이 [신체부위] DRL 기준을 초과했습니다" 팝업; ③ 팝업은 방사선사가 확인(Acknowledge) 후 닫힘; ④ 초과 이력 DB에 기록 + 주간 리포트 포함. | Safety-related | DRL 초과 시 팝업 100% 표시; 확인 없이 팝업 닫힘 불가 확인 | T, A | UT-DM-050, IT-DM-050 | HAZ-RAD |
+| SWR-DM-050 | PR-DM-044 | DRL 비교 경고 | 각 노출 후 현재 선량 vs DRL 자동 비교: ① DRL 80–100%: 황색 인디케이터; ② DRL 초과: 적색 인디케이터 + "DRL 초과 (DRL Exceeded): 현재 선량이 [신체부위] DRL 기준을 초과했습니다" 팝업; ③ 팝업은 방사선사가 확인(Acknowledge) 후 닫힘; ④ 초과 이력 DB에 기록 + 주간 리포트 포함. | Safety-related | DRL 초과 시 팝업 100% 표시; 확인 없이 팝업 닫힘 불가 확인 | T, A | UT-DM-050, IT-DM-050 | HAZ-RAD |
 | SWR-DM-051 | PR-DM-045 | 전자 X-ray 로그북 데이터 기록 | 모든 노출 완료 시 `dose_log` 테이블에 자동 기록: ① 환자 ID, 환자 성명, 검사 날짜/시간 (UTC), 검사 부위, Projection명, kVp, mAs, DAP, ESD, EI, DI, SID, 기술자 ID, Generator ID, Detector ID. ② 삽입은 트랜잭션으로 처리; ③ 로그 데이터는 수정 불가 (Insert-Only 정책). | Safety-related | 모든 노출에 대한 로그 기록 100% 확인; 수정 시도 차단 확인 | T, I | UT-DM-051, IT-DM-051 | HAZ-RAD, HAZ-DATA |
 | SWR-DM-052 | PR-DM-045 | 로그북 내보내기 (Export) | 도즈 로그북 내보내기 기능: ① 기간 필터 (날짜 범위); ② 기술자 필터; ③ 출력 형식: CSV (UTF-8 BOM) 또는 PDF; ④ PDF: fo-dicom + ReportViewer 기반, 병원 로고 포함; ⑤ CSV 컬럼: 모든 `dose_log` 필드; ⑥ 내보내기 실행 후 파일 저장 다이얼로그 표시. | Functional | CSV/PDF 출력 형식 정상 생성 확인; UTF-8 BOM CSV 확인 | T | UT-DM-052 | — |
 | SWR-DM-053 | PR-DM-046 | Reject Analysis 데이터 기록 | 방사선사가 영상 거부(Reject) 시 `reject_log` 테이블에 기록: ① 환자 ID, 검사 날짜, 신체 부위, Projection명, 거부 일시, 기술자 ID, 거부 원인 코드. ② 거부 원인 카테고리 ≥10종 (PR-DM-046): Positioning Error, Motion Blur, Over-Exposure, Under-Exposure, Technical Error, Patient Movement, Artifacts, Collimation Error, Grid Error, Repeat). ③ 기술자가 카테고리 선택 + 자유 텍스트 코멘트 입력 가능. | Functional | 거부 원인 ≥10개 카테고리 선택 UI 확인; DB 기록 확인 | T, I | UT-DM-053 | HAZ-RAD |
@@ -433,7 +433,7 @@ flowchart TD
 
 ### 5.5 DICOM/통신 (DICOM/Communication) — SWR-DC
 
-#### PR-DC-050~056: DICOM 서비스 전체
+#### PR-DC-050–056: DICOM 서비스 전체
 
 | SWR ID | 출처 PR | 요구사항명 | 상세 기술 사양 | IEC 62304 분류 | 수용 기준 | 검증 방법(TIAD) | 검증 TC | 위험 참조 |
 |--------|---------|-----------|--------------|----------------|----------|----------------|---------|----------|
@@ -457,7 +457,7 @@ flowchart TD
 
 ### 5.6 시스템 관리 (System Administration) — SWR-SA
 
-#### PR-SA-060~067: 시스템 관리 전체
+#### PR-SA-060–067: 시스템 관리 전체
 
 | SWR ID | 출처 PR | 요구사항명 | 상세 기술 사양 | IEC 62304 분류 | 수용 기준 | 검증 방법(TIAD) | 검증 TC | 위험 참조 |
 |--------|---------|-----------|--------------|----------------|----------|----------------|---------|----------|
@@ -484,7 +484,7 @@ flowchart TD
 
 ### 5.7 사이버보안 (Cybersecurity) — SWR-CS
 
-#### PR-CS-070~076: 사이버보안 전체
+#### PR-CS-070–076: 사이버보안 전체
 
 ```mermaid
 stateDiagram-v2
@@ -518,8 +518,8 @@ stateDiagram-v2
 | SWR-CS-072 | PR-CS-070 | 비밀번호 정책 강제 | 비밀번호 설정/변경 시 정책 검증: ① 최소 8자 (SWR-NF-SC-042); ② 대문자 1자 이상; ③ 소문자 1자 이상; ④ 숫자 1자 이상; ⑤ 특수문자 1자 이상 (!@#$%^&*); ⑥ 90일 만료 시 강제 변경; ⑦ 이전 5개 비밀번호 재사용 금지 (해시 비교). 정책 위반 시 구체적 오류 메시지 표시. | Security-related | 비밀번호 정책 위반 시 저장 차단 100% 확인; 이전 비밀번호 재사용 차단 확인 | T, I | UT-CS-072 | HAZ-SEC |
 | SWR-CS-073 | PR-CS-071 | AD/LDAP 도메인 인증 | LDAP v3 기반 도메인 인증 (Phase 1.5): ① `LdapAuthService.Authenticate(domain, username, password)`; ② 호환 프로토콜: LDAPS (SSL/TLS), Kerberos; ③ 도메인 설정: AD 서버 IP, Base DN, 검색 필터 (시스템 설정에서 관리자가 설정); ④ 도메인 그룹 → 시스템 역할 매핑 테이블 관리; ⑤ 도메인 서버 연결 불가 시 로컬 계정 폴백 옵션 (설정 가능). | Security-related | LDAP 인증 성공 확인; 도메인 서버 불가 시 폴백 동작 확인 | T, D | UT-CS-073, IT-CS-073 | HAZ-SEC |
 | SWR-CS-074 | PR-CS-071 | SSO 실패 폴백 처리 | 도메인 인증 실패 시 처리: ① 타임아웃(10초) 또는 연결 실패 시 자동으로 로컬 인증 화면 표시; ② "도메인 서버에 연결할 수 없습니다. 로컬 계정으로 로그인하세요" 안내; ③ 폴백 이벤트 감사 로그 기록. | Security-related | 도메인 실패 후 로컬 인증 폴백 확인 | T | UT-CS-074 | HAZ-SEC |
-| SWR-CS-075 | PR-CS-072 | 세션 비활성 타임아웃 | 비활성 타임아웃 관리: ① 기본값 15분, 관리자 설정 가능(5~60분); ② 마우스 이동, 키보드 입력, 터치로 비활성 타이머 리셋; ③ 타임아웃 3분 전: 화면 하단에 "3분 후 자동 로그아웃됩니다. 계속하려면 화면을 터치하세요" 카운트다운 표시; ④ 타임아웃 시 세션 토큰 무효화 → 로그인 화면으로 전환. | Security-related | 비활성 타임아웃 정확히 동작 확인; 3분 전 경고 표시 확인 | T, D | UT-CS-075 | HAZ-SEC |
-| SWR-CS-076 | PR-CS-072 | 촬영 중 화면 잠금 (Quick PIN) | 촬영 세션 중 비활성 타임아웃 발생 시: ① 전체 로그아웃 대신 "화면 잠금 (Screen Lock)" 모드 진입; ② Quick PIN(4~6자리 숫자) 입력으로 잠금 해제; ③ PIN은 해시 저장, 사용자 계정과 연결; ④ 잠금 중 촬영 상태(현재 파라미터, Detector 연결) 유지; ⑤ PIN 3회 실패 시 전체 로그아웃 강제 (촬영 중 상태 Suspend 처리). | Safety-related | 촬영 중 Quick PIN 잠금 화면 표시 확인; PIN 입력 후 촬영 상태 복원 확인 | T, D | UT-CS-076, IT-CS-076 | HAZ-SEC, HAZ-RAD |
+| SWR-CS-075 | PR-CS-072 | 세션 비활성 타임아웃 | 비활성 타임아웃 관리: ① 기본값 15분, 관리자 설정 가능(5–60분); ② 마우스 이동, 키보드 입력, 터치로 비활성 타이머 리셋; ③ 타임아웃 3분 전: 화면 하단에 "3분 후 자동 로그아웃됩니다. 계속하려면 화면을 터치하세요" 카운트다운 표시; ④ 타임아웃 시 세션 토큰 무효화 → 로그인 화면으로 전환. | Security-related | 비활성 타임아웃 정확히 동작 확인; 3분 전 경고 표시 확인 | T, D | UT-CS-075 | HAZ-SEC |
+| SWR-CS-076 | PR-CS-072 | 촬영 중 화면 잠금 (Quick PIN) | 촬영 세션 중 비활성 타임아웃 발생 시: ① 전체 로그아웃 대신 "화면 잠금 (Screen Lock)" 모드 진입; ② Quick PIN(4–6자리 숫자) 입력으로 잠금 해제; ③ PIN은 해시 저장, 사용자 계정과 연결; ④ 잠금 중 촬영 상태(현재 파라미터, Detector 연결) 유지; ⑤ PIN 3회 실패 시 전체 로그아웃 강제 (촬영 중 상태 Suspend 처리). | Safety-related | 촬영 중 Quick PIN 잠금 화면 표시 확인; PIN 입력 후 촬영 상태 복원 확인 | T, D | UT-CS-076, IT-CS-076 | HAZ-SEC, HAZ-RAD |
 | SWR-CS-077 | PR-CS-072 | 세션 토큰 갱신 | 활성 세션 중 세션 토큰 자동 갱신: ① 토큰 유효 기간: 30분; ② 사용자 활동 감지 시 자동 갱신 (Sliding Expiration); ③ 촬영 중(Exposing/ImageProcessing 상태)에서는 세션 만료 타이머 정지; ④ 세션 토큰은 메모리에만 저장 (디스크에 평문 저장 금지). | Security-related | 촬영 중 세션 만료 발생 없음 확인; 토큰 디스크 저장 없음 확인 | T | UT-CS-077 | HAZ-SEC, HAZ-RAD |
 | SWR-CS-078 | PR-CS-073 | DICOM TLS mTLS 옵션 | SWR-DC-063에 추가: mTLS(Mutual TLS) 설정: ① 클라이언트 인증서 (.pfx/.p12) 파일 로드; ② 인증서 저장소: Windows Certificate Store 또는 파일 시스템; ③ mTLS 활성화 설정 가능 (일부 PACS는 mTLS 미지원). | Security-related | mTLS 활성화 시 클라이언트 인증서 검증 확인 | T, I | UT-CS-078 | HAZ-SEC |
 | SWR-CS-079 | PR-CS-073 | TLS 비활성화 관리자 확인 | 기술적 이유로 TLS를 비활성화할 경우: ① "경고 (Warning): TLS 암호화 비활성화 시 DICOM 통신이 평문으로 전송됩니다. 계속하시겠습니까?" 다이얼로그; ② Administrator 역할만 비활성화 가능; ③ 비활성화 시 화면 상단에 "TLS 비활성 (TLS Disabled)" 영구 경고 배너; ④ 감사 로그에 TLS 비활성화 기록 (비활성화 사유 필수 입력). | Security-related | TLS 비활성화 시 경고 다이얼로그 표시; Administrator만 비활성화 가능 확인 | T, I | UT-CS-079 | HAZ-SEC |
@@ -530,12 +530,12 @@ stateDiagram-v2
 | SWR-CS-084 | PR-CS-076 | **[v2.0 보강 — MR-039]** 코드 서명 검증 + 업데이트 무결성 | 애플리케이션 실행 전 자체 서명 검증: ① 메인 실행 파일(.exe), 핵심 DLL에 EV 코드 서명; ② 앱 런처(Launcher.exe)가 핵심 어셈블리의 서명을 시작 전 검증; ③ 서명 검증 로직: `AuthentiCode.Verify()` + 신뢰할 수 있는 CA(인증 기관) 체인 검증; ④ 검증 실패 시 실행 중단 + "소프트웨어 무결성 오류 (Integrity Failure): 변조가 감지되었습니다" 경고. | Security-related | 서명 변조 시 실행 차단 100% 확인; 정상 서명 파일 정상 실행 확인 | T, I | UT-CS-084, IT-CS-084 | HAZ-SEC, HAZ-SW |
 | SWR-CS-085 | PR-CS-076 | **[v2.0 보강 — MR-039]** 변조 감지 로그 기록 | 코드 서명 검증 실패 또는 런타임 무결성 이상 감지 시: ① Critical 레벨 보안 이벤트 로그 기록 (변조된 파일 경로, 감지 시각); ② 원격 모니터링 서버에 보안 이벤트 실시간 전송 (설정 가능); ③ 관리자에게 이메일/SMS 알림 (설정 가능); ④ 이벤트 감사 로그(SWR-SA-072)에도 병행 기록. | Security-related | 변조 감지 시 Critical 로그 기록 확인 | T | UT-CS-085 | HAZ-SEC, HAZ-SW |
 
-#### PR-CS-077: CVD + 보안 인시던트 대응 → SWR-CS-086~087
+#### PR-CS-077: CVD + 보안 인시던트 대응 → SWR-CS-086–087
 **[v2.0 신규 — MR-037, Tier 1]** MRD v3.0 MR-037 보완 반영. IEC 81001-5-1 Clause 8 요구사항 충족.
 
 | SWR ID | 출처 PR | MR 추적 | 요구사항명 | 상세 기술 사양 | IEC 62304 분류 | 수용 기준 | 검증 방법(TIAD) | 검증 TC | 위험 참조 |
 |--------|---------|---------|-----------|--------------|----------------|----------|----------------|---------|----------|
-| SWR-CS-086 | PR-CS-077 | MR-037 | CVD (취약점 공개 정책) 프로세스 구현 | CVD (Coordinated Vulnerability Disclosure) 프로세스 수립 및 운영: ① security@[회사도메인] 전용 보안 취약점 신고 채널 운영 (이메일 + 웹 폼); ② 취약점 수신 24시간 이내 접수 확인 응답; ③ 심각도 분류 기준 정의: Critical (CVSS ≥9.0) / High (CVSS 7.0~8.9) / Medium (CVSS 4.0~6.9) / Low (CVSS <4.0); ④ SLA 정의: Critical 30일, High 90일, Medium 180일 이내 패치 배포; ⑤ 패치 배포 전 신고자 사전 통보 (Responsible Disclosure); ⑥ CVD 정책 문서 공개 (제품 공식 웹사이트 또는 패키지 동봉); ⑦ FDA 524B Postmarket Cybersecurity Guidance 준수 — 취약점 정보 FDA 보고 의무 (중대 취약점). | Security-related | CVD 정책 문서 작성 완료 확인; security@ 채널 운영 확인; SLA 정의 문서화 확인 | I, A | UT-CS-086, IT-CS-086 | HAZ-SEC |
+| SWR-CS-086 | PR-CS-077 | MR-037 | CVD (취약점 공개 정책) 프로세스 구현 | CVD (Coordinated Vulnerability Disclosure) 프로세스 수립 및 운영: ① security@[회사도메인] 전용 보안 취약점 신고 채널 운영 (이메일 + 웹 폼); ② 취약점 수신 24시간 이내 접수 확인 응답; ③ 심각도 분류 기준 정의: Critical (CVSS ≥9.0) / High (CVSS 7.0–8.9) / Medium (CVSS 4.0–6.9) / Low (CVSS <4.0); ④ SLA 정의: Critical 30일, High 90일, Medium 180일 이내 패치 배포; ⑤ 패치 배포 전 신고자 사전 통보 (Responsible Disclosure); ⑥ CVD 정책 문서 공개 (제품 공식 웹사이트 또는 패키지 동봉); ⑦ FDA 524B Postmarket Cybersecurity Guidance 준수 — 취약점 정보 FDA 보고 의무 (중대 취약점). | Security-related | CVD 정책 문서 작성 완료 확인; security@ 채널 운영 확인; SLA 정의 문서화 확인 | I, A | UT-CS-086, IT-CS-086 | HAZ-SEC |
 | SWR-CS-087 | PR-CS-077 | MR-037 | 보안 인시던트 대응/복구 계획 (IRP) | 보안 인시던트 대응 및 복구 계획 (Incident Response Plan, IRP) 수립: ① 인시던트 정의 및 분류: 보안 침해, 랜섬웨어, 데이터 유출, SW 무결성 위반; ② 대응 절차 (Playbook): 탐지(Detect) → 격리(Contain) → 제거(Eradicate) → 복구(Recover) → 교훈(Lessons Learned); ③ 역할 및 책임 (RACI): 보안 담당자, 개발팀, 경영진, 법무팀; ④ 환자 안전 우선 조치: 인시던트 발생 시 임상 워크플로우 영향 최소화 프로토콜; ⑤ 규제 기관 보고 의무: 중대 보안 인시던트 시 FDA/MFDS 보고 SLA 정의; ⑥ 인시던트 기록 및 추적: 모든 인시던트를 Ticket 시스템으로 관리, 90일 이상 기록 보관; ⑦ 연간 IRP 훈련 및 Tabletop 시뮬레이션 실시 계획. IEC 81001-5-1 Clause 8 요구사항 충족. | Security-related | IRP 문서 작성 완료 확인; 대응 절차 Playbook 문서화 확인; 역할/책임 정의 확인 | I, A | UT-CS-087, IT-CS-087 | HAZ-SEC |
 
 ---
@@ -551,7 +551,7 @@ stateDiagram-v2
 | SWR-NF-PF-003 | PR-NF-PF-003 | DICOM 전송 속도 ≥100Mbps | Gigabit 네트워크 환경에서 C-STORE 전송 처리량 ≥100Mbps. 측정: 100개 DICOM 파일(각 10MB) 전송 총 시간 기반 계산. | ≥100Mbps @ Gigabit | T, A | ST-NF-PF-003 |
 | SWR-NF-PF-004 | PR-NF-PF-004 | GUI 응답 시간 ≤200ms | 버튼/터치 입력 이벤트 발생 ~ 첫 시각적 피드백 표시까지 ≤200ms. WPF UI 스레드 차단 금지 (모든 I/O 및 처리는 비동기). | ≤200ms 입력→피드백 | T, A | ST-NF-PF-004 |
 | SWR-NF-PF-005 | PR-NF-PF-005 | 시스템 부팅 시간 ≤60초 | BIOS POST 완료 후 → HnVue 로그인 화면 표시까지 ≤60초. 최적화: 지연 로딩(Lazy Loading), 백그라운드 초기화, 앱 시작 프로파일링. | ≤60초 (BIOS POST 이후) | T | ST-NF-PF-005 |
-| SWR-NF-PF-006 | PR-NF-PF-006 | 동시 Study 3개 병렬 관리 | 최소 3개 Study 동시 관리 시 각 Study의 응답 시간 기준치(SWR-NF-PF-001~004) 10% 이내 저하. 구현: Study별 독
+| SWR-NF-PF-006 | PR-NF-PF-006 | 동시 Study 3개 병렬 관리 | 최소 3개 Study 동시 관리 시 각 Study의 응답 시간 기준치(SWR-NF-PF-001–004) 10% 이내 저하. 구현: Study별 독
 ### 6.2 신뢰성 요구사항 — SWR-NF-RL
 
 | SWR ID | 출처 PR | 요구사항명 | 상세 기술 사양 | 수용 기준 | 검증 방법 | 검증 TC |
@@ -584,7 +584,7 @@ stateDiagram-v2
 | SWR-NF-CP-032 | PR-NF-CP-032 | Multi-vendor Generator ≥3종 | HAL 기반 Generator 드라이버 플러그인 아키텍처: ① Interface `IGeneratorDriver` 구현; ② 통신 방식: Serial(RS-232/RS-485), Ethernet TCP; ③ Phase 1 지원 벤더: Simens(X.pree), Shimadzu, GMM(Opera); ④ 모든 벤더에서 동일 인터페이스: SetParameters(), Expose(), GetStatus() 메서드. | ≥3개 벤더 Generator 통신 성공 | T, D | ST-NF-CP-032 |
 | SWR-NF-CP-033 | PR-NF-CP-033 | PACS 호환성 ≥5개 벤더 | 주요 PACS 5개 벤더와 DICOM 호환성 검증: ① Sectra PACS, ② Fujifilm Synapse, ③ Infinitt PACS, ④ Maroview, ⑤ Agfa Impax. 호환성 테스트 항목: C-STORE, C-FIND, C-MOVE, Storage Commitment, MPPS. IHE Connectathon 참여로 공식 검증 목표. | 5개 PACS와 DICOM 연동 성공; 전송 성공률 ≥99.9% | T, D | ST-NF-CP-033 |
 | SWR-NF-CP-034 | PR-NF-CP-034 | 모니터 해상도 지원 | 지원 해상도: ① 최소: 3MP(2048×1536) 의료용 그레이스케일 모니터; ② 권장: 3MP 또는 5MP 컬러 의료용 모니터; ③ 최대: 4K(3840×2160) UHD 지원. DPI 배율 지원: 100%, 125%, 150%, 200%(HiDPI). 멀티모니터: 기본 지원(영상 뷰어 외부 모니터 확장 가능). | 3MP/4K 모니터 정상 렌더링 확인 | T, I | ST-NF-CP-034 |
-| SWR-NF-CP-035 | PR-NF-CP-035 | DICOM 표준 2023a 준수 | DICOM PS3.1~3.20 최신 버전(2023a) 준수. 준수 항목: ① DX IOD(Digital X-Ray Image); ② CR IOD; ③ RDSR TID 10011; ④ MPPS IOD; ⑤ Modality Worklist IOD; ⑥ Storage Commitment; ⑦ Grayscale Standard Display Function; ⑧ IHE Scheduled Workflow (SWF) Profile 지원. DICOM Conformance Statement 문서 제공(PR-NF-RG-064). | DICOM 표준 체크리스트 100% 준수 | T, I | ST-NF-CP-035 |
+| SWR-NF-CP-035 | PR-NF-CP-035 | DICOM 표준 2023a 준수 | DICOM PS3.1–3.20 최신 버전(2023a) 준수. 준수 항목: ① DX IOD(Digital X-Ray Image); ② CR IOD; ③ RDSR TID 10011; ④ MPPS IOD; ⑤ Modality Worklist IOD; ⑥ Storage Commitment; ⑦ Grayscale Standard Display Function; ⑧ IHE Scheduled Workflow (SWF) Profile 지원. DICOM Conformance Statement 문서 제공(PR-NF-RG-064). | DICOM 표준 체크리스트 100% 준수 | T, I | ST-NF-CP-035 |
 
 ### 6.5 보안 요구사항 — SWR-NF-SC
 
@@ -613,7 +613,7 @@ stateDiagram-v2
 |--------|---------|-----------|--------------|----------|---------|---------| 
 | SWR-NF-RG-060 | PR-NF-RG-060 | **[v2.0 보강 — MR-050]** IEC 62304 Class B 산출물 완비 + STRIDE 위협 모델링 | IEC 62304 전체 산출물: SDP(SW 개발 계획), SRS/FRS(본 문서), SAD, SDS, UT 결과, IT 결과, ST 결과, V&V 보고서, 릴리스 보고서, 형상 관리 기록. 각 산출물은 DHF(Design History File)에 포함. **[v2.0 추가 — MR-050]** STRIDE 기반 위협 모델링 수행 및 문서화 필수 (IEC 81001-5-1 Clause 5.2 요구사항): ① STRIDE 방법론 적용 (Spoofing, Tampering, Repudiation, Information Disclosure, DoS, Elevation of Privilege); ② 아키텍처 설계(SAD) 단계에서 STRIDE 위협 분석 수행; ③ 각 위협에 대한 대응 통제 조치 식별 및 RTM 연결; ④ 위협 모델링 문서 DHF에 포함. | IEC 62304 갭 분석 결과 0 Gap; STRIDE 위협 모델링 문서 완비 | I, A | ST-NF-RG-060 |
 | SWR-NF-RG-061 | PR-NF-RG-061 | ISO 14971 위험 참조 매핑 | 본 FRS의 모든 Safety-related SWR에 HAZ-xxx 위험 참조 포함(본 문서 §5 테이블의 「위험 참조」 컬럼). 위험 통제 조치(Risk Control Measure) ↔ SWR 양방향 추적성 확보. 잔류 위험 허용성 평가는 별도 Risk Management Report에서 수행. | 모든 Safety-related SWR의 위험 참조 기재 100% | I, A | ST-NF-RG-061 |
-| SWR-NF-RG-062 | PR-NF-RG-062 | IEC 62366 Usability Engineering | Summative Usability Test 완료 및 보고서 제출: ① Use Specification (본 PRD §2.1~2.4 기반); ② Formative 평가: 개발 Sprint 4, 8에서 수행; ③ Summative 평가: VT-UX-001~003; ④ 안전 관련 Task(Emergency 등록, DRL 경고 응답) 완료율 ≥95%; ⑤ Usability Engineering File(UEF) DHF에 포함. | 안전 Task 완료율 ≥95% (VT-UX-002) | D, A | ST-NF-RG-062 |
+| SWR-NF-RG-062 | PR-NF-RG-062 | IEC 62366 Usability Engineering | Summative Usability Test 완료 및 보고서 제출: ① Use Specification (본 PRD §2.1–2.4 기반); ② Formative 평가: 개발 Sprint 4, 8에서 수행; ③ Summative 평가: VT-UX-001–003; ④ 안전 관련 Task(Emergency 등록, DRL 경고 응답) 완료율 ≥95%; ⑤ Usability Engineering File(UEF) DHF에 포함. | 안전 Task 완료율 ≥95% (VT-UX-002) | D, A | ST-NF-RG-062 |
 | SWR-NF-RG-063 | PR-NF-RG-063 | FDA 21 CFR 820.30 Design Controls | Design Controls 전 단계 산출물 완비: ① Design Input(PRD v3.0); ② Design Output(FRS, SAD, SDS); ③ Design Reviews(§12.3 리뷰 기록); ④ Design Verification(UT+IT+ST 보고서); ⑤ Design Validation(VT-UX/CL/SEC 보고서); ⑥ Design Transfer(제조/설치 프로세스 문서); ⑦ Design Changes(변경 이력 및 영향도 분석). | Design Controls DHF 완전성 Inspection 통과 | I, A | ST-NF-RG-063 |
 | SWR-NF-RG-064 | PR-NF-RG-064 | DICOM Conformance Statement | DICOM PS 3.2 형식에 따른 DICOM Conformance Statement 문서 작성: ① 지원 SOP 클래스(SCU/SCP) 목록; ② 지원 전송 구문(Transfer Syntax); ③ 보안 프로파일(TLS); ④ 각 서비스의 IOD 구현 범위; ⑤ 벤더별 독점 확장(Private Tags) 목록. 릴리스마다 업데이트. | DICOM Conformance Statement 완전성 Inspection 통과 | I | ST-NF-RG-064 |
 | SWR-NF-RG-065 | PR-NF-RG-065 | RTM 완전성 100% | §10의 추적성 매트릭스(PR → SWR)가 모든 PR-xxx 및 PR-NF-xxx를 포함. SWR → SAD → SDS → TC 전방향 추적성 및 TC → SWR → PR → MR 역방향 추적성 100% 확보. RTM 업데이트 주기: 요구사항 변경 시 즉시 업데이트, 릴리스마다 완전성 검토. | RTM 완전성 100% Inspection 통과 | I, A | ST-NF-RG-065 |
@@ -630,14 +630,14 @@ stateDiagram-v2
 |-----------|--------------|----------------|---------|---------|
 | DX Image Storage | 1.2.840.10008.5.1.4.1.1.1.1 | SCU | Explicit VR LE, JPEG Lossless | SWR-DC-050 |
 | CR Image Storage | 1.2.840.10008.5.1.4.1.1.1 | SCU | Explicit VR LE | SWR-DC-050 |
-| Radiation Dose SR | 1.2.840.10008.5.1.4.1.1.88.67 | SCU | Explicit VR LE | SWR-DM-044~046 |
-| MPPS (Performed Procedure Step) | 1.2.840.10008.3.1.2.3.3 | SCU | Implicit VR LE | SWR-DC-055~056 |
-| Modality Worklist Management | 1.2.840.10008.5.1.4.31 | SCU | Implicit VR LE, Explicit VR LE | SWR-DC-053~054 |
-| Storage Commitment Push Model | 1.2.840.10008.1.3.10 | SCU | Explicit VR LE | SWR-DC-057~058 |
-| Basic Grayscale Print Management | 1.2.840.10008.5.1.1.9 | SCU | Implicit VR LE | SWR-DC-059~060 |
+| Radiation Dose SR | 1.2.840.10008.5.1.4.1.1.88.67 | SCU | Explicit VR LE | SWR-DM-044–046 |
+| MPPS (Performed Procedure Step) | 1.2.840.10008.3.1.2.3.3 | SCU | Implicit VR LE | SWR-DC-055–056 |
+| Modality Worklist Management | 1.2.840.10008.5.1.4.31 | SCU | Implicit VR LE, Explicit VR LE | SWR-DC-053–054 |
+| Storage Commitment Push Model | 1.2.840.10008.1.3.10 | SCU | Explicit VR LE | SWR-DC-057–058 |
+| Basic Grayscale Print Management | 1.2.840.10008.5.1.1.9 | SCU | Implicit VR LE | SWR-DC-059–060 |
 | Study Root Q/R — FIND | 1.2.840.10008.5.1.4.1.2.2.1 | SCU | Explicit VR LE | SWR-DC-061 |
 | Study Root Q/R — MOVE | 1.2.840.10008.5.1.4.1.2.2.2 | SCU | Explicit VR LE | SWR-DC-062 |
-| Presentation State Storage | 1.2.840.10008.5.1.4.1.1.11.1 | SCU | Explicit VR LE | SWR-IP-037~038 |
+| Presentation State Storage | 1.2.840.10008.5.1.4.1.1.11.1 | SCU | Explicit VR LE | SWR-IP-037–038 |
 
 #### 7.1.2 DICOM 데이터 흐름도 (Data Flow Diagram)
 
@@ -646,14 +646,14 @@ flowchart TD
     classDef default fill:#444,stroke:#666,color:#fff
     subgraph Console["HnVue （SCU）"]
         direction TB
-        MWL_SCU["MWL SCU\n（C-FIND）\nSWR-DC-053~054"]
-        MPPS_SCU["MPPS SCU\n（N-CREATE/N-SET）\nSWR-DC-055~056"]
-        STOR_SCU["Storage SCU\n（C-STORE）\nSWR-DC-050~052"]
-        COMMIT_SCU["Storage Commitment SCU\n（N-ACTION）\nSWR-DC-057~058"]
-        QR_SCU["Q/R SCU\n（C-FIND/C-MOVE）\nSWR-DC-061~062"]
-        RDSR_SCU["RDSR C-STORE SCU\nSWR-DM-044~046"]
-        PRINT_SCU["Print SCU\nSWR-DC-059~060"]
-        TLS["TLS 1.2/1.3\n암호화 레이어\nSWR-DC-063~064"]
+        MWL_SCU["MWL SCU\n（C-FIND）\nSWR-DC-053–054"]
+        MPPS_SCU["MPPS SCU\n（N-CREATE/N-SET）\nSWR-DC-055–056"]
+        STOR_SCU["Storage SCU\n（C-STORE）\nSWR-DC-050–052"]
+        COMMIT_SCU["Storage Commitment SCU\n（N-ACTION）\nSWR-DC-057–058"]
+        QR_SCU["Q/R SCU\n（C-FIND/C-MOVE）\nSWR-DC-061–062"]
+        RDSR_SCU["RDSR C-STORE SCU\nSWR-DM-044–046"]
+        PRINT_SCU["Print SCU\nSWR-DC-059–060"]
+        TLS["TLS 1.2/1.3\n암호화 레이어\nSWR-DC-063–064"]
     end
 
     subgraph External["외부 시스템"]
@@ -724,7 +724,7 @@ stateDiagram-v2
     note right of Exposing
         X-Ray 발생 중
         UI 노출 버튼 비활성화
-        SWR-WF-018~020 적용
+        SWR-WF-018–020 적용
     end note
 ```
 
@@ -746,9 +746,9 @@ stateDiagram-v2
 
 | 통신 방식 | 사용 케이스 | 데이터 | 관련 SWR |
 |---------|-----------|--------|---------|
-| GigE Vision (GigE 표준) | 유선 FPD 영상 데이터 수신 | Raw 16-bit 영상 프레임 | SWR-WF-023~025 |
-| 벤더 SDK (Canon/Fujifilm/Vieworks) | 드라이버 레벨 통신 | 상태 정보, 트리거, 캘리브레이션 | SWR-WF-021~022, SWR-SA-067~068 |
-| WiFi (무선 FPD) | 무선 FPD 상태/영상 수신 | 영상 + 배터리/신호 강도 상태 | SWR-WF-021~022 |
+| GigE Vision (GigE 표준) | 유선 FPD 영상 데이터 수신 | Raw 16-bit 영상 프레임 | SWR-WF-023–025 |
+| 벤더 SDK (Canon/Fujifilm/Vieworks) | 드라이버 레벨 통신 | 상태 정보, 트리거, 캘리브레이션 | SWR-WF-021–022, SWR-SA-067–068 |
+| WiFi (무선 FPD) | 무선 FPD 상태/영상 수신 | 영상 + 배터리/신호 강도 상태 | SWR-WF-021–022 |
 
 #### 7.3.2 FPD 상태 코드 및 처리 로직
 
@@ -766,7 +766,7 @@ stateDiagram-v2
 
 | 메시지 유형 | 표준 | 이벤트 | 목적 | 관련 SWR |
 |-----------|------|--------|------|---------|
-| ADT^A01 | HL7 v2.x | Patient Admit | HIS에서 환자 인구통계 수신 | SWR-PM-006~008 |
+| ADT^A01 | HL7 v2.x | Patient Admit | HIS에서 환자 인구통계 수신 | SWR-PM-006–008 |
 | ADT^A08 | HL7 v2.x | Patient Update | 환자 정보 업데이트 | SWR-PM-010 |
 | ORM^O01 | HL7 v2.x | Order | 검사 의뢰 수신 (MWL 대체) | SWR-PM-006 |
 | ORU^R01 | HL7 v2.x | Observation Result | 검사 결과 전송 | SWR-DC-055 |
@@ -1042,70 +1042,70 @@ flowchart LR
 
 | PR ID | PR 요구사항명 | 파생 SWR 범위 | SWR 개수 | IEC 62304 분류 | 검증 TC (대표) | 밸리데이션 |
 |-------|------------|-------------|---------|---------------|-------------|---------|
-| PR-PM-001 | 환자 수동 등록 | SWR-PM-001~004 | 4 | Non-safety | ST-PR-PM-001 | VT-UX-001 |
-| PR-PM-002 | 환자 정보 조회·수정 | SWR-PM-010~013 | 4 | Non-safety | ST-PR-PM-002 | VT-UX-001 |
-| PR-PM-003 | DICOM MWL 자동 불러오기 | SWR-PM-020~023 | 4 | Non-safety | ST-PR-PM-003 | VT-UX-001 |
-| PR-PM-004 | 응급 환자 빠른 등록 | SWR-PM-030~033 | 4 | Safety-related | ST-PR-PM-004 | VT-UX-002, VT-CL-001 |
-| PR-PM-005 | 환자 검색 | SWR-PM-040~043 | 4 | Non-safety | ST-PR-PM-005 | VT-UX-001 |
-| PR-PM-006 | 환자 삭제 (GDPR) | SWR-PM-050~053 | 4 | Non-safety | ST-PR-PM-006 | VT-UX-001 |
-| PR-WF-010 | APR 프로토콜 관리 | SWR-WF-010~012 | 3 | Safety-related | ST-PR-WF-010 | VT-CL-001 |
-| PR-WF-011 | 촬영 순서 설정·변경 | SWR-WF-013~014 | 2 | Non-safety | ST-PR-WF-011 | VT-UX-002 |
-| PR-WF-012 | 촬영 조건 설정 | SWR-WF-015~017 | 3 | Safety-related | ST-PR-WF-012 | VT-CL-001 |
-| PR-WF-013 | Generator 통신 및 제어 | SWR-WF-018~020 | 3 | Safety-related | ST-PR-WF-013 | VT-CL-001 |
-| PR-WF-014 | Detector 상태 모니터링 | SWR-WF-021~022 | 2 | Safety-related | ST-PR-WF-014 | VT-CL-001 |
-| PR-WF-015 | 촬영 실행 및 영상 수신 | SWR-WF-023~025 | 3 | Safety-related | ST-PR-WF-015 | VT-CL-001 |
-| PR-WF-016 | Emergency/Trauma 워크플로우 | SWR-WF-026~027 | 2 | Safety-related | ST-PR-WF-016 | VT-CL-001, VT-UX-002 |
-| PR-WF-017 | Multi-study 지원 | SWR-WF-028~029 | 2 | Non-safety | ST-PR-WF-017 | VT-UX-002 |
-| PR-WF-018 | Suspend/Resume Exam | SWR-WF-030~031 | 2 | Non-safety | ST-PR-WF-018 | VT-UX-002 |
-| PR-WF-019 | CD/DVD Burning with DICOM Viewer | SWR-WF-032~034 | 3 | Non-safety | ST-PR-WF-019 | VT-CL-001, VT-UX-002 |
-| PR-IP-020 | 실시간 영상 표시 | SWR-IP-020~021 | 2 | Safety-related | ST-PR-IP-020 | VT-CL-001 |
-| PR-IP-021 | Window/Level 조정 | SWR-IP-022~023 | 2 | Non-safety | ST-PR-IP-021 | VT-UX-002 |
-| PR-IP-022 | Zoom | SWR-IP-024~025 | 2 | Non-safety | ST-PR-IP-022 | VT-UX-002 |
+| PR-PM-001 | 환자 수동 등록 | SWR-PM-001–004 | 4 | Non-safety | ST-PR-PM-001 | VT-UX-001 |
+| PR-PM-002 | 환자 정보 조회·수정 | SWR-PM-010–013 | 4 | Non-safety | ST-PR-PM-002 | VT-UX-001 |
+| PR-PM-003 | DICOM MWL 자동 불러오기 | SWR-PM-020–023 | 4 | Non-safety | ST-PR-PM-003 | VT-UX-001 |
+| PR-PM-004 | 응급 환자 빠른 등록 | SWR-PM-030–033 | 4 | Safety-related | ST-PR-PM-004 | VT-UX-002, VT-CL-001 |
+| PR-PM-005 | 환자 검색 | SWR-PM-040–043 | 4 | Non-safety | ST-PR-PM-005 | VT-UX-001 |
+| PR-PM-006 | 환자 삭제 (GDPR) | SWR-PM-050–053 | 4 | Non-safety | ST-PR-PM-006 | VT-UX-001 |
+| PR-WF-010 | APR 프로토콜 관리 | SWR-WF-010–012 | 3 | Safety-related | ST-PR-WF-010 | VT-CL-001 |
+| PR-WF-011 | 촬영 순서 설정·변경 | SWR-WF-013–014 | 2 | Non-safety | ST-PR-WF-011 | VT-UX-002 |
+| PR-WF-012 | 촬영 조건 설정 | SWR-WF-015–017 | 3 | Safety-related | ST-PR-WF-012 | VT-CL-001 |
+| PR-WF-013 | Generator 통신 및 제어 | SWR-WF-018–020 | 3 | Safety-related | ST-PR-WF-013 | VT-CL-001 |
+| PR-WF-014 | Detector 상태 모니터링 | SWR-WF-021–022 | 2 | Safety-related | ST-PR-WF-014 | VT-CL-001 |
+| PR-WF-015 | 촬영 실행 및 영상 수신 | SWR-WF-023–025 | 3 | Safety-related | ST-PR-WF-015 | VT-CL-001 |
+| PR-WF-016 | Emergency/Trauma 워크플로우 | SWR-WF-026–027 | 2 | Safety-related | ST-PR-WF-016 | VT-CL-001, VT-UX-002 |
+| PR-WF-017 | Multi-study 지원 | SWR-WF-028–029 | 2 | Non-safety | ST-PR-WF-017 | VT-UX-002 |
+| PR-WF-018 | Suspend/Resume Exam | SWR-WF-030–031 | 2 | Non-safety | ST-PR-WF-018 | VT-UX-002 |
+| PR-WF-019 | CD/DVD Burning with DICOM Viewer | SWR-WF-032–034 | 3 | Non-safety | ST-PR-WF-019 | VT-CL-001, VT-UX-002 |
+| PR-IP-020 | 실시간 영상 표시 | SWR-IP-020–021 | 2 | Safety-related | ST-PR-IP-020 | VT-CL-001 |
+| PR-IP-021 | Window/Level 조정 | SWR-IP-022–023 | 2 | Non-safety | ST-PR-IP-021 | VT-UX-002 |
+| PR-IP-022 | Zoom | SWR-IP-024–025 | 2 | Non-safety | ST-PR-IP-022 | VT-UX-002 |
 | PR-IP-023 | Pan | SWR-IP-026 | 1 | Non-safety | ST-PR-IP-023 | VT-UX-002 |
-| PR-IP-024 | Rotation | SWR-IP-027~028 | 2 | Non-safety | ST-PR-IP-024 | VT-UX-002 |
-| PR-IP-025 | Image Stitching | SWR-IP-029~031 | 3 | Non-safety | ST-PR-IP-025 | VT-CL-002 |
-| PR-IP-026 | 거리 측정 | SWR-IP-032~033 | 2 | Safety-related | ST-PR-IP-026 | VT-CL-002 |
+| PR-IP-024 | Rotation | SWR-IP-027–028 | 2 | Non-safety | ST-PR-IP-024 | VT-UX-002 |
+| PR-IP-025 | Image Stitching | SWR-IP-029–031 | 3 | Non-safety | ST-PR-IP-025 | VT-CL-002 |
+| PR-IP-026 | 거리 측정 | SWR-IP-032–033 | 2 | Safety-related | ST-PR-IP-026 | VT-CL-002 |
 | PR-IP-027 | 각도 측정 | SWR-IP-034 | 1 | Non-safety | ST-PR-IP-027 | VT-CL-002 |
-| PR-IP-028 | 면적 측정 | SWR-IP-035~036 | 2 | Non-safety | ST-PR-IP-028 | VT-CL-002 |
-| PR-IP-029 | Annotation | SWR-IP-037~038 | 2 | Non-safety | ST-PR-IP-029 | VT-UX-002 |
-| PR-IP-030 | Gain/Offset 보정 | SWR-IP-039~040 | 2 | Safety-related | ST-PR-IP-030 | VT-CL-001 |
-| PR-IP-031 | 노이즈 감소 | SWR-IP-041~042 | 2 | Safety-related | ST-PR-IP-031 | VT-CL-001 |
-| PR-IP-032 | Edge Enhancement | SWR-IP-043~044 | 2 | Non-safety | ST-PR-IP-032 | VT-CL-001 |
-| PR-IP-033 | Scatter Correction | SWR-IP-045~046 | 2 | Safety-related | ST-PR-IP-033 | VT-CL-001 |
-| PR-IP-034 | Auto-trimming | SWR-IP-047~048 | 2 | Non-safety | ST-PR-IP-034 | VT-CL-001 |
+| PR-IP-028 | 면적 측정 | SWR-IP-035–036 | 2 | Non-safety | ST-PR-IP-028 | VT-CL-002 |
+| PR-IP-029 | Annotation | SWR-IP-037–038 | 2 | Non-safety | ST-PR-IP-029 | VT-UX-002 |
+| PR-IP-030 | Gain/Offset 보정 | SWR-IP-039–040 | 2 | Safety-related | ST-PR-IP-030 | VT-CL-001 |
+| PR-IP-031 | 노이즈 감소 | SWR-IP-041–042 | 2 | Safety-related | ST-PR-IP-031 | VT-CL-001 |
+| PR-IP-032 | Edge Enhancement | SWR-IP-043–044 | 2 | Non-safety | ST-PR-IP-032 | VT-CL-001 |
+| PR-IP-033 | Scatter Correction | SWR-IP-045–046 | 2 | Safety-related | ST-PR-IP-033 | VT-CL-001 |
+| PR-IP-034 | Auto-trimming | SWR-IP-047–048 | 2 | Non-safety | ST-PR-IP-034 | VT-CL-001 |
 | PR-IP-035 | Black Mask | SWR-IP-049 | 1 | Non-safety | ST-PR-IP-035 | VT-UX-002 |
-| PR-IP-036 | Contrast Optimization | SWR-IP-050~051 | 2 | Non-safety | ST-PR-IP-036 | VT-CL-001 |
+| PR-IP-036 | Contrast Optimization | SWR-IP-050–051 | 2 | Non-safety | ST-PR-IP-036 | VT-CL-001 |
 | PR-IP-037 | Brightness Control | SWR-IP-052 | 1 | Non-safety | ST-PR-IP-037 | VT-UX-002 |
-| PR-DM-040 | DAP 표시·기록 | SWR-DM-040~041 | 2 | Safety-related | ST-PR-DM-040 | VT-CL-001 |
-| PR-DM-041 | ESD 계산 | SWR-DM-042~043 | 2 | Safety-related | ST-PR-DM-041 | VT-CL-001 |
-| PR-DM-042 | RDSR 생성 | SWR-DM-044~046 | 3 | Safety-related | ST-PR-DM-042 | VT-CL-001 |
-| PR-DM-043 | Exposure Index 모니터링 | SWR-DM-047~048 | 2 | Safety-related | ST-PR-DM-043 | VT-CL-001 |
-| PR-DM-044 | DRL 비교 | SWR-DM-049~050 | 2 | Safety-related | ST-PR-DM-044 | VT-CL-001 |
-| PR-DM-045 | 전자 X-ray 로그북 | SWR-DM-051~052 | 2 | Non-safety | ST-PR-DM-045 | VT-CL-001 |
-| PR-DM-046 | Reject Analysis | SWR-DM-053~055 | 3 | Non-safety | ST-PR-DM-046 | VT-CL-002 |
-| PR-DC-050 | Storage SCU (C-STORE) | SWR-DC-050~052 | 3 | Safety-related | ST-PR-DC-050 | VT-CL-001 |
-| PR-DC-051 | MWL SCU | SWR-DC-053~054 | 2 | Non-safety | ST-PR-DC-051 | VT-UX-001 |
-| PR-DC-052 | MPPS SCU | SWR-DC-055~056 | 2 | Non-safety | ST-PR-DC-052 | VT-CL-001 |
-| PR-DC-053 | Storage Commitment SCU | SWR-DC-057~058 | 2 | Safety-related | ST-PR-DC-053 | VT-CL-001 |
-| PR-DC-054 | Print SCU | SWR-DC-059~060 | 2 | Non-safety | ST-PR-DC-054 | VT-UX-002 |
-| PR-DC-055 | Query/Retrieve SCU | SWR-DC-061~062 | 2 | Non-safety | ST-PR-DC-055 | VT-UX-002 |
-| PR-DC-056 | DICOM TLS | SWR-DC-063~064 | 2 | Security-related | ST-PR-DC-056 | VT-SEC-001 |
-| PR-SA-060 | 사용자 관리 (RBAC) | SWR-SA-060~062 | 3 | Security-related | ST-PR-SA-060 | VT-SEC-001 |
-| PR-SA-061 | Organ Program 편집기 | SWR-SA-063~064 | 2 | Safety-related | ST-PR-SA-061 | VT-UX-002 |
-| PR-SA-062 | 시스템 설정 | SWR-SA-065~066 | 2 | Non-safety | ST-PR-SA-062 | VT-UX-002 |
-| PR-SA-063 | 캘리브레이션 UI | SWR-SA-067~069 | 3 | Safety-related | ST-PR-SA-063 | VT-CL-001 |
-| PR-SA-064 | Defect Pixel Map 관리 | SWR-SA-070~071 | 2 | Safety-related | ST-PR-SA-064 | VT-CL-001 |
-| PR-SA-065 | Audit Trail | SWR-SA-072~073 | 2 | Security-related | ST-PR-SA-065 | VT-SEC-001 |
-| PR-SA-066 | 로깅 시스템 | SWR-SA-074~075 | 2 | Non-safety | ST-PR-SA-066 | — |
-| PR-SA-067 | SW 업데이트 관리 | SWR-SA-076~077 | 2 | Security-related | ST-PR-SA-067 | VT-SEC-001 |
-| PR-CS-070 | 로컬 사용자 인증 | SWR-CS-070~072 | 3 | Security-related | ST-PR-CS-070 | VT-SEC-001 |
-| PR-CS-071 | Domain 인증 (SSO) | SWR-CS-073~074 | 2 | Security-related | ST-PR-CS-071 | VT-SEC-001 |
-| PR-CS-072 | 세션 관리 | SWR-CS-075~077 | 3 | Security-related | ST-PR-CS-072 | VT-SEC-001 |
-| PR-CS-073 | DICOM TLS 암호화 | SWR-CS-078~079 | 2 | Security-related | ST-PR-CS-073 | VT-SEC-001 |
-| PR-CS-074 | PHI 보호 | SWR-CS-080~081 | 2 | Security-related | ST-PR-CS-074 | VT-SEC-001 |
-| PR-CS-075 | SBOM 관리 | SWR-CS-082~083 | 2 | Security-related | ST-PR-CS-075 | VT-SEC-001 |
-| PR-CS-076 | Secure Boot / SW 무결성 + 업데이트 메커니즘 | SWR-CS-084~085 | 2 | Security-related | ST-PR-CS-076 | VT-SEC-001 |
-| PR-CS-077 | CVD + 보안 인시던트 대응 | SWR-CS-086~087 | 2 | Security-related | ST-PR-CS-077 | VT-SEC-001 |
+| PR-DM-040 | DAP 표시·기록 | SWR-DM-040–041 | 2 | Safety-related | ST-PR-DM-040 | VT-CL-001 |
+| PR-DM-041 | ESD 계산 | SWR-DM-042–043 | 2 | Safety-related | ST-PR-DM-041 | VT-CL-001 |
+| PR-DM-042 | RDSR 생성 | SWR-DM-044–046 | 3 | Safety-related | ST-PR-DM-042 | VT-CL-001 |
+| PR-DM-043 | Exposure Index 모니터링 | SWR-DM-047–048 | 2 | Safety-related | ST-PR-DM-043 | VT-CL-001 |
+| PR-DM-044 | DRL 비교 | SWR-DM-049–050 | 2 | Safety-related | ST-PR-DM-044 | VT-CL-001 |
+| PR-DM-045 | 전자 X-ray 로그북 | SWR-DM-051–052 | 2 | Non-safety | ST-PR-DM-045 | VT-CL-001 |
+| PR-DM-046 | Reject Analysis | SWR-DM-053–055 | 3 | Non-safety | ST-PR-DM-046 | VT-CL-002 |
+| PR-DC-050 | Storage SCU (C-STORE) | SWR-DC-050–052 | 3 | Safety-related | ST-PR-DC-050 | VT-CL-001 |
+| PR-DC-051 | MWL SCU | SWR-DC-053–054 | 2 | Non-safety | ST-PR-DC-051 | VT-UX-001 |
+| PR-DC-052 | MPPS SCU | SWR-DC-055–056 | 2 | Non-safety | ST-PR-DC-052 | VT-CL-001 |
+| PR-DC-053 | Storage Commitment SCU | SWR-DC-057–058 | 2 | Safety-related | ST-PR-DC-053 | VT-CL-001 |
+| PR-DC-054 | Print SCU | SWR-DC-059–060 | 2 | Non-safety | ST-PR-DC-054 | VT-UX-002 |
+| PR-DC-055 | Query/Retrieve SCU | SWR-DC-061–062 | 2 | Non-safety | ST-PR-DC-055 | VT-UX-002 |
+| PR-DC-056 | DICOM TLS | SWR-DC-063–064 | 2 | Security-related | ST-PR-DC-056 | VT-SEC-001 |
+| PR-SA-060 | 사용자 관리 (RBAC) | SWR-SA-060–062 | 3 | Security-related | ST-PR-SA-060 | VT-SEC-001 |
+| PR-SA-061 | Organ Program 편집기 | SWR-SA-063–064 | 2 | Safety-related | ST-PR-SA-061 | VT-UX-002 |
+| PR-SA-062 | 시스템 설정 | SWR-SA-065–066 | 2 | Non-safety | ST-PR-SA-062 | VT-UX-002 |
+| PR-SA-063 | 캘리브레이션 UI | SWR-SA-067–069 | 3 | Safety-related | ST-PR-SA-063 | VT-CL-001 |
+| PR-SA-064 | Defect Pixel Map 관리 | SWR-SA-070–071 | 2 | Safety-related | ST-PR-SA-064 | VT-CL-001 |
+| PR-SA-065 | Audit Trail | SWR-SA-072–073 | 2 | Security-related | ST-PR-SA-065 | VT-SEC-001 |
+| PR-SA-066 | 로깅 시스템 | SWR-SA-074–075 | 2 | Non-safety | ST-PR-SA-066 | — |
+| PR-SA-067 | SW 업데이트 관리 | SWR-SA-076–077 | 2 | Security-related | ST-PR-SA-067 | VT-SEC-001 |
+| PR-CS-070 | 로컬 사용자 인증 | SWR-CS-070–072 | 3 | Security-related | ST-PR-CS-070 | VT-SEC-001 |
+| PR-CS-071 | Domain 인증 (SSO) | SWR-CS-073–074 | 2 | Security-related | ST-PR-CS-071 | VT-SEC-001 |
+| PR-CS-072 | 세션 관리 | SWR-CS-075–077 | 3 | Security-related | ST-PR-CS-072 | VT-SEC-001 |
+| PR-CS-073 | DICOM TLS 암호화 | SWR-CS-078–079 | 2 | Security-related | ST-PR-CS-073 | VT-SEC-001 |
+| PR-CS-074 | PHI 보호 | SWR-CS-080–081 | 2 | Security-related | ST-PR-CS-074 | VT-SEC-001 |
+| PR-CS-075 | SBOM 관리 | SWR-CS-082–083 | 2 | Security-related | ST-PR-CS-075 | VT-SEC-001 |
+| PR-CS-076 | Secure Boot / SW 무결성 + 업데이트 메커니즘 | SWR-CS-084–085 | 2 | Security-related | ST-PR-CS-076 | VT-SEC-001 |
+| PR-CS-077 | CVD + 보안 인시던트 대응 | SWR-CS-086–087 | 2 | Security-related | ST-PR-CS-077 | VT-SEC-001 |
 
 ### 10.3 비기능 요구사항 추적성 매트릭스 (PR-NF → SWR-NF)
 
@@ -1136,7 +1136,7 @@ flowchart LR
 | PR-NF-CP-031 | Multi-vendor Detector | SWR-NF-CP-031 | ≥3개 벤더 | T, D | ST-NF-CP-031 |
 | PR-NF-CP-032 | Multi-vendor Generator | SWR-NF-CP-032 | ≥3개 벤더 | T, D | ST-NF-CP-032 |
 | PR-NF-CP-033 | PACS 호환성 | SWR-NF-CP-033 | 5개 벤더 PACS | T, D | ST-NF-CP-033 |
-| PR-NF-CP-034 | 모니터 해상도 | SWR-NF-CP-034 | 3MP~4K | T, I | ST-NF-CP-034 |
+| PR-NF-CP-034 | 모니터 해상도 | SWR-NF-CP-034 | 3MP–4K | T, I | ST-NF-CP-034 |
 | PR-NF-CP-035 | DICOM 표준 | SWR-NF-CP-035 | DICOM 2023a | T, I | ST-NF-CP-035 |
 | PR-NF-SC-040 | 규제 준수 | SWR-NF-SC-040 | FDA 524B, HIPAA | I, A | ST-NF-SC-040 |
 | PR-NF-SC-041 | TLS 1.2+ | SWR-NF-SC-041 | TLS 1.0/1.1 비활성화 | T, I | ST-NF-SC-041 |
@@ -1160,20 +1160,20 @@ flowchart LR
 
 | 도메인 | SWR 범위 | SWR 수량 |
 |--------|---------|---------|
-| 환자 관리 (SWR-PM) | SWR-PM-001~053 | 16 |
-| 촬영 워크플로우 (SWR-WF) | SWR-WF-010~034 | 25 |
-| 영상 표시/처리 (SWR-IP) | SWR-IP-020~052 | 33 |
-| 선량 관리 (SWR-DM) | SWR-DM-040~055 | 16 |
-| DICOM/통신 (SWR-DC) | SWR-DC-050~064 | 15 |
-| 시스템 관리 (SWR-SA) | SWR-SA-060~077 | 18 |
-| 사이버보안 (SWR-CS) | SWR-CS-070~087 | 18 |
-| 비기능 성능 (SWR-NF-PF) | SWR-NF-PF-001~008 | 8 |
-| 비기능 신뢰성 (SWR-NF-RL) | SWR-NF-RL-010~015 | 6 |
-| 비기능 사용성 (SWR-NF-UX) | SWR-NF-UX-020~026 | 7 |
-| 비기능 호환성 (SWR-NF-CP) | SWR-NF-CP-030~035 | 6 |
-| 비기능 보안 (SWR-NF-SC) | SWR-NF-SC-040~045 | 6 |
-| 비기능 유지보수성 (SWR-NF-MT) | SWR-NF-MT-050~054 | 5 |
-| 비기능 규제 준수 (SWR-NF-RG) | SWR-NF-RG-060~065 | 6 |
+| 환자 관리 (SWR-PM) | SWR-PM-001–053 | 16 |
+| 촬영 워크플로우 (SWR-WF) | SWR-WF-010–034 | 25 |
+| 영상 표시/처리 (SWR-IP) | SWR-IP-020–052 | 33 |
+| 선량 관리 (SWR-DM) | SWR-DM-040–055 | 16 |
+| DICOM/통신 (SWR-DC) | SWR-DC-050–064 | 15 |
+| 시스템 관리 (SWR-SA) | SWR-SA-060–077 | 18 |
+| 사이버보안 (SWR-CS) | SWR-CS-070–087 | 18 |
+| 비기능 성능 (SWR-NF-PF) | SWR-NF-PF-001–008 | 8 |
+| 비기능 신뢰성 (SWR-NF-RL) | SWR-NF-RL-010–015 | 6 |
+| 비기능 사용성 (SWR-NF-UX) | SWR-NF-UX-020–026 | 7 |
+| 비기능 호환성 (SWR-NF-CP) | SWR-NF-CP-030–035 | 6 |
+| 비기능 보안 (SWR-NF-SC) | SWR-NF-SC-040–045 | 6 |
+| 비기능 유지보수성 (SWR-NF-MT) | SWR-NF-MT-050–054 | 5 |
+| 비기능 규제 준수 (SWR-NF-RG) | SWR-NF-RG-060–065 | 6 |
 | **합계** | | **~185 SWR** (v2.0: +5 신규 — MR-072×3, MR-037×2) |
 
 ---
