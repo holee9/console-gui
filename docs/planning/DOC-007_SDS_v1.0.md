@@ -325,7 +325,6 @@ stateDiagram-v2
         UI 입력 잠금
         SWR-WF-019 적용
     end note
-    classDef default fill:#444,stroke:#666,color:#fff
 ```
 
 #### 3.1.5 에러 처리 상세 (Error Handling)
@@ -534,7 +533,6 @@ stateDiagram-v2
         ④ 환자 컨텍스트 존재
         SWR-WF-023
     end note
-    classDef default fill:#444,stroke:#666,color:#fff
 ```
 
 #### 3.2.3 이벤트 처리 상세 (Event Handling)
@@ -1734,7 +1732,6 @@ erDiagram
     SERIES ||--o{ IMAGES : "includes"
     STUDIES ||--o{ DOSE_RECORDS : "accumulates"
     IMAGES ||--o| DOSE_RECORDS : "associated"
-    classDef default fill:#444,stroke:#666,color:#fff
 ```
 
 ### 4.3 설정 데이터 구조 (Configuration Data Structure)

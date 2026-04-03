@@ -376,7 +376,6 @@ pie title 라이선스 분포 (배포 포함 38개 구성요소)
     "MPL 2.0" : 1
     "Public Domain" : 1
     "기타 (zlib, libpng)" : 2
-    classDef default fill:#444,stroke:#666,color:#fff
 ```
 
 ### 9.2 라이선스 호환성 요약

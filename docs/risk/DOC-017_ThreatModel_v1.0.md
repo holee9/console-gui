@@ -398,7 +398,6 @@ pie title 완화 조치 유형 분포
     "입력 검증" : 5
     "모니터링/감사" : 4
     "무결성 검증" : 4
-    classDef default fill:#444,stroke:#666,color:#fff
 ```
 
 ---

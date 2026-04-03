@@ -220,7 +220,6 @@ gantt
 
     section 시판 후 감시
     PMS 체계 운영                        :pms1, 2027-01, 12M
-    classDef default fill:#444,stroke:#666,color:#fff
 ```
 
 ### 3.3 역할 및 책임 (Roles and Responsibilities)
@@ -275,7 +274,6 @@ quadrantChart
     HAZ-SEC-001 초기: [0.65, 0.35]
     잔여-RAD-001: [0.65, 0.20]
     잔여-RAD-002: [0.85, 0.10]
-    classDef default fill:#444,stroke:#666,color:#fff
 ```
 
 **위험 매트릭스 상세 (Detailed Risk Matrix)**
@@ -539,7 +537,6 @@ pie title 잔여 위험 수준 분포 (Residual Risk Distribution)
     "수용 가능 (Acceptable)" : 10
     "ALARP" : 12
     "수용 불가 (Unacceptable)" : 0
-    classDef default fill:#444,stroke:#666,color:#fff
 ```
 
 ### 8.3 전체 잔여 위험 수용 판정 (Overall Residual Risk Acceptability)
