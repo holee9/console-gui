@@ -931,6 +931,17 @@ graph LR
 
 ---
 
+## 8. 안전 상태 SW 요구사항
+
+| SWR ID | 요구사항 | 구현 상세 | MR 추적 |
+|--------|---------|---------|--------|
+| SWR-SS-001 | SafeStateManager 클래스: 현재 안전 상태를 관리하고 전환 조건을 평가 | enum SafeState { Idle, Degraded, Blocked, Emergency }, INotifyPropertyChanged | MR-044 |
+| SWR-SS-002 | PACS 장애 시 로컬 큐 저장: DicomStoreQueue 클래스 | ConcurrentQueue + SQLite 영속화, 연결 복구 시 자동 Dequeue | MR-019 |
+| SWR-SS-003 | Generator 장애 시 Exposure 차단: ExposureGate 클래스 | CanExpose 프로퍼티가 SS-BLOCKED/EMERGENCY 시 false | MR-031 |
+| SWR-SS-004 | 워치독 타이머: ModuleWatchdog 클래스 | Timer 기반, Heartbeat 미응답 시 이벤트 발생 | MR-044 |
+
+---
+
 ## 부록 A: SWR → IEC 62304 분류 매핑 테이블
 
 > 본 부록은 FRS-XRAY-GUI-001 v2.0의 모든 SWR을 IEC 62304 §5.2 분류에 매핑하는 마스터 테이블을 제공한다.

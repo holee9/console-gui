@@ -597,3 +597,24 @@ flowchart TD
 
 ---
 **문서 끝 (End of Document)** | UTP-XRAY-GUI-001 v2.0 | 2026-04-03
+
+
+## 12. Generator 에러 처리 단위 테스트
+
+| TC ID | 테스트명 | 입력 | 예상 결과 | MR 추적 |
+|-------|---------|------|----------|--------|
+| UT-GEN-001 | E01 통신 에러 수신 시 재연결 시도 | 에러코드 E01 | 3회 재연결 시도 후 SS-BLOCKED | MR-031 |
+| UT-GEN-002 | E09 Generator Overload 시 촬영 중단 | 에러코드 E09 | 즉시 Exposure 중단, SS-EMERGENCY | MR-031 |
+| UT-GEN-003 | E36 Tube 과열 시 냉각 대기 | 에러코드 E36 | Heat Unit 경고, SS-BLOCKED | MR-031 |
+| UT-GEN-004 | E50 Operator 중단 시 정상 처리 | 에러코드 E50 | 정상 중단, SS-IDLE | MR-031 |
+| UT-GEN-005 | 타임아웃 3s 초과 시 재연결 | 응답 없음 4s | 재연결 시도 3회 | MR-031 |
+
+## 13. 안전 상태 전환 단위 테스트
+
+| TC ID | 테스트명 | 초기 상태 | 이벤트 | 예상 상태 | MR 추적 |
+|-------|---------|---------|------|----------|--------|
+| UT-SS-001 | PACS 다운 시 DEGRADED 전환 | SS-IDLE | PACS 연결 실패 | SS-DEGRADED | MR-019 |
+| UT-SS-002 | Generator 오류 시 BLOCKED 전환 | SS-IDLE | Generator E01 | SS-BLOCKED | MR-031 |
+| UT-SS-003 | Exposure 중 HW 오류 시 EMERGENCY | SS-IDLE | Generator E09 | SS-EMERGENCY | MR-031 |
+| UT-SS-004 | PACS 복구 시 IDLE 복귀 | SS-DEGRADED | PACS 재연결 성공 | SS-IDLE | MR-019 |
+| UT-SS-005 | Generator 복구 시 IDLE 복귀 | SS-BLOCKED | Generator 재연결 성공 | SS-IDLE | MR-031 |

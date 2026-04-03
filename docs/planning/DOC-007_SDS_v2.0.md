@@ -476,6 +476,49 @@ sequenceDiagram
     PSCU-->>UI: 인쇄 완료 알림
 ```
 
+#### 3.5.4 fo-dicom TLS 설정
+
+```csharp
+// DICOM TLS 클라이언트 생성
+var client = DicomClientFactory.Create(
+    host: pacsHost,
+    port: pacsPort,
+    useTls: true,      // TLS 활성화
+    callingAe: "HNVUE",
+    calledAe: pacsAeTitle);
+
+// TLS 인증서 설정 （ITlsInitiator 구현）
+public class HnVueTlsInitiator : ITlsInitiator
+{
+    private readonly X509Certificate2 _certificate;
+    
+    public HnVueTlsInitiator（string certPath, string certPassword）
+    {
+        _certificate = new X509Certificate2（certPath, certPassword）;
+    }
+    
+    public SslStream InitiateTls（NetworkStream networkStream, string host, int port）
+    {
+        var sslStream = new SslStream（networkStream, false, ValidateServerCertificate）;
+        sslStream.AuthenticateAsClient（
+            host,
+            new X509CertificateCollection { _certificate },
+            SslProtocols.Tls12 | SslProtocols.Tls13,
+            checkCertificateRevocation: true）;
+        return sslStream;
+    }
+    
+    private bool ValidateServerCertificate（
+        object sender, X509Certificate cert, X509Chain chain, SslPolicyErrors errors）
+    {
+        return errors == SslPolicyErrors.None;
+    }
+}
+```
+
+> fo-dicom 5.x에서 TLS는 DicomClientFactory.Create의 useTls 파라미터 또는 ITlsInitiator 인터페이스로 설정한다.
+> 최소 TLS 1.2 필수, TLS 1.3 권장. 자체 서명 인증서 허용 안 함.
+
 ---
 
 ### 3.6 SDS-SA-6xx: SystemAdmin 모듈
@@ -1180,6 +1223,39 @@ Polly 라이브러리 기반 표준 재시도 정책:
 | FPD 연결 | 3회 | 2s, 4s, 8s | 지수 백오프 |
 | DB 접근 | 3회 | 100ms, 200ms, 500ms | 지수 백오프 |
 | Print | 1회 | 5s | 고정 간격 |
+
+### 13.7 Polly DI 설정 (.NET 8)
+
+Program.cs에서 Polly를 DI 컨테이너에 등록한다:
+
+```csharp
+// Polly 재시도 정책 팩토리 등록
+services.AddSingleton<IRetryPolicyFactory, RetryPolicyFactory>();
+
+// DICOM 클라이언트 전용 재시도 정책
+services.AddSingleton<IAsyncPolicy>(sp =>
+    Policy
+        .Handle<DicomAssociationRejectedException>()
+        .Or<DicomAssociationAbortedException>()
+        .Or<IOException>()
+        .WaitAndRetryAsync(
+            retryCount: 3,
+            sleepDurationProvider: attempt => TimeSpan.FromSeconds(Math.Pow(2, attempt)),
+            onRetry: (exception, delay, attempt, context) =>
+            {
+                var logger = sp.GetRequiredService<ILogger<DicomService>>();
+                logger.LogWarning(exception, "DICOM retry {Attempt} after {Delay}ms", attempt, delay.TotalMilliseconds);
+            }));
+
+// Generator 통신 전용 재시도 정책
+services.AddSingleton<IAsyncPolicy<GeneratorResponse>>(sp =>
+    Policy<GeneratorResponse>
+        .Handle<TimeoutException>()
+        .Or<IOException>()
+        .WaitAndRetryAsync(
+            retryCount: 3,
+            sleepDurationProvider: _ => TimeSpan.FromSeconds(1)));
+```
 
 ---
 

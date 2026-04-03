@@ -1156,6 +1156,35 @@ FPD 오류"| BLOCKED
 | BLOCKED → IDLE | 수동 오류 해제 + 재연결 성공 | 수동 |
 | EMERGENCY → IDLE | 안전 종료 + 관리자 확인 후 재시작 | 수동 |
 
+### 9.5 재시도 정책 아키텍처 패턴 (Polly)
+
+모든 외부 인터페이스 통신에 Polly 라이브러리 기반 재시도 정책을 적용한다.
+
+아키텍처 결정:
+- Polly IAsyncPolicy를 DI 컨테이너로 주입하여 모듈별 독립 정책 적용
+- 각 모듈은 자체 RetryPolicy를 갖되, RetryPolicyFactory를 통해 일관된 패턴 사용
+- Circuit Breaker 패턴: 연속 5회 실패 시 30초 차단 후 Half-Open 상태에서 1회 시도
+
+```mermaid
+flowchart LR
+    classDef default fill:#444,stroke:#666,color:#fff
+    A[요청] --> B{재시도 정책}
+    B -- 성공 --> C[응답]
+    B -- 실패 --> D{재시도 횟수 초과?}
+    D -- 아니오 --> E[지수 백오프 대기]
+    E --> B
+    D -- 예 --> F{Circuit Breaker}
+    F -- Open --> G[폴백 동작]
+    F -- Half-Open --> B
+```
+
+### 9.6 소프트웨어 워치독 타이머
+
+각 주요 모듈 (DICOM, Generator, FPD)에 소프트웨어 워치독을 구현한다:
+- Heartbeat 주기: DICOM 30s, Generator 3s, FPD 5s
+- Heartbeat 미응답 시: 모듈 재시작 → 실패 시 안전 상태 전환
+- 로그 기록: 모든 워치독 이벤트를 감사 로그에 기록
+
 ---
 
 ## 10. 보안 아키텍처 (STRIDE 위협 모델링)

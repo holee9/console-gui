@@ -1178,6 +1178,19 @@ flowchart LR
 
 ---
 
+## 11. 안전 상태 관리 요구사항
+
+| SWR ID | 요구사항 | 안전 상태 | MR 추적 | Tier |
+|--------|---------|---------|--------|------|
+| SWR-SS-001 | PACS 연결 실패 시 SS-DEGRADED로 전환하고, 로컬 저장 + 자동 재전송 대기 | SS-DEGRADED | MR-019 | Tier 1 |
+| SWR-SS-002 | Generator 통신 실패 시 SS-BLOCKED로 전환하고, 촬영을 차단 | SS-BLOCKED | MR-031 | Tier 2 |
+| SWR-SS-003 | Exposure 중 HW 오류 시 SS-EMERGENCY로 전환하고, 즉시 Exposure 중단 | SS-EMERGENCY | MR-031 | Tier 2 |
+| SWR-SS-004 | FPD 연결 끊김 시 SS-BLOCKED로 전환하고, 자동 재연결 3회 시도 | SS-BLOCKED | MR-023 | Tier 2 |
+| SWR-SS-005 | 장애 복구 시 자동으로 SS-IDLE로 복귀, 사용자 확인 알림 | SS-IDLE | MR-044 | Tier 2 |
+| SWR-SS-006 | 모든 안전 상태 전환을 감사 로그에 기록 | - | MR-035 | Tier 1 |
+
+---
+
 ## 부록 A. 약어 및 용어 정의
 
 | 약어 | 영문 전체 | 한국어 설명 |
