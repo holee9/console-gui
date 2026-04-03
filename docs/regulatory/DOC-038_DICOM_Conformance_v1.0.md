@@ -32,6 +32,7 @@ HnVue Console SW v1.0 — HnVue Console Software (IEC 62304 Class B)
 
 ```mermaid
 graph LR
+    classDef default fill:#444,stroke:#666,color:#fff
     RC[HnVue<br/>SCU/SCP] <-->|DICOM TLS| PACS[PACS Server<br/>SCP]
     RC <-->|DICOM TLS| RIS[RIS/MWL<br/>SCP]
     RC -->|MPPS| MPPS_SCP[MPPS SCP]

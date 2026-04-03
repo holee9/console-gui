@@ -29,6 +29,7 @@
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     A[동등성 분석<br/>Equivalence Analysis] --> B[문헌 검토<br/>Literature Review]
     B --> C[임상 데이터 평가<br/>Clinical Data Assessment]
     C --> D[이득-위험 분석<br/>Benefit-Risk Analysis]

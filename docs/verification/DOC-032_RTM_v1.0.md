@@ -138,6 +138,7 @@
 
 ```mermaid
 flowchart LR
+    classDef default fill:#444,stroke:#666,color:#fff
     MR["MR-xxx\n시장 요구사항\n(MRD v1.2)"]
     PR["PR-xxx\n제품 요구사항\n(PRD v3.0)\nDesign Input"]
     SWR["SWR-xxx\nSW 요구사항\n(FRS v1.0)\nDesign Output"]
@@ -175,6 +176,7 @@ flowchart LR
 
 ```mermaid
 flowchart TB
+    classDef default fill:#444,stroke:#666,color:#fff
     subgraph FWD["▶ Forward Traceability (순방향 추적성)"]
         direction LR
         F1["MR-001\n환자 관리"] --> F2["PR-PM-001\n환자 수동 등록"]
@@ -410,6 +412,7 @@ pie title Forward Traceability 커버리지 (PR 기준)
 
 ```mermaid
 flowchart RL
+    classDef default fill:#444,stroke:#666,color:#fff
     VT["VT 결과\n(Validation Report)"]
     ST["ST 결과\n(System Test Report)"]
     IT["IT 결과\n(Integration Test Report)"]
@@ -538,6 +541,7 @@ RTM은 다음 이벤트 발생 시 반드시 업데이트되어야 한다:
 
 ```mermaid
 flowchart LR
+    classDef default fill:#444,stroke:#666,color:#fff
     A["요구사항 변경\n(PRD/FRS/RMP 개정)"] --> B["변경 영향 분석\nImpact Analysis"]
     B --> C{"RTM 변경\n필요 여부"}
     C -- Yes --> D["RTM 초안 수정\n(Draft)"]

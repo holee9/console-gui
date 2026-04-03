@@ -69,6 +69,7 @@
 
 ```mermaid
 flowchart LR
+    classDef default fill:#444,stroke:#666,color:#fff
     MR["MR-xxx\n(MRD)\n시장·사용자 요구사항"]
     PR["PR-xxx\n(PRD v3.0)\n시스템 수준 Design Input\n21 CFR 820.30(c)"]
     SWR["SWR-xxx\n(FRS — 이 문서)\nIEC 62304 §5.2\nDesign Output\n21 CFR 820.30(d)"]
@@ -343,6 +344,7 @@ SWR-[도메인]-[번호]
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     subgraph Pipeline["영상 처리 파이프라인 (SWR-IP-039~052)"]
         A["Raw 16-bit Detector 영상\n(SWR-IP-039 입력)"]
         B["SWR-IP-039\nDefect Pixel 보정\n(결함 픽셀 맵 적용)"]
@@ -620,6 +622,7 @@ stateDiagram-v2
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     subgraph Console["HnVue (SCU)"]
         direction TB
         MWL_SCU["MWL SCU\n(C-FIND)\nSWR-DC-053~054"]
@@ -936,6 +939,7 @@ erDiagram
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     subgraph Critical["Safety-Critical SOUP"]
         S4["SOUP-004: OpenCV\n영상 처리 정확도\nHAZ-RAD, HAZ-SW"]
         S3["SOUP-003: DCMTK\nDICOM 데이터 무결성\nHAZ-DATA"]
@@ -988,6 +992,7 @@ flowchart TD
 
 ```mermaid
 flowchart LR
+    classDef default fill:#444,stroke:#666,color:#fff
     MR["MR-xxx\n(MRD v2.0)\n시장·사용자 요구사항"]
     PR["PR-xxx\n(PRD v3.0)\n시스템 수준 Design Input"]
     SWR_doc["SWR-xxx\n(FRS — 이 문서)\nIEC 62304 §5.2"]

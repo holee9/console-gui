@@ -33,6 +33,7 @@
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     MR["MR-xxx\nMarket Requirement\n(MRD)\n시장/고객 요구"]
     PR["PR-xxx\nProduct Requirement\n(PRD)\n시스템 수준 Design Input\n21 CFR 820.30(c)"]
     SWR["SWR-xxx\nSoftware Requirement\n(SRS/FRS)\nIEC 62304 §5.2\nSW 수준 요구사항"]
@@ -84,6 +85,7 @@ flowchart TD
 
 ```mermaid
 flowchart LR
+    classDef default fill:#444,stroke:#666,color:#fff
     subgraph DR1["DR#1 — 계획 검토\n(M1 종료)"]
         direction TB
         D1A["✅ MRD 승인"]
@@ -358,6 +360,7 @@ gantt
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     MRD["MRD\n(Market Requirements\nDocument)\nDOC-001"]
     PRD["PRD / SRS\n(Product Requirements Doc)\nDOC-002 / DOC-005"]
     FRS["FRS\n(Functional Requirements\nSpecification)\nDOC-004"]
@@ -451,6 +454,7 @@ flowchart TD
 
 ```mermaid
 flowchart LR
+    classDef default fill:#444,stroke:#666,color:#fff
     subgraph DHF["DHF (Design History File) — 21 CFR 820.30"]
         direction TB
         DP["Design Plan\n・SDP (SW Dev Plan)\n・DevGuideline\n・WBS\n・Risk Mgmt Plan"]
@@ -493,6 +497,7 @@ flowchart LR
 
 ```mermaid
 flowchart TB
+    classDef default fill:#444,stroke:#666,color:#fff
     subgraph UI["UI Layer (Presentation)"]
         direction LR
         MainUI["메인 프레임\n(Main Frame)"]
@@ -624,6 +629,7 @@ stateDiagram-v2
 
 ```mermaid
 flowchart LR
+    classDef default fill:#444,stroke:#666,color:#fff
     subgraph LEFT["개발 단계 (좌)"]
         direction TB
         SyRS["1. 시스템 요구사항\nSyRS / SRS\n(IEC 62304 §5.2)"]

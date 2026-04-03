@@ -73,6 +73,7 @@ FDA 21 CFR 820.30(g)에 따라 설계 밸리데이션은 다음을 확인한다:
 
 ```mermaid
 graph LR
+    classDef default fill:#444,stroke:#666,color:#fff
     subgraph "설계 검증 (Verification)"
         A[FRS/SRS<br/>SWR-xxx] --> B[단위 테스트<br/>Unit Test]
         A --> C[통합 테스트<br/>Integration Test]
@@ -116,6 +117,7 @@ graph LR
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     A[Phase 1: 사전 밸리데이션 준비<br/>Pre-Validation Preparation] --> B[Phase 2: IQ/OQ 실행<br/>Installation & Operational Qualification]
     B --> C[Phase 3: PQ 실행<br/>Performance Qualification]
     C --> D[Phase 4: 사용자 밸리데이션<br/>User Acceptance Validation]
@@ -148,6 +150,7 @@ flowchart TD
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     START[테스트 케이스 실행] --> R1{결과<br/>Pass?}
     R1 -->|Pass| PASS[✅ Pass 기록]
     R1 -->|Fail| SEV{심각도<br/>평가}
@@ -174,6 +177,7 @@ flowchart TD
 
 ```mermaid
 graph TB
+    classDef default fill:#444,stroke:#666,color:#fff
     subgraph "촬영실 시뮬레이션 (X-Ray Room Simulation)"
         XR[X-Ray Generator<br/>시뮬레이터] --- CON[HnVue<br/>GUI Console]
         CON --- DET[Detector<br/>시뮬레이터]
@@ -230,6 +234,7 @@ graph TB
 
 ```mermaid
 flowchart LR
+    classDef default fill:#444,stroke:#666,color:#fff
     A[설치 매체<br/>무결성 확인] --> B[설치 실행<br/>자동/수동]
     B --> C[파일 무결성<br/>해시 검증]
     C --> D[구성 파일<br/>확인]
@@ -389,6 +394,7 @@ flowchart LR
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     A[사전 교육<br/>30분] --> B[시나리오 1: 일반 촬영<br/>45분]
     B --> C[시나리오 2: 응급 촬영<br/>30분]
     C --> D[시나리오 3: 특수 촬영<br/>30분]
@@ -477,6 +483,7 @@ flowchart TD
 
 ```mermaid
 graph LR
+    classDef default fill:#444,stroke:#666,color:#fff
     MR[MR-xxx<br/>시장 요구사항] --> PR[PR-xxx<br/>제품 요구사항]
     PR --> SWR[SWR-xxx<br/>SW 요구사항]
     SWR --> TC[TC-xxx<br/>검증 테스트]

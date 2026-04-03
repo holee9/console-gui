@@ -70,6 +70,7 @@
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     MRD["MRD\nMarket Requirements Document\nDOC-001"]
     PRD["PRD v3.0\nProduct Requirements Doc\nDOC-002"]
     SDG["SW 개발 지침서\nSW Development Guideline\nDOC-003"]
@@ -219,6 +220,7 @@ flowchart TD
 
 ```mermaid
 flowchart LR
+    classDef default fill:#444,stroke:#666,color:#fff
     subgraph A["Phase A\n기반 문서 (Foundation)"]
         direction TB
         MRD["MRD"]
@@ -482,6 +484,7 @@ flowchart LR
 
 ```mermaid
 flowchart LR
+    classDef default fill:#444,stroke:#666,color:#fff
     subgraph MKT["시장 계층 (Market Layer)"]
         direction TB
         MR["MR-xxx\nMarket Requirement\n(MRD DOC-001)"]
@@ -715,6 +718,7 @@ gantt
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     subgraph TIER1["계층 1: 기반 문서"]
         MRD_V["MRD\n(DOC-001)"]
         PRD_V["PRD v3.0\n(DOC-002)"]
@@ -832,6 +836,7 @@ stateDiagram-v2
 
 ```mermaid
 flowchart LR
+    classDef default fill:#444,stroke:#666,color:#fff
     PA["Phase A\n기반 문서"] -->|"Gate A"| PB["Phase B\n설계"]
     PB -->|"Gate B"| PC_PD["Phase C+D\n위험/V&V 계획"]
     PC_PD -->|"Gate C/D"| PE_PF["Phase E+F\n사이버보안/임상"]

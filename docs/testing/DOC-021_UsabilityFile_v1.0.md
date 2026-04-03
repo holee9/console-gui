@@ -84,6 +84,7 @@
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     A[의도된 사용 명세<br/>Use Specification] --> B[사용자 프로파일<br/>User Profiles]
     B --> C[사용 시나리오<br/>Use Scenarios]
     C --> D[위험 관련 사용 시나리오<br/>Hazard-Related Use Scenarios]
@@ -150,6 +151,7 @@ HnVue Console SW는 **의료용 진단 X-Ray 촬영장치의 GUI Console Softwar
 
 ```mermaid
 graph TB
+    classDef default fill:#444,stroke:#666,color:#fff
     subgraph "1차 사용자 (Primary Users)"
         RT[방사선사<br/>Radiologic Technologist<br/>경력 1~30년<br/>기술 친숙도: 높음]
         RD[영상의학과 전문의<br/>Radiologist<br/>전문의 자격<br/>기술 친숙도: 중간]
@@ -201,6 +203,7 @@ graph TB
 
 ```mermaid
 flowchart LR
+    classDef default fill:#444,stroke:#666,color:#fff
     A[시스템 로그인] --> B[환자 선택<br/>Worklist]
     B --> C[프로토콜 선택]
     C --> D[파라미터 확인]
@@ -242,6 +245,7 @@ flowchart LR
 
 ```mermaid
 flowchart LR
+    classDef default fill:#444,stroke:#666,color:#fff
     UE[사용 오류<br/>Use Error] --> HS[위험 상황<br/>Hazardous Situation]
     HS --> HAR[위해<br/>Harm]
     
@@ -311,6 +315,7 @@ flowchart LR
 
 ```mermaid
 graph TB
+    classDef default fill:#444,stroke:#666,color:#fff
     HOME[메인 화면<br/>Main Dashboard] --> PM[환자 관리<br/>Patient Mgmt]
     HOME --> WF[촬영<br/>Acquisition]
     HOME --> IMG[영상 뷰어<br/>Image Viewer]
@@ -380,6 +385,7 @@ graph TB
 
 ```mermaid
 flowchart LR
+    classDef default fill:#444,stroke:#666,color:#fff
     subgraph "형성적 평가 (Formative)"
         F1[전문가 휴리스틱<br/>평가 (Round 1)]
         F2[인지 워크스루<br/>Cognitive Walkthrough]
@@ -462,6 +468,7 @@ flowchart LR
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     UE[사용 오류 식별<br/>Use Error] --> RA[위험 평가<br/>Risk Assessment]
     RA --> RC{위험 통제<br/>필요?}
     RC -->|Yes| UI_RC[UI 위험 통제<br/>설계 변경]
@@ -506,6 +513,7 @@ flowchart TD
 
 ```mermaid
 graph LR
+    classDef default fill:#444,stroke:#666,color:#fff
     UN[User Need<br/>사용자 요구] --> MR[MR-xxx<br/>시장 요구사항]
     MR --> PR[PR-xxx<br/>제품 요구사항]
     PR --> UIS[UI Spec<br/>UI 설계 명세]

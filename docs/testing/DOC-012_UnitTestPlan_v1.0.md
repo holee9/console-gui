@@ -116,6 +116,7 @@ Safety-Critical 코드 식별 기준:
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     A[SAD/SDS 검토\nReview Architecture] --> B[테스트 대상 단위 식별\nIdentify Test Units]
     B --> C{Safety-Critical\n여부?}
     C -->|Yes| D[100% Branch Coverage\n테스트 케이스 설계]
@@ -361,6 +362,7 @@ class TestDoseCalculation:
 
 ```mermaid
 graph LR
+    classDef default fill:#444,stroke:#666,color:#fff
     subgraph "테스트 대상 (SUT)"
         A[단위 테스트 대상\nUnit Under Test]
     end
@@ -400,6 +402,7 @@ graph LR
 
 ```mermaid
 flowchart LR
+    classDef default fill:#444,stroke:#666,color:#fff
     A[코드 푸시\nCode Push] --> B[빌드\nBuild C++/Python]
     B --> C[단위 테스트 실행\nRun Unit Tests]
     C --> D[커버리지 측정\nMeasure Coverage]
@@ -464,6 +467,7 @@ unit_test:
 
 ```mermaid
 graph TD
+    classDef default fill:#444,stroke:#666,color:#fff
     SWR[SWR 소프트웨어 요구사항\nSoftware Requirements] -->|검증| UT[단위 테스트 케이스\nUnit Test Cases]
     SAD[SAD 아키텍처 설계\nArchitecture Design] -->|기반| UT
     UT -->|충족| Coverage[커버리지 목표\nCoverage Goals]

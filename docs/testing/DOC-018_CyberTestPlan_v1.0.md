@@ -86,6 +86,7 @@
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     A[Phase 1: 정적 분석<br/>SAST + SCA<br/>개발 단계] --> B[Phase 2: 동적 분석<br/>DAST + Fuzzing<br/>통합 테스트 단계]
     B --> C[Phase 3: 침투 테스트<br/>Penetration Testing<br/>시스템 테스트 단계]
     C --> D[Phase 4: 취약점 스캔<br/>Vulnerability Scan<br/>릴리스 전]
@@ -120,6 +121,7 @@ flowchart TD
 
 ```mermaid
 graph LR
+    classDef default fill:#444,stroke:#666,color:#fff
     subgraph "STRIDE 위협"
         S[Spoofing<br/>5 위협]
         T[Tampering<br/>6 위협]
@@ -278,6 +280,7 @@ graph LR
 
 ```mermaid
 graph TB
+    classDef default fill:#444,stroke:#666,color:#fff
     subgraph "격리된 테스트 네트워크 (Isolated Test Network)"
         SUT[HnVue<br/>System Under Test]
         PACS_T[PACS 시뮬레이터<br/>dcm4chee]
@@ -360,6 +363,7 @@ graph TB
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     FAIL[테스트 실패 발견] --> SEV{심각도 평가}
     SEV -->|Critical| C1[즉시 개발팀 통보<br/>테스트 중단]
     SEV -->|High| C2[결함 등록<br/>수정 후 재테스트]

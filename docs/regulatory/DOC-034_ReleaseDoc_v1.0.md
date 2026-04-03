@@ -36,6 +36,7 @@
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     A[설계 입력/출력 완결 확인] --> B[V&V 전체 합격 확인]
     B --> C[위험 관리 완료 확인]
     C --> D[사이버보안 검증 완료]

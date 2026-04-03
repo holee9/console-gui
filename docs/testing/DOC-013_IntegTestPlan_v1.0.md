@@ -112,6 +112,7 @@ HnVue SW는 **보텀업(Bottom-up)** 통합 전략을 채택한다. 하위 레�
 
 ```mermaid
 graph TB
+    classDef default fill:#444,stroke:#666,color:#fff
     subgraph "Phase 1: Layer 1-2 기반 통합"
         DB[(Database\nPostgreSQL)]
         DBR[DB Repository\nLayer]
@@ -332,6 +333,7 @@ sequenceDiagram
 
 ```mermaid
 graph LR
+    classDef default fill:#444,stroke:#666,color:#fff
     subgraph "Storage SOP Classes"
         CR[CR Image\n1.2.840.10008.5.1.4.1.1.1]
         DX[DX Image\n1.2.840.10008.5.1.4.1.1.1.1]
@@ -370,6 +372,7 @@ graph LR
 
 ```mermaid
 graph TD
+    classDef default fill:#444,stroke:#666,color:#fff
     subgraph "테스트 PC (Integration Test Host)"
         RC[HnVue SW\nDUT]
         GS[Generator Sim\n:9001]

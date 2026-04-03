@@ -28,6 +28,7 @@
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     A[시판 후 데이터 수집<br/>Data Collection] --> B[데이터 분석<br/>Analysis]
     B --> C{안전성/성능<br/>이슈?}
     C -->|Yes| D[위험 평가<br/>Risk Assessment]
@@ -98,6 +99,7 @@ FDA Section 524B에 따라 사이버보안 시판 후 관리:
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     A[이슈 식별] --> B[심각도 평가]
     B --> C{CAPA 필요?}
     C -->|Yes| D[근본 원인 분석<br/>Root Cause Analysis]

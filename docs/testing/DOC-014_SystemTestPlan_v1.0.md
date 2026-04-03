@@ -101,6 +101,7 @@
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     A[PRD v3.0 / SRS 요구사항 분석] --> B[테스트 케이스 설계\nBlack-box 기법]
     B --> C1[기능 테스트\n50개]
     B --> C2[비기능 테스트\n20개]
@@ -300,6 +301,7 @@ xychart-beta
 
 ```mermaid
 graph LR
+    classDef default fill:#444,stroke:#666,color:#fff
     subgraph "동시 접속 테스트 (5 Users)"
         U1[Technician 1\n촬영 중]
         U2[Technician 2\n이미지 조회 중]
@@ -345,6 +347,7 @@ graph LR
 
 ```mermaid
 graph TD
+    classDef default fill:#444,stroke:#666,color:#fff
     RC[HnVue SW] --> HW1[발생기 인터페이스\nTCP/IP 프로토콜]
     RC --> HW2[검출기 인터페이스\nFPD TCP/IP]
     RC --> HW3[바코드 리더\nUSB HID]
@@ -363,6 +366,7 @@ graph TD
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     A[촬영 요청\nExposure Request] --> B[누적 선량 조회\nDB Query Dose]
     B --> C{선량 레벨\n확인}
     C -->|< 70% 한계| D[정상 촬영 허용\nAllow Exposure]
@@ -451,6 +455,7 @@ flowchart TD
 
 ```mermaid
 graph TD
+    classDef default fill:#444,stroke:#666,color:#fff
     subgraph "테스트 네트워크 (192.168.100.0/24)"
         DUT[HnVue DUT\n192.168.100.10]
         WS1[워크스테이션 1\n192.168.100.11]

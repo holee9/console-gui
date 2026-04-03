@@ -172,6 +172,7 @@ IEC 62304 §4.3에 따른 SW 안전 분류 (Safety Classification) 근거:
 
 ```mermaid
 graph TD
+    classDef default fill:#444,stroke:#666,color:#fff
     PL["🏢 프로젝트 총괄<br/>Project Lead (PL)"]
     PM["📋 프로젝트 매니저<br/>PM"]
     SE["⚙️ 시스템 엔지니어<br/>SE (System Engineer)"]
@@ -289,6 +290,7 @@ graph TD
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     START([프로젝트 시작\nProject Kickoff]) --> PH1
 
     subgraph PH1["Phase 1: 기획 (Planning)"]
@@ -523,6 +525,7 @@ gantt
 
 ```mermaid
 flowchart LR
+    classDef default fill:#444,stroke:#666,color:#fff
     MR["📋 MR-xxx\n시장 요구사항\nMarket Requirement\n(MRD)"]
     PR["📄 PR-xxx\n제품 요구사항\nProduct Requirement\n(PRD)"]
     SWR["💾 SWR-xxx\nSW 요구사항\nSW Requirement\n(SRS)"]
@@ -609,6 +612,7 @@ flowchart LR
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     A["변경 요청 접수\nChange Request (CR)"] --> B["영향 분석\nImpact Analysis"]
     B --> C{영향 범위\nImpact Scope}
     C -->|"Minor\n(현 Phase 내)"|  D["변경 승인\nChange Approval\n(SE + QA)"]
@@ -667,6 +671,7 @@ flowchart TD
 
 ```mermaid
 flowchart LR
+    classDef default fill:#444,stroke:#666,color:#fff
     A["설계 문서 완성\nDesign Doc Complete"] --> B["설계 검토 요청\n48h 전 배포\nDistribute 48h Prior"]
     B --> C["설계 검토 회의\nDesign Review Meeting\n(DRM)"]
     C --> D{검토 결과\nReview Result}
@@ -801,6 +806,7 @@ gitGraph
 
 ```mermaid
 flowchart LR
+    classDef default fill:#444,stroke:#666,color:#fff
     DEV["개발자\nDeveloper"] -->|"Git Push"| A["소스 코드 저장소\nGit Repository"]
     A -->|"PR 생성\nPR Created"| B["CI 트리거\nCI Trigger"]
     
@@ -938,6 +944,7 @@ flowchart LR
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     A["결함 발견\nDefect Found"] --> B["결함 등록\nBug Registration\n(BUG-xxx)"]
     B --> C["결함 분류\nBug Triage Meeting\n(주 2회)"]
     C --> D{심각도\nSeverity}
@@ -1025,6 +1032,7 @@ flowchart TD
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     A["SW 요구사항 확정\nSWR Baseline"] --> B["위험 식별\nHazard Identification\n(HAZ-xxx)"]
     B --> C["FMEA 워크시트 작성\nFMEA Worksheet"]
     C --> D["원인 분석\nCause Analysis\n(고장 모드 도출)"]
@@ -1084,6 +1092,7 @@ flowchart TD
 
 ```mermaid
 flowchart LR
+    classDef default fill:#444,stroke:#666,color:#fff
     A["시스템 범위 정의\nDefine System Scope"] --> B["데이터 흐름도 작성\nCreate DFD\n(Data Flow Diagram)"]
     B --> C["신뢰 경계 식별\nIdentify Trust Boundaries"]
     C --> D["STRIDE 분석\nSTRIDE Analysis"]
@@ -1134,6 +1143,7 @@ flowchart LR
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     A["취약점 발견\nVulnerability Discovered\n(내부 스캔 / 외부 보고 / CVE)"] --> B["취약점 평가\nVulnerability Assessment\n(CVSS Score)"]
     B --> C{CVSS 등급\nSeverity}
     C -->|"Critical ≥9.0"| D["즉시 대응\nImmediate Response\n24시간 이내"]
@@ -1197,6 +1207,7 @@ flowchart TD
 
 ```mermaid
 flowchart LR
+    classDef default fill:#444,stroke:#666,color:#fff
     A["릴리스 요청\nRelease Request\n(PM)"] --> B["QA 최종 검토\nQA Final Review"]
     B --> C["RA 검토\nRA Review"]
     C --> D["보안 최종 확인\nSecurity Final Check"]
@@ -1239,6 +1250,7 @@ flowchart LR
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     A["변경 필요성 식별\nChange Need Identified"] --> B["ECR 작성\nEngineering Change Request\n(ECR-xxx)"]
     B --> C["ECR 제출\nSubmit ECR"]
     C --> D["초기 검토\nInitial Review\n(SE)"]
@@ -1296,6 +1308,7 @@ flowchart TD
 
 ```mermaid
 flowchart LR
+    classDef default fill:#444,stroke:#666,color:#fff
     A["문서 작성\nDocument Draft\n(Author)"] --> B["내부 검토\nInternal Review\n(Peer Review)"]
     B --> C{검토 결과}
     C -->|"수정 필요\nRevision Required"| A

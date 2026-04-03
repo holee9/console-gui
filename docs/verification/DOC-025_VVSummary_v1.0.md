@@ -86,6 +86,7 @@ pie title V&V 전체 테스트 결과 (286 TC)
 
 ```mermaid
 graph LR
+    classDef default fill:#444,stroke:#666,color:#fff
     UT[단위 테스트<br/>3건 발견] --> IT[통합 테스트<br/>2건 발견]
     IT --> ST[시스템 테스트<br/>4건 발견]
     ST --> VAL[밸리데이션<br/>0건 발견]

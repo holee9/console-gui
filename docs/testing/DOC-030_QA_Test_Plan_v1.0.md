@@ -619,6 +619,7 @@ SC:  [____%]
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     A([QA 테스트 계획 시작]) --> B[FRS/PRD 요구사항 검토]
     B --> C[RTM 검토 및 TC 매핑 확인]
     C --> D{모든 SWR에 TC 존재?}
@@ -664,6 +665,7 @@ flowchart TD
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     A([결함 발견]) --> B[JIRA 결함 등록\nDefect Report 작성]
     B --> C[결함 재현 가능?]
     C -- No --> D[Cannot Reproduce 처리\n추가 정보 수집]
@@ -705,6 +707,7 @@ flowchart TD
 
 ```mermaid
 graph LR
+    classDef default fill:#444,stroke:#666,color:#fff
     subgraph Requirements["요구사항 계층 (Requirements Hierarchy)"]
         MR["MR-xxx\n마켓 요구사항\n(MRD)"]
         PR["PR-xxx\n제품 요구사항\n(PRD)"]
@@ -761,6 +764,7 @@ graph LR
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     A([릴리스 게이트 검토 시작]) --> B{Critical 결함\n0건?}
     B -- No --> C[❌ 릴리스 차단\nCritical 해결 필수]
     C --> D[수정 → 재테스트]

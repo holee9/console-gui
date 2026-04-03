@@ -98,8 +98,8 @@ HnVue Console SW는 자사 FPD(Flat Panel Detector)에 번들되는 X-ray 촬영
 |--------|----------|---------|------|
 | DOC-001 | MRD (Market Requirements) | **v3.0** | `docs/planning/DOC-001_MRD_v3.0.md` |
 | DOC-002 | PRD (Product Requirements) | **v2.0** | `docs/planning/DOC-002_PRD_v2.0.md` |
-| DOC-004 | FRS (Functional Requirements) | v1.0 | `docs/planning/DOC-004_FRS_v1.0.md` |
-| DOC-005 | SRS (Software Requirements) | v1.0 | `docs/planning/DOC-005_SRS_v1.0.md` |
+| DOC-004 | FRS (Functional Requirements) | **v2.0** | `docs/planning/DOC-004_FRS_v2.0.md` |
+| DOC-005 | SRS (Software Requirements) | **v2.0** | `docs/planning/DOC-005_SRS_v2.0.md` |
 | DOC-006 | SAD (Software Architecture) | v1.0 | `docs/planning/DOC-006_SAD_v1.0.md` |
 | DOC-007 | SDS (Software Design) | v1.0 | `docs/planning/DOC-007_SDS_v1.0.md` |
 | STRATEGY-001 | Company Positioning | v2.0 | `docs/planning/research/STRATEGY-001_Company_Positioning_v2.0.md` |

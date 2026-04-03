@@ -71,6 +71,7 @@ IEC 62304:2006+AMD1:2015의 §8 (소프트웨어 구성 관리) 및 §5.3.3 (SOU
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     A[구성요소 식별] --> B{자체 개발<br/>코드인가?}
     B -->|Yes| C[SOUP 아님<br/>일반 개발 프로세스]
     B -->|No| D{IEC 62304 준수<br/>증거 있는가?}
@@ -239,6 +240,7 @@ flowchart TD
 
 ```mermaid
 graph TB
+    classDef default fill:#444,stroke:#666,color:#fff
     subgraph "위험 수준 (Risk Level)"
         HIGH[High Risk<br/>OpenSSL, BouncyCastle<br/>fo-dicom, DCMTK]
         MED[Medium Risk<br/>OpenCV, ITK, SQLite<br/>HL7 라이브러리]
@@ -270,6 +272,7 @@ graph TB
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     A[SOUP 식별<br/>신규 구성요소] --> B[SOUP 평가<br/>Class/위험/라이선스]
     B --> C{수용 가능?}
     C -->|Yes| D[SBOM 등록<br/>모니터링 시작]

@@ -70,6 +70,7 @@
 
 ```mermaid
 graph LR
+    classDef default fill:#444,stroke:#666,color:#fff
     subgraph "응답 시간 vs 기준"
         A1["영상 표시<br/>1.2s / 2.0s"] 
         A2["Worklist<br/>1.8s / 3.0s"]

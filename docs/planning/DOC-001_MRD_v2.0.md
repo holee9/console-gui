@@ -540,6 +540,7 @@ FDA 21 CFR 820.30(c) Design Input 조항에 따라, 본 MRD(Market Requirements 
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     subgraph UN["User Needs"]
         VoC["VoC / Market Research\n(Section 4.2)"]
         Reg["Regulatory Requirements\n(IEC 62304/62366, FDA)"]
@@ -602,6 +603,7 @@ flowchart TD
 
 ```mermaid
 flowchart LR
+    classDef default fill:#444,stroke:#666,color:#fff
     subgraph Left["Design"]
         direction TB
         MRD_box["MRD\nMarket Requirements"]
@@ -920,6 +922,7 @@ DICOM Conformance Statement 작성 공개는 병원 구매 의사결정의 핵�
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     A[Product Concept] --> B[SW Safety Class\nIEC 62304]
     B --> C[Risk Analysis\nISO 14971]
     C --> D[SW Requirements\nAnalysis]

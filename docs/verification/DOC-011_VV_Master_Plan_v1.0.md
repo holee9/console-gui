@@ -139,6 +139,7 @@ HnVue V&V는 IEC 62304 및 FDA 권장 방법론에 따라 **V-Model** 기반 전
 
 ```mermaid
 graph LR
+    classDef default fill:#444,stroke:#666,color:#fff
     subgraph 개발 계층["개발 계층 (Development)"]
         A["🔷 사용자 요구사항\n(User Needs / MRD)"]
         B["🔷 시스템 요구사항\n(PRD / System Requirements)"]
@@ -229,6 +230,7 @@ mindmap
 
 ```mermaid
 flowchart TB
+    classDef default fill:#444,stroke:#666,color:#fff
     subgraph L4["Level 4: Design Validation (밸리데이션)"]
         L4A["입력: 출시 빌드 (Release Build)\n기준: MRD, User Needs\n출력: Design Validation Report\n도구: 실사용 환경, UAT 환경"]
     end
@@ -292,6 +294,7 @@ flowchart TB
 
 ```mermaid
 flowchart LR
+    classDef default fill:#444,stroke:#666,color:#fff
     subgraph CPP["C++ 단위 테스트"]
         GT["Google Test\n(GTest)"]
         GM["Google Mock\n(GMock)"]
@@ -635,6 +638,7 @@ OWASP Top 10 (2021) 기반 점검 항목:
 
 ```mermaid
 flowchart TB
+    classDef default fill:#444,stroke:#666,color:#fff
     subgraph PROD["운영 환경 (Production Environment)"]
         PROD_HW["실제 X-Ray 시스템\n(Generator + FPD)"]
         PROD_SW["HnVue Release Build\n(Final Version)"]
@@ -824,6 +828,7 @@ V&V [레벨] 보고서 (V&V [Level] Report)
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     START([V&V 완료 판정 시작]) --> CR{Critical 결함\n미결 건수 = 0?}
     
     CR -->|아니오| FAIL1["❌ FAIL\nCritical 결함 미결\n출시 불가"]

@@ -58,6 +58,7 @@
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     A[의료기기 SW?] -->|Yes| B{SW가 치료/진단에<br/>직접 영향?}
     B -->|Minor| C[Minor Level of Concern]
     B -->|Moderate| D[Moderate Level of Concern]

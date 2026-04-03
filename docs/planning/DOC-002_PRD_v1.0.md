@@ -71,6 +71,7 @@ MRD의 규제-위험 기반 4단계 우선순위 체계를 계승합니다.
 
 ```mermaid
 flowchart LR
+    classDef default fill:#444,stroke:#666,color:#fff
     MR["MR-xxx\n(Market Requirement)\nMRD에서 정의\n시장·사용자 요구"]
     PR["PR-xxx\n(Product Requirement)\nPRD에서 정의\n시스템 수준 Design Input"]
     SWR["SWR-xxx\n(Software Requirement)\nFRS/SRS에서 상세화\nIEC 62304 §5.2"]
@@ -266,6 +267,7 @@ flowchart LR
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     RT([방사선사<br/>Radiologic Technologist])
     CRT([선임 방사선사<br/>Chief RT])
     BMET([BMET<br/>엔지니어])
@@ -485,6 +487,7 @@ stateDiagram-v2
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     A[Raw Detector Data\nFlat-panel Raw Image] --> B[Defect Pixel Correction\n결함 픽셀 보정]
     B --> C[Gain Correction\nFlat Field Gain Map 적용]
     C --> D[Offset/Dark Correction\nOffset Map 적용]
@@ -722,6 +725,7 @@ sequenceDiagram
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     subgraph MainWindow["메인 윈도우 (1920×1080 이상)"]
         subgraph TopBar["상단 툴바 (Header, 60px)"]
             T1[시스템 로고]
@@ -767,6 +771,7 @@ flowchart TD
 
 ```mermaid
 flowchart TB
+    classDef default fill:#444,stroke:#666,color:#fff
     classDef person fill:#1a5276,color:#fff,stroke:#154360
     classDef system fill:#1e8449,color:#fff,stroke:#196f3d
     classDef external fill:#784212,color:#fff,stroke:#6e2f1a
@@ -974,6 +979,7 @@ classDiagram
 
 ```mermaid
 flowchart LR
+    classDef default fill:#444,stroke:#666,color:#fff
     subgraph LeftSide["개발 단계 (좌측)"]
         A1[사용자 요구사항\nUser Requirements\nMR-xxx]
         A2[제품 요구사항\nProduct Requirements - PRD\nPR-xxx / PR-NF-xxx]
@@ -1107,6 +1113,7 @@ gantt
 
 ```mermaid
 flowchart LR
+    classDef default fill:#444,stroke:#666,color:#fff
     subgraph Matrix["위험도 매트릭스"]
         direction TB
         C1["Critical\nTR-001, TR-006, RR-005"]
@@ -1131,6 +1138,7 @@ flowchart LR
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     subgraph Design["설계 단계 (Design Phase)"]
         UN["사용자 요구사항\n(User Needs / MRD)\nMR-001~007"]
         PRD_["제품 요구사항\n(PRD = Design Input)\nPR-PM/WF/IP/DM/DC/SA/CS\nPR-NF-PF/RL/UX/CP/SC/MT/RG"]
@@ -1292,6 +1300,7 @@ flowchart TD
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     subgraph Hazards["위험 식별 (ISO 14971)"]
         HAZ_RAD["HAZ-RAD\n방사선 위험"]
         HAZ_SW["HAZ-SW\nSW 오류 위험"]
@@ -1356,6 +1365,7 @@ flowchart TD
 
 ```mermaid
 flowchart LR
+    classDef default fill:#444,stroke:#666,color:#fff
     subgraph DHF["Design History File (DHF)"]
         subgraph DI["Design Input (설계 입력)"]
             MRD["MRD\n(User Needs)\nMR-001~007"]
@@ -1587,6 +1597,7 @@ flowchart LR
 
 ```mermaid
 flowchart LR
+    classDef default fill:#444,stroke:#666,color:#fff
     MR["MR-xxx\n(MRD)"]
     PR["PR-xxx / PR-NF-xxx\n(PRD)\nSystem-level Design Input"]
     SWR["SWR-xxx\n(FRS/SRS)\nIEC 62304 §5.2"]

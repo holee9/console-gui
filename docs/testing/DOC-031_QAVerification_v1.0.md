@@ -120,6 +120,7 @@
 
 ```mermaid
 flowchart LR
+    classDef default fill:#444,stroke:#666,color:#fff
     A[설계 입력 완결] --> B[설계 출력 완결]
     B --> C[V&V 합격]
     C --> D[위험 관리 완료]

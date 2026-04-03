@@ -30,6 +30,7 @@
 
 ```mermaid
 graph TD
+    classDef default fill:#444,stroke:#666,color:#fff
     DHF[DHF<br/>설계 이력 파일] --> DI[설계 입력<br/>Design Input]
     DHF --> DO[설계 출력<br/>Design Output]
     DHF --> DR[설계 검토<br/>Design Review]
@@ -136,6 +137,7 @@ graph TD
 
 ```mermaid
 flowchart LR
+    classDef default fill:#444,stroke:#666,color:#fff
     DI[설계 입력<br/>MRD→PRD→FRS/SRS] --> DO[설계 출력<br/>SAD→SDS→코드]
     DO --> DV_V[설계 검증<br/>UT→IT→ST]
     DV_V --> DVL_V[설계 밸리데이션<br/>IQ/OQ/PQ/UAV]
