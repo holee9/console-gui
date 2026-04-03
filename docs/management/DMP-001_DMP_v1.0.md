@@ -74,7 +74,7 @@
 flowchart TD
     classDef default fill:#444,stroke:#666,color:#fff
     MRD["MRD\nMarket Requirements Document\nDOC-001"]
-    PRD["PRD v3.0\nProduct Requirements Doc\nDOC-002"]
+    PRD["PRD v2.0\nProduct Requirements Doc\nDOC-002"]
     SDG["SW 개발 지침서\nSW Development Guideline\nDOC-003"]
     SDP_DOC["SDP\nSW Development Plan\nDOC-003a"]
     FRS["FRS\nFunctional Requirements Specification\nDOC-004"]
@@ -111,7 +111,7 @@ flowchart TD
     DHF["Design History File\nDHF — DOC-035"]
     ESTAR["510k / eSTAR Package\nDOC-036"]
     CE["CE Technical Documentation\nDOC-037"]
-    WBS["WBS v4.0\nWork Breakdown Structure\nWBS-001"]
+    WBS["WBS v1.0\nWork Breakdown Structure\nWBS-001"]
     DCS["DICOM Conformance\nStatement — DOC-038"]
     KFDA_DOC["KFDA 기술 문서\nKFDA Technical File\nDOC-039"]
     IFU["사용 설명서\nInstructions for Use （IFU）\nDOC-040"]
@@ -226,8 +226,8 @@ flowchart LR
     subgraph A["Phase A\n기반 문서 （Foundation）"]
         direction TB
         MRD["MRD"]
-        PRD_V3["PRD v3.0"]
-        WBS_V4["WBS v4.0"]
+        PRD_V2["PRD v2.0"]
+        WBS_V4["WBS v1.0"]
         SDG_A["SW 개발 지침서"]
         SDP_A["SDP"]
         PM_A["PM 계획서"]
@@ -323,8 +323,8 @@ flowchart LR
 | Phase | 문서 ID | 문서명 | 의존 문서 | 담당 | 목표 일정 | 인허가 제출 포함 |
 |-------|---------|--------|----------|------|----------|----------------|
 | A | **DOC-001** | MRD (Market Requirements Document) | — | PM/마케팅 | 2026-03 ✅완료 | ✅ (DHF Design Input) |
-| A | **DOC-002** | PRD v3.0 (Product Requirements Document) — MR→PR→SWR 3단계 계층 적용 | DOC-001 | PM/SE | 2026-03 ✅완료 | ✅ (DHF Design Input, eSTAR) |
-| A | **WBS-001** | WBS v4.0 (Work Breakdown Structure) — Milestone 통합 | DOC-001, DOC-002 | PM | 2026-03 ✅완료 | ✅ (DHF Design Plan) |
+| A | **DOC-002** | PRD v2.0 (Product Requirements Document) — MR→PR→SWR 3단계 계층 적용 | DOC-001 | PM/SE | 2026-03 ✅완료 | ✅ (DHF Design Input, eSTAR) |
+| A | **WBS-001** | WBS v1.0 (Work Breakdown Structure) — Milestone 통합 | DOC-001, DOC-002 | PM | 2026-03 ✅완료 | ✅ (DHF Design Plan) |
 | A | **DOC-003** | SW 개발 지침서 (Software Development Guideline) — **신규** | DOC-002 | Dev Lead/QA | 2026-04 | ✅ (DHF QMS, IEC 62304) |
 | A | **DOC-003a** | SDP (Software Development Plan) — **신규** | DOC-003 | PM/Dev Lead | 2026-04 | ✅ (DHF QMS, IEC 62304 §5.1) |
 | A | **DOC-041** | PM 계획서 (Project Management Plan) — **신규** | DOC-001, WBS-001 | PM | 2026-04 | — (내부 관리) |
@@ -337,7 +337,7 @@ flowchart LR
 
 ### 3.2 Phase B: 상세 설계 문서 (Detailed Design Documents)
 
-> MRD/PRD 승인 후 즉시 착수. SRS는 PRD v3.0의 SWR-xxx 체계 기반으로 작성
+> MRD/PRD 승인 후 즉시 착수. SRS는 PRD v2.0의 SWR-xxx 체계 기반으로 작성
 
 | Phase | 문서 ID | 문서명 | 의존 문서 | 담당 | 목표 일정 | 인허가 제출 포함 |
 |-------|---------|--------|----------|------|----------|----------------|
@@ -442,7 +442,7 @@ flowchart LR
 | ID 접두어 | 계층 | 예시 | 생성 문서 |
 |----------|------|------|---------|
 | **MR-xxx** | Market Requirement (시장 요구사항) | MR-001 | MRD (DOC-001) |
-| **PR-xxx** | Product Requirement (제품 요구사항) — 시스템 수준 Design Input | PR-001 | PRD v3.0 (DOC-002) |
+| **PR-xxx** | Product Requirement (제품 요구사항) — 시스템 수준 Design Input | PR-001 | PRD v2.0 (DOC-002) |
 | **SWR-xxx** | Software Requirement (소프트웨어 요구사항) — IEC 62304 §5.2 | SWR-001 | SRS (DOC-005) |
 | **FR-xxx** | Functional Requirement (기능 요구사항) | FR-001 | FRS (DOC-004) |
 | **NFR-xxx** | Non-Functional Requirement (비기능 요구사항) | NFR-001 | PRD/SRS |
@@ -494,7 +494,7 @@ flowchart LR
 
     subgraph PROD["제품 계층 （Product Layer）"]
         direction TB
-        PR["PR-xxx\nProduct Requirement\n（PRD v3.0 DOC-002）"]
+        PR["PR-xxx\nProduct Requirement\n（PRD v2.0 DOC-002）"]
         HAZ["HAZ-xxx\nHazard\n（FMEA DOC-009）"]
         RC["RC-xxx\nRisk Control\n（FMEA DOC-009）"]
     end
@@ -588,8 +588,8 @@ gantt
 
     section Phase A 기반 문서
     DOC-001 MRD                          :done, a1, 2026-03, 1M
-    DOC-002 PRD v3.0                    :done, a2, 2026-03, 1M
-    WBS-001 WBS v4.0                    :done, a3, 2026-03, 1M
+    DOC-002 PRD v2.0                    :done, a2, 2026-03, 1M
+    WBS-001 WBS v1.0                    :done, a3, 2026-03, 1M
     DOC-003 SW 개발 지침서              :a4, 2026-04, 1M
     DOC-003a SDP                        :a5, 2026-04, 1M
     DOC-041 PM 계획서                   :a6, 2026-04, 1M
@@ -663,7 +663,7 @@ gantt
 
 ```mermaid
 gantt
-    title PRD v3.0 승인 후 즉시 착수 작업
+    title PRD v2.0 승인 후 즉시 착수 작업
     dateFormat  YYYY-MM-DD
     axisFormat  %m/%d
 
@@ -725,7 +725,7 @@ flowchart TD
     classDef default fill:#444,stroke:#666,color:#fff
     subgraph TIER1["계층 1: 기반 문서"]
         MRD_V["MRD\n（DOC-001）"]
-        PRD_V["PRD v3.0\n（DOC-002）"]
+        PRD_V["PRD v2.0\n（DOC-002）"]
         SDG_V["SW 개발 지침서\n（DOC-003）"]
     end
 
@@ -783,7 +783,7 @@ flowchart TD
 
 | CV ID | 검증 쌍 | 검증 항목 | 검증 방법 | 담당 | 주기 |
 |-------|---------|---------|----------|------|------|
-| **CV-01** | MRD ↔ PRD v3.0 | 모든 MR-xxx에 대응하는 PR-xxx 존재 여부 | RTM 조회, 수동 검토 | PM/SE | PRD 업데이트 시 |
+| **CV-01** | MRD ↔ PRD v2.0 | 모든 MR-xxx에 대응하는 PR-xxx 존재 여부 | RTM 조회, 수동 검토 | PM/SE | PRD 업데이트 시 |
 | **CV-02** | PRD ↔ SRS | 모든 PR-xxx에 대응하는 SWR-xxx 존재 여부 | RTM 자동화 스크립트 | SE/QA | SRS 업데이트 시 |
 | **CV-03** | PRD ↔ FRS | PR-xxx 기능 요구사항 ↔ FR-xxx 완전 매핑 | 매핑 테이블 검토 | SE | FRS 베이스라인 |
 | **CV-04** | FRS ↔ SRS | FR-xxx ↔ SWR-xxx 양방향 완전성 | 자동화 스크립트 | SE | 월 1회 + 변경 시 |
@@ -864,8 +864,8 @@ flowchart LR
 | # | 항목 | 대응 문서 | 기준 | 완료 여부 |
 |---|------|---------|------|---------|
 | A-01 | MRD Released 상태 | DOC-001 | Released | ☐ |
-| A-02 | PRD v3.0 MR→PR→SWR 3단계 ID 체계 적용 완료 | DOC-002 | PR-xxx 할당 완료 | ☐ |
-| A-03 | WBS v4.0 Milestone 포함 승인 | WBS-001 | Released | ☐ |
+| A-02 | PRD v2.0 MR→PR→SWR 3단계 ID 체계 적용 완료 | DOC-002 | PR-xxx 할당 완료 | ☐ |
+| A-03 | WBS v1.0 Milestone 포함 승인 | WBS-001 | Released | ☐ |
 | A-04 | SW 개발 지침서 (DOC-003) Draft 이상 | DOC-003 | ≥ Draft | ☐ |
 | A-05 | SDP (DOC-003a) IEC 62304 §5.1 항목 완비 | DOC-003a | IEC 62304 §5.1 체크 | ☐ |
 | A-06 | PM 계획서 (DOC-041) 승인 | DOC-041 | Approved | ☐ |
@@ -962,7 +962,7 @@ stateDiagram-v2
 
 | 문서 유형 | 작성자 | 기술 검토 | 규제 검토 | QA 검토 | 교차 검증 | 최종 승인 |
 |----------|--------|---------|---------|---------|---------|---------|
-| MRD / PRD v3.0 | PM/마케팅 | SE Lead | RA | QA | CV-01 통과 | 프로젝트 책임자 |
+| MRD / PRD v2.0 | PM/마케팅 | SE Lead | RA | QA | CV-01 통과 | 프로젝트 책임자 |
 | SW 개발 지침서 / SDP | Dev Lead/PM | SE Lead | RA | QA | — | Dev Lead/PM |
 | FRS / SRS | SE | Dev Lead | RA | QA | CV-03, CV-04 | SE Lead |
 | SAD / SDS | Dev Lead | SE/Dev | RA | QA | CV-08 | CTO/Dev Lead |
@@ -991,8 +991,8 @@ stateDiagram-v2
 | 문서 ID | 문서명 | 담당 | 목표일 | 현재 상태 |
 |--------|--------|------|-------|----------|
 | DOC-001 | MRD | PM/마케팅 | 2026-03 | ✅ Released |
-| DOC-002 | PRD v3.0 | PM/SE | 2026-03 | ✅ Released |
-| WBS-001 | WBS v4.0 | PM | 2026-03 | ✅ Released |
+| DOC-002 | PRD v2.0 | PM/SE | 2026-03 | ✅ Released |
+| WBS-001 | WBS v1.0 | PM | 2026-03 | ✅ Released |
 | DOC-003 | SW 개발 지침서 | Dev Lead/QA | 2026-04 | ⬜ 미착수 |
 | DOC-003a | SDP | PM/Dev Lead | 2026-04 | ⬜ 미착수 |
 | DOC-041 | PM 계획서 | PM | 2026-04 | ⬜ 미착수 |
@@ -1124,7 +1124,7 @@ stateDiagram-v2
 
 ```
 [문서 ID]_[제품 코드]_[문서 약칭]_v[버전]_[날짜].[확장자]
-예시: DOC-004_XRAY-GUI_FRS_v1.0_20260501.docx
+예시: DOC-004_XRAY-GUI_FRS_v2.0_20260501.docx
       DOC-003_XRAY-GUI_SDG_v1.0_20260401.docx
       DOC-003a_XRAY-GUI_SDP_v1.0_20260401.docx
 ```
@@ -1297,7 +1297,7 @@ stateDiagram-v2
 
 ---
 
-> **Note 1**: 본 DMP는 WBS v4.0 (WBS-XRAY-GUI-001)과 연동하여 관리된다.
+> **Note 1**: 본 DMP는 WBS v1.0 (WBS-XRAY-GUI-001)과 연동하여 관리된다.
 >
 > **Note 2**: 모든 문서 ID (DOC-xxx)는 본 DMP의 부록 A 인덱스를 기준으로 한다. ID 신규 예약은 DMP 개정을 통해서만 가능하다.
 >

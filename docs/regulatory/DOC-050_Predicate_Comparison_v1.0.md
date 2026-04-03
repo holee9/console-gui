@@ -35,7 +35,7 @@
 
 FDA eSTAR 510(k) 제출을 위해 HnVue Console SW (Subject Device)와 Predicate Device 후보군의 의도된 사용 및 기술 특성 비교를 정형화된 표 형식으로 제공하여, FDA 심사관이 실질적 동등성(Substantial Equivalence, SE)을 신속하게 확인할 수 있도록 한다.
 
-본 문서는 DOC-036 (FDA 510(k) eSTAR_v1.0.md)의 eSTAR v6.1 Section 10 (Substantial Equivalence Comparison)에 직접 삽입·참조되는 핵심 문서이다.
+본 문서는 DOC-036 (FDA 510(k) eSTAR_v2.0.md)의 eSTAR v6.1 Section 10 (Substantial Equivalence Comparison)에 직접 삽입·참조되는 핵심 문서이다.
 
 ### 1.2 실질적 동등성 판단 기준 (21 CFR §807.87(f))
 
@@ -286,7 +286,7 @@ FDA eSTAR v6.1 Section 10 (Substantial Equivalence Comparison)에 본 문서가 
 
 | 문서 ID | 문서명 | 역할 |
 |--------|--------|------|
-| DOC-036 | FDA 510(k) eSTAR_v1.0 | 제출 패키지 — Section 10에 본 문서 참조 |
+| DOC-036 | FDA 510(k) eSTAR_v2.0 | 제출 패키지 — Section 10에 본 문서 참조 |
 | DOC-005 | SRS (SRS-XRAY-GUI-001) | SW 기능 및 보안 요구사항 (기술 특성 근거) |
 | DOC-006 | SAD (SAD-XRAY-GUI-001) | 아키텍처 — 기술 특성 상세 근거 |
 | DOC-029 | CER (CER-XRAY-GUI-001) | 임상 평가 — 동등 기기 임상 비교 (섹션 3 참조) |

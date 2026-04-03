@@ -24,7 +24,7 @@
 
 | 버전 | 날짜 | 작성자 | 변경 내용 |
 |------|------|--------|-----------|
-| v0.1 | 2026-03-16 | SW 개발팀 | 초안 작성 — PRD v3.0 기반 SWR 분해 초안 |
+| v0.1 | 2026-03-16 | SW 개발팀 | 초안 작성 — PRD v2.0 기반 SWR 분해 초안 |
 | v1.0 | 2026-03-16 | SW 개발팀 | 최초 공식 릴리스 — 전 도메인 SWR 완성, 인터페이스/DB/SOUP 요구사항 추가 |
 | v2.0 | 2026-04-02 | SW 개발팀 | MRD v3.0 4-Tier 우선순위 체계 반영 (P0/P1/P2 → Tier 1/2/3/4 전면 교체); MR-072 CD/DVD Burning 기능 요건 추가 (SWR-WF-032–034, PR-WF-019); 보완 3건 반영 — MR-037 인시던트 대응 (SWR-CS-086–087, PR-CS-077), MR-039 SW 업데이트 메커니즘 (SWR-SA-076–077/SWR-CS-084–085 보강, PR-CS-076/SA-067), MR-050 STRIDE 위협 모델링 (SWR-NF-RG-060 보강); 각 FR에 MR 추적 추가; 참조 문서 버전 업데이트 (MRD v3.0, PRD v2.0) |
 
@@ -71,7 +71,7 @@
 ```mermaid
 flowchart LR
     MR["MR-xxx\n（MRD）\n시장·사용자 요구사항"]
-    PR["PR-xxx\n（PRD v3.0）\n시스템 수준 Design Input\n21 CFR 820.30（c）"]
+    PR["PR-xxx\n（PRD v2.0）\n시스템 수준 Design Input\n21 CFR 820.30（c）"]
     SWR["SWR-xxx\n（FRS — 이 문서）\nIEC 62304 §5.2\nDesign Output\n21 CFR 820.30（d）"]
     SAD["SAD-xxx\n（소프트웨어 아키텍처）"]
     SDS["SDS-xxx\n（상세 설계）"]
@@ -614,7 +614,7 @@ stateDiagram-v2
 | SWR-NF-RG-060 | PR-NF-RG-060 | **[v2.0 보강 — MR-050]** IEC 62304 Class B 산출물 완비 + STRIDE 위협 모델링 | IEC 62304 전체 산출물: SDP(SW 개발 계획), SRS/FRS(본 문서), SAD, SDS, UT 결과, IT 결과, ST 결과, V&V 보고서, 릴리스 보고서, 형상 관리 기록. 각 산출물은 DHF(Design History File)에 포함. **[v2.0 추가 — MR-050]** STRIDE 기반 위협 모델링 수행 및 문서화 필수 (IEC 81001-5-1 Clause 5.2 요구사항): ① STRIDE 방법론 적용 (Spoofing, Tampering, Repudiation, Information Disclosure, DoS, Elevation of Privilege); ② 아키텍처 설계(SAD) 단계에서 STRIDE 위협 분석 수행; ③ 각 위협에 대한 대응 통제 조치 식별 및 RTM 연결; ④ 위협 모델링 문서 DHF에 포함. | IEC 62304 갭 분석 결과 0 Gap; STRIDE 위협 모델링 문서 완비 | I, A | ST-NF-RG-060 |
 | SWR-NF-RG-061 | PR-NF-RG-061 | ISO 14971 위험 참조 매핑 | 본 FRS의 모든 Safety-related SWR에 HAZ-xxx 위험 참조 포함(본 문서 §5 테이블의 「위험 참조」 컬럼). 위험 통제 조치(Risk Control Measure) ↔ SWR 양방향 추적성 확보. 잔류 위험 허용성 평가는 별도 Risk Management Report에서 수행. | 모든 Safety-related SWR의 위험 참조 기재 100% | I, A | ST-NF-RG-061 |
 | SWR-NF-RG-062 | PR-NF-RG-062 | IEC 62366 Usability Engineering | Summative Usability Test 완료 및 보고서 제출: ① Use Specification (본 PRD §2.1–2.4 기반); ② Formative 평가: 개발 Sprint 4, 8에서 수행; ③ Summative 평가: VT-UX-001–003; ④ 안전 관련 Task(Emergency 등록, DRL 경고 응답) 완료율 ≥95%; ⑤ Usability Engineering File(UEF) DHF에 포함. | 안전 Task 완료율 ≥95% (VT-UX-002) | D, A | ST-NF-RG-062 |
-| SWR-NF-RG-063 | PR-NF-RG-063 | FDA 21 CFR 820.30 Design Controls | Design Controls 전 단계 산출물 완비: ① Design Input(PRD v3.0); ② Design Output(FRS, SAD, SDS); ③ Design Reviews(§12.3 리뷰 기록); ④ Design Verification(UT+IT+ST 보고서); ⑤ Design Validation(VT-UX/CL/SEC 보고서); ⑥ Design Transfer(제조/설치 프로세스 문서); ⑦ Design Changes(변경 이력 및 영향도 분석). | Design Controls DHF 완전성 Inspection 통과 | I, A | ST-NF-RG-063 |
+| SWR-NF-RG-063 | PR-NF-RG-063 | FDA 21 CFR 820.30 Design Controls | Design Controls 전 단계 산출물 완비: ① Design Input(PRD v2.0); ② Design Output(FRS, SAD, SDS); ③ Design Reviews(§12.3 리뷰 기록); ④ Design Verification(UT+IT+ST 보고서); ⑤ Design Validation(VT-UX/CL/SEC 보고서); ⑥ Design Transfer(제조/설치 프로세스 문서); ⑦ Design Changes(변경 이력 및 영향도 분석). | Design Controls DHF 완전성 Inspection 통과 | I, A | ST-NF-RG-063 |
 | SWR-NF-RG-064 | PR-NF-RG-064 | DICOM Conformance Statement | DICOM PS 3.2 형식에 따른 DICOM Conformance Statement 문서 작성: ① 지원 SOP 클래스(SCU/SCP) 목록; ② 지원 전송 구문(Transfer Syntax); ③ 보안 프로파일(TLS); ④ 각 서비스의 IOD 구현 범위; ⑤ 벤더별 독점 확장(Private Tags) 목록. 릴리스마다 업데이트. | DICOM Conformance Statement 완전성 Inspection 통과 | I | ST-NF-RG-064 |
 | SWR-NF-RG-065 | PR-NF-RG-065 | RTM 완전성 100% | §10의 추적성 매트릭스(PR → SWR)가 모든 PR-xxx 및 PR-NF-xxx를 포함. SWR → SAD → SDS → TC 전방향 추적성 및 TC → SWR → PR → MR 역방향 추적성 100% 확보. RTM 업데이트 주기: 요구사항 변경 시 즉시 업데이트, 릴리스마다 완전성 검토. | RTM 완전성 100% Inspection 통과 | I, A | ST-NF-RG-065 |
 
@@ -1014,7 +1014,7 @@ flowchart TD
 ```mermaid
 flowchart LR
     MR["MR-xxx\n（MRD v3.0）\n시장·사용자 요구사항"]
-    PR["PR-xxx\n（PRD v3.0）\n시스템 수준 Design Input"]
+    PR["PR-xxx\n（PRD v2.0）\n시스템 수준 Design Input"]
     SWR_doc["SWR-xxx\n（FRS — 이 문서）\nIEC 62304 §5.2"]
     SAD_["SAD-xxx\n아키텍처 설계"]
     TC["UT/IT/ST\n테스트 케이스"]

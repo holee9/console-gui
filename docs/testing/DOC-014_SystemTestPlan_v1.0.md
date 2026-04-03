@@ -55,9 +55,9 @@
 
 ### 1.1 목적
 
-본 문서는 HnVue Console Software의 시스템 테스트 계획을 정의한다. IEC 62304:2006+AMD1:2015 §5.7 "소프트웨어 시스템 테스트 (Software System Testing)" 요구사항을 충족하기 위해 **전체 시스템 요구사항(PRD v3.0, SRS/FRS)** 에 대한 블랙박스(Black-box) 검증을 수행한다.
+본 문서는 HnVue Console Software의 시스템 테스트 계획을 정의한다. IEC 62304:2006+AMD1:2015 §5.7 "소프트웨어 시스템 테스트 (Software System Testing)" 요구사항을 충족하기 위해 **전체 시스템 요구사항(PRD v2.0, SRS/FRS)** 에 대한 블랙박스(Black-box) 검증을 수행한다.
 
-**Purpose:** Define system test plan to verify all system-level requirements (PRD v3.0, SRS) per IEC 62304 §5.7 using Black-box testing methodology.
+**Purpose:** Define system test plan to verify all system-level requirements (PRD v2.0, SRS) per IEC 62304 §5.7 using Black-box testing methodology.
 
 ### 1.2 범위
 
@@ -71,7 +71,7 @@
 ### 1.3 블랙박스 테스트 접근법
 
 - **블랙박스(Black-box)**: 내부 구현을 알지 못한 상태에서 입력/출력 기반 검증
-- **요구사항 기반**: PRD v3.0 및 SRS 요구사항 ID 기준 추적성 확보
+- **요구사항 기반**: PRD v2.0 및 SRS 요구사항 ID 기준 추적성 확보
 - **시나리오 기반**: 실제 임상 워크플로우 시나리오 적용
 - **경계값/동등분할**: 입력 범위의 경계 및 동등 클래스 커버
 
@@ -102,7 +102,7 @@
 ```mermaid
 flowchart TD
     classDef default fill:#444,stroke:#666,color:#fff
-    A[PRD v3.0 / SRS 요구사항 분석] --> B[테스트 케이스 설계\nBlack-box 기법]
+    A[PRD v2.0 / SRS 요구사항 분석] --> B[테스트 케이스 설계\nBlack-box 기법]
     B --> C1[기능 테스트\n50개]
     B --> C2[비기능 테스트\n20개]
     B --> C3[안전성 테스트\n15개]

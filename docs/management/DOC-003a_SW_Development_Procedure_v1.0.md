@@ -430,7 +430,7 @@ flowchart TD
 
 | 마일스톤 ID | 마일스톤명 | 목표 일자 | 연계 Phase Gate | 주요 완료 기준 |
 |------------|-----------|-----------|----------------|---------------|
-| **PG-A** | Phase A Gate — 기반 문서 완료 | 2026-04-15 | PG-1 (기획 검토) | MRD, PRD v3.0, WBS, SDP(DOC-003a), SW 개발 지침서 완료 |
+| **PG-A** | Phase A Gate — 기반 문서 완료 | 2026-04-15 | PG-1 (기획 검토) | MRD, PRD v2.0, WBS, SDP(DOC-003a), SW 개발 지침서 완료 |
 | **M1** | FRS 베이스라인 확정 | 2026-05-01 | PG-2 (요구사항 검토) | FRS(DOC-004) 승인 완료 |
 | **M2** | SRS 베이스라인 (SWR-xxx 체계) | 2026-05-15 | PG-2 | SRS(DOC-005) 확정, RTM 초안 |
 | **M3** | V&V Plan 승인 | 2026-06-01 | — | V&V Master Plan(DOC-011) 서명 완료 |
@@ -448,8 +448,8 @@ flowchart TD
 | Phase | 문서 ID | 문서명 | 목표 일정 | 상태 |
 |-------|---------|--------|-----------|------|
 | **A** | DOC-001 | MRD (Market Requirements Document) | 2026-03 | 완료 ✅ |
-| **A** | DOC-002 | PRD v3.0 (Product Requirements Document) | 2026-03 | 완료 ✅ |
-| **A** | WBS-001 | WBS v4.0 (Work Breakdown Structure) | 2026-03 | 완료 ✅ |
+| **A** | DOC-002 | PRD v2.0 (Product Requirements Document) | 2026-03 | 완료 ✅ |
+| **A** | WBS-001 | WBS v1.0 (Work Breakdown Structure) | 2026-03 | 완료 ✅ |
 | **A** | DOC-003 | SW 개발 지침서 (Software Development Guideline) | 2026-04 | 진행 중 |
 | **A** | DOC-003a | SDP (본 문서, IEC 62304 §5.1) | 2026-04 | 진행 중 |
 | **A** | DOC-041 | PM 계획서 (Project Management Plan) | 2026-04 | 진행 중 |

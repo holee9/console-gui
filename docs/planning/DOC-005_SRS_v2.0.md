@@ -89,7 +89,7 @@
 flowchart TD
     subgraph DocChain["문서 계층 （Document Hierarchy）"]
         MR["MR-xxx\n（MRD v3.0）\n시장·사용자 요구사항\n[21 CFR 820.30（a）]"]
-        PR["PR-xxx\n（PRD v3.0）\n시스템 수준 Design Input\n[21 CFR 820.30（c）]"]
+        PR["PR-xxx\n（PRD v2.0）\n시스템 수준 Design Input\n[21 CFR 820.30（c）]"]
         SRS_doc["SWR-xxx\n（SRS — 이 문서）\nIEC 62304 §5.2\nDesign Output\n[21 CFR 820.30（d）]"]
         FRS["FRS-XRAY-GUI-001 v2.0\n（기능 요구사항 명세서）\n원본 SWR 정의"]
         RMP["RMP-XRAY-GUI-001 v1.0\n（위험 관리 계획）\nHAZ-xxx 정의"]
@@ -1169,7 +1169,7 @@ graph TD
 | MVVM | Model-View-ViewModel | 소프트웨어 아키텍처 패턴 |
 | PACS | Picture Archiving and Communication System | 의료 영상 저장 전송 시스템 |
 | PHI | Protected Health Information | 보호 건강 정보 |
-| PR | Product Requirement | 제품 요구사항 (PRD v3.0) |
+| PR | Product Requirement | 제품 요구사항 (PRD v2.0) |
 | RBAC | Role-Based Access Control | 역할 기반 접근 제어 |
 | RDSR | Radiation Dose Structured Report | 방사선 선량 구조적 보고서 (DICOM TID 10011) |
 | RIS | Radiology Information System | 방사선과 정보 시스템 |

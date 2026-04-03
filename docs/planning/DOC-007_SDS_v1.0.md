@@ -88,8 +88,8 @@
 ```mermaid
 flowchart LR
     MRD["MR-xxx\n（MRD v2.0）\n시장 요구사항"]
-    PRD["PR-xxx\n（PRD v3.0）\nDesign Input\n21 CFR 820.30（c）"]
-    FRS["SWR-xxx\n（FRS v1.0）\nIEC 62304 §5.2"]
+    PRD["PR-xxx\n（PRD v2.0）\nDesign Input\n21 CFR 820.30（c）"]
+    FRS["SWR-xxx\n（FRS v2.0）\nIEC 62304 §5.2"]
     SAD["SAD-xxx\n（SAD v1.0）\nIEC 62304 §5.3"]
     SDS["SDS-xxx\n（SDS v1.0 — 이 문서）\nIEC 62304 §5.4"]
     CODE["소스 코드\n（Implementation）"]
@@ -2191,8 +2191,8 @@ flowchart TD
 ```mermaid
 flowchart LR
     MR["MR-xxx\n（MRD v2.0）"]
-    PR["PR-xxx\n（PRD v3.0）"]
-    SWR["SWR-xxx\n（FRS v1.0）"]
+    PR["PR-xxx\n（PRD v2.0）"]
+    SWR["SWR-xxx\n（FRS v2.0）"]
     SAD["SAD-xxx\n（SAD v1.0）"]
     SDS["SDS-xxx\n（이 문서）"]
     CODE["소스코드"]

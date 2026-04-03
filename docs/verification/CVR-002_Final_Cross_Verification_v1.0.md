@@ -56,20 +56,20 @@
 | 4 | DOC-002 | 제품 요구사항 정의서 (PRD) v1.0 | DOC-002_PRD_v1.0.md | 111.6 KB | ✅ |
 | 5 | DOC-003 | SW 개발 지침서 | DOC-003_SW_Development_Guideline_v1.0.md | 65.8 KB | ✅ |
 | 6 | DOC-003a | SW 개발 절차서 (SDP) | DOC-003a_SW_Development_Procedure_v1.0.md | 60.8 KB | ✅ |
-| 7 | DOC-004 | 기능 요구사항 명세서 (FRS) | DOC-004_FRS_v1.0.md | 155.4 KB | ✅ |
+| 7 | DOC-004 | 기능 요구사항 명세서 (FRS) | DOC-004_FRS_v2.0.md | 155.4 KB | ✅ |
 | 8 | DOC-008 | 위험 관리 계획서 (RMP) | DOC-008_Risk_Management_Plan_v1.0.md | 61.3 KB | ✅ |
 | 9 | DOC-011 | V&V 마스터 플랜 | DOC-011_VV_Master_Plan_v1.0.md | 51.0 KB | ✅ |
 | 10 | DOC-016 | 사이버보안 계획서 | DOC-016_Cybersecurity_Plan_v1.0.md | 59.4 KB | ✅ |
 | 11 | DOC-020 | 임상 평가 계획서 (CEP) | DOC-020_Clinical_Evaluation_Plan_v1.0.md | 46.5 KB | ✅ |
 | 12 | DOC-030 | QA 시험 계획서 | DOC-030_QA_Test_Plan_v1.0.md | 62.6 KB | ✅ |
-| 13 | DOC-032 | 요구사항 추적 매트릭스 (RTM) | DOC-032_RTM_v1.0.md | 49.4 KB | ✅ |
+| 13 | DOC-032 | 요구사항 추적 매트릭스 (RTM) | DOC-032_RTM_v2.0.md | 49.4 KB | ✅ |
 | 14 | CVR-001 | 교차검증 보고서 v1 | CVR-001_Cross_Verification_Report_v1.0.md | 33.5 KB | ✅ |
 
 ### Phase B: 개발 및 설계 문서 (8개)
 
 | # | 문서 ID | 문서명 | 파일명 | 크기 | 상태 |
 |---|---------|--------|--------|------|------|
-| 15 | DOC-005 | 소프트웨어 요구사항 명세서 (SRS) | DOC-005_SRS_v1.0.md | 97.4 KB | ✅ |
+| 15 | DOC-005 | 소프트웨어 요구사항 명세서 (SRS) | DOC-005_SRS_v2.0.md | 97.4 KB | ✅ |
 | 16 | DOC-006 | 소프트웨어 아키텍처 설계서 (SAD) | DOC-006_SAD_v1.0.md | 61.9 KB | ✅ |
 | 17 | DOC-007 | 상세 설계 명세서 (SDS) | DOC-007_SDS_v1.0.md | 89.2 KB | ✅ |
 | 18 | DOC-009 | FMEA (고장 모드 영향 분석) | DOC-009_FMEA_v1.0.md | 60.4 KB | ✅ |
@@ -99,7 +99,7 @@
 | 37 | DOC-033 | SOUP 관리 보고서 | DOC-033_SOUP_Report_v1.0.md | 15.4 KB | ✅ |
 | 38 | DOC-034 | 릴리스 문서 | DOC-034_ReleaseDoc_v1.0.md | 4.0 KB | ✅ |
 | 39 | DOC-035 | 설계 이력 파일 (DHF) | DOC-035_DHF_v1.0.md | 6.4 KB | ✅ |
-| 40 | DOC-036 | FDA 510(k) eSTAR 체크리스트 | DOC-036_510k_eSTAR_v1.0.md | 4.2 KB | ✅ |
+| 40 | DOC-036 | FDA 510(k) eSTAR 체크리스트 | DOC-036_510k_eSTAR_v2.0.md | 4.2 KB | ✅ |
 | 41 | DOC-037 | CE MDR 기술문서 체크리스트 | DOC-037_CE_TechDoc_v1.0.md | 3.6 KB | ✅ |
 | 42 | DOC-038 | DICOM 적합성 선언서 | DOC-038_DICOM_Conformance_v1.0.md | 5.2 KB | ✅ |
 | 43 | DOC-039 | KFDA 허가 체크리스트 | DOC-039_KFDA_v1.0.md | 3.5 KB | ✅ |
