@@ -245,16 +245,16 @@ MR (72개) → PR (65개) → SWR (176+개) → TC → HAZ
 
 | 파일 | 대체 문서 | 비고 |
 |------|----------|------|
-| `docs/planning/DOC-001_MRD_v1.0.md` | MRD v3.0 | 초기 버전 |
-| `docs/planning/DOC-001_MRD_v2.0.md` | MRD v3.0 | P1~P4 체계 (폐기) |
-| `docs/planning/DOC-002_PRD_v1.0.md` | PRD v2.0 | MR 추적성 없음 |
-| `docs/planning/DOC-004_FRS_v1.0.md` | FRS v2.0 | Tier 미반영 |
-| `docs/planning/DOC-005_SRS_v1.0.md` | SRS v2.0 | Tier 미반영 |
-| `docs/planning/research/STRATEGY-001_Company_Positioning_v1.0.md` | STRATEGY-001 v2.0 | 초기 전략 |
-| `docs/regulatory/DOC-036_510k_eSTAR_v1.0.md` | eSTAR v2.0 | 인시던트 대응 미포함 |
-| `docs/verification/DOC-032_RTM_v1.0.md` | RTM v2.0 | P1~P4 체계, MR-072 없음 |
-| `docs/verification/CVR-002_Final_CrossVerification.md` | CVR-002 v1.0 | 중복 파일 (파일명 불일치) |
-| `docs/medical-device-cybersecurity-template.md` | DOC-046, DOC-048 등 | 초기 참조 템플릿, 개별 문서로 분리 완료 |
+| `docs/archive/DOC-001_MRD_v1.0.md` | MRD v3.0 | 초기 버전 |
+| `docs/archive/DOC-001_MRD_v2.0.md` | MRD v3.0 | P1~P4 체계 (폐기) |
+| `docs/archive/DOC-002_PRD_v1.0.md` | PRD v2.0 | MR 추적성 없음 |
+| `docs/archive/DOC-004_FRS_v1.0.md` | FRS v2.0 | Tier 미반영 |
+| `docs/archive/DOC-005_SRS_v1.0.md` | SRS v2.0 | Tier 미반영 |
+| `docs/archive/STRATEGY-001_Company_Positioning_v1.0.md` | STRATEGY-001 v2.0 | 초기 전략 |
+| `docs/archive/DOC-036_510k_eSTAR_v1.0.md` | eSTAR v2.0 | 인시던트 대응 미포함 |
+| `docs/archive/DOC-032_RTM_v1.0.md` | RTM v2.0 | P1~P4 체계, MR-072 없음 |
+| `docs/archive/CVR-002_Final_CrossVerification.md` | CVR-002 v1.0 | 중복 파일 (파일명 불일치) |
+| `docs/archive/medical-device-cybersecurity-template.md` | DOC-046, DOC-048 등 | 초기 참조 템플릿, 개별 문서로 분리 완료 |
 
 ---
 
