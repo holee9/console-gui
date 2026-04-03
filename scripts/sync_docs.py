@@ -40,8 +40,8 @@ CURRENT_VERSIONS = {
     'RTM': 'v2.0',
     'eSTAR': 'v2.0',
     'WBS': 'v1.0',
-    'SAD': 'v1.0',
-    'SDS': 'v1.0',
+    'SAD': 'v2.0',
+    'SDS': 'v2.0',
 }
 
 # 버전 교체 맵 (구 → 현행)

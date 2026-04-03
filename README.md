@@ -90,8 +90,8 @@ MR（72개）→ PR（65개）→ SWR（176+개）→ TC → HAZ
 | 구분 | 상태 | 개수 | 설명 |
 |------|:----:|:----:|------|
 | 핵심 체인（MRD/PRD/FRS/SRS/RTM） | ✅ 정합 | 5 | 4-Tier, 추적성 100% |
-| 개정 완료（eSTAR 등） | ✅ 정합 | 3 | v2.0 개정 완료 |
-| Phase별 개정 대기 | ⏳ 대기 | 29 | 해당 Phase 착수 시 개정 |
+| 설계+관리+테스트 | ✅ 정합 | 13 | v2.0 개정 완료（SAD/SDS/DMP/SDP/WBS + 테스트 5개 + eSTAR） |
+| Phase별 개정 대기 | ⏳ 대기 | 19 | 검증 완료/인허가 시 개정 |
 | 28종 인허가 템플릿 | 27/28 | - | C06 PenTest만 외부 위탁 대기 |
 
 ---
@@ -117,22 +117,22 @@ MR（72개）→ PR（65개）→ SWR（176+개）→ TC → HAZ
 
 | Doc ID | 문서명 | 버전 | 경로 |
 |--------|--------|:----:|------|
-| DOC-006 | SAD（SW 아키텍처 설계） | v1.0 | `docs/planning/DOC-006_SAD_v1.0.md` |
-| DOC-007 | SDS（SW 상세 설계） | v1.0 | `docs/planning/DOC-007_SDS_v1.0.md` |
+| DOC-006 | SAD（SW 아키텍처 설계） | **v2.0** | `docs/planning/DOC-006_SAD_v2.0.md` |
+| DOC-007 | SDS（SW 상세 설계） | **v2.0** | `docs/planning/DOC-007_SDS_v2.0.md` |
 
 ### 관리 문서（Phase 1 착수 시 개정）
 
 | Doc ID | 문서명 | 버전 | 경로 |
 |--------|--------|:----:|------|
-| DMP-001 | 문서 마스터 플랜 | v1.0 | `docs/management/DMP-001_DMP_v1.0.md` |
+| DMP-001 | 문서 마스터 플랜 | **v2.0** | `docs/management/DMP-001_DMP_v2.0.md` |
 | DOC-003 | SW 개발 지침서 | v1.0 | `docs/management/DOC-003_SW_Development_Guideline_v1.0.md` |
-| DOC-003a | SW 개발 절차서（SDP） | v1.1 | `docs/management/DOC-003a_SW_Development_Procedure_v1.0.md` |
+| DOC-003a | SW 개발 절차서（SDP） | **v2.0** | `docs/management/DOC-003a_SW_Development_Procedure_v2.0.md` |
 | DOC-016 | 사이버보안 관리 계획 | v1.0 | `docs/management/DOC-016_Cybersecurity_Plan_v1.0.md` |
 | DOC-041 | PM 계획서 | v1.0 | `docs/management/DOC-041_PM_Plan_v1.0.md` |
 | DOC-042 | 형상관리 계획 | v1.0 | `docs/management/DOC-042_CMP_v1.0.md` |
 | DOC-043 | 소스코드 및 빌드 환경 | v1.0 | `docs/management/DOC-043_Build_Environment_v1.0.md` |
 | DOC-044 | 알려진 결함 목록 | v1.0 | `docs/management/DOC-044_Known_Anomalies_v1.0.md` |
-| WBS-001 | WBS | v1.0 | `docs/management/WBS-001_WBS_v1.0.md` |
+| WBS-001 | WBS | **v2.0** | `docs/management/WBS-001_WBS_v2.0.md` |
 
 ### 위험관리（Phase 1 착수 시 개정）
 
@@ -148,11 +148,11 @@ MR（72개）→ PR（65개）→ SWR（176+개）→ TC → HAZ
 
 | Doc ID | 문서명 | 버전 | 경로 |
 |--------|--------|:----:|------|
-| DOC-012 | 단위 테스트 계획 | v1.0 | `docs/testing/DOC-012_UnitTestPlan_v1.0.md` |
-| DOC-013 | 통합 테스트 계획 | v1.0 | `docs/testing/DOC-013_IntegTestPlan_v1.0.md` |
-| DOC-014 | 시스템 테스트 계획 | v1.0 | `docs/testing/DOC-014_SystemTestPlan_v1.0.md` |
-| DOC-018 | 사이버보안 테스트 계획 | v1.0 | `docs/testing/DOC-018_CyberTestPlan_v1.0.md` |
-| DOC-021 | 사용성 공학 파일 | v1.0 | `docs/testing/DOC-021_UsabilityFile_v1.0.md` |
+| DOC-012 | 단위 테스트 계획 | **v2.0** | `docs/testing/DOC-012_UnitTestPlan_v2.0.md` |
+| DOC-013 | 통합 테스트 계획 | **v2.0** | `docs/testing/DOC-013_IntegTestPlan_v2.0.md` |
+| DOC-014 | 시스템 테스트 계획 | **v2.0** | `docs/testing/DOC-014_SystemTestPlan_v2.0.md` |
+| DOC-018 | 사이버보안 테스트 계획 | **v2.0** | `docs/testing/DOC-018_CyberTestPlan_v2.0.md` |
+| DOC-021 | 사용성 공학 파일 | **v2.0** | `docs/testing/DOC-021_UsabilityFile_v2.0.md` |
 | DOC-022 | 단위 테스트 보고서 | v1.0 | `docs/testing/DOC-022_UTReport_v1.0.md` |
 | DOC-023 | 통합 테스트 보고서 | v1.0 | `docs/testing/DOC-023_ITReport_v1.0.md` |
 | DOC-024 | 시스템 테스트 보고서 | v1.0 | `docs/testing/DOC-024_STReport_v1.0.md` |
@@ -306,9 +306,9 @@ python scripts/sync_docs.py
 
 | 시점 | 대상 문서 | 개정 내용 |
 |------|----------|----------|
-| **완료** | MRD, PRD, FRS, SRS, RTM, eSTAR | 4-Tier, MR-072, 추적성, 보완 3건 |
-| **Phase 1 착수 시** | SAD, SDS, DMP, SDP, WBS | Tier 반영 + 실제 설계 |
-| **Phase 1 구현 완료 시** | UTP, ITP, STP, CyberTest, Usability | 실제 테스트 케이스 |
+| **완료** | MRD, PRD, FRS, SRS, RTM, eSTAR, SAD, SDS, DMP, SDP, WBS, UTP, ITP, STP, CyberTest, Usability | 4-Tier, MR-072, 추적성, 보완 3건, Phase 1 착수 준비 |
+| **Phase 1 착수 시** | ~~SAD, SDS, DMP, SDP, WBS~~ | ~~Tier 반영 + 실제 설계~~ **완료** |
+| **Phase 1 구현 완료 시** | ~~UTP, ITP, STP, CyberTest, Usability~~ | ~~테스트 계획~~ **완료**, 구현 후 실제 TC 기입 |
 | **Phase 1 검증 완료 시** | UTR, ITR, STR, V&V Summary, QA | 실제 테스트 결과 |
 | **인허가 제출 전** | eSTAR, DHF, DICOM Conf, IFU, GSPR | 최종 확정 |
 | **시판 후** | PMS, PMCF, CER | 실제 시판 후 데이터 |
