@@ -108,6 +108,7 @@ HnVue Console SW는 의료 전문가(방사선사, 영상의학과 전문의)가
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     A[설치 완료] --> B[DICOM 설정<br/>AE Title, Port]
     B --> C[PACS 연결 설정<br/>IP, AE Title]
     C --> D[RIS/Worklist 연결<br/>HL7/FHIR]
@@ -137,6 +138,7 @@ flowchart TD
 
 ```mermaid
 flowchart LR
+    classDef default fill:#444,stroke:#666,color:#fff
     A[로그인] --> B[Worklist<br/>환자 선택]
     B --> C[프로토콜<br/>선택/확인]
     C --> D[파라미터<br/>확인]

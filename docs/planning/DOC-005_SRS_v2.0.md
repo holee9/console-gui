@@ -164,6 +164,7 @@ flowchart TD
 
 ```mermaid
 graph TB
+    classDef default fill:#444,stroke:#666,color:#fff
     subgraph HnVue["HnVue HnVue Console SW (IEC 62304 Class B)"]
         direction TB
         subgraph UI["UI Layer (WPF/MVVM)"]
@@ -432,6 +433,7 @@ HnVue은 다음 7개 독립 모듈로 구성된다:
 
 ```mermaid
 flowchart LR
+    classDef default fill:#444,stroke:#666,color:#fff
     subgraph Inputs["입력 (Inputs)"]
         direction TB
         I1["FPD 영상\nGigE Vision"]
@@ -761,6 +763,7 @@ erDiagram
 
 ```mermaid
 graph LR
+    classDef default fill:#444,stroke:#666,color:#fff
     subgraph Hazards["위험 요소 (Hazards)"]
         HAZ_RAD["HAZ-RAD\n방사선 과다/과소 노출\n(Radiation Dose Error)"]
         HAZ_DATA["HAZ-DATA\n환자 데이터 오류/분실\n(Patient Data Error)"]
@@ -936,6 +939,7 @@ graph LR
 
 ```mermaid
 graph TD
+    classDef default fill:#444,stroke:#666,color:#fff
     subgraph SRS_Sections["SRS IEC 62304 §5.2 분류 체계"]
         S521["§5.2.1\n기능/성능 요구사항\nSWR-PM/WF/IP/DM/DC/SA\nSWR-NF-PF/RL"]
         S522["§5.2.2\nSW 시스템 입출력\nIN-001~012\nOUT-001~012"]

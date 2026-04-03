@@ -128,6 +128,7 @@ ISO 14971:2019 §9 (위험 관리 검토, Risk Management Review)에 따라 위�
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     A([위험 관리 계획 수립\nRMP-XRAY-GUI-001 v1.0\n2026-01-10 승인]) --> B
 
     subgraph ANALYSIS["위험 분석 (Risk Analysis) — 완료"]
@@ -448,6 +449,7 @@ ISO 14971:2019 §8에 따라 의도된 사용에 따른 HnVue GUI Console SW의 
 
 ```mermaid
 flowchart LR
+    classDef default fill:#444,stroke:#666,color:#fff
     subgraph B["임상적 편익 (Clinical Benefits)"]
         B1["진단 정확도 향상\n(Improved Diagnosis)"]
         B2["방사선 선량 저감\n30~50% 감소"]
@@ -516,6 +518,7 @@ ISO 14971:2019 §10에 따라, HnVue GUI Console SW는 시판 후 다음 정보 
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     A[시판 후 정보 수집] --> B[불만 처리\nComplaint Handling]
     A --> C[현장 오류 분석\nUse Error Analysis]
     A --> D[규제기관 감시\nFDA MAUDE / EUDAMED]

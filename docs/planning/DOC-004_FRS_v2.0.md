@@ -643,6 +643,7 @@ stateDiagram-v2
 
 ```mermaid
 flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
     subgraph Console["HnVue (SCU)"]
         direction TB
         MWL_SCU["MWL SCU\n(C-FIND)\nSWR-DC-053~054"]
