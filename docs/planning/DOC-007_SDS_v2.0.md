@@ -519,6 +519,181 @@ public class HnVueTlsInitiator : ITlsInitiator
 > fo-dicom 5.x에서 TLS는 DicomClientFactory.Create의 useTls 파라미터 또는 ITlsInitiator 인터페이스로 설정한다.
 > 최소 TLS 1.2 필수, TLS 1.3 권장. 자체 서명 인증서 허용 안 함.
 
+#### 3.5.5 Print SCU 시퀀스: Film Session → Film Box → Image Box → Print
+
+> 참조: DICOM-001 §3.3, §4.4
+
+Print SCU는 DIMSE-N 서비스（N-CREATE, N-SET, N-ACTION, N-DELETE）를 순차적으로 수행한다. 아래는 fo-dicom 5.x 기반 구현 코드이다.
+
+```csharp
+public async Task PrintDicomImageAsync(
+    string printerHost, int printerPort, string printerAeTitle,
+    DicomDataset pixelDataset, PrintOptions options, CancellationToken ct = default)
+{
+    var client = DicomClientFactory.Create(printerHost, printerPort, false, "HNVUE", printerAeTitle);
+
+    string filmSessionUid = null;
+    string filmBoxUid     = null;
+    string imageBoxUid    = null;
+
+    // 1. Film Session N-CREATE
+    var filmSessionDataset = new DicomDataset
+    {
+        { DicomTag.NumberOfCopies,  options.NumberOfCopies.ToString() },
+        { DicomTag.PrintPriority,   options.PrintPriority },   // HIGH / MED / LOW
+        { DicomTag.MediumType,      options.MediumType },      // BLUE FILM / CLEAR FILM / PAPER
+        { DicomTag.FilmDestination, options.FilmDestination }, // MAGAZINE / PROCESSOR
+    };
+    var createFilmSession = new DicomNCreateRequest(DicomUID.BasicFilmSession, DicomUID.Generate());
+    createFilmSession.Dataset = filmSessionDataset;
+    createFilmSession.OnResponseReceived = (req, rsp) =>
+    {
+        filmSessionUid = req.SOPInstanceUID?.UID;
+        if (rsp.Status != DicomStatus.Success)
+            throw new InvalidOperationException($"Film Session N-CREATE 실패: {rsp.Status}");
+    };
+    await client.AddRequestAsync(createFilmSession);
+
+    // 2. Film Box N-CREATE
+    var filmBoxDataset = new DicomDataset
+    {
+        { DicomTag.ImageDisplayFormat, options.ImageDisplayFormat }, // STANDARD\\1,1
+        { DicomTag.FilmSizeID,         options.FilmSizeId },        // 14INX17IN
+        { DicomTag.MagnificationType,  "REPLICATE" },
+        { DicomTag.BorderDensity,      "BLACK" },
+    };
+    var createFilmBox = new DicomNCreateRequest(DicomUID.BasicFilmBox, DicomUID.Generate());
+    createFilmBox.Dataset = filmBoxDataset;
+    createFilmBox.OnResponseReceived = (req, rsp) =>
+    {
+        filmBoxUid = req.SOPInstanceUID?.UID;
+        if (rsp.HasDataset)
+        {
+            var refSeq = rsp.Dataset.GetSequence(DicomTag.ReferencedImageBoxSequence);
+            if (refSeq?.Items?.Count > 0)
+                imageBoxUid = refSeq.Items[0].GetSingleValueOrDefault(DicomTag.ReferencedSOPInstanceUID, "");
+        }
+    };
+    await client.AddRequestAsync(createFilmBox);
+
+    // Film Session + Film Box 먼저 전송—Image Box UID 확보
+    await client.SendAsync(ct);
+
+    // 3. Image Box N-SET
+    var setImageBox = new DicomNSetRequest(DicomUID.BasicGrayscaleImageBox, imageBoxUid);
+    // … 픽셀 데이터 설정 생략 …
+    await client.AddRequestAsync(setImageBox);
+
+    // 4. Film Session N-ACTION（Print 실행）
+    var printAction = new DicomNActionRequest(DicomUID.BasicFilmSession, filmSessionUid, actionTypeId: 1);
+    await client.AddRequestAsync(printAction);
+    await client.SendAsync(ct);
+}
+```
+
+> **주의:** Film Box N-CREATE RSP에서 받은 Image Box UID를 사용해야 하므로, Film Session + Film Box 생성 후 첫 번째 `SendAsync()`를 호출하여 UID를 확보한 뒤 Image Box N-SET을 이어서 전송한다.
+
+#### 3.5.6 MWL 필수 반환 Tag 목록
+
+> 참조: DICOM-001 §3.2, §4.3
+
+MWL C-FIND 응답에서 Console이 반드시 추출해야 하는 10개 필수 DICOM Tag는 다음과 같다.
+
+| 순번 | Tag | 명칭 | 타입 | 설명 |
+|---|---|---|---|---|
+| 1 | (0010,0010) | PatientName | PN | 환자명 （Last^First） |
+| 2 | (0010,0020) | PatientID | LO | 환자 ID |
+| 3 | (0010,0030) | PatientBirthDate | DA | 생년월일 |
+| 4 | (0010,0040) | PatientSex | CS | M/F/O |
+| 5 | (0008,0050) | AccessionNumber | SH | 검사 번호 |
+| 6 | (0020,000D) | StudyInstanceUID | UI | 스터디 UID |
+| 7 | (0032,1060) | RequestedProcedureDescription | LO | 요청 검사 설명 |
+| 8 | (0040,1001) | RequestedProcedureID | SH | 요청 절차 ID |
+| 9 | (0040,0100) | ScheduledProcedureStepSequence | SQ | 예약 절차 시퀀스 （날짜, 모달리티, AE Title） |
+| 10 | (0008,0090) | ReferringPhysicianName | PN | 의래 의사명 |
+
+```csharp
+// fo-dicom 5.x MWL 필수 태그 요청 예시
+cfind.Dataset.AddOrUpdate(DicomTag.PatientName,                    "");
+cfind.Dataset.AddOrUpdate(DicomTag.PatientID,                      "");
+cfind.Dataset.AddOrUpdate(DicomTag.PatientBirthDate,               "");
+cfind.Dataset.AddOrUpdate(DicomTag.PatientSex,                     "");
+cfind.Dataset.AddOrUpdate(DicomTag.AccessionNumber,                "");
+cfind.Dataset.AddOrUpdate(DicomTag.StudyInstanceUID,               "");
+cfind.Dataset.AddOrUpdate(DicomTag.RequestedProcedureDescription,  "");
+cfind.Dataset.AddOrUpdate(DicomTag.RequestedProcedureID,           "");
+cfind.Dataset.AddOrUpdate(DicomTag.ReferringPhysicianName,         "");
+```
+
+#### 3.5.7 C-STORE 배치 전송 패턴
+
+> 참조: DICOM-001 §4.2, §4.6
+
+다수 파일을 단일 Association으로 한번에 전송하는 배치 패턴. Polly 재시도 정책 포함.
+
+```csharp
+public async Task StoreBatchAsync(
+    string pacsHost, int pacsPort, string pacsAeTitle,
+    IEnumerable<string> filePaths, CancellationToken ct = default)
+{
+    var client  = DicomClientFactory.Create(pacsHost, pacsPort, false, "HNVUE", pacsAeTitle);
+    var results = new ConcurrentBag<(string File, DicomStatus Status)>();
+
+    foreach (var path in filePaths)
+    {
+        var request     = new DicomCStoreRequest(path);
+        var capturedPath = path;
+        request.OnResponseReceived += (req, rsp) =>
+            results.Add((capturedPath, rsp.Status));
+        await client.AddRequestAsync(request);   // 단일 Association 내 다중 요청
+    }
+
+    await client.SendAsync(ct);                  // 일괄 전송 실행
+
+    // 실패 항목만 영속 큐에 저장（Polly 재시도 후도 실패 시）
+    foreach (var (file, status) in results.Where(r => r.Status.State != DicomState.Success))
+        _logger.LogWarning("전송 실패 — 영속 큐 등록: {File} — {Status}", file, status);
+}
+```
+
+#### 3.5.8 DICOMDIR 생성 코드 스니펫
+
+> 참조: DICOM-001 §8
+
+CD Burning용 DICOMDIR 파일을 fo-dicom 5.x `DicomDirectory` API로 생성한다.
+
+```csharp
+public async Task CreateDicomDirAsync(string outputDirectory, IEnumerable<string> dicomFiles)
+{
+    var dd = new DicomDirectory();  // DICOMDIR 루트 객체 생성
+
+    foreach (var filePath in dicomFiles)
+    {
+        var dcmFile = await DicomFile.OpenAsync(filePath);
+        // 상대 경로를 8.3 형식으로 변환 （ISO 9660 준수）
+        dd.AddFile(dcmFile,
+            Path.GetRelativePath(outputDirectory, filePath)
+                .Replace(Path.DirectorySeparatorChar, '\\'));
+    }
+
+    // DICOMDIR 파일 저장 （표준 위치: 루트의 DICOMDIR）
+    dd.Save(Path.Combine(outputDirectory, "DICOMDIR"));
+    _logger.LogInformation("DICOMDIR 생성 완료: {Path}", outputDirectory);
+}
+```
+
+**DICOMDIR 계층 구조:**
+
+```
+DICOMDIR (루트)
+└── PATIENT Record
+    └── STUDY Record
+        └── SERIES Record
+            ├── IMAGE Record → DICOM\\00000001.dcm
+            ├── IMAGE Record → DICOM\\00000002.dcm
+            └── IMAGE Record → DICOM\\00000003.dcm
+```
+
 ---
 
 ### 3.6 SDS-SA-6xx: SystemAdmin 모듈
@@ -1329,6 +1504,257 @@ sequenceDiagram
 | E37 | Tube Overload | 파라미터 축소 또는 냉각 |
 | E48 | Collimator Error | 블레이드 위치 오류, 서비스 콜 |
 | E50 | Operator abort | 정상 중단 |
+
+### 14.5 APR JSON 데이터 구조 예시
+
+> 참조: GENERATOR-001 §6.2, §6.3
+
+APR（Anatomically Programmed Radiography） 프리셋은 Console 로컬 DB와 Generator 내부 메모리 양쪽에 이중화 저장된다. 아래는 3개 대표 부위의 JSON 구조 예시이다.
+
+**Chest PA (ID: 1) — AEC 모드**
+
+```json
+{
+  "apr_id": 1,
+  "body_part": "Chest",
+  "projection": "PA",
+  "kvp": 120,
+  "mas": null,
+  "ma": null,
+  "time": null,
+  "aec_enabled": true,
+  "aec_field": [2, 3],
+  "aec_density": 0,
+  "focal_spot": "Large",
+  "grid": true,
+  "bucky": true,
+  "description": "흉부 정면 촬영 — 성인 표준"
+}
+```
+
+**Hand AP (ID: 7) — Manual 모드**
+
+```json
+{
+  "apr_id": 7,
+  "body_part": "Hand",
+  "projection": "AP",
+  "kvp": 50,
+  "mas": 4.0,
+  "ma": 100,
+  "time": 0.04,
+  "aec_enabled": false,
+  "aec_field": [],
+  "aec_density": 0,
+  "focal_spot": "Small",
+  "grid": false,
+  "bucky": false,
+  "description": "손 정면 촬영 — 소아/성인 소지"
+}
+```
+
+**Abdomen AP (ID: 3) — AEC 모드**
+
+```json
+{
+  "apr_id": 3,
+  "body_part": "Abdomen",
+  "projection": "AP",
+  "kvp": 75,
+  "mas": null,
+  "ma": null,
+  "time": null,
+  "aec_enabled": true,
+  "aec_field": [2],
+  "aec_density": 0,
+  "focal_spot": "Large",
+  "grid": true,
+  "bucky": true,
+  "description": "복부 정면 촬영 — 성인 표준"
+}
+```
+
+| 필드 | 타입 | 설명 |
+|---|---|---|
+| `apr_id` | int | 프리셋 ID（0–99） |
+| `body_part` | string | 신체 부위 |
+| `projection` | string | 촬영 방향（PA, AP, LAT, OBL 등） |
+| `kvp` | float | kVp 설정값 |
+| `mas` | float or null | mAs（AEC 모드이면 null） |
+| `aec_enabled` | bool | AEC 활성화 여부 |
+| `aec_field` | int[] | 활성화할 AEC 필드 번호 배열（1=Left, 2=Center, 3=Right） |
+| `aec_density` | int | AEC 밀도 보정값（-2–+2） |
+| `focal_spot` | string | "Small" 또는 "Large" |
+
+### 14.6 Generator 상태 머신 Enum
+
+> 참조: GENERATOR-001 §9.2, §9.3
+
+```csharp
+public enum GeneratorState
+{
+    Disconnected, // 시리얼 포트 미연결 또는 연결 실패
+    Idle,         // 연결됨, 대기 중 — 파라미터 설정 허용
+    Preparing,    // PREP 전송 후 Rotor 가속 + Filament 가열 중
+    Ready,        // READY 수신 — 촬영 대기 완료
+    Exposing,     // EXPOSE 전송 후 X-ray 발생 중
+    Done,         // EXPOSURE_DONE 수신 후 결과 처리 중
+    Error         // ERROR 수신 또는 타임아웃 발생
+}
+```
+
+**상태 전이 규칙:**
+
+| 현재 상태 | 이벤트 | 다음 상태 |
+|---|---|---|
+| Disconnected | 포트 Open 성공 + GET_STATUS ACK | Idle |
+| Idle | PREP 전송 | Preparing |
+| Preparing | READY 수신 | Ready |
+| Preparing | 타임아웃（5,000 ms） 또는 ERROR 수신 | Error |
+| Ready | EXPOSE 전송 | Exposing |
+| Ready | ABORT 전송 | Idle |
+| Exposing | EXPOSURE_DONE 수신 | Done |
+| Exposing | AEC_TERMINATED 수신 | Done |
+| Exposing | 타임아웃 또는 ERROR 수신 | Error |
+| Done | 결과 처리 완료 | Idle |
+| Error | RESET_ERROR 전송 + ACK 수신 | Idle |
+
+### 14.7 SerialPort 설정 코드 스니펫
+
+> 참조: GENERATOR-001 §8.1, §9.1
+
+```csharp
+using System.IO.Ports;
+
+public class GeneratorSerialPort : IDisposable
+{
+    private readonly SerialPort _port;
+
+    /// <param name="portName">COM 포트명 （예: "COM3"）</param>
+    /// <param name="baudRate">9600–115200（Generator 사양서에 따름, 기본 9600）</param>
+    public GeneratorSerialPort(string portName, int baudRate = 9600)
+    {
+        _port = new SerialPort
+        {
+            PortName     = portName,
+            BaudRate     = baudRate,   // 지원 범위: 9600 / 19200 / 38400 / 57600 / 115200
+            DataBits     = 8,          // 8N1
+            Parity       = Parity.None,
+            StopBits     = StopBits.One,
+            Handshake    = Handshake.None,
+            ReadTimeout  = 3000,       // ms — GENERATOR-001 §3.4 ACK 대기 권장값 준수
+            WriteTimeout = 1000,       // ms
+            Encoding     = System.Text.Encoding.ASCII
+        };
+        _port.DataReceived += OnDataReceived;
+    }
+
+    public void Open()  => _port.Open();
+    public void Close() => _port.Close();
+    public void Dispose() => _port.Dispose();
+
+    /// <summary>STX + 명령 + ETX + CRLF 프레임으로 전송</summary>
+    public void SendCommand(string command)
+    {
+        var frame = $"\x02{command}\x03\r\n";
+        _port.Write(frame);
+    }
+
+    private void OnDataReceived(object sender, SerialDataReceivedEventArgs e)
+    {
+        var data = _port.ReadExisting();
+        ParseResponse(data);
+    }
+
+    private void ParseResponse(string data)
+    {
+        // 상태 머신 파서에 위임 (§14.8 참조)
+    }
+}
+```
+
+### 14.8 Generator 응답 파서 패턴（STX/ETX 프레임）
+
+> 참조: GENERATOR-001 §3.1, §9.4
+
+```csharp
+public class GeneratorResponseParser
+{
+    // STX（0x02）– ETX（0x03） 사이 내용을 추출하는 버퍼
+    private readonly StringBuilder _buffer = new();
+
+    public IEnumerable<GeneratorResponse> Feed(string rawData)
+    {
+        foreach (char c in rawData)
+        {
+            if (c == '\x02')        // STX: 프레임 시작 — 버퍼 초기화
+            {
+                _buffer.Clear();
+            }
+            else if (c == '\x03')  // ETX: 프레임 종료 — 파싱 실행
+            {
+                var frame    = _buffer.ToString();
+                var response = ParseFrame(frame);
+                if (response is not null) yield return response;
+                _buffer.Clear();
+            }
+            else
+            {
+                _buffer.Append(c);
+            }
+        }
+    }
+
+    private static GeneratorResponse? ParseFrame(string frame)
+    {
+        if (string.IsNullOrWhiteSpace(frame)) return null;
+
+        var parts = frame.Trim().Split(' ', 2);
+        var token = parts[0].ToUpperInvariant();
+        var param = parts.Length > 1 ? parts[1] : null;
+
+        return token switch
+        {
+            "ACK"            => new GeneratorResponse(ResponseType.Ack, null),
+            "READY"          => new GeneratorResponse(ResponseType.Ready, null),
+            "BUSY"           => new GeneratorResponse(ResponseType.Busy, null),
+            "EXPOSURE_START" => new GeneratorResponse(ResponseType.ExposureStart, null),
+            "EXPOSURE_DONE"  => new GeneratorResponse(ResponseType.ExposureDone, null),
+            "AEC_TERMINATED" => new GeneratorResponse(ResponseType.AecTerminated, null),
+            "ACTUAL_KVP"     => new GeneratorResponse(ResponseType.ActualKvp, param),
+            "ACTUAL_MAS"     => new GeneratorResponse(ResponseType.ActualMas, param),
+            "ACTUAL_TIME"    => new GeneratorResponse(ResponseType.ActualTime, param),
+            "HEAT_UNITS"     => new GeneratorResponse(ResponseType.HeatUnits, param),
+            "ERROR"          => new GeneratorResponse(ResponseType.Error, param),
+            _                => null
+        };
+    }
+}
+
+public record GeneratorResponse(ResponseType Type, string? Parameter);
+
+public enum ResponseType
+{
+    Ack, Ready, Busy,
+    ExposureStart, ExposureDone, AecTerminated,
+    ActualKvp, ActualMas, ActualTime, HeatUnits,
+    Error
+}
+```
+
+### 14.9 에러 코드 → UI 메시지 매핑 테이블
+
+> 참조: GENERATOR-001 §7.2, §7.4
+
+| 에러 코드 | 내부 명칭 | UI 표시 메시지（한국어） | 심각도 | 방사선사 조치 |
+|---|---|---|---|---|
+| E09 | Generator Overload | "Generator 과부하입니다. 30분 냉각 후 재시도하십시오." | 에러 팝업 + 냉각 타이머 | 30분 대기 후 재시도 |
+| E12 | No mA During Exposure | "촬영 중 mA 신호가 감지되지 않았습니다. AEC 설정을 확인하십시오." | 경고 팝업 + 조치 안내 | AEC 설정 확인 후 재시도 |
+| E33 | Serial Communication Error | "Generator 직렬 통신 오류가 발생했습니다. 케이블 연결을 확인하십시오." | 에러 팝업 + 시스템 알림 | 케이블 점검 후 재시도 |
+| E36 | Heat Units Error | "X선 튜브 과열 경고입니다. 튜브를 냉각한 후 재시도하십시오." | 에러 팝업 + 냉각 타이머 | 냉각 대기 후 재시도 |
+| E93 | Internal Error | "Generator 내부 오류입니다. 서비스 엔지니어에게 문의하십시오." | 심각 에러 팝업 + 서비스 콜 안내 | 서비스 엔지니어 호출 필수 |
+
+> **표시 정책**: E50（정상 중단）은 정보 메시지로 표시하며 방사선사 조치 불필요. E48, E93은 자동 복구 불가 심각 에러로 처리한다.
 
 ---
 

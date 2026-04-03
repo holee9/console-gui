@@ -958,6 +958,126 @@ flowchart LR
 
 **에러 처리:** NACK 또는 타임아웃 시 WorkflowEngine이 ERROR 상태로 전이, INC 모듈에 이벤트 통보. 상세 에러 처리 매트릭스 → SDS §13.3
 
+### 7.3.1 Generator 상태 머신 아키텍처 다이어그램
+
+> 참조: GENERATOR-001 §9.2, §9.3
+
+```mermaid
+flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
+
+    DISC["Disconnected\n포트 미연결"]
+    IDLE["Idle\n대기 중\n파라미터 설정 허용"]
+    PREP["Preparing\nRotor 가속\nFilament 가열"]
+    READY["Ready\n촬영 대기 완료"]
+    EXPO["Exposing\nX-ray 발생 중"]
+    DONE["Done\n결과 처리"]
+    ERR["Error\n에러 상태"]
+
+    DISC -->|"포트 Open + GET_STATUS ACK"| IDLE
+    IDLE -->|"PREP 전송"| PREP
+    PREP -->|"READY 수신"| READY
+    PREP -->|"5,000 ms 타임아웃 또는 ERROR"| ERR
+    READY -->|"EXPOSE 전송"| EXPO
+    READY -->|"ABORT 전송"| IDLE
+    EXPO -->|"EXPOSURE_DONE 수신"| DONE
+    EXPO -->|"AEC_TERMINATED 수신"| DONE
+    EXPO -->|"타임아웃 또는 ERROR"| ERR
+    DONE -->|"결과 처리 완료"| IDLE
+    ERR -->|"RESET_ERROR + ACK"| IDLE
+```
+
+**아키텍처 결정 사항:**
+
+- 모든 Generator 명령은 현재 상태에서 허용된 명령만 전송 가능하다. 상태 외 명령 전송 시 InvalidOperationException 발생.
+- Disconnected 상태는 하드웨어 연결 실패 또는 포트 미개방 시 진입. Heartbeat 실패 시도 Disconnected로 폴백.
+- Done 상태는 염수 실측값（ACTUAL_KVP, ACTUAL_MAS, ACTUAL_TIME）를 로그에 기록한 후 Idle로 자동 전이.
+- 상태 머신 구현 상세 → SDS §14.6, §14.7
+
+### 7.3.2 DICOM 서비스별 아키텍처 결정 사항
+
+> 참조: DICOM-001 §3, §4, §6
+
+#### C-STORE: 로콜 큐 → 비동기 전송 → Polly 재시도 → 실패 시 영속 큐
+
+```mermaid
+flowchart LR
+    classDef default fill:#444,stroke:#666,color:#fff
+
+    ACQ["\ucd2c\uc601 \uc644\ub8cc\n영상 생성"] --> QUEUE["\ub85c\ucef5 OutboxQueue\n(SQLite dicom_outbox)"]
+    QUEUE --> SEND["DicomStoreSCU\nAddRequestAsync\n+ SendAsync"]
+    SEND -->|"Status=Success"| COMMIT["Committed\n로컵 파일 삭제 가능"]
+    SEND -->|"Failure"| POLLY["Polly 재시도\n지수 백오프 3회"]
+    POLLY -->|"3회 모두 실패"| PERSIST["\uc601\uc18d \ud050\n\uc7ac\uc804\uc1a1 \ub300\uae30"]
+    PERSIST -->|"\ub124\ud2b8\uc6cc\ud06c \ubcf5\uad6c"| SEND
+```
+
+| 항목 | 아키텍처 결정 |
+|---|---|
+| 로콜 큐 | SQLite `dicom_outbox` 테이블에 저장 — 애플리케이션 재시작 시도 복구 |
+| 비동기 전송 | `foreach` + `AddRequestAsync` + `SendAsync` 패턴 — 단일 Association으로 배치 전송 |
+| Polly 재시도 | 3회 지수 백오프（2, 4, 8초）— DicomNetworkException, SocketException 처리 |
+| 영속 큐 | 3회 실패 시 `OutboxQueue` 상태를 PENDING로 유지, 60초 주기 수동 재시도 |
+
+#### MWL: 10초 폴링 → 캐시 → UI 바인딩
+
+```mermaid
+flowchart LR
+    classDef default fill:#444,stroke:#666,color:#fff
+
+    TIMER["10초 폴링 타이머"] --> CFIND["C-FIND SCU\n\ub0a0\uc9dc/\ubaa8\ub2ec\ub9ac\ud2f0 \ud544\ud130"]
+    CFIND -->|"\uc751\ub2f5 \uc131\uacf5"| CACHE["\ub85c\ucf5c \uce90\uc2dc\n(WorklistCache)"]
+    CACHE --> UI["UI \ubc14\uc778\ub529\nObservableCollection\n\uac31\uc2e0"]
+    CFIND -->|"\uc5f0\uc2b5 \uc2e4\ud328"| STALE["\uce90\uc2dc \uc720\uc9c0\n\uc624\ud504\ub77c\uc778 \ubaa8\ub4dc"]
+```
+
+| 항목 | 아키텍처 결정 |
+|---|---|
+| 폴링 주기 | 10초 기본（설정 변경 가능）— `DispatcherTimer` 또는 `PeriodicTimer` |
+| 캐시 | 연결 실패 시 마지막 성공한 결과 유지 — 오프라인 모드 제공 |
+| UI 바인딩 | `ObservableCollection<WorklistItem>` 에 명시적 Dispatcher.Invoke로 갱신 |
+| 시간 갱신 충돌 | 이전 폴링이 진행 중이면 다음 폴링은 건너뜠 싞음 |
+
+#### Print: Film Session 상태 관리
+
+| 단계 | 담당 콴포넌트 | DIMSE 서비스 |
+|---|---|---|
+| Film Session 생성 | DicomPrintSCU.CreateFilmSessionAsync | N-CREATE |
+| Film Box 세팅 | DicomPrintSCU.CreateFilmBoxAsync | N-CREATE |
+| Image Box 데이터 | DicomPrintSCU.SetImageBoxAsync | N-SET |
+| 인쇄 실행 | DicomPrintSCU.PrintFilmSessionAsync | N-ACTION |
+| 세션 정리 | DicomPrintSCU.DeleteFilmSessionAsync | N-DELETE |
+
+Film Box N-CREATE RSP에서 수신한 Image Box UID는 내부 상태로 보관하고, 이후 N-SET 요청에 사용한다. 단일 `SendAsync()` 호출로는 UID를 확보할 수 없으므로 두 번의 `SendAsync()` 패턴을 적용한다. 상세 구현 → SDS §3.5.5
+
+### 7.3.3 IHE SWF 워크플로우와 아키텍처 매핑
+
+> 참조: DICOM-001 §6, GENERATOR-001 §4.1
+
+| IHE 트랜짝션 | DICOM 서비스 | HNVUE 역할 | 아키텍처 컴포넌트 | Phase |
+|---|---|---|---|---|
+| RAD-5 | MWL C-FIND | SCU | DicomFindSCU → WorklistCache → PatientMgmt UI | Phase 1 |
+| RAD-6 | MPPS N-CREATE/N-SET | SCU | DicomMppsSCU → WorkflowEngine.OnExamStart/Complete | Phase 2 |
+| RAD-8 | C-STORE | SCU | DicomStoreSCU → OutboxQueue → Polly | Phase 1 |
+| RAD-10 | Storage Commitment N-ACTION | SCU | DicomCommitSCU → OutboxQueue.Committed | Phase 2 |
+
+**SWF 전체 흐름:**
+
+```mermaid
+flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
+
+    MWL["RAD-5\nMWL C-FIND\n예약 목록 조회"]
+    SEL["\ubc29사\uc120사 \ud658자 \uc120\ud0dd"]
+    GEN["Generator \uc81c\uc5b4\n\ud30c\ub77c\ubbf8\ud130 \uc124\uc815\n+ PREP/EXPOSE"]
+    MPPS_S["RAD-6\nMPPS N-CREATE\nIN PROGRESS"]
+    STORE["RAD-8\nC-STORE\n\uc601\uc0c1 \uc804\uc1a1"]
+    MPPS_E["RAD-6\nMPPS N-SET\nCOMPLETED"]
+    COMMIT["RAD-10\nStorage Commitment\n\uc800\uc7a5 \ud655\uc778"]
+
+    MWL --> SEL --> MPPS_S --> GEN --> STORE --> MPPS_E --> COMMIT
+```
+
 ### 7.4 FPD SDK 인터페이스 상세
 
 **통신 프로토콜 개요:**

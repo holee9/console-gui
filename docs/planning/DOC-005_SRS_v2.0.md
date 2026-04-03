@@ -289,6 +289,11 @@ HnVue은 다음 7개 독립 모듈로 구성된다:
 | SWR-WF-018 | Safety-related | Generator 통신 및 파라미터 전송 | IGeneratorDriver 인터페이스: SetParameters() → ReadyForExposure 응답 수신. 타임아웃(2초) 시 에러 처리 | PR-WF-013 | HAZ-RAD, HAZ-HW | T |
 | SWR-WF-019 | Safety-related | 촬영 명령 전송 (Expose) | Expose() 명령 전송. 촬영 중 노출 버튼 비활성화. Exposure End + DAP 이벤트 수신 | PR-WF-013 | HAZ-RAD, HAZ-HW | T, D |
 | SWR-WF-020 | Safety-related | Generator 오류 처리 | Generator 통신 오류/타임아웃(30초) 시 ErrorState 진입. 사용자 알림(소리+시각적 경보) + 로그 기록 | PR-WF-013 | HAZ-RAD, HAZ-HW | T |
+| SWR-GEN-001 | Functional | Generator RS-232/Ethernet 인터페이스 자동 감지 | SerialPort.GetPortNames()로 COM 포트 열거 후 GET_STATUS ACK로 Generator 존재 탐지. Ethernet: TCP 소켓 연결 시도. 자동 감지 실패 시 수동 선택 UI 제공. BaudRate: 9,600–115,200 bps(8N1). SDS §14.7 SerialPort 코드 참조. | MR-GEN-001, PR-WF-013 | HAZ-RAD, HAZ-SW | T, D |
+| SWR-GEN-002 | Safety-related | APR 프리셋 50개 이상 저장/로딩 | SQLite apr_presets 테이블에 JSON 직렬화 저장. 최소 50개 프리셋+Generator 내부 메모리 이중화. LOAD_APR <id> 명령 전송+ACK 확인. APR 편집 UI+XML Export/Import+재동기화. SDS §14.5 APR JSON 구조 참조. | MR-GEN-002, PR-WF-011 | HAZ-RAD | T, D |
+| SWR-GEN-003 | Safety-related | AEC 필드 Left/Center/Right 조합 선택 | AEC_FIELD <1|2|3> 명령으로 단일 또는 조합 선택. AEC_FIELD 2 3 → Center+Right. AEC_DENSITY <-2..+2> 밀도 보정. APR 선택 시 권장 필드 자동 적용. AEC 비활성화 시 Manual 모드 전환. GENERATOR-001 §5 참조. | MR-GEN-003, PR-WF-012 | HAZ-RAD | T |
+| SWR-GEN-004 | Safety-related | Tube Heat Unit 실시간 모니터링 및 과열 경고 | GET_HEAT_UNITS 폴링+HEAT_UNITS <value> 수신. UI 색상 구분: 녹색(0–70%), 황색(70–90%), 적색(90–100%). 80% 초과 시 경고 토스트. 90% 초과 시 촬영 버튼 비활성화+"튜브 과열 경고" 팝업. E36 수신 즉각 반영. GENERATOR-001 §3.2.5 참조. | MR-GEN-004, PR-WF-013 | HAZ-RAD | T, A |
+| SWR-GEN-005 | Safety-related | Generator 에러 코드 수신 및 한글 메시지 표시 | GeneratorResponseParser가 ERROR <code> 파싱. 에러 코드→한글 메시지 매핑: E09→"Generator 과부하. 30분 냉각 후 재시도.", E12→"촬영 중 mA 미감지. AEC 확인.", E33→"직렬 통신 오류. 케이블 확인.", E36→"튜브 과열. 냉각 후 재시도.", E93→"내부 오류. 서비스 엔지니어 문의.". 모든 에러 Error Level 로그. SDS §14.9 매핑 테이블 참조. | MR-GEN-005, PR-WF-013 | HAZ-RAD, HAZ-SW | T |
 | SWR-WF-021 | Safety-related | Detector 상태 모니터링 | FPD 상태(READY/BUSY/ERROR/DISCONNECTED/LOW_BATTERY/CRITICAL_BATTERY/OVERHEAT) 실시간 표시. READY 상태만 노출 버튼 활성화 | PR-WF-014 | HAZ-RAD, HAZ-HW | T, D |
 | SWR-WF-022 | Safety-related | Detector 오류 처리 | FPD ERROR/DISCONNECTED 시 노출 버튼 비활성화 + 적색 인디케이터 + 경고음. 30초 주기 자동 재연결 | PR-WF-014 | HAZ-RAD, HAZ-HW | T |
 | SWR-WF-023 | Safety-related | 촬영 실행 (Hand Switch / Foot Switch) | USB HID Hand Switch 2단계 (Step1: Preparation, Step2: Exposure). Expose() 명령 전송. Foot Switch 동일 처리 | PR-WF-015 | HAZ-RAD | T, D |
@@ -354,6 +359,19 @@ HnVue은 다음 7개 독립 모듈로 구성된다:
 | SWR-DC-061 | Functional | Query/Retrieve SCU (C-FIND/C-MOVE) | PACS Study Root Q/R. C-FIND로 검색, C-MOVE로 영상 검색 후 검토 | PR-DC-055 | — | T |
 | SWR-DC-063 | Security-related | DICOM TLS 1.2/1.3 암호화 | 모든 DICOM 통신 TLS 1.2/1.3 적용. TLS 1.0/1.1 비활성화. 허용 Cipher Suite 제한 | PR-DC-056 | HAZ-SEC | T, I |
 | SWR-DC-064 | Security-related | DICOM TLS 인증서 관리 | 서버 인증서 검증(CA 체인). mTLS 옵션 지원. 만료 30일 전 관리자 경고 | PR-DC-056 | HAZ-SEC | T, I |
+
+
+#### E-2. DICOM-001 보강: C-STORE 배치/MWL 폴링/Print/DICOMDIR/Transfer Syntax — SWR-DC-001–005
+
+> 참조: DICOM-001 §3, §4, §8, §9
+
+| SWR ID | IEC 62304 분류 | 요구사항명 | 상세 | 출처 PR | 위험 참조 | 검증 방법 |
+|--------|--------------|-----------|------|---------|---------|---------|
+| SWR-DC-001 | Safety-related | DICOM C-STORE 배치 전송+로컬 큐 | fo-dicom foreach + AddRequestAsync + SendAsync 패턴으로 단일 Association 배치 전송. 실패 시 SQLite dicom_outbox 로컬 큐 저장. Polly 지수 백오프 3회(2/4/8초, DicomNetworkException+SocketException 처리). 3회 실패 시 영속 큐+60초 주기 재시도. Storage Commitment 성공 후 로컬 파일 삭제 허용. SDS §3.5.7, SAD §7.3.2 참조. | MR-DC-001, PR-DC-050 | HAZ-DATA | T, A |
+| SWR-DC-002 | Functional | MWL 10초 자동 폴링+캐시 | PeriodicTimer 기반 10초 폴링(설정 5–60초). C-FIND 성공 시 WorklistCache 갱신+ObservableCollection<WorklistItem> UI 업데이트. 연결 실패 시 캐시 유지+오프라인 모드 표시. 이전 폴링 진행 중 다음 폴링 스킵. 필수 반환 Tag 10개 추출: PatientName, PatientID, PatientBirthDate, PatientSex, AccessionNumber, StudyInstanceUID, RequestedProcedureDescription, RequestedProcedureID, ScheduledProcedureStepSequence, ReferringPhysicianName. SDS §3.5.6 참조. | MR-DC-002, PR-DC-051 | HAZ-DATA | T, A |
+| SWR-DC-003 | Functional | Print SCU Film Session 상태 관리 | Film Session N-CREATE → Film Box N-CREATE → Image Box N-SET → N-ACTION(Print) → N-DELETE 순서 엄격 준수. Film Box RSP에서 Image Box UID 수신 후 두 번째 SendAsync() 호출. Film Session 내부 상태 5종 추적(Created/FilmBoxReady/ImageSet/Printed/Deleted). N-ACTION 실패 시 Error 상태+재시도 UI. SDS §3.5.5 구현 코드 참조. | MR-DC-003, PR-DC-054 | -- | T, D |
+| SWR-DC-004 | Functional | DICOMDIR 자동 생성+CD Burning 지원 | fo-dicom DicomDirectory 생성+AddFile()+Save() 패턴. 파일명 8.3 형식(ISO 9660 Level 2). 계층 구조: PATIENT→STUDY→SERIES→IMAGE Record. IMAPI2 CD Burning 연동(SAD-CD-1000). CRC32 무결성 검증. SDS §3.5.8 구현 코드 참조. | MR-DC-004, PR-WF-032 | HAZ-DATA | T, D |
+| SWR-DC-005 | Functional | Transfer Syntax 협상+Implicit/Explicit VR LE 필수+JPEG Lossless 옵션 | 제안 순서: Explicit VR LE(1.2.840.10008.1.2.1) → JPEG Lossless SV1(1.2.840.10008.1.2.4.70) → Implicit VR LE(1.2.840.10008.1.2). Explicit+Implicit VR LE 필수 지원. JPEG Lossless SV1 옵션(PACS 수락 시 진단 영상 압축). fo-dicom AdditionalPresentationContexts에 Multiple Context 등록. PACS 거부 시 Explicit VR LE 자동 폴백. DICOM-001 §9 참조. | MR-DC-005, PR-DC-050 | HAZ-DATA | T, I |
 
 #### F. 시스템 관리 기능 (System Administration)
 
