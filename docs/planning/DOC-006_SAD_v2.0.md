@@ -931,26 +931,60 @@ flowchart LR
 
 ### 7.3 Generator 제어 인터페이스 상세
 
+**통신 프로토콜 개요:**
+
+| 항목 | 사양 |
+|---|---|
+| **물리 인터페이스** | RS-232（기본） / RS-422 / Ethernet（옵션） |
+| **Baud Rate** | 9600–115200（Generator 사양서에 따름） |
+| **데이터 형식** | 8N1（8 data bits, No parity, 1 stop bit） |
+| **프로토콜** | 명령–응답（Command-Response）, 패킷 기반 |
+| **타임아웃** | 명령 응답 3s, Exposure 완료 30s |
+
+**명령-응답 매핑:**
+
 | 명령 | 파라미터 | 응답 | 타임아웃 |
 |---|---|---|---|
-| PREPARE_EXPOSURE | kVp, mAs, Focus | ACK / NACK | 5초 |
-| ARM | — | READY / ERROR | 3초 |
-| FIRE | — | EXPOSURE_STARTED | 500ms |
+| SET_KVP | kVp 값 | ACK / NACK | 1초 |
+| SET_MAS | mAs 값 | ACK / NACK | 1초 |
+| LOAD_APR | APR ID | ACK / NACK | 2초 |
+| PREP | — | READY / ERROR | 5초 |
+| EXPOSE | — | EXPOSURE_DONE / ERROR | 30초 |
 | ABORT | — | ACK | 즉시 |
-| STATUS_QUERY | — | STATUS_RESPONSE | 1초 |
-| RESET | — | ACK / NACK | 10초 |
+| GET_STATUS | — | STATUS_RESPONSE | 1초 |
+| GET_HEAT_UNITS | — | HEAT_UNITS 값 | 1초 |
 
-**에러 처리:** NACK 또는 타임아웃 시 WorkflowEngine이 ERROR 상태로 전이, INC 모듈에 이벤트 통보
+**에러 코드 체계 (Sedecal 기준, E01–E93):** 참조 → SDS §14.4
+
+**에러 처리:** NACK 또는 타임아웃 시 WorkflowEngine이 ERROR 상태로 전이, INC 모듈에 이벤트 통보. 상세 에러 처리 매트릭스 → SDS §13.3
 
 ### 7.4 FPD SDK 인터페이스 상세
 
+**통신 프로토콜 개요:**
+
+| 항목 | 사양 |
+|---|---|
+| **물리 인터페이스** | GigE Vision（Gigabit Ethernet） |
+| **IP 설정** | LLA 자동 또는 고정 IP（Class C） |
+| **트리거 모드** | Software Trigger（기본） / External Trigger（HW 신호） |
+| **Heartbeat 주기** | 5s |
+
+**SDK API:**
+
 | 이벤트/메서드 | 파라미터 | 설명 |
 |---|---|---|
-| OnFrameReceived | FrameData (14-bit RAW) | 촬영 완료 후 FPD가 콜백 호출 |
+| Initialize | IP, AcqMode | SDK 로드 및 디텍터 검색, IP 연결 |
+| LoadCalibration | OffsetPath, GainPath | Offset/Gain 교정 파일 로딩 |
 | StartAcquisition | AcqMode, Timeout | 영상 수신 모드 시작 |
+| SoftwareTrigger | — | SW 트리거 발사 |
 | StopAcquisition | — | 영상 수신 중단 |
 | SetAcquisitionMode | Live / Triggered | 모드 설정 |
-| GetDetectorStatus | — | 검출기 상태 (온도, 오프셋 필요 여부) |
+| GetDetectorStatus | — | 검출기 상태（온도, 오프셋 필요 여부） |
+| OnFrameReceived | FrameData（14-bit RAW） | Offset/Gain 보정 적용 후 콜백 |
+
+**Calibration 사이클:** Offset（Dark） → Gain（Flat Field） → Defect Map. 상세 절차 → SDS §15.3
+
+**에러 처리:** GigE Heartbeat 타임아웃 5s, 트리거 타임아웃 10s, Calibration 만료 24h. 상세 매트릭스 → SDS §13.4
 
 **주의:** FPD SDK는 SOUP-002로 등록, 제조사별 SDK 래퍼 어댑터 패턴 적용
 
@@ -1060,6 +1094,67 @@ Log.Logger = new LoggerConfiguration()
 | ERROR | DICOM 전송 실패, DB 쓰기 오류 | 재시도 최대 3회, 실패 시 로컬 큐잉, 감사 로그 기록 |
 | WARNING | MWL 조회 실패, 네트워크 지연 | 사용자 알림, 수동 입력 모드 전환 |
 | INFO | 촬영 완료, 전송 성공 | 감사 로그 기록만 |
+
+상세 에러 처리 매트릭스（외부 인터페이스별 시나리오, 재시도 정책） → SDS §13
+
+### 9.4 안전 상태 전이도 (Safe State Transition)
+
+IEC 62304 Class B 요구사항에 따른 시스템 안전 상태 전이를 정의한다.
+
+```mermaid
+flowchart TD
+    classDef default fill:#444,stroke:#666,color:#fff
+    classDef idle fill:#2a6,stroke:#1a4,color:#fff
+    classDef degraded fill:#a60,stroke:#830,color:#fff
+    classDef blocked fill:#c33,stroke:#a00,color:#fff
+    classDef emergency fill:#700,stroke:#500,color:#fff
+
+    IDLE["SS-IDLE
+정상 대기
+모든 기능 정상"]
+    DEGRADED["SS-DEGRADED
+일부 기능 제한
+촬영 가능, 전송 보류"]
+    BLOCKED["SS-BLOCKED
+촬영 불가
+Generator/FPD 오류"]
+    EMERGENCY["SS-EMERGENCY
+긴급 중단
+즉시 Exposure 중단"]
+
+    IDLE -->|"PACS 연결 실패
+MWL 조회 실패
+Calibration 만료"| DEGRADED
+    IDLE -->|"Generator 통신 두절
+FPD Heartbeat 실패
+TLS 연결 차단"| BLOCKED
+    IDLE -->|"HW 심각 오류
+UnhandledException"| EMERGENCY
+
+    DEGRADED -->|"PACS 복구
+MWL 복구"| IDLE
+    DEGRADED -->|"Generator 오류
+FPD 오류"| BLOCKED
+    DEGRADED -->|"Exposure 중 HW 오류"| EMERGENCY
+
+    BLOCKED -->|"오류 해제
+재연결 성공"| IDLE
+    BLOCKED -->|"Exposure 중 E09/E37"| EMERGENCY
+
+    EMERGENCY -->|"안전 종료 후 재시작"| IDLE
+```
+
+**전이 조건 요약:**
+
+| 전이 | 트리거 | 자동/수동 |
+|---|---|---|
+| IDLE → DEGRADED | PACS/MWL 실패, Calibration 만료 | 자동 |
+| IDLE → BLOCKED | Generator/FPD 연결 실패, TLS 차단 | 자동 |
+| IDLE → EMERGENCY | HW 심각 오류, UnhandledException | 자동 |
+| DEGRADED → IDLE | 오류 서비스 복구 | 자동 |
+| DEGRADED → BLOCKED | Generator/FPD 추가 오류 | 자동 |
+| BLOCKED → IDLE | 수동 오류 해제 + 재연결 성공 | 수동 |
+| EMERGENCY → IDLE | 안전 종료 + 관리자 확인 후 재시작 | 수동 |
 
 ---
 

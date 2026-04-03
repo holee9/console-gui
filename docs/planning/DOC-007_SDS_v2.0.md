@@ -1114,6 +1114,203 @@ bool trustedPublisher = cert.Thumbprint == knownPublisherThumbprint;
 
 ---
 
+## 13. 에러 처리 매트릭스 (Error Handling Matrix)
+
+IEC 62304 Class B 요구사항에 따라, 모든 외부 인터페이스의 장애 시나리오와 대응 전략을 정의한다.
+
+### 13.1 안전 상태 정의 (Safe State Definition)
+
+| 안전 상태 | 조건 | 동작 |
+|----------|------|------|
+| **SS-IDLE** | 정상 대기 | 모든 기능 정상, 촬영 가능 |
+| **SS-DEGRADED** | 일부 기능 제한 | PACS 다운 등, 촬영 가능하나 전송 보류 |
+| **SS-BLOCKED** | 촬영 불가 | Generator/FPD 오류, 안전 차단 |
+| **SS-EMERGENCY** | 긴급 중단 | HW 심각 오류, 즉시 Exposure 중단 |
+
+### 13.2 DICOM 통신 에러 처리
+
+| 에러 시나리오 | 감지 방법 | 1차 대응 | 2차 대응 | 안전 상태 | 사용자 알림 |
+|-------------|---------|---------|---------|----------|-----------|
+| PACS 연결 실패 | Association timeout 10s | Polly 재시도 3회, 지수 백오프 2/4/8s | 로컬 큐에 저장, 연결 복구 시 자동 전송 | SS-DEGRADED | 상태바 PACS 아이콘 경고 |
+| C-STORE 전송 실패 | DIMSE timeout 30s | 동일 Association에서 재시도 1회 | 로컬 큐 저장, 새 Association으로 재전송 | SS-DEGRADED | 전송 실패 알림 + 재전송 큐 표시 |
+| MWL 조회 실패 | DIMSE timeout 15s | 재시도 2회, 2s 간격 | 마지막 캐시 워크리스트 표시 + 수동 입력 모드 | SS-DEGRADED | "워크리스트 서버 응답 없음. 수동 입력 가능" |
+| Print 실패 | DIMSE timeout 30s | 재시도 1회 | "프린터 연결 실패" 알림 | SS-DEGRADED | 프린터 오류 메시지 |
+| TLS 핸드셰이크 실패 | Handshake timeout 10s | 인증서 재검증 | 비암호화 폴백 금지, 연결 차단 | SS-BLOCKED | "보안 연결 실패. 관리자 문의" |
+
+### 13.3 Generator 통신 에러 처리
+
+| 에러 시나리오 | Generator 에러코드 | 감지 방법 | 1차 대응 | 2차 대응 | 안전 상태 |
+|-------------|------------------|---------|---------|---------|---------|
+| 통신 끊김 | E01/E02/E33 | Serial timeout 3s | 재연결 시도 3회, 1s 간격 | Generator OFF/ON 안내 | SS-BLOCKED |
+| Exposure 중 HW 오류 | E09 Generator Overload | 에러 코드 수신 | 즉시 Exposure 중단, 결과 폐기 | 30분 냉각 안내 | SS-EMERGENCY |
+| mA/kV 범위 초과 | E12/E13/E16 | 에러 코드 수신 | AEC Reset 안내 | 파라미터 자동 조정 제안 | SS-BLOCKED |
+| Tube 과열 | E36/E37 | 에러 코드 수신 | Heat Unit 경고 표시 | 냉각 대기 카운트다운 | SS-BLOCKED |
+| Collimator 오류 | E48 | 에러 코드 수신 | Exposure 차단 | 서비스 콜 안내 | SS-BLOCKED |
+| Operator 중단 | E50 | 에러 코드 수신 | 정상 중단 처리 | 이미지 폐기 확인 | SS-IDLE |
+
+### 13.4 FPD (Detector) 에러 처리
+
+| 에러 시나리오 | 감지 방법 | 1차 대응 | 2차 대응 | 안전 상태 |
+|-------------|---------|---------|---------|----------|
+| GigE 연결 끊김 | Heartbeat timeout 5s | 자동 재연결 시도 3회 | 디텍터 전원 사이클 안내 | SS-BLOCKED |
+| 트리거 타임아웃 | Exposure 후 10s 이미지 미수신 | 재트리거 1회 | "디텍터 응답 없음" 알림 | SS-BLOCKED |
+| Calibration 만료 | 마지막 교정 > 24h | 경고 표시, 촬영은 허용 | Offset/Gain 재교정 안내 | SS-DEGRADED |
+| 이미지 CRC 오류 | 수신 데이터 CRC 검증 | 재촬영 안내 （이미지 폐기） | 디텍터 진단 안내 | SS-BLOCKED |
+| 다중 디텍터 전환 실패 | 전환 후 Heartbeat 미응답 | 이전 디텍터로 롤백 | 수동 선택 안내 | SS-DEGRADED |
+
+### 13.5 시스템 내부 에러 처리
+
+| 에러 시나리오 | 감지 방법 | 대응 | 안전 상태 |
+|-------------|---------|------|----------|
+| DB 접근 실패 | SQLCipher exception | 재시도 3회, 실패 시 읽기 전용 모드 | SS-DEGRADED |
+| 영상처리 SDK 크래시 | Process exit code != 0 | SDK 프로세스 재시작, 원본 RAW 보존 | SS-DEGRADED |
+| 메모리 부족 | GC.GetTotalMemory 임계값 | 캐시 클리어, 오래된 이미지 언로드 | SS-DEGRADED |
+| 미처리 예외 | AppDomain.UnhandledException | 로그 기록, 자동 복구 시도, 실패 시 안전 종료 | SS-EMERGENCY |
+| SW 업데이트 실패 | 서명 검증 실패 / 적용 오류 | 이전 버전 롤백 （자동） | SS-IDLE |
+
+### 13.6 재시도 정책 (Retry Policy)
+
+Polly 라이브러리 기반 표준 재시도 정책:
+
+| 대상 | 최대 재시도 | 간격 | 전략 |
+|------|:--------:|------|------|
+| PACS C-STORE | 3회 | 2s, 4s, 8s | 지수 백오프 + 로컬 큐 폴백 |
+| MWL 조회 | 2회 | 2s, 4s | 지수 백오프 + 캐시 폴백 |
+| Generator 통신 | 3회 | 1s, 1s, 1s | 고정 간격 |
+| FPD 연결 | 3회 | 2s, 4s, 8s | 지수 백오프 |
+| DB 접근 | 3회 | 100ms, 200ms, 500ms | 지수 백오프 |
+| Print | 1회 | 5s | 고정 간격 |
+
+---
+
+## 14. Generator 통신 인터페이스 상세
+
+### 14.1 통신 프로토콜
+
+| 항목 | 사양 |
+|------|------|
+| **물리 인터페이스** | RS-232（기본） / RS-422 / Ethernet（옵션） |
+| **Baud Rate** | 9600–115200（Generator 사양서에 따름） |
+| **데이터 형식** | 8N1（8 data bits, No parity, 1 stop bit） |
+| **핸드셰이크** | 없음 또는 RTS/CTS |
+| **프로토콜** | 명령–응답（Command-Response）, 패킷 기반 |
+| **타임아웃** | 명령 응답 3s, Exposure 완료 30s |
+
+### 14.2 명령 체계
+
+```
+Console → Generator:
+  SET_KVP <value>      kVp 설정
+  SET_MAS <value>      mAs 설정
+  LOAD_APR <id>        APR 프리셋 로딩
+  PREP                 Rotor Start / Preparation
+  EXPOSE               Exposure 트리거
+  ABORT                Exposure 중단
+  GET_STATUS           상태 조회
+  GET_HEAT_UNITS       Tube Heat Unit 조회
+
+Generator → Console:
+  READY                촬영 준비 완료
+  EXPOSURE_DONE        촬영 완료
+  ACTUAL_KVP <value>   실제 kVp
+  ACTUAL_MAS <value>   실제 mAs
+  ERROR <code>         에러 코드 （E01–E93）
+  HEAT_UNITS <value>   현재 Heat Unit
+```
+
+### 14.3 Console ↔ Generator 촬영 시퀀스
+
+```mermaid
+sequenceDiagram
+    participant C as Console
+    participant G as Generator
+    C->>G: SET_KVP 80
+    C->>G: SET_MAS 20
+    C->>G: PREP
+    G-->>C: READY
+    C->>G: EXPOSE
+    G-->>C: EXPOSURE_DONE
+    G-->>C: ACTUAL_KVP 79.8
+    G-->>C: ACTUAL_MAS 19.9
+    Note over C,G: 에러 시
+    G-->>C: ERROR E09
+    C->>G: ABORT
+```
+
+### 14.4 에러 코드 참조 (Sedecal 기준)
+
+| 코드 | 설명 | 조치 |
+|------|------|------|
+| E01/E02 | Communication error | 케이블 확인 후 재시작 |
+| E06 | Exposure/Preparation 명령 중복 | 제어 해제 |
+| E09 | Generator Overload | 30분 냉각 후 재시도 |
+| E12 | No mA during exposure | AEC Reset 후 재시도 |
+| E13 | No kV during exposure | 기술 값 조정 |
+| E16 | Invalid kV/mA/kW | 파라미터 범위 초과 확인 |
+| E33 | Serial Communication error | 케이블/연결 확인 |
+| E34 | Technique error / Security Timer | 안전 차단 |
+| E36 | Heat Units error | 튜브 과열, 냉각 대기 |
+| E37 | Tube Overload | 파라미터 축소 또는 냉각 |
+| E48 | Collimator Error | 블레이드 위치 오류, 서비스 콜 |
+| E50 | Operator abort | 정상 중단 |
+
+---
+
+## 15. FPD SDK 인터페이스 상세
+
+### 15.1 통신 프로토콜
+
+| 항목 | 사양 |
+|------|------|
+| **물리 인터페이스** | GigE Vision（Gigabit Ethernet） |
+| **IP 설정** | LLA 자동 또는 고정 IP（Class C） |
+| **트리거 모드** | Software Trigger（기본） / External Trigger（HW 신호） |
+| **이미지 전송** | GigE Vision Stream Protocol |
+| **SDK** | 자사 FPD SDK（C# Wrapper） |
+| **Heartbeat 주기** | 5s |
+
+### 15.2 이미지 획득 시퀀스
+
+```mermaid
+sequenceDiagram
+    participant C as Console
+    participant F as FPD SDK
+    participant D as Detector HW
+    C->>F: Initialize（IP, Mode）
+    F->>D: Connect （GigE）
+    D-->>F: Connected
+    C->>F: LoadCalibration（Offset, Gain）
+    F-->>C: CalibrationLoaded
+    C->>F: StartAcquisition（Triggered）
+    C->>F: SoftwareTrigger
+    F->>D: Trigger
+    D-->>F: RawFrame （14-bit）
+    F->>F: Offset/Gain 보정 적용
+    F-->>C: OnFrameReceived（CorrectedFrame）
+    C->>F: StopAcquisition
+```
+
+### 15.3 Calibration 프로세스
+
+| 단계 | 설명 | 조건 |
+|------|------|------|
+| **Offset（Dark）** | X-ray 없이 Dark Frame 촬영 | 디텍터 워밍업 후, 주기적 수행 |
+| **Gain（Flat Field）** | 균일 X-ray 조사 → 픽셀별 감도 보정 | Offset 완료 후, 60/80/120 kVp |
+| **Defect Map** | 불량 픽셀 맵 생성 | 제조 시 1회 + 주기적 갱신 |
+
+Calibration 파일은 마지막 적용 시각을 메타데이터로 포함하며, 24시간 경과 시 SS-DEGRADED 전이 및 경고를 표시한다.
+
+### 15.4 SDK 에러 처리
+
+| 에러 | 감지 조건 | 대응 |
+|------|----------|------|
+| 연결 끊김 | Heartbeat timeout 5s | 자동 재연결 3회 → 실패 시 SS-BLOCKED |
+| 트리거 타임아웃 | Exposure 후 10s 미수신 | 재트리거 1회 → 실패 시 SS-BLOCKED |
+| Calibration 만료 | 마지막 교정 > 24h | SS-DEGRADED, 재교정 안내 |
+| CRC 오류 | 수신 프레임 CRC 불일치 | 이미지 폐기, 재촬영 요청 |
+
+---
+
 ## 6. SAD → SDS 추적성
 
 | SAD 모듈 | SDS 섹션 | 주요 변경 (v2.0) |
