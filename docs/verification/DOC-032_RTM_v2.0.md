@@ -177,12 +177,12 @@ flowchart LR
     RC -->|"SWR 연결\nISO 14971 §6"| SWR
 
     classDef default fill:#444,stroke:#666,color:#fff
-    style MR fill:#1a5276,color:#fff
-    style PR fill:#1e8449,color:#fff
-    style SWR fill:#7d3c98,color:#fff
-    style HAZ fill:#922b21,color:#fff
-    style RC fill:#d35400,color:#fff
-    style VT fill:#1a5276,color:#fff
+    style MR fill:#444,color:#fff
+    style PR fill:#444,color:#fff
+    style SWR fill:#444,color:#fff
+    style HAZ fill:#444,color:#fff
+    style RC fill:#444,color:#fff
+    style VT fill:#444,color:#fff
 ```
 
 ### 3.2 Forward/Backward 추적성 시각화
@@ -454,8 +454,8 @@ flowchart RL
     PR -->|"Design Input → User Need 역추적"| MR
 
     classDef default fill:#444,stroke:#666,color:#fff
-    style VT fill:#1a5276,color:#fff
-    style MR fill:#1e8449,color:#fff
+    style VT fill:#444,color:#fff
+    style MR fill:#444,color:#fff
 ```
 
 ### 5.3 Gap Analysis (매핑 누락 항목 식별)

@@ -46,7 +46,7 @@ flowchart TD
     G --> H[코드 서명 및 패키징]
     H --> I[릴리스 승인 서명]
     
-    style I fill:#437A22,color:#fff
+    style I fill:#444,color:#fff
 ```
 
 | # | 확인 항목 | 상태 | 증빙 문서 |

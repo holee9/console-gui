@@ -95,11 +95,11 @@ flowchart TD
     E -->|No| G[수정 후 재테스트<br/>Remediation]
     G --> D
     
-    style A fill:#1B474D,color:#fff
-    style B fill:#20808D,color:#fff
-    style C fill:#01696F,color:#fff
-    style D fill:#20808D,color:#fff
-    style F fill:#437A22,color:#fff
+    style A fill:#444,color:#fff
+    style B fill:#444,color:#fff
+    style C fill:#444,color:#fff
+    style D fill:#444,color:#fff
+    style F fill:#444,color:#fff
 ```
 
 ### 3.2 테스트 유형별 전략
@@ -153,9 +153,9 @@ graph LR
     E --> TC_AUTH
     E --> TC_INJ
     
-    style TC_AUTH fill:#01696F,color:#fff
-    style TC_ENC fill:#20808D,color:#fff
-    style TC_DOS fill:#A13544,color:#fff
+    style TC_AUTH fill:#444,color:#fff
+    style TC_ENC fill:#444,color:#fff
+    style TC_DOS fill:#444,color:#fff
 ```
 
 ---
@@ -310,8 +310,8 @@ graph TB
     WIRE -.->|캡처| SUT
     LOG_M -.->|수집| SUT
     
-    style SUT fill:#01696F,color:#fff
-    style PEN fill:#A13544,color:#fff
+    style SUT fill:#444,color:#fff
+    style PEN fill:#444,color:#fff
 ```
 
 ### 6.2 환경 사양
@@ -379,8 +379,8 @@ flowchart TD
     RA -->|Yes| ACCEPT[조건부 수용]
     RA -->|No| FIX
     
-    style FAIL fill:#A13544,color:#fff
-    style CLOSE fill:#437A22,color:#fff
+    style FAIL fill:#444,color:#fff
+    style CLOSE fill:#444,color:#fff
 ```
 
 ---

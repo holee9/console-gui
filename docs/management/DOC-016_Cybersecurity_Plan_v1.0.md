@@ -265,8 +265,8 @@ flowchart TD
     P6 <-->|"업데이트 패키지<br/>[코드 서명 검증]"| PATCH_SRV
     P6 -->|"업데이트 실행<br/>[무결성 확인]"| DS1
 
-    style TB1 fill:#ff6b6b,color:#fff
-    style TB2 fill:#ff6b6b,color:#fff
+    style TB1 fill:#444,color:#fff
+    style TB2 fill:#444,color:#fff
 ```
 
 ---

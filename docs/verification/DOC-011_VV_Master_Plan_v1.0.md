@@ -166,17 +166,17 @@ graph LR
     B -.->|"검증 기준 (PRD)"| J
     A -.->|"밸리데이션 기준 (MRD)"| K
 
-    style A fill:#1e3a5f,color:#fff
-    style B fill:#1e3a5f,color:#fff
-    style C fill:#1e3a5f,color:#fff
-    style D fill:#1e3a5f,color:#fff
-    style E fill:#1e3a5f,color:#fff
-    style F fill:#7b4f00,color:#fff
-    style G fill:#1a5c38,color:#fff
-    style H fill:#1a5c38,color:#fff
-    style I fill:#1a5c38,color:#fff
-    style J fill:#4b1c82,color:#fff
-    style K fill:#4b1c82,color:#fff
+    style A fill:#444,color:#fff
+    style B fill:#444,color:#fff
+    style C fill:#444,color:#fff
+    style D fill:#444,color:#fff
+    style E fill:#444,color:#fff
+    style F fill:#444,color:#fff
+    style G fill:#444,color:#fff
+    style H fill:#444,color:#fff
+    style I fill:#444,color:#fff
+    style J fill:#444,color:#fff
+    style K fill:#444,color:#fff
 ```
 
 ### 3.2 검증 (Verification) vs. 밸리데이션 (Validation) 정의
@@ -246,10 +246,10 @@ flowchart TB
 
     L1A --> L2A --> L3A --> L4A
 
-    style L1 fill:#e8f4f8,stroke:#2c7fb8
-    style L2 fill:#e8f4e8,stroke:#2ca25f
-    style L3 fill:#fff7e6,stroke:#f59b00
-    style L4 fill:#f4e8f4,stroke:#8856a7
+    style L1 fill:#444,stroke:#666
+    style L2 fill:#444,stroke:#666
+    style L3 fill:#444,stroke:#666
+    style L4 fill:#444,stroke:#666
 ```
 
 ### 4.2 검증 레벨 상세 정의표
@@ -320,9 +320,9 @@ flowchart LR
     CPP --> CI
     PY --> CI
 
-    style CPP fill:#dbeafe,stroke:#2563eb
-    style PY fill:#dcfce7,stroke:#16a34a
-    style CI fill:#fef9c3,stroke:#ca8a04
+    style CPP fill:#444,stroke:#666
+    style PY fill:#444,stroke:#666
+    style CI fill:#444,stroke:#666
 ```
 
 ### 5.3 Mocking / Stubbing 전략 (Mocking and Stubbing Strategy)
@@ -666,9 +666,9 @@ flowchart TB
     STAGE -. "System Test\nSecurity Test\nCompatibility Test" .-o STAGE
     PROD -. "Design Validation\nUAT\nClinical Simulation" .-o PROD
 
-    style DEV fill:#dbeafe,stroke:#2563eb
-    style STAGE fill:#dcfce7,stroke:#16a34a
-    style PROD fill:#fef3c7,stroke:#d97706
+    style DEV fill:#444,stroke:#666
+    style STAGE fill:#444,stroke:#666
+    style PROD fill:#444,stroke:#666
 ```
 
 ### 10.2 하드웨어 환경 (Hardware Environment)
@@ -853,14 +853,14 @@ flowchart TD
     APPROVAL -->|예| PASS
     APPROVAL -->|아니오| FAIL6["❌ FAIL\n위험 수용 거부\n추가 수정 필요"]
 
-    style PASS fill:#166534,color:#fff
-    style FAIL1 fill:#991b1b,color:#fff
-    style FAIL2 fill:#991b1b,color:#fff
-    style FAIL3 fill:#991b1b,color:#fff
-    style FAIL4 fill:#991b1b,color:#fff
-    style FAIL5 fill:#991b1b,color:#fff
-    style FAIL6 fill:#991b1b,color:#fff
-    style RISK fill:#92400e,color:#fff
+    style PASS fill:#444,color:#fff
+    style FAIL1 fill:#444,color:#fff
+    style FAIL2 fill:#444,color:#fff
+    style FAIL3 fill:#444,color:#fff
+    style FAIL4 fill:#444,color:#fff
+    style FAIL5 fill:#444,color:#fff
+    style FAIL6 fill:#444,color:#fff
+    style RISK fill:#444,color:#fff
 ```
 
 ---

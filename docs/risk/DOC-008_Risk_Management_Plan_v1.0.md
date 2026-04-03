@@ -175,10 +175,10 @@ flowchart TD
     S -->|새로운 위험 발견| B
 
     classDef default fill:#444,stroke:#666,color:#fff
-    style RA fill:#e8f4fd,stroke:#2196F3
-    style RE fill:#fff3e0,stroke:#FF9800
-    style RC fill:#fce4ec,stroke:#E91E63
-    style RR fill:#e8f5e9,stroke:#4CAF50
+    style RA fill:#444,stroke:#666
+    style RE fill:#444,stroke:#666
+    style RC fill:#444,stroke:#666
+    style RR fill:#444,stroke:#666
 ```
 
 ### 3.2 위험 관리 활동과 SW 개발 생명주기 연계 (Risk Management and SDLC Integration)
@@ -310,10 +310,10 @@ flowchart LR
     H --> C
 
     classDef default fill:#444,stroke:#666,color:#fff
-    style C fill:#ffcccc,stroke:#cc0000
-    style D fill:#fff3cc,stroke:#cc9900
-    style E fill:#ccffcc,stroke:#009900
-    style G fill:#ccffcc,stroke:#009900
+    style C fill:#444,stroke:#666
+    style D fill:#444,stroke:#666
+    style E fill:#444,stroke:#666
+    style G fill:#444,stroke:#666
 ```
 
 ---
@@ -455,9 +455,9 @@ flowchart TD
     C -->|방호로 해결 불가| D
 
     classDef default fill:#444,stroke:#666,color:#fff
-    style H1 fill:#ccffcc,stroke:#009900
-    style H2 fill:#fff3cc,stroke:#cc9900
-    style H3 fill:#ffcccc,stroke:#cc6600
+    style H1 fill:#444,stroke:#666
+    style H2 fill:#444,stroke:#666
+    style H3 fill:#444,stroke:#666
 ```
 
 ### 7.2 위험 통제 조치 테이블 (Risk Control Measures Table)
@@ -601,8 +601,8 @@ graph LR
     F <--> J
 
     classDef default fill:#444,stroke:#666,color:#fff
-    style DHF fill:#e8f4fd,stroke:#2196F3
-    style RMF fill:#fce4ec,stroke:#E91E63
+    style DHF fill:#444,stroke:#666
+    style RMF fill:#444,stroke:#666
 ```
 
 ---
@@ -639,9 +639,9 @@ flowchart TD
     M --> I
 
     classDef default fill:#444,stroke:#666,color:#fff
-    style G fill:#fff3cc,stroke:#cc9900
-    style K fill:#ffcccc,stroke:#cc0000
-    style M fill:#ffaaaa,stroke:#cc0000
+    style G fill:#444,stroke:#666
+    style K fill:#444,stroke:#666
+    style M fill:#444,stroke:#666
 ```
 
 ### 10.2 불만 처리 연계 (Complaint Handling Integration)
@@ -777,16 +777,16 @@ graph TD
     C1 -->|OR| F2["AEC 신호 디코딩\n오류 （FMEA-004）"]
 
     classDef default fill:#444,stroke:#666,color:#fff
-    style TE1 fill:#ff4444,color:#ffffff,stroke:#cc0000
-    style A1 fill:#ffaaaa,stroke:#cc0000
-    style A2 fill:#ffaaaa,stroke:#cc0000
-    style A3 fill:#ffaaaa,stroke:#cc0000
-    style B1 fill:#ffccaa,stroke:#cc6600
-    style B2 fill:#ffccaa,stroke:#cc6600
-    style C1 fill:#ffccaa,stroke:#cc6600
-    style C2 fill:#ffccaa,stroke:#cc6600
-    style D1 fill:#ffccaa,stroke:#cc6600
-    style D2 fill:#ffccaa,stroke:#cc6600
+    style TE1 fill:#444,color:#fff,stroke:#666
+    style A1 fill:#444,stroke:#666
+    style A2 fill:#444,stroke:#666
+    style A3 fill:#444,stroke:#666
+    style B1 fill:#444,stroke:#666
+    style B2 fill:#444,stroke:#666
+    style C1 fill:#444,stroke:#666
+    style C2 fill:#444,stroke:#666
+    style D1 fill:#444,stroke:#666
+    style D2 fill:#444,stroke:#666
 ```
 
 **최소 절단 집합 (Minimal Cut Sets)**:
@@ -823,16 +823,16 @@ graph TD
     H2 -->|OR| K2["바코드 스캔\n기능 부재"]
 
     classDef default fill:#444,stroke:#666,color:#fff
-    style TE2 fill:#ff4444,color:#ffffff,stroke:#cc0000
-    style G1 fill:#ffaaaa,stroke:#cc0000
-    style G2 fill:#ffaaaa,stroke:#cc0000
-    style G3 fill:#ffaaaa,stroke:#cc0000
-    style H1 fill:#ffccaa,stroke:#cc6600
-    style H2 fill:#ffccaa,stroke:#cc6600
-    style I1 fill:#ffccaa,stroke:#cc6600
-    style I2 fill:#ffccaa,stroke:#cc6600
-    style J1 fill:#ffccaa,stroke:#cc6600
-    style J2 fill:#ffccaa,stroke:#cc6600
+    style TE2 fill:#444,color:#fff,stroke:#666
+    style G1 fill:#444,stroke:#666
+    style G2 fill:#444,stroke:#666
+    style G3 fill:#444,stroke:#666
+    style H1 fill:#444,stroke:#666
+    style H2 fill:#444,stroke:#666
+    style I1 fill:#444,stroke:#666
+    style I2 fill:#444,stroke:#666
+    style J1 fill:#444,stroke:#666
+    style J2 fill:#444,stroke:#666
 ```
 
 **최소 절단 집합**:
@@ -869,16 +869,16 @@ graph TD
     M1 -->|OR| P2["SQL Injection\n취약점 악용"]
 
     classDef default fill:#444,stroke:#666,color:#fff
-    style TE3 fill:#ff4444,color:#ffffff,stroke:#cc0000
-    style L1 fill:#ffaaaa,stroke:#cc0000
-    style L2 fill:#ffaaaa,stroke:#cc0000
-    style L3 fill:#ffaaaa,stroke:#cc0000
-    style M1 fill:#ffccaa,stroke:#cc6600
-    style M2 fill:#ffccaa,stroke:#cc6600
-    style N1 fill:#ffccaa,stroke:#cc6600
-    style N2 fill:#ffccaa,stroke:#cc6600
-    style O1 fill:#ffccaa,stroke:#cc6600
-    style O2 fill:#ffccaa,stroke:#cc6600
+    style TE3 fill:#444,color:#fff,stroke:#666
+    style L1 fill:#444,stroke:#666
+    style L2 fill:#444,stroke:#666
+    style L3 fill:#444,stroke:#666
+    style M1 fill:#444,stroke:#666
+    style M2 fill:#444,stroke:#666
+    style N1 fill:#444,stroke:#666
+    style N2 fill:#444,stroke:#666
+    style O1 fill:#444,stroke:#666
+    style O2 fill:#444,stroke:#666
 ```
 
 **최소 절단 집합**:

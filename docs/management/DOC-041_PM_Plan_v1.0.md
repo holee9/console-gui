@@ -40,8 +40,8 @@ flowchart TD
     H --> A
     E --> A
     
-    style D fill:#A13544,color:#fff
-    style G fill:#964219,color:#fff
+    style D fill:#444,color:#fff
+    style G fill:#444,color:#fff
 ```
 
 ---
@@ -111,8 +111,8 @@ flowchart TD
     I -->|Yes| J[CAPA 종료]
     I -->|No| D
     
-    style D fill:#01696F,color:#fff
-    style J fill:#437A22,color:#fff
+    style D fill:#444,color:#fff
+    style J fill:#444,color:#fff
 ```
 
 ---

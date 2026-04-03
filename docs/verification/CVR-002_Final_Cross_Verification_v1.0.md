@@ -190,13 +190,13 @@ graph TD
     CEP[DOC-020 CEP] --> CER[DOC-029 CER]
     QAP[DOC-030 QA Plan] --> QAV[DOC-031 QA Verification]
     
-    style MRD fill:#e1f5fe
-    style PRD fill:#e1f5fe
-    style SRS fill:#e8f5e9
-    style SAD fill:#e8f5e9
-    style SDS fill:#e8f5e9
-    style RMP fill:#fff3e0
-    style VVP fill:#f3e5f5
+    style MRD fill:#444
+    style PRD fill:#444
+    style SRS fill:#444
+    style SAD fill:#444
+    style SDS fill:#444
+    style RMP fill:#444
+    style VVP fill:#444
 ```
 
 ### 4.2 참조 검증 결과
@@ -261,12 +261,12 @@ graph TD
         L["SOUP 관리<br/>DOC-033"]
     end
     
-    style A fill:#e8f5e9
-    style B fill:#e8f5e9
-    style C fill:#e8f5e9
-    style D fill:#e8f5e9
-    style G fill:#e8f5e9
-    style H fill:#e8f5e9
+    style A fill:#444
+    style B fill:#444
+    style C fill:#444
+    style D fill:#444
+    style G fill:#444
+    style H fill:#444
 ```
 
 ### 5.3 FDA 21 CFR 820.30 Design Control 매핑

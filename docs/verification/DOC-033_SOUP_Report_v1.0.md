@@ -84,9 +84,9 @@ flowchart TD
     H --> K[이상 목록 검토<br/>위험 평가 필수]
     I --> L[버전/라이선스<br/>확인 충분]
     
-    style F fill:#01696F,color:#fff
-    style H fill:#A13544,color:#fff
-    style I fill:#964219,color:#fff
+    style F fill:#444,color:#fff
+    style H fill:#444,color:#fff
+    style I fill:#444,color:#fff
 ```
 
 ### 2.3 SOUP 분류 기준
@@ -251,9 +251,9 @@ graph TB
     MED --> MON2[분기별 CVE 스캔<br/>계획 대응]
     LOW --> MON3[반기별 CVE 스캔<br/>다음 릴리스 반영]
     
-    style HIGH fill:#A13544,color:#fff
-    style MED fill:#964219,color:#fff
-    style LOW fill:#437A22,color:#fff
+    style HIGH fill:#444,color:#fff
+    style MED fill:#444,color:#fff
+    style LOW fill:#444,color:#fff
 ```
 
 ### 5.2 SOUP 위험 요약
@@ -287,9 +287,9 @@ flowchart TD
     J --> F
     K --> F
     
-    style A fill:#1B474D,color:#fff
-    style D fill:#437A22,color:#fff
-    style H fill:#A13544,color:#fff
+    style A fill:#444,color:#fff
+    style D fill:#444,color:#fff
+    style H fill:#444,color:#fff
 ```
 
 ### 6.2 SOUP 변경 관리

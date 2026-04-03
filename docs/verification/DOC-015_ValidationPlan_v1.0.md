@@ -86,11 +86,11 @@ graph LR
         E --> I[사용자 밸리데이션<br/>User Validation]
     end
     D -.->|검증 완료 후| F
-    style E fill:#01696F,color:#fff
-    style F fill:#20808D,color:#fff
-    style G fill:#20808D,color:#fff
-    style H fill:#20808D,color:#fff
-    style I fill:#20808D,color:#fff
+    style E fill:#444,color:#fff
+    style F fill:#444,color:#fff
+    style G fill:#444,color:#fff
+    style H fill:#444,color:#fff
+    style I fill:#444,color:#fff
 ```
 
 ---
@@ -130,11 +130,11 @@ flowchart TD
     I --> B
     J --> F
     
-    style A fill:#1B474D,color:#fff
-    style B fill:#20808D,color:#fff
-    style C fill:#20808D,color:#fff
-    style D fill:#01696F,color:#fff
-    style F fill:#437A22,color:#fff
+    style A fill:#444,color:#fff
+    style B fill:#444,color:#fff
+    style C fill:#444,color:#fff
+    style D fill:#444,color:#fff
+    style F fill:#444,color:#fff
 ```
 
 ### 3.2 밸리데이션 수준 정의
@@ -164,9 +164,9 @@ flowchart TD
     RA -->|Yes| COND[조건부 Pass]
     RA -->|No| STOP
     
-    style PASS fill:#437A22,color:#fff
-    style STOP fill:#A13544,color:#fff
-    style COND fill:#964219,color:#fff
+    style PASS fill:#444,color:#fff
+    style STOP fill:#444,color:#fff
+    style COND fill:#444,color:#fff
 ```
 
 ---
@@ -195,9 +195,9 @@ graph TB
     CON <-->|LDAP| LDAP
     PACS --> VIEW
     
-    style CON fill:#01696F,color:#fff
-    style PACS fill:#20808D,color:#fff
-    style RIS fill:#20808D,color:#fff
+    style CON fill:#444,color:#fff
+    style PACS fill:#444,color:#fff
+    style RIS fill:#444,color:#fff
 ```
 
 ### 4.2 환경 구성 상세
@@ -241,7 +241,7 @@ flowchart LR
     D --> E[서비스 기동<br/>확인]
     E --> F[IQ 체크리스트<br/>완료]
     
-    style F fill:#437A22,color:#fff
+    style F fill:#444,color:#fff
 ```
 
 | IQ 항목 | 확인 내용 | 방법 | 합격 기준 |
@@ -401,11 +401,11 @@ flowchart TD
     D --> E[자유 탐색<br/>15분]
     E --> F[설문 조사<br/>SUS + 인터뷰<br/>20분]
     
-    style A fill:#1B474D,color:#fff
-    style B fill:#20808D,color:#fff
-    style C fill:#20808D,color:#fff
-    style D fill:#20808D,color:#fff
-    style F fill:#01696F,color:#fff
+    style A fill:#444,color:#fff
+    style B fill:#444,color:#fff
+    style C fill:#444,color:#fff
+    style D fill:#444,color:#fff
+    style F fill:#444,color:#fff
 ```
 
 ### 7.3 임상 시뮬레이션 시나리오
@@ -492,9 +492,9 @@ graph LR
     VAL --> DVR[밸리데이션<br/>보고서]
     TC --> VVR[V&V<br/>보고서]
     
-    style MR fill:#01696F,color:#fff
-    style VAL fill:#20808D,color:#fff
-    style DVR fill:#437A22,color:#fff
+    style MR fill:#444,color:#fff
+    style VAL fill:#444,color:#fff
+    style DVR fill:#444,color:#fff
 ```
 
 ### 10.2 밸리데이션 추적성 매트릭스 (요약)

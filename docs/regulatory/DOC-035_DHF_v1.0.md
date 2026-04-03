@@ -42,7 +42,7 @@ graph TD
     DHF --> CS_SEC[사이버보안<br/>Cybersecurity]
     DHF --> UE[사용적합성<br/>Usability]
     
-    style DHF fill:#01696F,color:#fff
+    style DHF fill:#444,color:#fff
 ```
 
 ### 2.2 설계 입력 (Design Input) — §820.30(c)
@@ -153,8 +153,8 @@ flowchart LR
     UE_P[사용적합성<br/>UEF→평가] -.-> DI
     UE_P -.-> DVL_V
     
-    style DI fill:#01696F,color:#fff
-    style DT fill:#437A22,color:#fff
+    style DI fill:#444,color:#fff
+    style DT fill:#444,color:#fff
 ```
 
 ---

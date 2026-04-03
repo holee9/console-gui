@@ -653,10 +653,10 @@ flowchart TD
     W -- Yes --> Y[릴리스 승인 서명\nQA / Dev / RA / Medical]
     Y --> Z([릴리스 승인 완료])
 
-    style A fill:#4CAF50,color:#fff
-    style Z fill:#4CAF50,color:#fff
-    style Q fill:#f44336,color:#fff
-    style N fill:#FF9800,color:#fff
+    style A fill:#444,color:#fff
+    style Z fill:#444,color:#fff
+    style Q fill:#444,color:#fff
+    style N fill:#444,color:#fff
 ```
 
 ---
@@ -695,10 +695,10 @@ flowchart TD
     U --> V
     V --> W([결함 처리 완료])
 
-    style A fill:#f44336,color:#fff
-    style I fill:#f44336,color:#fff
-    style W fill:#4CAF50,color:#fff
-    style R fill:#4CAF50,color:#fff
+    style A fill:#444,color:#fff
+    style I fill:#444,color:#fff
+    style W fill:#444,color:#fff
+    style R fill:#444,color:#fff
 ```
 
 ---
@@ -751,11 +751,11 @@ graph LR
     ST --> CS
     ST --> NF
 
-    style SC fill:#FF9800,color:#fff
-    style PT fill:#9C27B0,color:#fff
-    style MR fill:#2196F3,color:#fff
-    style PR fill:#2196F3,color:#fff
-    style SWR fill:#2196F3,color:#fff
+    style SC fill:#444,color:#fff
+    style PT fill:#444,color:#fff
+    style MR fill:#444,color:#fff
+    style PR fill:#444,color:#fff
+    style SWR fill:#444,color:#fff
 ```
 
 ---
@@ -795,15 +795,15 @@ flowchart TD
     T --> U[Medical Director 서명]
     U --> V([🚀 릴리스 승인 완료])
 
-    style C fill:#f44336,color:#fff
-    style G fill:#f44336,color:#fff
-    style I fill:#f44336,color:#fff
-    style K fill:#f44336,color:#fff
-    style M fill:#FF9800,color:#fff
-    style O fill:#FF9800,color:#fff
-    style Q fill:#FF9800,color:#fff
-    style R fill:#4CAF50,color:#fff
-    style V fill:#4CAF50,color:#fff
+    style C fill:#444,color:#fff
+    style G fill:#444,color:#fff
+    style I fill:#444,color:#fff
+    style K fill:#444,color:#fff
+    style M fill:#444,color:#fff
+    style O fill:#444,color:#fff
+    style Q fill:#444,color:#fff
+    style R fill:#444,color:#fff
+    style V fill:#444,color:#fff
 ```
 
 ---

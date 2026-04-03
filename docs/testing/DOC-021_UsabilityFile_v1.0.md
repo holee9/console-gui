@@ -99,10 +99,10 @@ flowchart TD
     J -->|No| L[사용 오류 분석<br/>위험 평가]
     L --> F
     
-    style A fill:#1B474D,color:#fff
-    style D fill:#A13544,color:#fff
-    style I fill:#01696F,color:#fff
-    style K fill:#437A22,color:#fff
+    style A fill:#444,color:#fff
+    style D fill:#444,color:#fff
+    style I fill:#444,color:#fff
+    style K fill:#444,color:#fff
 ```
 
 ### 3.2 프로세스 산출물
@@ -169,9 +169,9 @@ graph TB
     SE -->|유지보수| SA
     RT -.->|촬영 수행| PT
     
-    style RT fill:#01696F,color:#fff
-    style RD fill:#20808D,color:#fff
-    style PT fill:#964219,color:#fff
+    style RT fill:#444,color:#fff
+    style RD fill:#444,color:#fff
+    style PT fill:#444,color:#fff
 ```
 
 ### 5.2 방사선사 프로파일 상세
@@ -215,9 +215,9 @@ flowchart LR
     I --> D
     H --> J[다음 환자]
     
-    style A fill:#1B474D,color:#fff
-    style E fill:#A13544,color:#fff
-    style H fill:#437A22,color:#fff
+    style A fill:#444,color:#fff
+    style E fill:#444,color:#fff
+    style H fill:#444,color:#fff
 ```
 
 ### 6.2 사용 시나리오 목록
@@ -258,9 +258,9 @@ flowchart LR
     UE3[L/R 마커 오류] --> HS3[영상 좌우<br/>반전]
     HS3 --> HAR3[진단 오류<br/>오진]
     
-    style UE fill:#964219,color:#fff
-    style HS fill:#A13544,color:#fff
-    style HAR fill:#A13544,color:#fff
+    style UE fill:#444,color:#fff
+    style HS fill:#444,color:#fff
+    style HAR fill:#444,color:#fff
 ```
 
 ### 7.2 위험 관련 사용 시나리오 상세
@@ -344,8 +344,8 @@ graph TB
     SYS --> SYS2[시스템 설정]
     SYS --> SYS3[감사 로그]
     
-    style HOME fill:#01696F,color:#fff
-    style WF fill:#A13544,color:#fff
+    style HOME fill:#444,color:#fff
+    style WF fill:#444,color:#fff
 ```
 
 ### 9.2 안전-필수 UI 요소 색상 체계
@@ -398,8 +398,8 @@ flowchart LR
     end
     F1 --> F2 --> F3 --> S1 --> S2 --> S3
     
-    style F1 fill:#1B474D,color:#fff
-    style S1 fill:#01696F,color:#fff
+    style F1 fill:#444,color:#fff
+    style S1 fill:#444,color:#fff
 ```
 
 ### 10.2 형성적 평가 (Formative Evaluation)
@@ -478,8 +478,8 @@ flowchart TD
     EFF -->|Yes| CLOSE[위험 통제<br/>유효성 확인]
     EFF -->|No| UI_RC
     
-    style UE fill:#A13544,color:#fff
-    style CLOSE fill:#437A22,color:#fff
+    style UE fill:#444,color:#fff
+    style CLOSE fill:#444,color:#fff
 ```
 
 ### 11.2 사용 오류 분류
@@ -524,10 +524,10 @@ graph LR
     HAZ --> RC_UI[UI 위험<br/>통제]
     RC_UI --> UIS
     
-    style UN fill:#1B474D,color:#fff
-    style MR fill:#01696F,color:#fff
-    style UT_TC fill:#20808D,color:#fff
-    style HRUS fill:#A13544,color:#fff
+    style UN fill:#444,color:#fff
+    style MR fill:#444,color:#fff
+    style UT_TC fill:#444,color:#fff
+    style HRUS fill:#444,color:#fff
 ```
 
 ### 12.2 추적성 매트릭스 (요약)

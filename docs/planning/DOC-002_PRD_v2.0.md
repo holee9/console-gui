@@ -81,9 +81,9 @@ flowchart LR
     MR -->|"분해/상세화\n(Decomposition)"| PR
     PR -->|"소프트웨어 요구사항 도출\n(Derivation)"| SWR
 
-    style MR fill:#1a5276,color:#fff
-    style PR fill:#1e8449,color:#fff
-    style SWR fill:#7d3c98,color:#fff
+    style MR fill:#444,color:#fff
+    style PR fill:#444,color:#fff
+    style SWR fill:#444,color:#fff
 ```
 
 **각 계층의 역할:**
@@ -321,11 +321,11 @@ flowchart TD
     RAD --> UC10 & UC12
 
     classDef default fill:#444,stroke:#666,color:#fff
-    style UC_PATIENT fill:#333,stroke:#666,color:#fff
-    style UC_ACQ fill:#333,stroke:#666,color:#fff
-    style UC_IMAGE fill:#333,stroke:#666,color:#fff
-    style UC_DOSE fill:#333,stroke:#666,color:#fff
-    style UC_ADMIN fill:#333,stroke:#666,color:#fff
+    style UC_PATIENT fill:#444,stroke:#666,color:#fff
+    style UC_ACQ fill:#444,stroke:#666,color:#fff
+    style UC_IMAGE fill:#444,stroke:#666,color:#fff
+    style UC_DOSE fill:#444,stroke:#666,color:#fff
+    style UC_ADMIN fill:#444,stroke:#666,color:#fff
 ```
 
 ### 2.3 User Journey Diagram
@@ -515,9 +515,9 @@ flowchart TD
     M --> N[Window/Level LUT 적용\n표시용 8-bit 변환\nPR-IP-021]
     N --> O[Display Output\n≤1초 내 화면 표시\nPR-IP-020]
 
-    style A fill:#2d3748,color:#fff
-    style O fill:#276749,color:#fff
-    style E fill:#744210,color:#fff
+    style A fill:#444,color:#fff
+    style O fill:#444,color:#fff
+    style E fill:#444,color:#fff
 ```
 
 ### 3.4 선량 관리 (Dose Management) — PR-DM
@@ -778,12 +778,12 @@ flowchart TD
     RightPanel <--> CenterPanel
     CenterPanel --> BottomBar
 
-    style MainWindow fill:#333,stroke:#666,color:#fff
-    style TopBar fill:#333,stroke:#666,color:#fff
-    style LeftPanel fill:#333,stroke:#666,color:#fff
-    style CenterPanel fill:#333,stroke:#666,color:#fff
-    style RightPanel fill:#333,stroke:#666,color:#fff
-    style BottomBar fill:#333,stroke:#666,color:#fff
+    style MainWindow fill:#444,stroke:#666,color:#fff
+    style TopBar fill:#444,stroke:#666,color:#fff
+    style LeftPanel fill:#444,stroke:#666,color:#fff
+    style CenterPanel fill:#444,stroke:#666,color:#fff
+    style RightPanel fill:#444,stroke:#666,color:#fff
+    style BottomBar fill:#444,stroke:#666,color:#fff
 ```
 
 ### 5.4 시스템 컨텍스트 다이어그램 (C4 Context Diagram)
@@ -791,10 +791,10 @@ flowchart TD
 ```mermaid
 flowchart TB
     classDef default fill:#444,stroke:#666,color:#fff
-    classDef person fill:#1a5276,color:#fff,stroke:#154360
-    classDef system fill:#1e8449,color:#fff,stroke:#196f3d
-    classDef external fill:#784212,color:#fff,stroke:#6e2f1a
-    classDef boundary fill:#f8f9fa,color:#000,stroke:#666,stroke-dasharray: 5
+    classDef person fill:#444,color:#fff,stroke:#666
+    classDef system fill:#444,color:#fff,stroke:#666
+    classDef external fill:#444,color:#fff,stroke:#666
+    classDef boundary fill:#444,color:#fff,stroke:#666,stroke-dasharray: 5
 
     RT([방사선사<br/>Radiologic Technologist]):::person
     ADMIN([시스템 관리자<br/>BMET/Admin]):::person
@@ -830,7 +830,7 @@ flowchart TB
     AD -- "사용자 인증 (Phase 2)" --> CON
     SDK -- "영상처리 파이프라인" --> CON
 
-    style XRaySys fill:#333,stroke:#666,color:#fff
+    style XRaySys fill:#444,stroke:#666,color:#fff
 ```
 
 ---
@@ -1038,13 +1038,13 @@ flowchart LR
     A4 -.->|검증 기준 제공| B4
     A5 -.->|검증 기준 제공| B5
 
-    style A6 fill:#2c3e50,color:#fff
-    style B6 fill:#2c3e50,color:#fff
-    style B1 fill:#145a32,color:#fff
-    style A1 fill:#145a32,color:#fff
-    style A2 fill:#1e8449,color:#fff
-    style LeftSide fill:#333,stroke:#666,color:#fff
-    style RightSide fill:#333,stroke:#666,color:#fff
+    style A6 fill:#444,color:#fff
+    style B6 fill:#444,color:#fff
+    style B1 fill:#444,color:#fff
+    style A1 fill:#444,color:#fff
+    style A2 fill:#444,color:#fff
+    style LeftSide fill:#444,stroke:#666,color:#fff
+    style RightSide fill:#444,stroke:#666,color:#fff
 ```
 
 ---
@@ -1159,7 +1159,7 @@ flowchart LR
     H1 -->|격주 모니터링\n완화 계획 수립| Action2[완화 계획 실행]
     M1 -->|월간 검토\n수용 또는 모니터링| Action3[모니터링 지속]
 
-    style Matrix fill:#333,stroke:#666,color:#fff
+    style Matrix fill:#444,stroke:#666,color:#fff
 ```
 
 ---
@@ -1216,16 +1216,16 @@ flowchart TD
     SAD -.->|Verification Criteria| IT
     SDS -.->|Verification Criteria| UT
 
-    style UN fill:#1a5276,color:#fff
-    style PRD_ fill:#1e8449,color:#fff
-    style SRS_ fill:#7d3c98,color:#fff
-    style CODE fill:#2c3e50,color:#fff
-    style VT_CL fill:#145a32,color:#fff
-    style VT_UX fill:#145a32,color:#fff
-    style VT_SEC fill:#145a32,color:#fff
-    style Design fill:#333,stroke:#666,color:#fff
-    style Verification fill:#333,stroke:#666,color:#fff
-    style Validation fill:#333,stroke:#666,color:#fff
+    style UN fill:#444,color:#fff
+    style PRD_ fill:#444,color:#fff
+    style SRS_ fill:#444,color:#fff
+    style CODE fill:#444,color:#fff
+    style VT_CL fill:#444,color:#fff
+    style VT_UX fill:#444,color:#fff
+    style VT_SEC fill:#444,color:#fff
+    style Design fill:#444,stroke:#666,color:#fff
+    style Verification fill:#444,stroke:#666,color:#fff
+    style Validation fill:#444,stroke:#666,color:#fff
 ```
 
 ### 10.2 검증 단계별 커버리지
@@ -1391,14 +1391,14 @@ flowchart TD
     PR_NF_RL013 --> ST_RL
     PR_CS070 & PR_CS074 & PR_CS077 --> VT_SEC001
 
-    style HAZ_RAD fill:#c0392b,color:#fff
-    style HAZ_SW fill:#d35400,color:#fff
-    style HAZ_DATA fill:#7d6608,color:#fff
-    style HAZ_SEC fill:#1a5276,color:#fff
-    style Hazards fill:#333,stroke:#666,color:#fff
-    style Controls fill:#333,stroke:#666,color:#fff
-    style Requirements fill:#333,stroke:#666,color:#fff
-    style Verification fill:#333,stroke:#666,color:#fff
+    style HAZ_RAD fill:#444,color:#fff
+    style HAZ_SW fill:#444,color:#fff
+    style HAZ_DATA fill:#444,color:#fff
+    style HAZ_SEC fill:#444,color:#fff
+    style Hazards fill:#444,stroke:#666,color:#fff
+    style Controls fill:#444,stroke:#666,color:#fff
+    style Requirements fill:#444,stroke:#666,color:#fff
+    style Verification fill:#444,stroke:#666,color:#fff
 ```
 
 ---
@@ -1464,16 +1464,16 @@ flowchart LR
     DR4 --> SDS
     DR5 --> VT
 
-    style PRD_DOC fill:#1e8449,color:#fff
-    style MRD fill:#1a5276,color:#fff
-    style FRS fill:#7d3c98,color:#fff
-    style VT fill:#145a32,color:#fff
-    style DHF fill:#333,stroke:#666,color:#fff
-    style DI fill:#333,stroke:#666,color:#fff
-    style DO fill:#333,stroke:#666,color:#fff
-    style DV fill:#333,stroke:#666,color:#fff
-    style DVA fill:#333,stroke:#666,color:#fff
-    style DR fill:#333,stroke:#666,color:#fff
+    style PRD_DOC fill:#444,color:#fff
+    style MRD fill:#444,color:#fff
+    style FRS fill:#444,color:#fff
+    style VT fill:#444,color:#fff
+    style DHF fill:#444,stroke:#666,color:#fff
+    style DI fill:#444,stroke:#666,color:#fff
+    style DO fill:#444,stroke:#666,color:#fff
+    style DV fill:#444,stroke:#666,color:#fff
+    style DVA fill:#444,stroke:#666,color:#fff
+    style DR fill:#444,stroke:#666,color:#fff
 ```
 
 ### 12.2 Design Input으로서의 PRD 역할

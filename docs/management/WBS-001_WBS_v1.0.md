@@ -56,14 +56,14 @@ flowchart TD
     RC -.->|"SWR 연결"| SWR
     RC -.->|"TC 연결"| TC
 
-    style MR fill:#EBF5FB,stroke:#2980B9,color:#000
-    style PR fill:#D6EAF8,stroke:#2980B9,color:#000
-    style SWR fill:#D1F2EB,stroke:#1ABC9C,color:#000
-    style SAD fill:#EAF7EA,stroke:#27AE60,color:#000
-    style TC fill:#FEF9E7,stroke:#F39C12,color:#000
-    style VV fill:#D5F5E3,stroke:#27AE60,color:#000
-    style HAZ fill:#FDEDEC,stroke:#E74C3C,color:#000
-    style RC fill:#F9EBEA,stroke:#E74C3C,color:#000
+    style MR fill:#444,stroke:#666,color:#fff
+    style PR fill:#444,stroke:#666,color:#fff
+    style SWR fill:#444,stroke:#666,color:#fff
+    style SAD fill:#444,stroke:#666,color:#fff
+    style TC fill:#444,stroke:#666,color:#fff
+    style VV fill:#444,stroke:#666,color:#fff
+    style HAZ fill:#444,stroke:#666,color:#fff
+    style RC fill:#444,stroke:#666,color:#fff
 ```
 
 ---
@@ -143,11 +143,11 @@ flowchart LR
     DR4 --> MS6([MS-06\n인허가 제출])
     MS6 --> DR5
 
-    style DR1 fill:#EBF5FB,stroke:#2980B9
-    style DR2 fill:#D6EAF8,stroke:#2980B9
-    style DR3 fill:#EAF7EA,stroke:#27AE60
-    style DR4 fill:#FEF9E7,stroke:#F39C12
-    style DR5 fill:#FDEDEC,stroke:#E74C3C
+    style DR1 fill:#444,stroke:#666
+    style DR2 fill:#444,stroke:#666
+    style DR3 fill:#444,stroke:#666
+    style DR4 fill:#444,stroke:#666
+    style DR5 fill:#444,stroke:#666
 ```
 
 ---
@@ -437,15 +437,15 @@ flowchart TD
     DHF --> eSTAR
     DHF --> CE
 
-    style MRD fill:#EBF5FB,stroke:#2980B9,color:#000
-    style PRD fill:#EBF5FB,stroke:#2980B9,color:#000
-    style FRS fill:#EBF5FB,stroke:#2980B9,color:#000
-    style SDP fill:#FDF2E9,stroke:#E67E22,color:#000
-    style DevGL fill:#FDF2E9,stroke:#E67E22,color:#000
-    style DHF fill:#FDEDEC,stroke:#E74C3C,color:#000
-    style eSTAR fill:#D5F5E3,stroke:#27AE60,color:#000
-    style CE fill:#D5F5E3,stroke:#27AE60,color:#000
-    style RTM fill:#FEF9E7,stroke:#F39C12,color:#000
+    style MRD fill:#444,stroke:#666,color:#fff
+    style PRD fill:#444,stroke:#666,color:#fff
+    style FRS fill:#444,stroke:#666,color:#fff
+    style SDP fill:#444,stroke:#666,color:#fff
+    style DevGL fill:#444,stroke:#666,color:#fff
+    style DHF fill:#444,stroke:#666,color:#fff
+    style eSTAR fill:#444,stroke:#666,color:#fff
+    style CE fill:#444,stroke:#666,color:#fff
+    style RTM fill:#444,stroke:#666,color:#fff
 ```
 
 ---
@@ -480,15 +480,15 @@ flowchart LR
     TM -.- DI
     TM -.- DV
 
-    style DHF fill:#FDEDEC,stroke:#E74C3C
-    style DP fill:#FDF2E9,stroke:#E67E22,color:#000
-    style DI fill:#EBF5FB,stroke:#2980B9,color:#000
-    style DO fill:#EAF7EA,stroke:#27AE60,color:#000
-    style DR fill:#EAF7EA,stroke:#27AE60,color:#000
-    style DV fill:#FEF9E7,stroke:#F39C12,color:#000
-    style DAL fill:#FEF9E7,stroke:#F39C12,color:#000
-    style RM fill:#FDEDEC,stroke:#E74C3C,color:#000
-    style TM fill:#F5EEF8,stroke:#8E44AD,color:#000
+    style DHF fill:#444,stroke:#666
+    style DP fill:#444,stroke:#666,color:#fff
+    style DI fill:#444,stroke:#666,color:#fff
+    style DO fill:#444,stroke:#666,color:#fff
+    style DR fill:#444,stroke:#666,color:#fff
+    style DV fill:#444,stroke:#666,color:#fff
+    style DAL fill:#444,stroke:#666,color:#fff
+    style RM fill:#444,stroke:#666,color:#fff
+    style TM fill:#444,stroke:#666,color:#fff
 ```
 
 ---
@@ -563,12 +563,12 @@ flowchart TB
     Comm --> Infra
     Sec --> Infra
 
-    style UI fill:#EBF5FB,stroke:#2980B9
-    style App fill:#EAF7EA,stroke:#27AE60
-    style Proc fill:#FEF9E7,stroke:#F39C12
-    style Comm fill:#F5EEF8,stroke:#8E44AD
-    style Sec fill:#FDEDEC,stroke:#E74C3C
-    style Infra fill:#F2F3F4,stroke:#7F8C8D
+    style UI fill:#444,stroke:#666
+    style App fill:#444,stroke:#666
+    style Proc fill:#444,stroke:#666
+    style Comm fill:#444,stroke:#666
+    style Sec fill:#444,stroke:#666
+    style Infra fill:#444,stroke:#666
 ```
 
 ---
@@ -661,9 +661,9 @@ flowchart LR
 
     SysTest --- VAL["사용성 평가\n（IEC 62366 Summative）\n임상 시뮬레이션\n사이버보안 침투 테스트"]
 
-    style LEFT fill:#EBF5FB,stroke:#2980B9
-    style RIGHT fill:#EAF7EA,stroke:#27AE60
-    style VAL fill:#FEF9E7,stroke:#F39C12
+    style LEFT fill:#444,stroke:#666
+    style RIGHT fill:#444,stroke:#666
+    style VAL fill:#444,stroke:#666
 ```
 
 ---

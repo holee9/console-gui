@@ -73,7 +73,7 @@ flowchart TD
     D --> F[FDA SW Documentation:<br/>Moderate Level]
     
     classDef default fill:#444,stroke:#666,color:#fff
-    style F fill:#01696F,color:#fff
+    style F fill:#444,color:#fff
 ```
 
 **결정**: HnVue은 영상 표시 및 촬영 파라미터 제어에 관여하므로 **Moderate Level of Concern**으로 분류한다.
@@ -141,8 +141,8 @@ flowchart TD
     I --> D
 
     classDef default fill:#444,stroke:#666,color:#fff
-    style D fill:#A13544,color:#fff
-    style H fill:#01696F,color:#fff
+    style D fill:#444,color:#fff
+    style H fill:#444,color:#fff
 ```
 
 ### 5.2 인시던트 대응 계획 (Incident Response Plan)
@@ -159,11 +159,11 @@ flowchart LR
     D --> E[📢 보고<br/>Reporting]
 
     classDef default fill:#444,stroke:#666,color:#fff
-    style A fill:#20808D,color:#fff
-    style B fill:#20808D,color:#fff
-    style C fill:#A13544,color:#fff
-    style D fill:#437A22,color:#fff
-    style E fill:#01696F,color:#fff
+    style A fill:#444,color:#fff
+    style B fill:#444,color:#fff
+    style C fill:#444,color:#fff
+    style D fill:#444,color:#fff
+    style E fill:#444,color:#fff
 ```
 
 | 단계 | 활동 | 담당 | 시간 목표 |

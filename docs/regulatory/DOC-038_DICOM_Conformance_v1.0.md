@@ -39,7 +39,7 @@ graph LR
     RC -->|SR/RDSR| SR_SCP[SR Repository]
     RC <-->|C-ECHO| ANY[Any DICOM Node]
     
-    style RC fill:#01696F,color:#fff
+    style RC fill:#444,color:#fff
 ```
 
 ---

@@ -105,11 +105,11 @@ flowchart TD
     SRS_doc -->|"검증 기준"| TC
 
     classDef default fill:#444,stroke:#666,color:#fff
-    style SRS_doc fill:#7d3c98,color:#fff
-    style PR fill:#1e8449,color:#fff
-    style MR fill:#1a5276,color:#fff
-    style FRS fill:#6e2fa0,color:#fff
-    style RMP fill:#922b21,color:#fff
+    style SRS_doc fill:#444,color:#fff
+    style PR fill:#444,color:#fff
+    style MR fill:#444,color:#fff
+    style FRS fill:#444,color:#fff
+    style RMP fill:#444,color:#fff
 ```
 
 **Phase 1 포함 도메인:**
@@ -217,11 +217,11 @@ graph TB
     DC_SVC --> PRINT
     CS_SVC -->|"LDAPS"| AD
 
-    style HnVue fill:#1a2e45,color:#fff
-    style UI fill:#1e8449,color:#fff
-    style BL fill:#7d3c98,color:#fff
-    style DAL fill:#1a5276,color:#fff
-    style HAL fill:#922b21,color:#fff
+    style HnVue fill:#444,color:#fff
+    style UI fill:#444,color:#fff
+    style BL fill:#444,color:#fff
+    style DAL fill:#444,color:#fff
+    style HAL fill:#444,color:#fff
 ```
 
 ### 3.3 SW 아키텍처 개요
@@ -472,9 +472,9 @@ flowchart LR
     BIZ --> O4
     DB_INT --> O5
 
-    style HnVue fill:#1a2e45,color:#fff
-    style Inputs fill:#1e8449,color:#fff
-    style Outputs fill:#7d3c98,color:#fff
+    style HnVue fill:#444,color:#fff
+    style Inputs fill:#444,color:#fff
+    style Outputs fill:#444,color:#fff
 ```
 
 ---
@@ -786,8 +786,8 @@ graph LR
     HAZ_SW --> RC_SW
     HAZ_HW --> RC_HW
 
-    style Hazards fill:#922b21,color:#fff
-    style Controls fill:#1a5276,color:#fff
+    style Hazards fill:#444,color:#fff
+    style Controls fill:#444,color:#fff
 ```
 
 ### 5.2 Safety-related SWR 매핑 테이블
@@ -955,10 +955,10 @@ graph TD
         S5212["§5.2.12\n규제 요구사항\nSWR-NF-RG-060–065\nSWR-NF-SC-040\nSWR-NF-CP-035"]
     end
 
-    style S524 fill:#922b21,color:#fff
-    style S525 fill:#1a5276,color:#fff
-    style S521 fill:#1e8449,color:#fff
-    style S527 fill:#7d3c98,color:#fff
+    style S524 fill:#444,color:#fff
+    style S525 fill:#444,color:#fff
+    style S521 fill:#444,color:#fff
+    style S527 fill:#444,color:#fff
 ```
 
 ### A.2 전체 SWR → IEC 62304 §5.2 매핑 마스터 테이블

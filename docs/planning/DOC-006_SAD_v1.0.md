@@ -247,8 +247,8 @@ graph LR
     WT8 -->|Heartbeat 신호| WT1 & WT5
 
     classDef default fill:#444,stroke:#666,color:#fff
-    classDef safety fill:#ffcccc,stroke:#cc0000
-    classDef normal fill:#cce5ff,stroke:#004085
+    classDef safety fill:#444,stroke:#666
+    classDef normal fill:#444,stroke:#666
     class WT5,WT8 safety
     class MT,WT1,WT2,WT3,WT4,WT6,WT7 normal
 ```
@@ -408,8 +408,8 @@ graph TD
     UI -->|의존| PM & WF & IP & DM & SA
 
     classDef default fill:#444,stroke:#666,color:#fff
-    classDef safety fill:#ffcccc,stroke:#cc0000,font-weight:bold
-    classDef normal fill:#d4edda,stroke:#28a745
+    classDef safety fill:#444,stroke:#666
+    classDef normal fill:#444,stroke:#666
     class WF,DM,CS safety
     class PM,IP,DC,SA,UI,DB normal
 ```

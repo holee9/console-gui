@@ -195,11 +195,11 @@ graph TD
     SE --> CLI
     SE --> UX
 
-    style PL fill:#01696F,color:#fff
-    style PM fill:#01696F,color:#fff
-    style QA fill:#437A22,color:#fff
-    style RA fill:#964219,color:#fff
-    style SEC fill:#7A39BB,color:#fff
+    style PL fill:#444,color:#fff
+    style PM fill:#444,color:#fff
+    style QA fill:#444,color:#fff
+    style RA fill:#444,color:#fff
+    style SEC fill:#444,color:#fff
 ```
 
 ### 4.2 역할별 책임 정의 (Role Definitions)
@@ -363,12 +363,12 @@ flowchart TD
 
     PH7 --> END([릴리스 완료\nRelease Complete])
 
-    style GATE1 fill:#964219,color:#fff
-    style GATE2 fill:#964219,color:#fff
-    style GATE3 fill:#964219,color:#fff
-    style GATE4 fill:#964219,color:#fff
-    style GATE5 fill:#964219,color:#fff
-    style GATE6 fill:#964219,color:#fff
+    style GATE1 fill:#444,color:#fff
+    style GATE2 fill:#444,color:#fff
+    style GATE3 fill:#444,color:#fff
+    style GATE4 fill:#444,color:#fff
+    style GATE5 fill:#444,color:#fff
+    style GATE6 fill:#444,color:#fff
 ```
 
 ### 5.2 Phase Gate 정의 (Phase Gate Definitions)
@@ -626,8 +626,8 @@ flowchart TD
     J --> K["재검증 범위 결정\nRe-verification Scope"]
     K --> END["변경 완료\nChange Complete"]
 
-    style E fill:#964219,color:#fff
-    style F fill:#964219,color:#fff
+    style E fill:#444,color:#fff
+    style F fill:#444,color:#fff
 ```
 
 **변경 요청 분류**:
@@ -683,7 +683,7 @@ flowchart LR
     H --> E
     E --> I["형상 기준선 설정\nConfiguration Baseline"]
 
-    style D fill:#01696F,color:#fff
+    style D fill:#444,color:#fff
 ```
 
 **설계 검토 항목**:
@@ -828,8 +828,8 @@ flowchart LR
     L -->|Pass| M["QA 환경 배포\nDeploy to QA"]
     L -->|Fail| I
 
-    style G fill:#01696F,color:#fff
-    style L fill:#01696F,color:#fff
+    style G fill:#444,color:#fff
+    style L fill:#444,color:#fff
 ```
 
 **빌드 환경**:
@@ -961,8 +961,8 @@ flowchart TD
     K -->|Yes| L["결함 종결\nClose Bug"]
     K -->|No| I
 
-    style D fill:#964219,color:#fff
-    style K fill:#01696F,color:#fff
+    style D fill:#444,color:#fff
+    style K fill:#444,color:#fff
 ```
 
 **결함 분류 기준**:
@@ -1048,7 +1048,7 @@ flowchart TD
     I -->|"수용 가능\nAcceptable"| M["위험 허용\nRisk Accepted"]
     M --> N["위험 관리 보고서\nRisk Management Report"]
 
-    style I fill:#964219,color:#fff
+    style I fill:#444,color:#fff
 ```
 
 **FMEA 수행 주기**:
@@ -1159,7 +1159,7 @@ flowchart TD
     J --> K["고객 통보\nCustomer Notification\n（해당 시）"]
     K --> L["취약점 종결\nClose Vulnerability"]
 
-    style C fill:#964219,color:#fff
+    style C fill:#444,color:#fff
 ```
 
 **취약점 정보 소스**:
@@ -1269,8 +1269,8 @@ flowchart TD
     O --> P["재검증 실행\nRe-verification"]
     P --> Q["변경 완료\nChange Closed"]
 
-    style J fill:#964219,color:#fff
-    style E fill:#01696F,color:#fff
+    style J fill:#444,color:#fff
+    style E fill:#444,color:#fff
 ```
 
 ### 14.2 영향 분석 절차 (Impact Analysis Procedure)
@@ -1323,9 +1323,9 @@ flowchart LR
     I --> J["배포\nDistribution\n（QA 관리）"]
     J --> K["DMS 등록\nRegister in DMS\n（Document Mgmt System）"]
 
-    style C fill:#01696F,color:#fff
-    style E fill:#01696F,color:#fff
-    style H fill:#964219,color:#fff
+    style C fill:#444,color:#fff
+    style E fill:#444,color:#fff
+    style H fill:#444,color:#fff
 ```
 
 ### 15.2 문서 번호 체계 (Document Numbering System)

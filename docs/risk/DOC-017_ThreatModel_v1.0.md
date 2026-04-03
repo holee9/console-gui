@@ -122,9 +122,9 @@ graph TB
     CON <-.->|HTTPS| UPD
     
     classDef default fill:#444,stroke:#666,color:#fff
-    style CON fill:#01696F,color:#fff
-    style PACS fill:#20808D,color:#fff
-    style RIS fill:#20808D,color:#fff
+    style CON fill:#444,color:#fff
+    style PACS fill:#444,color:#fff
+    style RIS fill:#444,color:#fff
 ```
 
 ### 3.2 진입점 (Entry Points)
@@ -174,7 +174,7 @@ graph LR
     RC -->|감사 로그| LOG[로그 저장소]
     
     classDef default fill:#444,stroke:#666,color:#fff
-    style RC fill:#01696F,color:#fff
+    style RC fill:#444,color:#fff
 ```
 
 ### 4.2 DFD Level 1 — 주요 프로세스
@@ -206,9 +206,9 @@ graph TB
     P2 -->|환자 데이터| DS_DB[（Local DB）]
     
     classDef default fill:#444,stroke:#666,color:#fff
-    style P1 fill:#20808D,color:#fff
-    style P3 fill:#A13544,color:#fff
-    style P4 fill:#20808D,color:#fff
+    style P1 fill:#444,color:#fff
+    style P3 fill:#444,color:#fff
+    style P4 fill:#444,color:#fff
 ```
 
 ---
@@ -309,10 +309,10 @@ graph TD
     A3 --> D3[인증서 조작<br/>Certificate Manipulation]
     
     classDef default fill:#444,stroke:#666,color:#fff
-    style ROOT fill:#A13544,color:#fff
-    style B1 fill:#964219,color:#fff
-    style D1 fill:#964219,color:#fff
-    style D2 fill:#964219,color:#fff
+    style ROOT fill:#444,color:#fff
+    style B1 fill:#444,color:#fff
+    style D1 fill:#444,color:#fff
+    style D2 fill:#444,color:#fff
 ```
 
 ### 6.2 공격 트리 2: 촬영 파라미터 변조 (Exposure Parameter Tampering)
@@ -334,9 +334,9 @@ graph TD
     A3 --> D2[백업 파일 변조<br/>복원 시 적용]
     
     classDef default fill:#444,stroke:#666,color:#fff
-    style ROOT2 fill:#A13544,color:#fff
-    style B1 fill:#964219,color:#fff
-    style C3 fill:#964219,color:#fff
+    style ROOT2 fill:#444,color:#fff
+    style B1 fill:#444,color:#fff
+    style C3 fill:#444,color:#fff
 ```
 
 ### 6.3 공격 트리 3: 촬영 워크플로우 서비스 거부 (Imaging Workflow DoS)
@@ -359,9 +359,9 @@ graph TD
     A3 --> D3[CPU 과부하<br/>복잡 쿼리 반복]
     
     classDef default fill:#444,stroke:#666,color:#fff
-    style ROOT3 fill:#A13544,color:#fff
-    style C2 fill:#964219,color:#fff
-    style D1 fill:#964219,color:#fff
+    style ROOT3 fill:#444,color:#fff
+    style C2 fill:#444,color:#fff
+    style D1 fill:#444,color:#fff
 ```
 
 ---

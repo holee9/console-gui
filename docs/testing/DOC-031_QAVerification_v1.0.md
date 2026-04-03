@@ -129,7 +129,7 @@ flowchart LR
     F --> G[QA 검증 합격]
     G --> H[릴리스 승인]
     
-    style H fill:#437A22,color:#fff
+    style H fill:#444,color:#fff
 ```
 
 ### 3.2 종합 판정

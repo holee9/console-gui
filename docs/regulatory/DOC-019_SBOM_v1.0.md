@@ -76,8 +76,8 @@ flowchart LR
     F --> G[FDA 제출용<br/>SBOM 생성]
     
     classDef default fill:#444,stroke:#666,color:#fff
-    style E fill:#A13544,color:#fff
-    style G fill:#437A22,color:#fff
+    style E fill:#444,color:#fff
+    style G fill:#444,color:#fff
 ```
 
 ### 2.2 SBOM 갱신 트리거
@@ -266,9 +266,9 @@ graph TD
     DATA --> SBOM018[EF Core]
     
     classDef default fill:#444,stroke:#666,color:#fff
-    style APP fill:#01696F,color:#fff
-    style SBOM019 fill:#A13544,color:#fff
-    style SBOM020 fill:#A13544,color:#fff
+    style APP fill:#444,color:#fff
+    style SBOM019 fill:#444,color:#fff
+    style SBOM020 fill:#444,color:#fff
 ```
 
 ---
@@ -298,9 +298,9 @@ flowchart TD
     N --> O[SBOM 갱신]
     
     classDef default fill:#444,stroke:#666,color:#fff
-    style G fill:#A13544,color:#fff
-    style I fill:#964219,color:#fff
-    style O fill:#437A22,color:#fff
+    style G fill:#444,color:#fff
+    style I fill:#444,color:#fff
+    style O fill:#444,color:#fff
 ```
 
 ### 6.2 고위험 모니터링 대상
@@ -336,8 +336,8 @@ flowchart TD
     K --> M[기본 평가<br/>충분]
     
     classDef default fill:#444,stroke:#666,color:#fff
-    style F fill:#01696F,color:#fff
-    style J fill:#A13544,color:#fff
+    style F fill:#444,color:#fff
+    style J fill:#444,color:#fff
 ```
 
 ### 7.2 SOUP 평가 요약

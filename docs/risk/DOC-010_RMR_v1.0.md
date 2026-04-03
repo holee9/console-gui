@@ -161,10 +161,10 @@ flowchart TD
 
     I --> J
 
-    style ANALYSIS fill:#e8f4fd,stroke:#2196F3
-    style EVAL fill:#fff3e0,stroke:#FF9800
-    style CTRL fill:#fce4ec,stroke:#E91E63
-    style REPORT fill:#e8f5e9,stroke:#4CAF50
+    style ANALYSIS fill:#444,stroke:#666
+    style EVAL fill:#444,stroke:#666
+    style CTRL fill:#444,stroke:#666
+    style REPORT fill:#444,stroke:#666
 ```
 
 ### 3.2 위험 관리 계획 이행 확인 (RMP Compliance Confirmation)
@@ -468,9 +468,9 @@ flowchart LR
     R --> C
     C -->|편익 >> 위험| D["✅ 전체 잔여 위험\n수용 가능 판정\nISO 14971:2019 §8"]
 
-    style B fill:#e8f5e9,stroke:#4CAF50
-    style R fill:#e3f2fd,stroke:#2196F3
-    style D fill:#c8e6c9,stroke:#2e7d32
+    style B fill:#444,stroke:#666
+    style R fill:#444,stroke:#666
+    style D fill:#444,stroke:#666
 ```
 
 **최종 결론**: HnVue GUI Console SW의 의도된 사용에 따른 임상적 편익 (진단 정확도 향상, 방사선 선량 최적화, 워크플로우 효율화, 환자 데이터 보호)은 모든 통제 조치가 적용된 후의 잔여 위험을 명확히 초과한다. **편익-위험 비율이 긍정적임을 확인한다.**
@@ -543,10 +543,10 @@ flowchart TD
     L --> M
     M --> J
 
-    style H fill:#ffcccc,stroke:#cc0000
-    style L fill:#ffaaaa,stroke:#cc0000
-    style G fill:#fff3cc,stroke:#cc9900
-    style J fill:#ccffcc,stroke:#009900
+    style H fill:#444,stroke:#666
+    style L fill:#444,stroke:#666
+    style G fill:#444,stroke:#666
+    style J fill:#444,stroke:#666
 ```
 
 ---

@@ -139,16 +139,16 @@ graph TD
     H --> J[CE MDR]
     H --> K[KFDA 식약처]
 
-    style A fill:#4472C4,color:#fff
-    style C fill:#ED7D31,color:#fff
-    style D fill:#70AD47,color:#fff
-    style E fill:#FFC000,color:#000
-    style F fill:#5B9BD5,color:#fff
-    style G fill:#FF0000,color:#fff
-    style H fill:#404040,color:#fff
-    style I fill:#92D050,color:#000
-    style J fill:#92D050,color:#000
-    style K fill:#92D050,color:#000
+    style A fill:#444,color:#fff
+    style C fill:#444,color:#fff
+    style D fill:#444,color:#fff
+    style E fill:#444,color:#fff
+    style F fill:#444,color:#fff
+    style G fill:#444,color:#fff
+    style H fill:#444,color:#fff
+    style I fill:#444,color:#fff
+    style J fill:#444,color:#fff
+    style K fill:#444,color:#fff
 ```
 
 ---
@@ -196,15 +196,15 @@ graph LR
     A --> B --> C --> D --> E
     E --> F --> G --> H --> I
 
-    style A fill:#4472C4,color:#fff
-    style B fill:#4472C4,color:#fff
-    style C fill:#4472C4,color:#fff
-    style D fill:#4472C4,color:#fff
-    style E fill:#404040,color:#fff
-    style F fill:#70AD47,color:#fff
-    style G fill:#70AD47,color:#fff
-    style H fill:#70AD47,color:#fff
-    style I fill:#70AD47,color:#fff
+    style A fill:#444,color:#fff
+    style B fill:#444,color:#fff
+    style C fill:#444,color:#fff
+    style D fill:#444,color:#fff
+    style E fill:#444,color:#fff
+    style F fill:#444,color:#fff
+    style G fill:#444,color:#fff
+    style H fill:#444,color:#fff
+    style I fill:#444,color:#fff
 ```
 
 ### 3.3 Phase별 입출력 산출물 (Phase I/O Deliverables)
@@ -323,10 +323,10 @@ flowchart TD
     K --> F
     M --> F
     
-    style C fill:#70AD47,color:#fff
-    style F fill:#FFC000,color:#000
-    style E fill:#FF0000,color:#fff
-    style F stroke:#FF8C00,stroke-width:3px
+    style C fill:#444,color:#fff
+    style F fill:#444,color:#fff
+    style E fill:#444,color:#fff
+    style F stroke:#666,stroke-width:3px
 ```
 
 #### Class B 분류 근거 상세
@@ -388,9 +388,9 @@ graph TD
     DOMAIN_PM & DOMAIN_WF & DOMAIN_IP & DOMAIN_DM & DOMAIN_DC & DOMAIN_SA & DOMAIN_CS --> PRD
     PRD --> SRS
 
-    style MRD fill:#4472C4,color:#fff
-    style PRD fill:#ED7D31,color:#fff
-    style SRS fill:#70AD47,color:#fff
+    style MRD fill:#444,color:#fff
+    style PRD fill:#444,color:#fff
+    style SRS fill:#444,color:#fff
 ```
 
 ### 5.2 요구사항 작성 규칙 (SMART Principle)
@@ -450,15 +450,15 @@ flowchart LR
     HAZ -->|통제| RC["RC-xxx<br/>위험 통제"]
     RC -->|구현 확인| VR
 
-    style MR fill:#4472C4,color:#fff
-    style PR fill:#ED7D31,color:#fff
-    style SWR fill:#70AD47,color:#fff
-    style SAD fill:#FFC000,color:#000
-    style CODE fill:#7030A0,color:#fff
-    style TC fill:#00B0F0,color:#fff
-    style VR fill:#92D050,color:#000
-    style HAZ fill:#FF0000,color:#fff
-    style RC fill:#FF7F00,color:#fff
+    style MR fill:#444,color:#fff
+    style PR fill:#444,color:#fff
+    style SWR fill:#444,color:#fff
+    style SAD fill:#444,color:#fff
+    style CODE fill:#444,color:#fff
+    style TC fill:#444,color:#fff
+    style VR fill:#444,color:#fff
+    style HAZ fill:#444,color:#fff
+    style RC fill:#444,color:#fff
 ```
 
 #### 추적성 매트릭스 (Traceability Matrix) 관리
@@ -505,15 +505,15 @@ flowchart TD
     
     A & B & C & D & E & F & G & H --> I
 
-    style A fill:#4472C4,color:#fff
-    style B fill:#ED7D31,color:#fff
-    style C fill:#70AD47,color:#fff
-    style D fill:#FFC000,color:#000
-    style E fill:#5B9BD5,color:#fff
-    style F fill:#7030A0,color:#fff
-    style G fill:#FF7F00,color:#fff
-    style H fill:#C55A11,color:#fff
-    style I fill:#404040,color:#fff
+    style A fill:#444,color:#fff
+    style B fill:#444,color:#fff
+    style C fill:#444,color:#fff
+    style D fill:#444,color:#fff
+    style E fill:#444,color:#fff
+    style F fill:#444,color:#fff
+    style G fill:#444,color:#fff
+    style H fill:#444,color:#fff
+    style I fill:#444,color:#fff
 ```
 
 ### 6.2 Design Input (설계 입력)
@@ -651,10 +651,10 @@ graph TB
     BL --> DA
     DA --> EXT
 
-    style UI fill:#4472C4,color:#fff
-    style BL fill:#ED7D31,color:#fff
-    style DA fill:#70AD47,color:#fff
-    style EXT fill:#595959,color:#fff
+    style UI fill:#444,color:#fff
+    style BL fill:#444,color:#fff
+    style DA fill:#444,color:#fff
+    style EXT fill:#444,color:#fff
 ```
 
 ### 7.3 SOUP (Software of Unknown Provenance) 관리
@@ -826,8 +826,8 @@ flowchart TD
 
     R1 --> R2
 
-    style RM fill:#FFF2CC,stroke:#FFC000
-    style SW fill:#E2EFDA,stroke:#70AD47
+    style RM fill:#444,stroke:#666
+    style SW fill:#444,stroke:#666
 ```
 
 ### 9.2 SW 위험 분석 방법
@@ -880,10 +880,10 @@ graph TD
     C3 --> RC3["RC-040: 선량 임계값 하드코딩"]
     C4 --> RC4["RC-015: 알람 무시 3회 제한"]
 
-    style TOP fill:#FF0000,color:#fff
-    style AND1 fill:#FF8C00,color:#fff
-    style OR1 fill:#FFC000,color:#000
-    style OR2 fill:#FFC000,color:#000
+    style TOP fill:#444,color:#fff
+    style AND1 fill:#444,color:#fff
+    style OR1 fill:#444,color:#fff
+    style OR2 fill:#444,color:#fff
 ```
 
 ### 9.3 위험 심각도/발생확률 분류
@@ -944,8 +944,8 @@ flowchart LR
     UT --> IT --> ST --> VAL
     UST & CLV & SVT --> REPORT["V&V 결과 보고서"]
 
-    style VER fill:#E2EFDA,stroke:#70AD47
-    style VAL fill:#DDEEFF,stroke:#4472C4
+    style VER fill:#444,stroke:#666
+    style VAL fill:#444,stroke:#666
 ```
 
 ### 10.2 테스트 유형별 지침
@@ -1030,12 +1030,12 @@ flowchart LR
     P1 --> P2 --> P3 --> P4 --> P5
     P5 -.->|"지속적 모니터링<br/>(CVE 추적)"| P1
 
-    style SSDLC fill:#FFE0CC,stroke:#FF7F00
-    style P1 fill:#4472C4,color:#fff
-    style P2 fill:#ED7D31,color:#fff
-    style P3 fill:#70AD47,color:#fff
-    style P4 fill:#FFC000,color:#000
-    style P5 fill:#5B9BD5,color:#fff
+    style SSDLC fill:#444,stroke:#666
+    style P1 fill:#444,color:#fff
+    style P2 fill:#444,color:#fff
+    style P3 fill:#444,color:#fff
+    style P4 fill:#444,color:#fff
+    style P5 fill:#444,color:#fff
 ```
 
 ### 11.2 STRIDE 위협 모델링
@@ -1184,9 +1184,9 @@ flowchart LR
     F -->|"QA 승인"| G["최종 승인<br/>（팀장/RA파트 서명）"]
     G --> H["문서 관리 시스템<br/>공식 등록"]
 
-    style A fill:#4472C4,color:#fff
-    style G fill:#70AD47,color:#fff
-    style H fill:#404040,color:#fff
+    style A fill:#444,color:#fff
+    style G fill:#444,color:#fff
+    style H fill:#444,color:#fff
 ```
 
 ### 12.4 DHF (Design History File) 편찬 지침
@@ -1260,9 +1260,9 @@ flowchart TD
     K -->|"FAIL"| I
     L --> M["DHF 갱신 및 CAPA 종결"]
 
-    style A fill:#4472C4,color:#fff
-    style L fill:#70AD47,color:#fff
-    style G fill:#FF4444,color:#fff
+    style A fill:#444,color:#fff
+    style L fill:#444,color:#fff
+    style G fill:#444,color:#fff
 ```
 
 ### 13.2 영향 분석 방법 (Impact Analysis)

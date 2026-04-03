@@ -193,25 +193,25 @@ flowchart TD
 
     WBS --> PM_PLAN
 
-    style MRD fill:#EBF5FB,stroke:#2980B9,color:#000
-    style PRD fill:#EBF5FB,stroke:#2980B9,color:#000
-    style FRS fill:#EBF5FB,stroke:#2980B9,color:#000
-    style SRS fill:#EBF5FB,stroke:#2980B9,color:#000
-    style SDG fill:#E8F8F5,stroke:#1ABC9C,color:#000
-    style SDP_DOC fill:#E8F8F5,stroke:#1ABC9C,color:#000
-    style DHF fill:#FDEDEC,stroke:#C0392B,color:#000
-    style ESTAR fill:#D5F5E3,stroke:#1E8449,color:#000
-    style CE fill:#D5F5E3,stroke:#1E8449,color:#000
-    style KFDA_DOC fill:#D5F5E3,stroke:#1E8449,color:#000
-    style RTM fill:#FEF9E7,stroke:#B7950B,color:#000
-    style RMP fill:#FDEBD0,stroke:#A04000,color:#000
-    style FMEA fill:#FDEBD0,stroke:#A04000,color:#000
-    style VVP fill:#F4ECF7,stroke:#7D3C98,color:#000
-    style CMP fill:#FDEDEC,stroke:#C0392B,color:#000
-    style SBOM fill:#FDEDEC,stroke:#C0392B,color:#000
-    style WBS fill:#EAF7EA,stroke:#27AE60,color:#000
-    style DCS fill:#F0E6FF,stroke:#8E44AD,color:#000
-    style IFU fill:#F0E6FF,stroke:#8E44AD,color:#000
+    style MRD fill:#444,stroke:#666,color:#fff
+    style PRD fill:#444,stroke:#666,color:#fff
+    style FRS fill:#444,stroke:#666,color:#fff
+    style SRS fill:#444,stroke:#666,color:#fff
+    style SDG fill:#444,stroke:#666,color:#fff
+    style SDP_DOC fill:#444,stroke:#666,color:#fff
+    style DHF fill:#444,stroke:#666,color:#fff
+    style ESTAR fill:#444,stroke:#666,color:#fff
+    style CE fill:#444,stroke:#666,color:#fff
+    style KFDA_DOC fill:#444,stroke:#666,color:#fff
+    style RTM fill:#444,stroke:#666,color:#fff
+    style RMP fill:#444,stroke:#666,color:#fff
+    style FMEA fill:#444,stroke:#666,color:#fff
+    style VVP fill:#444,stroke:#666,color:#fff
+    style CMP fill:#444,stroke:#666,color:#fff
+    style SBOM fill:#444,stroke:#666,color:#fff
+    style WBS fill:#444,stroke:#666,color:#fff
+    style DCS fill:#444,stroke:#666,color:#fff
+    style IFU fill:#444,stroke:#666,color:#fff
 ```
 
 ---
@@ -300,14 +300,14 @@ flowchart LR
     F --> G
     G --> H
 
-    style A fill:#EBF5FB,stroke:#2980B9,color:#000
-    style B fill:#EAF7EA,stroke:#27AE60,color:#000
-    style C fill:#FDEBD0,stroke:#A04000,color:#000
-    style D fill:#F4ECF7,stroke:#7D3C98,color:#000
-    style E fill:#FDEDEC,stroke:#C0392B,color:#000
-    style F fill:#FEF9E7,stroke:#B7950B,color:#000
-    style G fill:#EBF5FB,stroke:#2980B9,color:#000
-    style H fill:#D5F5E3,stroke:#1E8449,color:#000
+    style A fill:#444,stroke:#666,color:#fff
+    style B fill:#444,stroke:#666,color:#fff
+    style C fill:#444,stroke:#666,color:#fff
+    style D fill:#444,stroke:#666,color:#fff
+    style E fill:#444,stroke:#666,color:#fff
+    style F fill:#444,stroke:#666,color:#fff
+    style G fill:#444,stroke:#666,color:#fff
+    style H fill:#444,stroke:#666,color:#fff
 ```
 
 ---
@@ -535,11 +535,11 @@ flowchart LR
     IT -->|"RTM"| ST
     ST -->|"RTM"| VT
 
-    style MKT fill:#EBF5FB,stroke:#2980B9,color:#000
-    style PROD fill:#E8F8F5,stroke:#1ABC9C,color:#000
-    style SW fill:#EAF7EA,stroke:#27AE60,color:#000
-    style DESIGN fill:#FEF9E7,stroke:#B7950B,color:#000
-    style TEST fill:#F4ECF7,stroke:#7D3C98,color:#000
+    style MKT fill:#444,stroke:#666,color:#fff
+    style PROD fill:#444,stroke:#666,color:#fff
+    style SW fill:#444,stroke:#666,color:#fff
+    style DESIGN fill:#444,stroke:#666,color:#fff
+    style TEST fill:#444,stroke:#666,color:#fff
 ```
 
 ### 4.5 MR → PR → SWR 연결 예시
@@ -768,11 +768,11 @@ flowchart TD
     RMR_V <-->|"CV-15\nRM 보고 ↔ FMEA"| FMEA_V
     RTM_V <-->|"CV-16\nRTM 완전성 검증"| VVR_V
 
-    style TIER1 fill:#EBF5FB,stroke:#2980B9,color:#000
-    style TIER2 fill:#EAF7EA,stroke:#27AE60,color:#000
-    style TIER3 fill:#FDEBD0,stroke:#A04000,color:#000
-    style TIER4 fill:#F4ECF7,stroke:#7D3C98,color:#000
-    style TIER5 fill:#D5F5E3,stroke:#1E8449,color:#000
+    style TIER1 fill:#444,stroke:#666,color:#fff
+    style TIER2 fill:#444,stroke:#666,color:#fff
+    style TIER3 fill:#444,stroke:#666,color:#fff
+    style TIER4 fill:#444,stroke:#666,color:#fff
+    style TIER5 fill:#444,stroke:#666,color:#fff
 ```
 
 ### 6.3 교차 검증 매트릭스 (Cross-Verification Matrix)
@@ -844,13 +844,13 @@ flowchart LR
     PG -->|"Gate G"| PH["Phase H\nQA/인허가"]
     PH -->|"Gate H\n최종 인허가"| REG["인허가 제출\nRegulatory Submission"]
 
-    style PA fill:#EBF5FB,stroke:#2980B9,color:#000
-    style PB fill:#EAF7EA,stroke:#27AE60,color:#000
-    style PC_PD fill:#FDEBD0,stroke:#A04000,color:#000
-    style PE_PF fill:#FDEDEC,stroke:#C0392B,color:#000
-    style PG fill:#F4ECF7,stroke:#7D3C98,color:#000
-    style PH fill:#D5F5E3,stroke:#1E8449,color:#000
-    style REG fill:#D5F5E3,stroke:#1E8449,color:#000
+    style PA fill:#444,stroke:#666,color:#fff
+    style PB fill:#444,stroke:#666,color:#fff
+    style PC_PD fill:#444,stroke:#666,color:#fff
+    style PE_PF fill:#444,stroke:#666,color:#fff
+    style PG fill:#444,stroke:#666,color:#fff
+    style PH fill:#444,stroke:#666,color:#fff
+    style REG fill:#444,stroke:#666,color:#fff
 ```
 
 ### 7.2 Phase Gate A 체크리스트 (기반 문서 완료)

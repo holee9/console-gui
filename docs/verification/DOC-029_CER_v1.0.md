@@ -35,8 +35,8 @@ flowchart TD
     C --> D[이득-위험 분석<br/>Benefit-Risk Analysis]
     D --> E[임상 평가 결론<br/>Conclusion]
     
-    style A fill:#01696F,color:#fff
-    style E fill:#437A22,color:#fff
+    style A fill:#444,color:#fff
+    style E fill:#444,color:#fff
 ```
 
 > HnVue은 **well-established technology** (X-Ray Digital Radiography GUI) 기반이므로, MEDDEV 2.7/1 Rev.4에 따라 **문헌 기반 임상 평가 (Literature-Based Clinical Evaluation)**로 충분하며, 별도의 임상 시험은 불필요하다.

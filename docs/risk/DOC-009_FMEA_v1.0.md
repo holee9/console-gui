@@ -99,12 +99,12 @@ graph TD
     B --> E
     B --> F
 
-    style A fill:#e8f4fd,stroke:#2196F3
-    style B fill:#fce4ec,stroke:#E91E63
-    style C fill:#e8f5e9,stroke:#4CAF50
-    style D fill:#fff3e0,stroke:#FF9800
-    style E fill:#f3e5f5,stroke:#9C27B0
-    style F fill:#fce4ec,stroke:#E91E63
+    style A fill:#444,stroke:#666
+    style B fill:#444,stroke:#666
+    style C fill:#444,stroke:#666
+    style D fill:#444,stroke:#666
+    style E fill:#444,stroke:#666
+    style F fill:#444,stroke:#666
 ```
 
 ---
@@ -153,13 +153,13 @@ flowchart LR
     S6["⑥\nRPN 산정\n（S × O × D）"] --> S7
     S7["⑦\n권장 조치 및\n추적성 수립\n（Recommended\nActions & Links）"]
 
-    style S1 fill:#e3f2fd,stroke:#1565C0
-    style S2 fill:#e3f2fd,stroke:#1565C0
-    style S3 fill:#fff8e1,stroke:#F57F17
-    style S4 fill:#fff8e1,stroke:#F57F17
-    style S5 fill:#fce4ec,stroke:#880E4F
-    style S6 fill:#fce4ec,stroke:#880E4F
-    style S7 fill:#e8f5e9,stroke:#1B5E20
+    style S1 fill:#444,stroke:#666
+    style S2 fill:#444,stroke:#666
+    style S3 fill:#444,stroke:#666
+    style S4 fill:#444,stroke:#666
+    style S5 fill:#444,stroke:#666
+    style S6 fill:#444,stroke:#666
+    style S7 fill:#444,stroke:#666
 ```
 
 ### 3.2 고장 모드 유형 (Failure Mode Types)
@@ -373,22 +373,22 @@ graph TD
     BE1 -- OR --> BE9["BE-9: 입력값\n경계 검사 미적용"]
     BE1 -- OR --> BE10["BE-10: 프로토콜 DB\n손상\n（FMEA-A02）"]
 
-    style TE1 fill:#c62828,color:#ffffff,stroke:#b71c1c,stroke-width:3px
-    style IE1 fill:#ef9a9a,stroke:#c62828
-    style IE2 fill:#ef9a9a,stroke:#c62828
-    style IE3 fill:#ef9a9a,stroke:#c62828
-    style IE4 fill:#ffcdd2,stroke:#e57373
-    style IE5 fill:#ffcdd2,stroke:#e57373
-    style BE1 fill:#fff9c4,stroke:#f9a825
-    style BE2 fill:#fff9c4,stroke:#f9a825
-    style BE3 fill:#fff9c4,stroke:#f9a825
-    style BE4 fill:#fff9c4,stroke:#f9a825
-    style BE5 fill:#fff9c4,stroke:#f9a825
-    style BE6 fill:#fff9c4,stroke:#f9a825
-    style BE7 fill:#fff9c4,stroke:#f9a825
-    style BE8 fill:#fff9c4,stroke:#f9a825
-    style BE9 fill:#fff9c4,stroke:#f9a825
-    style BE10 fill:#fff9c4,stroke:#f9a825
+    style TE1 fill:#444,color:#fff,stroke:#666,stroke-width:3px
+    style IE1 fill:#444,stroke:#666
+    style IE2 fill:#444,stroke:#666
+    style IE3 fill:#444,stroke:#666
+    style IE4 fill:#444,stroke:#666
+    style IE5 fill:#444,stroke:#666
+    style BE1 fill:#444,stroke:#666
+    style BE2 fill:#444,stroke:#666
+    style BE3 fill:#444,stroke:#666
+    style BE4 fill:#444,stroke:#666
+    style BE5 fill:#444,stroke:#666
+    style BE6 fill:#444,stroke:#666
+    style BE7 fill:#444,stroke:#666
+    style BE8 fill:#444,stroke:#666
+    style BE9 fill:#444,stroke:#666
+    style BE10 fill:#444,stroke:#666
 ```
 
 **최소 절단 집합 (Minimal Cut Sets)**:
@@ -441,24 +441,24 @@ graph TD
     IE8 -- AND --> BE21["BE-21: DICOM 태그\n손실 전송\n（FMEA-C01）"]
     IE8 -- AND --> BE22["BE-22: 수신 측\n태그 무결성\n검증 미수행"]
 
-    style TE2 fill:#c62828,color:#ffffff,stroke:#b71c1c,stroke-width:3px
-    style IE6 fill:#ef9a9a,stroke:#c62828
-    style IE7 fill:#ef9a9a,stroke:#c62828
-    style IE8 fill:#ef9a9a,stroke:#c62828
-    style IE9 fill:#ffcdd2,stroke:#e57373
-    style IE10 fill:#ffcdd2,stroke:#e57373
-    style BE11 fill:#fff9c4,stroke:#f9a825
-    style BE12 fill:#fff9c4,stroke:#f9a825
-    style BE13 fill:#fff9c4,stroke:#f9a825
-    style BE14 fill:#fff9c4,stroke:#f9a825
-    style BE15 fill:#fff9c4,stroke:#f9a825
-    style BE16 fill:#fff9c4,stroke:#f9a825
-    style BE17 fill:#fff9c4,stroke:#f9a825
-    style BE18 fill:#fff9c4,stroke:#f9a825
-    style BE19 fill:#fff9c4,stroke:#f9a825
-    style BE20 fill:#fff9c4,stroke:#f9a825
-    style BE21 fill:#fff9c4,stroke:#f9a825
-    style BE22 fill:#fff9c4,stroke:#f9a825
+    style TE2 fill:#444,color:#fff,stroke:#666,stroke-width:3px
+    style IE6 fill:#444,stroke:#666
+    style IE7 fill:#444,stroke:#666
+    style IE8 fill:#444,stroke:#666
+    style IE9 fill:#444,stroke:#666
+    style IE10 fill:#444,stroke:#666
+    style BE11 fill:#444,stroke:#666
+    style BE12 fill:#444,stroke:#666
+    style BE13 fill:#444,stroke:#666
+    style BE14 fill:#444,stroke:#666
+    style BE15 fill:#444,stroke:#666
+    style BE16 fill:#444,stroke:#666
+    style BE17 fill:#444,stroke:#666
+    style BE18 fill:#444,stroke:#666
+    style BE19 fill:#444,stroke:#666
+    style BE20 fill:#444,stroke:#666
+    style BE21 fill:#444,stroke:#666
+    style BE22 fill:#444,stroke:#666
 ```
 
 **최소 절단 집합**:
@@ -507,22 +507,22 @@ graph TD
     BE31 -- OR --> BE33["BE-33: 네트워크\n격리 미실시"]
     BE31 -- OR --> BE34["BE-34: USB 포트\n정책 미적용"]
 
-    style TE3 fill:#c62828,color:#ffffff,stroke:#b71c1c,stroke-width:3px
-    style IE11 fill:#ef9a9a,stroke:#c62828
-    style IE12 fill:#ef9a9a,stroke:#c62828
-    style IE13 fill:#ef9a9a,stroke:#c62828
-    style BE23 fill:#ffcdd2,stroke:#e57373
-    style BE27 fill:#ffcdd2,stroke:#e57373
-    style BE31 fill:#ffcdd2,stroke:#e57373
-    style BE24 fill:#fff9c4,stroke:#f9a825
-    style BE25 fill:#fff9c4,stroke:#f9a825
-    style BE26 fill:#fff9c4,stroke:#f9a825
-    style BE28 fill:#fff9c4,stroke:#f9a825
-    style BE29 fill:#fff9c4,stroke:#f9a825
-    style BE30 fill:#fff9c4,stroke:#f9a825
-    style BE32 fill:#fff9c4,stroke:#f9a825
-    style BE33 fill:#fff9c4,stroke:#f9a825
-    style BE34 fill:#fff9c4,stroke:#f9a825
+    style TE3 fill:#444,color:#fff,stroke:#666,stroke-width:3px
+    style IE11 fill:#444,stroke:#666
+    style IE12 fill:#444,stroke:#666
+    style IE13 fill:#444,stroke:#666
+    style BE23 fill:#444,stroke:#666
+    style BE27 fill:#444,stroke:#666
+    style BE31 fill:#444,stroke:#666
+    style BE24 fill:#444,stroke:#666
+    style BE25 fill:#444,stroke:#666
+    style BE26 fill:#444,stroke:#666
+    style BE28 fill:#444,stroke:#666
+    style BE29 fill:#444,stroke:#666
+    style BE30 fill:#444,stroke:#666
+    style BE32 fill:#444,stroke:#666
+    style BE33 fill:#444,stroke:#666
+    style BE34 fill:#444,stroke:#666
 ```
 
 **최소 절단 집합**:
@@ -569,21 +569,21 @@ graph TD
     IE16 -- AND --> BE44["BE-44: Heartbeat\n미전송으로 단절\n미감지\n（FMEA-W08）"]
     IE16 -- AND --> BE45["BE-45: 네트워크\n이중화 경로\n미구성"]
 
-    style TE4 fill:#c62828,color:#ffffff,stroke:#b71c1c,stroke-width:3px
-    style IE14 fill:#ef9a9a,stroke:#c62828
-    style IE15 fill:#ef9a9a,stroke:#c62828
-    style IE16 fill:#ef9a9a,stroke:#c62828
-    style BE35 fill:#ffcdd2,stroke:#e57373
-    style BE36 fill:#ffcdd2,stroke:#e57373
-    style BE37 fill:#fff9c4,stroke:#f9a825
-    style BE38 fill:#fff9c4,stroke:#f9a825
-    style BE39 fill:#fff9c4,stroke:#f9a825
-    style BE40 fill:#fff9c4,stroke:#f9a825
-    style BE41 fill:#fff9c4,stroke:#f9a825
-    style BE42 fill:#fff9c4,stroke:#f9a825
-    style BE43 fill:#fff9c4,stroke:#f9a825
-    style BE44 fill:#fff9c4,stroke:#f9a825
-    style BE45 fill:#fff9c4,stroke:#f9a825
+    style TE4 fill:#444,color:#fff,stroke:#666,stroke-width:3px
+    style IE14 fill:#444,stroke:#666
+    style IE15 fill:#444,stroke:#666
+    style IE16 fill:#444,stroke:#666
+    style BE35 fill:#444,stroke:#666
+    style BE36 fill:#444,stroke:#666
+    style BE37 fill:#444,stroke:#666
+    style BE38 fill:#444,stroke:#666
+    style BE39 fill:#444,stroke:#666
+    style BE40 fill:#444,stroke:#666
+    style BE41 fill:#444,stroke:#666
+    style BE42 fill:#444,stroke:#666
+    style BE43 fill:#444,stroke:#666
+    style BE44 fill:#444,stroke:#666
+    style BE45 fill:#444,stroke:#666
 ```
 
 **최소 절단 집합**:
@@ -632,22 +632,22 @@ graph TD
     IE19 -- AND --> BE54["BE-54: 세션 토큰\n만료 미처리\n（FMEA-S03）"]
     IE19 -- AND --> BE55["BE-55: 암호화되지\n않은 세션 전송\n（FMEA-S01）"]
 
-    style TE5 fill:#c62828,color:#ffffff,stroke:#b71c1c,stroke-width:3px
-    style IE17 fill:#ef9a9a,stroke:#c62828
-    style IE18 fill:#ef9a9a,stroke:#c62828
-    style IE19 fill:#ef9a9a,stroke:#c62828
-    style IE20 fill:#ffcdd2,stroke:#e57373
-    style IE21 fill:#ffcdd2,stroke:#e57373
-    style BE46 fill:#fff9c4,stroke:#f9a825
-    style BE47 fill:#fff9c4,stroke:#f9a825
-    style BE48 fill:#fff9c4,stroke:#f9a825
-    style BE49 fill:#fff9c4,stroke:#f9a825
-    style BE50 fill:#fff9c4,stroke:#f9a825
-    style BE51 fill:#fff9c4,stroke:#f9a825
-    style BE52 fill:#fff9c4,stroke:#f9a825
-    style BE53 fill:#fff9c4,stroke:#f9a825
-    style BE54 fill:#fff9c4,stroke:#f9a825
-    style BE55 fill:#fff9c4,stroke:#f9a825
+    style TE5 fill:#444,color:#fff,stroke:#666,stroke-width:3px
+    style IE17 fill:#444,stroke:#666
+    style IE18 fill:#444,stroke:#666
+    style IE19 fill:#444,stroke:#666
+    style IE20 fill:#444,stroke:#666
+    style IE21 fill:#444,stroke:#666
+    style BE46 fill:#444,stroke:#666
+    style BE47 fill:#444,stroke:#666
+    style BE48 fill:#444,stroke:#666
+    style BE49 fill:#444,stroke:#666
+    style BE50 fill:#444,stroke:#666
+    style BE51 fill:#444,stroke:#666
+    style BE52 fill:#444,stroke:#666
+    style BE53 fill:#444,stroke:#666
+    style BE54 fill:#444,stroke:#666
+    style BE55 fill:#444,stroke:#666
 ```
 
 **최소 절단 집합**:
@@ -748,11 +748,11 @@ flowchart TD
     F --> J{M7 시스템\n통합 테스트 전}
     H --> K{PMS 통해\n지속 모니터링}
 
-    style A fill:#c62828,color:#ffffff
-    style C fill:#e65100,color:#ffffff
-    style E fill:#f57f17,color:#ffffff
-    style G fill:#2e7d32,color:#ffffff
-    style I fill:#c62828,color:#ffffff
+    style A fill:#444,color:#fff
+    style C fill:#444,color:#fff
+    style E fill:#444,color:#fff
+    style G fill:#444,color:#fff
+    style I fill:#444,color:#fff
 ```
 
 ---
@@ -852,10 +852,10 @@ graph LR
     FMEA_BOX --> RC
     RC --> SWR_BOX
 
-    style HAZ fill:#ffebee,stroke:#c62828
-    style FMEA_BOX fill:#fff8e1,stroke:#f57f17
-    style RC fill:#e8f5e9,stroke:#2e7d32
-    style SWR_BOX fill:#e3f2fd,stroke:#1565c0
+    style HAZ fill:#444,stroke:#666
+    style FMEA_BOX fill:#444,stroke:#666
+    style RC fill:#444,stroke:#666
+    style SWR_BOX fill:#444,stroke:#666
 ```
 
 ---

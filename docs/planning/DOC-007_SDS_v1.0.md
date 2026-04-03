@@ -103,10 +103,10 @@ flowchart LR
     CODE -->|검증| UT
 
     classDef default fill:#444,stroke:#666,color:#fff
-    style SDS fill:#7d3c98,color:#fff
-    style SAD fill:#1e8449,color:#fff
-    style FRS fill:#1a5276,color:#fff
-    style CODE fill:#2c3e50,color:#fff
+    style SDS fill:#444,color:#fff
+    style SAD fill:#444,color:#fff
+    style FRS fill:#444,color:#fff
+    style CODE fill:#444,color:#fff
 ```
 
 ---
@@ -2058,9 +2058,9 @@ flowchart TD
     MAIN -->|"세션 타임아웃\n(15분)"| LOGIN
 
     classDef default fill:#444,stroke:#666,color:#fff
-    style EMRG fill:#cc0000,color:#fff
-    style LOGIN fill:#1a5276,color:#fff
-    style ACQ fill:#1e8449,color:#fff
+    style EMRG fill:#444,color:#fff
+    style LOGIN fill:#444,color:#fff
+    style ACQ fill:#444,color:#fff
 ```
 
 ### 6.2 주요 화면 레이아웃 상세 (Key Screen Layout Details)
@@ -2215,9 +2215,9 @@ flowchart LR
     CODE --> IT
 
     classDef default fill:#444,stroke:#666,color:#fff
-    style SDS fill:#7d3c98,color:#fff
-    style MR fill:#1a5276,color:#fff
-    style SWR fill:#1e8449,color:#fff
+    style SDS fill:#444,color:#fff
+    style MR fill:#444,color:#fff
+    style SWR fill:#444,color:#fff
 ```
 
 ---

@@ -596,12 +596,12 @@ flowchart TD
     MR -.->|Validation| VT
     HAZ -.->|Risk Verify| ST
 
-    style DI fill:#333,stroke:#666,color:#fff
-    style DO fill:#333,stroke:#666,color:#fff
-    style RM fill:#333,stroke:#666,color:#fff
-    style SyRS_PRD fill:#333,stroke:#666,color:#fff
-    style UN fill:#333,stroke:#666,color:#fff
-    style VV fill:#333,stroke:#666,color:#fff
+    style DI fill:#444,stroke:#666,color:#fff
+    style DO fill:#444,stroke:#666,color:#fff
+    style RM fill:#444,stroke:#666,color:#fff
+    style SyRS_PRD fill:#444,stroke:#666,color:#fff
+    style UN fill:#444,stroke:#666,color:#fff
+    style VV fill:#444,stroke:#666,color:#fff
 ```
 
 ### 4a.3 V-Model에서 MRD의 위치
@@ -644,8 +644,8 @@ flowchart LR
     SRS_box -.->|"SW\nVerification"| IntT_box
     SDS_box -.->|"Unit\nVerification"| UnitT_box
 
-    style Left fill:#333,stroke:#666,color:#fff
-    style Right fill:#333,stroke:#666,color:#fff
+    style Left fill:#444,stroke:#666,color:#fff
+    style Right fill:#444,stroke:#666,color:#fff
 ```
 
 ### 4a.4 Design Input 분류 정의

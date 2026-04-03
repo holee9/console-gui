@@ -88,10 +88,10 @@ flowchart LR
     UT -->|"검증"| IT
 
     classDef default fill:#444,stroke:#666,color:#fff
-    style SWR fill:#7d3c98,color:#fff
-    style PR fill:#1e8449,color:#fff
-    style MR fill:#1a5276,color:#fff
-    style CODE fill:#2c3e50,color:#fff
+    style SWR fill:#444,color:#fff
+    style PR fill:#444,color:#fff
+    style MR fill:#444,color:#fff
+    style CODE fill:#444,color:#fff
 ```
 
 ---
@@ -382,9 +382,9 @@ flowchart TD
     H --> I --> J --> K --> L --> M --> N --> O --> P
 
     classDef default fill:#444,stroke:#666,color:#fff
-    style A fill:#2d3748,color:#fff
-    style P fill:#276749,color:#fff
-    style E fill:#744210,color:#fff
+    style A fill:#444,color:#fff
+    style P fill:#444,color:#fff
+    style E fill:#444,color:#fff
 ```
 
 | SWR ID | 출처 PR | 요구사항명 | 상세 기술 사양 | IEC 62304 분류 | 수용 기준 | 검증 방법(TIAD) | 검증 TC | 위험 참조 |
@@ -675,8 +675,8 @@ flowchart TD
     PRINT_SCU -->|"Print Request"| PRINT_SRV
     TLS -.->|"암호화 적용"| Console
 
-    style Console fill:#1e8449,color:#fff
-    style TLS fill:#7d3c98,color:#fff
+    style Console fill:#444,color:#fff
+    style TLS fill:#444,color:#fff
 ```
 
 #### 7.1.3 MWL C-FIND 쿼리 속성 (Query Attributes)
@@ -989,9 +989,9 @@ flowchart TD
     S7 & S9 --> M4
 
     classDef default fill:#444,stroke:#666,color:#fff
-    style Critical fill:#c0392b,color:#fff
-    style Security fill:#1a5276,color:#fff
-    style Infrastructure fill:#1e8449,color:#fff
+    style Critical fill:#444,color:#fff
+    style Security fill:#444,color:#fff
+    style Infrastructure fill:#444,color:#fff
 ```
 
 ### 9.3 SOUP 검증 및 적격성 확인 (Validation & Qualification)
@@ -1032,10 +1032,10 @@ flowchart LR
     PR -.->|"역추적"| MR
 
     classDef default fill:#444,stroke:#666,color:#fff
-    style MR fill:#1a5276,color:#fff
-    style PR fill:#1e8449,color:#fff
-    style SWR_doc fill:#7d3c98,color:#fff
-    style VT_ fill:#145a32,color:#fff
+    style MR fill:#444,color:#fff
+    style PR fill:#444,color:#fff
+    style SWR_doc fill:#444,color:#fff
+    style VT_ fill:#444,color:#fff
 ```
 
 ### 10.2 기능 요구사항 추적성 매트릭스 (PR → SWR)

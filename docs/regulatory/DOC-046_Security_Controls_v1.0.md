@@ -377,11 +377,11 @@ flowchart LR
     D --> E[보고<br/>Reporting]
 
     classDef default fill:#444,stroke:#666,color:#fff
-    style A fill:#20808D,color:#fff
-    style B fill:#964219,color:#fff
-    style C fill:#A13544,color:#fff
-    style D fill:#437A22,color:#fff
-    style E fill:#01696F,color:#fff
+    style A fill:#444,color:#fff
+    style B fill:#444,color:#fff
+    style C fill:#444,color:#fff
+    style D fill:#444,color:#fff
+    style E fill:#444,color:#fff
 ```
 
 | 단계 | 활동 | 담당 | 시간 목표 |

@@ -118,7 +118,7 @@ flowchart TD
     G --> H[C-ECHO 테스트<br/>연결 확인]
     H --> I[시스템 준비 완료]
     
-    style I fill:#437A22,color:#fff
+    style I fill:#444,color:#fff
 ```
 
 ---
@@ -147,7 +147,7 @@ flowchart LR
     F --> G[PACS<br/>전송]
     G --> H[다음 환자]
     
-    style E fill:#A13544,color:#fff
+    style E fill:#444,color:#fff
 ```
 
 ### 6.4 주요 기능 요약

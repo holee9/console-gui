@@ -91,8 +91,8 @@ graph LR
     IT --> ST[시스템 테스트<br/>4건 발견]
     ST --> VAL[밸리데이션<br/>0건 발견]
     
-    style UT fill:#964219,color:#fff
-    style VAL fill:#437A22,color:#fff
+    style UT fill:#444,color:#fff
+    style VAL fill:#444,color:#fff
 ```
 
 ---

@@ -85,8 +85,8 @@ flowchart LR
     B --> F["영상 표시\n（Image Display）"]
     F --> G["영상의학과 의사\n（Radiologist）\n최종 진단"]
     
-    style B fill:#4A90D9,color:#fff,stroke:#2C5F8A
-    style G fill:#E8F5E9,stroke:#388E3C
+    style B fill:#444,color:#fff,stroke:#666
+    style G fill:#444,stroke:#666
     
     note1["HnVue는 진단 보조（Diagnostic Aid）로서\n최종 진단은 영상의학과 의사가 수행"]
 ```
@@ -269,8 +269,8 @@ flowchart TD
     H --> I["문헌 데이터 적용\nLiterature Data Applicable"]
     I --> J["CER 작성\nClinical Evaluation Report"]
 
-    style C fill:#4A90D9,color:#fff
-    style H fill:#27AE60,color:#fff
+    style C fill:#444,color:#fff
+    style H fill:#444,color:#fff
 ```
 
 ### 5.2 Predicate Device 선정 (FDA 510(k) 관점)
@@ -397,11 +397,11 @@ flowchart TD
     G --> I["임상 성능 문헌\nClinical Performance\nn=30"]
     G --> J["사용성 문헌\nUsability Studies\nn=20"]
 
-    style A fill:#E3F2FD,stroke:#1565C0
-    style G fill:#E8F5E9,stroke:#2E7D32
-    style H fill:#FFF3E0,stroke:#E65100
-    style I fill:#FFF3E0,stroke:#E65100
-    style J fill:#FFF3E0,stroke:#E65100
+    style A fill:#444,stroke:#666
+    style G fill:#444,stroke:#666
+    style H fill:#444,stroke:#666
+    style I fill:#444,stroke:#666
+    style J fill:#444,stroke:#666
 ```
 
 ---
@@ -479,9 +479,9 @@ flowchart LR
     G -- "No" --> I["재설계 필요\nRedesign Required"]
     I --> D
 
-    style F fill:#4A90D9,color:#fff
-    style H fill:#27AE60,color:#fff
-    style I fill:#E74C3C,color:#fff
+    style F fill:#444,color:#fff
+    style H fill:#444,color:#fff
+    style I fill:#444,color:#fff
 ```
 
 ### 8.2 형성 평가 계획 (Formative Evaluation Plan)

@@ -77,10 +77,10 @@ graph LR
         A3["촬영 사이클<br/>22s / 30s"]
         A4["W/L 반응<br/>35ms / 100ms"]
     end
-    style A1 fill:#437A22,color:#fff
-    style A2 fill:#437A22,color:#fff
-    style A3 fill:#437A22,color:#fff
-    style A4 fill:#437A22,color:#fff
+    style A1 fill:#444,color:#fff
+    style A2 fill:#444,color:#fff
+    style A3 fill:#444,color:#fff
+    style A4 fill:#444,color:#fff
 ```
 
 ---
