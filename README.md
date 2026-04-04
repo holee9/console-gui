@@ -468,6 +468,28 @@ python scripts/sync_docs.py
 
 ---
 
+## Branch Strategy for Parallel UI Development
+
+웹 UI 사용성 검증을 별도 PC에서 병행할 때는 `main`을 통합 기준선으로 유지하고, 실험성 UI는 전용 브랜치에서만 진행한다.
+
+| 목적 | 권장 브랜치 | 운영 원칙 |
+|------|-------------|----------|
+| 통합 기준선 | `main` | 문서 정리, 검증 완료된 모듈, 병합 완료된 Wave 결과만 반영 |
+| 데스크톱/WPF 구현 | `feat/wave*-*` | 현재 Wave 범위의 WPF, App, Core 모듈 구현 전용 |
+| 웹 UI 사용성 검증 | `feat/web-ui` | 웹 전용 화면, mock data, API contract, 사용성 테스트 산출물만 반영 |
+
+### 운영 규칙
+
+- `main`은 데스크톱 릴리스 기준선으로 유지한다. 웹 UI 실험 코드는 직접 섞지 않는다.
+- 웹 UI는 별도 PC에서 병행 개발 가능하며, 가급적 `feat/web-ui` 한 브랜치에만 모은다.
+- 웹 브랜치에서는 WPF 화면과 기존 App wiring을 직접 수정하지 말고, 웹 전용 디렉터리와 계약 문서 중심으로 작업한다.
+- 공용 변경이 필요하면 `HnVue.Common` 인터페이스 또는 별도 contract 문서에 먼저 반영하고, 데스크톱과 웹이 같은 의미의 DTO와 서비스 계약을 공유하도록 맞춘다.
+- 사용성 검증이 끝난 후에는 웹 브랜치 전체를 합치기보다, `main`에 필요한 산출물과 검증된 계약 변경만 선택적으로 반영한다.
+
+> 권장 흐름: `main` pull → `feat/web-ui`에서 UI 검증 → 결과 정리 → 필요한 공용 계약만 `main`으로 병합
+
+---
+
 ## Sync from GitHub Mirror
 
 Perplexity Computer에서 GitHub 미러 작업 내용을 사내 로컬 Git에 반영:
