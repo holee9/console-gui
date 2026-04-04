@@ -487,18 +487,18 @@ python scripts/sync_docs.py
 - 웹 브랜치에서는 WPF 화면과 기존 App wiring을 직접 수정하지 말고, 웹 전용 디렉터리와 계약 문서 중심으로 작업한다.
 - 공용 변경이 필요하면 `HnVue.Common` 인터페이스 또는 별도 contract 문서에 먼저 반영하고, 데스크톱과 웹이 같은 의미의 DTO와 서비스 계약을 공유하도록 맞춘다.
 - 사용성 검증이 끝난 후에는 웹 브랜치 전체를 합치기보다, `main`에 필요한 산출물과 검증된 계약 변경만 선택적으로 반영한다.
-- GitHub 미러 또는 별도 원격 동기화가 있는 경우, 웹 브랜치는 `main`과 별도로 보호한다. 미러 원본에 없는 `feature/*` 브랜치를 대상 저장소에서 삭제하는 동기화 방식은 사용하지 않는다.
+- **새 작업 브랜치는 반드시 Gitea(`origin`)에도 push해야 한다.** Gitea Push Mirror가 10분 간격으로 GitHub를 Gitea 상태로 덮어쓰므로, Gitea에 없는 브랜치는 GitHub에서 자동 삭제된다.
 
 > 권장 흐름: `main` pull → `feature/web-ui`에서 UI 검증 → 결과 정리 → 필요한 공용 계약만 `main`으로 병합
 
-### Mirror Sync Warning
+### Mirror Sync 동작 방식
 
-`feature/web-ui`는 별도 PC에서 장시간 유지되는 작업 브랜치다. 미러 동기화가 ref 전체를 강제로 맞추면, 소스 미러에 없는 `feature/web-ui`가 대상 GitHub에서 반복 삭제될 수 있다.
+Gitea에는 **Push Mirror**가 설정되어 있다(`interval: 10m, sync_on_commit: true`). 이 미러가 Gitea → GitHub 자동 동기화의 주체이며, Gitea 상태를 기준으로 GitHub를 덮어쓴다.
 
-- `git push --mirror`, `git push --prune`, ref 전체 overwrite 방식은 작업 브랜치를 삭제할 수 있으므로 사용하지 않는다.
-- 자동 동기화는 반드시 `scripts/sync_to_github.ps1`을 사용한다. 이 스크립트는 `--mirror`/`--prune` 없이 지정 브랜치만 push한다.
-- `feature/web-ui`도 미러 대상에 포함해야 한다면 `-Branches main, feature/web-ui` 옵션을 사용한다.
-- 미러 동기화 후 `feature/web-ui`가 GitHub에서 사라지면, 스크립트에 해당 브랜치를 추가했는지 확인하고 `-Branches main, feature/web-ui`로 재실행한다.
+- Gitea에 없는 브랜치는 Push Mirror 실행 시 GitHub에서 자동 삭제된다.
+- `feature/web-ui` 등 작업 브랜치는 반드시 **Gitea에도 push**해야 GitHub에서 보존된다.
+- `scripts/sync_to_github.ps1`은 비상 수동 동기화용이며, 평상시 자동 동기화는 Push Mirror가 담당한다.
+- Push Mirror가 있는 한 `git push --mirror`, `git push --prune` 같은 별도 명령은 불필요하며 사용하지 않는다.
 
 ---
 
@@ -516,18 +516,15 @@ python scripts/sync_docs.py
 
 ## Sync to GitHub Mirror (Gitea → GitHub)
 
-### 안전한 동기화 스크립트
+### 수동 동기화 스크립트 (비상용)
 
-`--mirror` / `--prune` 없이 지정한 브랜치만 push한다. GitHub에만 존재하는 브랜치(예: `feature/web-ui`)는 삭제되지 않는다.
+Gitea Push Mirror 장애 또는 즉시 동기화가 필요할 때만 사용한다. `--mirror`/`--prune` 없이 지정한 브랜치만 push한다.
 
 ```powershell
 # 최초 1회 — GitHub remote 등록
 git remote add github https://github.com/holee9/console-gui.git
 
-# main만 동기화 (기본)
-.\scripts\sync_to_github.ps1
-
-# main + feature/web-ui 동시 동기화
+# main + feature/web-ui 동기화
 .\scripts\sync_to_github.ps1 -Branches main, feature/web-ui
 
 # 실행 전 확인 (dry-run)
@@ -535,14 +532,21 @@ git remote add github https://github.com/holee9/console-gui.git
 ```
 
 > 스크립트 위치: `scripts/sync_to_github.ps1`
-> `--mirror`, `--prune`, ref 전체 overwrite 방식은 스크립트 내부에서 사용하지 않는다.
+> 평상시 자동 동기화는 Gitea Push Mirror(10m)가 담당한다. 이 스크립트는 보조 수단이다.
 
-### Mirror Operator Checklist
+### 새 브랜치 생성 시 체크리스트
 
-- 자동 동기화 대상은 기본적으로 `main`만 사용한다.
-- `feature/web-ui`를 포함해야 할 때는 `-Branches main, feature/web-ui` 옵션을 명시한다.
-- `--mirror`, `--prune`, ref delete가 포함된 push는 절대 사용하지 않는다.
-- 동기화 직후 GitHub에서 `feature/web-ui` 존재 여부를 확인한다.
+GitHub(보조 PC)에서 새 브랜치를 만든 경우 반드시 아래 절차를 따른다.
+
+```bash
+# 1) GitHub 브랜치 로컬에 가져오기
+git fetch github <branch>
+
+# 2) Gitea에 push (Push Mirror 보존을 위해 필수)
+git push origin github/<branch>:refs/heads/<branch>
+```
+
+브랜치가 Gitea에 없으면 다음 Push Mirror 실행(최대 10분) 때 GitHub에서 삭제된다.
 
 ---
 
