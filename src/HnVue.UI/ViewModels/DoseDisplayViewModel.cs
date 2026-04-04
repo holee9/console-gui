@@ -1,0 +1,86 @@
+using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using HnVue.Common.Abstractions;
+using HnVue.Common.Models;
+
+namespace HnVue.UI.ViewModels;
+
+/// <summary>
+/// ViewModel for the dose display panel.
+/// Shows current DAP, historical dose records, and alerts when the DRL reference level is exceeded.
+/// </summary>
+public sealed partial class DoseDisplayViewModel : ObservableObject
+{
+    // Default DRL reference level in mGy·cm² for a general chest examination.
+    private const double DefaultDrlReferenceLevel = 150.0;
+
+    private readonly IDoseService _doseService;
+
+    /// <summary>Initialises a new instance of <see cref="DoseDisplayViewModel"/>.</summary>
+    /// <param name="doseService">Provides dose records and validation.</param>
+    public DoseDisplayViewModel(IDoseService doseService)
+    {
+        _doseService = doseService;
+    }
+
+    /// <summary>Gets or sets the dose-area product (DAP) for the current exposure in mGy·cm².</summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsDoseAlert))]
+    private double _currentDoseDap;
+
+    /// <summary>Gets the collection of historical dose records for the current session.</summary>
+    public ObservableCollection<DoseRecord> DoseHistory { get; } = new();
+
+    /// <summary>
+    /// Gets or sets the Diagnostic Reference Level (DRL) threshold in mGy·cm².
+    /// A dose alert is raised when <see cref="CurrentDoseDap"/> exceeds this value.
+    /// </summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsDoseAlert))]
+    private double _drlReferenceLevel = DefaultDrlReferenceLevel;
+
+    /// <summary>Gets or sets a message describing the most recent error, or <see langword="null"/> on success.</summary>
+    [ObservableProperty]
+    private string? _errorMessage;
+
+    /// <summary>Gets or sets a value indicating whether a refresh is in progress.</summary>
+    [ObservableProperty]
+    private bool _isRefreshing;
+
+    /// <summary>
+    /// Gets a value indicating whether the current DAP exceeds the DRL reference level.
+    /// </summary>
+    public bool IsDoseAlert => CurrentDoseDap > DrlReferenceLevel;
+
+    /// <summary>Refreshes the dose history for the given study UID.</summary>
+    /// <param name="studyInstanceUid">DICOM Study Instance UID to retrieve dose data for.</param>
+    [RelayCommand]
+    private async Task RefreshAsync(string? studyInstanceUid = null)
+    {
+        if (string.IsNullOrWhiteSpace(studyInstanceUid)) return;
+
+        IsRefreshing = true;
+        ErrorMessage = null;
+
+        try
+        {
+            var result = await _doseService.GetDoseByStudyAsync(studyInstanceUid);
+
+            if (result.IsSuccess && result.Value is not null)
+            {
+                DoseHistory.Clear();
+                DoseHistory.Add(result.Value);
+                CurrentDoseDap = result.Value.Dap;
+            }
+            else if (result.IsFailure)
+            {
+                ErrorMessage = result.ErrorMessage;
+            }
+        }
+        finally
+        {
+            IsRefreshing = false;
+        }
+    }
+}

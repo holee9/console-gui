@@ -5,20 +5,18 @@ using System.Windows.Data;
 namespace HnVue.UI.Converters;
 
 /// <summary>
-/// Converts a null value to <see cref="Visibility.Collapsed"/> and a non-null value to <see cref="Visibility.Visible"/>.
-/// Used to show/hide UI elements based on whether a binding value is null.
+/// Converts a <see langword="null"/> reference to a <see cref="Visibility"/> value.
+/// Returns <see cref="Visibility.Collapsed"/> when the value is <see langword="null"/>;
+/// otherwise returns <see cref="Visibility.Visible"/>.
 /// </summary>
 [ValueConversion(typeof(object), typeof(Visibility))]
 public sealed class NullToVisibilityConverter : IValueConverter
 {
-    /// <summary>
-    /// Converts a value: returns <see cref="Visibility.Visible"/> when the value is non-null,
-    /// <see cref="Visibility.Collapsed"/> when null.
-    /// </summary>
+    /// <inheritdoc/>
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         => value is null ? Visibility.Collapsed : Visibility.Visible;
 
-    /// <summary>Not supported. Throws <see cref="NotSupportedException"/>.</summary>
+    /// <inheritdoc/>
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-        => throw new NotSupportedException($"{nameof(NullToVisibilityConverter)} does not support ConvertBack.");
+        => throw new NotSupportedException($"{nameof(NullToVisibilityConverter)} does not support two-way binding.");
 }

@@ -1,0 +1,51 @@
+<UserControl x:Class="HnVue.UI.Views.DoseDisplayView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="400" d:DesignWidth="500">
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="Dose Display" FontSize="18" FontWeight="Bold" Margin="0,0,0,12"/>
+
+        <StackPanel Grid.Row="1" Margin="0,0,0,8">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="DAP: " FontWeight="SemiBold"/>
+                <TextBlock Text="{Binding CurrentDoseDap, StringFormat=F2}"/>
+                <TextBlock Text=" mGy·cm²" Margin="4,0,0,0"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="DRL Reference: " FontWeight="SemiBold"/>
+                <TextBlock Text="{Binding DrlReferenceLevel, StringFormat=F2}"/>
+                <TextBlock Text=" mGy·cm²" Margin="4,0,0,0"/>
+            </StackPanel>
+        </StackPanel>
+
+        <Border Grid.Row="2" Background="OrangeRed" CornerRadius="4" Padding="8,4"
+                Visibility="{Binding IsDoseAlert, Converter={StaticResource BoolToVisibilityConverter}}"
+                Margin="0,0,0,8">
+            <TextBlock Text="DOSE ALERT: Current DAP exceeds DRL reference level"
+                       Foreground="White" FontWeight="Bold"/>
+        </Border>
+
+        <ListBox Grid.Row="3" ItemsSource="{Binding DoseHistory}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock>
+                        <Run Text="{Binding DoseId}"/>
+                        <Run Text=" | DAP: "/>
+                        <Run Text="{Binding Dap, StringFormat=F2}"/>
+                        <Run Text=" mGy·cm²"/>
+                    </TextBlock>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</UserControl>

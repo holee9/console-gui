@@ -1,0 +1,41 @@
+<UserControl x:Class="HnVue.UI.Views.SystemAdminView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="500" d:DesignWidth="600">
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="System Administration" FontSize="18" FontWeight="Bold" Margin="0,0,0,12"/>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,8">
+            <Button Content="Load Settings" Command="{Binding LoadSettingsCommand}" Width="120" Margin="0,0,8,0"/>
+            <Button Content="Save Settings" Command="{Binding SaveSettingsCommand}" Width="120"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="2" Margin="0,0,0,8">
+            <TextBlock Text="{Binding StatusMessage}" Foreground="Green"
+                       Visibility="{Binding StatusMessage, Converter={StaticResource NullToVisibilityConverter}}"/>
+            <TextBlock Text="{Binding ErrorMessage}" Foreground="Red"
+                       Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}"/>
+        </StackPanel>
+
+        <GroupBox Grid.Row="3" Header="DICOM Settings">
+            <StackPanel Margin="8">
+                <TextBlock Text="PACS AE Title"/>
+                <TextBox Text="{Binding Settings.Dicom.PacsAeTitle}" Margin="0,0,0,8"/>
+                <TextBlock Text="PACS Host"/>
+                <TextBox Text="{Binding Settings.Dicom.PacsHost}" Margin="0,0,0,8"/>
+                <TextBlock Text="PACS Port"/>
+                <TextBox Text="{Binding Settings.Dicom.PacsPort}" Margin="0,0,0,8"/>
+            </StackPanel>
+        </GroupBox>
+    </Grid>
+</UserControl>
