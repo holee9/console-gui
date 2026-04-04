@@ -550,77 +550,63 @@ git remote add github https://github.com/holee9/console-gui.git
 
 > **이 섹션은 GitHub 미러 측에서 동기화 방식 전환 여부를 확인하기 위한 체크포인트입니다.**
 
-### 적용 여부 확인 방법
+### 현재 상태: ✅ 해결 완료 (2026-04-04)
 
-GitHub 저장소에서 아래 항목을 순서대로 확인한다.
+| # | 확인 항목 | 기대 결과 | 상태 |
+|---|-----------|-----------|------|
+| 1 | `scripts/sync_to_github.ps1` 파일 존재 | 파일 존재 | ✅ |
+| 2 | `feature/web-ui` — Gitea(origin) 존재 | `refs/heads/feature/web-ui` 존재 | ✅ |
+| 3 | `feature/web-ui` — GitHub 존재 | `refs/heads/feature/web-ui` 존재 | ✅ |
+| 4 | Gitea ↔ GitHub commit 일치 | 양쪽 `7926ba1` 동일 | ✅ |
 
-| # | 확인 항목 | 확인 방법 | 기대 결과 |
-|---|-----------|-----------|-----------|
-| 1 | 안전 동기화 스크립트 존재 | `scripts/sync_to_github.ps1` 파일 유무 | 파일 **존재** → 전환 완료 |
-| 2 | `--mirror` / `--prune` 미사용 | 스크립트 내부에 해당 플래그 없음 | 스크립트에 해당 문자열 **없음** |
-| 3 | `feature/web-ui` 브랜치 보존 | GitHub Branches 탭에서 확인 | 브랜치 **삭제되지 않음** |
-| 4 | 이 README 섹션 존재 | `Mirror Sync Fix Status` 제목 검색 | 섹션 **존재** → 이 커밋 이후 동기화 |
-| 5 | 별도 branch cleanup 작업 비활성화 | GitHub Events에서 `DeleteEvent feature/web-ui` 재발 여부 확인 | `main` push 없이 단독 삭제 **없음** |
+### 근본 원인 (확인 완료)
 
-### 전환 이력
+Gitea 저장소에 **Push Mirror**가 설정되어 있었다. 이 미러는 10분 간격과 커밋 즉시 실행 모드로 GitHub에 push하며, 내부적으로 `--mirror` 동작을 사용한다.
+
+`feature/web-ui`가 **GitHub에만 존재하고 Gitea에는 없는** 상태였기 때문에, Push Mirror가 실행될 때마다 Gitea 상태를 기준으로 GitHub를 덮어써 `feature/web-ui`를 반복 삭제했다.
+
+```
+Gitea Push Mirror 설정 (조회 결과)
+  remote : https://github.com/holee9/console-gui.git
+  interval: 10m (+ sync_on_commit: true)
+```
+
+### 해결 방법 (적용 완료)
+
+`feature/web-ui`를 GitHub에서 Gitea에도 동일하게 push하여, 양쪽 저장소 상태를 일치시켰다.
+
+```bash
+# 실행한 명령
+git fetch github
+git push origin github/feature/web-ui:refs/heads/feature/web-ui
+```
+
+이후 Gitea Push Mirror가 실행되면 `feature/web-ui`가 Gitea에도 존재하므로 GitHub에서 삭제되지 않는다.
+
+### 브랜치 삭제 재발 시 대응
+
+GitHub에서 `feature/web-ui`가 다시 사라진 경우, Gitea에서 해당 브랜치도 사라졌는지 먼저 확인한다.
+
+```bash
+# Gitea 브랜치 목록 확인
+git ls-remote origin
+
+# Gitea에 없다면 GitHub → Gitea 복구 후 양쪽 동기화
+git fetch github
+git push origin github/feature/web-ui:refs/heads/feature/web-ui
+```
+
+> Gitea에 없는 브랜치는 Push Mirror가 실행될 때마다 GitHub에서도 삭제된다.
+> 작업 브랜치는 **반드시 Gitea와 GitHub 양쪽에 존재**해야 한다.
+
+### 이력
 
 | 날짜 | 변경 내용 |
 |------|-----------|
-| 2026-04-04 | `git push --mirror` 방식 → `scripts/sync_to_github.ps1` 선택적 push 방식으로 전환 |
-| 2026-04-04 22:23 KST | `feature/web-ui` 재생성 후에도 `DeleteEvent` 재발 확인. 같은 시점 `main` push 없이 브랜치만 삭제되어, 별도 cleanup/delete 작업이 아직 남아 있는 것으로 판단 |
-
-### 현재 판정
-
-- 안전 push 스크립트와 README 반영은 완료됐다.
-- 그러나 `feature/web-ui`는 2026-04-04 22:16 KST 재생성 후 2026-04-04 22:23:56 KST에 다시 삭제되었다.
-- 같은 시점 `main` push 이벤트가 없었으므로, `scripts/sync_to_github.ps1` 자체보다 **별도의 branch cleanup/delete 작업**이 계속 실행 중일 가능성이 높다.
-- 따라서 현재 상태는 **부분 개선**이며, `feature/web-ui`를 안정적으로 유지할 수 있는 상태로는 아직 보지 않는다.
-
-### 올바른 처리 방법 (GitHub 상태를 Gitea에도 반영)
-
-자동 동기화의 기준 원본이 Gitea라면, GitHub에만 존재하는 `feature/web-ui`는 다음 동기화 때 다시 삭제될 수 있다.  
-따라서 **GitHub에서 만든 작업 브랜치를 먼저 Gitea에도 같은 이름으로 반영한 뒤**, 안전 동기화 스크립트로 다시 GitHub에 push 해야 한다.
-
-#### 권장 절차
-
-```bash
-# 1) GitHub 브랜치 가져오기
-git fetch github feature/web-ui
-
-# 2) 로컬에 동일 브랜치 생성/갱신
-git checkout -B feature/web-ui github/feature/web-ui
-
-# 3) Gitea(origin)에도 동일 브랜치 반영
-git push origin feature/web-ui
-
-# 4) 이후 GitHub 동기화는 안전 스크립트로 수행
-.\scripts\sync_to_github.ps1 -Branches main, feature/web-ui
-```
-
-#### 핵심 원칙
-
-- GitHub에만 브랜치가 있고 Gitea에 없으면, Gitea 기준 자동 동기화에서 해당 브랜치를 삭제 대상으로 볼 수 있다.
-- 따라서 `feature/web-ui`를 유지하려면 **Gitea와 GitHub 양쪽에 동일 브랜치가 존재**해야 한다.
-- 이후 자동 동기화도 `main`만이 아니라 `main, feature/web-ui`를 명시적으로 다뤄야 한다.
-
-### 브랜치가 다시 삭제됐을 때
-
-`feature/web-ui`가 GitHub에서 사라진 경우, **Gitea 쪽 동기화 실행자**에게 아래를 전달한다.
-
-```
-sync_to_github.ps1 에 feature/web-ui 브랜치가 누락된 것으로 보입니다.
-Gitea에서 아래 명령을 실행해 주세요:
-
-  .\scripts\sync_to_github.ps1 -Branches main, feature/web-ui
-
-이후 GitHub Branches 탭에서 feature/web-ui 존재 여부를 재확인합니다.
-```
-
-추가로, GitHub Events에서 `feature/web-ui` 삭제 시점에 `refs/heads/main` push 이벤트가 같이 없다면, 아래 항목을 먼저 점검한다.
-
-- 오래된 자동 동기화 잡이 아직 `--mirror`, `--prune`, ref delete, branch cleanup API를 사용하고 있지 않은지 확인
-- 새 스크립트(`scripts/sync_to_github.ps1`) 외에 별도 branch 정리 작업이 남아 있지 않은지 확인
-- 해당 cleanup 작업을 비활성화한 뒤, **GitHub 브랜치를 먼저 Gitea에도 복구한 다음** `.\scripts\sync_to_github.ps1 -Branches main, feature/web-ui` 실행
+| 2026-04-04 | `scripts/sync_to_github.ps1` 추가, README Mirror Sync 섹션 개선 |
+| 2026-04-04 22:23 KST | `feature/web-ui` 재생성 후에도 삭제 재발 — Gitea Push Mirror가 원인으로 특정 |
+| 2026-04-04 | Gitea Push Mirror 설정 확인 (10m interval, sync_on_commit) |
+| 2026-04-04 | `feature/web-ui`를 Gitea에 push → Gitea ↔ GitHub 완전 일치, 해결 완료 |
 
 ---
 
