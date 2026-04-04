@@ -30,6 +30,9 @@
     <IsPackable>false</IsPackable>
     <!-- Relax warnings-as-errors in test projects to reduce friction -->
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <!-- Suppress xUnit-idiomatic patterns: underscores in method names (CA1707),
+         inline array expressions for [Theory] data (CA1861). -->
+    <NoWarn>$(NoWarn);CA1707;CA1861</NoWarn>
   </PropertyGroup>
 
 </Project>

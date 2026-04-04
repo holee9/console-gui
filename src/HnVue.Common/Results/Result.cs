@@ -56,13 +56,12 @@ public sealed class Result
     /// <summary>
     /// Creates a successful result that explicitly wraps a <see langword="null"/> value.
     /// Use this for operations whose contract allows returning <see langword="null"/> on success
-    /// (e.g., "check for update" that may return null when no update is available).
+    /// (e.g., repository lookups that return <c>null</c> when no record is found).
     /// Prefer <see cref="Success{T}"/> for non-nullable return types.
     /// </summary>
-    /// <typeparam name="T">A nullable reference type (e.g., <c>UpdateInfo?</c>).</typeparam>
+    /// <typeparam name="T">A nullable reference type (e.g., <c>PatientRecord?</c>).</typeparam>
     /// <param name="value">The value to wrap; may be <see langword="null"/>.</param>
-    public static Result<T?> SuccessNullable<T>(T? value) where T : class
-        => Result<T?>.CreateSuccessNullable(value);
+    public static Result<T> SuccessNullable<T>(T? value) where T : class? => Result<T>.CreateSuccessNullable(value);
 
     /// <inheritdoc/>
     public override string ToString() => IsSuccess
@@ -105,6 +104,12 @@ public sealed class Result<T>
             throw new ArgumentNullException(nameof(value), "Cannot create a successful Result with a null value.");
         return new(value);
     }
+
+    /// <summary>
+    /// Creates a successful result wrapping a nullable value (no null guard).
+    /// Used only by <see cref="Result.SuccessNullable{T}"/> for nullable-typed operations.
+    /// </summary>
+    internal static Result<T> CreateSuccessNullable(T? value) => new(value!);
 
     internal static Result<T> CreateFailure(ErrorCode code, string message) => new(code, message);
 
@@ -161,6 +166,22 @@ public sealed class Result<T>
         return IsSuccess
             ? binder(_value!)
             : Result<TOut>.CreateFailure(Error!.Value, _errorMessage!);
+    }
+
+    /// <summary>
+    /// Collapses the result into a single value by applying one of two projection functions.
+    /// Eliminates the need for <c>if (result.IsSuccess)</c> branches at the call site.
+    /// </summary>
+    /// <typeparam name="TOut">The type of the returned value.</typeparam>
+    /// <param name="onSuccess">Invoked with the value when the result is successful.</param>
+    /// <param name="onFailure">Invoked with the error code and message when the result is a failure.</param>
+    public TOut Match<TOut>(Func<T, TOut> onSuccess, Func<ErrorCode, string, TOut> onFailure)
+    {
+        ArgumentNullException.ThrowIfNull(onSuccess);
+        ArgumentNullException.ThrowIfNull(onFailure);
+        return IsSuccess
+            ? onSuccess(_value!)
+            : onFailure(Error!.Value, _errorMessage!);
     }
 
     /// <summary>

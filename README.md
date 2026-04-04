@@ -69,9 +69,9 @@ HnVue Console SW는 H&abyz（에이치앤아비즈）가 자사 FPD（Flat Panel
 HnVue/
 ├── src/                         # 14개 소스 프로젝트
 │   ├── HnVue.Common             # ✅ 구현 완료 — 17 인터페이스, Result<T>, 5 Enum
-│   ├── HnVue.Data               # ⏳ Wave 1
-│   ├── HnVue.Security           # ⏳ Wave 1  (안전 임계, 90%+)
-│   ├── HnVue.UI                 # ⏳ Wave 1  (skeleton)
+│   ├── HnVue.Data               # ✅ Wave 1 완료 — EF Core 8 + SQLCipher, 4 Repository
+│   ├── HnVue.Security           # ✅ Wave 1 완료 — bcrypt/JWT/HMAC-SHA256 해시 체인 (안전 임계, 90%+)
+│   ├── HnVue.UI                 # ✅ Wave 1 완료 — MahApps.Metro 테마 + LoginView skeleton
 │   ├── HnVue.App                # ⏳ Wave 2  (DI 완전 연결)
 │   ├── HnVue.Dicom              # ⏳ Wave 2
 │   ├── HnVue.Incident           # ⏳ Wave 2  (안전 임계, 90%+)
@@ -118,15 +118,17 @@ HnVue.Common (Layer 0)
 
 ---
 
-#### Wave 1 — 대기 ⏳ (3개 worktree 병렬, Phase 1a 완성)
+#### Wave 1 — 완료 ✅ (2026-04-04, `main` 머지 완료)
 
 Pre-Wave commit을 base로 3개 브랜치 동시 분기.
 
 | Worktree | 브랜치 | 구현 모듈 | 핵심 내용 | 커버리지 |
 |----------|--------|---------|---------|:-------:|
-| WT-1 | `feat/wave1-data` | **HnVue.Data** | EF Core 8 + SQLCipher AES-256, 6개 Entity (Patients/Studies/Images/DoseRecords/Users/AuditLogs), Repository 구현 | 80%+ |
-| WT-2 | `feat/wave1-security` | **HnVue.Security** | bcrypt cost=12 (~300ms), JWT 15분 만료, HMAC-SHA256 해시 체인, RBAC 4역할, 계정 잠금(5회) | **90%+** |
+| WT-1 | `feat/wave1-data` | **HnVue.Data** | EF Core 8 + SQLCipher AES-256, 6개 Entity (Patients/Studies/Images/DoseRecords/Users/AuditLogs), Repository 구현, `Result.SuccessNullable<T>()` API | 80%+ |
+| WT-2 | `feat/wave1-security` | **HnVue.Security** | bcrypt cost=12 (~300ms), JWT HS256 15분 만료, HMAC-SHA256 해시 체인, RBAC 4역할, 계정 잠금(5회) | **90%+** |
 | WT-3 | `feat/wave1-ui-skeleton` | **HnVue.UI skeleton** | MahApps.Metro 테마 토큰 (Colors/Typography/Spacing/ButtonStyles), MainWindow 5-패널, LoginView+LoginViewModel | 60%+ |
+
+**결과:** 0 errors / 0 warnings / 215 tests 통과 (Common 82 + Data 69 + Security 37 + UI 27)
 
 **M1 검증 기준:** 로그인 → 인증 → RBAC → 감사 로그 해시 체인 E2E 동작
 
@@ -185,7 +187,7 @@ Wave 4 완료 후.
 
 ```
 Pre-Wave  ████████████████████  완료  ✅  v0.1.0-pre-wave
-Wave 1    ░░░░░░░░░░░░░░░░░░░░  대기  ⏳  (3 worktree 병렬)
+Wave 1    ████████████████████  완료  ✅  (Data + Security + UI skeleton, 215 tests)
 Wave 2    ░░░░░░░░░░░░░░░░░░░░  대기  ⏳  (4 worktree 병렬)
 Wave 3    ░░░░░░░░░░░░░░░░░░░░  대기  ⏳  (Workflow 단독)
 Wave 4    ░░░░░░░░░░░░░░░░░░░░  대기  🔒  (DRL 수치표 필요)
@@ -476,17 +478,27 @@ python scripts/sync_docs.py
 |------|-------------|----------|
 | 통합 기준선 | `main` | 문서 정리, 검증 완료된 모듈, 병합 완료된 Wave 결과만 반영 |
 | 데스크톱/WPF 구현 | `feat/wave*-*` | 현재 Wave 범위의 WPF, App, Core 모듈 구현 전용 |
-| 웹 UI 사용성 검증 | `feat/web-ui` | 웹 전용 화면, mock data, API contract, 사용성 테스트 산출물만 반영 |
+| 웹 UI 사용성 검증 | `feature/web-ui` | 웹 전용 화면, mock data, API contract, 사용성 테스트 산출물만 반영 |
 
 ### 운영 규칙
 
 - `main`은 데스크톱 릴리스 기준선으로 유지한다. 웹 UI 실험 코드는 직접 섞지 않는다.
-- 웹 UI는 별도 PC에서 병행 개발 가능하며, 가급적 `feat/web-ui` 한 브랜치에만 모은다.
+- 웹 UI는 별도 PC에서 병행 개발 가능하며, 가급적 `feature/web-ui` 한 브랜치에만 모은다.
 - 웹 브랜치에서는 WPF 화면과 기존 App wiring을 직접 수정하지 말고, 웹 전용 디렉터리와 계약 문서 중심으로 작업한다.
 - 공용 변경이 필요하면 `HnVue.Common` 인터페이스 또는 별도 contract 문서에 먼저 반영하고, 데스크톱과 웹이 같은 의미의 DTO와 서비스 계약을 공유하도록 맞춘다.
 - 사용성 검증이 끝난 후에는 웹 브랜치 전체를 합치기보다, `main`에 필요한 산출물과 검증된 계약 변경만 선택적으로 반영한다.
+- **새 작업 브랜치는 반드시 Gitea(`origin`)에도 push해야 한다.** Gitea Push Mirror가 10분 간격으로 GitHub를 Gitea 상태로 덮어쓰므로, Gitea에 없는 브랜치는 GitHub에서 자동 삭제된다.
 
-> 권장 흐름: `main` pull → `feat/web-ui`에서 UI 검증 → 결과 정리 → 필요한 공용 계약만 `main`으로 병합
+> 권장 흐름: `main` pull → `feature/web-ui`에서 UI 검증 → 결과 정리 → 필요한 공용 계약만 `main`으로 병합
+
+### Mirror Sync 동작 방식
+
+Gitea에는 **Push Mirror**가 설정되어 있다(`interval: 10m, sync_on_commit: true`). 이 미러가 Gitea → GitHub 자동 동기화의 주체이며, Gitea 상태를 기준으로 GitHub를 덮어쓴다.
+
+- Gitea에 없는 브랜치는 Push Mirror 실행 시 GitHub에서 자동 삭제된다.
+- `feature/web-ui` 등 작업 브랜치는 반드시 **Gitea에도 push**해야 GitHub에서 보존된다.
+- `scripts/sync_to_github.ps1`은 비상 수동 동기화용이며, 평상시 자동 동기화는 Push Mirror가 담당한다.
+- Push Mirror가 있는 한 `git push --mirror`, `git push --prune` 같은 별도 명령은 불필요하며 사용하지 않는다.
 
 ---
 
@@ -502,16 +514,105 @@ python scripts/sync_docs.py
 
 ---
 
-## Sync from GitHub Mirror
+## Sync to GitHub Mirror (Gitea → GitHub)
 
-Perplexity Computer에서 GitHub 미러 작업 내용을 사내 로컬 Git에 반영:
+### 수동 동기화 스크립트 (비상용)
 
-```bash
-# 최초 1회
+Gitea Push Mirror 장애 또는 즉시 동기화가 필요할 때만 사용한다. `--mirror`/`--prune` 없이 지정한 브랜치만 push한다.
+
+```powershell
+# 최초 1회 — GitHub remote 등록
 git remote add github https://github.com/holee9/console-gui.git
 
-# 작업 반영 시
-git fetch github
-git merge github/main
+# main + feature/web-ui 동기화
+.\scripts\sync_to_github.ps1 -Branches main, feature/web-ui
+
+# 실행 전 확인 (dry-run)
+.\scripts\sync_to_github.ps1 -DryRun
+```
+
+> 스크립트 위치: `scripts/sync_to_github.ps1`
+> 평상시 자동 동기화는 Gitea Push Mirror(10m)가 담당한다. 이 스크립트는 보조 수단이다.
+
+### 새 브랜치 생성 시 체크리스트
+
+GitHub(보조 PC)에서 새 브랜치를 만든 경우 반드시 아래 절차를 따른다.
+
+```bash
+# 1) GitHub 브랜치 로컬에 가져오기
+git fetch github <branch>
+
+# 2) Gitea에 push (Push Mirror 보존을 위해 필수)
+git push origin github/<branch>:refs/heads/<branch>
+```
+
+브랜치가 Gitea에 없으면 다음 Push Mirror 실행(최대 10분) 때 GitHub에서 삭제된다.
+
+---
+
+## Mirror Sync Fix Status
+
+> **이 섹션은 GitHub 미러 측에서 동기화 방식 전환 여부를 확인하기 위한 체크포인트입니다.**
+
+### 현재 상태: ✅ 해결 완료 (2026-04-04)
+
+| # | 확인 항목 | 기대 결과 | 상태 |
+|---|-----------|-----------|------|
+| 1 | `scripts/sync_to_github.ps1` 파일 존재 | 파일 존재 | ✅ |
+| 2 | `feature/web-ui` — Gitea(origin) 존재 | `refs/heads/feature/web-ui` 존재 | ✅ |
+| 3 | `feature/web-ui` — GitHub 존재 | `refs/heads/feature/web-ui` 존재 | ✅ |
+| 4 | Gitea ↔ GitHub commit 일치 | 양쪽 `7926ba1` 동일 | ✅ |
+
+## Mirror Sync Quick Guide
+
+필수 원칙:
+
+- Gitea 작업 PC에서는 `git fetch github <branch>` 단독 사용 금지
+- 항상 `refs/remotes/github/<branch>` 를 명시해서 remote-tracking ref 를 갱신
+- 새 작업 브랜치는 GitHub와 Gitea 양쪽에 모두 존재해야 한다
+
+### 1회성: Gitea 작업 PC에 GitHub remote 추가
+
+```bash
+git remote add github https://github.com/holee9/console-gui.git
+```
+
+### GitHub `main` 을 Gitea `main` 에 반영
+
+Gitea 기본 화면의 README를 최신으로 보려면 이 블록을 실행한다.
+
+```bash
+git fetch github main:refs/remotes/github/main
+git checkout main
+git merge --ff-only github/main
 git push origin main
+```
+
+### GitHub 새 작업 브랜치를 Gitea에도 추가
+
+새 브랜치가 GitHub에 생겼을 때는 아래 `<branch>` 를 실제 브랜치 이름으로 바꿔서 실행한다.
+
+```bash
+git fetch github <branch>:refs/remotes/github/<branch>
+git checkout -B <branch> github/<branch>
+git push origin <branch>
+```
+
+### Gitea에서 GitHub로 미러 반영
+
+필요할 때만 PowerShell에서 실행한다.
+
+```powershell
+.\scripts\sync_to_github.ps1 -Branches main, feature/web-ui
+```
+
+### 금지
+
+아래 방식은 stale ref 때문에 예전 커밋을 다시 push 할 수 있으므로 사용하지 않는다.
+
+```bash
+git fetch github <branch>
+git checkout <branch>
+git merge --ff-only github/<branch>
+git push origin <branch>
 ```
