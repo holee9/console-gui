@@ -9,7 +9,7 @@ namespace HnVue.Workflow.Tests;
 [Trait("SWR", "SWR-WF-010")]
 public sealed class WorkflowStateMachineTests
 {
-    private WorkflowStateMachine CreateSut() => new();
+    private static WorkflowStateMachine CreateSut() => new();
 
     // ── Initial state ─────────────────────────────────────────────────────────
 
