@@ -267,8 +267,8 @@ HnVue은 다음 7개 독립 모듈로 구성된다:
 | SWR-PM-002 | Functional | 필수 필드 유효성 검사 | 저장 시 필수 필드(환자 ID, 성명, 성별) 미입력 시 저장 차단 + 적색(#FF3B30) 테두리 표시. on-blur 및 저장 버튼 시점 모두 검사 | PR-PM-001 | HAZ-DATA | T |
 | SWR-PM-003 | Safety-related | 중복 환자 ID 감지 | 저장 시 SQLite DB Case-Insensitive 비동기 중복 체크(≤200ms @ 10,000건). 중복 시 3선택지 다이얼로그 표시 + 강제 저장 시 Audit Trail 기록 | PR-PM-001 | HAZ-DATA | T, A |
 | SWR-PM-004 | Safety-related | 환자 등록 데이터 ACID 저장 | ACID 트랜잭션(BEGIN→INSERT→COMMIT), 실패 시 ROLLBACK. SQLite WAL 모드, 등록 이벤트 Audit Trail 기록 | PR-PM-001 | HAZ-DATA | T, I |
-| SWR-PM-010 | Functional | 환자 정보 조회 화면 | 환자 선택 후 ≤500ms 내 상세 정보(전 필드 + 검사 이력) 표시. 기본 Read-Only 모드. 수정 버튼 Technologist 이상 RBAC 적용 | PR-PM-002 | HAZ-DATA | T |
-| SWR-PM-011 | Safety-related | 환자 정보 수정 권한 검사 | Technologist/Administrator만 수정 가능. 권한 없는 역할 차단 + 동시 편집 잠금(Edit Lock) | PR-PM-002 | HAZ-DATA, HAZ-SEC | T, I |
+| SWR-PM-010 | Functional | 환자 정보 조회 화면 | 환자 선택 후 ≤500ms 내 상세 정보(전 필드 + 검사 이력) 표시. 기본 Read-Only 모드. 수정 버튼 Radiographer 이상 RBAC 적용 | PR-PM-002 | HAZ-DATA | T |
+| SWR-PM-011 | Safety-related | 환자 정보 수정 권한 검사 | Radiographer/Admin만 수정 가능. 권한 없는 역할 차단 + 동시 편집 잠금(Edit Lock) | PR-PM-002 | HAZ-DATA, HAZ-SEC | T, I |
 | SWR-PM-012 | Safety-related | 환자 정보 수정 Audit 기록 | 변경 전·후 값 모두 Audit Trail 기록(필드명, 이전값, 신값, 수정자 ID, UTC 일시). 환자 ID 수정 불가 | PR-PM-002 | HAZ-DATA, HAZ-SEC | T, I |
 | SWR-PM-013 | Functional | 환자 등록 상태 배지 | Active(녹색)/Pending(황색)/Completed(회색)/Emergency(적색) 4가지 배지 이벤트 드리븐 자동 갱신 | PR-PM-002 | — | T |
 | SWR-PM-020 | Functional | MWL C-FIND 요청 생성 | DICOM Modality Worklist SCU C-FIND 요청. 필터: Modality(DR/CR), 장치 AE Title, 오늘 날짜 기본. HL7 ORM^O01 대안 지원 | PR-PM-003 | — | T |
@@ -377,10 +377,10 @@ HnVue은 다음 7개 독립 모듈로 구성된다:
 
 | SWR ID | IEC 62304 분류 | 요구사항명 | 상세 | 출처 PR | 위험 참조 | 검증 방법 |
 |--------|---------------|-----------|------|---------|---------|---------|
-| SWR-SA-060 | Security-related | RBAC 역할 정의 | 4개 역할: Administrator, Technologist, Physician, Service(BMET). 역할별 권한 매트릭스 정의 및 문서화 | PR-SA-060 | HAZ-SEC | T, I |
-| SWR-SA-061 | Security-related | 사용자 계정 관리 | 관리자: 사용자 생성/수정/비활성화/잠금 해제. 계정 비활성화 시 즉시 세션 무효화 | PR-SA-060 | HAZ-SEC | T |
+| SWR-SA-060 | Security-related | RBAC 역할 정의 | 4개 역할: Radiographer(방사선사), Radiologist(판독의), Admin(관리자), Service(BMET). 역할별 권한 매트릭스 정의 및 문서화 | PR-SA-060 | HAZ-SEC | T, I |
+| SWR-SA-061 | Security-related | 사용자 계정 관리 | Admin 역할: 사용자 생성/수정/비활성화/잠금 해제. 계정 비활성화 시 즉시 세션 무효화 | PR-SA-060 | HAZ-SEC | T |
 | SWR-SA-062 | Security-related | 역할 기반 UI 접근 제어 | UI 레이어 + 서비스 레이어 이중 권한 검사. 미권한 메뉴 숨김 + API 차단 | PR-SA-060 | HAZ-SEC | T, I |
-| SWR-SA-063 | Safety-related | APR 프로토콜 편집기 | Administrator/Service 전용 APR 파라미터 편집. 변경 시 이전 버전 자동 백업 + 감사 로그 | PR-SA-061 | HAZ-RAD | T, I |
+| SWR-SA-063 | Safety-related | APR 프로토콜 편집기 | Admin/Service 전용 APR 파라미터 편집. 변경 시 이전 버전 자동 백업 + 감사 로그 | PR-SA-061 | HAZ-RAD | T, I |
 | SWR-SA-065 | Functional | 시스템 설정 관리 | DICOM AE Title, PACS/RIS IP·포트, 네트워크 설정, 언어·타임존 등 시스템 전반 설정. 설정 내보내기/가져오기 | PR-SA-062 | — | T, D |
 | SWR-SA-067 | Safety-related | FPD 캘리브레이션 (Gain/Offset 획득) | Gain Map 획득(균일한 방사선 노출), Offset Map 획득(Dark Frame). 캘리브레이션 결과 DB 저장 + 날짜 표시 | PR-SA-063 | HAZ-RAD, HAZ-SW | T, I |
 | SWR-SA-068 | Safety-related | 캘리브레이션 유효성 관리 | 캘리브레이션 만료(기본 7일) 시 촬영 전 경고 표시. 만료 캘리브레이션으로 촬영 시 확인 필요 | PR-SA-063 | HAZ-RAD | T |
