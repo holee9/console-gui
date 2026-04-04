@@ -28,36 +28,84 @@ public static class ServiceCollectionExtensions
 }
 
 /// <summary>
-/// In-memory implementation of <see cref="ISecurityContext"/>.
+/// Thread-safe in-memory implementation of <see cref="ISecurityContext"/>.
 /// Stores the authenticated user for the duration of the current application session.
-/// Thread-safe for read access; write access must be serialised by the caller.
+/// Uses <see cref="ReaderWriterLockSlim"/> for concurrent read access and exclusive write access.
 /// </summary>
-internal sealed class ThreadLocalSecurityContext : ISecurityContext
+internal sealed class ThreadLocalSecurityContext : ISecurityContext, IDisposable
 {
+    private readonly ReaderWriterLockSlim _lock = new(LockRecursionPolicy.NoRecursion);
     private AuthenticatedUser? _currentUser;
 
     /// <inheritdoc/>
-    public string? CurrentUserId => _currentUser?.UserId;
+    public string? CurrentUserId
+    {
+        get
+        {
+            _lock.EnterReadLock();
+            try { return _currentUser?.UserId; }
+            finally { _lock.ExitReadLock(); }
+        }
+    }
 
     /// <inheritdoc/>
-    public string? CurrentUsername => _currentUser?.Username;
+    public string? CurrentUsername
+    {
+        get
+        {
+            _lock.EnterReadLock();
+            try { return _currentUser?.Username; }
+            finally { _lock.ExitReadLock(); }
+        }
+    }
 
     /// <inheritdoc/>
-    public UserRole? CurrentRole => _currentUser?.Role;
+    public UserRole? CurrentRole
+    {
+        get
+        {
+            _lock.EnterReadLock();
+            try { return _currentUser?.Role; }
+            finally { _lock.ExitReadLock(); }
+        }
+    }
 
     /// <inheritdoc/>
-    public bool IsAuthenticated => _currentUser != null;
+    public bool IsAuthenticated
+    {
+        get
+        {
+            _lock.EnterReadLock();
+            try { return _currentUser != null; }
+            finally { _lock.ExitReadLock(); }
+        }
+    }
 
     /// <inheritdoc/>
-    public bool HasRole(UserRole role) => _currentUser?.Role == role;
+    public bool HasRole(UserRole role)
+    {
+        _lock.EnterReadLock();
+        try { return _currentUser?.Role == role; }
+        finally { _lock.ExitReadLock(); }
+    }
 
     /// <inheritdoc/>
     public void SetCurrentUser(AuthenticatedUser user)
     {
         ArgumentNullException.ThrowIfNull(user);
-        _currentUser = user;
+        _lock.EnterWriteLock();
+        try { _currentUser = user; }
+        finally { _lock.ExitWriteLock(); }
     }
 
     /// <inheritdoc/>
-    public void ClearCurrentUser() => _currentUser = null;
+    public void ClearCurrentUser()
+    {
+        _lock.EnterWriteLock();
+        try { _currentUser = null; }
+        finally { _lock.ExitWriteLock(); }
+    }
+
+    /// <inheritdoc/>
+    public void Dispose() => _lock.Dispose();
 }

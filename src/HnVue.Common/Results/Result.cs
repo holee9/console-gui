@@ -87,7 +87,14 @@ public sealed class Result<T>
     }
 
     // Internal factory methods called by the non-generic Result class.
-    internal static Result<T> CreateSuccess(T value) => new(value);
+    internal static Result<T> CreateSuccess(T value)
+    {
+        // Guard against null for reference types; value types are inherently non-null.
+        if (value is null)
+            throw new ArgumentNullException(nameof(value), "Cannot create a successful Result with a null value.");
+        return new(value);
+    }
+
     internal static Result<T> CreateFailure(ErrorCode code, string message) => new(code, message);
 
     /// <summary>Gets a value indicating whether the operation succeeded.</summary>

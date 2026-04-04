@@ -42,4 +42,10 @@ public interface IPatientService
     Task<Result<PatientRecord?>> GetByIdAsync(
         string patientId,
         CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Deletes a patient and all associated studies. Restricted to Admin role.
+    /// </summary>
+    /// <remarks>Requires active study check before deletion. SWR-PM-050.</remarks>
+    Task<Result> DeleteAsync(string patientId, CancellationToken cancellationToken = default);
 }
