@@ -49,7 +49,11 @@ export const messages = {
     autoCheck: "자동 업데이트 점검",
     reviewedDocs: "문서 반영",
     reviewedDocsDescription:
-      "PRD의 5패널 GUI 개념, SDS 디자인 토큰, UEF의 5클릭 시나리오를 웹 MVP 범위에 매핑했습니다."
+      "PRD의 5패널 GUI 개념, SDS 디자인 토큰, UEF의 5클릭 시나리오를 웹 MVP 범위에 매핑했습니다.",
+    parameterSync: "파라미터 전송",
+    ackReceived: "Generator ACK 수신",
+    pendingAck: "Generator ACK 대기",
+    routeRedirect: "현재 역할에는 이 화면 권한이 없어 허용된 화면으로 이동합니다."
   },
   en: {
     appTitle: "HnVue Web Validation Console",
@@ -99,7 +103,11 @@ export const messages = {
     autoCheck: "Automatic update check",
     reviewedDocs: "Document alignment",
     reviewedDocsDescription:
-      "The web MVP maps the PRD 5-panel GUI concept, SDS design tokens, and the UEF 5-click scenario."
+      "The web MVP maps the PRD 5-panel GUI concept, SDS design tokens, and the UEF 5-click scenario.",
+    parameterSync: "Parameter transfer",
+    ackReceived: "Generator ACK received",
+    pendingAck: "Waiting for generator ACK",
+    routeRedirect: "This role cannot open that page, so the validation UI redirects to the next allowed view."
   }
 } as const;
 

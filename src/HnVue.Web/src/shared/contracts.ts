@@ -60,6 +60,7 @@ export interface DoseSnapshot {
 export interface SystemStatus {
   detector: "Connected" | "Disconnected" | "Busy" | "Ready";
   generator: "Idle" | "Preparing" | "Ready" | "Exposing" | "Error";
+  parameterSync: "Pending" | "Acked" | "Error";
   network: "Online" | "Degraded" | "Offline";
   storage: string;
   safeState: SafeState;

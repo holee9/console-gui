@@ -2,6 +2,7 @@ import { NavLink } from "react-router-dom";
 import { roleLabel } from "../shared/copy";
 import { useAppState } from "./state";
 import type { PropsWithChildren } from "react";
+import { canAccessRoute, type AppRoute } from "../shared/policy";
 
 const statusToneClass = {
   Idle: "is-success",
@@ -14,13 +15,24 @@ const statusToneClass = {
   Busy: "is-warning",
   Preparing: "is-warning",
   Exposing: "is-danger",
+  Pending: "is-warning",
+  Acked: "is-success",
   Offline: "is-danger",
   Disconnected: "is-danger",
   Error: "is-danger"
 } as const;
 
+const navItems: { href: AppRoute; labelKey: "navConsole" | "navDelivery" | "navAdmin" }[] = [
+  { href: "/console", labelKey: "navConsole" },
+  { href: "/delivery", labelKey: "navDelivery" },
+  { href: "/admin", labelKey: "navAdmin" }
+];
+
 export default function AppShell({ children }: PropsWithChildren) {
   const { locale, text, user, logout, selectedStudy, systemStatus, toggleLocale } = useAppState();
+  const visibleNavItems = user
+    ? navItems.filter((item) => canAccessRoute(user.role, item.href))
+    : [];
 
   return (
     <div className="app-shell">
@@ -32,15 +44,11 @@ export default function AppShell({ children }: PropsWithChildren) {
         </div>
 
         <nav className="shell-nav" aria-label="Primary">
-          <NavLink to="/console" className="nav-pill">
-            {text.navConsole}
-          </NavLink>
-          <NavLink to="/delivery" className="nav-pill">
-            {text.navDelivery}
-          </NavLink>
-          <NavLink to="/admin" className="nav-pill">
-            {text.navAdmin}
-          </NavLink>
+          {visibleNavItems.map((item) => (
+            <NavLink key={item.href} to={item.href} className="nav-pill">
+              {text[item.labelKey]}
+            </NavLink>
+          ))}
         </nav>
 
         <div className="header-actions">
@@ -73,6 +81,9 @@ export default function AppShell({ children }: PropsWithChildren) {
             </span>
             <span className={`status-chip ${statusToneClass[systemStatus.detector]}`}>
               DET: {systemStatus.detector}
+            </span>
+            <span className={`status-chip ${statusToneClass[systemStatus.parameterSync]}`}>
+              ACK: {systemStatus.parameterSync}
             </span>
             <span className={`status-chip ${statusToneClass[systemStatus.network]}`}>
               NET: {systemStatus.network}

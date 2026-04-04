@@ -124,89 +124,87 @@ export const protocolPresets: ProtocolPreset[] = [
   }
 ];
 
-export const initialDose: DoseSnapshot = {
-  doseId: "DOSE-260404-001",
-  studyInstanceUid: "1.2.410.1000.26.404.1",
-  dap: 1.42,
-  ei: 413,
-  di: -0.6,
-  effectiveDose: 0.12,
-  bodyPart: "CHEST",
-  recordedAt: "2026-04-04T10:42:00Z"
-};
+export function createInitialDose(): DoseSnapshot {
+  return {
+    doseId: "DOSE-PENDING",
+    studyInstanceUid: "Pending",
+    dap: 0,
+    ei: 0,
+    di: 0,
+    effectiveDose: 0,
+    bodyPart: "Pending",
+    recordedAt: ""
+  };
+}
 
-export const initialSystemStatus: SystemStatus = {
-  detector: "Ready",
-  generator: "Ready",
-  network: "Online",
-  storage: "74%",
-  safeState: "Idle"
-};
+export function createInitialSystemStatus(): SystemStatus {
+  return {
+    detector: "Connected",
+    generator: "Idle",
+    parameterSync: "Pending",
+    network: "Online",
+    storage: "74%",
+    safeState: "Idle"
+  };
+}
 
-export const initialAlerts: AlertItem[] = [
-  {
-    id: "AL-001",
-    severity: "warning",
-    title: "Pediatric protocol guard",
-    message: "Pediatric patients must use a low-dose preset with an explicit confirmation step.",
-    requiresAck: false
-  },
-  {
-    id: "AL-002",
-    severity: "critical",
-    title: "Critical alarms require ACK",
-    message: "A critical workflow alarm must remain visible until the operator explicitly acknowledges it.",
-    requiresAck: true
-  }
-];
+export function createInitialAlerts(): AlertItem[] {
+  return [];
+}
 
-export const initialAuditTrail: AuditEvent[] = [
-  {
-    id: "EV-001",
-    timestamp: "10:42:15",
-    level: "info",
-    message: "Web validation workspace initialized from feature/web-ui."
-  },
-  {
-    id: "EV-002",
-    timestamp: "10:42:18",
-    level: "info",
-    message: "PRD 5-panel layout and UEF 5-click scenario loaded into the MVP shell."
-  }
-];
+export function createInitialAuditTrail(): AuditEvent[] {
+  return [
+    {
+      id: "EV-001",
+      timestamp: "10:42:15",
+      level: "info",
+      message: "Web validation workspace initialized from feature/web-ui."
+    },
+    {
+      id: "EV-002",
+      timestamp: "10:42:18",
+      level: "info",
+      message: "PRD 5-panel layout and UEF 5-click scenario loaded into the MVP shell."
+    }
+  ];
+}
 
-export const initialDeliveryQueue: DeliveryStudy[] = worklistStudies.map((study, index) => ({
-  id: `DEL-${index + 1}`,
-  patientName: study.patientName,
-  studyLabel: `${study.requestedProcedure} / ${study.accessionNumber}`,
-  discLabel: `HNVUE-${study.patientId}`,
-  drive: index === 1 ? "USB Writer Bay-2" : "DVD-RW Bay-1",
-  includeViewer: true,
-  encryptDisc: index === 1,
-  status: "Ready",
-  progress: 0
-}));
+export function createInitialDeliveryQueue(): DeliveryStudy[] {
+  return worklistStudies.map((study, index) => ({
+    id: `DEL-${index + 1}`,
+    patientName: study.patientName,
+    studyLabel: `${study.requestedProcedure} / ${study.accessionNumber}`,
+    discLabel: `HNVUE-${study.patientId}`,
+    drive: index === 1 ? "USB Writer Bay-2" : "DVD-RW Bay-1",
+    includeViewer: true,
+    encryptDisc: index === 1,
+    status: "Ready",
+    progress: 0
+  }));
+}
 
-export const initialSettings: SystemSettings = {
-  network: {
-    ip: "192.168.12.24",
-    gateway: "192.168.12.1",
-    dns: "8.8.8.8"
-  },
-  dicom: {
-    pacsAeTitle: "HNVUE_PACS",
-    risAeTitle: "HNVUE_MWL",
-    port: 104,
-    pollSeconds: 10
-  },
-  ui: {
-    locale: "ko",
-    touchMode: true,
-    inactivityMinutes: 15
-  },
-  update: {
-    channel: "validation",
-    autoCheck: true,
-    signedOnly: true
-  }
-};
+export function createInitialSettings(): SystemSettings {
+  return {
+    network: {
+      ip: "192.168.12.24",
+      gateway: "192.168.12.1",
+      dns: "8.8.8.8"
+    },
+    dicom: {
+      pacsAeTitle: "HNVUE_PACS",
+      risAeTitle: "HNVUE_MWL",
+      port: 104,
+      pollSeconds: 10
+    },
+    ui: {
+      locale: "ko",
+      touchMode: true,
+      inactivityMinutes: 15
+    },
+    update: {
+      channel: "validation",
+      autoCheck: true,
+      signedOnly: true
+    }
+  };
+}

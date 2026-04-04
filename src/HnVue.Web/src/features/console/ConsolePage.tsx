@@ -53,8 +53,17 @@ export default function ConsolePage() {
 
   const progress = stageOrder[workflowStage];
   const isBlocked = systemStatus.safeState === "Blocked";
-  const canConfirm = workflowStage === "ProtocolLoaded" && !isBlocked;
-  const canExpose = workflowStage === "ReadyToExpose" && !isBlocked;
+  const canConfirm =
+    workflowStage === "ProtocolLoaded" &&
+    Boolean(selectedStudy) &&
+    Boolean(selectedProtocol) &&
+    !isBlocked;
+  const canExpose =
+    workflowStage === "ReadyToExpose" &&
+    !isBlocked &&
+    systemStatus.parameterSync === "Acked" &&
+    systemStatus.generator === "Ready" &&
+    systemStatus.detector === "Ready";
   const canSend = workflowStage === "ImageReview" || workflowStage === "Completed";
 
   return (
@@ -155,7 +164,7 @@ export default function ConsolePage() {
             <div className="viewer-overlay">
               <span className="viewer-pill">Window / Level</span>
               <span className="viewer-pill">Zoom 100%</span>
-              <span className="viewer-pill">Detector ready</span>
+              <span className="viewer-pill">{systemStatus.detector}</span>
             </div>
 
             <div className="viewer-image">
@@ -263,6 +272,12 @@ export default function ConsolePage() {
               <div>
                 <span>Generator</span>
                 <strong>{systemStatus.generator}</strong>
+              </div>
+              <div>
+                <span>{text.parameterSync}</span>
+                <strong>
+                  {systemStatus.parameterSync === "Acked" ? text.ackReceived : text.pendingAck}
+                </strong>
               </div>
               <div>
                 <span>{text.dose}</span>

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { roleLabel } from "../../shared/copy";
 import type { UserRole } from "../../shared/contracts";
 import { useAppState } from "../../app/state";
+import { getDefaultRoute } from "../../shared/policy";
 
 const roleDescriptions: Record<UserRole, { ko: string; en: string }> = {
   Radiographer: {
@@ -31,7 +32,7 @@ export default function LoginPage() {
   function handleEnterWorkspace() {
     loginAsRole(selectedRole);
     startTransition(() => {
-      navigate("/console");
+      navigate(getDefaultRoute(selectedRole));
     });
   }
 

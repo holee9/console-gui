@@ -6,13 +6,13 @@ import {
 } from "react";
 import { getText } from "../shared/copy";
 import {
+  createInitialAlerts,
+  createInitialAuditTrail,
+  createInitialDeliveryQueue,
+  createInitialDose,
+  createInitialSettings,
+  createInitialSystemStatus,
   demoUsers,
-  initialAlerts,
-  initialAuditTrail,
-  initialDeliveryQueue,
-  initialDose,
-  initialSettings,
-  initialSystemStatus,
   protocolPresets,
   worklistStudies
 } from "../shared/mock-data";
@@ -21,6 +21,7 @@ import type {
   AuditEvent,
   AuthUser,
   DeliveryStudy,
+  DoseSnapshot,
   Locale,
   ProtocolPreset,
   SystemSettings,
@@ -29,6 +30,7 @@ import type {
   WorkflowStage,
   WorklistStudy
 } from "../shared/contracts";
+import { deriveSafeState } from "../shared/policy";
 
 type SettingsSection = keyof SystemSettings;
 type SettingsValue = string | number | boolean;
@@ -46,7 +48,7 @@ interface AppState {
   alerts: AlertItem[];
   auditTrail: AuditEvent[];
   deliveryQueue: DeliveryStudy[];
-  currentDose: typeof initialDose;
+  currentDose: DoseSnapshot;
   settings: SystemSettings;
   loginAsRole: (role: UserRole) => void;
   logout: () => void;
@@ -73,18 +75,49 @@ function nowTime() {
   });
 }
 
+function createPediatricGuardAlert(): AlertItem {
+  return {
+    id: "AL-PEDS",
+    severity: "warning",
+    title: "Pediatric dose guard",
+    message: "Pediatric workflow selected. Confirm the low-dose preset before exposure.",
+    requiresAck: false
+  };
+}
+
+function createProtocolMismatchAlert(protocolId: string): AlertItem {
+  return {
+    id: `AL-MISMATCH-${protocolId}`,
+    severity: "critical",
+    title: "Protocol mismatch",
+    message: "The selected patient is pediatric but the preset is not flagged for pediatric use.",
+    requiresAck: true
+  };
+}
+
+function resetWorkflowArtifacts() {
+  return {
+    selectedStudyId: null,
+    selectedProtocolId: null,
+    workflowStage: "Idle" as WorkflowStage,
+    alerts: createInitialAlerts(),
+    currentDose: createInitialDose(),
+    systemStatus: createInitialSystemStatus()
+  };
+}
+
 export function AppProvider({ children }: PropsWithChildren) {
   const [locale, setLocale] = useState<Locale>("ko");
   const [user, setUser] = useState<AuthUser | null>(null);
   const [workflowStage, setWorkflowStage] = useState<WorkflowStage>("Idle");
-  const [selectedStudyId, setSelectedStudyId] = useState<string | null>(worklistStudies[0]?.id ?? null);
-  const [selectedProtocolId, setSelectedProtocolId] = useState<string | null>(protocolPresets[0]?.id ?? null);
-  const [systemStatus, setSystemStatus] = useState<SystemStatus>(initialSystemStatus);
-  const [alerts, setAlerts] = useState<AlertItem[]>(initialAlerts);
-  const [auditTrail, setAuditTrail] = useState<AuditEvent[]>(initialAuditTrail);
-  const [deliveryQueue, setDeliveryQueue] = useState<DeliveryStudy[]>(initialDeliveryQueue);
-  const [currentDose, setCurrentDose] = useState(initialDose);
-  const [settings, setSettings] = useState<SystemSettings>(initialSettings);
+  const [selectedStudyId, setSelectedStudyId] = useState<string | null>(null);
+  const [selectedProtocolId, setSelectedProtocolId] = useState<string | null>(null);
+  const [systemStatus, setSystemStatus] = useState<SystemStatus>(() => createInitialSystemStatus());
+  const [alerts, setAlerts] = useState<AlertItem[]>(() => createInitialAlerts());
+  const [auditTrail, setAuditTrail] = useState<AuditEvent[]>(() => createInitialAuditTrail());
+  const [deliveryQueue, setDeliveryQueue] = useState<DeliveryStudy[]>(() => createInitialDeliveryQueue());
+  const [currentDose, setCurrentDose] = useState<DoseSnapshot>(() => createInitialDose());
+  const [settings, setSettings] = useState<SystemSettings>(() => createInitialSettings());
 
   const selectedStudy = worklistStudies.find((study) => study.id === selectedStudyId) ?? null;
   const selectedProtocol =
@@ -103,14 +136,44 @@ export function AppProvider({ children }: PropsWithChildren) {
   }
 
   function loginAsRole(role: UserRole) {
+    const session = resetWorkflowArtifacts();
     setUser(demoUsers[role]);
+    setSelectedStudyId(session.selectedStudyId);
+    setSelectedProtocolId(session.selectedProtocolId);
+    setWorkflowStage(session.workflowStage);
+    setAlerts(session.alerts);
+    setCurrentDose(session.currentDose);
+    setSystemStatus(session.systemStatus);
+    setDeliveryQueue(createInitialDeliveryQueue());
+    setSettings((current) => ({
+      ...createInitialSettings(),
+      ui: {
+        ...createInitialSettings().ui,
+        locale: current.ui.locale
+      }
+    }));
+    setAuditTrail(createInitialAuditTrail());
     appendAudit("info", `${role} role entered the validation workspace.`);
   }
 
   function logout() {
+    const session = resetWorkflowArtifacts();
     setUser(null);
-    setWorkflowStage("Idle");
-    appendAudit("info", "User left the validation workspace.");
+    setSelectedStudyId(session.selectedStudyId);
+    setSelectedProtocolId(session.selectedProtocolId);
+    setWorkflowStage(session.workflowStage);
+    setAlerts(session.alerts);
+    setCurrentDose(session.currentDose);
+    setSystemStatus(session.systemStatus);
+    setDeliveryQueue(createInitialDeliveryQueue());
+    setSettings((current) => ({
+      ...createInitialSettings(),
+      ui: {
+        ...createInitialSettings().ui,
+        locale: current.ui.locale
+      }
+    }));
+    setAuditTrail(createInitialAuditTrail());
   }
 
   function toggleLocale() {
@@ -128,81 +191,96 @@ export function AppProvider({ children }: PropsWithChildren) {
   }
 
   function selectStudy(studyId: string) {
-    setSelectedStudyId(studyId);
-    setWorkflowStage("PatientSelected");
     const study = worklistStudies.find((item) => item.id === studyId);
 
-    if (study) {
-      appendAudit("info", `Selected patient ${study.patientName} (${study.accessionNumber}).`);
-
-      if (study.ageGroup === "Pediatric") {
-        setAlerts((current) => {
-          const exists = current.some((alert) => alert.id === "AL-PEDS");
-
-          if (exists) {
-            return current;
-          }
-
-          return [
-            {
-              id: "AL-PEDS",
-              severity: "warning",
-              title: "Pediatric dose guard",
-              message: "Pediatric workflow selected. Confirm the low-dose preset before exposure.",
-              requiresAck: false
-            },
-            ...current
-          ];
-        });
-      }
+    if (!study) {
+      return;
     }
+
+    const nextAlerts = study.ageGroup === "Pediatric" ? [createPediatricGuardAlert()] : createInitialAlerts();
+
+    setSelectedStudyId(studyId);
+    setSelectedProtocolId(null);
+    setWorkflowStage("PatientSelected");
+    setAlerts(nextAlerts);
+    setCurrentDose(createInitialDose());
+    setSystemStatus((current) => ({
+      ...current,
+      detector: "Connected",
+      generator: "Idle",
+      parameterSync: "Pending",
+      safeState: deriveSafeState(nextAlerts)
+    }));
+    appendAudit("info", `Selected patient ${study.patientName} (${study.accessionNumber}).`);
   }
 
   function selectProtocol(protocolId: string) {
     const protocol = protocolPresets.find((item) => item.id === protocolId);
+
+    if (!selectedStudy || !protocol) {
+      appendAudit("warning", "Protocol selection requires a patient context.");
+      return;
+    }
+
+    const nextAlerts =
+      selectedStudy.ageGroup === "Pediatric"
+        ? protocol.pediatric
+          ? [createPediatricGuardAlert()]
+          : [createProtocolMismatchAlert(protocolId), createPediatricGuardAlert()]
+        : createInitialAlerts();
+
     setSelectedProtocolId(protocolId);
     setWorkflowStage("ProtocolLoaded");
-
-    if (protocol) {
-      appendAudit("info", `Loaded protocol ${protocol.title}.`);
-
-      if (selectedStudy?.ageGroup === "Pediatric" && !protocol.pediatric) {
-        setAlerts((current) => [
-          {
-            id: `AL-MISMATCH-${protocolId}`,
-            severity: "critical",
-            title: "Protocol mismatch",
-            message: "The selected patient is pediatric but the preset is not flagged for pediatric use.",
-            requiresAck: true
-          },
-          ...current
-        ]);
-        setSystemStatus((current) => ({
-          ...current,
-          safeState: "Blocked"
-        }));
-      } else {
-        setSystemStatus((current) => ({
-          ...current,
-          safeState: "Idle"
-        }));
-      }
-    }
+    setAlerts(nextAlerts);
+    setSystemStatus((current) => ({
+      ...current,
+      generator: nextAlerts.some((alert) => alert.severity === "critical") ? "Error" : "Preparing",
+      parameterSync: nextAlerts.some((alert) => alert.severity === "critical") ? "Error" : "Pending",
+      safeState: deriveSafeState(nextAlerts)
+    }));
+    appendAudit("info", `Loaded protocol ${protocol.title}.`);
   }
 
   function confirmParameters() {
+    if (!selectedStudy || !selectedProtocol) {
+      appendAudit("warning", "Parameter confirmation requires both a patient and a protocol.");
+      return;
+    }
+
+    if (deriveSafeState(alerts) === "Blocked") {
+      appendAudit("warning", "Parameter confirmation paused until critical alerts are acknowledged.");
+      return;
+    }
+
     setWorkflowStage("ReadyToExpose");
     setSystemStatus((current) => ({
       ...current,
+      parameterSync: "Acked",
       generator: "Ready",
       detector: "Ready"
     }));
-    appendAudit("info", "Exposure parameters confirmed.");
+    appendAudit("info", "Exposure parameters confirmed after generator ACK simulation.");
   }
 
   function startExposure() {
     if (!selectedStudy || !selectedProtocol) {
       appendAudit("warning", "Exposure blocked because patient or protocol was not selected.");
+      return;
+    }
+
+    const hasBlockingAlerts = deriveSafeState(alerts) === "Blocked";
+    const canExpose =
+      workflowStage === "ReadyToExpose" &&
+      !hasBlockingAlerts &&
+      systemStatus.parameterSync === "Acked" &&
+      systemStatus.generator === "Ready" &&
+      systemStatus.detector === "Ready";
+
+    if (!canExpose) {
+      appendAudit(
+        "warning",
+        "Exposure blocked because generator ACK, detector readiness, or critical-alert clearance is incomplete."
+      );
       return;
     }
 
@@ -231,6 +309,7 @@ export function AppProvider({ children }: PropsWithChildren) {
 
     setSystemStatus((current) => ({
       ...current,
+      parameterSync: "Pending",
       generator: "Ready",
       detector: "Connected"
     }));
@@ -242,17 +321,27 @@ export function AppProvider({ children }: PropsWithChildren) {
   }
 
   function resetWorkflow() {
-    setWorkflowStage("Idle");
-    setSystemStatus(initialSystemStatus);
+    const session = resetWorkflowArtifacts();
+    setSelectedStudyId(session.selectedStudyId);
+    setSelectedProtocolId(session.selectedProtocolId);
+    setWorkflowStage(session.workflowStage);
+    setAlerts(session.alerts);
+    setCurrentDose(session.currentDose);
+    setSystemStatus(session.systemStatus);
     appendAudit("info", "Workflow reset for the next patient.");
   }
 
   function acknowledgeAlert(alertId: string) {
-    setAlerts((current) => current.filter((alert) => alert.id !== alertId));
-    setSystemStatus((current) => ({
-      ...current,
-      safeState: "Idle"
-    }));
+    setAlerts((current) => {
+      const nextAlerts = current.filter((alert) => alert.id !== alertId);
+      setSystemStatus((status) => ({
+        ...status,
+        generator: deriveSafeState(nextAlerts) === "Blocked" ? "Error" : status.generator === "Error" ? "Preparing" : status.generator,
+        parameterSync: deriveSafeState(nextAlerts) === "Blocked" ? "Error" : status.parameterSync === "Error" ? "Pending" : status.parameterSync,
+        safeState: deriveSafeState(nextAlerts)
+      }));
+      return nextAlerts;
+    });
     appendAudit("info", `Acknowledged alert ${alertId}.`);
   }
 
