@@ -563,158 +563,56 @@ git push origin github/<branch>:refs/heads/<branch>
 | 3 | `feature/web-ui` — GitHub 존재 | `refs/heads/feature/web-ui` 존재 | ✅ |
 | 4 | Gitea ↔ GitHub commit 일치 | 양쪽 `7926ba1` 동일 | ✅ |
 
-### 근본 원인 (확인 완료)
+## Mirror Sync Quick Guide
 
-Gitea 저장소에 **Push Mirror**가 설정되어 있었다. 이 미러는 10분 간격과 커밋 즉시 실행 모드로 GitHub에 push하며, 내부적으로 `--mirror` 동작을 사용한다.
+필수 원칙:
 
-`feature/web-ui`가 **GitHub에만 존재하고 Gitea에는 없는** 상태였기 때문에, Push Mirror가 실행될 때마다 Gitea 상태를 기준으로 GitHub를 덮어써 `feature/web-ui`를 반복 삭제했다.
+- Gitea 작업 PC에서는 `git fetch github <branch>` 단독 사용 금지
+- 항상 `refs/remotes/github/<branch>` 를 명시해서 remote-tracking ref 를 갱신
+- 새 작업 브랜치는 GitHub와 Gitea 양쪽에 모두 존재해야 한다
 
-```
-Gitea Push Mirror 설정 (조회 결과)
-  remote : https://github.com/holee9/console-gui.git
-  interval: 10m (+ sync_on_commit: true)
-```
-
-### 해결 방법 (적용 완료)
-
-`feature/web-ui`를 GitHub에서 Gitea에도 동일하게 push하여, 양쪽 저장소 상태를 일치시켰다.
+### 1회성: Gitea 작업 PC에 GitHub remote 추가
 
 ```bash
-# 실행한 명령
-git fetch github
-git push origin github/feature/web-ui:refs/heads/feature/web-ui
-```
-
-이후 Gitea Push Mirror가 실행되면 `feature/web-ui`가 Gitea에도 존재하므로 GitHub에서 삭제되지 않는다.
-
-### 브랜치 삭제 재발 시 대응
-
-GitHub에서 `feature/web-ui`가 다시 사라진 경우, Gitea에서 해당 브랜치도 사라졌는지 먼저 확인한다.
-
-```bash
-# Gitea 브랜치 목록 확인
-git ls-remote origin
-
-# Gitea에 없다면 GitHub → Gitea 복구 후 양쪽 동기화
-git fetch github
-git push origin github/feature/web-ui:refs/heads/feature/web-ui
-```
-
-> Gitea에 없는 브랜치는 Push Mirror가 실행될 때마다 GitHub에서도 삭제된다.
-> 작업 브랜치는 **반드시 Gitea와 GitHub 양쪽에 존재**해야 한다.
-
-### GitHub에 새 커밋이 안 보이거나 예전 커밋으로 되돌아갈 때
-
-증상:
-
-- 이 PC에서 `git push origin feature/web-ui` 는 성공한 것처럼 보임
-- 하지만 GitHub 브랜치 화면에는 방금 커밋이 안 보임
-- 또는 잠시 보였다가 Gitea에 있던 예전 커밋으로 다시 돌아감
-
-원인:
-
-- GitHub `feature/web-ui`만 먼저 앞으로 갔고
-- Gitea `feature/web-ui`는 아직 예전 커밋인 상태에서
-- Push Mirror가 다시 Gitea 상태를 기준으로 GitHub를 덮어씀
-
-해결 원칙:
-
-- **GitHub에 새 커밋을 올린 직후, Gitea의 `feature/web-ui`도 즉시 같은 커밋으로 fast-forward 해야 한다.**
-- `git fetch github <branch>` 만 단독으로 쓰지 말고, **반드시 `refs/remotes/github/<branch>` 를 명시 갱신**해야 한다.
-- 이유: plain `git fetch github feature/web-ui` 또는 `git fetch github main` 은 `FETCH_HEAD` 만 갱신되고, 이후 `git merge github/...` 가 **stale remote-tracking ref** 를 써서 예전 커밋을 다시 push 할 수 있다.
-
-#### Gitea 작업 PC 복붙용 명령
-
-주의:
-
-- 아래 3줄은 **`feature/web-ui` 전용**이다.
-- 이 3줄을 실행해도 **Gitea `main` 은 바뀌지 않는다.**
-- Gitea 웹 화면에서 기본으로 보이는 README는 보통 `main` 이므로, README 변경 확인은 아래 `main 동기화` 블록을 따로 실행해야 한다.
-
-아래 3줄을 `feature/web-ui` 반영용 **표준 명령**으로 사용한다.
-
-```bash
-git fetch github feature/web-ui:refs/remotes/github/feature/web-ui
-git checkout -B feature/web-ui github/feature/web-ui
-git push origin feature/web-ui
-```
-
-#### 왜 3줄 표준 명령만 쓰는가
-
-- `git fetch github feature/web-ui:refs/remotes/github/feature/web-ui`
-  GitHub 최신 브랜치를 **로컬 remote-tracking ref** 에 강제로 반영한다.
-- `git checkout -B feature/web-ui github/feature/web-ui`
-  로컬 `feature/web-ui` 를 GitHub 최신 커밋으로 정확히 맞춘다.
-- `git push origin feature/web-ui`
-  Gitea 원본 저장소를 GitHub와 동일 커밋으로 맞춘다.
-
-#### 금지: 예전 4줄 fast-forward 블록
-
-아래 패턴은 **사용 금지**:
-
-```bash
-git fetch github feature/web-ui
-git checkout feature/web-ui
-git merge --ff-only github/feature/web-ui
-git push origin feature/web-ui
-```
-
-이 4줄은 `github/feature/web-ui` ref 가 stale 인 상태에서 예전 커밋을 다시 Gitea 원본으로 push 할 수 있다. 실제 운영 중 **README가 다시 예전 상태로 돌아간 원인**으로 확인되었다.
-
-#### 그 다음 GitHub 미러 동기화까지 다시 맞추려면
-
-PowerShell에서 아래를 실행:
-
-```powershell
-.\scripts\sync_to_github.ps1 -Branches main, feature/web-ui
-```
-
-#### 운영 팁
-
-- 가장 안전한 순서는 `GitHub push -> 즉시 Gitea fast-forward -> 필요 시 sync_to_github.ps1 실행` 이다.
-- `feature/web-ui` 작업 중에는 `Gitea feature/web-ui` 와 `GitHub feature/web-ui` 의 헤드 커밋이 다르면 안 된다.
-- `merge --ff-only` 가 실패하면, Gitea `feature/web-ui` 에서 별도 커밋이 생긴 상태일 가능성이 있으므로 수동 정리가 필요하다.
-
-### 이력
-
-| 날짜 | 변경 내용 |
-|------|-----------|
-| 2026-04-04 | `scripts/sync_to_github.ps1` 추가, README Mirror Sync 섹션 개선 |
-| 2026-04-04 22:23 KST | `feature/web-ui` 재생성 후에도 삭제 재발 — Gitea Push Mirror가 원인으로 특정 |
-| 2026-04-04 | Gitea Push Mirror 설정 확인 (10m interval, sync_on_commit) |
-| 2026-04-04 | `feature/web-ui`를 Gitea에 push → Gitea ↔ GitHub 완전 일치, 해결 완료 |
-
----
-
-## Sync from GitHub Mirror (GitHub → Gitea)
-
-Perplexity Computer에서 GitHub 미러 작업 내용을 사내 Gitea에 반영할 때도 **plain fetch + merge 패턴은 사용하지 않는다**.
-
-#### Gitea `main` README 를 GitHub 최신 상태로 맞추는 복붙용 명령
-
-아래 4줄은 **`main` 전용**이다. GitHub `main` 의 README 변경을 Gitea 기본 화면에도 보이게 하려면 이 블록을 실행해야 한다.
-
-```bash
-# 최초 1회
 git remote add github https://github.com/holee9/console-gui.git
+```
 
-# 권장: main만 동기화
+### GitHub `main` 을 Gitea `main` 에 반영
+
+Gitea 기본 화면의 README를 최신으로 보려면 이 블록을 실행한다.
+
+```bash
 git fetch github main:refs/remotes/github/main
 git checkout main
 git merge --ff-only github/main
 git push origin main
 ```
 
-#### GitHub 작업 브랜치 `feature/web-ui` 를 Gitea에도 반영하는 복붙용 명령
+### GitHub 새 작업 브랜치를 Gitea에도 추가
+
+새 브랜치가 GitHub에 생겼을 때는 아래 `<branch>` 를 실제 브랜치 이름으로 바꿔서 실행한다.
 
 ```bash
-# GitHub 작업 브랜치를 Gitea에도 반영해야 할 때
-git fetch github feature/web-ui:refs/remotes/github/feature/web-ui
-git checkout -B feature/web-ui github/feature/web-ui
-git push origin feature/web-ui
+git fetch github <branch>:refs/remotes/github/<branch>
+git checkout -B <branch> github/<branch>
+git push origin <branch>
 ```
 
-즉:
+### Gitea에서 GitHub로 미러 반영
 
-- `Gitea main README 를 바꾸고 싶다` -> `main` 4줄 블록 실행
-- `Gitea feature/web-ui 브랜치를 맞추고 싶다` -> `feature/web-ui` 3줄 블록 실행
+필요할 때만 PowerShell에서 실행한다.
+
+```powershell
+.\scripts\sync_to_github.ps1 -Branches main, feature/web-ui
+```
+
+### 금지
+
+아래 방식은 stale ref 때문에 예전 커밋을 다시 push 할 수 있으므로 사용하지 않는다.
+
+```bash
+git fetch github <branch>
+git checkout <branch>
+git merge --ff-only github/<branch>
+git push origin <branch>
+```
