@@ -589,7 +589,7 @@ sequenceDiagram
 
 | ID | 출처 MR | 요구사항명 | 상세 설명 | Tier | Phase | 수용 기준 | 파생 SWR | 검증 수준 | 위험 참조 | MR 추적 |
 |-------|---------|--------|-----------|------|-------|-----------|-----------|-----------| -----------|---------|
-| PR-SA-060 | MR-033 | 사용자 관리 (RBAC) | 역할별 접근 제어: Administrator + Technologist 2개 역할 정의(Phase 1); bcrypt 해시 저장; 로그인 실패 5회 시 계정 잠금 | Tier 1 | 1 | Administrator만 사용자 추가/삭제 가능; 권한 없는 메뉴 비활성화 또는 숨김; bcrypt 해시 저장 확인; 5회 실패 잠금 동작 확인 | SWR-SA-060, SWR-SA-061, SWR-SA-062 | T, I | HAZ-SEC | MR-033 |
+| PR-SA-060 | MR-033 | 사용자 관리 (RBAC) | 역할별 접근 제어: Radiographer, Radiologist, Admin, Service 4개 역할 정의(Phase 1); bcrypt 해시 저장; 로그인 실패 5회 시 계정 잠금 | Tier 1 | 1 | Admin만 사용자 추가/삭제 가능; 권한 없는 메뉴 비활성화 또는 숨김; bcrypt 해시 저장 확인; 5회 실패 잠금 동작 확인 | SWR-SA-060, SWR-SA-061, SWR-SA-062 | T, I | HAZ-SEC | MR-033 |
 | PR-SA-061 | MR-004 | Organ Program/Exam Set 편집기 | 신체 부위별 촬영 프로토콜(kVp, mAs, Focus, AEC, 영상 처리 설정) 편집 GUI 제공 | Tier 2 | 1 | 변경 사항 저장 즉시 적용; 이전 버전으로 롤백 가능; Import/Export(XML) 지원 | SWR-SA-063, SWR-SA-064 | T, D | HAZ-RAD | MR-004 |
 | PR-SA-062 | MR-044, MR-045 | 시스템 설정 | 네트워크 설정(IP, Gateway, DNS), DICOM AE 설정, 날짜/시간, 언어(한/영), 화면 표시 설정 GUI | Tier 2 | 1 | 설정 변경 후 재시작 필요 항목 명시; 설정 파일 백업/복원 기능; 한/영 언어 전환 확인 | SWR-SA-065, SWR-SA-066 | T, D | HAZ-DATA | MR-044, MR-045 |
 | PR-SA-063 | MR-023 | 캘리브레이션 UI | Gain/Offset 캘리브레이션 위자드: 다크 영상 획득 → 플랫 영상 획득 → 보정 맵 계산 → 저장; 자사 FPD SDK 연동 | Tier 2 | 1 | 위자드 완료 후 보정 품질 지표(VNUE) 자동 계산 및 Pass/Fail 판정 | SWR-SA-067, SWR-SA-068, SWR-SA-069 | T, A | HAZ-RAD, HAZ-SW | MR-023 |

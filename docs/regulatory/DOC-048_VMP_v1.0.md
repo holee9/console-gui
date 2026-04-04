@@ -115,7 +115,7 @@ DOC-019 §6.2 및 DOC-017 §10의 고위험 모니터링 대상 컴포넌트에 
 | 1 (최우선) | SBOM-019 | BouncyCastle 2.3.0 | 인증/암호화 기능 — High CVE 이력 |
 | 2 (높음) | SBOM-009 | fo-dicom 5.1.3 | DICOM 파서 — 네트워크 노출, DOC-017 TM-T-001 연계 |
 | 2 (높음) | SBOM-010 | DCMTK 3.6.8 | DICOM 라이브러리 — 네트워크 노출 |
-| 3 (보통) | SBOM-002 | .NET 6.0 Runtime | 플랫폼 전체 영향 — EOL 이후 업그레이드 모니터링 |
+| 3 (보통) | SBOM-002 | .NET 8.0 Runtime | 플랫폼 전체 영향 — LTS 정기 패치 모니터링 |
 | 3 (보통) | SBOM-012/013 | OpenCvSharp4 / OpenCV | 영상 처리 파서 — 입력 취약점 가능성 |
 | 4 (낮음) | 나머지 SBOM | WPF, Serilog 등 | 정기 스캔으로 충분 |
 

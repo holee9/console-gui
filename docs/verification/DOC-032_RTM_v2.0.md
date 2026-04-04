@@ -87,7 +87,7 @@
 | PRD-XRAY-GUI-001 | Product Requirements Document | v2.0 |
 | FRS-XRAY-GUI-001 | Functional Requirements Specification | v2.0 |
 | RMP-XRAY-GUI-001 | Risk Management Plan & FMEA | v1.0 |
-| SAD-XRAY-GUI-001 | Software Architecture Document | 작성 예정 |
+| SAD-XRAY-GUI-001 | Software Architecture Document | v2.0 |
 | SDS-XRAY-GUI-001 | Software Detailed Design Spec | 작성 예정 |
 | UTP-XRAY-GUI-001 | Unit Test Plan | 작성 예정 |
 | ITP-XRAY-GUI-001 | Integration Test Plan | 작성 예정 |
@@ -322,7 +322,7 @@ flowchart TB
 
 | # | MR ID | MR Tier | PR ID | PR 요구사항명 | Tier | Phase | SWR ID | HAZ ID | RC ID | SAD Ref | SDS Ref | UT ID | IT ID | ST ID | VT ID | QA TC ID | 검증 수준 | 검증 상태 |
 |---|-------|---------|-------|------------|------|-------|--------|--------|-------|---------|---------|-------|-------|-------|-------|----------|---------|---------|
-| 49 | MR-006 | Tier 1 | PR-SA-060 | 사용자 관리 (RBAC) | Tier 1 | 1 | SWR-SA-060, SWR-SA-061, SWR-SA-062 | HAZ-SEC-001, HAZ-DATA-002 | RC-020, RC-023, RC-024 | SAD-SA-600 | SDS §3.6 | UT-SA-060–062 | IT-SA-060 | ST-SA-001 | VT-SA-001 | QA-SA-001 | T, I | Pending |
+| 49 | MR-033 | Tier 1 | PR-SA-060 | 사용자 관리 (RBAC) | Tier 1 | 1 | SWR-SA-060, SWR-SA-061, SWR-SA-062 | HAZ-SEC-001, HAZ-DATA-002 | RC-020, RC-023, RC-024 | SAD-SA-600 | SDS §3.7 | UT-SA-060–062 | IT-SA-060 | ST-SA-001 | VT-SA-001 | QA-SA-001 | T, I | Pending |
 | 50 | MR-006 | Tier 2 | PR-SA-061 | Organ Program/Exam Set 편집기 | Tier 2 | 1 | SWR-SA-063, SWR-SA-064 | HAZ-RAD-001, HAZ-RAD-003 | RC-001, RC-006 | SAD-SA-600 | SDS §3.6 | UT-SA-063–064 | IT-SA-063 | ST-SA-002 | VT-SA-002 | QA-SA-002 | T, D | Pending |
 | 51 | MR-006 | Tier 2 | PR-SA-062 | 시스템 설정 | Tier 2 | 1 | SWR-SA-065, SWR-SA-066 | HAZ-DATA-001 | RC-018 | SAD-SA-600 | SDS §3.6 | UT-SA-065–066 | IT-SA-065 | ST-SA-003 | VT-SA-003 | QA-SA-003 | T, D | Pending |
 | 52 | MR-006 | Tier 2 | PR-SA-063 | 캘리브레이션 UI | Tier 2 | 1 | SWR-SA-067, SWR-SA-068, SWR-SA-069 | HAZ-RAD-001, HAZ-SW-002 | RC-006, RC-011 | SAD-SA-600 | SDS §3.6 | UT-SA-067–069 | IT-SA-067 | ST-SA-004 | VT-SA-004 | QA-SA-004 | T, A | Pending |

@@ -551,7 +551,7 @@ flowchart LR
 
 | SWR ID | IEC 62304 분류 | 요구사항명 | 상세 | 출처 PR | 위험 참조 | 검증 방법 |
 |--------|---------------|-----------|------|---------|---------|---------|
-| SWR-CS-070 | Security-related | 로컬 인증 — bcrypt 해시 | bcrypt(cost factor=12, ~300ms): 비밀번호 해시 저장. 타이밍 공격 방지 고정 시간 비교. 로그인 성공 시 JWT/세션 토큰 발급 | PR-CS-070 | HAZ-SEC | T, I |
+| SWR-CS-070 | Security-related | 로컬 인증 — bcrypt 해시 | bcrypt(cost factor=12, ~200-500ms (목표 하드웨어 사양에서 실측 확인 필요)): 비밀번호 해시 저장. 타이밍 공격 방지 고정 시간 비교. 로그인 성공 시 JWT/세션 토큰 발급 | PR-CS-070 | HAZ-SEC | T, I |
 | SWR-CS-071 | Security-related | 계정 잠금 (5회 실패) | 로그인 5회 실패 → 30분 잠금. 관리자 강제 해제 가능. 잠금 이벤트 Security 레벨 감사 로그 | PR-CS-070 | HAZ-SEC | T |
 | SWR-CS-072 | Security-related | 비밀번호 복잡성 정책 강제 | 최소 8자, 대/소문자/숫자/특수문자 각 1자 이상, 90일 만료, 이전 5개 재사용 금지, 취약 비밀번호 목록(30,000개) 차단 | PR-CS-070 | HAZ-SEC | T, I |
 | SWR-CS-073 | Security-related | AD/LDAP 도메인 인증 | LDAP v3/LDAPS/Kerberos. 도메인 그룹 → 시스템 역할 매핑. 서버 연결 불가 시 로컬 인증 폴백 | PR-CS-071 | HAZ-SEC | T, D |
