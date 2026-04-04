@@ -113,7 +113,7 @@ flowchart LR
 | SBOM-001 | Windows 10 IoT Enterprise LTSC | 21H2 (19044) | Microsoft | Commercial | Class B | OS | 정기 패치 적용 | Medium |
 | SBOM-002 | .NET 8.0 Runtime (LTS) | 8.0.x | Microsoft | MIT | Class B | Direct | CVE 모니터링 중 | Low |
 | SBOM-003 | .NET 8.0 SDK | 8.0.x | Microsoft | MIT | N/A (빌드) | Direct | 런타임 미포함 | Low |
-| SBOM-004 | ASP.NET Core Runtime | 6.0.36 | Microsoft | MIT | Class B | Direct | CVE 모니터링 중 | Low |
+| SBOM-004 | ASP.NET Core Runtime | 8.0.x | Microsoft | MIT | Class B | Direct | CVE 모니터링 중 | Low |
 
 ### 4.2 UI 프레임워크 (UI Framework)
 

@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HnVue.Common\HnVue.Common.csproj" />
+    <ProjectReference Include="..\HnVue.Data\HnVue.Data.csproj" />
+    <ProjectReference Include="..\HnVue.Security\HnVue.Security.csproj" />
+  </ItemGroup>
+
+</Project>

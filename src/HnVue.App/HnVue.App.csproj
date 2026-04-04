@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HnVue.Common\HnVue.Common.csproj" />
+    <ProjectReference Include="..\HnVue.Data\HnVue.Data.csproj" />
+    <ProjectReference Include="..\HnVue.Security\HnVue.Security.csproj" />
+    <ProjectReference Include="..\HnVue.Dicom\HnVue.Dicom.csproj" />
+    <ProjectReference Include="..\HnVue.Workflow\HnVue.Workflow.csproj" />
+    <ProjectReference Include="..\HnVue.Imaging\HnVue.Imaging.csproj" />
+    <ProjectReference Include="..\HnVue.Dose\HnVue.Dose.csproj" />
+    <ProjectReference Include="..\HnVue.PatientManagement\HnVue.PatientManagement.csproj" />
+    <ProjectReference Include="..\HnVue.Incident\HnVue.Incident.csproj" />
+    <ProjectReference Include="..\HnVue.Update\HnVue.Update.csproj" />
+    <ProjectReference Include="..\HnVue.SystemAdmin\HnVue.SystemAdmin.csproj" />
+    <ProjectReference Include="..\HnVue.CDBurning\HnVue.CDBurning.csproj" />
+    <ProjectReference Include="..\HnVue.UI\HnVue.UI.csproj" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" />
+  </ItemGroup>
+
+</Project>

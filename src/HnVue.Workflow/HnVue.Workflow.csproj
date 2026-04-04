@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HnVue.Common\HnVue.Common.csproj" />
+    <ProjectReference Include="..\HnVue.Data\HnVue.Data.csproj" />
+    <ProjectReference Include="..\HnVue.Security\HnVue.Security.csproj" />
+    <ProjectReference Include="..\HnVue.Dicom\HnVue.Dicom.csproj" />
+    <ProjectReference Include="..\HnVue.Imaging\HnVue.Imaging.csproj" />
+    <ProjectReference Include="..\HnVue.Dose\HnVue.Dose.csproj" />
+    <ProjectReference Include="..\HnVue.Incident\HnVue.Incident.csproj" />
+    <PackageReference Include="System.IO.Ports" />
+  </ItemGroup>
+
+</Project>
