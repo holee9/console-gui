@@ -1,0 +1,91 @@
+using HnVue.Data.Entities;
+using Microsoft.EntityFrameworkCore;
+
+namespace HnVue.Data;
+
+/// <summary>
+/// EF Core database context for the HnVue console application.
+/// Uses SQLite with optional SQLCipher AES-256 encryption.
+/// Pass the encryption key via the connection string: <c>Data Source=hnvue.db;Password=&lt;key&gt;</c>.
+/// </summary>
+public sealed class HnVueDbContext(DbContextOptions<HnVueDbContext> options) : DbContext(options)
+{
+    /// <summary>Gets the patient demographic records.</summary>
+    public DbSet<PatientEntity> Patients => Set<PatientEntity>();
+
+    /// <summary>Gets the DICOM study records.</summary>
+    public DbSet<StudyEntity> Studies => Set<StudyEntity>();
+
+    /// <summary>Gets the acquired image file references.</summary>
+    public DbSet<ImageEntity> Images => Set<ImageEntity>();
+
+    /// <summary>Gets the radiation dose records.</summary>
+    public DbSet<DoseRecordEntity> DoseRecords => Set<DoseRecordEntity>();
+
+    /// <summary>Gets the user account records.</summary>
+    public DbSet<UserEntity> Users => Set<UserEntity>();
+
+    /// <summary>Gets the tamper-evident audit log entries.</summary>
+    public DbSet<AuditLogEntity> AuditLogs => Set<AuditLogEntity>();
+
+    /// <inheritdoc/>
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        // ── PatientEntity ──────────────────────────────────────────────────────
+        modelBuilder.Entity<PatientEntity>(e =>
+        {
+            e.HasKey(p => p.PatientId);
+            e.HasIndex(p => p.Name);
+            e.HasMany(p => p.Studies)
+             .WithOne(s => s.Patient)
+             .HasForeignKey(s => s.PatientId)
+             .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // ── StudyEntity ────────────────────────────────────────────────────────
+        modelBuilder.Entity<StudyEntity>(e =>
+        {
+            e.HasKey(s => s.StudyInstanceUid);
+            e.HasIndex(s => s.PatientId);
+            e.HasMany(s => s.Images)
+             .WithOne(i => i.Study)
+             .HasForeignKey(i => i.StudyInstanceUid)
+             .OnDelete(DeleteBehavior.Cascade);
+            e.HasMany(s => s.DoseRecords)
+             .WithOne(d => d.Study)
+             .HasForeignKey(d => d.StudyInstanceUid)
+             .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // ── ImageEntity ────────────────────────────────────────────────────────
+        modelBuilder.Entity<ImageEntity>(e =>
+        {
+            e.HasKey(i => i.ImageId);
+            e.HasIndex(i => i.StudyInstanceUid);
+        });
+
+        // ── DoseRecordEntity ───────────────────────────────────────────────────
+        modelBuilder.Entity<DoseRecordEntity>(e =>
+        {
+            e.HasKey(d => d.DoseId);
+            e.HasIndex(d => d.StudyInstanceUid);
+        });
+
+        // ── UserEntity ─────────────────────────────────────────────────────────
+        modelBuilder.Entity<UserEntity>(e =>
+        {
+            e.HasKey(u => u.UserId);
+            e.HasIndex(u => u.Username).IsUnique();
+        });
+
+        // ── AuditLogEntity ─────────────────────────────────────────────────────
+        modelBuilder.Entity<AuditLogEntity>(e =>
+        {
+            e.HasKey(a => a.EntryId);
+            e.HasIndex(a => a.TimestampTicks);
+            e.HasIndex(a => a.UserId);
+        });
+    }
+}
