@@ -9,7 +9,12 @@ public sealed class JwtOptions
     /// <summary>The configuration section name used for binding.</summary>
     public const string SectionName = "Jwt";
 
-    /// <summary>Gets or sets the HMAC-SHA256 signing secret. Minimum 32 characters required.</summary>
+    /// <summary>
+    /// Gets or sets the HMAC-SHA256 signing secret. Minimum 32 characters required.
+    /// WARNING: The default value is for development use only.
+    /// In production, this MUST be overridden with a securely generated, environment-specific secret
+    /// supplied via configuration (e.g., environment variable or secrets manager).
+    /// </summary>
     public string SecretKey { get; set; } = "HnVue-Dev-Secret-Key-32CharMinimum!";
 
     /// <summary>Gets or sets the token validity window in minutes. Defaults to 15 minutes.</summary>

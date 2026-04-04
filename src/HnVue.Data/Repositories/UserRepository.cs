@@ -26,7 +26,11 @@ internal sealed class UserRepository(HnVueDbContext context) : IUserRepository
 
             return Result.Success(EntityMapper.ToRecord(entity));
         }
-        catch (DbUpdateException ex)
+        catch (OperationCanceledException)
+        {
+            throw;
+        }
+        catch (Exception ex)
         {
             return Result.Failure<UserRecord>(
                 ErrorCode.DatabaseError,
@@ -49,7 +53,11 @@ internal sealed class UserRepository(HnVueDbContext context) : IUserRepository
 
             return Result.Success(EntityMapper.ToRecord(entity));
         }
-        catch (DbUpdateException ex)
+        catch (OperationCanceledException)
+        {
+            throw;
+        }
+        catch (Exception ex)
         {
             return Result.Failure<UserRecord>(
                 ErrorCode.DatabaseError,
@@ -145,7 +153,11 @@ internal sealed class UserRepository(HnVueDbContext context) : IUserRepository
 
             return Result.Success(records);
         }
-        catch (DbUpdateException ex)
+        catch (OperationCanceledException)
+        {
+            throw;
+        }
+        catch (Exception ex)
         {
             return Result.Failure<IReadOnlyList<UserRecord>>(
                 ErrorCode.DatabaseError,

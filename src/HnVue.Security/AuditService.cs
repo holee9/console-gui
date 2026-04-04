@@ -16,8 +16,11 @@ public sealed class AuditService(IAuditRepository auditRepository) : IAuditServi
     private readonly IAuditRepository _auditRepository = auditRepository;
 
     /// <summary>
-    /// Default HMAC key used for development and testing purposes.
-    /// In production, this should be replaced by a configurable, securely stored key.
+    /// Default HMAC key used for development and testing purposes only.
+    /// WARNING: This key is embedded in source code and must NOT be used in production.
+    /// In production, override this by supplying a securely generated key via
+    /// environment variable (e.g., HNVUE_AUDIT_HMAC_KEY) or a secrets manager.
+    /// Minimum key length: 32 bytes. Rotate regularly per IEC 62304 security policy.
     /// </summary>
     internal static readonly byte[] DefaultHmacKey =
         Encoding.UTF8.GetBytes("HnVue-Audit-HMAC-Key-32CharMin!!");

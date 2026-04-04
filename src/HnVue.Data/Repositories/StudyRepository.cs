@@ -46,7 +46,11 @@ internal sealed class StudyRepository(HnVueDbContext context) : IStudyRepository
 
             return Result.Success(records);
         }
-        catch (DbUpdateException ex)
+        catch (OperationCanceledException)
+        {
+            throw;
+        }
+        catch (Exception ex)
         {
             return Result.Failure<IReadOnlyList<StudyRecord>>(
                 ErrorCode.DatabaseError,
@@ -69,7 +73,11 @@ internal sealed class StudyRepository(HnVueDbContext context) : IStudyRepository
 
             return Result.Success<StudyRecord?>(EntityMapper.ToRecord(entity));
         }
-        catch (DbUpdateException ex)
+        catch (OperationCanceledException)
+        {
+            throw;
+        }
+        catch (Exception ex)
         {
             return Result.Failure<StudyRecord?>(
                 ErrorCode.DatabaseError,

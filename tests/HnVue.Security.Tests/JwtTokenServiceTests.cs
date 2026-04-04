@@ -97,4 +97,69 @@ public sealed class JwtTokenServiceTests
         jwt.Issuer.Should().Be("HnVue");
         jwt.Audiences.Should().Contain("HnVue");
     }
+
+    [Fact]
+    public void Validate_ValidToken_ReturnsSuccessWithPrincipal()
+    {
+        var sut = CreateSut();
+        var token = sut.Issue("user-1", "testuser", UserRole.Radiographer);
+
+        var result = sut.Validate(token);
+
+        result.IsSuccess.Should().BeTrue();
+        result.Value.Should().NotBeNull();
+        result.Value.Identity.Should().NotBeNull();
+        result.Value.Identity!.IsAuthenticated.Should().BeTrue();
+    }
+
+    [Fact]
+    public void Validate_InvalidToken_ReturnsTokenInvalidFailure()
+    {
+        var sut = CreateSut();
+
+        var result = sut.Validate("this.is.not.a.valid.token");
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(HnVue.Common.Results.ErrorCode.TokenInvalid);
+    }
+
+    [Fact]
+    public void Validate_TokenSignedWithDifferentKey_ReturnsTokenInvalidFailure()
+    {
+        var otherOptions = new JwtOptions
+        {
+            SecretKey = "OtherSecretKey-32CharMinimumForHs256!",
+            ExpiryMinutes = 15,
+            Issuer = "HnVue",
+            Audience = "HnVue",
+        };
+        var otherSut = new JwtTokenService(otherOptions);
+        var tokenFromOtherKey = otherSut.Issue("user-1", "testuser", UserRole.Admin);
+
+        var sut = CreateSut();
+        var result = sut.Validate(tokenFromOtherKey);
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(HnVue.Common.Results.ErrorCode.TokenInvalid);
+    }
+
+    [Fact]
+    public void Validate_ExpiredToken_ReturnsTokenExpiredFailure()
+    {
+        var expiredOptions = new JwtOptions
+        {
+            SecretKey = "TestSecretKey-32CharMinimumForHs256!",
+            ExpiryMinutes = -1, // Already expired
+            Issuer = "HnVue",
+            Audience = "HnVue",
+        };
+        var expiredSut = new JwtTokenService(expiredOptions);
+        var expiredToken = expiredSut.Issue("user-1", "testuser", UserRole.Radiographer);
+
+        var sut = CreateSut();
+        var result = sut.Validate(expiredToken);
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(HnVue.Common.Results.ErrorCode.TokenExpired);
+    }
 }

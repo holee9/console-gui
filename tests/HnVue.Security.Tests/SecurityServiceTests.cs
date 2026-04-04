@@ -190,6 +190,33 @@ public sealed class SecurityServiceTests
         result.Error.Should().Be(ErrorCode.NotFound);
     }
 
+    [Fact]
+    public async Task CheckAuthorization_HigherRoleSatisfiesLowerRequired_ReturnsSuccess()
+    {
+        // Admin (level 3) should satisfy Radiographer (level 1) requirement.
+        var user = MakeUser(role: UserRole.Admin);
+        _userRepository.GetByIdAsync(user.UserId, Arg.Any<CancellationToken>())
+            .Returns(Result.Success(user));
+
+        var result = await _sut.CheckAuthorizationAsync(user.UserId, UserRole.Radiographer);
+
+        result.IsSuccess.Should().BeTrue();
+    }
+
+    [Fact]
+    public async Task CheckAuthorization_LowerRoleFailsHigherRequired_ReturnsInsufficientPermission()
+    {
+        // Radiographer (level 1) should NOT satisfy Radiologist (level 2) requirement.
+        var user = MakeUser(role: UserRole.Radiographer);
+        _userRepository.GetByIdAsync(user.UserId, Arg.Any<CancellationToken>())
+            .Returns(Result.Success(user));
+
+        var result = await _sut.CheckAuthorizationAsync(user.UserId, UserRole.Radiologist);
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.InsufficientPermission);
+    }
+
     // ── LockAccountAsync ───────────────────────────────────────────────────────
 
     [Fact]

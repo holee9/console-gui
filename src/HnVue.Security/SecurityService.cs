@@ -43,7 +43,8 @@ public sealed class SecurityService(
         if (user.IsLocked)
             return Result.Failure<AuthenticationToken>(ErrorCode.AccountLocked, "Account is locked.");
 
-        if (!BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
+        var verifyResult = PasswordHasher.Verify(password, user.PasswordHash);
+        if (verifyResult.IsFailure)
         {
             var newCount = user.FailedLoginCount + 1;
             await _userRepository.UpdateFailedLoginCountAsync(user.UserId, newCount, cancellationToken).ConfigureAwait(false);
@@ -82,7 +83,7 @@ public sealed class SecurityService(
             return Result.Failure(ErrorCode.NotFound, $"User '{userId}' not found.");
 
         var user = userResult.Value;
-        return user.Role == requiredRole
+        return RbacPolicy.HasRoleOrHigher(user.Role, requiredRole)
             ? Result.Success()
             : Result.Failure(ErrorCode.InsufficientPermission, $"Role '{requiredRole}' required; user has '{user.Role}'.");
     }
@@ -128,14 +129,15 @@ public sealed class SecurityService(
 
         var user = userResult.Value;
 
-        if (!BCrypt.Net.BCrypt.Verify(currentPassword, user.PasswordHash))
+        var verifyCurrentResult = PasswordHasher.Verify(currentPassword, user.PasswordHash);
+        if (verifyCurrentResult.IsFailure)
             return Result.Failure(ErrorCode.AuthenticationFailed, "Current password is incorrect.");
 
         if (!PasswordPolicyRegex.IsMatch(newPassword))
             return Result.Failure(ErrorCode.PasswordPolicyViolation,
                 "Password must be at least 8 characters and contain at least one uppercase letter and one digit.");
 
-        var newHash = BCrypt.Net.BCrypt.HashPassword(newPassword, workFactor: 12);
+        var newHash = PasswordHasher.HashPassword(newPassword);
         var updateResult = await _userRepository.UpdatePasswordHashAsync(userId, newHash, cancellationToken).ConfigureAwait(false);
         if (updateResult.IsFailure)
             return updateResult;

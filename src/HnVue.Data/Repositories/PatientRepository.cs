@@ -44,7 +44,11 @@ internal sealed class PatientRepository(HnVueDbContext context) : IPatientReposi
 
             return Result.Success<PatientRecord?>(EntityMapper.ToRecord(entity));
         }
-        catch (DbUpdateException ex)
+        catch (OperationCanceledException)
+        {
+            throw;
+        }
+        catch (Exception ex)
         {
             return Result.Failure<PatientRecord?>(
                 ErrorCode.DatabaseError,
@@ -70,7 +74,11 @@ internal sealed class PatientRepository(HnVueDbContext context) : IPatientReposi
 
             return Result.Success(records);
         }
-        catch (DbUpdateException ex)
+        catch (OperationCanceledException)
+        {
+            throw;
+        }
+        catch (Exception ex)
         {
             return Result.Failure<IReadOnlyList<PatientRecord>>(
                 ErrorCode.DatabaseError,

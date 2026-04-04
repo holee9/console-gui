@@ -47,7 +47,11 @@ internal sealed class AuditRepository(HnVueDbContext context) : IAuditRepository
                 ? Result.SuccessNullable<string?>(null)
                 : Result.Success<string?>(lastEntry);
         }
-        catch (DbUpdateException ex)
+        catch (OperationCanceledException)
+        {
+            throw;
+        }
+        catch (Exception ex)
         {
             return Result.Failure<string?>(
                 ErrorCode.DatabaseError,
@@ -89,7 +93,11 @@ internal sealed class AuditRepository(HnVueDbContext context) : IAuditRepository
 
             return Result.Success(records);
         }
-        catch (DbUpdateException ex)
+        catch (OperationCanceledException)
+        {
+            throw;
+        }
+        catch (Exception ex)
         {
             return Result.Failure<IReadOnlyList<AuditEntry>>(
                 ErrorCode.DatabaseError,
