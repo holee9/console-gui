@@ -13,4 +13,7 @@ public enum DoseValidationLevel
 
     /// <summary>Dose exceeds the safety limit; the exposure must be blocked.</summary>
     Block,
+
+    /// <summary>Dose exceeds the critical emergency threshold; immediate safety interlock activation required.</summary>
+    Emergency,
 }
