@@ -496,9 +496,9 @@ python scripts/sync_docs.py
 `feature/web-ui`는 별도 PC에서 장시간 유지되는 작업 브랜치다. 미러 동기화가 ref 전체를 강제로 맞추면, 소스 미러에 없는 `feature/web-ui`가 대상 GitHub에서 반복 삭제될 수 있다.
 
 - `git push --mirror`, `git push --prune`, ref 전체 overwrite 방식은 작업 브랜치를 삭제할 수 있으므로 사용하지 않는다.
-- 자동 동기화가 필요하면 기본값은 `main`만 동기화한다.
-- `feature/web-ui`도 미러 대상에 포함해야 한다면, 미러 원본에도 동일한 브랜치를 유지한 뒤 동기화한다.
-- 미러 동기화 후 `feature/web-ui`가 GitHub에서 사라지면, 먼저 미러 스크립트의 ref 처리 방식을 점검한 뒤 브랜치를 다시 push 한다.
+- 자동 동기화는 반드시 `scripts/sync_to_github.ps1`을 사용한다. 이 스크립트는 `--mirror`/`--prune` 없이 지정 브랜치만 push한다.
+- `feature/web-ui`도 미러 대상에 포함해야 한다면 `-Branches main, feature/web-ui` 옵션을 사용한다.
+- 미러 동기화 후 `feature/web-ui`가 GitHub에서 사라지면, 스크립트에 해당 브랜치를 추가했는지 확인하고 `-Branches main, feature/web-ui`로 재실행한다.
 
 ---
 
@@ -514,9 +514,77 @@ python scripts/sync_docs.py
 
 ---
 
-## Sync from GitHub Mirror
+## Sync to GitHub Mirror (Gitea → GitHub)
 
-Perplexity Computer에서 GitHub 미러 작업 내용을 사내 로컬 Git에 반영:
+### 안전한 동기화 스크립트
+
+`--mirror` / `--prune` 없이 지정한 브랜치만 push한다. GitHub에만 존재하는 브랜치(예: `feature/web-ui`)는 삭제되지 않는다.
+
+```powershell
+# 최초 1회 — GitHub remote 등록
+git remote add github https://github.com/holee9/console-gui.git
+
+# main만 동기화 (기본)
+.\scripts\sync_to_github.ps1
+
+# main + feature/web-ui 동시 동기화
+.\scripts\sync_to_github.ps1 -Branches main, feature/web-ui
+
+# 실행 전 확인 (dry-run)
+.\scripts\sync_to_github.ps1 -DryRun
+```
+
+> 스크립트 위치: `scripts/sync_to_github.ps1`
+> `--mirror`, `--prune`, ref 전체 overwrite 방식은 스크립트 내부에서 사용하지 않는다.
+
+### Mirror Operator Checklist
+
+- 자동 동기화 대상은 기본적으로 `main`만 사용한다.
+- `feature/web-ui`를 포함해야 할 때는 `-Branches main, feature/web-ui` 옵션을 명시한다.
+- `--mirror`, `--prune`, ref delete가 포함된 push는 절대 사용하지 않는다.
+- 동기화 직후 GitHub에서 `feature/web-ui` 존재 여부를 확인한다.
+
+---
+
+## Mirror Sync Fix Status
+
+> **이 섹션은 GitHub 미러 측에서 동기화 방식 전환 여부를 확인하기 위한 체크포인트입니다.**
+
+### 적용 여부 확인 방법
+
+GitHub 저장소에서 아래 항목을 순서대로 확인한다.
+
+| # | 확인 항목 | 확인 방법 | 기대 결과 |
+|---|-----------|-----------|-----------|
+| 1 | 안전 동기화 스크립트 존재 | `scripts/sync_to_github.ps1` 파일 유무 | 파일 **존재** → 전환 완료 |
+| 2 | `--mirror` / `--prune` 미사용 | 스크립트 내부에 해당 플래그 없음 | 스크립트에 해당 문자열 **없음** |
+| 3 | `feature/web-ui` 브랜치 보존 | GitHub Branches 탭에서 확인 | 브랜치 **삭제되지 않음** |
+| 4 | 이 README 섹션 존재 | `Mirror Sync Fix Status` 제목 검색 | 섹션 **존재** → 이 커밋 이후 동기화 |
+
+### 전환 이력
+
+| 날짜 | 변경 내용 |
+|------|-----------|
+| 2026-04-04 | `git push --mirror` 방식 → `scripts/sync_to_github.ps1` 선택적 push 방식으로 전환 |
+
+### 브랜치가 다시 삭제됐을 때
+
+`feature/web-ui`가 GitHub에서 사라진 경우, **Gitea 쪽 동기화 실행자**에게 아래를 전달한다.
+
+```
+sync_to_github.ps1 에 feature/web-ui 브랜치가 누락된 것으로 보입니다.
+Gitea에서 아래 명령을 실행해 주세요:
+
+  .\scripts\sync_to_github.ps1 -Branches main, feature/web-ui
+
+이후 GitHub Branches 탭에서 feature/web-ui 존재 여부를 재확인합니다.
+```
+
+---
+
+## Sync from GitHub Mirror (GitHub → Gitea)
+
+Perplexity Computer에서 GitHub 미러 작업 내용을 사내 Gitea에 반영:
 
 ```bash
 # 최초 1회
@@ -528,10 +596,3 @@ git checkout main
 git merge github/main
 git push origin main
 ```
-
-### Mirror Operator Checklist
-
-- 자동 동기화 대상은 기본적으로 `main`만 사용한다.
-- 작업 저장소에 `feature/web-ui`가 존재하는 동안에는 `--mirror`, `--prune`, ref delete가 포함된 push를 금지한다.
-- 미러 원본에 없는 브랜치를 대상 GitHub에서 지우는 스크립트는 웹 UI 검증 기간 동안 비활성화한다.
-- 동기화 직후 GitHub에서 `feature/web-ui` 존재 여부를 확인한다.
