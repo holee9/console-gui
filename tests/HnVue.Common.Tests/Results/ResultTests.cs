@@ -140,6 +140,48 @@ public sealed class ResultTests
         text.Should().Contain(nameof(ErrorCode.AuthenticationFailed));
     }
 
+    // ── Result<T> Match ───────────────────────────────────────────────────────
+
+    [Fact]
+    public void Match_OnSuccess_InvokesOnSuccess()
+    {
+        var result = Result.Success(7);
+
+        var output = result.Match(v => $"ok:{v}", (code, msg) => $"err:{code}:{msg}");
+
+        output.Should().Be("ok:7");
+    }
+
+    [Fact]
+    public void Match_OnFailure_InvokesOnFailure()
+    {
+        var result = Result.Failure<int>(ErrorCode.AuthenticationFailed, "bad creds");
+
+        var output = result.Match(v => "ok", (code, msg) => $"err:{code}:{msg}");
+
+        output.Should().Be($"err:{ErrorCode.AuthenticationFailed}:bad creds");
+    }
+
+    [Fact]
+    public void Match_WithNullOnSuccess_ThrowsArgumentNullException()
+    {
+        var result = Result.Success(1);
+
+        var act = () => result.Match(null!, (_, _) => "err");
+
+        act.Should().Throw<ArgumentNullException>();
+    }
+
+    [Fact]
+    public void Match_WithNullOnFailure_ThrowsArgumentNullException()
+    {
+        var result = Result.Success(1);
+
+        var act = () => result.Match(v => "ok", null!);
+
+        act.Should().Throw<ArgumentNullException>();
+    }
+
     // ── Non-generic Result ────────────────────────────────────────────────────
 
     [Fact]

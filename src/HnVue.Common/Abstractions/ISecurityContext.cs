@@ -21,7 +21,16 @@ public interface ISecurityContext
     /// <summary>Gets a value indicating whether a user is currently authenticated.</summary>
     bool IsAuthenticated { get; }
 
-    /// <summary>Returns <see langword="true"/> when the current user holds the specified <paramref name="role"/>.</summary>
+    /// <summary>
+    /// Returns <see langword="true"/> when the current user holds exactly the specified <paramref name="role"/>.
+    /// </summary>
+    /// <remarks>
+    /// Role matching is exact: <c>HasRole(UserRole.Radiographer)</c> returns <see langword="false"/>
+    /// for an <c>Admin</c> user even though Admin shares some permissions.
+    /// This is by design — each role has a distinct, non-hierarchical permission set per the SRS.
+    /// Callers that need to permit multiple roles must call <c>HasRole</c> for each allowed role,
+    /// or compare <see cref="CurrentRole"/> directly.
+    /// </remarks>
     /// <param name="role">Role to test against the current user's role.</param>
     bool HasRole(UserRole role);
 

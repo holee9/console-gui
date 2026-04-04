@@ -1,5 +1,5 @@
 using FluentAssertions;
-using HnVue.Common.Models;
+using HnVue.Common.Enums;
 using Xunit;
 
 namespace HnVue.Common.Tests.Models;

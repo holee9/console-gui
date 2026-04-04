@@ -147,6 +147,22 @@ public sealed class Result<T>
     }
 
     /// <summary>
+    /// Collapses the result into a single value by applying one of two projection functions.
+    /// Eliminates the need for <c>if (result.IsSuccess)</c> branches at the call site.
+    /// </summary>
+    /// <typeparam name="TOut">The type of the returned value.</typeparam>
+    /// <param name="onSuccess">Invoked with the value when the result is successful.</param>
+    /// <param name="onFailure">Invoked with the error code and message when the result is a failure.</param>
+    public TOut Match<TOut>(Func<T, TOut> onSuccess, Func<ErrorCode, string, TOut> onFailure)
+    {
+        ArgumentNullException.ThrowIfNull(onSuccess);
+        ArgumentNullException.ThrowIfNull(onFailure);
+        return IsSuccess
+            ? onSuccess(_value!)
+            : onFailure(Error!.Value, _errorMessage!);
+    }
+
+    /// <summary>
     /// Implicitly wraps a value in a successful <see cref="Result{T}"/>.
     /// Allows natural assignment: <c>Result&lt;int&gt; r = 42;</c>
     /// </summary>
