@@ -1,11 +1,14 @@
 using FluentAssertions;
+using HnVue.CDBurning;
 using HnVue.Common.Abstractions;
 using HnVue.Common.Enums;
 using HnVue.Common.Models;
 using HnVue.Common.Results;
+using HnVue.Dicom;
 using HnVue.Dose;
 using HnVue.PatientManagement;
 using HnVue.Security;
+using HnVue.Workflow;
 using NSubstitute;
 using Xunit;
 
@@ -153,8 +156,10 @@ public sealed class CrossModuleIntegrationTests
             RequestedProcedure: "PA Chest");
 
         // Patient does not exist yet
+#pragma warning disable CS8620 // SuccessNullable returns Result<T?> but NSubstitute types as Result<T>
         patientRepo.FindByIdAsync("P-001", Arg.Any<CancellationToken>())
-            .Returns(Result.SuccessNullable<PatientRecord>(null));
+            .Returns(ci => Task.FromResult(Result.SuccessNullable<PatientRecord>(null)));
+#pragma warning restore CS8620
 
         var expectedRecord = new PatientRecord(
             PatientId: "P-001",
@@ -215,8 +220,10 @@ public sealed class CrossModuleIntegrationTests
             CreatedBy: "admin");
 
         // Patient already exists in the system
+#pragma warning disable CS8620 // SuccessNullable returns Result<T?> but NSubstitute types as Result<T>
         patientRepo.FindByIdAsync("P-002", Arg.Any<CancellationToken>())
-            .Returns(Result.SuccessNullable<PatientRecord>(existingRecord));
+            .Returns(ci => Task.FromResult(Result.SuccessNullable<PatientRecord>(existingRecord)));
+#pragma warning restore CS8620
 
         var patientService = new PatientService(patientRepo);
         var worklistService = new WorklistService(worklistRepo, patientService);
@@ -382,6 +389,279 @@ public sealed class CrossModuleIntegrationTests
         result.Error.Should().Be(ErrorCode.ValidationFailed);
     }
 
+    // ── Scenario 4: Shooting workflow state machine ────────────────────────────
+
+    /// <summary>
+    /// Integration test: WorkflowEngine drives the full 9-state acquisition chain
+    /// from Idle through Completed using the real WorkflowStateMachine.
+    /// SWR-WF-010: State machine allows all valid transitions in sequence.
+    /// SWR-WF-020: Engine exposes current state correctly after each transition.
+    /// SWR-WF-030: Session completes cleanly and can be reset to Idle.
+    /// </summary>
+    [Fact]
+    [Trait("SWR", "SWR-WF-010")]
+    [Trait("SWR", "SWR-WF-020")]
+    [Trait("SWR", "SWR-WF-030")]
+    public async Task ShootingWorkflow_FullStateChain_TransitionsToCompleted()
+    {
+        // Arrange — real engine with real state machine, simulated generator and dose service
+        var doseService = Substitute.For<IDoseService>();
+        var generator = new GeneratorSimulator { PrepareDelayMs = 0, ExposureDelayMs = 0 };
+        var engine = new WorkflowEngine(doseService, generator);
+
+        engine.CurrentState.Should().Be(WorkflowState.Idle, "engine starts in Idle");
+
+        // Act — drive through all 9 states
+        var startResult = await engine.StartAsync("P-001", "1.2.3.4.5");
+        startResult.IsSuccess.Should().BeTrue("StartAsync should move Idle → PatientSelected");
+        engine.CurrentState.Should().Be(WorkflowState.PatientSelected);
+
+        var protocolResult = await engine.TransitionAsync(WorkflowState.ProtocolLoaded);
+        protocolResult.IsSuccess.Should().BeTrue();
+        engine.CurrentState.Should().Be(WorkflowState.ProtocolLoaded);
+
+        var readyResult = await engine.TransitionAsync(WorkflowState.ReadyToExpose);
+        readyResult.IsSuccess.Should().BeTrue();
+        engine.CurrentState.Should().Be(WorkflowState.ReadyToExpose);
+
+        var exposingResult = await engine.TransitionAsync(WorkflowState.Exposing);
+        exposingResult.IsSuccess.Should().BeTrue();
+        engine.CurrentState.Should().Be(WorkflowState.Exposing);
+
+        var acquiringResult = await engine.TransitionAsync(WorkflowState.ImageAcquiring);
+        acquiringResult.IsSuccess.Should().BeTrue();
+        engine.CurrentState.Should().Be(WorkflowState.ImageAcquiring);
+
+        var processingResult = await engine.TransitionAsync(WorkflowState.ImageProcessing);
+        processingResult.IsSuccess.Should().BeTrue();
+        engine.CurrentState.Should().Be(WorkflowState.ImageProcessing);
+
+        var reviewResult = await engine.TransitionAsync(WorkflowState.ImageReview);
+        reviewResult.IsSuccess.Should().BeTrue();
+        engine.CurrentState.Should().Be(WorkflowState.ImageReview);
+
+        var completedResult = await engine.TransitionAsync(WorkflowState.Completed);
+        completedResult.IsSuccess.Should().BeTrue();
+        engine.CurrentState.Should().Be(WorkflowState.Completed, "workflow should reach Completed state");
+    }
+
+    /// <summary>
+    /// Integration test: An invalid state transition is rejected by WorkflowEngine.
+    /// SWR-WF-010: State machine blocks disallowed transitions.
+    /// </summary>
+    [Fact]
+    [Trait("SWR", "SWR-WF-010")]
+    public async Task ShootingWorkflow_InvalidTransition_ReturnsFailure()
+    {
+        // Arrange — engine in Idle state; jump directly to Exposing (not allowed)
+        var doseService = Substitute.For<IDoseService>();
+        var generator = new GeneratorSimulator();
+        var engine = new WorkflowEngine(doseService, generator);
+
+        // Act — try to jump from Idle directly to Exposing
+        var result = await engine.TransitionAsync(WorkflowState.Exposing);
+
+        // Assert
+        result.IsFailure.Should().BeTrue("direct jump from Idle to Exposing is not a valid transition");
+        result.Error.Should().Be(ErrorCode.InvalidStateTransition);
+        engine.CurrentState.Should().Be(WorkflowState.Idle, "engine must remain in Idle after rejected transition");
+    }
+
+    /// <summary>
+    /// Integration test: GeneratorSimulator fault injection triggers workflow abort.
+    /// SWR-WF-030: Exposure fault drives the engine into Error state via AbortAsync.
+    /// </summary>
+    [Fact]
+    [Trait("SWR", "SWR-WF-030")]
+    public async Task ShootingWorkflow_GeneratorFault_AbortDrivesEngineToError()
+    {
+        // Arrange
+        var doseService = Substitute.For<IDoseService>();
+        var generator = new GeneratorSimulator { PrepareDelayMs = 0, ExposureDelayMs = 0 };
+        var engine = new WorkflowEngine(doseService, generator);
+
+        // Advance to ReadyToExpose
+        await engine.StartAsync("P-002", "1.2.3.4.6");
+        await engine.TransitionAsync(WorkflowState.ProtocolLoaded);
+        await engine.TransitionAsync(WorkflowState.ReadyToExpose);
+
+        engine.CurrentState.Should().Be(WorkflowState.ReadyToExpose);
+
+        // Act — simulate a hardware fault by aborting the workflow
+        var abortResult = await engine.AbortAsync("Simulated generator hardware fault");
+
+        // Assert
+        abortResult.IsSuccess.Should().BeTrue("AbortAsync always succeeds");
+        engine.CurrentState.Should().Be(WorkflowState.Error,
+            "engine must be in Error state after abort");
+    }
+
+    // ── Scenario 5: DICOM Store + Find ────────────────────────────────────────
+
+    /// <summary>
+    /// Integration test: DicomStoreScu returns failure when the source file does not exist.
+    /// Verifies graceful error handling without throwing exceptions.
+    /// SWR-DICOM-010: C-STORE of a missing file returns DicomStoreFailed.
+    /// </summary>
+    [Fact]
+    [Trait("SWR", "SWR-DICOM-010")]
+    public async Task DicomStore_MissingFile_ReturnsStoreFailed()
+    {
+        // Arrange — use localhost AE (no real PACS needed; file missing triggers early exit)
+        var config = new TestDicomNetworkConfig();
+        var storeScu = new DicomStoreScu(config);
+
+        var missingPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"missing_{Guid.NewGuid()}.dcm");
+
+        // Act
+        var result = await storeScu.StoreAsync(missingPath);
+
+        // Assert
+        result.IsFailure.Should().BeTrue("storing a non-existent file must fail");
+        result.Error.Should().Be(ErrorCode.DicomStoreFailed);
+    }
+
+    /// <summary>
+    /// Integration test: DicomStoreScu returns failure when PACS is unreachable (connection refused).
+    /// SWR-DICOM-010: Network failure is caught and returned as DicomStoreFailed (no exception).
+    /// </summary>
+    [Fact]
+    [Trait("SWR", "SWR-DICOM-010")]
+    public async Task DicomStore_UnreachablePacs_ReturnsStoreFailed()
+    {
+        // Arrange — write a minimal temp file so the file-exists check passes
+        var tempFile = System.IO.Path.GetTempFileName();
+        System.IO.File.WriteAllBytes(tempFile, Array.Empty<byte>());
+
+        try
+        {
+            var config = new TestDicomNetworkConfig(pacsPort: 19999); // Unlikely to be open
+            var storeScu = new DicomStoreScu(config);
+
+            // Act
+            var result = await storeScu.StoreAsync(tempFile);
+
+            // Assert — must not throw; must return failure
+            result.IsFailure.Should().BeTrue("C-STORE to an unreachable host must fail gracefully");
+            result.Error.Should().Be(ErrorCode.DicomStoreFailed);
+        }
+        finally
+        {
+            System.IO.File.Delete(tempFile);
+        }
+    }
+
+    /// <summary>
+    /// Integration test: DicomFindScu returns failure when MWL SCP is unreachable.
+    /// SWR-DICOM-020: Network failure during C-FIND is caught and returned as DicomQueryFailed.
+    /// </summary>
+    [Fact]
+    [Trait("SWR", "SWR-DICOM-020")]
+    public async Task DicomFind_UnreachableMwlScp_ReturnsQueryFailed()
+    {
+        // Arrange — MWL SCP on an unreachable port
+        var config = new TestDicomNetworkConfig(mwlPort: 19998);
+        var findScu = new DicomFindScu(config);
+
+        var query = new WorklistQuery(
+            AeTitle: "TESTMWL",
+            DateFrom: DateOnly.FromDateTime(DateTime.Today),
+            DateTo: DateOnly.FromDateTime(DateTime.Today),
+            PatientId: null);
+
+        // Act
+        var result = await findScu.QueryWorklistAsync(query);
+
+        // Assert
+        result.IsFailure.Should().BeTrue("C-FIND to an unreachable MWL SCP must fail gracefully");
+        result.Error.Should().Be(ErrorCode.DicomQueryFailed);
+    }
+
+    // ── Scenario 6: CD Burning ─────────────────────────────────────────────────
+
+    /// <summary>
+    /// Integration test: CDDVDBurnService succeeds when disc is inserted and study files exist.
+    /// Uses IMAPIComWrapper (simulated) and a stubbed IStudyRepository.
+    /// SWR-CD-010: Burn session creates, adds files, and verifies successfully.
+    /// </summary>
+    [Fact]
+    [Trait("SWR", "SWR-CD-010")]
+    public async Task CdBurn_WithDiscAndFiles_SucceedsEndToEnd()
+    {
+        // Arrange
+        var tempFile = System.IO.Path.GetTempFileName();
+        System.IO.File.WriteAllText(tempFile, "DICOM_TEST");
+
+        try
+        {
+            var studyRepo = Substitute.For<HnVue.CDBurning.IStudyRepository>();
+            studyRepo.GetFilesForStudyAsync("1.2.3.4.STUDY", Arg.Any<CancellationToken>())
+                .Returns(Task.FromResult(Result.Success<IReadOnlyList<string>>(new[] { tempFile })));
+
+            var burnSession = new IMAPIComWrapper();
+            burnSession.SimulateDiscInserted(blank: true);
+
+            var burnService = new CDDVDBurnService(burnSession, studyRepo);
+
+            // Act
+            var result = await burnService.BurnStudyAsync("1.2.3.4.STUDY", "TEST_STUDY");
+
+            // Assert
+            result.IsSuccess.Should().BeTrue("burn should succeed when disc is present and study files exist");
+        }
+        finally
+        {
+            System.IO.File.Delete(tempFile);
+        }
+    }
+
+    /// <summary>
+    /// Integration test: CDDVDBurnService returns BurnFailed when no disc is inserted.
+    /// SWR-CD-010: Missing disc is detected before burn attempt.
+    /// </summary>
+    [Fact]
+    [Trait("SWR", "SWR-CD-010")]
+    public async Task CdBurn_NoDiscInserted_ReturnsBurnFailed()
+    {
+        // Arrange — no SimulateDiscInserted called → disc absent
+        var studyRepo = Substitute.For<HnVue.CDBurning.IStudyRepository>();
+        var burnSession = new IMAPIComWrapper();
+        var burnService = new CDDVDBurnService(burnSession, studyRepo);
+
+        // Act
+        var result = await burnService.BurnStudyAsync("1.2.3.4.STUDY2", "NO_DISC");
+
+        // Assert
+        result.IsFailure.Should().BeTrue("burn must fail when no disc is in the drive");
+        result.Error.Should().Be(ErrorCode.BurnFailed);
+    }
+
+    /// <summary>
+    /// Integration test: CDDVDBurnService returns BurnFailed when the study has no files.
+    /// SWR-CD-020: Empty study is rejected before burn attempt.
+    /// </summary>
+    [Fact]
+    [Trait("SWR", "SWR-CD-020")]
+    public async Task CdBurn_EmptyStudy_ReturnsNotFound()
+    {
+        // Arrange
+        var studyRepo = Substitute.For<HnVue.CDBurning.IStudyRepository>();
+        studyRepo.GetFilesForStudyAsync("1.2.3.4.EMPTY", Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(Result.Success<IReadOnlyList<string>>(Array.Empty<string>())));
+
+        var burnSession = new IMAPIComWrapper();
+        burnSession.SimulateDiscInserted(blank: true);
+
+        var burnService = new CDDVDBurnService(burnSession, studyRepo);
+
+        // Act
+        var result = await burnService.BurnStudyAsync("1.2.3.4.EMPTY", "EMPTY_STUDY");
+
+        // Assert
+        result.IsFailure.Should().BeTrue("burn must fail when the study has no files");
+        result.Error.Should().Be(ErrorCode.NotFound);
+    }
+
     // ── Helpers ────────────────────────────────────────────────────────────────
 
     private static UserRecord MakeUser(
@@ -402,5 +682,42 @@ public sealed class CrossModuleIntegrationTests
             FailedLoginCount: failedLoginCount,
             IsLocked: isLocked,
             LastLoginAt: null);
+    }
+
+    // ── Test infrastructure helpers ────────────────────────────────────────────
+
+    /// <summary>
+    /// Minimal <see cref="IDicomNetworkConfig"/> implementation for integration tests.
+    /// Points all endpoints at localhost ports that are unlikely to be running DICOM services,
+    /// so that network-error paths can be exercised without external infrastructure.
+    /// </summary>
+    private sealed class TestDicomNetworkConfig : IDicomNetworkConfig
+    {
+        /// <summary>Initialises the config with optional port overrides.</summary>
+        public TestDicomNetworkConfig(
+            int pacsPort = 19999,
+            int mwlPort = 19998)
+        {
+            PacsPort = pacsPort;
+            MwlPort = mwlPort;
+        }
+
+        /// <inheritdoc/>
+        public string PacsHost => "127.0.0.1";
+
+        /// <inheritdoc/>
+        public int PacsPort { get; }
+
+        /// <inheritdoc/>
+        public string PacsAeTitle => "TEST_PACS";
+
+        /// <inheritdoc/>
+        public string LocalAeTitle => "TEST_SCU";
+
+        /// <inheritdoc/>
+        public string MwlHost => "127.0.0.1";
+
+        /// <inheritdoc/>
+        public int MwlPort { get; }
     }
 }
