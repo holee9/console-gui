@@ -620,11 +620,31 @@ git push origin github/feature/web-ui:refs/heads/feature/web-ui
 해결 원칙:
 
 - **GitHub에 새 커밋을 올린 직후, Gitea의 `feature/web-ui`도 즉시 같은 커밋으로 fast-forward 해야 한다.**
-- `merge --ff-only` 를 사용해 불필요한 merge commit 없이 GitHub 커밋 그대로 맞춘다.
+- `git fetch github <branch>` 만 단독으로 쓰지 말고, **반드시 `refs/remotes/github/<branch>` 를 명시 갱신**해야 한다.
+- 이유: plain `git fetch github feature/web-ui` 또는 `git fetch github main` 은 `FETCH_HEAD` 만 갱신되고, 이후 `git merge github/...` 가 **stale remote-tracking ref** 를 써서 예전 커밋을 다시 push 할 수 있다.
 
 #### Gitea 작업 PC 복붙용 명령
 
-아래 블록을 **그대로 복사해서 Gitea 작업 PC**에서 실행:
+아래 3줄을 **항상 표준 명령으로 사용**한다. 기존 로컬 브랜치가 있더라도, mirror 운영용 PC에서는 이 방식으로 GitHub 상태를 그대로 다시 맞춘다.
+
+```bash
+git fetch github feature/web-ui:refs/remotes/github/feature/web-ui
+git checkout -B feature/web-ui github/feature/web-ui
+git push origin feature/web-ui
+```
+
+#### 왜 3줄 표준 명령만 쓰는가
+
+- `git fetch github feature/web-ui:refs/remotes/github/feature/web-ui`
+  GitHub 최신 브랜치를 **로컬 remote-tracking ref** 에 강제로 반영한다.
+- `git checkout -B feature/web-ui github/feature/web-ui`
+  로컬 `feature/web-ui` 를 GitHub 최신 커밋으로 정확히 맞춘다.
+- `git push origin feature/web-ui`
+  Gitea 원본 저장소를 GitHub와 동일 커밋으로 맞춘다.
+
+#### 금지: 예전 4줄 fast-forward 블록
+
+아래 패턴은 **사용 금지**:
 
 ```bash
 git fetch github feature/web-ui
@@ -633,37 +653,7 @@ git merge --ff-only github/feature/web-ui
 git push origin feature/web-ui
 ```
 
-#### `feature/web-ui` 에서 `does not match` 또는 `pathspec did not match` 가 뜨면
-
-이 경우는 대부분 **Gitea 작업 PC에 로컬 `feature/web-ui` 브랜치가 아직 없을 때**다.
-
-아래 블록을 **그대로 복사해서 Gitea 작업 PC**에서 실행:
-
-```bash
-git fetch github feature/web-ui:refs/remotes/github/feature/web-ui
-git checkout -B feature/web-ui github/feature/web-ui
-git push origin feature/web-ui
-```
-
-위 3줄이 성공하면, 그 다음부터는 아래 fast-forward 블록을 사용한다:
-
-```bash
-git fetch github feature/web-ui:refs/remotes/github/feature/web-ui
-git checkout feature/web-ui
-git merge --ff-only github/feature/web-ui
-git push origin feature/web-ui
-```
-
-설명:
-
-- `git fetch github feature/web-ui`
-  GitHub 최신 `feature/web-ui` 커밋을 가져온다.
-- `git checkout feature/web-ui`
-  Gitea 기준 작업 브랜치로 이동한다.
-- `git merge --ff-only github/feature/web-ui`
-  Gitea 브랜치를 GitHub 최신 커밋으로 fast-forward 한다.
-- `git push origin feature/web-ui`
-  Gitea 원본 저장소에도 최신 커밋을 반영한다.
+이 4줄은 `github/feature/web-ui` ref 가 stale 인 상태에서 예전 커밋을 다시 Gitea 원본으로 push 할 수 있다. 실제 운영 중 **README가 다시 예전 상태로 돌아간 원인**으로 확인되었다.
 
 #### 그 다음 GitHub 미러 동기화까지 다시 맞추려면
 
@@ -692,20 +682,20 @@ PowerShell에서 아래를 실행:
 
 ## Sync from GitHub Mirror (GitHub → Gitea)
 
-Perplexity Computer에서 GitHub 미러 작업 내용을 사내 Gitea에 반영:
+Perplexity Computer에서 GitHub 미러 작업 내용을 사내 Gitea에 반영할 때도 **plain fetch + merge 패턴은 사용하지 않는다**.
 
 ```bash
 # 최초 1회
 git remote add github https://github.com/holee9/console-gui.git
 
 # 권장: main만 동기화
-git fetch github main
+git fetch github main:refs/remotes/github/main
 git checkout main
-git merge github/main
+git merge --ff-only github/main
 git push origin main
 
 # GitHub 작업 브랜치를 Gitea에도 반영해야 할 때
-git fetch github feature/web-ui
+git fetch github feature/web-ui:refs/remotes/github/feature/web-ui
 git checkout -B feature/web-ui github/feature/web-ui
 git push origin feature/web-ui
 ```
