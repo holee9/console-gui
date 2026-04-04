@@ -490,6 +490,18 @@ python scripts/sync_docs.py
 
 ---
 
+## Remote CI for Secondary Workstation
+
+보조 작업 PC에 `dotnet SDK`가 없어도 GitHub Actions로 원격 빌드 검증을 수행할 수 있다.
+
+- `desktop-ci`: `windows-latest`에서 WPF/.NET 8 restore, build, test 수행
+- `web-ui-ci`: `web-ui/` 또는 `src/HnVue.Web/` 아래 `package.json`이 생기면 Node 기반 lint, test, build 수행
+- 이 PC에서는 코드 수정과 push에 집중하고, 실제 WPF 실행, 장치 연동, 현장 배포 검증은 원래 구현 PC에서 계속 진행한다.
+
+> 권장 흐름: 보조 PC에서 수정 및 push → GitHub Actions로 원격 검증 → 원래 구현 PC에서 실제 실행/하드웨어 확인
+
+---
+
 ## Sync from GitHub Mirror
 
 Perplexity Computer에서 GitHub 미러 작업 내용을 사내 로컬 Git에 반영:

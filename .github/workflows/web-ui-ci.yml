@@ -1,0 +1,88 @@
+name: Web UI CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - feat/**
+      - feature/**
+      - codex/**
+      - claude/**
+    paths:
+      - .github/workflows/web-ui-ci.yml
+      - web-ui/**
+      - src/HnVue.Web/**
+  pull_request:
+    branches:
+      - main
+    paths:
+      - .github/workflows/web-ui-ci.yml
+      - web-ui/**
+      - src/HnVue.Web/**
+
+permissions:
+  contents: read
+
+concurrency:
+  group: web-ui-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    if: ${{ hashFiles('web-ui/package.json') != '' || hashFiles('src/HnVue.Web/package.json') != '' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Detect web UI workspace
+        id: detect
+        shell: bash
+        run: |
+          if [ -f web-ui/package.json ]; then
+            echo "app_dir=web-ui" >> "$GITHUB_OUTPUT"
+          elif [ -f src/HnVue.Web/package.json ]; then
+            echo "app_dir=src/HnVue.Web" >> "$GITHUB_OUTPUT"
+          else
+            echo "No web UI workspace found."
+            exit 1
+          fi
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        working-directory: ${{ steps.detect.outputs.app_dir }}
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        working-directory: ${{ steps.detect.outputs.app_dir }}
+        run: pnpm run lint --if-present
+
+      - name: Test
+        working-directory: ${{ steps.detect.outputs.app_dir }}
+        run: pnpm run test --if-present
+
+      - name: Build
+        working-directory: ${{ steps.detect.outputs.app_dir }}
+        run: pnpm run build
+
+      - name: Upload web UI build output
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-ui-build-output
+          path: |
+            ${{ steps.detect.outputs.app_dir }}/dist/**
+            ${{ steps.detect.outputs.app_dir }}/build/**
+          if-no-files-found: warn

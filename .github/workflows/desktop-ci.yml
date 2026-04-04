@@ -1,0 +1,86 @@
+name: Desktop CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - feat/**
+      - feature/**
+      - codex/**
+      - claude/**
+    paths:
+      - .github/workflows/desktop-ci.yml
+      - scripts/ci/**
+      - Directory.Build.props
+      - Directory.Packages.props
+      - global.json
+      - nuget.config
+      - src/**
+      - tests/**
+      - tests.integration/**
+  pull_request:
+    branches:
+      - main
+    paths:
+      - .github/workflows/desktop-ci.yml
+      - scripts/ci/**
+      - Directory.Build.props
+      - Directory.Packages.props
+      - global.json
+      - nuget.config
+      - src/**
+      - tests/**
+      - tests.integration/**
+
+permissions:
+  contents: read
+
+concurrency:
+  group: desktop-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-test:
+    runs-on: windows-latest
+    timeout-minutes: 45
+    env:
+      DOTNET_NOLOGO: true
+      NUGET_PACKAGES: ${{ github.workspace }}\.nuget\packages
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.NUGET_PACKAGES }}
+          key: nuget-${{ runner.os }}-${{ hashFiles('global.json', 'nuget.config', 'Directory.Build.props', 'Directory.Packages.props', 'src/**/*.csproj', 'tests/**/*.csproj', 'tests.integration/**/*.csproj') }}
+          restore-keys: |
+            nuget-${{ runner.os }}-
+
+      - name: Restore, build, and test desktop projects
+        shell: pwsh
+        run: ./scripts/ci/Invoke-DesktopCi.ps1 -Mode All -Configuration Release -ResultsDirectory "$env:GITHUB_WORKSPACE\artifacts\test-results"
+
+      - name: Upload desktop build output
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: HnVue.App-build-output
+          path: src/HnVue.App/bin/Release/**
+          if-no-files-found: warn
+
+      - name: Upload test results
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: desktop-test-results
+          path: artifacts/test-results/**/*.trx
+          if-no-files-found: warn
