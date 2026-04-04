@@ -88,7 +88,7 @@
 | FRS-XRAY-GUI-001 | Functional Requirements Specification | v2.0 |
 | RMP-XRAY-GUI-001 | Risk Management Plan & FMEA | v1.0 |
 | SAD-XRAY-GUI-001 | Software Architecture Document | v2.0 |
-| SDS-XRAY-GUI-001 | Software Detailed Design Spec | 작성 예정 |
+| SDS-XRAY-GUI-001 | Software Detailed Design Spec | v2.0 |
 | UTP-XRAY-GUI-001 | Unit Test Plan | 작성 예정 |
 | ITP-XRAY-GUI-001 | Integration Test Plan | 작성 예정 |
 | STP-XRAY-GUI-001 | System Test Plan | 작성 예정 |
@@ -111,8 +111,8 @@
 | **SWR ID** | 소프트웨어 요구사항 ID (Software Requirement) | FRS-XRAY-GUI-001 v2.0 | IEC 62304 §5.2 Design Output |
 | **HAZ ID** | 관련 위험 ID (Hazard) | RMP-XRAY-GUI-001 v1.0 | ISO 14971 위험 식별 |
 | **RC ID** | 위험 통제 조치 ID (Risk Control) | RMP-XRAY-GUI-001 v1.0 | ISO 14971 §6 |
-| **SAD Ref** | 소프트웨어 아키텍처 설계 참조 | SAD (작성 예정) | — |
-| **SDS Ref** | 소프트웨어 상세 설계 참조 | SDS (작성 예정) | — |
+| **SAD Ref** | 소프트웨어 아키텍처 설계 참조 | SAD-XRAY-GUI-001 v2.0 | — |
+| **SDS Ref** | 소프트웨어 상세 설계 참조 | SDS-XRAY-GUI-001 v2.0 | — |
 | **UT ID** | 단위 테스트 케이스 ID | Unit Test Plan (작성 예정) | IEC 62304 §5.5 |
 | **IT ID** | 통합 테스트 케이스 ID | Integration Test Plan (작성 예정) | IEC 62304 §5.6 |
 | **ST ID** | 시스템 테스트 케이스 ID | System Test Plan (작성 예정) | FDA 21 CFR 820.30(f) |
@@ -154,8 +154,8 @@ flowchart LR
     MR["MR-xxx\n시장 요구사항\n（MRD v3.0）\nTier 1–4"]
     PR["PR-xxx\n제품 요구사항\n（PRD v2.0）\nDesign Input"]
     SWR["SWR-xxx\nSW 요구사항\n（FRS v2.0）\nDesign Output"]
-    SAD["SAD Ref\n아키텍처 설계\n（작성 예정）"]
-    SDS["SDS Ref\n상세 설계\n（작성 예정）"]
+    SAD["SAD Ref\n아키텍처 설계\n（SAD v2.0）"]
+    SDS["SDS Ref\n상세 설계\n（SDS v2.0）"]
     UT["UT-xxx\n단위 테스트\n（UTP 작성 예정）"]
     IT["IT-xxx\n통합 테스트\n（ITP 작성 예정）"]
     ST["ST-xxx\n시스템 테스트\n（STP 작성 예정）"]
@@ -239,7 +239,7 @@ flowchart TB
 ## 4. 전체 RTM 매트릭스
 
 > **범례**:
-> - SAD Ref, SDS Ref, UT ID, IT ID, ST ID, VT ID, QA TC ID 컬럼의 **TBD**: 해당 문서 작성 예정 (Planning Phase)
+> - SAD Ref, SDS Ref 컬럼: 참조 매핑 완료 (SAD v2.0, SDS v2.0). UT ID, IT ID, ST ID, VT ID, QA TC ID 컬럼의 **TBD**: 해당 테스트 계획 작성 시 기입 예정
 > - **검증 상태**: 현재 단계에서는 전체 **Pending** (개발/테스트 미착수)
 > - **Tier**: MRD v3.0 4-Tier 분류 체계 적용 (Tier 1=인허가 필수, Tier 2=판매 필수, Tier 3=차별화, Tier 4=보류)
 

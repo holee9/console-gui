@@ -893,7 +893,7 @@ erDiagram
     USERS {
         string user_id PK "사용자 ID"
         string display_name "표시 이름"
-        string password_hash "bcrypt/Argon2 해시"
+        string password_hash "bcrypt (cost=12) 해시"
         string role "역할 （Admin/Radiographer/Radiologist/Service）"
         bool is_active "활성 여부"
         int login_attempt_count "로그인 실패 횟수"
