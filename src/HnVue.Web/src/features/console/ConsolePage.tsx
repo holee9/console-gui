@@ -1,6 +1,6 @@
 import { useDeferredValue, useState } from "react";
 import { useAppState } from "../../app/state";
-import type { WorkflowStage } from "../../shared/contracts";
+import type { ValidationGuidance, WorkflowStage } from "../../shared/contracts";
 
 const stageOrder: Record<WorkflowStage, number> = {
   Idle: 0,
@@ -19,20 +19,130 @@ const stageLabels = [
   "Send"
 ] as const;
 
+function getValidationGuidance({
+  locale,
+  selectedStudy,
+  selectedProtocol,
+  workflowStage,
+  workflowClicks,
+  isBlocked,
+  canExpose
+}: {
+  locale: "ko" | "en";
+  selectedStudy: ReturnType<typeof useAppState>["selectedStudy"];
+  selectedProtocol: ReturnType<typeof useAppState>["selectedProtocol"];
+  workflowStage: WorkflowStage;
+  workflowClicks: number;
+  isBlocked: boolean;
+  canExpose: boolean;
+}): ValidationGuidance {
+  const labels =
+    locale === "ko"
+      ? {
+          title: "검증 가이드",
+          noStudy: "Worklist에서 환자를 선택해 5클릭 워크플로우를 시작하세요.",
+          emergency: "응급이면 상단의 '응급 시작'으로 응급 환자와 권장 프로토콜을 즉시 불러올 수 있습니다.",
+          noProtocol: "선택한 환자와 신체 부위에 맞는 프로토콜을 선택하세요.",
+          pediatric: "소아 환자는 저선량 프로토콜을 우선 선택하고 확인 단계 전까지 경고 배너를 유지하세요.",
+          blocked: "치명 경고가 남아 있어 촬영이 차단되었습니다.",
+          blockedRecovery: "ACK가 필요한 경고를 해제하고, 소아 환자라면 소아용 저선량 프리셋으로 다시 선택하세요.",
+          confirm: "kVp, mAs, 디텍터 상태를 확인한 뒤 파라미터 확인을 누르세요.",
+          ready: "Generator ACK와 Detector Ready가 모두 녹색이면 촬영 실행으로 진행하세요.",
+          send: "영상 검토 후 PACS 전송으로 5클릭 시나리오를 완료하세요.",
+          done:
+            workflowClicks <= 5
+              ? `표준 워크플로우를 ${workflowClicks}클릭으로 완료했습니다.`
+              : `워크플로우는 완료했지만 ${workflowClicks}클릭으로 목표(5클릭)를 초과했습니다.`
+        }
+      : {
+          title: "Validation guidance",
+          noStudy: "Select a patient from the worklist to start the 5-click workflow.",
+          emergency: "If the case is urgent, use Emergency start to preload the emergency patient and the recommended protocol.",
+          noProtocol: "Choose the protocol that matches the selected patient and body part.",
+          pediatric: "For pediatric studies, keep the low-dose preset and safety banner visible before confirmation.",
+          blocked: "A critical alert is still blocking exposure.",
+          blockedRecovery: "Acknowledge the blocking alert and switch back to a pediatric-safe preset before continuing.",
+          confirm: "Review kVp, mAs, and detector readiness, then confirm the parameters.",
+          ready: "Once generator ACK and detector readiness are both green, you can start exposure.",
+          send: "Review the image and send it to PACS to complete the 5-click scenario.",
+          done:
+            workflowClicks <= 5
+              ? `The standard workflow finished within ${workflowClicks} clicks.`
+              : `The workflow finished in ${workflowClicks} clicks, which exceeds the 5-click target.`
+        };
+
+  if (!selectedStudy) {
+    return {
+      title: labels.title,
+      detail: labels.noStudy,
+      recovery: labels.emergency
+    };
+  }
+
+  if (!selectedProtocol) {
+    return {
+      title: labels.title,
+      detail: labels.noProtocol,
+      recovery: selectedStudy.ageGroup === "Pediatric" ? labels.pediatric : labels.emergency
+    };
+  }
+
+  if (isBlocked) {
+    return {
+      title: labels.title,
+      detail: labels.blocked,
+      recovery: labels.blockedRecovery
+    };
+  }
+
+  if (workflowStage === "ProtocolLoaded") {
+    return {
+      title: labels.title,
+      detail: labels.confirm,
+      recovery: labels.pediatric
+    };
+  }
+
+  if (workflowStage === "ReadyToExpose") {
+    return {
+      title: labels.title,
+      detail: canExpose ? labels.ready : labels.blocked,
+      recovery: canExpose ? labels.send : labels.blockedRecovery
+    };
+  }
+
+  if (workflowStage === "ImageReview") {
+    return {
+      title: labels.title,
+      detail: labels.send,
+      recovery: labels.done
+    };
+  }
+
+  return {
+    title: labels.title,
+    detail: labels.done,
+    recovery: labels.emergency
+  };
+}
+
 export default function ConsolePage() {
   const {
+    locale,
     text,
     worklist,
     protocols,
     selectedStudy,
     selectedProtocol,
     workflowStage,
+    workflowClicks,
     systemStatus,
     alerts,
     auditTrail,
     currentDose,
     selectStudy,
     selectProtocol,
+    launchEmergencyWorkflow,
     confirmParameters,
     startExposure,
     sendToPacs,
@@ -64,7 +174,16 @@ export default function ConsolePage() {
     systemStatus.parameterSync === "Acked" &&
     systemStatus.generator === "Ready" &&
     systemStatus.detector === "Ready";
-  const canSend = workflowStage === "ImageReview" || workflowStage === "Completed";
+  const canSend = workflowStage === "ImageReview";
+  const guidance = getValidationGuidance({
+    locale,
+    selectedStudy,
+    selectedProtocol,
+    workflowStage,
+    workflowClicks,
+    isBlocked,
+    canExpose
+  });
 
   return (
     <div className="page-stack">
@@ -79,7 +198,7 @@ export default function ConsolePage() {
           <section className="subpanel">
             <div className="section-header">
               <h2>{text.worklist}</h2>
-              <button type="button" className="ghost-button">
+              <button type="button" className="ghost-button" onClick={launchEmergencyWorkflow}>
                 {text.emergencyRegister}
               </button>
             </div>
@@ -121,6 +240,29 @@ export default function ConsolePage() {
             <div className="section-header">
               <h2>{text.workflow}</h2>
               <span className="summary-muted">MR-003 / Max 5 clicks</span>
+            </div>
+
+            <div className="metrics-grid">
+              <article className={`metric-card ${workflowClicks <= 5 ? "is-success" : "is-warning"}`}>
+                <span className="summary-label">{locale === "ko" ? "클릭 수" : "Clicks"}</span>
+                <strong>
+                  {workflowClicks} / 5
+                </strong>
+                <span className="summary-muted">
+                  {workflowClicks <= 5
+                    ? locale === "ko"
+                      ? "목표 범위 내"
+                      : "On target"
+                    : locale === "ko"
+                      ? "목표 초과"
+                      : "Over target"}
+                </span>
+              </article>
+              <article className="metric-card">
+                <span className="summary-label">{guidance.title}</span>
+                <strong>{guidance.detail}</strong>
+                <span className="summary-muted">{guidance.recovery}</span>
+              </article>
             </div>
 
             <div className="steps-grid">
@@ -212,6 +354,13 @@ export default function ConsolePage() {
                   ) : null}
                 </article>
               ))}
+              {alerts.length === 0 ? (
+                <p className="empty-state">
+                  {locale === "ko"
+                    ? "현재 차단 경고가 없습니다. 다음 단계 안내를 따라 진행하세요."
+                    : "No blocking alerts are active. Follow the next-step guidance panel."}
+                </p>
+              ) : null}
             </div>
           </section>
         </section>

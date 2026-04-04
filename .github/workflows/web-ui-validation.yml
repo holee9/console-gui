@@ -83,6 +83,16 @@ jobs:
         working-directory: ${{ steps.detect.outputs.app_dir }}
         run: pnpm run --if-present test
 
+      - name: Install Playwright browser
+        if: ${{ steps.detect.outputs.has_workspace == 'true' }}
+        working-directory: ${{ steps.detect.outputs.app_dir }}
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: E2E
+        if: ${{ steps.detect.outputs.has_workspace == 'true' }}
+        working-directory: ${{ steps.detect.outputs.app_dir }}
+        run: pnpm run --if-present test:e2e
+
       - name: Build
         if: ${{ steps.detect.outputs.has_workspace == 'true' }}
         working-directory: ${{ steps.detect.outputs.app_dir }}
@@ -96,4 +106,6 @@ jobs:
           path: |
             ${{ steps.detect.outputs.app_dir }}/dist/**
             ${{ steps.detect.outputs.app_dir }}/build/**
+            ${{ steps.detect.outputs.app_dir }}/playwright-report/**
+            ${{ steps.detect.outputs.app_dir }}/test-results/**
           if-no-files-found: warn

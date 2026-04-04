@@ -112,6 +112,17 @@ export const protocolPresets: ProtocolPreset[] = [
     pediatric: true
   },
   {
+    id: "PR-005",
+    title: "Knee Trauma Standard",
+    bodyPart: "KNEE",
+    orientation: "AP/LAT",
+    kvp: 66,
+    mas: 2.8,
+    aec: "Off",
+    detector: "FPD-B",
+    pediatric: false
+  },
+  {
     id: "PR-004",
     title: "Abdomen Routine",
     bodyPart: "ABDOMEN",

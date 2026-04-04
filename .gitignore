@@ -208,6 +208,8 @@ node_modules/
 .tscache/
 .next/
 out/
+playwright-report/
+test-results/
 
 # ===========================================
 # Build Tools & Frameworks

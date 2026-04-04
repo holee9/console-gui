@@ -116,3 +116,9 @@ export interface SystemSettings {
     signedOnly: boolean;
   };
 }
+
+export interface ValidationGuidance {
+  title: string;
+  detail: string;
+  recovery: string;
+}

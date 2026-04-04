@@ -8,6 +8,13 @@ const routePermissions: Record<AppRoute, UserRole[]> = {
   "/admin": ["Admin", "Service"]
 };
 
+const defaultRoutes: Record<UserRole, AppRoute> = {
+  Radiographer: "/console",
+  Radiologist: "/console",
+  Admin: "/admin",
+  Service: "/admin"
+};
+
 export function listAllowedRoutes(role: UserRole) {
   return (Object.keys(routePermissions) as AppRoute[]).filter((route) =>
     routePermissions[route].includes(role)
@@ -19,7 +26,7 @@ export function canAccessRoute(role: UserRole, route: AppRoute) {
 }
 
 export function getDefaultRoute(role: UserRole): AppRoute {
-  return listAllowedRoutes(role)[0] ?? "/console";
+  return defaultRoutes[role] ?? "/console";
 }
 
 export function isBlockingAlert(alert: AlertItem) {

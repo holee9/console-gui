@@ -16,6 +16,7 @@ test("RBAC routes follow the documented validation matrix", () => {
 
   assert.equal(canAccessRoute("Radiographer", "/admin"), false);
   assert.equal(canAccessRoute("Admin", "/delivery"), true);
+  assert.equal(getDefaultRoute("Admin"), "/admin");
   assert.equal(getDefaultRoute("Service"), "/admin");
 });
 

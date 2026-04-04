@@ -13,6 +13,8 @@ Web validation workspace for the HnVue console UI.
 ```bash
 pnpm install
 pnpm dev
+pnpm exec playwright install chromium
+pnpm test:e2e
 pnpm build
 ```
 
@@ -24,3 +26,4 @@ pnpm build
 - CD/DVD delivery flow
 - System administration and language settings
 - Mock contracts aligned with `HnVue.Common`
+- Playwright-based E2E validation for the web MVP

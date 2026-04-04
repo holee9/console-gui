@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { roleLabel } from "../shared/copy";
 import { useAppState } from "./state";
 import type { PropsWithChildren } from "react";
@@ -29,10 +29,18 @@ const navItems: { href: AppRoute; labelKey: "navConsole" | "navDelivery" | "navA
 ];
 
 export default function AppShell({ children }: PropsWithChildren) {
-  const { locale, text, user, logout, selectedStudy, systemStatus, toggleLocale } = useAppState();
+  const navigate = useNavigate();
+  const { locale, text, user, logout, selectedStudy, systemStatus, toggleLocale, launchEmergencyWorkflow } =
+    useAppState();
   const visibleNavItems = user
     ? navItems.filter((item) => canAccessRoute(user.role, item.href))
     : [];
+  const showEmergencyShortcut = user ? canAccessRoute(user.role, "/console") : false;
+
+  function handleEmergencyShortcut() {
+    launchEmergencyWorkflow();
+    navigate("/console");
+  }
 
   return (
     <div className="app-shell">
@@ -52,6 +60,11 @@ export default function AppShell({ children }: PropsWithChildren) {
         </nav>
 
         <div className="header-actions">
+          {showEmergencyShortcut ? (
+            <button type="button" className="danger-button" onClick={handleEmergencyShortcut}>
+              {locale === "ko" ? "응급 시작" : "Emergency start"}
+            </button>
+          ) : null}
           <button type="button" className="secondary-button" onClick={toggleLocale}>
             {text.locale}: {locale.toUpperCase()}
           </button>
