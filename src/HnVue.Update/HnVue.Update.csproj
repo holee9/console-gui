@@ -2,11 +2,21 @@
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
+    <!-- Suppress CA1848: LoggerMessage delegates are overkill for this module's logging volume.
+         The module is not a hot path; structured logging clarity is preferred. -->
+    <NoWarn>$(NoWarn);CA1848;CA2254</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\HnVue.Common\HnVue.Common.csproj" />
     <ProjectReference Include="..\HnVue.Security\HnVue.Security.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Http" />
+    <PackageReference Include="Microsoft.Extensions.Options" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
   </ItemGroup>
 
 </Project>
