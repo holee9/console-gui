@@ -57,18 +57,140 @@ HnVue Console SW는 H&abyz（에이치앤아비즈）가 자사 FPD（Flat Panel
 
 ## 소스코드 개발 현황
 
-### Pre-Wave 완료 (2026-04-04, tag: v0.1.0-pre-wave)
+> **구현 방식**: 모듈 간 인터페이스 우선 설계(HnVue.Common.Abstractions) → Wave 단위 병렬 구현.
+> 각 Wave는 이전 Wave가 `main` 머지 완료 후 분기.
+> 안전 임계 모듈(Workflow, Security, Dose, Incident, Update)은 IEC 62304 §5.5 기준 90%+ 커버리지 적용.
 
-| 항목 | 상태 | 내용 |
-|------|:----:|------|
-| 빌드 인프라 | ✅ | global.json (.NET 8.0.419), Directory.Build.props, Directory.Packages.props, nuget.config, .editorconfig |
-| 솔루션 구조 | ✅ | HnVue.sln + 28개 프로젝트 (14 src + 13 tests + 1 integration) |
-| HnVue.Common | ✅ | Result<T>, 5개 Enum, 17개 서비스 인터페이스, 17개 DTO |
-| HnVue.Common.Tests | ✅ | 38/38 pass |
-| 빌드 검증 | ✅ | 0 errors / 0 warnings |
-| Evaluator 평가 | ✅ | 0.766 PASS (Critical 2건 수정 완료) |
+---
 
-**다음 단계 (Wave 1):** HnVue.Data + HnVue.Security + HnVue.UI skeleton — 3개 worktree 병렬 구현
+### 솔루션 구조 (28개 프로젝트)
+
+```
+HnVue/
+├── src/                         # 14개 소스 프로젝트
+│   ├── HnVue.Common             # ✅ 구현 완료 — 17 인터페이스, Result<T>, 5 Enum
+│   ├── HnVue.Data               # ⏳ Wave 1
+│   ├── HnVue.Security           # ⏳ Wave 1  (안전 임계, 90%+)
+│   ├── HnVue.UI                 # ⏳ Wave 1  (skeleton)
+│   ├── HnVue.App                # ⏳ Wave 2  (DI 완전 연결)
+│   ├── HnVue.Dicom              # ⏳ Wave 2
+│   ├── HnVue.Incident           # ⏳ Wave 2  (안전 임계, 90%+)
+│   ├── HnVue.Update             # ⏳ Wave 2  (안전 임계, 85%+)
+│   ├── HnVue.Workflow           # ⏳ Wave 3  (안전 임계, 90%+)
+│   ├── HnVue.Imaging            # 🔒 Wave 4  (Phase 1c)
+│   ├── HnVue.Dose               # 🔒 Wave 4  (Phase 1c, DRL 수치표 필요)
+│   ├── HnVue.PatientManagement  # 🔒 Wave 4  (Phase 1c)
+│   ├── HnVue.CDBurning          # 🔒 Wave 4  (Phase 1c)
+│   └── HnVue.SystemAdmin        # 🔒 Wave 4  (Phase 1c)
+├── tests/                       # 13개 테스트 프로젝트 (모듈별 1:1)
+└── tests.integration/           # 1개 통합 테스트 프로젝트
+```
+
+---
+
+### 구현 단계별 상세
+
+#### Pre-Wave — 완료 ✅ (2026-04-04, `v0.1.0-pre-wave`)
+
+순차 실행. Wave 1 병렬 분기의 기준점(base commit).
+
+| 작업 | 내용 | 결과 |
+|------|------|:----:|
+| 빌드 인프라 | `global.json` (.NET 8.0.419 LTS 고정), `Directory.Build.props` (Nullable/TreatWarningsAsErrors/Deterministic), `Directory.Packages.props` (CPM), `nuget.config`, `.editorconfig` | ✅ |
+| 솔루션 스캐폴딩 | `HnVue.sln` + 28개 빈 `.csproj`, 의존성 그래프 기반 `ProjectReference` 연결, `dotnet build` 성공 | ✅ |
+| HnVue.Common | `Result<T>` 모나드, `ErrorCode` (9개 도메인), `SafeState`/`UserRole`/`WorkflowState`/`GeneratorState`/`IncidentSeverity` Enum, 17개 서비스 인터페이스, 17개 DTO, `ThreadLocalSecurityContext` (ReaderWriterLockSlim) | ✅ |
+| HnVue.Common.Tests | 38개 테스트 — Result 모나드, Enum 검증, SecurityContext 스레드 안전성 | ✅ 38/38 |
+| Evaluator 평가 | 0.766 PASS — Critical 2건(IGeneratorInterface 추가, 동시성 수정) + High/Medium 3건 수정 | ✅ |
+
+**모듈 의존성 그래프:**
+```
+HnVue.Common (Layer 0)
+  └─ HnVue.Data (Layer 1)
+       └─ HnVue.Security (Layer 2)
+            ├─ HnVue.Dicom    (Layer 3)
+            ├─ HnVue.Incident (Layer 3, 안전 임계)
+            ├─ HnVue.Update   (Layer 3, 안전 임계)
+            ├─ HnVue.Imaging  (Layer 3)
+            └─ HnVue.Workflow (Layer 4, 안전 임계, Dicom+Imaging+Dose+Incident 통합)
+                  └─ HnVue.UI (Layer 5, Common 인터페이스만 참조)
+                        └─ HnVue.App (Layer 6, DI 컴포지션 루트)
+```
+
+---
+
+#### Wave 1 — 대기 ⏳ (3개 worktree 병렬, Phase 1a 완성)
+
+Pre-Wave commit을 base로 3개 브랜치 동시 분기.
+
+| Worktree | 브랜치 | 구현 모듈 | 핵심 내용 | 커버리지 |
+|----------|--------|---------|---------|:-------:|
+| WT-1 | `feat/wave1-data` | **HnVue.Data** | EF Core 8 + SQLCipher AES-256, 6개 Entity (Patients/Studies/Images/DoseRecords/Users/AuditLogs), Repository 구현 | 80%+ |
+| WT-2 | `feat/wave1-security` | **HnVue.Security** | bcrypt cost=12 (~300ms), JWT 15분 만료, HMAC-SHA256 해시 체인, RBAC 4역할, 계정 잠금(5회) | **90%+** |
+| WT-3 | `feat/wave1-ui-skeleton` | **HnVue.UI skeleton** | MahApps.Metro 테마 토큰 (Colors/Typography/Spacing/ButtonStyles), MainWindow 5-패널, LoginView+LoginViewModel | 60%+ |
+
+**M1 검증 기준:** 로그인 → 인증 → RBAC → 감사 로그 해시 체인 E2E 동작
+
+---
+
+#### Wave 2 — 대기 ⏳ (4개 worktree 병렬, Phase 1b 핵심)
+
+Wave 1 전체 `main` 머지 후 분기. 최대 10 agents 동시 (각 팀 2~3 agents).
+
+| Worktree | 브랜치 | 구현 모듈 | 핵심 내용 | 커버리지 |
+|----------|--------|---------|---------|:-------:|
+| WT-4 | `feat/wave2-dicom` | **HnVue.Dicom** | C-STORE SCU, C-FIND MWL, Print SCU, TLS 1.2/1.3, OutboxQueue (Polly 재시도), fo-dicom 5.1.3 | 80%+ |
+| WT-5 | `feat/wave2-incident` | **HnVue.Incident** | 4단계 심각도 분류, CVE 조회, 알림 체계 | **90%+** |
+| WT-6 | `feat/wave2-update` | **HnVue.Update** | Authenticode 서명 검증, SHA-256, 백업/롤백 | **85%+** |
+| WT-7 | `feat/wave2-app-ui` | **HnVue.App** + **HnVue.UI 완성** | DI 컴포지션 루트 + 나머지 6개 ViewModel (PatientList/Workflow/ImageViewer/DoseDisplay/SystemAdmin/CDBurn) | 70%+ |
+
+---
+
+#### Wave 3 — 대기 ⏳ (1개 worktree, Phase 1b 완성)
+
+Wave 2 전체 `main` 머지 후 분기. Workflow는 모든 모듈의 통합점이므로 단독 Wave.
+
+| Worktree | 브랜치 | 구현 모듈 | 핵심 내용 | 커버리지 |
+|----------|--------|---------|---------|:-------:|
+| WT-8 | `feat/wave3-workflow` | **HnVue.Workflow** | 9-상태 머신 (IDLE→COMPLETED/ERROR), GeneratorSerialPort (RS-232: STX+ETX 프레임, SET_KVP/PREP/EXPOSE/ABORT), GeneratorSimulator, FpdSdkWrapper, DetectorSimulator | **90%+** |
+
+**M2 검증 기준:** 환자 선택 → 프로토콜 로드 → 촬영 준비 → 노출(시뮬레이터) → 영상 획득 → PACS 전송 전체 워크플로우
+
+---
+
+#### Wave 4 — 대기 🔒 (Phase 1c, DRL 수치표 수령 후)
+
+| Worktree | 구현 모듈 | 블로커 |
+|----------|---------|--------|
+| WT-9 | **HnVue.Dose** | DRL 신체 부위별 수치 테이블 미확보 (사용자 제공 필요) |
+| WT-10 | **HnVue.Imaging** | Wave 3 완료 후 |
+| WT-11 | **HnVue.PatientManagement** | Wave 3 완료 후 |
+| WT-12 | **HnVue.CDBurning** | Wave 3 완료 후 |
+| WT-13 | **HnVue.SystemAdmin** | Wave 3 완료 후 |
+
+---
+
+#### Phase 1d — UI 통합 + 통합 테스트
+
+Wave 4 완료 후.
+
+| 작업 | 내용 |
+|------|------|
+| DI 완전 연결 | HnVue.App에서 전체 13개 모듈 DI 등록 |
+| 통합 테스트 4개 시나리오 | 촬영 워크플로우 / DICOM 네트워크 / 인증 플로우 / CD 굽기 |
+| M3/M4 게이트 | 커버리지: 안전 임계 90%+, 기타 80%+ |
+
+---
+
+### 진행 요약
+
+```
+Pre-Wave  ████████████████████  완료  ✅  v0.1.0-pre-wave
+Wave 1    ░░░░░░░░░░░░░░░░░░░░  대기  ⏳  (3 worktree 병렬)
+Wave 2    ░░░░░░░░░░░░░░░░░░░░  대기  ⏳  (4 worktree 병렬)
+Wave 3    ░░░░░░░░░░░░░░░░░░░░  대기  ⏳  (Workflow 단독)
+Wave 4    ░░░░░░░░░░░░░░░░░░░░  대기  🔒  (DRL 수치표 필요)
+Phase 1d  ░░░░░░░░░░░░░░░░░░░░  대기  🔒
+```
 
 ---
 
