@@ -625,7 +625,13 @@ git push origin github/feature/web-ui:refs/heads/feature/web-ui
 
 #### Gitea 작업 PC 복붙용 명령
 
-아래 3줄을 **항상 표준 명령으로 사용**한다. 기존 로컬 브랜치가 있더라도, mirror 운영용 PC에서는 이 방식으로 GitHub 상태를 그대로 다시 맞춘다.
+주의:
+
+- 아래 3줄은 **`feature/web-ui` 전용**이다.
+- 이 3줄을 실행해도 **Gitea `main` 은 바뀌지 않는다.**
+- Gitea 웹 화면에서 기본으로 보이는 README는 보통 `main` 이므로, README 변경 확인은 아래 `main 동기화` 블록을 따로 실행해야 한다.
+
+아래 3줄을 `feature/web-ui` 반영용 **표준 명령**으로 사용한다.
 
 ```bash
 git fetch github feature/web-ui:refs/remotes/github/feature/web-ui
@@ -684,6 +690,10 @@ PowerShell에서 아래를 실행:
 
 Perplexity Computer에서 GitHub 미러 작업 내용을 사내 Gitea에 반영할 때도 **plain fetch + merge 패턴은 사용하지 않는다**.
 
+#### Gitea `main` README 를 GitHub 최신 상태로 맞추는 복붙용 명령
+
+아래 4줄은 **`main` 전용**이다. GitHub `main` 의 README 변경을 Gitea 기본 화면에도 보이게 하려면 이 블록을 실행해야 한다.
+
 ```bash
 # 최초 1회
 git remote add github https://github.com/holee9/console-gui.git
@@ -693,26 +703,18 @@ git fetch github main:refs/remotes/github/main
 git checkout main
 git merge --ff-only github/main
 git push origin main
+```
 
+#### GitHub 작업 브랜치 `feature/web-ui` 를 Gitea에도 반영하는 복붙용 명령
+
+```bash
 # GitHub 작업 브랜치를 Gitea에도 반영해야 할 때
 git fetch github feature/web-ui:refs/remotes/github/feature/web-ui
 git checkout -B feature/web-ui github/feature/web-ui
 git push origin feature/web-ui
 ```
 
-이미 Gitea에 `feature/web-ui` 가 존재하고, GitHub 쪽 최신 커밋만 빠르게 반영하려면 아래 방식이 더 안전하다:
+즉:
 
-```bash
-git fetch github feature/web-ui
-git checkout feature/web-ui
-git merge --ff-only github/feature/web-ui
-git push origin feature/web-ui
-```
-
-`git checkout feature/web-ui` 에서 `pathspec did not match` 가 나면, 아래 생성/복구 블록을 먼저 실행한다:
-
-```bash
-git fetch github feature/web-ui:refs/remotes/github/feature/web-ui
-git checkout -B feature/web-ui github/feature/web-ui
-git push origin feature/web-ui
-```
+- `Gitea main README 를 바꾸고 싶다` -> `main` 4줄 블록 실행
+- `Gitea feature/web-ui 브랜치를 맞추고 싶다` -> `feature/web-ui` 3줄 블록 실행
