@@ -27,3 +27,9 @@ pnpm build
 - System administration and language settings
 - Mock contracts aligned with `HnVue.Common`
 - Playwright-based E2E validation for the web MVP
+
+## Review Status
+
+- PR `#2` reviewer feedback (`#3` to `#6`) was addressed before merge.
+- The merged branch includes the `burnDisc` audit fix, numeric `NaN` guards, `state.tsx` quality cleanup, ESLint, and core state-action tests.
+- Validation baseline: `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build`, `pnpm test:e2e`
