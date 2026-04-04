@@ -576,6 +576,33 @@ GitHub 저장소에서 아래 항목을 순서대로 확인한다.
 - 같은 시점 `main` push 이벤트가 없었으므로, `scripts/sync_to_github.ps1` 자체보다 **별도의 branch cleanup/delete 작업**이 계속 실행 중일 가능성이 높다.
 - 따라서 현재 상태는 **부분 개선**이며, `feature/web-ui`를 안정적으로 유지할 수 있는 상태로는 아직 보지 않는다.
 
+### 올바른 처리 방법 (GitHub 상태를 Gitea에도 반영)
+
+자동 동기화의 기준 원본이 Gitea라면, GitHub에만 존재하는 `feature/web-ui`는 다음 동기화 때 다시 삭제될 수 있다.  
+따라서 **GitHub에서 만든 작업 브랜치를 먼저 Gitea에도 같은 이름으로 반영한 뒤**, 안전 동기화 스크립트로 다시 GitHub에 push 해야 한다.
+
+#### 권장 절차
+
+```bash
+# 1) GitHub 브랜치 가져오기
+git fetch github feature/web-ui
+
+# 2) 로컬에 동일 브랜치 생성/갱신
+git checkout -B feature/web-ui github/feature/web-ui
+
+# 3) Gitea(origin)에도 동일 브랜치 반영
+git push origin feature/web-ui
+
+# 4) 이후 GitHub 동기화는 안전 스크립트로 수행
+.\scripts\sync_to_github.ps1 -Branches main, feature/web-ui
+```
+
+#### 핵심 원칙
+
+- GitHub에만 브랜치가 있고 Gitea에 없으면, Gitea 기준 자동 동기화에서 해당 브랜치를 삭제 대상으로 볼 수 있다.
+- 따라서 `feature/web-ui`를 유지하려면 **Gitea와 GitHub 양쪽에 동일 브랜치가 존재**해야 한다.
+- 이후 자동 동기화도 `main`만이 아니라 `main, feature/web-ui`를 명시적으로 다뤄야 한다.
+
 ### 브랜치가 다시 삭제됐을 때
 
 `feature/web-ui`가 GitHub에서 사라진 경우, **Gitea 쪽 동기화 실행자**에게 아래를 전달한다.
@@ -593,7 +620,7 @@ Gitea에서 아래 명령을 실행해 주세요:
 
 - 오래된 자동 동기화 잡이 아직 `--mirror`, `--prune`, ref delete, branch cleanup API를 사용하고 있지 않은지 확인
 - 새 스크립트(`scripts/sync_to_github.ps1`) 외에 별도 branch 정리 작업이 남아 있지 않은지 확인
-- 해당 cleanup 작업을 비활성화한 뒤 다시 `.\scripts\sync_to_github.ps1 -Branches main, feature/web-ui` 실행
+- 해당 cleanup 작업을 비활성화한 뒤, **GitHub 브랜치를 먼저 Gitea에도 복구한 다음** `.\scripts\sync_to_github.ps1 -Branches main, feature/web-ui` 실행
 
 ---
 
@@ -610,4 +637,9 @@ git fetch github main
 git checkout main
 git merge github/main
 git push origin main
+
+# GitHub 작업 브랜치를 Gitea에도 반영해야 할 때
+git fetch github feature/web-ui
+git checkout -B feature/web-ui github/feature/web-ui
+git push origin feature/web-ui
 ```
