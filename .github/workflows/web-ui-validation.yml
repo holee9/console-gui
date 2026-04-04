@@ -78,6 +78,11 @@ jobs:
         working-directory: ${{ steps.detect.outputs.app_dir }}
         run: pnpm run --if-present lint
 
+      - name: Typecheck
+        if: ${{ steps.detect.outputs.has_workspace == 'true' }}
+        working-directory: ${{ steps.detect.outputs.app_dir }}
+        run: pnpm run --if-present typecheck
+
       - name: Test
         if: ${{ steps.detect.outputs.has_workspace == 'true' }}
         working-directory: ${{ steps.detect.outputs.app_dir }}

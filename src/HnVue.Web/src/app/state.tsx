@@ -1,9 +1,20 @@
 import {
   createContext,
   useContext,
+  useRef,
   useState,
-  type PropsWithChildren
+  type PropsWithChildren,
+  type ReactElement
 } from "react";
+import {
+  applyAcknowledgeAlert,
+  applyBurnDisc,
+  canConfirmParameters,
+  canStartExposure,
+  createSessionSettings,
+  isValidSettingValue,
+  type SettingsSection
+} from "./state-logic";
 import { getText } from "../shared/copy";
 import {
   createInitialAlerts,
@@ -31,9 +42,6 @@ import type {
   WorklistStudy
 } from "../shared/contracts";
 import { deriveSafeState } from "../shared/policy";
-
-type SettingsSection = keyof SystemSettings;
-type SettingsValue = string | number | boolean;
 
 interface AppState {
   locale: Locale;
@@ -64,7 +72,11 @@ interface AppState {
   acknowledgeAlert: (alertId: string) => void;
   burnDisc: (deliveryId: string) => void;
   toggleDeliveryFlag: (deliveryId: string, key: "includeViewer" | "encryptDisc") => void;
-  updateSetting: (section: SettingsSection, key: string, value: SettingsValue) => void;
+  updateSetting: <S extends SettingsSection, K extends keyof SystemSettings[S]>(
+    section: S,
+    key: K,
+    value: SystemSettings[S][K]
+  ) => void;
 }
 
 const AppContext = createContext<AppState | null>(null);
@@ -130,7 +142,7 @@ function resetWorkflowArtifacts() {
   };
 }
 
-export function AppProvider({ children }: PropsWithChildren) {
+export function AppProvider({ children }: PropsWithChildren): ReactElement {
   const [locale, setLocale] = useState<Locale>("ko");
   const [user, setUser] = useState<AuthUser | null>(null);
   const [workflowStage, setWorkflowStage] = useState<WorkflowStage>("Idle");
@@ -143,15 +155,17 @@ export function AppProvider({ children }: PropsWithChildren) {
   const [deliveryQueue, setDeliveryQueue] = useState<DeliveryStudy[]>(() => createInitialDeliveryQueue());
   const [currentDose, setCurrentDose] = useState<DoseSnapshot>(() => createInitialDose());
   const [settings, setSettings] = useState<SystemSettings>(() => createInitialSettings());
+  const auditCounter = useRef(createInitialAuditTrail().length);
 
   const selectedStudy = worklistStudies.find((study) => study.id === selectedStudyId) ?? null;
   const selectedProtocol =
     protocolPresets.find((protocol) => protocol.id === selectedProtocolId) ?? null;
 
   function appendAudit(level: AuditEvent["level"], message: string) {
+    auditCounter.current += 1;
     setAuditTrail((current) => [
       {
-        id: `EV-${current.length + 1}`,
+        id: `EV-${String(auditCounter.current).padStart(3, "0")}`,
         timestamp: nowTime(),
         level,
         message
@@ -160,9 +174,10 @@ export function AppProvider({ children }: PropsWithChildren) {
     ].slice(0, 12));
   }
 
-  function loginAsRole(role: UserRole) {
+  function resetSessionState(nextUser: AuthUser | null) {
     const session = resetWorkflowArtifacts();
-    setUser(demoUsers[role]);
+
+    setUser(nextUser);
     setSelectedStudyId(session.selectedStudyId);
     setSelectedProtocolId(session.selectedProtocolId);
     setWorkflowStage(session.workflowStage);
@@ -171,36 +186,18 @@ export function AppProvider({ children }: PropsWithChildren) {
     setCurrentDose(session.currentDose);
     setSystemStatus(session.systemStatus);
     setDeliveryQueue(createInitialDeliveryQueue());
-    setSettings((current) => ({
-      ...createInitialSettings(),
-      ui: {
-        ...createInitialSettings().ui,
-        locale: current.ui.locale
-      }
-    }));
+    setSettings((current) => createSessionSettings(current.ui.locale));
     setAuditTrail(createInitialAuditTrail());
+    auditCounter.current = createInitialAuditTrail().length;
+  }
+
+  function loginAsRole(role: UserRole) {
+    resetSessionState(demoUsers[role]);
     appendAudit("info", `${role} role entered the validation workspace.`);
   }
 
   function logout() {
-    const session = resetWorkflowArtifacts();
-    setUser(null);
-    setSelectedStudyId(session.selectedStudyId);
-    setSelectedProtocolId(session.selectedProtocolId);
-    setWorkflowStage(session.workflowStage);
-    setWorkflowClicks(session.workflowClicks);
-    setAlerts(session.alerts);
-    setCurrentDose(session.currentDose);
-    setSystemStatus(session.systemStatus);
-    setDeliveryQueue(createInitialDeliveryQueue());
-    setSettings((current) => ({
-      ...createInitialSettings(),
-      ui: {
-        ...createInitialSettings().ui,
-        locale: current.ui.locale
-      }
-    }));
-    setAuditTrail(createInitialAuditTrail());
+    resetSessionState(null);
   }
 
   function toggleLocale() {
@@ -311,7 +308,7 @@ export function AppProvider({ children }: PropsWithChildren) {
       return;
     }
 
-    if (deriveSafeState(alerts) === "Blocked") {
+    if (!canConfirmParameters({ alerts, selectedStudy, selectedProtocol })) {
       appendAudit("warning", "Parameter confirmation paused until critical alerts are acknowledged.");
       return;
     }
@@ -333,15 +330,7 @@ export function AppProvider({ children }: PropsWithChildren) {
       return;
     }
 
-    const hasBlockingAlerts = deriveSafeState(alerts) === "Blocked";
-    const canExpose =
-      workflowStage === "ReadyToExpose" &&
-      !hasBlockingAlerts &&
-      systemStatus.parameterSync === "Acked" &&
-      systemStatus.generator === "Ready" &&
-      systemStatus.detector === "Ready";
-
-    if (!canExpose) {
+    if (!canStartExposure({ alerts, selectedStudy, selectedProtocol, systemStatus, workflowStage })) {
       appendAudit(
         "warning",
         "Exposure blocked because generator ACK, detector readiness, or critical-alert clearance is incomplete."
@@ -405,36 +394,23 @@ export function AppProvider({ children }: PropsWithChildren) {
   }
 
   function acknowledgeAlert(alertId: string) {
-    setAlerts((current) => {
-      const nextAlerts = current.filter((alert) => alert.id !== alertId);
-      setSystemStatus((status) => ({
-        ...status,
-        generator: deriveSafeState(nextAlerts) === "Blocked" ? "Error" : status.generator === "Error" ? "Preparing" : status.generator,
-        parameterSync: deriveSafeState(nextAlerts) === "Blocked" ? "Error" : status.parameterSync === "Error" ? "Pending" : status.parameterSync,
-        safeState: deriveSafeState(nextAlerts)
-      }));
-      return nextAlerts;
-    });
+    const resolved = applyAcknowledgeAlert(alerts, systemStatus, alertId);
+
+    setAlerts(resolved.nextAlerts);
+    setSystemStatus(resolved.nextSystemStatus);
     appendAudit("info", `Acknowledged alert ${alertId}.`);
   }
 
   function burnDisc(deliveryId: string) {
-    setDeliveryQueue((current) =>
-      current.map((study) =>
-        study.id === deliveryId
-          ? {
-              ...study,
-              status: "Completed",
-              progress: 100
-            }
-          : study
-      )
-    );
+    const result = applyBurnDisc(deliveryQueue, deliveryId);
 
-    const study = deliveryQueue.find((item) => item.id === deliveryId);
+    setDeliveryQueue(result.nextQueue);
 
-    if (study) {
-      appendAudit("info", `Disc package completed for ${study.patientName} after PHI review and read-back verify.`);
+    if (result.completedStudy) {
+      appendAudit(
+        "info",
+        `Disc package completed for ${result.completedStudy.patientName} after PHI review and read-back verify.`
+      );
     }
   }
 
@@ -454,7 +430,19 @@ export function AppProvider({ children }: PropsWithChildren) {
     );
   }
 
-  function updateSetting(section: SettingsSection, key: string, value: SettingsValue) {
+  function updateSetting<S extends SettingsSection, K extends keyof SystemSettings[S]>(
+    section: S,
+    key: K,
+    value: SystemSettings[S][K]
+  ) {
+    if (!isValidSettingValue(value as string | number | boolean)) {
+      appendAudit(
+        "warning",
+        `Ignored invalid value for ${String(section)}.${String(key)} in the settings panel.`
+      );
+      return;
+    }
+
     setSettings((current) => ({
       ...current,
       [section]: {
@@ -463,7 +451,7 @@ export function AppProvider({ children }: PropsWithChildren) {
       }
     }));
 
-    appendAudit("info", `Updated ${section}.${key} in the validation settings panel.`);
+    appendAudit("info", `Updated ${String(section)}.${String(key)} in the validation settings panel.`);
   }
 
   return (
@@ -505,7 +493,7 @@ export function AppProvider({ children }: PropsWithChildren) {
   );
 }
 
-export function useAppState() {
+export function useAppState(): AppState {
   const context = useContext(AppContext);
 
   if (!context) {

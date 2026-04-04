@@ -206,6 +206,7 @@ secret-*.*
 node_modules/
 *.tsbuildinfo
 .tscache/
+.vite/
 .next/
 out/
 playwright-report/

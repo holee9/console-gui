@@ -3,6 +3,22 @@ import { useAppState } from "../../app/state";
 export default function AdminPage() {
   const { text, settings, updateSetting } = useAppState();
 
+  function updateDicomNumberSetting(key: "port" | "pollSeconds", rawValue: string) {
+    const parsed = Number(rawValue);
+
+    if (!Number.isNaN(parsed)) {
+      updateSetting("dicom", key, parsed);
+    }
+  }
+
+  function updateUiNumberSetting(key: "inactivityMinutes", rawValue: string) {
+    const parsed = Number(rawValue);
+
+    if (!Number.isNaN(parsed)) {
+      updateSetting("ui", key, parsed);
+    }
+  }
+
   return (
     <div className="page-stack">
       <section className="page-intro panel">
@@ -40,7 +56,7 @@ export default function AdminPage() {
                   className="text-input"
                   type="number"
                   value={settings.dicom.port}
-                  onChange={(event) => updateSetting("dicom", "port", Number(event.target.value))}
+                  onChange={(event) => updateDicomNumberSetting("port", event.target.value)}
                 />
               </label>
               <label>
@@ -49,7 +65,7 @@ export default function AdminPage() {
                   className="text-input"
                   type="number"
                   value={settings.dicom.pollSeconds}
-                  onChange={(event) => updateSetting("dicom", "pollSeconds", Number(event.target.value))}
+                  onChange={(event) => updateDicomNumberSetting("pollSeconds", event.target.value)}
                 />
               </label>
             </div>
@@ -131,7 +147,7 @@ export default function AdminPage() {
                 className="text-input"
                 type="number"
                 value={settings.ui.inactivityMinutes}
-                onChange={(event) => updateSetting("ui", "inactivityMinutes", Number(event.target.value))}
+                onChange={(event) => updateUiNumberSetting("inactivityMinutes", event.target.value)}
               />
             </label>
           </article>
