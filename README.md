@@ -32,7 +32,7 @@ HnVue Console SW는 H&abyz（에이치앤아비즈）가 자사 FPD（Flat Panel
 | 영상처리 | 외부 SDK（Phase 1） | Phase 2에서 자체 엔진 내재화 |
 | DB | SQLite + EF Core | SQLCipher AES-256 암호화 |
 | 로깅 | Serilog | SHA-256 해시 체인, 365일 보관 |
-| 인증/보안 | bcrypt, DPAPI, TLS 1.2+ | RBAC 2역할（Admin, Technologist） |
+| 인증/보안 | bcrypt(cost=12), DPAPI, TLS 1.2+ | RBAC 4역할（Radiographer, Radiologist, Admin, Service） |
 | 테스트 | xUnit + NSubstitute | 80%+ 커버리지 목표 |
 | SBOM | CycloneDX for .NET | NVD 자동 매칭 |
 | CI/CD | dotnet CLI + Code Signing | signtool.exe 디지털 서명 |
@@ -85,13 +85,14 @@ MR（72개）→ PR（65개）→ SWR（176+개）→ TC → HAZ
   MRD v3.0    PRD v2.0    FRS/SRS v2.0    RTM v2.0
 ```
 
-### 문서 정합성 현황（2026-04-03）
+### 문서 정합성 현황（2026-04-04）
 
 | 구분 | 상태 | 개수 | 설명 |
 |------|:----:|:----:|------|
-| 핵심 체인（MRD/PRD/FRS/SRS/RTM） | ✅ 정합 | 5 | 4-Tier, 추적성 100% |
+| 핵심 체인（MRD/PRD/FRS/SRS/RTM） | ✅ 정합 | 5 | 4-Tier, 추적성 100%, RTM SAD/SDS 매핑 완료 |
 | 설계+관리+테스트 | ✅ 정합 | 13 | v2.0 개정 완료（SAD/SDS/DMP/SDP/WBS + 테스트 5개 + eSTAR） |
-| Phase별 개정 대기 | ⏳ 대기 | 19 | 검증 완료/인허가 시 개정 |
+| 위험/보안/검증 | ✅ v2.0 | 3 | RMP v2.0, STRIDE v2.0, V&V Plan v2.0 — 4-Tier + 12모듈 반영 |
+| Phase별 개정 대기 | ⏳ 대기 | 16 | 검증 완료/인허가 시 개정 |
 | 28종 인허가 템플릿 | 27/28 | - | C06 PenTest만 외부 위탁 대기 |
 
 ---
@@ -138,10 +139,10 @@ MR（72개）→ PR（65개）→ SWR（176+개）→ TC → HAZ
 
 | Doc ID | 문서명 | 버전 | 경로 |
 |--------|--------|:----:|------|
-| DOC-008 | 위험 관리 계획서 | v1.0 | `docs/risk/DOC-008_Risk_Management_Plan_v1.0.md` |
+| DOC-008 | 위험 관리 계획서 | **v2.0** | `docs/risk/DOC-008_Risk_Management_Plan_v1.0.md` |
 | DOC-009 | FMEA | v1.0 | `docs/risk/DOC-009_FMEA_v1.0.md` |
 | DOC-010 | 위험 관리 보고서 | v1.0 | `docs/risk/DOC-010_RMR_v1.0.md` |
-| DOC-017 | 위협 모델링（STRIDE） | v1.0 | `docs/risk/DOC-017_ThreatModel_v1.0.md` |
+| DOC-017 | 위협 모델링（STRIDE） | **v2.0** | `docs/risk/DOC-017_ThreatModel_v1.0.md` |
 | DOC-047 | 사이버보안 위험 평가 | v1.0 | `docs/risk/DOC-047_Security_Risk_Assessment_v1.0.md` |
 
 ### 시험（Phase 1 구현 완료 시 개정）
@@ -166,7 +167,7 @@ MR（72개）→ PR（65개）→ SWR（176+개）→ TC → HAZ
 
 | Doc ID | 문서명 | 버전 | 경로 |
 |--------|--------|:----:|------|
-| DOC-011 | V&V 마스터 플랜 | v1.0 | `docs/verification/DOC-011_VV_Master_Plan_v1.0.md` |
+| DOC-011 | V&V 마스터 플랜 | **v2.0** | `docs/verification/DOC-011_VV_Master_Plan_v1.0.md` |
 | DOC-015 | 밸리데이션 계획 | v1.0 | `docs/verification/DOC-015_ValidationPlan_v1.0.md` |
 | DOC-025 | V&V 요약 보고서 | v1.0 | `docs/verification/DOC-025_VVSummary_v1.0.md` |
 | DOC-029 | 임상 평가 보고서 | v1.0 | `docs/verification/DOC-029_CER_v1.0.md` |
@@ -307,6 +308,7 @@ python scripts/sync_docs.py
 | 시점 | 대상 문서 | 개정 내용 |
 |------|----------|----------|
 | **완료** | MRD, PRD, FRS, SRS, RTM, eSTAR, SAD, SDS, DMP, SDP, WBS, UTP, ITP, STP, CyberTest, Usability | 4-Tier, MR-072, 추적성, 보완 3건, Phase 1 착수 준비 |
+| **완료（v2.0 개정）** | SRS(bcrypt 확정), SDS(디자인토큰+MahApps), SBOM(.NET8+NSubstitute), DOC-043(28프로젝트), RTM(SAD/SDS 매핑 90행), RMP(4HAZ+4RC), STRIDE(10위협), V&V Plan(13테스트프로젝트) | Phase 1 착수 전 교차검증 완료, 8개 문서 개정 |
 | **Phase 1 착수 시** | ~~SAD, SDS, DMP, SDP, WBS~~ | ~~Tier 반영 + 실제 설계~~ **완료** |
 | **Phase 1 구현 완료 시** | ~~UTP, ITP, STP, CyberTest, Usability~~ | ~~테스트 계획~~ **완료**, 구현 후 실제 TC 기입 |
 | **Phase 1 검증 완료 시** | UTR, ITR, STR, V&V Summary, QA | 실제 테스트 결과 |

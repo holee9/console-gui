@@ -551,7 +551,7 @@ flowchart LR
 
 | SWR ID | IEC 62304 분류 | 요구사항명 | 상세 | 출처 PR | 위험 참조 | 검증 방법 |
 |--------|---------------|-----------|------|---------|---------|---------|
-| SWR-CS-070 | Security-related | 로컬 인증 — Argon2id 해시 | Argon2id(메모리 64MB, 반복 3): 비밀번호 해시 저장. 타이밍 공격 방지 고정 시간 비교. 로그인 성공 시 JWT/세션 토큰 발급 | PR-CS-070 | HAZ-SEC | T, I |
+| SWR-CS-070 | Security-related | 로컬 인증 — bcrypt 해시 | bcrypt(cost factor=12, ~300ms): 비밀번호 해시 저장. 타이밍 공격 방지 고정 시간 비교. 로그인 성공 시 JWT/세션 토큰 발급 | PR-CS-070 | HAZ-SEC | T, I |
 | SWR-CS-071 | Security-related | 계정 잠금 (5회 실패) | 로그인 5회 실패 → 30분 잠금. 관리자 강제 해제 가능. 잠금 이벤트 Security 레벨 감사 로그 | PR-CS-070 | HAZ-SEC | T |
 | SWR-CS-072 | Security-related | 비밀번호 복잡성 정책 강제 | 최소 8자, 대/소문자/숫자/특수문자 각 1자 이상, 90일 만료, 이전 5개 재사용 금지, 취약 비밀번호 목록(30,000개) 차단 | PR-CS-070 | HAZ-SEC | T, I |
 | SWR-CS-073 | Security-related | AD/LDAP 도메인 인증 | LDAP v3/LDAPS/Kerberos. 도메인 그룹 → 시스템 역할 매핑. 서버 연결 불가 시 로컬 인증 폴백 | PR-CS-071 | HAZ-SEC | T, D |
@@ -917,7 +917,7 @@ graph LR
 
 | SWR ID | 검증 방법 | 수용 기준 (Pass 조건) | 검증 TC |
 |--------|---------|-------------------|-------|
-| SWR-CS-070 | T, I | Argon2id 해시 적용 확인; 타이밍 공격 방지 구현(고정 시간 비교) 코드 Inspection | UT-CS-070 |
+| SWR-CS-070 | T, I | bcrypt(cost=12) 해시 적용 확인; 타이밍 공격 방지 구현(고정 시간 비교) 코드 Inspection | UT-CS-070 |
 | SWR-CS-071 | T | 5회 실패 후 30분 계정 잠금 100% 확인 | UT-CS-071 |
 | SWR-CS-080 | T, I | DB 파일 직접 열기 시 PHI 컬럼 암호화 상태(복호화 불가) 확인 | IT-CS-080 |
 | SWR-CS-084 | T, I | 서명 변조된 DLL 실행 시 100% 차단; 정상 서명 파일 정상 실행 확인 | IT-CS-084 |
@@ -1107,7 +1107,7 @@ graph TD
 
 | SWR ID | IEC 62304 §5.2 분류 | 요구사항명 | 출처 PR | 위험 참조 | 검증 방법 |
 |--------|-------------------|-----------|---------|---------|---------|
-| SWR-CS-070 | §5.2.5 보안 요구사항 | 로컬 인증 Argon2id | PR-CS-070 | HAZ-SEC | T, I |
+| SWR-CS-070 | §5.2.5 보안 요구사항 | 로컬 인증 bcrypt(cost=12) | PR-CS-070 | HAZ-SEC | T, I |
 | SWR-CS-071 | §5.2.4 경보/§5.2.5 보안 | 계정 잠금 (5회 실패) | PR-CS-070 | HAZ-SEC | T |
 | SWR-CS-072 | §5.2.5 보안 요구사항 | 비밀번호 복잡성 정책 | PR-CS-070 | HAZ-SEC | T, I |
 | SWR-CS-073 | §5.2.3 인터페이스 / §5.2.5 보안 | AD/LDAP 도메인 인증 | PR-CS-071 | HAZ-SEC | T, D |

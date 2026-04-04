@@ -9,7 +9,7 @@
 |------|------|
 | **문서 ID** | TM-XRAY-GUI-001 |
 | **문서명** | HnVue GUI Console SW 위협 모델링 보고서 |
-| **버전** | v1.0 |
+| **버전** | v2.0 |
 | **작성일** | 2026-03-18 |
 | **작성자** | 사이버보안 팀 (Cybersecurity Team) |
 | **검토자** | SW 아키텍트, QA 팀장 |
@@ -22,6 +22,7 @@
 | 버전 | 날짜 | 변경 내용 | 작성자 |
 |------|------|----------|--------|
 | v1.0 | 2026-03-18 | 최초 작성 — STRIDE 기반 위협 모델 수립 | 사이버보안 팀 |
+| v2.0 | 2026-04-03 | 4-Tier 우선순위 체계 반영; CD/DVD Burning, 인시던트 대응, SW 업데이트 모듈 위협 분석 추가; 공격 트리 보완; SDS v2.0 매핑 업데이트 | 사이버보안 팀 |
 
 ---
 
@@ -155,6 +156,14 @@ graph TB
 | A-007 | SW 바이너리/구성 파일 | C:Low, I:Critical, A:Critical | 직접 (SW 무결성) |
 | A-008 | X-Ray Generator 제어 명령 | C:Low, I:Critical, A:Critical | 직접 (환자 안전) |
 
+### 3.4 신규 모듈 구성요소 (New Module Components)
+
+| SAD-ID | 모듈명 | 핵심 기술/기능 |
+|--------|--------|---------------|
+| SAD-CD-1000 | CDDVDBurning | IMAPI2 COM, DICOMDIR 생성, AES-256 암호화 옵션 |
+| SAD-INC-1100 | IncidentResponse | CVE/NVD 조회, 4단계 분류, PSIRT 알림 |
+| SAD-UPD-1200 | SWUpdate | HTTPS 다운로드, Authenticode 검증, SHA-256 해시, 백업/롤백 |
+
 ---
 
 ## 4. 데이터 흐름도 (Data Flow Diagrams)
@@ -219,13 +228,13 @@ graph TB
 
 | STRIDE 범주 | 설명 | 위반 속성 | 식별 위협 수 |
 |-------------|------|----------|------------|
-| **S** — Spoofing (스푸핑) | 신원 위장 | Authentication | 5 |
-| **T** — Tampering (변조) | 데이터 변조 | Integrity | 6 |
-| **R** — Repudiation (부인) | 행위 부인 | Non-repudiation | 3 |
-| **I** — Information Disclosure (정보 유출) | 정보 유출 | Confidentiality | 5 |
-| **D** — Denial of Service (서비스 거부) | 서비스 거부 | Availability | 5 |
-| **E** — Elevation of Privilege (권한 상승) | 권한 상승 | Authorization | 4 |
-| **합계** | | | **28** |
+| **S** — Spoofing (스푸핑) | 신원 위장 | Authentication | 6 |
+| **T** — Tampering (변조) | 데이터 변조 | Integrity | 9 |
+| **R** — Repudiation (부인) | 행위 부인 | Non-repudiation | 4 |
+| **I** — Information Disclosure (정보 유출) | 정보 유출 | Confidentiality | 6 |
+| **D** — Denial of Service (서비스 거부) | 서비스 거부 | Availability | 7 |
+| **E** — Elevation of Privilege (권한 상승) | 권한 상승 | Authorization | 6 |
+| **합계** | | | **38** |
 
 ### 5.2 Spoofing — 스푸핑 위협 (신원 위장)
 
@@ -284,6 +293,31 @@ graph TB
 | TM-E-002 | SQL Injection으로 DB 전체 접근 (SQL Injection) | EP-009 | A-001, A-002 | 8.6 | Critical | 매개변수화된 쿼리, ORM, 입력 검증 | RC-CS-026 |
 | TM-E-003 | DLL Injection/Hijacking으로 시스템 권한 탈취 (DLL Injection) | EP-006 | A-007, A-008 | 7.8 | High | 코드 서명 검증, DLL 경로 고정, 무결성 감시 | RC-CS-027 |
 | TM-E-004 | 서비스 계정 악용으로 시스템 레벨 접근 (Service Account Abuse) | EP-010 | A-007 | 6.7 | Medium | 최소 권한 원칙, 서비스 계정 격리, 감사 | RC-CS-028 |
+
+### 5.8 CD/DVD Burning 모듈 위협 (SAD-CD-1000)
+
+| TM-ID | STRIDE | 위협 설명 | 대상 모듈 | 영향 자산 | CVSS | 심각도 | 완화 조치 | RC 연계 |
+|-------|--------|----------|----------|----------|------|--------|----------|---------|
+| TM-T-007 | Tampering | 미디어에 기록된 DICOM 파일 변조 (DICOM File Tampering on Burned Media) | SAD-CD-1000 | A-002 | 7.4 | High | SHA-256 체크섬 검증 + DICOMDIR 무결성 확인 | RC-CS-029 |
+| TM-I-006 | Information Disclosure | PHI 포함 미디어 무단 반출 (Unauthorized PHI Media Export) | SAD-CD-1000 | A-001 | 7.2 | High | AES-256 암호화 옵션 + RBAC 접근 제어 (Admin/Radiologist만) | RC-CS-030 |
+| TM-R-004 | Repudiation | 미디어 생성 행위 부인 (Media Creation Repudiation) | SAD-CD-1000 | A-006 | 5.5 | Medium | 감사 로그에 환자ID, 생성자, 시간, 미디어ID 기록 | RC-CS-031 |
+
+### 5.9 Incident Response 모듈 위협 (SAD-INC-1100)
+
+| TM-ID | STRIDE | 위협 설명 | 대상 모듈 | 영향 자산 | CVSS | 심각도 | 완화 조치 | RC 연계 |
+|-------|--------|----------|----------|----------|------|--------|----------|---------|
+| TM-D-006 | Denial of Service | 인시던트 보고 시스템 자체 공격으로 무력화 (Incident Reporting System DoS) | SAD-INC-1100 | A-006 | 7.5 | High | 독립 스레드 운영 + 로컬 큐 영속화 | RC-CS-032 |
+| TM-T-008 | Tampering | 인시던트 로그 삭제/변조 (Incident Log Tampering/Deletion) | SAD-INC-1100 | A-006 | 9.0 | Critical | HMAC-SHA256 해시 체인 + 읽기 전용 감사 로그 | RC-CS-033 |
+| TM-E-005 | Elevation of Privilege | 인시던트 분류 등급 조작 (Incident Severity Classification Manipulation) | SAD-INC-1100 | A-006 | 7.8 | High | 분류 알고리즘 코드 서명 + 관리자 수동 재분류만 허용 | RC-CS-034 |
+
+### 5.10 SW Update 모듈 위협 (SAD-UPD-1200)
+
+| TM-ID | STRIDE | 위협 설명 | 대상 모듈 | 영향 자산 | CVSS | 심각도 | 완화 조치 | RC 연계 |
+|-------|--------|----------|----------|----------|------|--------|----------|---------|
+| TM-S-006 | Spoofing | 악성 업데이트 서버 위장 (Malicious Update Server Spoofing) | SAD-UPD-1200 | A-007 | 9.1 | Critical | HTTPS + 서버 인증서 핀닝 (Certificate Pinning) | RC-CS-035 |
+| TM-T-009 | Tampering | 업데이트 패키지 변조 (Update Package Tampering) | SAD-UPD-1200 | A-007 | 9.3 | Critical | Authenticode SHA-256 + RSA-2048 서명 검증 + SHA-256 해시 이중 검증 | RC-CS-036 |
+| TM-D-007 | Denial of Service | 업데이트 중 시스템 중단 (System Disruption During Update) | SAD-UPD-1200 | A-007 | 7.8 | High | 사전 백업 + 자동 롤백 + 오프라인 업데이트(USB) 지원 | RC-CS-037 |
+| TM-E-006 | Elevation of Privilege | 업데이트 프로세스를 통한 권한 상승 (Privilege Escalation via Update Process) | SAD-UPD-1200 | A-007, A-008 | 8.0 | High | Admin/Service 역할만 업데이트 실행 허용 (RBAC) | RC-CS-038 |
 
 ---
 
@@ -372,33 +406,48 @@ graph TD
 
 | STRIDE | 식별 위협 | 완화 적용 | 잔류 위험 수용 | 추가 테스트 필요 |
 |--------|----------|----------|--------------|----------------|
-| Spoofing (5) | 5 | 5 | 0 | CSTC-AUTH-xxx |
-| Tampering (6) | 6 | 6 | 0 | CSTC-INT-xxx |
-| Repudiation (3) | 3 | 3 | 0 | CSTC-LOG-xxx |
-| Information Disclosure (5) | 5 | 5 | 0 | CSTC-ENC-xxx |
-| Denial of Service (5) | 5 | 5 | 1 (TM-D-005) | CSTC-DOS-xxx |
-| Elevation of Privilege (4) | 4 | 4 | 0 | CSTC-PRIV-xxx |
-| **합계** | **28** | **28** | **1** | **40+ TC** |
+| Spoofing (6) | 6 | 6 | 0 | CSTC-AUTH-xxx |
+| Tampering (9) | 9 | 9 | 0 | CSTC-INT-xxx |
+| Repudiation (4) | 4 | 4 | 0 | CSTC-LOG-xxx |
+| Information Disclosure (6) | 6 | 6 | 0 | CSTC-ENC-xxx |
+| Denial of Service (7) | 7 | 7 | 1 (TM-D-005) | CSTC-DOS-xxx |
+| Elevation of Privilege (6) | 6 | 6 | 0 | CSTC-PRIV-xxx |
+| **합계** | **38** | **38** | **1** | **50+ TC** |
 
 ### 7.2 심각도별 분포
 
 | 심각도 | 위협 수 | 비율 | 완화 상태 |
 |--------|---------|------|----------|
-| Critical (CVSS ≥ 9.0) | 3 | 10.7% | 모두 완화 적용 |
-| High (CVSS 7.0-8.9) | 12 | 42.9% | 모두 완화 적용 |
-| Medium (CVSS 4.0-6.9) | 11 | 39.3% | 모두 완화 적용 |
-| Low (CVSS < 4.0) | 2 | 7.1% | 모두 완화 적용 |
+| Critical (CVSS ≥ 9.0) | 6 | 15.8% | 모두 완화 적용 |
+| High (CVSS 7.0-8.9) | 18 | 47.4% | 모두 완화 적용 |
+| Medium (CVSS 4.0-6.9) | 12 | 31.5% | 모두 완화 적용 |
+| Low (CVSS < 4.0) | 2 | 5.3% | 모두 완화 적용 |
 
 ### 7.3 완화 조치 유형별 분류
 
 ```mermaid
 pie title 완화 조치 유형 분포
-    "암호화/TLS" : 8
-    "접근 통제/인증" : 7
+    "암호화/TLS" : 10
+    "접근 통제/인증" : 10
     "입력 검증" : 5
-    "모니터링/감사" : 4
-    "무결성 검증" : 4
+    "모니터링/감사" : 6
+    "무결성 검증" : 7
 ```
+
+### 7.4 신규 모듈 위협-완화 매트릭스 (New Module Threat-Mitigation Matrix)
+
+| TM-ID | STRIDE | 모듈 (SAD Reference) | 위협 | 심각도 | 완화 조치 | SDS 매핑 |
+|-------|--------|---------------------|------|--------|----------|---------|
+| TM-T-007 | Tampering | CDDVDBurning (SAD-CD-1000) | 미디어 DICOM 파일 변조 | High | SHA-256 체크섬 + DICOMDIR 무결성 확인 | SDS-CD-SEC-001 |
+| TM-I-006 | Info Disclosure | CDDVDBurning (SAD-CD-1000) | PHI 미디어 무단 반출 | High | AES-256 암호화 + RBAC | SDS-CD-SEC-002 |
+| TM-R-004 | Repudiation | CDDVDBurning (SAD-CD-1000) | 미디어 생성 행위 부인 | Medium | 감사 로그 기록 | SDS-CD-SEC-003 |
+| TM-D-006 | DoS | IncidentResponse (SAD-INC-1100) | 인시던트 보고 시스템 무력화 | High | 독립 스레드 + 로컬 큐 영속화 | SDS-INC-SEC-001 |
+| TM-T-008 | Tampering | IncidentResponse (SAD-INC-1100) | 인시던트 로그 변조 | Critical | HMAC-SHA256 해시 체인 + 읽기 전용 로그 | SDS-INC-SEC-002 |
+| TM-E-005 | EoP | IncidentResponse (SAD-INC-1100) | 인시던트 분류 등급 조작 | High | 코드 서명 + 관리자 수동 재분류 | SDS-INC-SEC-003 |
+| TM-S-006 | Spoofing | SWUpdate (SAD-UPD-1200) | 악성 업데이트 서버 위장 | Critical | HTTPS + Certificate Pinning | SDS-UPD-SEC-001 |
+| TM-T-009 | Tampering | SWUpdate (SAD-UPD-1200) | 업데이트 패키지 변조 | Critical | Authenticode + SHA-256 이중 검증 | SDS-UPD-SEC-002 |
+| TM-D-007 | DoS | SWUpdate (SAD-UPD-1200) | 업데이트 중 시스템 중단 | High | 사전 백업 + 자동 롤백 + USB 오프라인 | SDS-UPD-SEC-003 |
+| TM-E-006 | EoP | SWUpdate (SAD-UPD-1200) | 업데이트 프로세스 권한 상승 | High | RBAC (Admin/Service만 허용) | SDS-UPD-SEC-004 |
 
 ---
 
@@ -431,11 +480,11 @@ pie title 완화 조치 유형 분포
 
 ### 9.1 잔류 위험 요약 테이블
 
-모든 28개 위협에 대한 완화 조치 적용 후 잔류 위험 평가:
+모든 38개 위협에 대한 완화 조치 적용 후 잔류 위험 평가:
 
 | 잔류 위험 수준 | 위협 수 | 대표 위협 | 수용 근거 |
 |--------------|---------|----------|----------|
-| **수용 가능 (Acceptable)** | 25 | TM-S-001–005, TM-T-001–006 등 | ALARP 원칙 충족, 추가 완화 비용 대비 효과 미미 |
+| **수용 가능 (Acceptable)** | 35 | TM-S-001–006, TM-T-001–009 등 | ALARP 원칙 충족, 추가 완화 비용 대비 효과 미미 |
 | **조건부 수용 (ALARA)** | 3 | TM-T-003, TM-D-004, TM-E-002 | 지속적 모니터링 조건 하 수용 |
 | **수용 불가 (Unacceptable)** | 0 | — | — |
 

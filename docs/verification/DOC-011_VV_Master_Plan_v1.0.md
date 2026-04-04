@@ -8,7 +8,7 @@
 | 항목 | 내용 |
 |------|------|
 | **문서 ID (Document ID)** | VVP-XRAY-GUI-001 |
-| **버전 (Version)** | v1.0 |
+| **버전 (Version)** | v2.0 |
 | **제품명 (Product Name)** | HnVue Console SW |
 | **작성일 (Date)** | 2026-03-16 |
 | **작성자 (Author)** | SW V&V Team |
@@ -26,6 +26,7 @@
 | v0.1 | 2025-09-01 | SW V&V Team | 초안 작성 (Draft) |
 | v0.9 | 2025-11-15 | SW V&V Team | 내부 검토 반영 (Internal Review) |
 | v1.0 | 2026-03-16 | SW V&V Team | 최초 승인 릴리스 (Initial Approved Release) |
+| v2.0 | 2026-04-03 | SW V&V Team | 4-Tier 우선순위 체계 반영; 모듈별 독립 테스트 프로젝트(13개) 구조 반영; CD/DVD Burning, 인시던트 대응, SW 업데이트 모듈 검증 추가; xUnit Trait 기반 SWR 추적성 도입; NSubstitute 5.1.0 채택 (Moq 교체); 안전 임계 모듈 커버리지 90%+ 목표 설정 |
 
 ---
 
@@ -78,13 +79,18 @@ Phase 1 범위 내 소프트웨어 도메인:
 
 | 도메인 코드 | 도메인명 | 주요 기능 |
 |------------|---------|-----------|
-| PM | Patient Management (환자 관리) | 환자 등록, 검색, 정보 편집, 워크리스트 |
+| PM | Patient Management (환자관리) | 환자 등록, 검색, 정보 편집, 워크리스트 |
 | WF | Acquisition Workflow (촬영 워크플로우) | 프로토콜 선택, 촬영 시퀀스, 노출 제어 |
-| IP | Image Display & Processing (영상 표시/처리) | 영상 뷰어, 윈도우 레벨, 노이즈 필터 |
-| DM | Dose Management (선량 관리) | DRL 모니터링, 선량 경보, 누적 선량 |
-| DC | DICOM/Communication (DICOM/통신) | DICOM Store/Query/Retrieve, HL7 MWL |
+| IP | Image Display & Processing (영상처리) | 영상 뷰어, 윈도우 레벨, 노이즈 필터 |
+| DM | Dose Management (선량관리) | DRL 모니터링, 선량 경보, 누적 선량 |
+| DC | DICOM/Communication (DICOM 통신) | DICOM Store/Query/Retrieve, HL7 MWL |
 | SA | System Administration (시스템 관리) | 사용자 관리, 시스템 설정, 로그 |
 | CS | Cybersecurity (사이버보안) | 인증, 암호화, 감사 로그 |
+| UI | UI Framework (UI 프레임워크) | 공통 UI 컴포넌트, 레이아웃, 테마 |
+| DB | Data Persistence (데이터 영속성) | 데이터베이스 접근, ORM, 마이그레이션 |
+| CD | CD/DVD Burning (CD/DVD Burning) | 영상 CD/DVD 굽기, 뷰어 포함 미디어 생성 (MR-072) |
+| INC | Incident Response (인시던트 대응) | 사고 감지, 알림, 대응 워크플로우 (MR-037) |
+| UPD | SW Update (SW 업데이트) | 소프트웨어 자동/수동 업데이트, 롤백 (MR-039) |
 
 **제외 범위 (Out of Scope)**:
 - Phase 2 기능: AI Integration, Cloud 연동 (M13–M24)
@@ -241,7 +247,7 @@ flowchart TB
         L2A["입력: SW 모듈\n기준: SAD\n출력: IT Report\n도구: 자동화 프레임워크, Mock HW"]
     end
     subgraph L1["Level 1: Unit Test （단위 테스트）"]
-        L1A["입력: 소스코드\n기준: SDS\n출력: UT Report\n도구: GTest/GMock （C++）, pytest （Python）"]
+        L1A["입력: 소스코드\n기준: SDS\n출력: UT Report\n도구: xUnit/NSubstitute （.NET）, GTest/GMock （C++）, pytest （Python）"]
     end
 
     L1A --> L2A --> L3A --> L4A
@@ -256,7 +262,7 @@ flowchart TB
 
 | 레벨 | 활동 | 입력 (Input) | 기준 문서 | 출력 (Output) | 도구 (Tool) | IEC 62304 조항 |
 |------|------|-------------|-----------|--------------|------------|----------------|
-| **Level 1** | 단위 테스트 (Unit Test) | 소스코드 (Source Code) | SDS (소프트웨어 상세 설계) | UT Report | GTest, GMock, pytest, gcov | §5.7 |
+| **Level 1** | 단위 테스트 (Unit Test) | 소스코드 (Source Code) | SDS (소프트웨어 상세 설계) | UT Report | xUnit 2.7.0, NSubstitute 5.1.0, Coverlet 6.0.0, GTest, GMock, pytest, gcov | §5.7 |
 | **Level 2** | 통합 테스트 (Integration Test) | SW 모듈 (Software Modules) | SAD (소프트웨어 아키텍처) | IT Report | Robot Framework, 자동화 프레임워크, HW 시뮬레이터 | §5.7 |
 | **Level 3** | 시스템 테스트 (System Test) | 통합 SW (Integrated SW) | FRS, PRD | ST Report | 시스템 테스트 환경, DICOM 시뮬레이터 (DCMTK), Orthanc | §5.8 |
 | **Level 4** | 밸리데이션 (Design Validation) | 출시 빌드 (Release Build) | MRD, User Needs | V&V Report | 실사용 환경, UAT 환경, 임상 시뮬레이터 | FDA 820.30(g) |
@@ -295,6 +301,16 @@ flowchart TB
 ```mermaid
 flowchart LR
     classDef default fill:#444,stroke:#666,color:#fff
+    subgraph DOTNET[".NET 8 단위 테스트"]
+        XU["xUnit 2.7.0"]
+        NS["NSubstitute 5.1.0\n（Mocking）"]
+        FA["FluentAssertions 6.12.0\n（Assertion）"]
+        CV["Coverlet 6.0.0\n（커버리지 측정）"]
+        XU --> NS
+        NS --> FA
+        FA --> CV
+    end
+
     subgraph CPP["C++ 단위 테스트"]
         GT["Google Test\n（GTest）"]
         GM["Google Mock\n（GMock）"]
@@ -313,13 +329,15 @@ flowchart LR
 
     subgraph CI["CI 파이프라인"]
         JK["Jenkins /\nGitHub Actions"]
-        RP["테스트 결과 리포트\n（JUnit XML）"]
+        RP["테스트 결과 리포트\n（JUnit XML / TRX）"]
         JK --> RP
     end
 
+    DOTNET --> CI
     CPP --> CI
     PY --> CI
 
+    style DOTNET fill:#444,stroke:#666
     style CPP fill:#444,stroke:#666
     style PY fill:#444,stroke:#666
     style CI fill:#444,stroke:#666
@@ -331,31 +349,84 @@ flowchart LR
 
 | 대상 컴포넌트 | Mock/Stub 대상 | 도구 | 전략 |
 |------------|--------------|------|------|
-| DICOM 통신 모듈 | DICOM 네트워크 스택 | GMock, DCMTK Stub | Interface Injection으로 Mock 주입 |
-| Generator 제어 모듈 | 하드웨어 드라이버 | GMock Hardware Abstraction Layer | HAL (Hardware Abstraction Layer) 인터페이스 모킹 |
-| 데이터베이스 계층 | SQLite/PostgreSQL | pytest-mock, SQLite In-Memory | In-memory DB 또는 Mock Repository |
-| 파일 시스템 | OS 파일 I/O | Temp Directory Fixture | pytest tmp_path Fixture |
-| 시스템 시간 | OS clock | Clock Interface Mock | Dependency Injection |
+| DICOM 통신 모듈 (.NET) | DICOM 네트워크 스택 | NSubstitute 5.1.0 | Interface Injection으로 Mock 주입 |
+| DICOM 통신 모듈 (C++) | DICOM 네트워크 스택 | GMock, DCMTK Stub | Interface Injection으로 Mock 주입 |
+| Generator 제어 모듈 | 하드웨어 드라이버 | GMock / NSubstitute | HAL (Hardware Abstraction Layer) 인터페이스 모킹 |
+| 데이터베이스 계층 (.NET) | Entity Framework / SQLite | NSubstitute, SQLite In-Memory | In-memory DB 또는 Mock Repository |
+| 데이터베이스 계층 (Python) | SQLite/PostgreSQL | pytest-mock, SQLite In-Memory | In-memory DB 또는 Mock Repository |
+| 파일 시스템 | OS 파일 I/O | NSubstitute (IFileSystem) / Temp Directory | 인터페이스 추상화 또는 Temp Fixture |
+| 시스템 시간 | OS clock | NSubstitute (ITimeProvider) / Clock Interface Mock | Dependency Injection |
+| CD/DVD Burning 모듈 | IMAPI2 COM 인터페이스 | NSubstitute 5.1.0 | COM Wrapper 인터페이스 모킹 |
+| SW 업데이트 모듈 | HTTP 다운로드, 파일 시스템 | NSubstitute 5.1.0 | IUpdateService 인터페이스 모킹 |
+
+> **참고**: Moq 라이브러리는 v2.0부터 NSubstitute 5.1.0으로 교체되었다. NSubstitute는 비침투적 (non-intrusive) 모킹 API를 제공하며, Castle.Core 의존성을 제거하여 라이선스 리스크를 해소한다.
 
 ### 5.4 단위 테스트 범위 (Unit Test Scope)
 
 도메인별 단위 테스트 대상 모듈:
 
-| 도메인 | 테스트 대상 모듈 | 언어 | 우선순위 |
-|--------|--------------|------|---------|
-| WF | 촬영 프로토콜 엔진 (Acquisition Protocol Engine) | C++ | 높음 |
-| WF | 노출 파라미터 계산기 (Exposure Parameter Calculator) | C++ | 높음 |
-| DM | 선량 계산 모듈 (Dose Calculation Module) | C++ | 높음 (Safety-Critical) |
-| DM | 선량 경보 로직 (Dose Alert Logic) | C++ | 높음 (Safety-Critical) |
-| IP | 영상 처리 필터 (Image Processing Filter) | C++ | 중간 |
-| DC | DICOM 메시지 파서 (DICOM Message Parser) | C++ | 중간 |
-| PM | 환자 데이터 검증기 (Patient Data Validator) | Python | 중간 |
-| CS | 인증/권한 모듈 (Auth/Authorization Module) | Python | 높음 |
+| 도메인 | 테스트 대상 모듈 | 언어 | Tier | 안전 임계 |
+|--------|--------------|------|------|---------|
+| WF | 촬영 프로토콜 엔진 (Acquisition Protocol Engine) | C# / C++ | Tier 1 | YES |
+| WF | 노출 파라미터 계산기 (Exposure Parameter Calculator) | C# / C++ | Tier 1 | YES |
+| DM | 선량 계산 모듈 (Dose Calculation Module) | C# / C++ | Tier 1 | YES (Safety-Critical) |
+| DM | 선량 경보 로직 (Dose Alert Logic) | C# / C++ | Tier 1 | YES (Safety-Critical) |
+| CS | 인증/권한 모듈 (Auth/Authorization Module) | C# | Tier 1 | YES |
+| INC | 인시던트 감지/알림 모듈 (Incident Detection/Alert Module) | C# | Tier 1 | YES |
+| UPD | SW 업데이트 관리 모듈 (SW Update Manager Module) | C# | Tier 2 | YES |
+| IP | 영상 처리 필터 (Image Processing Filter) | C# / C++ | Tier 2 | No |
+| DC | DICOM 메시지 파서 (DICOM Message Parser) | C# / C++ | Tier 2 | No |
+| PM | 환자 데이터 검증기 (Patient Data Validator) | C# | Tier 2 | No |
+| DB | 데이터 영속성 계층 (Data Persistence Layer) | C# | Tier 3 | No |
+| CD | CD/DVD Burning 엔진 (CD/DVD Burning Engine) | C# | Tier 3 | No |
+| SA | 시스템 관리 모듈 (System Administration Module) | C# | Tier 3 | No |
+| UI | UI 프레임워크 공통 컴포넌트 (UI Framework Common Components) | C# | Tier 4 | No |
 
-### 5.5 단위 테스트 합격 기준 (Unit Test Pass Criteria)
+> **Tier 분류 기준**: Tier 1 = 환자 안전 직결 (Safety-Critical), Tier 2 = 핵심 임상 기능, Tier 3 = 지원 기능, Tier 4 = UI/UX 기능. 4-Tier 우선순위 체계에 따라 테스트 개발 및 실행 순서를 결정한다.
+
+### 5.5 모듈별 독립 테스트 프로젝트 구조 (Independent Test Project Structure)
+
+HnVue Console SW는 .NET 8 기반 13개 독립 테스트 프로젝트로 구성되며, 각 프로젝트는 대상 모듈과 1:1 대응한다. 안전 임계 (Safety-Critical) 모듈은 강화된 커버리지 목표가 적용된다.
+
+| 테스트 프로젝트 | 대상 모듈 | SDS 참조 | 안전 임계 | 커버리지 목표 |
+|---|---|---|---|---|
+| HnVue.Common.Tests | HnVue.Common | - | No | 80%+ |
+| HnVue.PatientManagement.Tests | HnVue.PatientManagement | SDS-PM-1xx | No | 80%+ |
+| HnVue.Workflow.Tests | HnVue.Workflow | SDS-WF-2xx | YES | 90%+ |
+| HnVue.Imaging.Tests | HnVue.Imaging | SDS-IP-3xx | No | 80%+ |
+| HnVue.Dose.Tests | HnVue.Dose | SDS-DM-4xx | YES | 90%+ |
+| HnVue.Dicom.Tests | HnVue.Dicom | SDS-DC-5xx | No | 80%+ |
+| HnVue.SystemAdmin.Tests | HnVue.SystemAdmin | SDS-SA-6xx | No | 80%+ |
+| HnVue.Security.Tests | HnVue.Security | SDS-CS-7xx | YES | 90%+ |
+| HnVue.UI.Tests | HnVue.UI | SDS-UI-8xx | No | 70%+ |
+| HnVue.Data.Tests | HnVue.Data | SDS-DB-9xx | No | 80%+ |
+| HnVue.CDBurning.Tests | HnVue.CDBurning | SDS-CD-10xx | No | 80%+ |
+| HnVue.Incident.Tests | HnVue.Incident | SDS-INC-11xx | YES | 90%+ |
+| HnVue.Update.Tests | HnVue.Update | SDS-UPD-12xx | YES | 85%+ |
+
+### 5.6 SWR 추적성 via xUnit Traits (SWR Traceability via xUnit Traits)
+
+모든 단위 테스트는 xUnit Trait를 사용하여 SWR 및 HAZ 추적성을 보장한다:
+
+```csharp
+[Fact]
+[Trait("SWR", "SWR-CS-070")]
+[Trait("HAZ", "HAZ-SEC")]
+public async Task AuthenticateAsync_FiveFailedAttempts_LocksAccount() { ... }
+```
+
+검증 명령:
+- 특정 SWR: `dotnet test --filter "SWR=SWR-CS-070"`
+- 안전 테스트: `dotnet test --filter "HAZ=HAZ-SEC"`
+- 모듈별 독립 검증: `dotnet test tests/HnVue.Security.Tests/`
+
+Trait 기반 추적성은 RTM (Requirements Traceability Matrix)과 연동되어 SWR → TC 매핑을 자동화한다. CI 파이프라인에서 Trait 필터를 활용하여 안전 임계 모듈의 회귀 테스트를 우선 실행한다.
+
+### 5.7 단위 테스트 합격 기준 (Unit Test Pass Criteria)
 
 - 모든 테스트 케이스 Pass (실패 0건)
 - Statement Coverage ≥ 80% (전체 코드베이스)
+- 안전 임계 모듈 Statement Coverage ≥ 90% (Workflow, Dose, Security, Incident, Update)
 - Safety-Critical 모듈 Branch Coverage = 100%
 - 빌드 경고 (Build Warning) 0건 (Warning-as-Error 설정)
 
@@ -449,7 +520,12 @@ C4Context
 | DC | DICOM 전송/조회, HL7 연동, 프린트 | PR-051–060 | 25 |
 | SA | 사용자 관리, 로그 조회, 설정, 업데이트 | PR-061–075 | 30 |
 | CS | 로그인, 권한 제어, 감사 로그 | PR-076–085 | 20 |
-| **합계** | | | **185** |
+| UI | UI 공통 컴포넌트, 레이아웃, 테마 | PR-086–090 | 10 |
+| DB | 데이터 영속성, 마이그레이션 | PR-091–095 | 10 |
+| CD | CD/DVD Burning, 미디어 생성, 뷰어 포함 | PR-096–100 (MR-072) | 10 |
+| INC | 인시던트 감지, 알림, 대응 워크플로우 | PR-101–108 (MR-037) | 15 |
+| UPD | SW 업데이트 다운로드, 설치, 롤백 | PR-109–115 (MR-039) | 12 |
+| **합계** | | | **242** |
 
 ### 7.3 성능 테스트 (Performance Test)
 
@@ -689,14 +765,19 @@ flowchart TB
 |---------|---------|-----|
 | OS | Windows 10 LTSC 2021 (21H2) | 기본 지원 OS |
 | OS (호환성) | Windows 11 22H2 | 호환성 테스트 |
-| 컴파일러 | MSVC 2022 (C++17), Python 3.11 | 빌드 |
-| 단위 테스트 | Google Test 1.14, pytest 7.x | UT 프레임워크 |
-| 커버리지 | gcov/lcov, pytest-cov | 커버리지 측정 |
+| 런타임 | .NET 8 (LTS) | 기본 런타임 |
+| 컴파일러 | MSVC 2022 (C++17), .NET SDK 8.x, Python 3.11 | 빌드 |
+| 단위 테스트 (.NET) | xUnit 2.7.0, FluentAssertions 6.12.0 | .NET UT 프레임워크 |
+| 모킹 (.NET) | NSubstitute 5.1.0 | .NET 모킹 (Moq 대체) |
+| 커버리지 (.NET) | Coverlet 6.0.0 | .NET 커버리지 측정 |
+| 단위 테스트 (C++) | Google Test 1.14 | C++ UT 프레임워크 |
+| 단위 테스트 (Python) | pytest 7.x | Python UT 프레임워크 |
+| 커버리지 (C++/Python) | gcov/lcov, pytest-cov | 커버리지 측정 |
 | 통합 테스트 | Robot Framework 6.x | IT 자동화 |
-| DICOM 라이브러리 | DCMTK 3.6.8 | DICOM 처리 |
+| DICOM 라이브러리 | DCMTK 3.6.8, fo-dicom 5.x (.NET) | DICOM 처리 |
 | DICOM 서버 | Orthanc 1.12 | 테스트 PACS |
 | CI/CD | Jenkins 2.x / GitHub Actions | 자동화 파이프라인 |
-| 정적 분석 | Coverity, Cppcheck | SAST |
+| 정적 분석 | Coverity, Cppcheck, .NET Analyzers | SAST |
 | 사이버보안 | nmap, Burp Suite Community, OWASP ZAP | 보안 테스트 |
 
 ### 10.4 DICOM 시뮬레이터 환경
@@ -952,6 +1033,11 @@ TC - [레벨] - [도메인] - [순번]
   DC  = DICOM/Communication
   SA  = System Administration
   CS  = Cybersecurity
+  UI  = UI Framework
+  DB  = Data Persistence
+  CD  = CD/DVD Burning
+  INC = Incident Response
+  UPD = SW Update
   PERF= Performance
   SAF = Safety
   STR = Stress
@@ -1034,6 +1120,10 @@ TC - [레벨] - [도메인] - [순번]
 
 | 도구명 | 버전 | 목적 | 레벨 | 검증 상태 |
 |-------|------|------|------|---------|
+| **xUnit** | 2.7.0 | .NET 단위 테스트 프레임워크 | UT | IQ/OQ 완료 |
+| **NSubstitute** | 5.1.0 | .NET 목킹 (Mocking) — Moq 대체 | UT | IQ/OQ 완료 |
+| **FluentAssertions** | 6.12.0 | .NET Assertion 라이브러리 | UT | IQ/OQ 완료 |
+| **Coverlet** | 6.0.0 | .NET 코드 커버리지 측정 | UT | IQ 완료 |
 | **Google Test (GTest)** | 1.14.0 | C++ 단위 테스트 프레임워크 | UT | IQ/OQ 완료 |
 | **Google Mock (GMock)** | 1.14.0 | C++ 목킹 (Mocking) | UT | IQ/OQ 완료 |
 | **gcov / lcov** | gcc 13 내장 / 1.16 | C++ 코드 커버리지 측정 | UT | IQ 완료 |
@@ -1062,8 +1152,8 @@ TC - [레벨] - [도메인] - [순번]
 
 | 도구 등급 | 정의 | 요구 검증 수준 | 해당 도구 |
 |---------|------|------------|---------|
-| Category 1 | 자동화 없음, 검증 결과 수동 검토 | IQ만 필요 | gcov, nmap |
-| Category 2 | 자동화 있음, 출력 독립 검증 가능 | IQ + OQ | GTest, pytest, Jenkins |
+| Category 1 | 자동화 없음, 검증 결과 수동 검토 | IQ만 필요 | gcov, Coverlet, nmap |
+| Category 2 | 자동화 있음, 출력 독립 검증 가능 | IQ + OQ | xUnit, NSubstitute, GTest, pytest, Jenkins |
 | Category 3 | 자동화, 출력 독립 검증 어려움 | IQ + OQ + PQ | (해당 없음) |
 
 ---
@@ -1081,4 +1171,4 @@ TC - [레벨] - [도메인] - [순번]
 | 승인자 (Approver) | Director of SW Engineering | ____________ | 2026-03-16 |
 
 ---
-*VVP-XRAY-GUI-001 v1.0 | © 2026 HnVue Project | IEC 62304 Class B | FDA 510(k) / CE MDR / KFDA*
+*VVP-XRAY-GUI-001 v2.0 | © 2026 HnVue Project | IEC 62304 Class B | FDA 510(k) / CE MDR / KFDA*

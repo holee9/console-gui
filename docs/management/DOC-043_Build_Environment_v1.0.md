@@ -128,39 +128,76 @@ HnVue의 소스코드 구조는 IEC 62304 §5.3 아키텍처 설계(DOC-006)에 
 
 ```
 HnVue/
-├── src/
-│   ├── HnVue.UI/              # UI Module (WPF .NET 8, MahApps.Metro, CommunityToolkit.Mvvm)
-│   ├── HnVue.DICOM/           # DICOM Engine (fo-dicom 5.1.3, DCMTK 3.6.8)
-│   ├── HnVue.Imaging/         # Image Processing Module (OpenCvSharp4 4.9.0, ITK.NET 5.3.0)
-│   ├── HnVue.Security/        # Security Module (BouncyCastle 2.3.0, OpenSSL 3.2.1)
-│   ├── HnVue.Data/            # Data Layer (SQLite 3.45.1, Entity Framework Core 8.0.2)
-│   ├── HnVue.Worklist/        # Worklist Manager (NHapi 3.2.0, fo-dicom MWL)
-│   ├── HnVue.Dose/            # Dose Management Module
-│   ├── HnVue.Audit/           # Audit Log Module (Serilog 3.1.1)
-│   └── HnVue.Common/          # 공통 유틸리티 (MediatR, Polly, FluentValidation)
-├── tests/
-│   ├── HnVue.Unit/            # 단위 시험 (xUnit 2.7.0, Moq 4.20.70)
-│   └── HnVue.Integration/     # 통합 시험
-├── build/
-│   ├── HnVue.sln              # Visual Studio 솔루션 파일
-│   ├── Directory.Build.props        # 전역 빌드 속성 (버전 번호 포함)
-│   └── scripts/
-│       ├── build-release.ps1        # 릴리즈 빌드 자동화 스크립트 (PowerShell)
-│       └── sign-package.ps1         # 코드서명 스크립트
+├── HnVue.sln                              # Visual Studio 솔루션 파일 (28개 프로젝트)
+├── Directory.Build.props                   # 전역 빌드 속성 (버전, nullable, analyzers, deterministic)
+├── Directory.Packages.props                # 중앙 NuGet 패키지 버전 관리 (Central Package Management)
+├── global.json                             # .NET SDK 8.0 LTS 버전 고정
+├── nuget.config                            # NuGet 소스 설정
+├── .editorconfig                           # C# 코딩 표준 (Microsoft conventions)
+├── packages.lock.json                      # NuGet 의존성 잠금 파일 (버전 고정)
+│
+├── src/                                     # 소스 프로젝트 (14개)
+│   ├── HnVue.App/                          # WPF Application Host (진입점, DI 컨테이너)
+│   ├── HnVue.Common/                       # 공통 추상화 (Result<T>, 열거형, 인터페이스)
+│   ├── HnVue.PatientManagement/            # SDS-PM-1xx: 환자관리, MWL 연동
+│   ├── HnVue.Workflow/                     # SDS-WF-2xx: 촬영 워크플로우, Generator/FPD 인터페이스
+│   ├── HnVue.Imaging/                      # SDS-IP-3xx: 영상처리 (W/L, Zoom, Rotate)
+│   ├── HnVue.Dose/                         # SDS-DM-4xx: 선량관리 (DAP, DRL 인터록)
+│   ├── HnVue.Dicom/                        # SDS-DC-5xx: DICOM 통신 (C-STORE, MWL, Print SCU)
+│   ├── HnVue.SystemAdmin/                  # SDS-SA-6xx: 시스템 설정, 프로토콜 관리
+│   ├── HnVue.Security/                     # SDS-CS-7xx: RBAC, bcrypt, PHI 암호화, 감사 로그
+│   ├── HnVue.UI/                           # SDS-UI-8xx: WPF MVVM (Views, ViewModels, Themes)
+│   ├── HnVue.Data/                         # SDS-DB-9xx: EF Core + SQLCipher (AES-256)
+│   ├── HnVue.CDBurning/                    # SDS-CD-10xx: CD/DVD 굽기 (IMAPI2)
+│   ├── HnVue.Incident/                     # SDS-INC-11xx: 인시던트 대응 (IEC 81001-5-1)
+│   └── HnVue.Update/                       # SDS-UPD-12xx: SW 업데이트 (FDA 524B)
+│
+├── tests/                                   # 단위 테스트 프로젝트 (13개, 모듈별 독립 검증)
+│   ├── HnVue.Common.Tests/                 # Common 모듈 테스트
+│   ├── HnVue.PatientManagement.Tests/      # SDS-PM 독립 검증
+│   ├── HnVue.Workflow.Tests/               # SDS-WF 독립 검증 (안전 임계: 90%+)
+│   ├── HnVue.Imaging.Tests/               # SDS-IP 독립 검증
+│   ├── HnVue.Dose.Tests/                   # SDS-DM 독립 검증 (안전 임계: 90%+)
+│   ├── HnVue.Dicom.Tests/                 # SDS-DC 독립 검증
+│   ├── HnVue.SystemAdmin.Tests/           # SDS-SA 독립 검증
+│   ├── HnVue.Security.Tests/              # SDS-CS 독립 검증 (안전 임계: 90%+)
+│   ├── HnVue.UI.Tests/                    # SDS-UI 독립 검증 (ViewModel만)
+│   ├── HnVue.Data.Tests/                  # SDS-DB 독립 검증
+│   ├── HnVue.CDBurning.Tests/            # SDS-CD 독립 검증
+│   ├── HnVue.Incident.Tests/             # SDS-INC 독립 검증 (안전 임계: 90%+)
+│   └── HnVue.Update.Tests/               # SDS-UPD 독립 검증 (안전 임계: 85%+)
+│
+├── tests.integration/                       # 통합 테스트 프로젝트 (1개)
+│   └── HnVue.IntegrationTests/             # 모듈간 교차 시나리오 검증
+│
 ├── installer/
-│   └── HnVueSetup.wixproj     # WiX Toolset MSI 설치 패키지 프로젝트
-├── docs/                            # 규제 산출물 문서
+│   └── HnVue.Installer/                    # WiX v4 MSI 설치 패키지 프로젝트
+│       └── HnVue.Installer.wixproj
+│
+├── build/
+│   └── scripts/
+│       ├── build-release.ps1               # 릴리즈 빌드 자동화 스크립트 (PowerShell)
+│       ├── sign-package.ps1                # 코드서명 스크립트
+│       └── generate-sbom.ps1              # CycloneDX SBOM 자동 생성
+│
+├── docs/                                    # 규제 산출물 문서
 │   ├── management/
 │   ├── planning/
+│   ├── testing/
+│   ├── risk/
+│   ├── verification/
 │   └── regulatory/
-├── packages.lock.json               # NuGet 의존성 잠금 파일 (버전 고정)
-└── .github/
+│
+├── scripts/
+│   └── sync_docs.py                        # 문서 동기화 자동화 스크립트
+│
+└── .gitea/
     └── workflows/
-        ├── ci.yml                   # CI 파이프라인 (PR 빌드, 단위 테스트)
-        └── release.yml              # 릴리즈 빌드 파이프라인
+        ├── ci.yml                           # CI 파이프라인 (PR 빌드, 단위 테스트, SBOM)
+        └── release.yml                      # 릴리즈 빌드 파이프라인 (코드서명, MSI 생성)
 ```
 
-> **주의**: 위 구조는 개발 착수 전 계획 기준이다. 실제 프로젝트 구조에 맞게 개발 완료 후 업데이트한다.
+> **주의**: 위 구조는 SDS v2.0의 12개 소프트웨어 모듈에 1:1 매핑하는 14개 소스 프로젝트 + 13개 모듈별 독립 테스트 프로젝트로 구성된다. IEC 62304 §5.3 추적성 및 §5.5 독립 검증 요구사항을 충족한다.
 
 #### 4.2.3 소스코드 보호 조치
 
@@ -233,7 +270,7 @@ SBOM의 상세 목록은 DOC-019 (SBOM-XRAY-GUI-001)를 참조한다. 아래는 
 | SBOM-024 | NHapi (HL7 v2 Parser) | 3.2.0 | nHapi contributors | B | HL7 통신 |
 | SBOM-032 | Serilog | 3.1.1 | Serilog Contributors | A | 감사 로그 |
 | SBOM-039 | xUnit | 2.7.0 | xUnit.net | — | 단위 테스트 (비배포) |
-| SBOM-040 | Moq | 4.20.70 | moq contributors | — | Mock 프레임워크 (비배포) |
+| SBOM-040 | NSubstitute | 5.1.0 | NSubstitute contributors | — | Mock 프레임워크 (비배포) |
 | SBOM-042 | Coverlet | 6.0.0 | tonerdo | — | 코드 커버리지 (비배포) |
 
 > **주의**: 위 버전은 DOC-019 (SBOM) v1.0 기준이다. 개발 진행 중 변경 시 DOC-019를 먼저 업데이트하고 본 문서를 동기화한다.

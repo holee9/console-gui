@@ -111,15 +111,15 @@ flowchart LR
 | SBOM-ID | 구성요소명 | 버전 | 공급자 | 라이선스 | SOUP Class | 의존성 | CVE 현황 | 위험도 |
 |---------|-----------|------|--------|---------|-----------|--------|---------|--------|
 | SBOM-001 | Windows 10 IoT Enterprise LTSC | 21H2 (19044) | Microsoft | Commercial | Class B | OS | 정기 패치 적용 | Medium |
-| SBOM-002 | .NET 6.0 Runtime (LTS) | 6.0.36 | Microsoft | MIT | Class B | Direct | CVE 모니터링 중 | Low |
-| SBOM-003 | .NET 6.0 SDK | 6.0.428 | Microsoft | MIT | N/A (빌드) | Direct | 런타임 미포함 | Low |
+| SBOM-002 | .NET 8.0 Runtime (LTS) | 8.0.x | Microsoft | MIT | Class B | Direct | CVE 모니터링 중 | Low |
+| SBOM-003 | .NET 8.0 SDK | 8.0.x | Microsoft | MIT | N/A (빌드) | Direct | 런타임 미포함 | Low |
 | SBOM-004 | ASP.NET Core Runtime | 6.0.36 | Microsoft | MIT | Class B | Direct | CVE 모니터링 중 | Low |
 
 ### 4.2 UI 프레임워크 (UI Framework)
 
 | SBOM-ID | 구성요소명 | 버전 | 공급자 | 라이선스 | SOUP Class | 의존성 | CVE 현황 | 위험도 |
 |---------|-----------|------|--------|---------|-----------|--------|---------|--------|
-| SBOM-005 | WPF (.NET 6) | 6.0.36 | Microsoft | MIT | Class B | Direct | 알려진 CVE 없음 | Low |
+| SBOM-005 | WPF (.NET 8) | 8.0.x | Microsoft | MIT | Class B | Direct | 알려진 CVE 없음 | Low |
 | SBOM-006 | CommunityToolkit.Mvvm | 8.2.2 | Microsoft | MIT | Class A | Direct | 알려진 CVE 없음 | Low |
 | SBOM-007 | MahApps.Metro | 2.4.10 | MahApps | MIT | Class A | Direct | 알려진 CVE 없음 | Low |
 | SBOM-008 | LiveChartsCore | 2.0.0-rc3 | LiveCharts | MIT | Class A | Direct | 알려진 CVE 없음 | Low |
@@ -199,7 +199,7 @@ flowchart LR
 | SBOM-ID | 구성요소명 | 버전 | 공급자 | 라이선스 | 비고 |
 |---------|-----------|------|--------|---------|------|
 | SBOM-039 | xUnit | 2.7.0 | xUnit.net | Apache 2.0 | 단위 테스트 |
-| SBOM-040 | Moq | 4.20.70 | moq contributors | BSD-3 | 목 프레임워크 |
+| SBOM-040 | NSubstitute | 5.1.0 | NSubstitute contributors | BSD-3 | 목 프레임워크 |
 | SBOM-041 | FluentAssertions | 6.12.0 | Dennis Doomen | Apache 2.0 | 어설션 |
 | SBOM-042 | Coverlet | 6.0.0 | tonerdo | MIT | 코드 커버리지 |
 

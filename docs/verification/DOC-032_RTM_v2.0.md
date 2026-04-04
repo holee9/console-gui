@@ -247,27 +247,27 @@ flowchart TB
 
 | # | MR ID | MR Tier | PR ID | PR 요구사항명 | Tier | Phase | SWR ID | HAZ ID | RC ID | SAD Ref | SDS Ref | UT ID | IT ID | ST ID | VT ID | QA TC ID | 검증 수준 | 검증 상태 |
 |---|-------|---------|-------|------------|------|-------|--------|--------|-------|---------|---------|-------|-------|-------|-------|----------|---------|---------|
-| 1 | MR-001 | Tier 2 | PR-PM-001 | 환자 수동 등록 | Tier 2 | 1 | SWR-PM-001, SWR-PM-002, SWR-PM-003, SWR-PM-004 | HAZ-DATA-002, HAZ-DATA-004 | RC-022 | TBD | TBD | UT-PM-001–004 | IT-PM-001–004 | ST-PM-001 | VT-PM-001 | QA-PM-001 | T, I | Pending |
-| 2 | MR-001 | Tier 2 | PR-PM-002 | 환자 정보 조회·수정 | Tier 2 | 1 | SWR-PM-010, SWR-PM-011, SWR-PM-012, SWR-PM-013 | HAZ-DATA-002, HAZ-SEC-001 | RC-020, RC-023 | TBD | TBD | UT-PM-010–013 | IT-PM-010–013 | ST-PM-002 | VT-PM-002 | QA-PM-002 | T, I | Pending |
-| 3 | MR-001 | Tier 2 | PR-PM-003 | DICOM MWL 자동 불러오기 | Tier 2 | 1 | SWR-PM-020, SWR-PM-021, SWR-PM-022, SWR-PM-023, SWR-PM-024 | HAZ-DATA-001, HAZ-NET-002 | RC-018, RC-036 | TBD | TBD | UT-PM-020–024 | IT-PM-020–024 | ST-PM-003 | VT-PM-003 | QA-PM-003 | T, A | Pending |
-| 4 | MR-001 | Tier 2 | PR-PM-004 | 응급 환자 빠른 등록 | Tier 2 | 1 | SWR-PM-030, SWR-PM-031, SWR-PM-032, SWR-PM-033 | HAZ-RAD-001, HAZ-DATA-002 | RC-001, RC-008 | TBD | TBD | UT-PM-030–033 | IT-PM-030–033 | ST-PM-004 | VT-PM-004 | QA-PM-004 | T, D | Pending |
-| 5 | MR-001 | Tier 2 | PR-PM-005 | 환자 검색 | Tier 2 | 1 | SWR-PM-040, SWR-PM-041, SWR-PM-042, SWR-PM-043 | — | — | TBD | TBD | UT-PM-040–043 | IT-PM-041 | ST-PM-005 | VT-PM-005 | QA-PM-005 | T, A | Pending |
-| 6 | MR-001 | Tier 2 | PR-PM-006 | 환자 삭제 (GDPR/개인정보) | Tier 2 | 1 | SWR-PM-050, SWR-PM-051, SWR-PM-052, SWR-PM-053 | HAZ-DATA-002, HAZ-SEC-001 | RC-019, RC-020 | TBD | TBD | UT-PM-050–053 | IT-PM-052 | ST-PM-006 | — | QA-PM-006 | T, I | Pending |
+| 1 | MR-001 | Tier 2 | PR-PM-001 | 환자 수동 등록 | Tier 2 | 1 | SWR-PM-001, SWR-PM-002, SWR-PM-003, SWR-PM-004 | HAZ-DATA-002, HAZ-DATA-004 | RC-022 | SAD-PM-100 | SDS §3.1 | UT-PM-001–004 | IT-PM-001–004 | ST-PM-001 | VT-PM-001 | QA-PM-001 | T, I | Pending |
+| 2 | MR-001 | Tier 2 | PR-PM-002 | 환자 정보 조회·수정 | Tier 2 | 1 | SWR-PM-010, SWR-PM-011, SWR-PM-012, SWR-PM-013 | HAZ-DATA-002, HAZ-SEC-001 | RC-020, RC-023 | SAD-PM-100 | SDS §3.1 | UT-PM-010–013 | IT-PM-010–013 | ST-PM-002 | VT-PM-002 | QA-PM-002 | T, I | Pending |
+| 3 | MR-001 | Tier 2 | PR-PM-003 | DICOM MWL 자동 불러오기 | Tier 2 | 1 | SWR-PM-020, SWR-PM-021, SWR-PM-022, SWR-PM-023, SWR-PM-024 | HAZ-DATA-001, HAZ-NET-002 | RC-018, RC-036 | SAD-PM-100 | SDS §3.1 | UT-PM-020–024 | IT-PM-020–024 | ST-PM-003 | VT-PM-003 | QA-PM-003 | T, A | Pending |
+| 4 | MR-001 | Tier 2 | PR-PM-004 | 응급 환자 빠른 등록 | Tier 2 | 1 | SWR-PM-030, SWR-PM-031, SWR-PM-032, SWR-PM-033 | HAZ-RAD-001, HAZ-DATA-002 | RC-001, RC-008 | SAD-PM-100 | SDS §3.1 | UT-PM-030–033 | IT-PM-030–033 | ST-PM-004 | VT-PM-004 | QA-PM-004 | T, D | Pending |
+| 5 | MR-001 | Tier 2 | PR-PM-005 | 환자 검색 | Tier 2 | 1 | SWR-PM-040, SWR-PM-041, SWR-PM-042, SWR-PM-043 | — | — | SAD-PM-100 | SDS §3.1 | UT-PM-040–043 | IT-PM-041 | ST-PM-005 | VT-PM-005 | QA-PM-005 | T, A | Pending |
+| 6 | MR-001 | Tier 2 | PR-PM-006 | 환자 삭제 (GDPR/개인정보) | Tier 2 | 1 | SWR-PM-050, SWR-PM-051, SWR-PM-052, SWR-PM-053 | HAZ-DATA-002, HAZ-SEC-001 | RC-019, RC-020 | SAD-PM-100 | SDS §3.1 | UT-PM-050–053 | IT-PM-052 | ST-PM-006 | — | QA-PM-006 | T, I | Pending |
 
 ### 4.2 촬영 워크플로우 (Acquisition Workflow)
 
 | # | MR ID | MR Tier | PR ID | PR 요구사항명 | Tier | Phase | SWR ID | HAZ ID | RC ID | SAD Ref | SDS Ref | UT ID | IT ID | ST ID | VT ID | QA TC ID | 검증 수준 | 검증 상태 |
 |---|-------|---------|-------|------------|------|-------|--------|--------|-------|---------|---------|-------|-------|-------|-------|----------|---------|---------|
-| 7 | MR-002 | Tier 2 | PR-WF-010 | APR 프로토콜 관리 | Tier 2 | 1 | SWR-WF-010, SWR-WF-011, SWR-WF-012 | HAZ-RAD-001, HAZ-RAD-003 | RC-001, RC-006 | TBD | TBD | UT-WF-010–012 | IT-WF-010–012 | ST-WF-001 | VT-WF-001 | QA-WF-001 | T, D | Pending |
-| 8 | MR-002 | Tier 2 | PR-WF-011 | 촬영 순서 설정·변경 | Tier 2 | 1 | SWR-WF-013, SWR-WF-014 | HAZ-DATA-001 | RC-018 | TBD | TBD | UT-WF-013–014 | IT-WF-014 | ST-WF-002 | VT-WF-002 | QA-WF-002 | T, I | Pending |
-| 9 | MR-002 | Tier 2 | PR-WF-012 | 촬영 조건 설정 | Tier 2 | 1 | SWR-WF-015, SWR-WF-016, SWR-WF-017 | HAZ-RAD-001, HAZ-RAD-004 | RC-001, RC-002, RC-003, RC-007 | TBD | TBD | UT-WF-015–017 | IT-WF-016–017 | ST-WF-003 | VT-WF-003 | QA-WF-003 | T, A | Pending |
-| 10 | MR-002 | Tier 2 | PR-WF-013 | Generator 통신 및 제어 | Tier 2 | 1 | SWR-WF-018, SWR-WF-019, SWR-WF-020 | HAZ-RAD-001, HAZ-RAD-002, HAZ-SW-004, HAZ-NET-001 | RC-001, RC-004, RC-015, RC-035 | TBD | TBD | UT-WF-018–020 | IT-WF-019 | ST-WF-004 | VT-WF-004 | QA-WF-004 | T, A | Pending |
-| 11 | MR-002 | Tier 2 | PR-WF-014 | Detector 상태 모니터링 | Tier 2 | 1 | SWR-WF-021, SWR-WF-022 | HAZ-RAD-001, HAZ-SW-004 | RC-004, RC-015, RC-016 | TBD | TBD | UT-WF-021–022 | IT-WF-021 | ST-WF-005 | VT-WF-005 | QA-WF-005 | T, D | Pending |
-| 12 | MR-002 | Tier 2 | PR-WF-015 | 촬영 실행 및 영상 수신 | Tier 2 | 1 | SWR-WF-023, SWR-WF-024, SWR-WF-025 | HAZ-RAD-001, HAZ-RAD-002, HAZ-SW-004 | RC-002, RC-004, RC-005, RC-015 | TBD | TBD | UT-WF-023–025 | IT-WF-023–024 | ST-WF-006 | VT-WF-006 | QA-WF-006 | T, A | Pending |
-| 13 | MR-002 | Tier 2 | PR-WF-016 | Emergency/Trauma 워크플로우 | Tier 2 | 1 | SWR-WF-026, SWR-WF-027 | HAZ-RAD-001, HAZ-UI-003 | RC-002, RC-033, RC-034 | TBD | TBD | UT-WF-026–027 | IT-WF-027 | ST-WF-007 | VT-WF-007 | QA-WF-007 | T, D | Pending |
-| 14 | MR-002 | Tier 2 | PR-WF-017 | Multi-study 지원 | Tier 2 | 1 | SWR-WF-028, SWR-WF-029 | HAZ-DATA-001, HAZ-DATA-004 | RC-018, RC-022 | TBD | TBD | UT-WF-028–029 | IT-WF-028–029 | ST-WF-008 | — | QA-WF-008 | T, I | Pending |
-| 15 | MR-002 | Tier 2 | PR-WF-018 | Suspend/Resume Exam | Tier 2 | 1 | SWR-WF-030, SWR-WF-031 | HAZ-DATA-001, HAZ-SW-004 | RC-015, RC-016, RC-018 | TBD | TBD | UT-WF-030–031 | IT-WF-030–031 | ST-WF-009 | — | QA-WF-009 | T, D | Pending |
-| 16 | MR-072 | Tier 2 | PR-WF-019 | CD/DVD Burning with DICOM Viewer | Tier 2 | 1 | SWR-WF-032, SWR-WF-033, SWR-WF-034 | HAZ-DATA-001 | RC-018 | TBD | TBD | UT-WF-032–034 | IT-WF-032 | ST-WF-010 | VT-WF-010 | QA-WF-010 | T, D | Pending |
+| 7 | MR-002 | Tier 2 | PR-WF-010 | APR 프로토콜 관리 | Tier 2 | 1 | SWR-WF-010, SWR-WF-011, SWR-WF-012 | HAZ-RAD-001, HAZ-RAD-003 | RC-001, RC-006 | SAD-WF-200 | SDS §3.2 | UT-WF-010–012 | IT-WF-010–012 | ST-WF-001 | VT-WF-001 | QA-WF-001 | T, D | Pending |
+| 8 | MR-002 | Tier 2 | PR-WF-011 | 촬영 순서 설정·변경 | Tier 2 | 1 | SWR-WF-013, SWR-WF-014 | HAZ-DATA-001 | RC-018 | SAD-WF-200 | SDS §3.2 | UT-WF-013–014 | IT-WF-014 | ST-WF-002 | VT-WF-002 | QA-WF-002 | T, I | Pending |
+| 9 | MR-002 | Tier 2 | PR-WF-012 | 촬영 조건 설정 | Tier 2 | 1 | SWR-WF-015, SWR-WF-016, SWR-WF-017 | HAZ-RAD-001, HAZ-RAD-004 | RC-001, RC-002, RC-003, RC-007 | SAD-WF-200 | SDS §3.2 | UT-WF-015–017 | IT-WF-016–017 | ST-WF-003 | VT-WF-003 | QA-WF-003 | T, A | Pending |
+| 10 | MR-002 | Tier 2 | PR-WF-013 | Generator 통신 및 제어 | Tier 2 | 1 | SWR-WF-018, SWR-WF-019, SWR-WF-020 | HAZ-RAD-001, HAZ-RAD-002, HAZ-SW-004, HAZ-NET-001 | RC-001, RC-004, RC-015, RC-035 | SAD-WF-200 | SDS §3.2 | UT-WF-018–020 | IT-WF-019 | ST-WF-004 | VT-WF-004 | QA-WF-004 | T, A | Pending |
+| 11 | MR-002 | Tier 2 | PR-WF-014 | Detector 상태 모니터링 | Tier 2 | 1 | SWR-WF-021, SWR-WF-022 | HAZ-RAD-001, HAZ-SW-004 | RC-004, RC-015, RC-016 | SAD-WF-200 | SDS §3.2 | UT-WF-021–022 | IT-WF-021 | ST-WF-005 | VT-WF-005 | QA-WF-005 | T, D | Pending |
+| 12 | MR-002 | Tier 2 | PR-WF-015 | 촬영 실행 및 영상 수신 | Tier 2 | 1 | SWR-WF-023, SWR-WF-024, SWR-WF-025 | HAZ-RAD-001, HAZ-RAD-002, HAZ-SW-004 | RC-002, RC-004, RC-005, RC-015 | SAD-WF-200 | SDS §3.2 | UT-WF-023–025 | IT-WF-023–024 | ST-WF-006 | VT-WF-006 | QA-WF-006 | T, A | Pending |
+| 13 | MR-002 | Tier 2 | PR-WF-016 | Emergency/Trauma 워크플로우 | Tier 2 | 1 | SWR-WF-026, SWR-WF-027 | HAZ-RAD-001, HAZ-UI-003 | RC-002, RC-033, RC-034 | SAD-WF-200 | SDS §3.2 | UT-WF-026–027 | IT-WF-027 | ST-WF-007 | VT-WF-007 | QA-WF-007 | T, D | Pending |
+| 14 | MR-002 | Tier 2 | PR-WF-017 | Multi-study 지원 | Tier 2 | 1 | SWR-WF-028, SWR-WF-029 | HAZ-DATA-001, HAZ-DATA-004 | RC-018, RC-022 | SAD-WF-200 | SDS §3.2 | UT-WF-028–029 | IT-WF-028–029 | ST-WF-008 | — | QA-WF-008 | T, I | Pending |
+| 15 | MR-002 | Tier 2 | PR-WF-018 | Suspend/Resume Exam | Tier 2 | 1 | SWR-WF-030, SWR-WF-031 | HAZ-DATA-001, HAZ-SW-004 | RC-015, RC-016, RC-018 | SAD-WF-200 | SDS §3.2 | UT-WF-030–031 | IT-WF-030–031 | ST-WF-009 | — | QA-WF-009 | T, D | Pending |
+| 16 | MR-072 | Tier 2 | PR-WF-019 | CD/DVD Burning with DICOM Viewer | Tier 2 | 1 | SWR-WF-032, SWR-WF-033, SWR-WF-034 | HAZ-DATA-001 | RC-018 | SAD-CD-1000 | SDS §3.10 | UT-WF-032–034 | IT-WF-032 | ST-WF-010 | VT-WF-010 | QA-WF-010 | T, D | Pending |
 
 > **[v2.0 신규 — MR-072]** PR-WF-019 CD/DVD Burning with DICOM Viewer: MRD v3.0 MR-072 (Tier 2) 신규 추가. DICOMDIR 구조 + 내장 DICOM 뷰어 + ISO 이미지 생성. SWR-WF-032–034 (FRS v2.0 §5.2 신규 정의). TC ID는 테스트 계획 수립 시 확정.
 
@@ -275,61 +275,61 @@ flowchart TB
 
 | # | MR ID | MR Tier | PR ID | PR 요구사항명 | Tier | Phase | SWR ID | HAZ ID | RC ID | SAD Ref | SDS Ref | UT ID | IT ID | ST ID | VT ID | QA TC ID | 검증 수준 | 검증 상태 |
 |---|-------|---------|-------|------------|------|-------|--------|--------|-------|---------|---------|-------|-------|-------|-------|----------|---------|---------|
-| 17 | MR-003 | Tier 2 | PR-IP-020 | 실시간 영상 표시 | Tier 2 | 1 | SWR-IP-020, SWR-IP-021 | HAZ-RAD-001, HAZ-SW-002 | RC-011, RC-012 | TBD | TBD | UT-IP-020–021 | IT-IP-020 | ST-IP-001 | VT-IP-001 | QA-IP-001 | T, A | Pending |
-| 18 | MR-003 | Tier 2 | PR-IP-021 | Window/Level 조정 | Tier 2 | 1 | SWR-IP-022, SWR-IP-023 | — | — | TBD | TBD | UT-IP-022–023 | — | ST-IP-002 | VT-IP-002 | QA-IP-002 | T, D | Pending |
-| 19 | MR-003 | Tier 2 | PR-IP-022 | Zoom | Tier 2 | 1 | SWR-IP-024, SWR-IP-025 | — | — | TBD | TBD | UT-IP-024–025 | — | ST-IP-003 | VT-IP-003 | QA-IP-003 | T, D | Pending |
-| 20 | MR-003 | Tier 2 | PR-IP-023 | Pan | Tier 2 | 1 | SWR-IP-026 | — | — | TBD | TBD | UT-IP-026 | — | ST-IP-004 | VT-IP-004 | QA-IP-004 | T, D | Pending |
-| 21 | MR-003 | Tier 2 | PR-IP-024 | Rotation | Tier 2 | 1 | SWR-IP-027, SWR-IP-028 | — | — | TBD | TBD | UT-IP-027–028 | — | ST-IP-005 | VT-IP-005 | QA-IP-005 | T, D | Pending |
-| 22 | MR-003 | Tier 2 | PR-IP-025 | Image Stitching | Tier 3 | 1.5 | SWR-IP-029, SWR-IP-030, SWR-IP-031 | — | — | TBD | TBD | UT-IP-029–031 | IT-IP-029 | ST-IP-006 | — | QA-IP-006 | T, A | Pending |
-| 23 | MR-003 | Tier 2 | PR-IP-026 | 거리 측정 | Tier 2 | 1 | SWR-IP-032, SWR-IP-033 | HAZ-SW-002 | RC-011 | TBD | TBD | UT-IP-032–033 | IT-IP-033 | ST-IP-007 | VT-IP-007 | QA-IP-007 | T, A | Pending |
-| 24 | MR-003 | Tier 2 | PR-IP-027 | 각도 측정 | Tier 2 | 1 | SWR-IP-034 | — | — | TBD | TBD | UT-IP-034 | — | ST-IP-008 | — | QA-IP-008 | T, A | Pending |
-| 25 | MR-003 | Tier 2 | PR-IP-028 | 면적 측정 | Tier 2 | 1 | SWR-IP-035, SWR-IP-036 | — | — | TBD | TBD | UT-IP-035–036 | — | ST-IP-009 | — | QA-IP-009 | T, A | Pending |
-| 26 | MR-003 | Tier 2 | PR-IP-029 | Annotation | Tier 2 | 1 | SWR-IP-037, SWR-IP-038 | HAZ-DATA-001 | RC-018 | TBD | TBD | UT-IP-037–038 | IT-IP-033 | ST-IP-010 | — | QA-IP-010 | T, I | Pending |
-| 27 | MR-003 | Tier 2 | PR-IP-030 | Gain/Offset 보정 | Tier 2 | 1 | SWR-IP-039, SWR-IP-040 | HAZ-RAD-001, HAZ-SW-002 | RC-006, RC-011 | TBD | TBD | UT-IP-039–040 | IT-IP-020 | ST-IP-011 | VT-IP-011 | QA-IP-011 | T, A | Pending |
-| 28 | MR-003 | Tier 2 | PR-IP-031 | 노이즈 감소 (Noise Reduction) | Tier 2 | 1 | SWR-IP-041, SWR-IP-042 | HAZ-RAD-001 | RC-007 | TBD | TBD | UT-IP-041–042 | — | ST-IP-012 | VT-IP-012 | QA-IP-012 | T, A | Pending |
-| 29 | MR-003 | Tier 2 | PR-IP-032 | Edge Enhancement | Tier 2 | 1 | SWR-IP-043, SWR-IP-044 | — | — | TBD | TBD | UT-IP-043–044 | — | ST-IP-013 | VT-IP-013 | QA-IP-013 | T, D | Pending |
-| 30 | MR-003 | Tier 3 | PR-IP-033 | Scatter Correction | Tier 3 | 1.5 | SWR-IP-045, SWR-IP-046 | HAZ-RAD-001 | RC-007 | TBD | TBD | UT-IP-045–046 | — | ST-IP-014 | — | QA-IP-014 | T, A | Pending |
-| 31 | MR-003 | Tier 2 | PR-IP-034 | Auto-trimming/Cropping | Tier 2 | 1 | SWR-IP-047, SWR-IP-048 | — | — | TBD | TBD | UT-IP-047–048 | — | ST-IP-015 | VT-IP-015 | QA-IP-015 | T, A | Pending |
-| 32 | MR-003 | Tier 2 | PR-IP-035 | Black Mask (Automatic Shutters) | Tier 2 | 1 | SWR-IP-049 | — | — | TBD | TBD | UT-IP-049 | — | ST-IP-016 | — | QA-IP-016 | T, D | Pending |
-| 33 | MR-003 | Tier 2 | PR-IP-036 | Contrast Optimization | Tier 2 | 1 | SWR-IP-050, SWR-IP-051 | — | — | TBD | TBD | UT-IP-050–051 | — | ST-IP-017 | VT-IP-017 | QA-IP-017 | T, D | Pending |
-| 34 | MR-003 | Tier 2 | PR-IP-037 | Brightness Control | Tier 2 | 1 | SWR-IP-052 | — | — | TBD | TBD | UT-IP-052 | — | ST-IP-018 | — | QA-IP-018 | T, D | Pending |
+| 17 | MR-003 | Tier 2 | PR-IP-020 | 실시간 영상 표시 | Tier 2 | 1 | SWR-IP-020, SWR-IP-021 | HAZ-RAD-001, HAZ-SW-002 | RC-011, RC-012 | SAD-IP-300 | SDS §3.3 | UT-IP-020–021 | IT-IP-020 | ST-IP-001 | VT-IP-001 | QA-IP-001 | T, A | Pending |
+| 18 | MR-003 | Tier 2 | PR-IP-021 | Window/Level 조정 | Tier 2 | 1 | SWR-IP-022, SWR-IP-023 | — | — | SAD-IP-300 | SDS §3.3 | UT-IP-022–023 | — | ST-IP-002 | VT-IP-002 | QA-IP-002 | T, D | Pending |
+| 19 | MR-003 | Tier 2 | PR-IP-022 | Zoom | Tier 2 | 1 | SWR-IP-024, SWR-IP-025 | — | — | SAD-IP-300 | SDS §3.3 | UT-IP-024–025 | — | ST-IP-003 | VT-IP-003 | QA-IP-003 | T, D | Pending |
+| 20 | MR-003 | Tier 2 | PR-IP-023 | Pan | Tier 2 | 1 | SWR-IP-026 | — | — | SAD-IP-300 | SDS §3.3 | UT-IP-026 | — | ST-IP-004 | VT-IP-004 | QA-IP-004 | T, D | Pending |
+| 21 | MR-003 | Tier 2 | PR-IP-024 | Rotation | Tier 2 | 1 | SWR-IP-027, SWR-IP-028 | — | — | SAD-IP-300 | SDS §3.3 | UT-IP-027–028 | — | ST-IP-005 | VT-IP-005 | QA-IP-005 | T, D | Pending |
+| 22 | MR-003 | Tier 2 | PR-IP-025 | Image Stitching | Tier 3 | 1.5 | SWR-IP-029, SWR-IP-030, SWR-IP-031 | — | — | SAD-IP-300 | SDS §3.3 | UT-IP-029–031 | IT-IP-029 | ST-IP-006 | — | QA-IP-006 | T, A | Pending |
+| 23 | MR-003 | Tier 2 | PR-IP-026 | 거리 측정 | Tier 2 | 1 | SWR-IP-032, SWR-IP-033 | HAZ-SW-002 | RC-011 | SAD-IP-300 | SDS §3.3 | UT-IP-032–033 | IT-IP-033 | ST-IP-007 | VT-IP-007 | QA-IP-007 | T, A | Pending |
+| 24 | MR-003 | Tier 2 | PR-IP-027 | 각도 측정 | Tier 2 | 1 | SWR-IP-034 | — | — | SAD-IP-300 | SDS §3.3 | UT-IP-034 | — | ST-IP-008 | — | QA-IP-008 | T, A | Pending |
+| 25 | MR-003 | Tier 2 | PR-IP-028 | 면적 측정 | Tier 2 | 1 | SWR-IP-035, SWR-IP-036 | — | — | SAD-IP-300 | SDS §3.3 | UT-IP-035–036 | — | ST-IP-009 | — | QA-IP-009 | T, A | Pending |
+| 26 | MR-003 | Tier 2 | PR-IP-029 | Annotation | Tier 2 | 1 | SWR-IP-037, SWR-IP-038 | HAZ-DATA-001 | RC-018 | SAD-IP-300 | SDS §3.3 | UT-IP-037–038 | IT-IP-033 | ST-IP-010 | — | QA-IP-010 | T, I | Pending |
+| 27 | MR-003 | Tier 2 | PR-IP-030 | Gain/Offset 보정 | Tier 2 | 1 | SWR-IP-039, SWR-IP-040 | HAZ-RAD-001, HAZ-SW-002 | RC-006, RC-011 | SAD-IP-300 | SDS §3.3 | UT-IP-039–040 | IT-IP-020 | ST-IP-011 | VT-IP-011 | QA-IP-011 | T, A | Pending |
+| 28 | MR-003 | Tier 2 | PR-IP-031 | 노이즈 감소 (Noise Reduction) | Tier 2 | 1 | SWR-IP-041, SWR-IP-042 | HAZ-RAD-001 | RC-007 | SAD-IP-300 | SDS §3.3 | UT-IP-041–042 | — | ST-IP-012 | VT-IP-012 | QA-IP-012 | T, A | Pending |
+| 29 | MR-003 | Tier 2 | PR-IP-032 | Edge Enhancement | Tier 2 | 1 | SWR-IP-043, SWR-IP-044 | — | — | SAD-IP-300 | SDS §3.3 | UT-IP-043–044 | — | ST-IP-013 | VT-IP-013 | QA-IP-013 | T, D | Pending |
+| 30 | MR-003 | Tier 3 | PR-IP-033 | Scatter Correction | Tier 3 | 1.5 | SWR-IP-045, SWR-IP-046 | HAZ-RAD-001 | RC-007 | SAD-IP-300 | SDS §3.3 | UT-IP-045–046 | — | ST-IP-014 | — | QA-IP-014 | T, A | Pending |
+| 31 | MR-003 | Tier 2 | PR-IP-034 | Auto-trimming/Cropping | Tier 2 | 1 | SWR-IP-047, SWR-IP-048 | — | — | SAD-IP-300 | SDS §3.3 | UT-IP-047–048 | — | ST-IP-015 | VT-IP-015 | QA-IP-015 | T, A | Pending |
+| 32 | MR-003 | Tier 2 | PR-IP-035 | Black Mask (Automatic Shutters) | Tier 2 | 1 | SWR-IP-049 | — | — | SAD-IP-300 | SDS §3.3 | UT-IP-049 | — | ST-IP-016 | — | QA-IP-016 | T, D | Pending |
+| 33 | MR-003 | Tier 2 | PR-IP-036 | Contrast Optimization | Tier 2 | 1 | SWR-IP-050, SWR-IP-051 | — | — | SAD-IP-300 | SDS §3.3 | UT-IP-050–051 | — | ST-IP-017 | VT-IP-017 | QA-IP-017 | T, D | Pending |
+| 34 | MR-003 | Tier 2 | PR-IP-037 | Brightness Control | Tier 2 | 1 | SWR-IP-052 | — | — | SAD-IP-300 | SDS §3.3 | UT-IP-052 | — | ST-IP-018 | — | QA-IP-018 | T, D | Pending |
 
 ### 4.4 선량 관리 (Dose Management)
 
 | # | MR ID | MR Tier | PR ID | PR 요구사항명 | Tier | Phase | SWR ID | HAZ ID | RC ID | SAD Ref | SDS Ref | UT ID | IT ID | ST ID | VT ID | QA TC ID | 검증 수준 | 검증 상태 |
 |---|-------|---------|-------|------------|------|-------|--------|--------|-------|---------|---------|-------|-------|-------|-------|----------|---------|---------|
-| 35 | MR-004 | Tier 2 | PR-DM-040 | DAP 표시·기록 | Tier 2 | 1 | SWR-DM-040, SWR-DM-041 | HAZ-RAD-001, HAZ-SW-003 | RC-013, RC-014 | TBD | TBD | UT-DM-040–041 | IT-DM-040 | ST-DM-001 | VT-DM-001 | QA-DM-001 | T, A | Pending |
-| 36 | MR-004 | Tier 2 | PR-DM-041 | ESD 계산 | Tier 2 | 1 | SWR-DM-042, SWR-DM-043 | HAZ-RAD-001, HAZ-SW-003 | RC-013 | TBD | TBD | UT-DM-042–043 | — | ST-DM-002 | VT-DM-002 | QA-DM-002 | T, A | Pending |
-| 37 | MR-004 | Tier 2 | PR-DM-042 | RDSR 생성 | Tier 2 | 1 | SWR-DM-044, SWR-DM-045, SWR-DM-046 | HAZ-RAD-001, HAZ-DATA-001 | RC-013, RC-018 | TBD | TBD | UT-DM-044–046 | IT-DM-044 | ST-DM-003 | VT-DM-003 | QA-DM-003 | T, I | Pending |
-| 38 | MR-004 | Tier 2 | PR-DM-043 | Exposure Index 모니터링 | Tier 2 | 1 | SWR-DM-047, SWR-DM-048 | HAZ-RAD-001, HAZ-RAD-004 | RC-007 | TBD | TBD | UT-DM-047–048 | — | ST-DM-004 | VT-DM-004 | QA-DM-004 | T, A | Pending |
-| 39 | MR-004 | Tier 2 | PR-DM-044 | DRL 비교 | Tier 2 | 1 | SWR-DM-049, SWR-DM-050 | HAZ-RAD-001, HAZ-RAD-004 | RC-007 | TBD | TBD | UT-DM-049–050 | — | ST-DM-005 | VT-DM-005 | QA-DM-005 | T, A | Pending |
-| 40 | MR-004 | Tier 2 | PR-DM-045 | 전자 X-ray 로그북 | Tier 2 | 1 | SWR-DM-051, SWR-DM-052 | HAZ-RAD-001, HAZ-DATA-002 | RC-019, RC-020 | TBD | TBD | UT-DM-051–052 | IT-DM-051 | ST-DM-006 | VT-DM-006 | QA-DM-006 | T, I | Pending |
-| 41 | MR-004 | Tier 3 | PR-DM-046 | Reject Analysis | Tier 3 | 1.5 | SWR-DM-053, SWR-DM-054, SWR-DM-055 | HAZ-RAD-001 | RC-007 | TBD | TBD | UT-DM-053–055 | — | ST-DM-007 | — | QA-DM-007 | T, A | Pending |
+| 35 | MR-004 | Tier 2 | PR-DM-040 | DAP 표시·기록 | Tier 2 | 1 | SWR-DM-040, SWR-DM-041 | HAZ-RAD-001, HAZ-SW-003 | RC-013, RC-014 | SAD-DM-400 | SDS §3.4 | UT-DM-040–041 | IT-DM-040 | ST-DM-001 | VT-DM-001 | QA-DM-001 | T, A | Pending |
+| 36 | MR-004 | Tier 2 | PR-DM-041 | ESD 계산 | Tier 2 | 1 | SWR-DM-042, SWR-DM-043 | HAZ-RAD-001, HAZ-SW-003 | RC-013 | SAD-DM-400 | SDS §3.4 | UT-DM-042–043 | — | ST-DM-002 | VT-DM-002 | QA-DM-002 | T, A | Pending |
+| 37 | MR-004 | Tier 2 | PR-DM-042 | RDSR 생성 | Tier 2 | 1 | SWR-DM-044, SWR-DM-045, SWR-DM-046 | HAZ-RAD-001, HAZ-DATA-001 | RC-013, RC-018 | SAD-DM-400 | SDS §3.4 | UT-DM-044–046 | IT-DM-044 | ST-DM-003 | VT-DM-003 | QA-DM-003 | T, I | Pending |
+| 38 | MR-004 | Tier 2 | PR-DM-043 | Exposure Index 모니터링 | Tier 2 | 1 | SWR-DM-047, SWR-DM-048 | HAZ-RAD-001, HAZ-RAD-004 | RC-007 | SAD-DM-400 | SDS §3.4 | UT-DM-047–048 | — | ST-DM-004 | VT-DM-004 | QA-DM-004 | T, A | Pending |
+| 39 | MR-004 | Tier 2 | PR-DM-044 | DRL 비교 | Tier 2 | 1 | SWR-DM-049, SWR-DM-050 | HAZ-RAD-001, HAZ-RAD-004 | RC-007 | SAD-DM-400 | SDS §3.4 | UT-DM-049–050 | — | ST-DM-005 | VT-DM-005 | QA-DM-005 | T, A | Pending |
+| 40 | MR-004 | Tier 2 | PR-DM-045 | 전자 X-ray 로그북 | Tier 2 | 1 | SWR-DM-051, SWR-DM-052 | HAZ-RAD-001, HAZ-DATA-002 | RC-019, RC-020 | SAD-DM-400 | SDS §3.4 | UT-DM-051–052 | IT-DM-051 | ST-DM-006 | VT-DM-006 | QA-DM-006 | T, I | Pending |
+| 41 | MR-004 | Tier 3 | PR-DM-046 | Reject Analysis | Tier 3 | 1.5 | SWR-DM-053, SWR-DM-054, SWR-DM-055 | HAZ-RAD-001 | RC-007 | SAD-DM-400 | SDS §3.4 | UT-DM-053–055 | — | ST-DM-007 | — | QA-DM-007 | T, A | Pending |
 
 ### 4.5 DICOM/통신 (DICOM/Communication)
 
 | # | MR ID | MR Tier | PR ID | PR 요구사항명 | Tier | Phase | SWR ID | HAZ ID | RC ID | SAD Ref | SDS Ref | UT ID | IT ID | ST ID | VT ID | QA TC ID | 검증 수준 | 검증 상태 |
 |---|-------|---------|-------|------------|------|-------|--------|--------|-------|---------|---------|-------|-------|-------|-------|----------|---------|---------|
-| 42 | MR-005 | Tier 1 | PR-DC-050 | Storage SCU (C-STORE) | Tier 1 | 1 | SWR-DC-050, SWR-DC-051, SWR-DC-052 | HAZ-DATA-001, HAZ-DATA-003 | RC-018, RC-021 | TBD | TBD | UT-DC-050–052 | IT-DC-050 | ST-DC-001 | VT-DC-001 | QA-DC-001 | T, A | Pending |
-| 43 | MR-005 | Tier 1 | PR-DC-051 | MWL SCU | Tier 1 | 1 | SWR-DC-053, SWR-DC-054 | HAZ-DATA-001, HAZ-NET-002 | RC-018, RC-036 | TBD | TBD | UT-DC-053–054 | IT-DC-053 | ST-DC-002 | VT-DC-002 | QA-DC-002 | T, A | Pending |
-| 44 | MR-005 | Tier 1 | PR-DC-052 | MPPS SCU | Tier 1 | 1 | SWR-DC-055, SWR-DC-056 | HAZ-DATA-001 | RC-018 | TBD | TBD | UT-DC-055–056 | IT-DC-055 | ST-DC-003 | VT-DC-003 | QA-DC-003 | T, A | Pending |
-| 45 | MR-005 | Tier 1 | PR-DC-053 | Storage Commitment SCU | Tier 1 | 1 | SWR-DC-057, SWR-DC-058 | HAZ-DATA-001, HAZ-DATA-003 | RC-018, RC-021 | TBD | TBD | UT-DC-057–058 | IT-DC-057 | ST-DC-004 | VT-DC-004 | QA-DC-004 | T, I | Pending |
-| 46 | MR-005 | Tier 2 | PR-DC-054 | Print SCU | Tier 2 | 1 | SWR-DC-059, SWR-DC-060 | — | — | TBD | TBD | UT-DC-059–060 | IT-DC-059 | ST-DC-005 | — | QA-DC-005 | T, D | Pending |
-| 47 | MR-005 | Tier 2 | PR-DC-055 | Query/Retrieve SCU | Tier 2 | 1 | SWR-DC-061, SWR-DC-062 | — | — | TBD | TBD | UT-DC-061–062 | IT-DC-061 | ST-DC-006 | — | QA-DC-006 | T, D | Pending |
-| 48 | MR-005 | Tier 1 | PR-DC-056 | DICOM TLS | Tier 1 | 1 | SWR-DC-063, SWR-DC-064 | HAZ-SEC-001, HAZ-DATA-002 | RC-019, RC-023 | TBD | TBD | UT-DC-063–064 | IT-DC-063 | ST-DC-007 | VT-DC-007 | QA-DC-007 | T, I | Pending |
+| 42 | MR-005 | Tier 1 | PR-DC-050 | Storage SCU (C-STORE) | Tier 1 | 1 | SWR-DC-050, SWR-DC-051, SWR-DC-052 | HAZ-DATA-001, HAZ-DATA-003 | RC-018, RC-021 | SAD-DC-500 | SDS §3.5 | UT-DC-050–052 | IT-DC-050 | ST-DC-001 | VT-DC-001 | QA-DC-001 | T, A | Pending |
+| 43 | MR-005 | Tier 1 | PR-DC-051 | MWL SCU | Tier 1 | 1 | SWR-DC-053, SWR-DC-054 | HAZ-DATA-001, HAZ-NET-002 | RC-018, RC-036 | SAD-DC-500 | SDS §3.5 | UT-DC-053–054 | IT-DC-053 | ST-DC-002 | VT-DC-002 | QA-DC-002 | T, A | Pending |
+| 44 | MR-005 | Tier 1 | PR-DC-052 | MPPS SCU | Tier 1 | 1 | SWR-DC-055, SWR-DC-056 | HAZ-DATA-001 | RC-018 | SAD-DC-500 | SDS §3.5 | UT-DC-055–056 | IT-DC-055 | ST-DC-003 | VT-DC-003 | QA-DC-003 | T, A | Pending |
+| 45 | MR-005 | Tier 1 | PR-DC-053 | Storage Commitment SCU | Tier 1 | 1 | SWR-DC-057, SWR-DC-058 | HAZ-DATA-001, HAZ-DATA-003 | RC-018, RC-021 | SAD-DC-500 | SDS §3.5 | UT-DC-057–058 | IT-DC-057 | ST-DC-004 | VT-DC-004 | QA-DC-004 | T, I | Pending |
+| 46 | MR-005 | Tier 2 | PR-DC-054 | Print SCU | Tier 2 | 1 | SWR-DC-059, SWR-DC-060 | — | — | SAD-DC-500 | SDS §3.5 | UT-DC-059–060 | IT-DC-059 | ST-DC-005 | — | QA-DC-005 | T, D | Pending |
+| 47 | MR-005 | Tier 2 | PR-DC-055 | Query/Retrieve SCU | Tier 2 | 1 | SWR-DC-061, SWR-DC-062 | — | — | SAD-DC-500 | SDS §3.5 | UT-DC-061–062 | IT-DC-061 | ST-DC-006 | — | QA-DC-006 | T, D | Pending |
+| 48 | MR-005 | Tier 1 | PR-DC-056 | DICOM TLS | Tier 1 | 1 | SWR-DC-063, SWR-DC-064 | HAZ-SEC-001, HAZ-DATA-002 | RC-019, RC-023 | SAD-DC-500 | SDS §3.5 | UT-DC-063–064 | IT-DC-063 | ST-DC-007 | VT-DC-007 | QA-DC-007 | T, I | Pending |
 
 ### 4.6 시스템 관리 (System Administration)
 
 | # | MR ID | MR Tier | PR ID | PR 요구사항명 | Tier | Phase | SWR ID | HAZ ID | RC ID | SAD Ref | SDS Ref | UT ID | IT ID | ST ID | VT ID | QA TC ID | 검증 수준 | 검증 상태 |
 |---|-------|---------|-------|------------|------|-------|--------|--------|-------|---------|---------|-------|-------|-------|-------|----------|---------|---------|
-| 49 | MR-006 | Tier 1 | PR-SA-060 | 사용자 관리 (RBAC) | Tier 1 | 1 | SWR-SA-060, SWR-SA-061, SWR-SA-062 | HAZ-SEC-001, HAZ-DATA-002 | RC-020, RC-023, RC-024 | TBD | TBD | UT-SA-060–062 | IT-SA-060 | ST-SA-001 | VT-SA-001 | QA-SA-001 | T, I | Pending |
-| 50 | MR-006 | Tier 2 | PR-SA-061 | Organ Program/Exam Set 편집기 | Tier 2 | 1 | SWR-SA-063, SWR-SA-064 | HAZ-RAD-001, HAZ-RAD-003 | RC-001, RC-006 | TBD | TBD | UT-SA-063–064 | IT-SA-063 | ST-SA-002 | VT-SA-002 | QA-SA-002 | T, D | Pending |
-| 51 | MR-006 | Tier 2 | PR-SA-062 | 시스템 설정 | Tier 2 | 1 | SWR-SA-065, SWR-SA-066 | HAZ-DATA-001 | RC-018 | TBD | TBD | UT-SA-065–066 | IT-SA-065 | ST-SA-003 | VT-SA-003 | QA-SA-003 | T, D | Pending |
-| 52 | MR-006 | Tier 2 | PR-SA-063 | 캘리브레이션 UI | Tier 2 | 1 | SWR-SA-067, SWR-SA-068, SWR-SA-069 | HAZ-RAD-001, HAZ-SW-002 | RC-006, RC-011 | TBD | TBD | UT-SA-067–069 | IT-SA-067 | ST-SA-004 | VT-SA-004 | QA-SA-004 | T, A | Pending |
-| 53 | MR-006 | Tier 2 | PR-SA-064 | Defect Pixel Map 관리 | Tier 2 | 1 | SWR-SA-070, SWR-SA-071 | HAZ-RAD-001, HAZ-SW-002 | RC-011 | TBD | TBD | UT-SA-070–071 | — | ST-SA-005 | — | QA-SA-005 | T, A | Pending |
-| 54 | MR-006 | Tier 1 | PR-SA-065 | Audit Trail | Tier 1 | 1 | SWR-SA-072, SWR-SA-073 | HAZ-SEC-001, HAZ-DATA-002 | RC-020, RC-023 | TBD | TBD | UT-SA-072–073 | IT-SA-072 | ST-SA-006 | VT-SA-006 | QA-SA-006 | T, I | Pending |
-| 55 | MR-006 | Tier 2 | PR-SA-066 | 로깅 시스템 | Tier 2 | 1 | SWR-SA-074, SWR-SA-075 | HAZ-SW-004 | RC-015, RC-016 | TBD | TBD | UT-SA-074–075 | IT-SA-074 | ST-SA-007 | — | QA-SA-007 | T, I | Pending |
-| 56 | MR-039 | Tier 1 | PR-SA-067 | SW 업데이트 관리 | Tier 1 | 1 | SWR-SA-076, SWR-SA-077 | HAZ-SEC-002, HAZ-SEC-003 | RC-025, RC-027 | TBD | TBD | UT-SA-076–077 | IT-SA-076 | ST-SA-008 | VT-SA-008 | QA-SA-008 | T, I | Pending |
+| 49 | MR-006 | Tier 1 | PR-SA-060 | 사용자 관리 (RBAC) | Tier 1 | 1 | SWR-SA-060, SWR-SA-061, SWR-SA-062 | HAZ-SEC-001, HAZ-DATA-002 | RC-020, RC-023, RC-024 | SAD-SA-600 | SDS §3.6 | UT-SA-060–062 | IT-SA-060 | ST-SA-001 | VT-SA-001 | QA-SA-001 | T, I | Pending |
+| 50 | MR-006 | Tier 2 | PR-SA-061 | Organ Program/Exam Set 편집기 | Tier 2 | 1 | SWR-SA-063, SWR-SA-064 | HAZ-RAD-001, HAZ-RAD-003 | RC-001, RC-006 | SAD-SA-600 | SDS §3.6 | UT-SA-063–064 | IT-SA-063 | ST-SA-002 | VT-SA-002 | QA-SA-002 | T, D | Pending |
+| 51 | MR-006 | Tier 2 | PR-SA-062 | 시스템 설정 | Tier 2 | 1 | SWR-SA-065, SWR-SA-066 | HAZ-DATA-001 | RC-018 | SAD-SA-600 | SDS §3.6 | UT-SA-065–066 | IT-SA-065 | ST-SA-003 | VT-SA-003 | QA-SA-003 | T, D | Pending |
+| 52 | MR-006 | Tier 2 | PR-SA-063 | 캘리브레이션 UI | Tier 2 | 1 | SWR-SA-067, SWR-SA-068, SWR-SA-069 | HAZ-RAD-001, HAZ-SW-002 | RC-006, RC-011 | SAD-SA-600 | SDS §3.6 | UT-SA-067–069 | IT-SA-067 | ST-SA-004 | VT-SA-004 | QA-SA-004 | T, A | Pending |
+| 53 | MR-006 | Tier 2 | PR-SA-064 | Defect Pixel Map 관리 | Tier 2 | 1 | SWR-SA-070, SWR-SA-071 | HAZ-RAD-001, HAZ-SW-002 | RC-011 | SAD-SA-600 | SDS §3.6 | UT-SA-070–071 | — | ST-SA-005 | — | QA-SA-005 | T, A | Pending |
+| 54 | MR-006 | Tier 1 | PR-SA-065 | Audit Trail | Tier 1 | 1 | SWR-SA-072, SWR-SA-073 | HAZ-SEC-001, HAZ-DATA-002 | RC-020, RC-023 | SAD-SA-600 | SDS §3.6 | UT-SA-072–073 | IT-SA-072 | ST-SA-006 | VT-SA-006 | QA-SA-006 | T, I | Pending |
+| 55 | MR-006 | Tier 2 | PR-SA-066 | 로깅 시스템 | Tier 2 | 1 | SWR-SA-074, SWR-SA-075 | HAZ-SW-004 | RC-015, RC-016 | SAD-SA-600 | SDS §3.6 | UT-SA-074–075 | IT-SA-074 | ST-SA-007 | — | QA-SA-007 | T, I | Pending |
+| 56 | MR-039 | Tier 1 | PR-SA-067 | SW 업데이트 관리 | Tier 1 | 1 | SWR-SA-076, SWR-SA-077 | HAZ-SEC-002, HAZ-SEC-003 | RC-025, RC-027 | SAD-UPD-1200 | SDS §3.12 | UT-SA-076–077 | IT-SA-076 | ST-SA-008 | VT-SA-008 | QA-SA-008 | T, I | Pending |
 
 > **[v2.0 변경 — MR-039]** PR-SA-067 SW 업데이트 관리: MR-006 → MR-039 (보완 반영). MRD v3.0 MR-039 (Tier 1) 업데이트 메커니즘 요건에 따라 MR ID 및 Tier 업데이트. 서명된 업데이트 패키지 검증, 롤백 지원, 업데이트 무결성 검증 (FDA 524B(b)(2)) 포함.
 
@@ -337,14 +337,14 @@ flowchart TB
 
 | # | MR ID | MR Tier | PR ID | PR 요구사항명 | Tier | Phase | SWR ID | HAZ ID | RC ID | SAD Ref | SDS Ref | UT ID | IT ID | ST ID | VT ID | QA TC ID | 검증 수준 | 검증 상태 |
 |---|-------|---------|-------|------------|------|-------|--------|--------|-------|---------|---------|-------|-------|-------|-------|----------|---------|---------|
-| 57 | MR-007 | Tier 1 | PR-CS-070 | 로컬 사용자 인증 | Tier 1 | 1 | SWR-CS-070, SWR-CS-071, SWR-CS-072 | HAZ-SEC-001, HAZ-SEC-004 | RC-023, RC-028 | TBD | TBD | UT-CS-070–072 | IT-CS-070 | ST-CS-001 | VT-CS-001 | QA-CS-001 | T, I | Pending |
-| 58 | MR-007 | Tier 3 | PR-CS-071 | Domain 인증 (SSO) | Tier 3 | 1.5 | SWR-CS-073, SWR-CS-074 | HAZ-SEC-001, HAZ-SEC-004 | RC-023, RC-028 | TBD | TBD | UT-CS-073–074 | IT-CS-073 | ST-CS-002 | — | QA-CS-002 | T, D | Pending |
-| 59 | MR-007 | Tier 1 | PR-CS-072 | 세션 관리 | Tier 1 | 1 | SWR-CS-075, SWR-CS-076, SWR-CS-077 | HAZ-SEC-004, HAZ-RAD-001 | RC-028, RC-002 | TBD | TBD | UT-CS-075–077 | IT-CS-075 | ST-CS-003 | VT-CS-003 | QA-CS-003 | T, D | Pending |
-| 60 | MR-007 | Tier 1 | PR-CS-073 | DICOM TLS 암호화 | Tier 1 | 1 | SWR-CS-078, SWR-CS-079 | HAZ-SEC-001, HAZ-DATA-002 | RC-019, RC-023 | TBD | TBD | UT-CS-078–079 | IT-CS-078 | ST-CS-004 | VT-CS-004 | QA-CS-004 | T, I | Pending |
-| 61 | MR-007 | Tier 1 | PR-CS-074 | PHI 보호 | Tier 1 | 1 | SWR-CS-080, SWR-CS-081 | HAZ-SEC-001, HAZ-DATA-002 | RC-019, RC-020 | TBD | TBD | UT-CS-080–081 | IT-CS-080 | ST-CS-005 | VT-CS-005 | QA-CS-005 | T, I | Pending |
-| 62 | MR-007 | Tier 1 | PR-CS-075 | SBOM 관리 | Tier 1 | 1 | SWR-CS-082, SWR-CS-083 | HAZ-SEC-002, HAZ-SEC-003 | RC-025, RC-027 | TBD | TBD | UT-CS-082–083 | IT-CS-082 | ST-CS-006 | VT-CS-006 | QA-CS-006 | T, I | Pending |
-| 63 | MR-039 | Tier 1 | PR-CS-076 | Secure Boot / SW 무결성 + 업데이트 메커니즘 | Tier 1 | 1 | SWR-CS-084, SWR-CS-085 | HAZ-SEC-002, HAZ-SEC-003 | RC-025, RC-027 | TBD | TBD | UT-CS-084–085 | IT-CS-084 | ST-CS-007 | VT-CS-007 | QA-CS-007 | T, I | Pending |
-| 64 | MR-037 | Tier 1 | PR-CS-077 | CVD + 보안 인시던트 대응 | Tier 1 | 1 | SWR-CS-086, SWR-CS-087 | HAZ-SEC-001, HAZ-SEC-004 | RC-023, RC-028 | TBD | TBD | UT-CS-086–087 | IT-CS-086 | ST-CS-008 | VT-CS-008 | QA-CS-008 | I, A | Pending |
+| 57 | MR-007 | Tier 1 | PR-CS-070 | 로컬 사용자 인증 | Tier 1 | 1 | SWR-CS-070, SWR-CS-071, SWR-CS-072 | HAZ-SEC-001, HAZ-SEC-004 | RC-023, RC-028 | SAD-CS-700 | SDS §3.7 | UT-CS-070–072 | IT-CS-070 | ST-CS-001 | VT-CS-001 | QA-CS-001 | T, I | Pending |
+| 58 | MR-007 | Tier 3 | PR-CS-071 | Domain 인증 (SSO) | Tier 3 | 1.5 | SWR-CS-073, SWR-CS-074 | HAZ-SEC-001, HAZ-SEC-004 | RC-023, RC-028 | SAD-CS-700 | SDS §3.7 | UT-CS-073–074 | IT-CS-073 | ST-CS-002 | — | QA-CS-002 | T, D | Pending |
+| 59 | MR-007 | Tier 1 | PR-CS-072 | 세션 관리 | Tier 1 | 1 | SWR-CS-075, SWR-CS-076, SWR-CS-077 | HAZ-SEC-004, HAZ-RAD-001 | RC-028, RC-002 | SAD-CS-700 | SDS §3.7 | UT-CS-075–077 | IT-CS-075 | ST-CS-003 | VT-CS-003 | QA-CS-003 | T, D | Pending |
+| 60 | MR-007 | Tier 1 | PR-CS-073 | DICOM TLS 암호화 | Tier 1 | 1 | SWR-CS-078, SWR-CS-079 | HAZ-SEC-001, HAZ-DATA-002 | RC-019, RC-023 | SAD-CS-700 | SDS §3.7 | UT-CS-078–079 | IT-CS-078 | ST-CS-004 | VT-CS-004 | QA-CS-004 | T, I | Pending |
+| 61 | MR-007 | Tier 1 | PR-CS-074 | PHI 보호 | Tier 1 | 1 | SWR-CS-080, SWR-CS-081 | HAZ-SEC-001, HAZ-DATA-002 | RC-019, RC-020 | SAD-CS-700 | SDS §3.7 | UT-CS-080–081 | IT-CS-080 | ST-CS-005 | VT-CS-005 | QA-CS-005 | T, I | Pending |
+| 62 | MR-007 | Tier 1 | PR-CS-075 | SBOM 관리 | Tier 1 | 1 | SWR-CS-082, SWR-CS-083 | HAZ-SEC-002, HAZ-SEC-003 | RC-025, RC-027 | SAD-CS-700 | SDS §3.7 | UT-CS-082–083 | IT-CS-082 | ST-CS-006 | VT-CS-006 | QA-CS-006 | T, I | Pending |
+| 63 | MR-039 | Tier 1 | PR-CS-076 | Secure Boot / SW 무결성 + 업데이트 메커니즘 | Tier 1 | 1 | SWR-CS-084, SWR-CS-085 | HAZ-SEC-002, HAZ-SEC-003 | RC-025, RC-027 | SAD-UPD-1200, SAD-CS-700 | SDS §3.12, §3.7 | UT-CS-084–085 | IT-CS-084 | ST-CS-007 | VT-CS-007 | QA-CS-007 | T, I | Pending |
+| 64 | MR-037 | Tier 1 | PR-CS-077 | CVD + 보안 인시던트 대응 | Tier 1 | 1 | SWR-CS-086, SWR-CS-087 | HAZ-SEC-001, HAZ-SEC-004 | RC-023, RC-028 | SAD-INC-1100 | SDS §3.11 | UT-CS-086–087 | IT-CS-086 | ST-CS-008 | VT-CS-008 | QA-CS-008 | I, A | Pending |
 
 > **[v2.0 신규 — MR-039]** PR-CS-076 Secure Boot / SW 무결성 + 업데이트 메커니즘: MRD v3.0 MR-039 (Tier 1) 보완 반영. 코드 서명 검증 + 서명된 업데이트 패키지 + 롤백 지원 (FDA 524B(b)(2)).
 >
@@ -354,32 +354,32 @@ flowchart TB
 
 | # | MR ID | MR Tier | PR ID | PR 요구사항명 | 카테고리 | Tier | Phase | SWR ID | HAZ ID | RC ID | SAD Ref | SDS Ref | ST ID | VT ID | QA TC ID | 검증 수준 | 검증 상태 |
 |---|-------|---------|-------|------------|---------|------|-------|--------|--------|-------|---------|---------|-------|-------|----------|---------|---------|
-| 65 | MR-002, MR-003 | Tier 2 | PR-NF-PF-001 | 영상 표시 지연 ≤1,000ms | 성능 | Tier 2 | 1 | SWR-NF-PF-001 | HAZ-RAD-001 | RC-007 | TBD | TBD | ST-NF-PF-001 | VT-NF-PF-001 | QA-NF-PF-001 | T, A | Pending |
-| 66 | MR-001 | Tier 2 | PR-NF-PF-002 | 환자 검색 응답 ≤500ms | 성능 | Tier 2 | 1 | SWR-NF-PF-002 | — | — | TBD | TBD | ST-NF-PF-002 | — | QA-NF-PF-002 | T, A | Pending |
-| 67 | MR-005 | Tier 1 | PR-NF-PF-003 | DICOM 전송 속도 ≥100Mbps | 성능 | Tier 1 | 1 | SWR-NF-PF-003 | HAZ-DATA-001 | RC-018 | TBD | TBD | ST-NF-PF-003 | — | QA-NF-PF-003 | T, A | Pending |
-| 68 | MR-002, MR-003 | Tier 2 | PR-NF-PF-004 | GUI 응답 시간 ≤200ms | 성능 | Tier 2 | 1 | SWR-NF-PF-004 | — | — | TBD | TBD | ST-NF-PF-004 | VT-NF-PF-004 | QA-NF-PF-004 | T, A | Pending |
-| 69 | MR-006 | Tier 2 | PR-NF-PF-005 | 시스템 부팅 시간 ≤60초 | 성능 | Tier 2 | 1 | SWR-NF-PF-005 | — | — | TBD | TBD | ST-NF-PF-005 | — | QA-NF-PF-005 | T | Pending |
-| 70 | MR-002 | Tier 2 | PR-NF-RL-010 | 시스템 가용성 ≥99.9% | 신뢰성 | Tier 2 | 1 | SWR-NF-RL-010 | HAZ-SW-004 | RC-015, RC-016 | TBD | TBD | ST-NF-RL-010 | VT-NF-RL-010 | QA-NF-RL-010 | T, A | Pending |
-| 71 | MR-002 | Tier 2 | PR-NF-RL-011 | MTBF ≥10,000시간 | 신뢰성 | Tier 2 | 1 | SWR-NF-RL-011 | HAZ-SW-004 | RC-015 | TBD | TBD | ST-NF-RL-011 | — | QA-NF-RL-011 | A | Pending |
-| 72 | MR-002, MR-005 | Tier 2 | PR-NF-RL-012 | 데이터 무결성 0건 손실 | 신뢰성 | Tier 2 | 1 | SWR-NF-RL-012 | HAZ-DATA-001, HAZ-DATA-003 | RC-018, RC-021 | TBD | TBD | ST-NF-RL-012 | VT-NF-RL-012 | QA-NF-RL-012 | T, A | Pending |
-| 73 | MR-002 | Tier 2 | PR-NF-RL-013 | 자동 복구 ≤30초 | 신뢰성 | Tier 2 | 1 | SWR-NF-RL-013 | HAZ-SW-004, HAZ-SW-005 | RC-015, RC-017 | TBD | TBD | ST-NF-RL-013 | — | QA-NF-RL-013 | T, D | Pending |
-| 74 | MR-001, MR-002 | Tier 2 | PR-NF-UX-020 | 교육 시간 ≤4시간 | 사용성 | Tier 2 | 1 | SWR-NF-UX-020 | — | — | TBD | TBD | ST-NF-UX-020 | VT-NF-UX-020 | QA-NF-UX-020 | D, A | Pending |
-| 75 | MR-002 | Tier 2 | PR-NF-UX-021 | 표준 검사 클릭 수 ≤5회 | 사용성 | Tier 2 | 1 | SWR-NF-UX-021 | HAZ-RAD-001 | RC-029, RC-030 | TBD | TBD | ST-NF-UX-021 | VT-NF-UX-021 | QA-NF-UX-021 | T, D | Pending |
-| 76 | MR-002 | Tier 2 | PR-NF-UX-022 | 터치스크린 최적화 ≥44px | 사용성 | Tier 2 | 1 | SWR-NF-UX-022 | HAZ-UI-001 | RC-029 | TBD | TBD | ST-NF-UX-022 | — | QA-NF-UX-022 | I | Pending |
-| 77 | MR-001, MR-002 | Tier 2 | PR-NF-UX-024 | SUS 점수 ≥70점 | 사용성 | Tier 2 | 1 | SWR-NF-UX-024 | — | — | TBD | TBD | ST-NF-UX-024 | VT-NF-UX-024 | QA-NF-UX-024 | D, A | Pending |
-| 78 | MR-006 | Tier 2 | PR-NF-CP-030 | OS 호환성 Win10/11 | 호환성 | Tier 2 | 1 | SWR-NF-CP-030 | HAZ-SW-004 | RC-015 | TBD | TBD | ST-NF-CP-030 | — | QA-NF-CP-030 | T, I | Pending |
-| 79 | MR-002 | Tier 2 | PR-NF-CP-031 | Multi-vendor Detector ≥3개 | 호환성 | Tier 2 | 1 | SWR-NF-CP-031 | HAZ-RAD-001 | RC-001 | TBD | TBD | ST-NF-CP-031 | VT-NF-CP-031 | QA-NF-CP-031 | T, D | Pending |
-| 80 | MR-007, MR-037, MR-039 | Tier 1 | PR-NF-SC-040 | FDA 524B / HIPAA 준수 | 보안 | Tier 1 | 1 | SWR-NF-SC-040 | HAZ-SEC-001 | RC-023, RC-024 | TBD | TBD | ST-NF-SC-040 | VT-NF-SC-040 | QA-NF-SC-040 | I, A | Pending |
-| 81 | MR-007 | Tier 1 | PR-NF-SC-041 | TLS 1.2 이상 | 보안 | Tier 1 | 1 | SWR-NF-SC-041 | HAZ-SEC-001, HAZ-DATA-002 | RC-019 | TBD | TBD | ST-NF-SC-041 | VT-NF-SC-041 | QA-NF-SC-041 | T, I | Pending |
-| 82 | MR-007 | Tier 1 | PR-NF-SC-042 | 비밀번호 정책 | 보안 | Tier 1 | 1 | SWR-NF-SC-042 | HAZ-SEC-001 | RC-023 | TBD | TBD | ST-NF-SC-042 | — | QA-NF-SC-042 | T, I | Pending |
-| 83 | MR-006 | Tier 2 | PR-NF-MT-050 | 모듈식 아키텍처 | 유지보수성 | Tier 2 | 1 | SWR-NF-MT-050 | HAZ-SW-004 | RC-015 | TBD | TBD | ST-NF-MT-050 | — | QA-NF-MT-050 | I, A | Pending |
-| 84 | MR-050 | Tier 1 | PR-NF-MT-051 | 코드 커버리지 ≥80% | 유지보수성 | Tier 1 | 1 | SWR-NF-MT-051 | HAZ-SW-004 | RC-015 | TBD | TBD | ST-NF-MT-051 | — | QA-NF-MT-051 | T, A | Pending |
-| 85 | MR-050 | Tier 1 | PR-NF-RG-060 | IEC 62304 Class B 적합성 + STRIDE 위협 모델링 | 규제 준수 | Tier 1 | 1 | SWR-NF-RG-060 | HAZ-SW-004 | RC-015, RC-016 | TBD | TBD | ST-NF-RG-060 | VT-NF-RG-060 | QA-NF-RG-060 | I, A | Pending |
-| 86 | MR-001, MR-002 | Tier 1 | PR-NF-RG-061 | ISO 14971 HAZ 매핑 | 규제 준수 | Tier 1 | 1 | SWR-NF-RG-061 | HAZ-RAD-001, HAZ-SW-001 | RC-001, RC-008 | TBD | TBD | ST-NF-RG-061 | VT-NF-RG-061 | QA-NF-RG-061 | I, A | Pending |
-| 87 | MR-001 | Tier 1 | PR-NF-RG-062 | IEC 62366 Usability | 규제 준수 | Tier 1 | 1 | SWR-NF-RG-062 | HAZ-RAD-001 | RC-029, RC-030 | TBD | TBD | ST-NF-RG-062 | VT-NF-RG-062 | QA-NF-RG-062 | D, A | Pending |
-| 88 | MR-007 | Tier 1 | PR-NF-RG-063 | FDA 21 CFR 820.30 | 규제 준수 | Tier 1 | 1 | SWR-NF-RG-063 | HAZ-SW-004 | RC-015 | TBD | TBD | ST-NF-RG-063 | VT-NF-RG-063 | QA-NF-RG-063 | I, A | Pending |
-| 89 | MR-004 | Tier 1 | PR-NF-RG-064 | DICOM Conformance | 규제 준수 | Tier 1 | 1 | SWR-NF-RG-064 | HAZ-DATA-001 | RC-018 | TBD | TBD | ST-NF-RG-064 | VT-NF-RG-064 | QA-NF-RG-064 | I | Pending |
-| 90 | MR-007 | Tier 1 | PR-NF-RG-065 | FDA 510(k) RTM 완전성 | 규제 준수 | Tier 1 | 1 | SWR-NF-RG-065 | — | — | TBD | TBD | ST-NF-RG-065 | VT-NF-RG-065 | QA-NF-RG-065 | I, A | Pending |
+| 65 | MR-002, MR-003 | Tier 2 | PR-NF-PF-001 | 영상 표시 지연 ≤1,000ms | 성능 | Tier 2 | 1 | SWR-NF-PF-001 | HAZ-RAD-001 | RC-007 | All modules | SDS §5 | ST-NF-PF-001 | VT-NF-PF-001 | QA-NF-PF-001 | T, A | Pending |
+| 66 | MR-001 | Tier 2 | PR-NF-PF-002 | 환자 검색 응답 ≤500ms | 성능 | Tier 2 | 1 | SWR-NF-PF-002 | — | — | All modules | SDS §5 | ST-NF-PF-002 | — | QA-NF-PF-002 | T, A | Pending |
+| 67 | MR-005 | Tier 1 | PR-NF-PF-003 | DICOM 전송 속도 ≥100Mbps | 성능 | Tier 1 | 1 | SWR-NF-PF-003 | HAZ-DATA-001 | RC-018 | All modules | SDS §5 | ST-NF-PF-003 | — | QA-NF-PF-003 | T, A | Pending |
+| 68 | MR-002, MR-003 | Tier 2 | PR-NF-PF-004 | GUI 응답 시간 ≤200ms | 성능 | Tier 2 | 1 | SWR-NF-PF-004 | — | — | All modules | SDS §5 | ST-NF-PF-004 | VT-NF-PF-004 | QA-NF-PF-004 | T, A | Pending |
+| 69 | MR-006 | Tier 2 | PR-NF-PF-005 | 시스템 부팅 시간 ≤60초 | 성능 | Tier 2 | 1 | SWR-NF-PF-005 | — | — | All modules | SDS §5 | ST-NF-PF-005 | — | QA-NF-PF-005 | T | Pending |
+| 70 | MR-002 | Tier 2 | PR-NF-RL-010 | 시스템 가용성 ≥99.9% | 신뢰성 | Tier 2 | 1 | SWR-NF-RL-010 | HAZ-SW-004 | RC-015, RC-016 | SAD-DB-900, SAD-WF-200 | SDS §3.9, §3.2 | ST-NF-RL-010 | VT-NF-RL-010 | QA-NF-RL-010 | T, A | Pending |
+| 71 | MR-002 | Tier 2 | PR-NF-RL-011 | MTBF ≥10,000시간 | 신뢰성 | Tier 2 | 1 | SWR-NF-RL-011 | HAZ-SW-004 | RC-015 | SAD-DB-900, SAD-WF-200 | SDS §3.9, §3.2 | ST-NF-RL-011 | — | QA-NF-RL-011 | A | Pending |
+| 72 | MR-002, MR-005 | Tier 2 | PR-NF-RL-012 | 데이터 무결성 0건 손실 | 신뢰성 | Tier 2 | 1 | SWR-NF-RL-012 | HAZ-DATA-001, HAZ-DATA-003 | RC-018, RC-021 | SAD-DB-900, SAD-WF-200 | SDS §3.9, §3.2 | ST-NF-RL-012 | VT-NF-RL-012 | QA-NF-RL-012 | T, A | Pending |
+| 73 | MR-002 | Tier 2 | PR-NF-RL-013 | 자동 복구 ≤30초 | 신뢰성 | Tier 2 | 1 | SWR-NF-RL-013 | HAZ-SW-004, HAZ-SW-005 | RC-015, RC-017 | SAD-DB-900, SAD-WF-200 | SDS §3.9, §3.2 | ST-NF-RL-013 | — | QA-NF-RL-013 | T, D | Pending |
+| 74 | MR-001, MR-002 | Tier 2 | PR-NF-UX-020 | 교육 시간 ≤4시간 | 사용성 | Tier 2 | 1 | SWR-NF-UX-020 | — | — | SAD-UI-800 | SDS §3.8 | ST-NF-UX-020 | VT-NF-UX-020 | QA-NF-UX-020 | D, A | Pending |
+| 75 | MR-002 | Tier 2 | PR-NF-UX-021 | 표준 검사 클릭 수 ≤5회 | 사용성 | Tier 2 | 1 | SWR-NF-UX-021 | HAZ-RAD-001 | RC-029, RC-030 | SAD-UI-800 | SDS §3.8 | ST-NF-UX-021 | VT-NF-UX-021 | QA-NF-UX-021 | T, D | Pending |
+| 76 | MR-002 | Tier 2 | PR-NF-UX-022 | 터치스크린 최적화 ≥44px | 사용성 | Tier 2 | 1 | SWR-NF-UX-022 | HAZ-UI-001 | RC-029 | SAD-UI-800 | SDS §3.8 | ST-NF-UX-022 | — | QA-NF-UX-022 | I | Pending |
+| 77 | MR-001, MR-002 | Tier 2 | PR-NF-UX-024 | SUS 점수 ≥70점 | 사용성 | Tier 2 | 1 | SWR-NF-UX-024 | — | — | SAD-UI-800 | SDS §3.8 | ST-NF-UX-024 | VT-NF-UX-024 | QA-NF-UX-024 | D, A | Pending |
+| 78 | MR-006 | Tier 2 | PR-NF-CP-030 | OS 호환성 Win10/11 | 호환성 | Tier 2 | 1 | SWR-NF-CP-030 | HAZ-SW-004 | RC-015 | All modules | SDS §5 | ST-NF-CP-030 | — | QA-NF-CP-030 | T, I | Pending |
+| 79 | MR-002 | Tier 2 | PR-NF-CP-031 | Multi-vendor Detector ≥3개 | 호환성 | Tier 2 | 1 | SWR-NF-CP-031 | HAZ-RAD-001 | RC-001 | All modules | SDS §5 | ST-NF-CP-031 | VT-NF-CP-031 | QA-NF-CP-031 | T, D | Pending |
+| 80 | MR-007, MR-037, MR-039 | Tier 1 | PR-NF-SC-040 | FDA 524B / HIPAA 준수 | 보안 | Tier 1 | 1 | SWR-NF-SC-040 | HAZ-SEC-001 | RC-023, RC-024 | SAD-CS-700 | SDS §3.7 | ST-NF-SC-040 | VT-NF-SC-040 | QA-NF-SC-040 | I, A | Pending |
+| 81 | MR-007 | Tier 1 | PR-NF-SC-041 | TLS 1.2 이상 | 보안 | Tier 1 | 1 | SWR-NF-SC-041 | HAZ-SEC-001, HAZ-DATA-002 | RC-019 | SAD-CS-700 | SDS §3.7 | ST-NF-SC-041 | VT-NF-SC-041 | QA-NF-SC-041 | T, I | Pending |
+| 82 | MR-007 | Tier 1 | PR-NF-SC-042 | 비밀번호 정책 | 보안 | Tier 1 | 1 | SWR-NF-SC-042 | HAZ-SEC-001 | RC-023 | SAD-CS-700 | SDS §3.7 | ST-NF-SC-042 | — | QA-NF-SC-042 | T, I | Pending |
+| 83 | MR-006 | Tier 2 | PR-NF-MT-050 | 모듈식 아키텍처 | 유지보수성 | Tier 2 | 1 | SWR-NF-MT-050 | HAZ-SW-004 | RC-015 | SAD-SA-600 | SDS §3.6 | ST-NF-MT-050 | — | QA-NF-MT-050 | I, A | Pending |
+| 84 | MR-050 | Tier 1 | PR-NF-MT-051 | 코드 커버리지 ≥80% | 유지보수성 | Tier 1 | 1 | SWR-NF-MT-051 | HAZ-SW-004 | RC-015 | SAD-SA-600 | SDS §3.6 | ST-NF-MT-051 | — | QA-NF-MT-051 | T, A | Pending |
+| 85 | MR-050 | Tier 1 | PR-NF-RG-060 | IEC 62304 Class B 적합성 + STRIDE 위협 모델링 | 규제 준수 | Tier 1 | 1 | SWR-NF-RG-060 | HAZ-SW-004 | RC-015, RC-016 | All modules | SDS §6 | ST-NF-RG-060 | VT-NF-RG-060 | QA-NF-RG-060 | I, A | Pending |
+| 86 | MR-001, MR-002 | Tier 1 | PR-NF-RG-061 | ISO 14971 HAZ 매핑 | 규제 준수 | Tier 1 | 1 | SWR-NF-RG-061 | HAZ-RAD-001, HAZ-SW-001 | RC-001, RC-008 | All modules | SDS §6 | ST-NF-RG-061 | VT-NF-RG-061 | QA-NF-RG-061 | I, A | Pending |
+| 87 | MR-001 | Tier 1 | PR-NF-RG-062 | IEC 62366 Usability | 규제 준수 | Tier 1 | 1 | SWR-NF-RG-062 | HAZ-RAD-001 | RC-029, RC-030 | All modules | SDS §6 | ST-NF-RG-062 | VT-NF-RG-062 | QA-NF-RG-062 | D, A | Pending |
+| 88 | MR-007 | Tier 1 | PR-NF-RG-063 | FDA 21 CFR 820.30 | 규제 준수 | Tier 1 | 1 | SWR-NF-RG-063 | HAZ-SW-004 | RC-015 | All modules | SDS §6 | ST-NF-RG-063 | VT-NF-RG-063 | QA-NF-RG-063 | I, A | Pending |
+| 89 | MR-004 | Tier 1 | PR-NF-RG-064 | DICOM Conformance | 규제 준수 | Tier 1 | 1 | SWR-NF-RG-064 | HAZ-DATA-001 | RC-018 | All modules | SDS §6 | ST-NF-RG-064 | VT-NF-RG-064 | QA-NF-RG-064 | I | Pending |
+| 90 | MR-007 | Tier 1 | PR-NF-RG-065 | FDA 510(k) RTM 완전성 | 규제 준수 | Tier 1 | 1 | SWR-NF-RG-065 | — | — | All modules | SDS §6 | ST-NF-RG-065 | VT-NF-RG-065 | QA-NF-RG-065 | I, A | Pending |
 
 > **[v2.0 변경 — MR-050]** PR-NF-RG-060: MRD v3.0 MR-050 (Tier 1) 보완 반영. PR 요구사항명에 "STRIDE 위협 모델링" 추가. IEC 62304 Class B 전 산출물 완비 + STRIDE 기반 위협 모델링 수행 및 문서화 (IEC 81001-5-1 Clause 5.2). SWR-NF-RG-060 내용 FRS v2.0에서 보강.
 
@@ -462,7 +462,7 @@ flowchart RL
 
 | Gap 유형 | 해당 항목 | 현황 | 조치 계획 |
 |---------|---------|------|---------| 
-| **SAD/SDS 미작성** | 전체 90개 PR | SAD/SDS 문서 작성 예정 | Phase 1 설계 단계에서 완성 |
+| **SAD/SDS 참조 매핑 완료** | 전체 90개 PR | SAD Ref / SDS Ref 컬럼 매핑 완료 | SAD/SDS 문서 본문 작성은 Phase 1 설계 단계에서 완성 |
 | **테스트 케이스 미작성** | 전체 90개 PR | UTP/ITP/STP/VP 작성 예정 | Phase 1 V&V 계획 수립 중 |
 | **HAZ 미매핑 PR** | PR-IP-021–024, PR-IP-027–028, PR-IP-031–032 등 | 위험 없음 또는 간접 위험 | 위험 재검토 후 확정 |
 | **Phase 1.5 VT 부재** | PR-IP-025, PR-IP-033, PR-DM-046, PR-CS-071 등 | Phase 1.5 밸리데이션 계획 미수립 | Phase 1.5 착수 시 VT 추가 |
@@ -606,7 +606,7 @@ FDA 21 CFR 820.30 및 IEC 62304 요건에 따른 RTM 완전성 기준:
 | 모든 Tier 1/2 PR에 VT ID 매핑 | 100% | ⏳ TBD | Phase 1 밸리데이션 계획 |
 | 모든 Safety TC에 검증 결과 | 100% | ⏳ TBD | Phase 1 V&V 완료 후 |
 | 검증 상태 전체 Pass | 100% | ⏳ Pending | 510(k) 제출 전 |
-| SAD/SDS 참조 완전성 | 100% | ⏳ TBD | 설계 단계 완료 후 |
+| SAD/SDS 참조 완전성 | 100% | ✅ 완료 (참조 매핑) | SAD/SDS 문서 본문은 설계 단계 완료 후 |
 | RTM ↔ DHF 연결성 확인 | 100% | ⏳ TBD | 최종 심사 전 |
 
 ### 7.4 도구 및 프로세스 (Tools & Process)

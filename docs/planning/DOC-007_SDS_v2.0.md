@@ -876,7 +876,7 @@ sequenceDiagram
 **Tier 매핑:** Tier 2 (MR-010 촬영 워크플로우, MR-051 IEC 62366 사용성)
 **관련 SWR:** SWR-UI-001–SWR-UI-020
 
-**기술 스택:** WPF .NET 8 + MVVM (CommunityToolkit.Mvvm) + MaterialDesignInXaml
+**기술 스택:** WPF .NET 8 + MVVM (CommunityToolkit.Mvvm) + MahApps.Metro 2.4.10
 
 **MVVM 구조:**
 ```
@@ -894,6 +894,138 @@ Views/                         ViewModels/
 - 기본값: 15분 비활동 시 화면 잠금
 - 잠금 시: 로그인 화면 표시, 현재 세션 일시 중단
 - 중단 금지 상태 (촬영 중)에서는 잠금 연기
+
+#### 3.8.1 디자인 토큰 사양 (Design Token Specification)
+
+##### 색상 토큰 (Color Tokens)
+
+**안전 색상 (Safety Colors — IEC 62366-1):**
+
+| 토큰 | Hex | 용도 |
+|------|-----|------|
+| @color-danger | #FF0000 | 방사선 경고, 즉시 조치 필요 |
+| @color-warning | #FFA500 | 주의, 확인 필요 |
+| @color-success | #00AA00 | 정상/완료 |
+| @color-info | #0066CC | 정보 참조 |
+| @color-disabled | #999999 | 비활성/대기 |
+
+**인터페이스 색상 (Interface Colors):**
+
+| 토큰 | Hex | 용도 |
+|------|-----|------|
+| @color-background | #FFFFFF | 메인 배경 |
+| @color-surface | #F5F5F5 | 패널/카드 배경 |
+| @color-border | #E0E0E0 | 테두리 |
+| @color-text-primary | #212121 | 본문 텍스트 |
+| @color-text-secondary | #757575 | 보조 텍스트 |
+| @color-accent | #1976D2 | 강조/선택 |
+| @color-focus-ring | #0066FF | 포커스 링 (접근성) |
+
+**상태 색상 (State Colors):**
+
+| 토큰 | Hex | 용도 |
+|------|-----|------|
+| @color-hover | #E3F2FD | 마우스 오버 배경 |
+| @color-active | #BBDEFB | 클릭/선택 배경 |
+| @color-error-bg | #FFEBEE | 에러 필드 배경 |
+| @color-error-border | #F44336 | 에러 필드 테두리 |
+
+##### 타이포그래피 토큰 (Typography Tokens)
+
+| 토큰 | 값 | 용도 |
+|------|-----|------|
+| @font-family-primary | Segoe UI, sans-serif | 본문, 레이블, 버튼 |
+| @font-family-mono | Consolas, monospace | DICOM 태그, 기술 데이터 |
+| @font-size-xs | 11px | 상태바, 타임스탬프 |
+| @font-size-sm | 12px | 보조 레이블, 캡션 |
+| @font-size-base | 14px | 본문, 입력 필드 |
+| @font-size-md | 16px | 서브 헤딩, 강조 텍스트 |
+| @font-size-lg | 20px | 섹션 헤딩 |
+| @font-size-xl | 24px | 페이지 타이틀 |
+| @font-size-2xl | 32px | 대시보드 수치 (선량 등) |
+| @font-weight-normal | 400 | 본문 |
+| @font-weight-medium | 500 | 레이블, 버튼 |
+| @font-weight-bold | 700 | 헤딩, 경고 |
+| @line-height-base | 1.5 | 기본 행간 |
+
+##### 간격 토큰 (Spacing Tokens)
+
+8px 기반 그리드 시스템:
+
+| 토큰 | 값 | 용도 |
+|------|-----|------|
+| @spacing-xs | 4px | 아이콘-텍스트 간격 |
+| @spacing-sm | 8px | 인접 컨트롤 간격 |
+| @spacing-md | 12px | 그룹 내 요소 간격 |
+| @spacing-base | 16px | 패널 패딩, 카드 패딩 |
+| @spacing-lg | 24px | 섹션 간격 |
+| @spacing-xl | 32px | 패널 간 간격 |
+| @spacing-2xl | 48px | 주요 영역 간 구분 |
+
+##### 컴포넌트 사양 (Component Specifications)
+
+**버튼 (Buttons):**
+
+| 유형 | 배경 | 텍스트 | 테두리 | 용도 |
+|------|------|--------|--------|------|
+| Primary (Filled) | @color-accent | #FFFFFF | none | 주요 액션 (저장, 전송) |
+| Danger (Filled) | @color-danger | #FFFFFF | none | 위험 액션 (촬영, 삭제) |
+| Secondary (Outlined) | transparent | @color-accent | 1px @color-accent | 보조 액션 (취소, 뒤로) |
+| Tertiary (Text) | transparent | @color-accent | none | 링크형 액션 |
+| Disabled | #E0E0E0 | #9E9E9E | none | 비활성 |
+
+버튼 공통: 최소 44x44px (WCAG 2.1), border-radius 6px, font-weight 500, padding 8px 16px
+
+**입력 필드 (Input Fields):**
+
+| 상태 | 테두리 | 배경 | 아이콘 |
+|------|--------|------|--------|
+| Default | 1px @color-border | @color-background | — |
+| Focus | 2px @color-focus-ring | @color-background | — |
+| Error | 2px @color-error-border | @color-error-bg | 에러 아이콘 |
+| Disabled | 1px @color-disabled | @color-surface | — |
+
+에러 메시지: 필드 하단, @color-danger, @font-size-sm
+
+**다이얼로그 (Dialogs):**
+
+| 속성 | 값 |
+|------|-----|
+| Max Width | 600px |
+| 위치 | 화면 중앙 |
+| 배경 dim | rgba(0,0,0,0.5) |
+| 그림자 | 0 4px 24px rgba(0,0,0,0.2) |
+| Border Radius | 8px |
+| 패딩 | @spacing-lg (24px) |
+
+**알림 토스트 (Toast Notifications):**
+
+| 속성 | 값 |
+|------|-----|
+| Width | 400px |
+| 위치 | 우하단 |
+| 자동 닫힘 | 3초 (Info), 수동 (Warning/Error) |
+| 그림자 | 0 2px 8px rgba(0,0,0,0.15) |
+
+##### 반응형 사양 (Responsive Specifications)
+
+| 해상도 | DPI 스케일 | 레이아웃 |
+|--------|-----------|---------|
+| 1920x1080 (FHD) | 100% | 5-패널 기본 레이아웃 |
+| 2560x1440 (QHD) | 125% | 5-패널, 확대 여백 |
+| 3840x2160 (4K) | 150-200% | 5-패널, 고밀도 정보 표시 |
+
+Per-Monitor DPI Aware v2 적용 (Windows 10/11 API)
+
+##### 포커스 및 접근성 (Focus & Accessibility)
+
+| 항목 | 사양 |
+|------|------|
+| 포커스 링 | 2px solid @color-focus-ring, offset 2px |
+| 최소 대비 | 4.5:1 (WCAG AA) |
+| 최소 터치 대상 | 44x44px |
+| Tab 순서 | 논리적 좌→우, 상→하 |
+| 색상 의존 금지 | 모든 색상 정보에 아이콘/텍스트 병기 |
 
 ---
 
