@@ -1,0 +1,76 @@
+<UserControl x:Class="HnVue.UI.Views.LoginView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             Background="{StaticResource HnVue.Background.Dark.Brush}">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </UserControl.Resources>
+    <Grid MaxWidth="400" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Title -->
+        <TextBlock Grid.Row="0"
+                   Text="HnVue Console"
+                   FontSize="{StaticResource HnVue.FontSize.Header}"
+                   FontFamily="{StaticResource HnVue.FontFamily}"
+                   Foreground="{StaticResource HnVue.Text.Primary.Brush}"
+                   HorizontalAlignment="Center"
+                   Margin="{StaticResource HnVue.Spacing.Large}" />
+
+        <!-- Loading indicator -->
+        <mah:MetroProgressBar Grid.Row="1"
+                               IsIndeterminate="True"
+                               Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+        <!-- Username input -->
+        <TextBox Grid.Row="2"
+                 Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
+                 mah:TextBoxHelper.Watermark="사용자명"
+                 mah:TextBoxHelper.UseFloatingWatermark="True"
+                 Margin="{StaticResource HnVue.Spacing.Normal}" />
+
+        <!-- Password input -->
+        <PasswordBox Grid.Row="3"
+                     x:Name="PasswordBoxControl"
+                     mah:TextBoxHelper.Watermark="비밀번호"
+                     mah:TextBoxHelper.UseFloatingWatermark="True"
+                     PasswordChanged="PasswordBox_PasswordChanged"
+                     Margin="{StaticResource HnVue.Spacing.Normal}" />
+
+        <!-- Error + Login button -->
+        <StackPanel Grid.Row="4">
+            <TextBlock Text="{Binding ErrorMessage}"
+                       Foreground="{StaticResource HnVue.Error.Brush}"
+                       TextWrapping="Wrap"
+                       Margin="{StaticResource HnVue.Spacing.Small}">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <!-- Default: visible when ErrorMessage has a value -->
+                        <Setter Property="Visibility" Value="Visible" />
+                        <Style.Triggers>
+                            <!-- Hide when ErrorMessage is null or empty -->
+                            <DataTrigger Binding="{Binding ErrorMessage}" Value="{x:Null}">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ErrorMessage}" Value="">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+            <Button Content="로그인"
+                    Command="{Binding LoginCommand}"
+                    Style="{StaticResource HnVue.PrimaryButton}"
+                    HorizontalAlignment="Stretch"
+                    Margin="{StaticResource HnVue.Spacing.Normal}" />
+        </StackPanel>
+    </Grid>
+</UserControl>
