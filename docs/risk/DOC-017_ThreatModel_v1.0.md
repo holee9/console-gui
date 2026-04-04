@@ -507,7 +507,7 @@ pie title 완화 조치 유형 분포
 | TM-T-001 | fo-dicom 5.x, DCMTK 3.6.x | DICOM 라이브러리 CVE | SBOM-XRAY-GUI-001 참조 |
 | TM-I-001 | OpenSSL 3.x | 암호화 라이브러리 CVE | 고위험 모니터링 대상 |
 | TM-E-002 | Entity Framework Core, SQLite | DB 레이어 CVE | SQL Injection 관련 |
-| TM-T-004 | .NET 6.0 Runtime | 런타임 CVE | 서명 검증 관련 |
+| TM-T-004 | .NET 8.0 Runtime | 런타임 CVE | 서명 검증 관련 |
 | TM-D-004 | gRPC, RestSharp | 네트워크 라이브러리 CVE | DoS 취약점 관련 |
 
 **SBOM 참조**: 상세 구성요소 목록 및 CVE 현황은 DOC-019 SBOM (SBOM-XRAY-GUI-001)을 참조한다.

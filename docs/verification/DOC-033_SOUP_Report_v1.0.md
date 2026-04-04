@@ -195,8 +195,8 @@ flowchart TD
 |---------|---------|------|----------|----------|----------|
 | SOUP-006 | OpenSSL | 3.2.1 | 직접 (인증/암호화) | ✅ | 월별 CVE 모니터링 필수 |
 | SOUP-007 | BouncyCastle | 2.3.0 | 직접 (암호화) | ✅ | 월별 CVE 모니터링 |
-| SOUP-008 | .NET 6.0 Runtime | 6.0.36 | 간접→직접 (플랫폼) | ✅ | MS 보안 업데이트 즉시 적용 |
-| SOUP-009 | WPF 6.0 | 6.0.36 | 간접 (UI 표시) | ✅ | 표시 정확성 검증 |
+| SOUP-008 | .NET 8.0 Runtime | 8.0.x | 간접→직접 (플랫폼) | ✅ | MS 보안 업데이트 즉시 적용 |
+| SOUP-009 | WPF 8.0 | 8.0.x | 간접 (UI 표시) | ✅ | 표시 정확성 검증 |
 | SOUP-010 | ASP.NET Core | 6.0.36 | 간접 (서비스) | ✅ | 보안 업데이트 |
 | SOUP-011 | DicomObjects.NET | 14.0.x | 직접 (DICOM) | ✅ | 벤더 SLA 기반 패치 |
 | SOUP-012 | NHapi HL7 | 3.2.0 | 직접 (환자 데이터) | ✅ | HL7 메시지 검증 |
@@ -229,7 +229,7 @@ flowchart TD
 | SOUP-034 | zlib | 1.3.1 | 압축 | ✅ |
 | SOUP-035 | libpng | 1.6.43 | PNG 코덱 | ✅ |
 | SOUP-036 | Windows 10 IoT | LTSC 21H2 | 운영 체제 | ✅ |
-| SOUP-037 | .NET 6.0 SDK | 6.0.428 | 빌드 도구 | ✅ (비배포) |
+| SOUP-037 | .NET 8.0 SDK | 8.0.x | 빌드 도구 | ✅ (비배포) |
 | SOUP-038 | (예비) | — | — | — |
 
 ---
@@ -357,7 +357,7 @@ SOUP 구성요소 업데이트 시 수행하는 영향 분석 절차:
 | 1 | OpenSSL, BouncyCastle은 **월별 CVE 모니터링** 유지 | High |
 | 2 | fo-dicom, DCMTK는 **분기별 릴리스 추적** 및 DICOM Conformance 재검증 | High |
 | 3 | OpenCV 업데이트 시 **영상 처리 정확성 회귀 테스트** 필수 | Medium |
-| 4 | .NET 6.0 LTS **2026-11 EOS 전 .NET 8.0 마이그레이션** 계획 수립 | Medium |
+| 4 | .NET 8.0 LTS 사용 중 — **2026-11 .NET 8.0 LTS 지원 기간 내 안정 운영** | Low |
 | 5 | CI/CD 파이프라인에 **자동 SCA 스캔** (OWASP Dependency-Check) 상시 적용 | High |
 | 6 | 모든 SOUP 업데이트는 **변경 관리 프로세스** 경유 필수 | High |
 

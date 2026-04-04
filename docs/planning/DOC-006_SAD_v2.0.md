@@ -709,7 +709,7 @@ DICOMCommunication Module (SAD-DC-500)
 | **Safety-Critical** | 아니오 |
 | **Tier 매핑** | Tier 2: MR-010 촬영 워크플로우, MR-051 IEC 62366 사용성 |
 
-**기술 스택:** WPF .NET 8, MVVM 패턴, MaterialDesignInXaml
+**기술 스택:** WPF .NET 8, MVVM 패턴, MahApps.Metro 2.4.10
 
 **관련 SWR:** SWR-UI-001–SWR-UI-020
 
@@ -1125,7 +1125,7 @@ flowchart TD
 | SOUP-007 | EF Core | 8.x | Microsoft | ORM (DataPersistence) | Class B | MIT |
 | SOUP-008 | BCrypt.Net | 4.x | BCrypt.Net | 패스워드 해싱 (비용 12) | Class B | MIT |
 | SOUP-009 | Windows IMAPI2 | OS 내장 | Microsoft | CD/DVD 굽기 | Class A | OS 포함 |
-| SOUP-010 | MaterialDesignInXaml | 5.x | Material Design | WPF UI 테마 | Class A | MIT |
+| SOUP-010 | MahApps.Metro | 2.4.10 | MahApps | WPF UI 테마 | Class A | MIT |
 
 ### 8.2 fo-dicom 5.x 통합 방식
 
