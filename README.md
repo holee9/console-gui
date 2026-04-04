@@ -633,6 +633,27 @@ git merge --ff-only github/feature/web-ui
 git push origin feature/web-ui
 ```
 
+#### `feature/web-ui` 에서 `does not match` 또는 `pathspec did not match` 가 뜨면
+
+이 경우는 대부분 **Gitea 작업 PC에 로컬 `feature/web-ui` 브랜치가 아직 없을 때**다.
+
+아래 블록을 **그대로 복사해서 Gitea 작업 PC**에서 실행:
+
+```bash
+git fetch github feature/web-ui:refs/remotes/github/feature/web-ui
+git checkout -B feature/web-ui github/feature/web-ui
+git push origin feature/web-ui
+```
+
+위 3줄이 성공하면, 그 다음부터는 아래 fast-forward 블록을 사용한다:
+
+```bash
+git fetch github feature/web-ui:refs/remotes/github/feature/web-ui
+git checkout feature/web-ui
+git merge --ff-only github/feature/web-ui
+git push origin feature/web-ui
+```
+
 설명:
 
 - `git fetch github feature/web-ui`
@@ -695,5 +716,13 @@ git push origin feature/web-ui
 git fetch github feature/web-ui
 git checkout feature/web-ui
 git merge --ff-only github/feature/web-ui
+git push origin feature/web-ui
+```
+
+`git checkout feature/web-ui` 에서 `pathspec did not match` 가 나면, 아래 생성/복구 블록을 먼저 실행한다:
+
+```bash
+git fetch github feature/web-ui:refs/remotes/github/feature/web-ui
+git checkout -B feature/web-ui github/feature/web-ui
 git push origin feature/web-ui
 ```
