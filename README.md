@@ -55,6 +55,23 @@ HnVue Console SW는 H&abyz（에이치앤아비즈）가 자사 FPD（Flat Panel
 
 ---
 
+## 소스코드 개발 현황
+
+### Pre-Wave 완료 (2026-04-04, tag: v0.1.0-pre-wave)
+
+| 항목 | 상태 | 내용 |
+|------|:----:|------|
+| 빌드 인프라 | ✅ | global.json (.NET 8.0.419), Directory.Build.props, Directory.Packages.props, nuget.config, .editorconfig |
+| 솔루션 구조 | ✅ | HnVue.sln + 28개 프로젝트 (14 src + 13 tests + 1 integration) |
+| HnVue.Common | ✅ | Result<T>, 5개 Enum, 17개 서비스 인터페이스, 17개 DTO |
+| HnVue.Common.Tests | ✅ | 38/38 pass |
+| 빌드 검증 | ✅ | 0 errors / 0 warnings |
+| Evaluator 평가 | ✅ | 0.766 PASS (Critical 2건 수정 완료) |
+
+**다음 단계 (Wave 1):** HnVue.Data + HnVue.Security + HnVue.UI skeleton — 3개 worktree 병렬 구현
+
+---
+
 ## 개발 로드맵
 
 ### Phase 구성
