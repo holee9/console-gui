@@ -560,12 +560,21 @@ GitHub 저장소에서 아래 항목을 순서대로 확인한다.
 | 2 | `--mirror` / `--prune` 미사용 | 스크립트 내부에 해당 플래그 없음 | 스크립트에 해당 문자열 **없음** |
 | 3 | `feature/web-ui` 브랜치 보존 | GitHub Branches 탭에서 확인 | 브랜치 **삭제되지 않음** |
 | 4 | 이 README 섹션 존재 | `Mirror Sync Fix Status` 제목 검색 | 섹션 **존재** → 이 커밋 이후 동기화 |
+| 5 | 별도 branch cleanup 작업 비활성화 | GitHub Events에서 `DeleteEvent feature/web-ui` 재발 여부 확인 | `main` push 없이 단독 삭제 **없음** |
 
 ### 전환 이력
 
 | 날짜 | 변경 내용 |
 |------|-----------|
 | 2026-04-04 | `git push --mirror` 방식 → `scripts/sync_to_github.ps1` 선택적 push 방식으로 전환 |
+| 2026-04-04 22:23 KST | `feature/web-ui` 재생성 후에도 `DeleteEvent` 재발 확인. 같은 시점 `main` push 없이 브랜치만 삭제되어, 별도 cleanup/delete 작업이 아직 남아 있는 것으로 판단 |
+
+### 현재 판정
+
+- 안전 push 스크립트와 README 반영은 완료됐다.
+- 그러나 `feature/web-ui`는 2026-04-04 22:16 KST 재생성 후 2026-04-04 22:23:56 KST에 다시 삭제되었다.
+- 같은 시점 `main` push 이벤트가 없었으므로, `scripts/sync_to_github.ps1` 자체보다 **별도의 branch cleanup/delete 작업**이 계속 실행 중일 가능성이 높다.
+- 따라서 현재 상태는 **부분 개선**이며, `feature/web-ui`를 안정적으로 유지할 수 있는 상태로는 아직 보지 않는다.
 
 ### 브랜치가 다시 삭제됐을 때
 
@@ -579,6 +588,12 @@ Gitea에서 아래 명령을 실행해 주세요:
 
 이후 GitHub Branches 탭에서 feature/web-ui 존재 여부를 재확인합니다.
 ```
+
+추가로, GitHub Events에서 `feature/web-ui` 삭제 시점에 `refs/heads/main` push 이벤트가 같이 없다면, 아래 항목을 먼저 점검한다.
+
+- 오래된 자동 동기화 잡이 아직 `--mirror`, `--prune`, ref delete, branch cleanup API를 사용하고 있지 않은지 확인
+- 새 스크립트(`scripts/sync_to_github.ps1`) 외에 별도 branch 정리 작업이 남아 있지 않은지 확인
+- 해당 cleanup 작업을 비활성화한 뒤 다시 `.\scripts\sync_to_github.ps1 -Branches main, feature/web-ui` 실행
 
 ---
 
