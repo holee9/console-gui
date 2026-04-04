@@ -7,16 +7,17 @@ namespace HnVue.Common.Tests.Models;
 public sealed class DoseValidationLevelTests
 {
     [Fact]
-    public void DoseValidationLevel_HasThreeValues()
+    public void DoseValidationLevel_HasFourValues()
     {
-        Enum.GetValues<DoseValidationLevel>().Should().HaveCount(3);
+        // Emergency level was added for 4-level interlock (IEC 62304 safety requirement)
+        Enum.GetValues<DoseValidationLevel>().Should().HaveCount(4);
     }
 
     [Fact]
     public void DoseValidationLevel_ContainsExpectedMembers()
     {
         Enum.GetNames<DoseValidationLevel>().Should().BeEquivalentTo(
-            new[] { "Allow", "Warn", "Block" });
+            new[] { "Allow", "Warn", "Block", "Emergency" });
     }
 
     [Fact]

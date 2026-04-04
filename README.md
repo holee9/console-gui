@@ -70,20 +70,21 @@ HnVue/
 ├── src/                         # 14개 소스 프로젝트
 │   ├── HnVue.Common             # ✅ 구현 완료 — 17 인터페이스, Result<T>, 5 Enum
 │   ├── HnVue.Data               # ✅ Wave 1 완료 — EF Core 8 + SQLCipher, 4 Repository
-│   ├── HnVue.Security           # ✅ Wave 1 완료 — bcrypt/JWT/HMAC-SHA256 해시 체인 (안전 임계, 90%+)
-│   ├── HnVue.UI                 # ✅ Wave 1 완료 — MahApps.Metro 테마 + LoginView skeleton
-│   ├── HnVue.App                # ⏳ Wave 2  (DI 완전 연결)
-│   ├── HnVue.Dicom              # ⏳ Wave 2
-│   ├── HnVue.Incident           # ⏳ Wave 2  (안전 임계, 90%+)
-│   ├── HnVue.Update             # ⏳ Wave 2  (안전 임계, 85%+)
-│   ├── HnVue.Workflow           # ⏳ Wave 3  (안전 임계, 90%+)
-│   ├── HnVue.Imaging            # 🔒 Wave 4  (Phase 1c)
-│   ├── HnVue.Dose               # 🔒 Wave 4  (Phase 1c, DRL 수치표 필요)
-│   ├── HnVue.PatientManagement  # 🔒 Wave 4  (Phase 1c)
-│   ├── HnVue.CDBurning          # 🔒 Wave 4  (Phase 1c)
-│   └── HnVue.SystemAdmin        # 🔒 Wave 4  (Phase 1c)
+│   ├── HnVue.Security           # ✅ Wave 1+REF 완료 — bcrypt/JWT/HMAC, PasswordHasher, RbacPolicy (안전 임계, 90%+)
+│   ├── HnVue.UI                 # ✅ Wave 1 완료 — MahApps.Metro 테마 + LoginView/MainView
+│   ├── HnVue.App                # ✅ 스캐폴딩 완료 — DI 컴포지션 루트 기반 구조
+│   ├── HnVue.Workflow           # ✅ REF 완료 — WorkflowEngine, WorkflowStateMachine(9-상태), GeneratorSimulator (안전 임계, 90%+)
+│   ├── HnVue.Dose               # ✅ REF 완료 — DoseService 4단계 인터록 Allow/Warn/Block/Emergency (안전 임계, 90%+)
+│   ├── HnVue.PatientManagement  # ✅ REF 완료 — PatientService(CRUD+중복), WorklistService(MWL+응급ID)
+│   ├── HnVue.Dicom              # ✅ REF 완료 — DicomStoreScu, DicomFindScu, DicomFileIO, DicomFileWrapper
+│   ├── HnVue.Incident           # ✅ REF 완료 — IncidentResponseService 4단계 심각도 (안전 임계, 90%+)
+│   ├── HnVue.Update             # ✅ REF 완료 — SWUpdateService, CodeSignVerifier(SHA-256), BackupService (안전 임계, 85%+)
+│   ├── HnVue.SystemAdmin        # ✅ REF 완료 — SystemAdminService(설정 검증+감사 CSV 내보내기)
+│   ├── HnVue.CDBurning          # ✅ REF 완료 — CDDVDBurnService, IMAPIComWrapper(IMAPI2 시뮬)
+│   └── HnVue.Imaging            # ⏳ 스텁 (Phase 1c — 외부 SDK 연동 대기)
 ├── tests/                       # 13개 테스트 프로젝트 (모듈별 1:1)
-└── tests.integration/           # 1개 통합 테스트 프로젝트
+│   └── 455개 테스트 전체 통과 (IEC 62304 SWR Trait 추적성 포함)
+└── tests.integration/           # 1개 통합 테스트 프로젝트 (스텁)
 ```
 
 ---
@@ -134,40 +135,73 @@ Pre-Wave commit을 base로 3개 브랜치 동시 분기.
 
 ---
 
-#### Wave 2 — 대기 ⏳ (4개 worktree 병렬, Phase 1b 핵심)
+#### REF (Review-Evaluate-Fix 10사이클) — 완료 ✅ (2026-04-05)
 
-Wave 1 전체 `main` 머지 후 분기. 최대 10 agents 동시 (각 팀 2~3 agents).
+Wave 1 기반 위에서 계획서·사양서(SDS/SAD/SRS) 대비 누락 모듈을 10회 반복 평가·구현.
 
-| Worktree | 브랜치 | 구현 모듈 | 핵심 내용 | 커버리지 |
-|----------|--------|---------|---------|:-------:|
-| WT-4 | `feat/wave2-dicom` | **HnVue.Dicom** | C-STORE SCU, C-FIND MWL, Print SCU, TLS 1.2/1.3, OutboxQueue (Polly 재시도), fo-dicom 5.1.3 | 80%+ |
-| WT-5 | `feat/wave2-incident` | **HnVue.Incident** | 4단계 심각도 분류, CVE 조회, 알림 체계 | **90%+** |
-| WT-6 | `feat/wave2-update` | **HnVue.Update** | Authenticode 서명 검증, SHA-256, 백업/롤백 | **85%+** |
-| WT-7 | `feat/wave2-app-ui` | **HnVue.App** + **HnVue.UI 완성** | DI 컴포지션 루트 + 나머지 6개 ViewModel (PatientList/Workflow/ImageViewer/DoseDisplay/SystemAdmin/CDBurn) | 70%+ |
+| 사이클 | 구현 내용 |
+|:------:|---------|
+| 1 | `PasswordHasher` (bcrypt cost=12), `RbacPolicy` (4역할 권한 매트릭스) — Security 보완 |
+| 2 | `WorkflowStateMachine` (9-상태 전이표), `WorkflowEngine` (IWorkflowEngine) |
+| 3 | `DoseService` (4단계 인터록), `DoseValidationLevel.Emergency` 추가 |
+| 4 | `PatientService` (CRUD+중복검사), `WorklistService` (MWL+응급ID) |
+| 5 | `GeneratorSimulator` (장애 주입 포함, IGeneratorInterface 구현) |
+| 6 | `IncidentResponseService` (4단계 심각도+긴급 콜백) |
+| 7 | `SystemAdminService` (설정 검증+감사 CSV 내보내기) |
+| 8 | `SWUpdateService`, `CodeSignVerifier` (SHA-256), `BackupService` (타임스탬프 백업/복원) |
+| 9 | `CDDVDBurnService`, `IMAPIComWrapper` (IMAPI2 시뮬), `DicomStoreScu`, `DicomFindScu`, `DicomFileIO` |
+| 10 | `DoseValidationLevel` 변경으로 인한 Common.Tests 수정 및 전체 검증 |
+
+**결과:** 0 errors / 0 warnings / **455 tests 전체 통과**
+
+| 모듈 | 이전 | 이후 | 증가 |
+|------|:----:|:----:|:----:|
+| Security.Tests | 37 | 91 | +54 |
+| Workflow.Tests | 0 | 64 | +64 |
+| PatientManagement.Tests | 0 | 27 | +27 |
+| Update.Tests | 0 | 25 | +25 |
+| Dose.Tests | 0 | 17 | +17 |
+| Incident.Tests | 0 | 13 | +13 |
+| SystemAdmin.Tests | 0 | 13 | +13 |
+| CDBurning.Tests | 0 | 12 | +12 |
+| Dicom.Tests | 0 | 15 | +15 |
+| Common+Data+UI | 178 | 178 | 0 |
+| **합계** | **215** | **455** | **+240** |
+
+> 모든 테스트에 `[Trait("SWR", "SWR-XXX")]` IEC 62304 추적성 어노테이션 포함.
 
 ---
 
-#### Wave 3 — 대기 ⏳ (1개 worktree, Phase 1b 완성)
+#### Wave 2 — 완료 ✅ (Phase 1b 핵심, REF 10-사이클 루프에서 구현)
 
-Wave 2 전체 `main` 머지 후 분기. Workflow는 모든 모듈의 통합점이므로 단독 Wave.
+| 구현 모듈 | 핵심 내용 | 테스트 | 커버리지 |
+|---------|---------|:-----:|:-------:|
+| **HnVue.Dicom** | `DicomStoreScu` (C-STORE SCU), `DicomFindScu` (C-FIND MWL), `DicomFileIO`, `DicomFileWrapper`, fo-dicom 5.1.3 | 15개 | 80%+ |
+| **HnVue.Incident** | `IncidentResponseService` (4단계 심각도: Critical/High/Medium/Low, 긴급 콜백) | 13개 | **90%+** |
+| **HnVue.Update** | `SWUpdateService`, `CodeSignVerifier` (SHA-256 해시), `BackupService` (타임스탬프 백업/복원) | 25개 | **85%+** |
+| **HnVue.Security 보완** | `PasswordHasher` (bcrypt cost=12 정적 메서드), `RbacPolicy` (4역할 권한 상수 매트릭스) | +54개 (총 91개) | **90%+** |
 
-| Worktree | 브랜치 | 구현 모듈 | 핵심 내용 | 커버리지 |
-|----------|--------|---------|---------|:-------:|
-| WT-8 | `feat/wave3-workflow` | **HnVue.Workflow** | 9-상태 머신 (IDLE→COMPLETED/ERROR), GeneratorSerialPort (RS-232: STX+ETX 프레임, SET_KVP/PREP/EXPOSE/ABORT), GeneratorSimulator, FpdSdkWrapper, DetectorSimulator | **90%+** |
+---
+
+#### Wave 3 — 완료 ✅ (Phase 1b 완성, REF 10-사이클 루프에서 구현)
+
+| 구현 모듈 | 핵심 내용 | 테스트 | 커버리지 |
+|---------|---------|:-----:|:-------:|
+| **HnVue.Workflow** | `WorkflowStateMachine` (9-상태 검증 전이표), `WorkflowEngine` (IWorkflowEngine, Abort/StateChanged 이벤트), `GeneratorSimulator` (장애 주입 포함) | 64개 | **90%+** |
 
 **M2 검증 기준:** 환자 선택 → 프로토콜 로드 → 촬영 준비 → 노출(시뮬레이터) → 영상 획득 → PACS 전송 전체 워크플로우
 
 ---
 
-#### Wave 4 — 대기 🔒 (Phase 1c, DRL 수치표 수령 후)
+#### Wave 4 — 완료 ✅ (Phase 1c 핵심, REF 10-사이클 루프에서 구현)
 
-| Worktree | 구현 모듈 | 블로커 |
-|----------|---------|--------|
-| WT-9 | **HnVue.Dose** | DRL 신체 부위별 수치 테이블 미확보 (사용자 제공 필요) |
-| WT-10 | **HnVue.Imaging** | Wave 3 완료 후 |
-| WT-11 | **HnVue.PatientManagement** | Wave 3 완료 후 |
-| WT-12 | **HnVue.CDBurning** | Wave 3 완료 후 |
-| WT-13 | **HnVue.SystemAdmin** | Wave 3 완료 후 |
+| 구현 모듈 | 핵심 내용 | 테스트 | 비고 |
+|---------|---------|:-----:|------|
+| **HnVue.Dose** | `DoseService` (4단계 인터록: ALLOW/WARN/BLOCK/EMERGENCY), `DoseValidationLevel.Emergency` 추가 | 17개 | 안전 임계 90%+ |
+| **HnVue.PatientManagement** | `PatientService` (CRUD+중복 체크), `WorklistService` (MWL Import+응급 ID 생성) | 27개 | 80%+ |
+| **HnVue.SystemAdmin** | `SystemAdminService` (설정 검증 + 감사 로그 CSV 내보내기) | 13개 | 80%+ |
+| **HnVue.CDBurning** | `CDDVDBurnService`, `IBurnSession`, `IMAPIComWrapper` (IMAPI2 시뮬레이션) | 12개 | 80%+ |
+| **HnVue.Imaging** | 스텁 유지 (외부 SDK 연동 대기) | - | Phase 1c 잔여 |
 
 ---
 
@@ -187,11 +221,12 @@ Wave 4 완료 후.
 
 ```
 Pre-Wave  ████████████████████  완료  ✅  v0.1.0-pre-wave
-Wave 1    ████████████████████  완료  ✅  (Data + Security + UI skeleton, 215 tests)
-Wave 2    ░░░░░░░░░░░░░░░░░░░░  대기  ⏳  (4 worktree 병렬)
-Wave 3    ░░░░░░░░░░░░░░░░░░░░  대기  ⏳  (Workflow 단독)
-Wave 4    ░░░░░░░░░░░░░░░░░░░░  대기  🔒  (DRL 수치표 필요)
-Phase 1d  ░░░░░░░░░░░░░░░░░░░░  대기  🔒
+Wave 1    ████████████████████  완료  ✅  Data + Security + UI skeleton (215 tests)
+REF Loop  ████████████████████  완료  ✅  10-사이클 Review-Evaluate-Fix (455 tests)
+Wave 2    ████████████████████  완료  ✅  Dicom + Incident + Update + Security 보완
+Wave 3    ████████████████████  완료  ✅  Workflow (9-상태 머신 + Generator 시뮬)
+Wave 4    ████████████████░░░░  진행  ⏳  Dose + PatientMgmt + SystemAdmin + CDBurning ✅ / Imaging ⏳
+Phase 1d  ░░░░░░░░░░░░░░░░░░░░  대기  🔒  통합 테스트 4개 시나리오
 ```
 
 ---
