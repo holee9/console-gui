@@ -603,6 +603,61 @@ git push origin github/feature/web-ui:refs/heads/feature/web-ui
 > Gitea에 없는 브랜치는 Push Mirror가 실행될 때마다 GitHub에서도 삭제된다.
 > 작업 브랜치는 **반드시 Gitea와 GitHub 양쪽에 존재**해야 한다.
 
+### GitHub에 새 커밋이 안 보이거나 예전 커밋으로 되돌아갈 때
+
+증상:
+
+- 이 PC에서 `git push origin feature/web-ui` 는 성공한 것처럼 보임
+- 하지만 GitHub 브랜치 화면에는 방금 커밋이 안 보임
+- 또는 잠시 보였다가 Gitea에 있던 예전 커밋으로 다시 돌아감
+
+원인:
+
+- GitHub `feature/web-ui`만 먼저 앞으로 갔고
+- Gitea `feature/web-ui`는 아직 예전 커밋인 상태에서
+- Push Mirror가 다시 Gitea 상태를 기준으로 GitHub를 덮어씀
+
+해결 원칙:
+
+- **GitHub에 새 커밋을 올린 직후, Gitea의 `feature/web-ui`도 즉시 같은 커밋으로 fast-forward 해야 한다.**
+- `merge --ff-only` 를 사용해 불필요한 merge commit 없이 GitHub 커밋 그대로 맞춘다.
+
+#### Gitea 작업 PC 복붙용 명령
+
+아래 블록을 **그대로 복사해서 Gitea 작업 PC**에서 실행:
+
+```bash
+git fetch github feature/web-ui
+git checkout feature/web-ui
+git merge --ff-only github/feature/web-ui
+git push origin feature/web-ui
+```
+
+설명:
+
+- `git fetch github feature/web-ui`
+  GitHub 최신 `feature/web-ui` 커밋을 가져온다.
+- `git checkout feature/web-ui`
+  Gitea 기준 작업 브랜치로 이동한다.
+- `git merge --ff-only github/feature/web-ui`
+  Gitea 브랜치를 GitHub 최신 커밋으로 fast-forward 한다.
+- `git push origin feature/web-ui`
+  Gitea 원본 저장소에도 최신 커밋을 반영한다.
+
+#### 그 다음 GitHub 미러 동기화까지 다시 맞추려면
+
+PowerShell에서 아래를 실행:
+
+```powershell
+.\scripts\sync_to_github.ps1 -Branches main, feature/web-ui
+```
+
+#### 운영 팁
+
+- 가장 안전한 순서는 `GitHub push -> 즉시 Gitea fast-forward -> 필요 시 sync_to_github.ps1 실행` 이다.
+- `feature/web-ui` 작업 중에는 `Gitea feature/web-ui` 와 `GitHub feature/web-ui` 의 헤드 커밋이 다르면 안 된다.
+- `merge --ff-only` 가 실패하면, Gitea `feature/web-ui` 에서 별도 커밋이 생긴 상태일 가능성이 있으므로 수동 정리가 필요하다.
+
 ### 이력
 
 | 날짜 | 변경 내용 |
@@ -631,5 +686,14 @@ git push origin main
 # GitHub 작업 브랜치를 Gitea에도 반영해야 할 때
 git fetch github feature/web-ui
 git checkout -B feature/web-ui github/feature/web-ui
+git push origin feature/web-ui
+```
+
+이미 Gitea에 `feature/web-ui` 가 존재하고, GitHub 쪽 최신 커밋만 빠르게 반영하려면 아래 방식이 더 안전하다:
+
+```bash
+git fetch github feature/web-ui
+git checkout feature/web-ui
+git merge --ff-only github/feature/web-ui
 git push origin feature/web-ui
 ```
