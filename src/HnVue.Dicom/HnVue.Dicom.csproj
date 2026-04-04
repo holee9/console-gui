@@ -8,6 +8,8 @@
     <ProjectReference Include="..\HnVue.Common\HnVue.Common.csproj" />
     <ProjectReference Include="..\HnVue.Data\HnVue.Data.csproj" />
     <PackageReference Include="fo-dicom" />
+    <PackageReference Include="Polly" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" />
   </ItemGroup>
 
 </Project>
