@@ -49,7 +49,7 @@ public sealed class AuditRepositoryTests
 
         var filter = new AuditQueryFilter(UserId: "U001");
         var query = await repo.QueryAsync(filter);
-        var stored = query.Value.First();
+        var stored = query.Value[0];
         stored.EntryId.Should().Be(entryId);
         stored.UserId.Should().Be("U001");
         stored.Action.Should().Be("EXPOSE");

@@ -53,6 +53,16 @@ public sealed class Result
     /// <param name="message">Human-readable error description.</param>
     public static Result<T> Failure<T>(ErrorCode code, string message) => Result<T>.CreateFailure(code, message);
 
+    /// <summary>
+    /// Creates a successful result that explicitly wraps a <see langword="null"/> value.
+    /// Use this for operations whose contract allows returning <see langword="null"/> on success
+    /// (e.g., repository lookups that return <c>null</c> when no record is found).
+    /// Prefer <see cref="Success{T}"/> for non-nullable return types.
+    /// </summary>
+    /// <typeparam name="T">A nullable reference type (e.g., <c>PatientRecord?</c>).</typeparam>
+    /// <param name="value">The value to wrap; may be <see langword="null"/>.</param>
+    public static Result<T> SuccessNullable<T>(T? value) where T : class? => Result<T>.CreateSuccessNullable(value);
+
     /// <inheritdoc/>
     public override string ToString() => IsSuccess
         ? "Success"
@@ -94,6 +104,12 @@ public sealed class Result<T>
             throw new ArgumentNullException(nameof(value), "Cannot create a successful Result with a null value.");
         return new(value);
     }
+
+    /// <summary>
+    /// Creates a successful result wrapping a nullable value (no null guard).
+    /// Used only by <see cref="Result.SuccessNullable{T}"/> for nullable-typed operations.
+    /// </summary>
+    internal static Result<T> CreateSuccessNullable(T? value) => new(value!);
 
     internal static Result<T> CreateFailure(ErrorCode code, string message) => new(code, message);
 

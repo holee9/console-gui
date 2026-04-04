@@ -44,7 +44,7 @@ internal sealed class AuditRepository(HnVueDbContext context) : IAuditRepository
                 .ConfigureAwait(false);
 
             return lastEntry is null
-                ? ResultExtensions.SuccessWithNull<string?>()
+                ? Result.SuccessNullable<string?>(null)
                 : Result.Success<string?>(lastEntry);
         }
         catch (DbUpdateException ex)

@@ -40,7 +40,7 @@ internal sealed class PatientRepository(HnVueDbContext context) : IPatientReposi
                 .ConfigureAwait(false);
 
             if (entity is null)
-                return ResultExtensions.SuccessWithNull<PatientRecord?>();
+                return Result.SuccessNullable<PatientRecord?>(null);
 
             return Result.Success<PatientRecord?>(EntityMapper.ToRecord(entity));
         }

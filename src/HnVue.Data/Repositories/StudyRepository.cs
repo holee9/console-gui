@@ -65,7 +65,7 @@ internal sealed class StudyRepository(HnVueDbContext context) : IStudyRepository
                 .ConfigureAwait(false);
 
             if (entity is null)
-                return ResultExtensions.SuccessWithNull<StudyRecord?>();
+                return Result.SuccessNullable<StudyRecord?>(null);
 
             return Result.Success<StudyRecord?>(EntityMapper.ToRecord(entity));
         }

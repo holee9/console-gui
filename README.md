@@ -69,9 +69,9 @@ HnVue Console SW는 H&abyz（에이치앤아비즈）가 자사 FPD（Flat Panel
 HnVue/
 ├── src/                         # 14개 소스 프로젝트
 │   ├── HnVue.Common             # ✅ 구현 완료 — 17 인터페이스, Result<T>, 5 Enum
-│   ├── HnVue.Data               # ⏳ Wave 1
-│   ├── HnVue.Security           # ⏳ Wave 1  (안전 임계, 90%+)
-│   ├── HnVue.UI                 # ⏳ Wave 1  (skeleton)
+│   ├── HnVue.Data               # ✅ Wave 1 완료 — EF Core 8 + SQLCipher, 4 Repository
+│   ├── HnVue.Security           # ✅ Wave 1 완료 — bcrypt/JWT/HMAC-SHA256 해시 체인 (안전 임계, 90%+)
+│   ├── HnVue.UI                 # ✅ Wave 1 완료 — MahApps.Metro 테마 + LoginView skeleton
 │   ├── HnVue.App                # ⏳ Wave 2  (DI 완전 연결)
 │   ├── HnVue.Dicom              # ⏳ Wave 2
 │   ├── HnVue.Incident           # ⏳ Wave 2  (안전 임계, 90%+)
@@ -118,15 +118,17 @@ HnVue.Common (Layer 0)
 
 ---
 
-#### Wave 1 — 대기 ⏳ (3개 worktree 병렬, Phase 1a 완성)
+#### Wave 1 — 완료 ✅ (2026-04-04, `main` 머지 완료)
 
 Pre-Wave commit을 base로 3개 브랜치 동시 분기.
 
 | Worktree | 브랜치 | 구현 모듈 | 핵심 내용 | 커버리지 |
 |----------|--------|---------|---------|:-------:|
-| WT-1 | `feat/wave1-data` | **HnVue.Data** | EF Core 8 + SQLCipher AES-256, 6개 Entity (Patients/Studies/Images/DoseRecords/Users/AuditLogs), Repository 구현 | 80%+ |
-| WT-2 | `feat/wave1-security` | **HnVue.Security** | bcrypt cost=12 (~300ms), JWT 15분 만료, HMAC-SHA256 해시 체인, RBAC 4역할, 계정 잠금(5회) | **90%+** |
+| WT-1 | `feat/wave1-data` | **HnVue.Data** | EF Core 8 + SQLCipher AES-256, 6개 Entity (Patients/Studies/Images/DoseRecords/Users/AuditLogs), Repository 구현, `Result.SuccessNullable<T>()` API | 80%+ |
+| WT-2 | `feat/wave1-security` | **HnVue.Security** | bcrypt cost=12 (~300ms), JWT HS256 15분 만료, HMAC-SHA256 해시 체인, RBAC 4역할, 계정 잠금(5회) | **90%+** |
 | WT-3 | `feat/wave1-ui-skeleton` | **HnVue.UI skeleton** | MahApps.Metro 테마 토큰 (Colors/Typography/Spacing/ButtonStyles), MainWindow 5-패널, LoginView+LoginViewModel | 60%+ |
+
+**결과:** 0 errors / 0 warnings / 215 tests 통과 (Common 82 + Data 69 + Security 37 + UI 27)
 
 **M1 검증 기준:** 로그인 → 인증 → RBAC → 감사 로그 해시 체인 E2E 동작
 
@@ -185,7 +187,7 @@ Wave 4 완료 후.
 
 ```
 Pre-Wave  ████████████████████  완료  ✅  v0.1.0-pre-wave
-Wave 1    ░░░░░░░░░░░░░░░░░░░░  대기  ⏳  (3 worktree 병렬)
+Wave 1    ████████████████████  완료  ✅  (Data + Security + UI skeleton, 215 tests)
 Wave 2    ░░░░░░░░░░░░░░░░░░░░  대기  ⏳  (4 worktree 병렬)
 Wave 3    ░░░░░░░░░░░░░░░░░░░░  대기  ⏳  (Workflow 단독)
 Wave 4    ░░░░░░░░░░░░░░░░░░░░  대기  🔒  (DRL 수치표 필요)
