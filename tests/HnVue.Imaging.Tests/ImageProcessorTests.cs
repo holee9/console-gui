@@ -1,4 +1,5 @@
 using System.IO;
+using FellowOakDicom;
 using FluentAssertions;
 using HnVue.Common.Enums;
 using HnVue.Common.Models;
@@ -347,5 +348,167 @@ public sealed class ImageProcessorTests
 
         File.WriteAllBytes(tempPath, pixels);
         return tempPath;
+    }
+
+    // ── DICOM synthetic tests ─────────────────────────────────────────────────
+
+    /// <summary>
+    /// Creates an in-memory DICOM dataset saved to a temporary file.
+    /// The pixel buffer is a simple gradient over the specified dimensions.
+    /// Includes mandatory DICOM file meta tags (SOPClassUID, SOPInstanceUID, TransferSyntaxUID).
+    /// </summary>
+    private static async Task<string> CreateTempDicomFileAsync(
+        ushort rows,
+        ushort columns,
+        ushort bitsAllocated,
+        byte[]? pixelBytes = null,
+        double? windowCenter = null,
+        double? windowWidth = null)
+    {
+        var dataset = new DicomDataset();
+
+        // Mandatory file meta / composite IOD tags required by DicomFile constructor.
+        dataset.Add(DicomTag.SOPClassUID, DicomUID.SecondaryCaptureImageStorage);
+        dataset.Add(DicomTag.SOPInstanceUID, DicomUID.Generate());
+        dataset.Add(DicomTag.Modality, "DX");
+
+        // Image pixel module.
+        dataset.Add(DicomTag.Rows, rows);
+        dataset.Add(DicomTag.Columns, columns);
+        dataset.Add(DicomTag.BitsAllocated, bitsAllocated);
+        dataset.Add(DicomTag.BitsStored, bitsAllocated);
+        dataset.Add(DicomTag.HighBit, (ushort)(bitsAllocated - 1));
+        dataset.Add(DicomTag.PixelRepresentation, (ushort)0);
+        dataset.Add(DicomTag.SamplesPerPixel, (ushort)1);
+        dataset.Add(DicomTag.PhotometricInterpretation, "MONOCHROME2");
+
+        if (windowCenter.HasValue)
+            dataset.Add(DicomTag.WindowCenter, windowCenter.Value);
+        if (windowWidth.HasValue)
+            dataset.Add(DicomTag.WindowWidth, windowWidth.Value);
+
+        if (bitsAllocated == 8)
+        {
+            var pixels8 = pixelBytes ?? CreateGradientPixels8(rows, columns);
+            dataset.Add(new DicomOtherByte(DicomTag.PixelData, pixels8));
+        }
+        else
+        {
+            // 16-bit: store as OtherWord.
+            var pixels16 = CreateGradientPixels16(rows, columns);
+            dataset.Add(new DicomOtherWord(DicomTag.PixelData, pixels16));
+        }
+
+        var dcmFile = new DicomFile(dataset);
+        var tempPath = Path.Combine(Path.GetTempPath(), $"hnvue_dicom_{Guid.NewGuid():N}.dcm");
+        await dcmFile.SaveAsync(tempPath).ConfigureAwait(false);
+        return tempPath;
+    }
+
+    /// <summary>Creates an 8-bit gradient pixel buffer for synthetic DICOM tests.</summary>
+    private static byte[] CreateGradientPixels8(ushort rows, ushort columns)
+    {
+        var pixels = new byte[rows * columns];
+        for (var i = 0; i < pixels.Length; i++)
+            pixels[i] = (byte)(i % 256);
+        return pixels;
+    }
+
+    /// <summary>Creates a 16-bit gradient pixel buffer for synthetic DICOM tests.</summary>
+    private static ushort[] CreateGradientPixels16(ushort rows, ushort columns)
+    {
+        var pixels = new ushort[rows * columns];
+        for (var i = 0; i < pixels.Length; i++)
+            pixels[i] = (ushort)(i % 4096); // 12-bit range typical for DR detectors
+        return pixels;
+    }
+
+    [Fact]
+    [Trait("SWR", "SWR-IP-020")]
+    public async Task ProcessAsync_ValidDicomFile_8bit_ReturnsCorrectDimensions()
+    {
+        // Arrange
+        var sut = CreateSut();
+        var tempPath = await CreateTempDicomFileAsync(rows: 4, columns: 4, bitsAllocated: 8);
+
+        try
+        {
+            // Act
+            var result = await sut.ProcessAsync(tempPath, new ProcessingParameters());
+
+            // Assert
+            result.IsSuccess.Should().BeTrue();
+            result.Value.Width.Should().Be(4);
+            result.Value.Height.Should().Be(4);
+            result.Value.BitsPerPixel.Should().Be(8);
+            result.Value.FilePath.Should().Be(tempPath);
+            result.Value.PixelData.Should().HaveCount(16);
+        }
+        finally
+        {
+            File.Delete(tempPath);
+        }
+    }
+
+    [Fact]
+    [Trait("SWR", "SWR-IP-020")]
+    public async Task ProcessAsync_ValidDicomFile_16bit_NormalizesTo8bit()
+    {
+        // Arrange
+        var sut = CreateSut();
+        var tempPath = await CreateTempDicomFileAsync(rows: 4, columns: 4, bitsAllocated: 16);
+
+        try
+        {
+            // Act
+            var result = await sut.ProcessAsync(tempPath, new ProcessingParameters());
+
+            // Assert — 16-bit DICOM is normalised to 8-bit display data
+            result.IsSuccess.Should().BeTrue();
+            result.Value.Width.Should().Be(4);
+            result.Value.Height.Should().Be(4);
+            result.Value.BitsPerPixel.Should().Be(8);
+            result.Value.PixelData.Should().HaveCount(16);
+
+            // All output values must be within 8-bit range
+            result.Value.PixelData.Should().OnlyContain(b => b >= 0 && b <= 255);
+        }
+        finally
+        {
+            File.Delete(tempPath);
+        }
+    }
+
+    [Fact]
+    [Trait("SWR", "SWR-IP-020")]
+    public async Task ProcessAsync_DicomWithVoiLutTags_UsesTagWindowWhenAutoWindowRequested()
+    {
+        // Arrange
+        var sut = CreateSut();
+        const double expectedCenter = 2048.0;
+        const double expectedWidth = 4096.0;
+
+        var tempPath = await CreateTempDicomFileAsync(
+            rows: 4,
+            columns: 4,
+            bitsAllocated: 8,
+            windowCenter: expectedCenter,
+            windowWidth: expectedWidth);
+
+        try
+        {
+            // Act — AutoWindow: true should prefer DICOM VOI LUT tags over statistics
+            var parameters = new ProcessingParameters(AutoWindow: true);
+            var result = await sut.ProcessAsync(tempPath, parameters);
+
+            // Assert
+            result.IsSuccess.Should().BeTrue();
+            result.Value.WindowCenter.Should().Be(expectedCenter);
+            result.Value.WindowWidth.Should().Be(expectedWidth);
+        }
+        finally
+        {
+            File.Delete(tempPath);
+        }
     }
 }

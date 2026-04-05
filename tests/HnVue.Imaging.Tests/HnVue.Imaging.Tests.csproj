@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="fo-dicom" />
     <ProjectReference Include="..\..\src\HnVue.Imaging\HnVue.Imaging.csproj" />
     <ProjectReference Include="..\..\src\HnVue.Common\HnVue.Common.csproj" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" />

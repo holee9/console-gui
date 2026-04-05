@@ -8,4 +8,8 @@
     <ProjectReference Include="..\HnVue.Common\HnVue.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="fo-dicom" />
+  </ItemGroup>
+
 </Project>

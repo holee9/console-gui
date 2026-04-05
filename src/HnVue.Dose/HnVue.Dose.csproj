@@ -5,7 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\HnVue.Common\HnVue.Common.csproj" />
+    <ProjectReference Include="..\HnVue.Data\HnVue.Data.csproj" />
   </ItemGroup>
 
 </Project>

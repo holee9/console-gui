@@ -7,6 +7,7 @@
   <ItemGroup>
     <ProjectReference Include="..\HnVue.Common\HnVue.Common.csproj" />
     <ProjectReference Include="..\HnVue.Data\HnVue.Data.csproj" />
+    <ProjectReference Include="..\HnVue.Dicom\HnVue.Dicom.csproj" />
   </ItemGroup>
 
 </Project>
