@@ -1,46 +1,66 @@
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using HnVue.Common.Abstractions;
 
 namespace HnVue.UI.ViewModels;
 
 /// <summary>
-/// ViewModel for the main application shell. Reflects the current authentication state
-/// sourced from <see cref="ISecurityContext"/>.
+/// ViewModel for the main shell window.
+/// Manages navigation state and the currently active view.
 /// </summary>
 public sealed partial class MainViewModel : ObservableObject
 {
     private readonly ISecurityContext _securityContext;
 
-    /// <summary>
-    /// Initialises a new instance of <see cref="MainViewModel"/>.
-    /// </summary>
-    /// <param name="securityContext">The application-wide security context.</param>
+    /// <summary>Initialises a new instance of <see cref="MainViewModel"/>.</summary>
+    /// <param name="securityContext">Provides information about the currently authenticated user.</param>
     public MainViewModel(ISecurityContext securityContext)
     {
-        ArgumentNullException.ThrowIfNull(securityContext);
         _securityContext = securityContext;
     }
 
-    /// <summary>Gets or sets the login name of the currently authenticated user.</summary>
+    /// <summary>Gets or sets a value indicating whether the login view is visible.</summary>
     [ObservableProperty]
-    private string? _currentUsername;
+    private bool _isLoginVisible = true;
 
-    /// <summary>Gets or sets a display-friendly representation of the current user's role.</summary>
+    /// <summary>Gets or sets a value indicating whether the main content is visible.</summary>
     [ObservableProperty]
-    private string? _currentRoleDisplay;
+    private bool _isMainContentVisible;
 
-    /// <summary>Gets or sets a value indicating whether a user is currently authenticated.</summary>
+    /// <summary>Gets or sets the username displayed in the shell header.</summary>
     [ObservableProperty]
-    private bool _isAuthenticated;
+    private string _currentUsername = string.Empty;
 
-    /// <summary>
-    /// Synchronises this ViewModel's observable properties from the current
-    /// <see cref="ISecurityContext"/> state. Call this after a login or logout event.
-    /// </summary>
-    public void RefreshFromContext()
+    /// <summary>Gets or sets the currently active navigation item label.</summary>
+    [ObservableProperty]
+    private string _activeNavItem = string.Empty;
+
+    /// <summary>Handles a successful login event and transitions to the main content.</summary>
+    /// <param name="user">The authenticated user.</param>
+    public void OnLoginSuccess(Common.Models.AuthenticatedUser user)
     {
-        IsAuthenticated = _securityContext.IsAuthenticated;
-        CurrentUsername = _securityContext.CurrentUsername;
-        CurrentRoleDisplay = _securityContext.CurrentRole?.ToString();
+        CurrentUsername = user.Username;
+        IsLoginVisible = false;
+        IsMainContentVisible = true;
+        ActiveNavItem = "PatientList";
+    }
+
+    /// <summary>Navigates to the specified section.</summary>
+    /// <param name="navItem">The identifier of the navigation target.</param>
+    [RelayCommand]
+    private void Navigate(string navItem)
+    {
+        ActiveNavItem = navItem;
+    }
+
+    /// <summary>Logs out the current user and returns to the login screen.</summary>
+    [RelayCommand]
+    private void Logout()
+    {
+        _securityContext.ClearCurrentUser();
+        CurrentUsername = string.Empty;
+        IsMainContentVisible = false;
+        IsLoginVisible = true;
+        ActiveNavItem = string.Empty;
     }
 }
