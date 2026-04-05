@@ -1,196 +1,374 @@
 using System.IO;
+using System.Net;
+using System.Net.Http;
 using System.Security.Cryptography;
+using System.Text;
 using FluentAssertions;
+using HnVue.Common.Abstractions;
 using HnVue.Common.Models;
 using HnVue.Common.Results;
 using HnVue.Update;
+using Microsoft.Extensions.Options;
 using NSubstitute;
 using Xunit;
 
 namespace HnVue.Update.Tests;
 
-[Trait("SWR", "SWR-UPD-030")]
+/// <summary>
+/// Integration-level tests for <see cref="SWUpdateService"/>.
+/// Uses temp directories for file I/O and mocks for external dependencies.
+/// </summary>
 public sealed class SWUpdateServiceTests : IDisposable
 {
-    private readonly IUpdateRepository _repository;
-    private readonly BackupService _backupService;
-    private readonly SWUpdateService _sut;
-    private readonly string _tempRoot;
+    private readonly string _tempDir;
     private readonly string _appDir;
     private readonly string _backupDir;
+    private readonly IAuditService _auditService;
 
     public SWUpdateServiceTests()
     {
-        _repository = Substitute.For<IUpdateRepository>();
-
-        _tempRoot = Path.Combine(Path.GetTempPath(), $"SWUpdateTest_{Guid.NewGuid()}");
-        _appDir = Path.Combine(_tempRoot, "app");
-        _backupDir = Path.Combine(_tempRoot, "backups");
+        _tempDir = Path.Combine(Path.GetTempPath(), $"HnVueSvcTests_{Guid.NewGuid():N}");
+        _appDir = Path.Combine(_tempDir, "app");
+        _backupDir = Path.Combine(_tempDir, "backup");
         Directory.CreateDirectory(_appDir);
         Directory.CreateDirectory(_backupDir);
-        File.WriteAllText(Path.Combine(_appDir, "app.exe"), "fake");
 
-        _backupService = new BackupService(_appDir, _backupDir);
-        _sut = new SWUpdateService(_repository, _backupService);
+        _auditService = Substitute.For<IAuditService>();
+        _auditService.WriteAuditAsync(Arg.Any<AuditEntry>(), Arg.Any<CancellationToken>())
+            .Returns(Result.Success());
     }
 
     public void Dispose()
     {
-        if (Directory.Exists(_tempRoot)) Directory.Delete(_tempRoot, recursive: true);
+        if (Directory.Exists(_tempDir))
+            Directory.Delete(_tempDir, recursive: true);
     }
 
-    // ── Constructor ───────────────────────────────────────────────────────────
+    // ── Helpers ────────────────────────────────────────────────────────────────
 
-    [Fact]
-    public void Constructor_NullRepository_ThrowsArgumentNullException()
+    private UpdateOptions BuildOptions(bool requireSignature = false) => new()
     {
-        var act = () => new SWUpdateService(null!, _backupService);
+        UpdateServerUrl = "https://update.hnvue.com/api/v1",
+        CurrentVersion = "1.0.0",
+        ApplicationDirectory = _appDir,
+        BackupDirectory = _backupDir,
+        RequireAuthenticodeSignature = requireSignature
+    };
 
-        act.Should().Throw<ArgumentNullException>().WithParameterName("updateRepository");
+    private SWUpdateService BuildService(
+        UpdateOptions? options = null,
+        IHttpClientFactory? httpClientFactory = null)
+    {
+        options ??= BuildOptions();
+        var optionsWrapper = Options.Create(options);
+        httpClientFactory ??= BuildHttpClientFactory("1.1.0");
+        return new SWUpdateService(optionsWrapper, httpClientFactory, _auditService);
     }
 
-    [Fact]
-    public void Constructor_NullBackupService_ThrowsArgumentNullException()
+    private static IHttpClientFactory BuildHttpClientFactory(
+        string serverVersion,
+        bool networkError = false,
+        bool invalidJson = false)
     {
-        var act = () => new SWUpdateService(_repository, null!);
+        var factory = Substitute.For<IHttpClientFactory>();
 
-        act.Should().Throw<ArgumentNullException>().WithParameterName("backupService");
+        HttpMessageHandler handler;
+        if (networkError)
+        {
+            handler = new ThrowingHttpMessageHandler(new HttpRequestException("connection refused"));
+        }
+        else if (invalidJson)
+        {
+            handler = new StubHttpMessageHandler(HttpStatusCode.OK, "{ bad json");
+        }
+        else
+        {
+            string json = $$"""
+                {
+                  "version": "{{serverVersion}}",
+                  "releaseNotes": "Release notes",
+                  "packageUrl": "https://cdn.hnvue.com/updates/{{serverVersion}}.zip",
+                  "sha256Hash": "abc123"
+                }
+                """;
+            handler = new StubHttpMessageHandler(HttpStatusCode.OK, json);
+        }
+
+        factory.CreateClient(Arg.Any<string>()).Returns(new HttpClient(handler));
+        return factory;
     }
 
-    // ── CheckUpdateAsync ──────────────────────────────────────────────────────
+    private string CreateFakePackage(string content = "fake package bytes")
+    {
+        string packagePath = Path.Combine(_tempDir, "update.zip");
+        File.WriteAllText(packagePath, content);
+        return packagePath;
+    }
+
+    private static string ComputeSha256Hex(string filePath)
+    {
+        byte[] bytes = File.ReadAllBytes(filePath);
+        return Convert.ToHexString(SHA256.HashData(bytes));
+    }
+
+    private void WriteSidecarHash(string packagePath, string hash)
+    {
+        File.WriteAllText(packagePath + ".sha256", hash);
+    }
+
+    // ── CheckUpdateAsync ───────────────────────────────────────────────────────
 
     [Fact]
-    public async Task CheckUpdate_UpdateAvailable_ReturnsUpdateInfo()
+    public async Task CheckUpdateAsync_NewerVersionAvailable_ReturnsUpdateInfo()
     {
-        var info = new UpdateInfo("2.0.0", "Fixes", "http://example.com/pkg.zip", new string('A', 64));
-        _repository.CheckForUpdateAsync(Arg.Any<CancellationToken>())
-            .Returns(Result.SuccessNullable<UpdateInfo?>(info));
+        // Arrange
+        var sut = BuildService(BuildOptions(), BuildHttpClientFactory("1.5.0"));
 
-        var result = await _sut.CheckUpdateAsync();
+        // Act
+        Result<UpdateInfo?> result = await sut.CheckUpdateAsync();
 
+        // Assert
         result.IsSuccess.Should().BeTrue();
         result.Value.Should().NotBeNull();
-        result.Value!.Version.Should().Be("2.0.0");
+        result.Value!.Version.Should().Be("1.5.0");
     }
 
     [Fact]
-    public async Task CheckUpdate_AlreadyUpToDate_ReturnsSuccessWithNull()
+    public async Task CheckUpdateAsync_SameVersion_ReturnsSuccessWithNull()
     {
-        _repository.CheckForUpdateAsync(Arg.Any<CancellationToken>())
-            .Returns(Result.SuccessNullable<UpdateInfo?>(null));
+        // Arrange
+        var options = BuildOptions();
+        options.CurrentVersion = "1.1.0";
+        var sut = BuildService(options, BuildHttpClientFactory("1.1.0"));
 
-        var result = await _sut.CheckUpdateAsync();
+        // Act
+        Result<UpdateInfo?> result = await sut.CheckUpdateAsync();
 
+        // Assert
         result.IsSuccess.Should().BeTrue();
         result.Value.Should().BeNull();
     }
 
-    // ── ApplyUpdateAsync ──────────────────────────────────────────────────────
+    [Fact]
+    public async Task CheckUpdateAsync_NetworkError_ReturnsFailure()
+    {
+        // Arrange
+        var sut = BuildService(null, BuildHttpClientFactory("1.1.0", networkError: true));
+
+        // Act
+        Result<UpdateInfo?> result = await sut.CheckUpdateAsync();
+
+        // Assert
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.ValidationFailed);
+    }
+
+    // ── ApplyUpdateAsync ───────────────────────────────────────────────────────
 
     [Fact]
-    public async Task ApplyUpdate_ValidPackage_SucceedsAfterVerification()
+    public async Task ApplyUpdateAsync_NoHashSidecar_SkipsHashCheck_ReturnsSuccess()
     {
-        // Create a real package file with known hash
-        var pkgPath = Path.Combine(_tempRoot, "update.zip");
-        var content = "update package content"u8.ToArray();
-        await File.WriteAllBytesAsync(pkgPath, content);
-        var hash = Convert.ToHexString(SHA256.HashData(content));
+        // Arrange: no .sha256 sidecar — hash check is skipped
+        string packagePath = CreateFakePackage();
+        File.WriteAllText(Path.Combine(_appDir, "app.exe"), "app binary");
+        var sut = BuildService();
 
-        var info = new UpdateInfo("2.0.0", null, "url", hash);
-        _repository.GetPackageInfoAsync(pkgPath, Arg.Any<CancellationToken>())
-            .Returns(Result.Success(info));
-        _repository.ApplyPackageAsync(pkgPath, Arg.Any<CancellationToken>())
-            .Returns(Result.Success());
+        // Act
+        Result result = await sut.ApplyUpdateAsync(packagePath);
 
-        var result = await _sut.ApplyUpdateAsync(pkgPath);
-
-        result.IsSuccess.Should().BeTrue();
-        await _repository.Received(1).ApplyPackageAsync(pkgPath, Arg.Any<CancellationToken>());
+        // Assert
+        result.IsSuccess.Should().BeTrue("when no sidecar hash is present, hash verification is skipped");
     }
 
     [Fact]
-    public async Task ApplyUpdate_WrongHash_ReturnsSignatureVerificationFailed()
+    public async Task ApplyUpdateAsync_ValidHash_ReturnsSuccess()
     {
-        var pkgPath = Path.Combine(_tempRoot, "update_bad.zip");
-        await File.WriteAllTextAsync(pkgPath, "content");
+        // Arrange
+        string packagePath = CreateFakePackage("valid package content");
+        string correctHash = ComputeSha256Hex(packagePath);
+        WriteSidecarHash(packagePath, correctHash);
+        File.WriteAllText(Path.Combine(_appDir, "app.exe"), "app binary");
+        var sut = BuildService();
 
-        var info = new UpdateInfo("2.0.0", null, "url", new string('F', 64));
-        _repository.GetPackageInfoAsync(pkgPath, Arg.Any<CancellationToken>())
-            .Returns(Result.Success(info));
+        // Act
+        Result result = await sut.ApplyUpdateAsync(packagePath);
 
-        var result = await _sut.ApplyUpdateAsync(pkgPath);
+        // Assert
+        result.IsSuccess.Should().BeTrue();
+    }
 
+    [Fact]
+    public async Task ApplyUpdateAsync_InvalidHash_ReturnsUpdatePackageCorrupt()
+    {
+        // Arrange
+        string packagePath = CreateFakePackage("original content");
+        // Write wrong hash
+        WriteSidecarHash(packagePath, new string('0', 64));
+        var sut = BuildService();
+
+        // Act
+        Result result = await sut.ApplyUpdateAsync(packagePath);
+
+        // Assert
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.UpdatePackageCorrupt);
+        result.ErrorMessage.Should().Contain("integrity check failed");
+    }
+
+    [Fact]
+    public async Task ApplyUpdateAsync_InvalidSignature_SignatureRequired_ReturnsSignatureVerificationFailed()
+    {
+        // Arrange: RequireAuthenticodeSignature = true, file is not a real signed binary
+        string packagePath = CreateFakePackage("not a signed exe");
+        string correctHash = ComputeSha256Hex(packagePath);
+        WriteSidecarHash(packagePath, correctHash);
+        File.WriteAllText(Path.Combine(_appDir, "app.exe"), "app binary");
+        var sut = BuildService(BuildOptions(requireSignature: true));
+
+        // Act
+        Result result = await sut.ApplyUpdateAsync(packagePath);
+
+        // Assert
         result.IsFailure.Should().BeTrue();
         result.Error.Should().Be(ErrorCode.SignatureVerificationFailed);
     }
 
     [Fact]
-    public async Task ApplyUpdate_NonExistentFile_ReturnsUpdatePackageCorrupt()
+    public async Task ApplyUpdateAsync_SignatureNotRequired_SkipsAuthenticodeCheck()
     {
-        var result = await _sut.ApplyUpdateAsync("C:/nonexistent/update.zip");
+        // Arrange: RequireAuthenticodeSignature = false — unsigned file is acceptable
+        string packagePath = CreateFakePackage("unsigned package");
+        string correctHash = ComputeSha256Hex(packagePath);
+        WriteSidecarHash(packagePath, correctHash);
+        File.WriteAllText(Path.Combine(_appDir, "app.exe"), "app binary");
+        var sut = BuildService(BuildOptions(requireSignature: false));
 
-        result.IsFailure.Should().BeTrue();
-        result.Error.Should().Be(ErrorCode.UpdatePackageCorrupt);
+        // Act
+        Result result = await sut.ApplyUpdateAsync(packagePath);
+
+        // Assert
+        result.IsSuccess.Should().BeTrue("Authenticode check is skipped when not required");
     }
 
     [Fact]
-    public async Task ApplyUpdate_NullPath_ThrowsArgumentNullException()
+    public async Task ApplyUpdateAsync_ValidPackage_CreatesBackup()
     {
-        var act = async () => await _sut.ApplyUpdateAsync(null!);
+        // Arrange
+        string packagePath = CreateFakePackage("valid content");
+        File.WriteAllText(Path.Combine(_appDir, "app.exe"), "app binary");
+        var sut = BuildService();
 
-        await act.Should().ThrowAsync<ArgumentNullException>();
-    }
+        // Act
+        await sut.ApplyUpdateAsync(packagePath);
 
-    // ── RollbackAsync ─────────────────────────────────────────────────────────
-
-    [Fact]
-    public async Task Rollback_WithBackupAvailable_RestoresFromLatestBackup()
-    {
-        // Create a backup first
-        await _backupService.CreateBackupAsync();
-
-        var result = await _sut.RollbackAsync();
-
-        result.IsSuccess.Should().BeTrue();
+        // Assert
+        string[] backupDirs = Directory.GetDirectories(_backupDir, "backup_*");
+        backupDirs.Should().NotBeEmpty("backup must be created before staging the update");
     }
 
     [Fact]
-    public async Task Rollback_WithNoBackups_ReturnsRollbackFailed()
+    public async Task ApplyUpdateAsync_ValidPackage_WritesAuditEntry()
     {
-        var emptyBackupDir = Path.Combine(_tempRoot, "empty_backups");
-        var sut = new SWUpdateService(
-            _repository,
-            new BackupService(_appDir, emptyBackupDir));
+        // Arrange
+        string packagePath = CreateFakePackage("valid content");
+        File.WriteAllText(Path.Combine(_appDir, "app.exe"), "app binary");
+        var sut = BuildService();
 
-        var result = await sut.RollbackAsync();
+        // Act
+        await sut.ApplyUpdateAsync(packagePath);
 
+        // Assert
+        await _auditService.Received(1).WriteAuditAsync(
+            Arg.Is<AuditEntry>(e => e.Action == "UPDATE_STAGED"),
+            Arg.Any<CancellationToken>());
+    }
+
+    // ── RollbackAsync ──────────────────────────────────────────────────────────
+
+    [Fact]
+    public async Task RollbackAsync_NoBackup_ReturnsRollbackFailed()
+    {
+        // Arrange: no backup exists
+        var sut = BuildService();
+
+        // Act
+        Result result = await sut.RollbackAsync();
+
+        // Assert
         result.IsFailure.Should().BeTrue();
         result.Error.Should().Be(ErrorCode.RollbackFailed);
     }
 
-    // ── ApplyUpdateAsync — additional paths ───────────────────────────────────
-
     [Fact]
-    public async Task ApplyUpdate_EmptyPath_ReturnsValidationFailure()
+    public async Task RollbackAsync_HasBackup_ReturnsSuccess()
     {
-        var result = await _sut.ApplyUpdateAsync("   ");
+        // Arrange: create a backup first
+        File.WriteAllText(Path.Combine(_appDir, "app.exe"), "v1 binary");
+        string packagePath = CreateFakePackage("valid content");
+        var sut = BuildService();
+        await sut.ApplyUpdateAsync(packagePath); // This creates a backup
 
-        result.IsFailure.Should().BeTrue();
-        result.Error.Should().Be(ErrorCode.ValidationFailed);
+        // Corrupt the app
+        File.WriteAllText(Path.Combine(_appDir, "app.exe"), "CORRUPTED");
+
+        // Act
+        Result result = await sut.RollbackAsync();
+
+        // Assert
+        result.IsSuccess.Should().BeTrue();
+        File.ReadAllText(Path.Combine(_appDir, "app.exe")).Should().Be("v1 binary");
     }
 
     [Fact]
-    public async Task ApplyUpdate_PackageInfoFailure_PropagatesError()
+    public async Task RollbackAsync_HasBackup_WritesAuditEntry()
     {
-        var pkgPath = Path.Combine(_tempRoot, "pkg_info_fail.zip");
-        await File.WriteAllTextAsync(pkgPath, "content");
+        // Arrange
+        File.WriteAllText(Path.Combine(_appDir, "app.exe"), "v1");
+        string packagePath = CreateFakePackage("pkg");
+        var sut = BuildService();
+        await sut.ApplyUpdateAsync(packagePath);
 
-        _repository.GetPackageInfoAsync(pkgPath, Arg.Any<CancellationToken>())
-            .Returns(Result.Failure<UpdateInfo>(ErrorCode.Unknown, "info fetch failed"));
+        // Act
+        await sut.RollbackAsync();
 
-        var result = await _sut.ApplyUpdateAsync(pkgPath);
+        // Assert
+        await _auditService.Received(1).WriteAuditAsync(
+            Arg.Is<AuditEntry>(e => e.Action == "UPDATE_ROLLED_BACK"),
+            Arg.Any<CancellationToken>());
+    }
 
-        result.IsFailure.Should().BeTrue();
-        result.Error.Should().Be(ErrorCode.Unknown);
+    // ── Stub helpers ───────────────────────────────────────────────────────────
+
+    private sealed class StubHttpMessageHandler : HttpMessageHandler
+    {
+        private readonly HttpStatusCode _statusCode;
+        private readonly string _body;
+
+        public StubHttpMessageHandler(HttpStatusCode statusCode, string body)
+        {
+            _statusCode = statusCode;
+            _body = body;
+        }
+
+        protected override Task<HttpResponseMessage> SendAsync(
+            HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return Task.FromResult(new HttpResponseMessage(_statusCode)
+            {
+                Content = new StringContent(_body, Encoding.UTF8, "application/json")
+            });
+        }
+    }
+
+    private sealed class ThrowingHttpMessageHandler : HttpMessageHandler
+    {
+        private readonly Exception _exception;
+
+        public ThrowingHttpMessageHandler(Exception ex) => _exception = ex;
+
+        protected override Task<HttpResponseMessage> SendAsync(
+            HttpRequestMessage request, CancellationToken cancellationToken)
+            => Task.FromException<HttpResponseMessage>(_exception);
     }
 }
