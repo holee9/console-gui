@@ -31,5 +31,5 @@ internal sealed class StubDoseService : IDoseService
     public Task<Result<DoseRecord?>> GetDoseByStudyAsync(
         string studyInstanceUid,
         CancellationToken cancellationToken = default)
-        => Task.FromResult(Result.SuccessNullable<DoseRecord>(null));
+        => Task.FromResult(Result.SuccessNullable<DoseRecord?>(null));
 }

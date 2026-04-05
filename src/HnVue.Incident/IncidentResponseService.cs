@@ -1,5 +1,6 @@
 using HnVue.Common.Enums;
 using HnVue.Common.Results;
+using HnVue.Incident.Models;
 
 namespace HnVue.Incident;
 
@@ -30,18 +31,18 @@ public sealed class IncidentResponseService
     /// <param name="severity">Severity level of the incident.</param>
     /// <param name="category">Short category tag (e.g., "DOSE", "NETWORK", "HARDWARE").</param>
     /// <param name="description">Human-readable description of the incident.</param>
-    /// <param name="source">Source system or component reporting the incident.</param>
+    /// <param name="reportedByUserId">Identifier of the user or system component reporting the incident.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     public async Task<Result<IncidentRecord>> RecordAsync(
         IncidentSeverity severity,
         string category,
         string description,
-        string source,
+        string reportedByUserId,
         CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(category);
         ArgumentNullException.ThrowIfNull(description);
-        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(reportedByUserId);
 
         if (string.IsNullOrWhiteSpace(category))
             return Result.Failure<IncidentRecord>(ErrorCode.ValidationFailed, "Category is required.");
@@ -51,13 +52,15 @@ public sealed class IncidentResponseService
 
         var record = new IncidentRecord(
             IncidentId: Guid.NewGuid().ToString(),
+            OccurredAt: DateTimeOffset.UtcNow,
+            ReportedByUserId: reportedByUserId.Trim(),
             Severity: severity,
             Category: category.Trim(),
             Description: description.Trim(),
-            Source: source.Trim(),
-            OccurredAt: DateTimeOffset.UtcNow,
+            Resolution: null,
             IsResolved: false,
-            Resolution: null);
+            ResolvedAt: null,
+            ResolvedByUserId: null);
 
         var saveResult = await _repository.SaveAsync(record, cancellationToken).ConfigureAwait(false);
         if (saveResult.IsFailure)

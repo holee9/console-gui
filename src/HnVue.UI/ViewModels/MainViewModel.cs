@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HnVue.Common.Abstractions;
+using HnVue.Common.Enums;
 
 namespace HnVue.UI.ViewModels;
 
@@ -14,8 +15,10 @@ public sealed partial class MainViewModel : ObservableObject
 
     /// <summary>Initialises a new instance of <see cref="MainViewModel"/>.</summary>
     /// <param name="securityContext">Provides information about the currently authenticated user.</param>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="securityContext"/> is <see langword="null"/>.</exception>
     public MainViewModel(ISecurityContext securityContext)
     {
+        ArgumentNullException.ThrowIfNull(securityContext, nameof(securityContext));
         _securityContext = securityContext;
     }
 
@@ -27,13 +30,34 @@ public sealed partial class MainViewModel : ObservableObject
     [ObservableProperty]
     private bool _isMainContentVisible;
 
+    /// <summary>Gets or sets a value indicating whether the current user is authenticated.</summary>
+    [ObservableProperty]
+    private bool _isAuthenticated;
+
     /// <summary>Gets or sets the username displayed in the shell header.</summary>
     [ObservableProperty]
-    private string _currentUsername = string.Empty;
+    private string? _currentUsername;
+
+    /// <summary>Gets or sets the display string for the current user's role.</summary>
+    [ObservableProperty]
+    private string? _currentRoleDisplay;
 
     /// <summary>Gets or sets the currently active navigation item label.</summary>
     [ObservableProperty]
     private string _activeNavItem = string.Empty;
+
+    /// <summary>
+    /// Reads authentication state from <see cref="ISecurityContext"/> and updates
+    /// <see cref="IsAuthenticated"/>, <see cref="CurrentUsername"/>, and <see cref="CurrentRoleDisplay"/>.
+    /// </summary>
+    public void RefreshFromContext()
+    {
+        IsAuthenticated = _securityContext.IsAuthenticated;
+        CurrentUsername = _securityContext.IsAuthenticated ? _securityContext.CurrentUsername : null;
+        CurrentRoleDisplay = _securityContext.IsAuthenticated && _securityContext.CurrentRole.HasValue
+            ? _securityContext.CurrentRole.Value.ToString()
+            : null;
+    }
 
     /// <summary>Handles a successful login event and transitions to the main content.</summary>
     /// <param name="user">The authenticated user.</param>
@@ -43,6 +67,7 @@ public sealed partial class MainViewModel : ObservableObject
         IsLoginVisible = false;
         IsMainContentVisible = true;
         ActiveNavItem = "PatientList";
+        RefreshFromContext();
     }
 
     /// <summary>Navigates to the specified section.</summary>
@@ -58,7 +83,9 @@ public sealed partial class MainViewModel : ObservableObject
     private void Logout()
     {
         _securityContext.ClearCurrentUser();
-        CurrentUsername = string.Empty;
+        CurrentUsername = null;
+        CurrentRoleDisplay = null;
+        IsAuthenticated = false;
         IsMainContentVisible = false;
         IsLoginVisible = true;
         ActiveNavItem = string.Empty;

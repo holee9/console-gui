@@ -1,5 +1,6 @@
 using HnVue.Common.Enums;
 using HnVue.Common.Results;
+using HnVue.Incident.Models;
 
 namespace HnVue.Incident;
 

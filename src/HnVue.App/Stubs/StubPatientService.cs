@@ -39,7 +39,7 @@ internal sealed class StubPatientService : IPatientService
     public Task<Result<PatientRecord?>> GetByIdAsync(
         string patientId,
         CancellationToken cancellationToken = default)
-        => Task.FromResult(Result.SuccessNullable<PatientRecord>(null));
+        => Task.FromResult(Result.SuccessNullable<PatientRecord?>(null));
 
     /// <inheritdoc/>
     public Task<Result> DeleteAsync(

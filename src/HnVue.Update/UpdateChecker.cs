@@ -53,7 +53,7 @@ internal sealed class UpdateChecker
             if (response is null)
             {
                 _logger?.LogWarning("Update server returned null response");
-                return Result.SuccessNullable<UpdateInfo>(null);
+                return Result.SuccessNullable<UpdateInfo?>(null);
             }
 
             if (!IsNewerVersion(response.Version, _options.CurrentVersion))
@@ -61,7 +61,7 @@ internal sealed class UpdateChecker
                 _logger?.LogInformation(
                     "No update available. Current={Current}, Available={Available}",
                     _options.CurrentVersion, response.Version);
-                return Result.SuccessNullable<UpdateInfo>(null);
+                return Result.SuccessNullable<UpdateInfo?>(null);
             }
 
             var updateInfo = new UpdateInfo(
@@ -71,7 +71,7 @@ internal sealed class UpdateChecker
                 response.Sha256Hash);
 
             _logger?.LogInformation("Update available: {Version}", response.Version);
-            return Result.SuccessNullable<UpdateInfo>(updateInfo);
+            return Result.SuccessNullable<UpdateInfo?>(updateInfo);
         }
         catch (OperationCanceledException)
         {

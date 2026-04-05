@@ -8,12 +8,14 @@ namespace HnVue.UI.ViewModels;
 public sealed class LoginSuccessEventArgs : EventArgs
 {
     /// <summary>Initialises a new instance of <see cref="LoginSuccessEventArgs"/>.</summary>
-    /// <param name="user">The authenticated user.</param>
-    public LoginSuccessEventArgs(AuthenticatedUser user)
+    /// <param name="token">The authentication token issued on successful login.</param>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="token"/> is <see langword="null"/>.</exception>
+    public LoginSuccessEventArgs(AuthenticationToken token)
     {
-        User = user;
+        ArgumentNullException.ThrowIfNull(token, nameof(token));
+        Token = token;
     }
 
-    /// <summary>Gets the authenticated user.</summary>
-    public AuthenticatedUser User { get; }
+    /// <summary>Gets the authentication token issued on successful login.</summary>
+    public AuthenticationToken Token { get; }
 }

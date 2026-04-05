@@ -2,6 +2,7 @@ using FluentAssertions;
 using HnVue.Common.Enums;
 using HnVue.Common.Results;
 using HnVue.Incident;
+using HnVue.Incident.Models;
 using NSubstitute;
 using Xunit;
 
@@ -158,8 +159,17 @@ public sealed class IncidentResponseServiceTests
     {
         var records = (IReadOnlyList<IncidentRecord>)new[]
         {
-            new IncidentRecord("I1", IncidentSeverity.High, "NET", "desc", "src",
-                DateTimeOffset.UtcNow, false, null),
+            new IncidentRecord(
+                IncidentId: "I1",
+                OccurredAt: DateTimeOffset.UtcNow,
+                ReportedByUserId: "src",
+                Severity: IncidentSeverity.High,
+                Category: "NET",
+                Description: "desc",
+                Resolution: null,
+                IsResolved: false,
+                ResolvedAt: null,
+                ResolvedByUserId: null),
         };
         _repository.GetBySeverityAsync(IncidentSeverity.High, Arg.Any<CancellationToken>())
             .Returns(Result.Success(records));

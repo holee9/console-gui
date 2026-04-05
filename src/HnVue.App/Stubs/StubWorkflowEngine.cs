@@ -22,7 +22,9 @@ internal sealed class StubWorkflowEngine : IWorkflowEngine
     public SafeState CurrentSafeState => SafeState.Idle;
 
     /// <inheritdoc/>
+#pragma warning disable CS0067 // Event never used — stub implementation; event required by IWorkflowEngine interface
     public event EventHandler<WorkflowStateChangedEventArgs>? StateChanged;
+#pragma warning restore CS0067
 
     /// <inheritdoc/>
     public Task<Result> StartAsync(

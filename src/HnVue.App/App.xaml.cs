@@ -8,6 +8,7 @@ using HnVue.Data.Extensions;
 using HnVue.Dicom;
 using HnVue.Dose;
 using HnVue.Incident;
+using HnVue.Incident.Models;
 using HnVue.PatientManagement;
 using HnVue.Security;
 using HnVue.Security.Extensions;

@@ -2,6 +2,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HnVue.Common.Abstractions;
 using HnVue.Common.Models;
+using HnVue.Common.Results;
 
 namespace HnVue.UI.ViewModels;
 
@@ -33,7 +34,7 @@ public sealed partial class LoginViewModel : ObservableObject
 
     /// <summary>Gets or sets a value indicating whether a login attempt is in progress.</summary>
     [ObservableProperty]
-    private bool _isLoggingIn;
+    private bool _isLoading;
 
     /// <summary>Gets or sets the error message to display on login failure.</summary>
     [ObservableProperty]
@@ -46,7 +47,7 @@ public sealed partial class LoginViewModel : ObservableObject
     [RelayCommand(CanExecute = nameof(CanLogin))]
     private async Task LoginAsync()
     {
-        IsLoggingIn = true;
+        IsLoading = true;
         ErrorMessage = null;
 
         try
@@ -54,28 +55,33 @@ public sealed partial class LoginViewModel : ObservableObject
             var result = await _securityService.AuthenticateAsync(Username, Password);
             if (result.IsSuccess)
             {
+                var token = result.Value;
                 var authUser = new AuthenticatedUser(
-                    result.Value.UserId,
-                    result.Value.Username,
-                    result.Value.Role);
+                    token.UserId,
+                    token.Username,
+                    token.Role);
                 _securityContext.SetCurrentUser(authUser);
-                LoginSucceeded?.Invoke(this, new LoginSuccessEventArgs(authUser));
+                LoginSucceeded?.Invoke(this, new LoginSuccessEventArgs(token));
             }
             else
             {
-                ErrorMessage = result.ErrorMessage ?? "Authentication failed.";
+                ErrorMessage = result.Error switch
+                {
+                    Common.Results.ErrorCode.AccountLocked => "계정이 잠겼습니다. 관리자에게 문의하세요.",
+                    _ => "사용자명 또는 비밀번호가 올바르지 않습니다."
+                };
             }
         }
         finally
         {
-            IsLoggingIn = false;
+            IsLoading = false;
         }
     }
 
     private bool CanLogin() =>
-        !string.IsNullOrWhiteSpace(Username) && !string.IsNullOrWhiteSpace(Password) && !IsLoggingIn;
+        !string.IsNullOrWhiteSpace(Username) && !string.IsNullOrWhiteSpace(Password) && !IsLoading;
 
     partial void OnUsernameChanged(string value) => LoginCommand.NotifyCanExecuteChanged();
     partial void OnPasswordChanged(string value) => LoginCommand.NotifyCanExecuteChanged();
-    partial void OnIsLoggingInChanged(bool value) => LoginCommand.NotifyCanExecuteChanged();
+    partial void OnIsLoadingChanged(bool value) => LoginCommand.NotifyCanExecuteChanged();
 }
