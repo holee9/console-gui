@@ -12,6 +12,9 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <Deterministic>true</Deterministic>
 
+    <!-- XML Documentation: IEC 62304 §5.4 compliant -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+
     <!-- Assembly Metadata -->
     <Company>HnVue Medical</Company>
     <Product>HnVue Console SW</Product>

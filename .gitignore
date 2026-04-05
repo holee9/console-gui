@@ -223,6 +223,12 @@ dist-ssr/
 .netlify/
 .firebase/
 
+# ===========================================
+# DocFX Build Output
+# ===========================================
+_site/
+api/
+
 # User Custom Patterns (preserved by moai update)
 docs/planning/archive/
 .claude/
