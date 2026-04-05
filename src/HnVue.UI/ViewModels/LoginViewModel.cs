@@ -20,6 +20,8 @@ public sealed partial class LoginViewModel : ObservableObject
     /// <param name="securityContext">Context updated upon successful login.</param>
     public LoginViewModel(ISecurityService securityService, ISecurityContext securityContext)
     {
+        ArgumentNullException.ThrowIfNull(securityService);
+        ArgumentNullException.ThrowIfNull(securityContext);
         _securityService = securityService;
         _securityContext = securityContext;
     }
