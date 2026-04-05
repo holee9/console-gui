@@ -9,6 +9,7 @@ using HnVue.Dose;
 using HnVue.PatientManagement;
 using HnVue.Security;
 using HnVue.Workflow;
+using Microsoft.Extensions.Options;
 using NSubstitute;
 using Xunit;
 
@@ -29,6 +30,9 @@ public sealed class CrossModuleIntegrationTests
         Issuer = "HnVue",
         Audience = "HnVue",
     };
+
+    private static readonly IOptions<AuditOptions> TestAuditOptions =
+        Options.Create(new AuditOptions { HmacKey = "IntegrationTestHmacKey-32CharMin!" });
 
     // ── Scenario 1: Authentication → RBAC → Audit chain ───────────────────────
 
@@ -62,7 +66,7 @@ public sealed class CrossModuleIntegrationTests
         auditRepo.AppendAsync(Arg.Any<AuditEntry>(), Arg.Any<CancellationToken>())
             .Returns(Result.Success());
 
-        var secService = new SecurityService(userRepo, auditRepo, secContext, TestJwtOptions);
+        var secService = new SecurityService(userRepo, auditRepo, secContext, TestJwtOptions, TestAuditOptions);
 
         // Act — Step 1: Authenticate
         var authResult = await secService.AuthenticateAsync(user.Username, password);
@@ -116,7 +120,7 @@ public sealed class CrossModuleIntegrationTests
         auditRepo.AppendAsync(Arg.Any<AuditEntry>(), Arg.Any<CancellationToken>())
             .Returns(Result.Success());
 
-        var secService = new SecurityService(userRepo, auditRepo, secContext, TestJwtOptions);
+        var secService = new SecurityService(userRepo, auditRepo, secContext, TestJwtOptions, TestAuditOptions);
 
         // Act
         var lockedAuthResult = await secService.AuthenticateAsync(lockedUser.Username, "Pass1");
@@ -407,7 +411,9 @@ public sealed class CrossModuleIntegrationTests
         // Arrange — real engine with real state machine, simulated generator and dose service
         var doseService = Substitute.For<IDoseService>();
         var generator = new GeneratorSimulator { PrepareDelayMs = 0, ExposureDelayMs = 0 };
-        var engine = new WorkflowEngine(doseService, generator);
+        var secCtx = Substitute.For<ISecurityContext>();
+        secCtx.CurrentRole.Returns(UserRole.Radiographer);
+        var engine = new WorkflowEngine(doseService, generator, secCtx);
 
         engine.CurrentState.Should().Be(WorkflowState.Idle, "engine starts in Idle");
 
@@ -456,7 +462,9 @@ public sealed class CrossModuleIntegrationTests
         // Arrange — engine in Idle state; jump directly to Exposing (not allowed)
         var doseService = Substitute.For<IDoseService>();
         var generator = new GeneratorSimulator();
-        var engine = new WorkflowEngine(doseService, generator);
+        var secCtx = Substitute.For<ISecurityContext>();
+        secCtx.CurrentRole.Returns(UserRole.Radiographer);
+        var engine = new WorkflowEngine(doseService, generator, secCtx);
 
         // Act — try to jump from Idle directly to Exposing
         var result = await engine.TransitionAsync(WorkflowState.Exposing);
@@ -478,7 +486,9 @@ public sealed class CrossModuleIntegrationTests
         // Arrange
         var doseService = Substitute.For<IDoseService>();
         var generator = new GeneratorSimulator { PrepareDelayMs = 0, ExposureDelayMs = 0 };
-        var engine = new WorkflowEngine(doseService, generator);
+        var secCtx = Substitute.For<ISecurityContext>();
+        secCtx.CurrentRole.Returns(UserRole.Radiographer);
+        var engine = new WorkflowEngine(doseService, generator, secCtx);
 
         // Advance to ReadyToExpose
         await engine.StartAsync("P-002", "1.2.3.4.6");

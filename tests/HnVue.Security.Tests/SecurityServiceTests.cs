@@ -4,6 +4,7 @@ using HnVue.Common.Enums;
 using HnVue.Common.Models;
 using HnVue.Common.Results;
 using HnVue.Security;
+using Microsoft.Extensions.Options;
 using NSubstitute;
 using Xunit;
 
@@ -24,12 +25,15 @@ public sealed class SecurityServiceTests
         Audience = "HnVue",
     };
 
+    private static readonly IOptions<AuditOptions> TestAuditOptions =
+        Options.Create(new AuditOptions { HmacKey = "TestHmacKey-32CharMinimumForAudit!" });
+
     public SecurityServiceTests()
     {
         _userRepository = Substitute.For<IUserRepository>();
         _auditRepository = Substitute.For<IAuditRepository>();
         _securityContext = Substitute.For<ISecurityContext>();
-        _sut = new SecurityService(_userRepository, _auditRepository, _securityContext, TestJwtOptions);
+        _sut = new SecurityService(_userRepository, _auditRepository, _securityContext, TestJwtOptions, TestAuditOptions);
 
         // Default: audit repository GetLastHashAsync returns NotFound (empty log = null previous hash).
         _auditRepository.GetLastHashAsync(Arg.Any<CancellationToken>())

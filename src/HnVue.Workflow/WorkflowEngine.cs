@@ -2,6 +2,7 @@ using HnVue.Common.Abstractions;
 using HnVue.Common.Enums;
 using HnVue.Common.Models;
 using HnVue.Common.Results;
+using HnVue.Security;
 
 namespace HnVue.Workflow;
 
@@ -20,6 +21,7 @@ public sealed class WorkflowEngine : IWorkflowEngine
     private readonly WorkflowStateMachine _stateMachine = new();
     private readonly IDoseService _doseService;
     private readonly IGeneratorInterface _generator;
+    private readonly ISecurityContext _securityContext;
     private readonly object _lock = new();
 
     private SafeState _safeState = SafeState.Idle;
@@ -31,10 +33,12 @@ public sealed class WorkflowEngine : IWorkflowEngine
     /// </summary>
     /// <param name="doseService">Dose validation service for pre-exposure checks.</param>
     /// <param name="generator">Generator hardware interface (real or simulated).</param>
-    public WorkflowEngine(IDoseService doseService, IGeneratorInterface generator)
+    /// <param name="securityContext">Security context for RBAC enforcement.</param>
+    public WorkflowEngine(IDoseService doseService, IGeneratorInterface generator, ISecurityContext securityContext)
     {
         _doseService = doseService ?? throw new ArgumentNullException(nameof(doseService));
         _generator = generator ?? throw new ArgumentNullException(nameof(generator));
+        _securityContext = securityContext ?? throw new ArgumentNullException(nameof(securityContext));
     }
 
     /// <inheritdoc/>
@@ -99,6 +103,15 @@ public sealed class WorkflowEngine : IWorkflowEngine
         WorkflowState targetState,
         CancellationToken cancellationToken = default)
     {
+        // SWR-IP-RBAC-001: Enforce RBAC before radiation exposure.
+        if (targetState == WorkflowState.Exposing)
+        {
+            var currentRole = _securityContext.CurrentRole ?? UserRole.Radiographer;
+            var rbacResult = RbacPolicy.Check(currentRole, Permissions.PerformExposure);
+            if (rbacResult.IsFailure)
+                return rbacResult;
+        }
+
         WorkflowState previous;
         Result transitionResult;
 

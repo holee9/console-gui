@@ -1,8 +1,10 @@
+using System.Text;
 using System.Text.RegularExpressions;
 using HnVue.Common.Abstractions;
 using HnVue.Common.Enums;
 using HnVue.Common.Models;
 using HnVue.Common.Results;
+using Microsoft.Extensions.Options;
 
 namespace HnVue.Security;
 
@@ -14,7 +16,8 @@ public sealed class SecurityService(
     IUserRepository userRepository,
     IAuditRepository auditRepository,
     ISecurityContext securityContext,
-    JwtOptions jwtOptions) : ISecurityService
+    JwtOptions jwtOptions,
+    IOptions<AuditOptions> auditOptions) : ISecurityService
 {
     private const int MaxFailedAttempts = 5;
 
@@ -23,6 +26,7 @@ public sealed class SecurityService(
     private readonly ISecurityContext _securityContext = securityContext;
     private readonly JwtTokenService _jwtTokenService = new(jwtOptions);
     private readonly int _expiryMinutes = jwtOptions.ExpiryMinutes;
+    private readonly byte[] _hmacKey = Encoding.UTF8.GetBytes(auditOptions.Value.HmacKey);
 
     // Password policy: min 8 chars, at least 1 digit, at least 1 uppercase letter.
     private static readonly Regex PasswordPolicyRegex =
@@ -161,7 +165,7 @@ public sealed class SecurityService(
         var timestamp = DateTimeOffset.UtcNow;
         var entryId = Guid.NewGuid().ToString();
         var payload = $"{entryId}|{timestamp:O}|{userId}|{action}|{details}|{previousHash}";
-        var currentHash = AuditService.ComputeHmacInternal(payload, AuditService.DefaultHmacKey);
+        var currentHash = AuditService.ComputeHmacInternal(payload, _hmacKey);
 
         var entry = new AuditEntry(entryId, timestamp, userId, action, details, previousHash, currentHash);
         await _auditRepository.AppendAsync(entry, cancellationToken).ConfigureAwait(false);

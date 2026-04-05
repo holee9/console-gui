@@ -3,6 +3,7 @@ using System.Text;
 using HnVue.Common.Abstractions;
 using HnVue.Common.Models;
 using HnVue.Common.Results;
+using Microsoft.Extensions.Options;
 
 namespace HnVue.Security;
 
@@ -11,19 +12,30 @@ namespace HnVue.Security;
 /// Each entry references the hash of the preceding entry, forming a chain that
 /// detects any modification or deletion of historical records.
 /// </summary>
-public sealed class AuditService(IAuditRepository auditRepository) : IAuditService
+public sealed class AuditService : IAuditService
 {
-    private readonly IAuditRepository _auditRepository = auditRepository;
+    private readonly IAuditRepository _auditRepository;
+    private readonly byte[] _hmacKey;
 
     /// <summary>
-    /// Default HMAC key used for development and testing purposes only.
-    /// WARNING: This key is embedded in source code and must NOT be used in production.
-    /// In production, override this by supplying a securely generated key via
-    /// environment variable (e.g., HNVUE_AUDIT_HMAC_KEY) or a secrets manager.
-    /// Minimum key length: 32 bytes. Rotate regularly per IEC 62304 security policy.
+    /// Initialises a new <see cref="AuditService"/> with the specified repository and HMAC key options.
     /// </summary>
-    internal static readonly byte[] DefaultHmacKey =
-        Encoding.UTF8.GetBytes("HnVue-Audit-HMAC-Key-32CharMin!!");
+    /// <param name="auditRepository">Repository for persisting audit entries.</param>
+    /// <param name="options">HMAC key configuration. The key must not be empty.</param>
+    /// <exception cref="ArgumentException">Thrown when <see cref="AuditOptions.HmacKey"/> is null or empty.</exception>
+    public AuditService(IAuditRepository auditRepository, IOptions<AuditOptions> options)
+    {
+        _auditRepository = auditRepository ?? throw new ArgumentNullException(nameof(auditRepository));
+        var opts = options?.Value ?? throw new ArgumentNullException(nameof(options));
+
+        if (string.IsNullOrWhiteSpace(opts.HmacKey))
+            throw new ArgumentException(
+                "AuditOptions.HmacKey must be configured. " +
+                "Set 'Security:AuditHmacKey' in configuration or the HNVUE_AUDIT_HMAC_KEY environment variable.",
+                nameof(options));
+
+        _hmacKey = Encoding.UTF8.GetBytes(opts.HmacKey);
+    }
 
     /// <inheritdoc/>
     public async Task<Result> WriteAuditAsync(
@@ -38,7 +50,7 @@ public sealed class AuditService(IAuditRepository auditRepository) : IAuditServi
         var previousHash = lastHashResult.IsSuccess ? lastHashResult.Value : null;
 
         var payload = BuildPayload(entry.EntryId, entry.Timestamp, entry.UserId, entry.Action, entry.Details, previousHash);
-        var currentHash = ComputeHmacInternal(payload, DefaultHmacKey);
+        var currentHash = ComputeHmacInternal(payload, _hmacKey);
 
         var newEntry = new AuditEntry(
             entry.EntryId,
@@ -78,7 +90,7 @@ public sealed class AuditService(IAuditRepository auditRepository) : IAuditServi
 
             // Recompute the HMAC for this entry and compare to stored hash.
             var payload = BuildPayload(entry.EntryId, entry.Timestamp, entry.UserId, entry.Action, entry.Details, entry.PreviousHash);
-            var recomputedHash = ComputeHmacInternal(payload, DefaultHmacKey);
+            var recomputedHash = ComputeHmacInternal(payload, _hmacKey);
             if (!string.Equals(recomputedHash, entry.CurrentHash, StringComparison.Ordinal))
                 return Result.Success(false);
 

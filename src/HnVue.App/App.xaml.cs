@@ -16,6 +16,7 @@ using HnVue.SystemAdmin;
 using HnVue.UI.ViewModels;
 using HnVue.Update;
 using HnVue.Workflow;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -85,8 +86,10 @@ public partial class App : Application
     private static IHost BuildHost()
     {
         return Host.CreateDefaultBuilder()
-            .ConfigureServices((_, services) =>
+            .ConfigureServices((context, services) =>
             {
+                var configuration = context.Configuration;
+
                 // ── HnVue.Common ─────────────────────────────────────────────
                 // Registers ISecurityContext (ThreadLocalSecurityContext singleton).
                 services.AddHnVueCommon();
@@ -98,13 +101,33 @@ public partial class App : Application
 
                 // ── HnVue.Security ───────────────────────────────────────────
                 // Registers ISecurityService, IAuditService, JwtTokenService.
-                services.AddHnVueSecurity(new JwtOptions
-                {
-                    SecretKey = "HnVueDevelopmentSecretKey-32CharMin!",
-                    Issuer = "HnVue",
-                    Audience = "HnVue",
-                    ExpiryMinutes = 60,
-                });
+                // Secrets loaded from configuration with environment variable fallback.
+                var jwtSecret = configuration["Security:JwtSecretKey"]
+                    ?? Environment.GetEnvironmentVariable("HNVUE_JWT_SECRET");
+                if (string.IsNullOrWhiteSpace(jwtSecret))
+                    throw new InvalidOperationException(
+                        "JWT secret key is not configured. " +
+                        "Set 'Security:JwtSecretKey' in appsettings.json or the HNVUE_JWT_SECRET environment variable.");
+
+                var auditHmacKey = configuration["Security:AuditHmacKey"]
+                    ?? Environment.GetEnvironmentVariable("HNVUE_AUDIT_HMAC_KEY");
+                if (string.IsNullOrWhiteSpace(auditHmacKey))
+                    throw new InvalidOperationException(
+                        "Audit HMAC key is not configured. " +
+                        "Set 'Security:AuditHmacKey' in appsettings.json or the HNVUE_AUDIT_HMAC_KEY environment variable.");
+
+                services.AddHnVueSecurity(
+                    new JwtOptions
+                    {
+                        SecretKey = jwtSecret,
+                        Issuer = "HnVue",
+                        Audience = "HnVue",
+                        ExpiryMinutes = 60,
+                    },
+                    new AuditOptions
+                    {
+                        HmacKey = auditHmacKey,
+                    });
 
                 // ── HnVue.Workflow ───────────────────────────────────────────
                 // WorkflowEngine depends on IDoseService and IGeneratorInterface.

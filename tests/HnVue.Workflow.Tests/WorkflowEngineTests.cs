@@ -14,13 +14,18 @@ public sealed class WorkflowEngineTests
 {
     private readonly IDoseService _doseService;
     private readonly IGeneratorInterface _generator;
+    private readonly ISecurityContext _securityContext;
     private readonly WorkflowEngine _sut;
 
     public WorkflowEngineTests()
     {
         _doseService = Substitute.For<IDoseService>();
         _generator = Substitute.For<IGeneratorInterface>();
-        _sut = new WorkflowEngine(_doseService, _generator);
+        _securityContext = Substitute.For<ISecurityContext>();
+        // Default: authenticated Radiographer with PerformExposure permission.
+        _securityContext.CurrentRole.Returns(UserRole.Radiographer);
+        _securityContext.IsAuthenticated.Returns(true);
+        _sut = new WorkflowEngine(_doseService, _generator, _securityContext);
     }
 
     // ── Constructor guards ────────────────────────────────────────────────────
@@ -28,7 +33,7 @@ public sealed class WorkflowEngineTests
     [Fact]
     public void Constructor_NullDoseService_ThrowsArgumentNullException()
     {
-        var act = () => new WorkflowEngine(null!, _generator);
+        var act = () => new WorkflowEngine(null!, _generator, _securityContext);
 
         act.Should().Throw<ArgumentNullException>().WithParameterName("doseService");
     }
@@ -36,9 +41,17 @@ public sealed class WorkflowEngineTests
     [Fact]
     public void Constructor_NullGenerator_ThrowsArgumentNullException()
     {
-        var act = () => new WorkflowEngine(_doseService, null!);
+        var act = () => new WorkflowEngine(_doseService, null!, _securityContext);
 
         act.Should().Throw<ArgumentNullException>().WithParameterName("generator");
+    }
+
+    [Fact]
+    public void Constructor_NullSecurityContext_ThrowsArgumentNullException()
+    {
+        var act = () => new WorkflowEngine(_doseService, _generator, null!);
+
+        act.Should().Throw<ArgumentNullException>().WithParameterName("securityContext");
     }
 
     // ── Initial state ─────────────────────────────────────────────────────────

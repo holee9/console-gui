@@ -3,6 +3,7 @@ using HnVue.Common.Abstractions;
 using HnVue.Common.Models;
 using HnVue.Common.Results;
 using HnVue.Security;
+using Microsoft.Extensions.Options;
 using NSubstitute;
 using Xunit;
 
@@ -10,13 +11,20 @@ namespace HnVue.Security.Tests;
 
 public sealed class AuditServiceTests
 {
+    /// <summary>
+    /// Test HMAC key used across all audit service tests.
+    /// This key is only for test execution and must never be used in production.
+    /// </summary>
+    private const string TestHmacKey = "HnVue-Test-HMAC-Key-32CharMin!!";
+
     private readonly IAuditRepository _auditRepository;
     private readonly AuditService _sut;
 
     public AuditServiceTests()
     {
         _auditRepository = Substitute.For<IAuditRepository>();
-        _sut = new AuditService(_auditRepository);
+        var options = Options.Create(new AuditOptions { HmacKey = TestHmacKey });
+        _sut = new AuditService(_auditRepository, options);
     }
 
     // ── WriteAuditAsync ────────────────────────────────────────────────────────
@@ -105,12 +113,12 @@ public sealed class AuditServiceTests
 
         var id1 = Guid.NewGuid().ToString();
         var payload1 = $"{id1}|{timestamp:O}|user-1|LOGIN||";
-        var hash1 = AuditService.ComputeHmacInternal(payload1, AuditService.DefaultHmacKey);
+        var hash1 = AuditService.ComputeHmacInternal(payload1, System.Text.Encoding.UTF8.GetBytes(TestHmacKey));
         var entry1 = new AuditEntry(id1, timestamp, "user-1", "LOGIN", null, null, hash1);
 
         var id2 = Guid.NewGuid().ToString();
         var payload2 = $"{id2}|{timestamp:O}|user-1|EXPOSE||{hash1}";
-        var hash2 = AuditService.ComputeHmacInternal(payload2, AuditService.DefaultHmacKey);
+        var hash2 = AuditService.ComputeHmacInternal(payload2, System.Text.Encoding.UTF8.GetBytes(TestHmacKey));
         var entry2 = new AuditEntry(id2, timestamp, "user-1", "EXPOSE", null, hash1, hash2);
 
         _auditRepository.QueryAsync(Arg.Any<AuditQueryFilter>(), Arg.Any<CancellationToken>())
@@ -129,7 +137,7 @@ public sealed class AuditServiceTests
 
         var id1 = Guid.NewGuid().ToString();
         var payload1 = $"{id1}|{timestamp:O}|user-1|LOGIN||";
-        var hash1 = AuditService.ComputeHmacInternal(payload1, AuditService.DefaultHmacKey);
+        var hash1 = AuditService.ComputeHmacInternal(payload1, System.Text.Encoding.UTF8.GetBytes(TestHmacKey));
         // Tamper: store a wrong hash
         var entry1 = new AuditEntry(id1, timestamp, "user-1", "LOGIN", null, null, "tampered-hash");
 
@@ -149,14 +157,14 @@ public sealed class AuditServiceTests
 
         var id1 = Guid.NewGuid().ToString();
         var payload1 = $"{id1}|{timestamp:O}|user-1|LOGIN||";
-        var hash1 = AuditService.ComputeHmacInternal(payload1, AuditService.DefaultHmacKey);
+        var hash1 = AuditService.ComputeHmacInternal(payload1, System.Text.Encoding.UTF8.GetBytes(TestHmacKey));
         var entry1 = new AuditEntry(id1, timestamp, "user-1", "LOGIN", null, null, hash1);
 
         // entry2 references a wrong previousHash
         var id2 = Guid.NewGuid().ToString();
         var wrongPrevHash = "wrong-previous-hash";
         var payload2 = $"{id2}|{timestamp:O}|user-1|EXPOSE||{wrongPrevHash}";
-        var hash2 = AuditService.ComputeHmacInternal(payload2, AuditService.DefaultHmacKey);
+        var hash2 = AuditService.ComputeHmacInternal(payload2, System.Text.Encoding.UTF8.GetBytes(TestHmacKey));
         var entry2 = new AuditEntry(id2, timestamp, "user-1", "EXPOSE", null, wrongPrevHash, hash2);
 
         _auditRepository.QueryAsync(Arg.Any<AuditQueryFilter>(), Arg.Any<CancellationToken>())
