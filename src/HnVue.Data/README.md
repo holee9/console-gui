@@ -36,3 +36,4 @@ EF Core를 사용한 데이터 영속성 계층입니다. SQLCipher 암호화 DB
 
 - SQLCipher를 통한 저장 데이터 암호화 (FDA §524B 요구사항)
 - `InternalsVisibleTo`로 테스트 프로젝트에 내부 타입 노출
+- 예외 처리: `catch(Exception ex) when (ex is not OutOfMemoryException)` 패턴 적용 (AuditRepository, UserRepository, PatientRepository, StudyRepository)

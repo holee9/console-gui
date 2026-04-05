@@ -5,7 +5,7 @@
 | 상태 | 값 |
 |------|-----|
 | **빌드** | 0 errors, 0 warnings ✅ |
-| **테스트** | 523개 전체 통과 ✅ |
+| **테스트** | 728개 전체 통과 ✅ (단위 710 + 통합 18) |
 | **품질 점수** | 0.91/1.0 ✅ |
 | **코드 커버리지** | 85%+ (안전 임계 모듈 90%+) |
 | **XML Doc 커버리지** | 257/257 public members = 100% ✅ |
@@ -247,15 +247,18 @@ EF Core 8 + SQLite + SQLCipher AES-256 암호화. Repository 패턴 구현.
   - Radiographer < Radiologist < Admin < Service (계층)
   - `HasRole(userRole, requiredRole)` → 정확 일치
   - `HasRoleOrHigher(userRole, requiredRole)` → 계층 비교
+- `AuditOptions` (HMAC 키 IOptions 외부화)
+  - `Security:AuditHmacKey` 설정 또는 `HNVUE_AUDIT_HMAC_KEY` 환경변수로 주입
+  - 런타임 초기화 시 키 유효성 검증 (null/empty 거부)
 - `AuditService` (HMAC-SHA256 해시 체인)
   - 모든 작업 기록 (로그인, 데이터 수정, 설정 변경)
   - HMAC으로 체인 무결성 검증
-  - **⚠️ 프로덕션 배포 시:** `JwtOptions.SecretKey` 및 `AuditService.DefaultHmacKey` 환경변수로 교체 필수
+  - **⚠️ 프로덕션 배포 시:** `JwtOptions.SecretKey` 및 `AuditHmacKey` 설정 필수 (하드코딩 키 완전 제거됨)
 - `SecurityContext` (ReaderWriterLockSlim)
   - 현재 사용자, 역할, 권한 저장
   - 스레드 안전 접근
 
-**테스트:** 91개 (`HnVue.Security.Tests`) — +54개 추가됨
+**테스트:** 67개 단위 (`HnVue.Security.Tests`)
 **커버리지:** 90%+
 
 ### Layer 3a: DICOM 통신
@@ -434,8 +437,13 @@ IEC 60601-1-3 준수. 4단계 인터록 시스템.
 - `WorkflowEngine` (IWorkflowEngine 구현)
   - 현재 상태 조회
   - 상태 전이 (Transition)
+  - **RBAC 강제 (SWR-IP-RBAC-001):** `TransitionAsync(Exposing)` 호출 시 미인증 사용자(null role) → `AuthenticationFailed` 반환; Admin/Service 역할 노출 금지
   - 이벤트 등록/해제 (StateChanged, Abort)
   - 비동기 처리
+
+- `GeneratorSerialPort` (RS-232 시리얼 통신)
+  - 실 제너레이터 하드웨어 RS-232 연동
+  - `IOException`/`InvalidOperationException`/`TimeoutException` 세분화 처리
 
 - `GeneratorSimulator` (장애 주입)
   - 실제 X-ray 제너레이터 시뮬레이션
@@ -452,17 +460,20 @@ IEC 60601-1-3 준수. 4단계 인터록 시스템.
 WPF 사용자 인터페이스. MVVM 패턴.
 
 **핵심 항목:**
-- `MainWindow` (5-패널 레이아웃)
-  - 위: 메뉴바 (File, Edit, View, Tools, Help)
-  - 왼쪽: 환자 목록 (트리뷰)
-  - 중앙: 촬영 프로토콜 + 영상 뷰어
-  - 오른쪽: 워크플로우 상태 + 선량 게이지
-  - 아래: 상태바 (현재 사용자, 시간, DICOM 상태)
+- `MainWindow` (Wave B — 3컬럼 레이아웃 완성)
+  - 왼쪽: `PatientListView` (환자 목록)
+  - 중앙: `ImageViewerView` (영상 뷰어)
+  - 오른쪽: `WorkflowView` + `DoseDisplayView`
+  - 오버레이: `LoginView` (인증 전 전체화면 → 인증 후 메인 컨텐츠 전환)
+
+- `MainViewModel` — 자식 ViewModel 오케스트레이션
+  - `PatientListViewModel`, `ImageViewerViewModel`, `WorkflowViewModel`, `DoseDisplayViewModel` 포함
+  - DI 주입 방식으로 App.xaml.cs에서 모두 등록
 
 - `LoginView` / `LoginViewModel`
   - Username + Password 입력
   - JWT 토큰 발급
-  - RBAC 역할 표시
+  - 인증 성공 시 `LoginSucceeded` 이벤트 → MainWindow 오버레이 해제
 
 - 테마: MahApps.Metro
   - 색상 팔레트 (Primary: Blue, Accent: Green)
@@ -470,7 +481,7 @@ WPF 사용자 인터페이스. MVVM 패턴.
   - 버튼 스타일 (Flat, 둥근 모서리)
   - 간격 (8px, 16px, 24px)
 
-**테스트:** 27개 (`HnVue.UI.Tests`)
+**테스트:** 86개 단위 (`HnVue.UI.Tests`)
 **커버리지:** 60%+
 
 ### Layer 6: 애플리케이션 진입점
@@ -484,9 +495,10 @@ DI 컴포지션 루트. 모든 모듈 통합.
   - Serilog 로깅 구성
   - DI 컨테이너 등록 (Microsoft.Extensions.DependencyInjection)
   - 모든 서비스 등록 (13개 모듈)
-- `App.xaml.cs` (WPF 애플리케이션)
+- `App.xaml.cs` (WPF 애플리케이션, Wave B 완성)
   - 전역 예외 처리
-  - Window 관리
+  - 자식 ViewModel 4개 DI 등록: `PatientListViewModel`, `ImageViewerViewModel`, `WorkflowViewModel`, `DoseDisplayViewModel`
+  - `appsettings.Development.json`: 개발용 설정 (git 추적 제외됨 — 자격증명 보호)
 
 **DI 등록 예시:**
 ```csharp
@@ -494,6 +506,10 @@ services.AddScoped<ISecurityService, SecurityService>();
 services.AddScoped<IPatientService, PatientService>();
 services.AddScoped<IWorkflowEngine, WorkflowEngine>();
 services.AddScoped<IDoseService, DoseService>();
+services.AddTransient<PatientListViewModel>();
+services.AddTransient<ImageViewerViewModel>();
+services.AddTransient<WorkflowViewModel>();
+services.AddTransient<DoseDisplayViewModel>();
 // ... 13개 모듈 모두 등록
 ```
 
@@ -506,14 +522,14 @@ services.AddScoped<IDoseService, DoseService>();
 | 영역 | 완성도 | 상태 |
 |------|:------:|------|
 | Architecture / Clean Architecture | 90% | ✅ 우수 |
-| Security (JWT/RBAC/bcrypt/HMAC) | 85% | ✅ 양호 |
+| Security (JWT/RBAC/bcrypt/HMAC) | 90% | ✅ 우수 — AuditOptions 외부화, RBAC null 가드 완성 |
 | Data Layer (EF Core + SQLCipher) | 80% | ✅ 양호 |
-| Workflow Engine (9-상태 머신) | 80% | ✅ 양호 |
+| Workflow Engine (9-상태 머신) | 85% | ✅ 양호 — RBAC 노출 강제 (SWR-IP-RBAC-001) |
 | DICOM Communication (C-STORE/C-FIND) | 75% | 보통 (실 PACS 미검증) |
-| Unit Test Infrastructure | 95% | ✅ 523개, 90%+ 커버리지 |
+| Unit Test Infrastructure | 95% | ✅ 728개, 90%+ 커버리지 |
 | Regulatory Framework | 85% | 보통 (문서-코드 정합성 검토 필요) |
 | **HnVue.Imaging (핵심)** | **15%** | ❌ Stub 수준 |
-| **WPF UI 화면 (핵심)** | **20%** | ❌ 로그인만 존재 |
+| **WPF UI 화면 (핵심)** | **55%** | ⚠️ Wave B 완료 — 3컬럼 레이아웃, 로그인 오버레이, 자식 ViewModel 연결 |
 | **Hardware Integration** | **10%** | ❌ Simulator만 |
 | **1차 릴리즈 준비도** | **~45%** | ❌ 추가 개발 필요 |
 
@@ -559,6 +575,31 @@ UI 통합 + 통합 테스트
 - **최종 결과:**
   - 빌드: 0 errors, 0 warnings ✅
   - 테스트: 523개 (499개 + 24개 신규) ✅
+  - 품질 점수: 0.91/1.0 ✅
+  - 안전 임계 모듈 커버리지: 90%+ 유지 ✅
+
+#### Wave A + B 병렬 개발 (완료 ✅, 2026-04-05)
+3개 worktree 병렬 개발 + UI 통합 + 보안 강화
+- **Wave A — 병렬 개발 (WT-1/2/3/4):**
+  - WT-1: HnVue.Dicom C-STORE/MWL SCU + fo-dicom 5.x + DicomOutbox
+  - WT-2: HnVue.App DI 컴포지션 루트 + UI 6개 ViewModel/View 통합
+  - WT-3a: HnVue.Incident 심각도 분류 + HMAC-SHA256 감사 체인 + 알림 체계
+  - WT-3b: HnVue.Update Authenticode 서명 검증 + SHA-256 + 백업/롤백
+- **Wave B — UI 통합:**
+  - MainWindow 3컬럼 레이아웃 (PatientListView/ImageViewerView/WorkflowView/DoseDisplayView)
+  - 로그인 오버레이 (LoginView) + 인증 후 메인 컨텐츠 전환
+  - MainViewModel 자식 ViewModel 4개 연결
+- **보안 강화:**
+  - AuditOptions: IOptions<AuditOptions>로 HMAC 키 외부화 (하드코딩 시크릿 완전 제거)
+  - JwtOptions: 기본 SecretKey 제거, 런타임 유효성 검증 추가
+  - WorkflowEngine RBAC (SWR-IP-RBAC-001): null role → `AuthenticationFailed`, Admin/Service 노출 금지
+  - `appsettings.Development.json` git 추적 제외 (.gitignore 추가)
+- **예외 처리 전역 강화:**
+  - `catch(Exception ex) when (ex is not OutOfMemoryException)` 패턴 전체 소스 적용
+  - GeneratorSerialPort: 세분화 예외 (`IOException`/`InvalidOperationException`/`TimeoutException`)
+- **최종 결과:**
+  - 빌드: 0 errors, 0 warnings ✅
+  - 테스트: 728개 (단위 710 + 통합 18) ✅
   - 품질 점수: 0.91/1.0 ✅
   - 안전 임계 모듈 커버리지: 90%+ 유지 ✅
 
@@ -610,11 +651,11 @@ dotnet test --configuration Debug
 
 **예상 결과:**
 ```
-Passed   523
+Passed   728
 Failed    0
 Skipped   0
 
-Total: 523 tests completed in ~45 seconds
+Total: 728 tests completed in ~60 seconds
 ```
 
 #### 특정 프로젝트만 테스트

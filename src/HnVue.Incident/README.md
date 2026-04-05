@@ -34,3 +34,5 @@
 
 - IncidentSeverity 열거형은 HnVue.Common에 정의
 - 감사 로그와 연동하여 인시던트 추적
+- 루트 레벨 중복 `IncidentRecord.cs` 제거됨 (단일 소스 원칙)
+- 예외 처리: 에스컬레이션 콜백에 `catch(Exception ex) when (ex is not OutOfMemoryException)` 패턴 적용
