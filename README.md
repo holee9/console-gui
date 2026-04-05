@@ -564,16 +564,30 @@ python scripts/sync_docs.py
 
 ### GitHub → Gitea 동기화
 
-Perplexity 세션 등에서 GitHub에 push한 내용을 사내 Gitea에 반영할 때, 사내 PC에서 실행:
+Perplexity 세션 등에서 GitHub에 push한 내용을 사내 Gitea에 반영할 때 사용한다.
+
+최초 1회:
 
 ```bash
-# 최초 1회
 git remote add github https://github.com/holee9/console-gui.git
+```
 
-# 반영 시 매번
+매번 `main` 반영:
+
+```bash
 git fetch github
+git checkout main
 git merge github/main
 git push origin main
+```
+
+매번 `feature/web-ui` 반영:
+
+```bash
+git fetch github
+git checkout feature/web-ui
+git merge github/feature/web-ui
+git push origin feature/web-ui
 ```
 
 ### CI（GitHub Actions）
