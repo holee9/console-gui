@@ -60,7 +60,7 @@ public sealed class BackupService
         {
             throw;
         }
-        catch (Exception ex)
+        catch (Exception ex) when (ex is not OutOfMemoryException)
         {
             return Result.Failure<string>(
                 ErrorCode.Unknown,
@@ -99,7 +99,7 @@ public sealed class BackupService
         {
             throw;
         }
-        catch (Exception ex)
+        catch (Exception ex) when (ex is not OutOfMemoryException)
         {
             return Result.Failure(ErrorCode.RollbackFailed, $"Restore failed: {ex.Message}");
         }

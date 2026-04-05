@@ -65,7 +65,7 @@ public sealed class DicomStoreScu
         {
             throw;
         }
-        catch (Exception ex)
+        catch (Exception ex) when (ex is not OutOfMemoryException)
         {
             return Result.Failure(ErrorCode.DicomStoreFailed,
                 $"C-STORE to '{_config.PacsAeTitle}' failed: {ex.Message}");

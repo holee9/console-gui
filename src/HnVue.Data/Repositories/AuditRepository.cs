@@ -51,7 +51,7 @@ internal sealed class AuditRepository(HnVueDbContext context) : IAuditRepository
         {
             throw;
         }
-        catch (Exception ex)
+        catch (Exception ex) when (ex is not OutOfMemoryException)
         {
             return Result.Failure<string?>(
                 ErrorCode.DatabaseError,
@@ -97,7 +97,7 @@ internal sealed class AuditRepository(HnVueDbContext context) : IAuditRepository
         {
             throw;
         }
-        catch (Exception ex)
+        catch (Exception ex) when (ex is not OutOfMemoryException)
         {
             return Result.Failure<IReadOnlyList<AuditEntry>>(
                 ErrorCode.DatabaseError,

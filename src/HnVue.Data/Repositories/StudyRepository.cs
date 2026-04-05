@@ -50,7 +50,7 @@ internal sealed class StudyRepository(HnVueDbContext context) : IStudyRepository
         {
             throw;
         }
-        catch (Exception ex)
+        catch (Exception ex) when (ex is not OutOfMemoryException)
         {
             return Result.Failure<IReadOnlyList<StudyRecord>>(
                 ErrorCode.DatabaseError,
@@ -77,7 +77,7 @@ internal sealed class StudyRepository(HnVueDbContext context) : IStudyRepository
         {
             throw;
         }
-        catch (Exception ex)
+        catch (Exception ex) when (ex is not OutOfMemoryException)
         {
             return Result.Failure<StudyRecord?>(
                 ErrorCode.DatabaseError,

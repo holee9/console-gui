@@ -54,7 +54,7 @@ internal sealed class BackupManager
         {
             return Result.Failure<string>(ErrorCode.OperationCancelled, "Backup operation was cancelled.");
         }
-        catch (Exception ex)
+        catch (Exception ex) when (ex is not OutOfMemoryException)
         {
             _logger?.LogError(ex, "Failed to create backup");
             return Result.Failure<string>(ErrorCode.RollbackFailed, $"Backup creation failed: {ex.Message}");
@@ -94,7 +94,7 @@ internal sealed class BackupManager
         {
             return Result.Failure(ErrorCode.OperationCancelled, "Restore operation was cancelled.");
         }
-        catch (Exception ex)
+        catch (Exception ex) when (ex is not OutOfMemoryException)
         {
             _logger?.LogError(ex, "Failed to restore from backup {BackupPath}", latestBackup);
             return Result.Failure(ErrorCode.RollbackFailed, $"Restore failed: {ex.Message}");

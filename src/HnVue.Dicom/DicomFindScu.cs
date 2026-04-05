@@ -64,7 +64,7 @@ public sealed class DicomFindScu
         {
             throw;
         }
-        catch (Exception ex)
+        catch (Exception ex) when (ex is not OutOfMemoryException)
         {
             return Result.Failure<IReadOnlyList<WorklistItem>>(
                 ErrorCode.DicomQueryFailed,

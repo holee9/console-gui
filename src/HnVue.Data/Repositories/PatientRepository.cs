@@ -48,7 +48,7 @@ internal sealed class PatientRepository(HnVueDbContext context) : IPatientReposi
         {
             throw;
         }
-        catch (Exception ex)
+        catch (Exception ex) when (ex is not OutOfMemoryException)
         {
             return Result.Failure<PatientRecord?>(
                 ErrorCode.DatabaseError,
@@ -78,7 +78,7 @@ internal sealed class PatientRepository(HnVueDbContext context) : IPatientReposi
         {
             throw;
         }
-        catch (Exception ex)
+        catch (Exception ex) when (ex is not OutOfMemoryException)
         {
             return Result.Failure<IReadOnlyList<PatientRecord>>(
                 ErrorCode.DatabaseError,

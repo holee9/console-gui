@@ -21,6 +21,8 @@
 *.nupkg
 TestResults/
 coverage/
+coverage-latest/
+coverage-results/
 *.coverage
 *.coveragexml
 

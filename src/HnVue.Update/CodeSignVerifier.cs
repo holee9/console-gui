@@ -57,7 +57,7 @@ public sealed class CodeSignVerifier
         {
             throw;
         }
-        catch (Exception ex)
+        catch (Exception ex) when (ex is not OutOfMemoryException)
         {
             return Result.Failure(ErrorCode.UpdatePackageCorrupt,
                 $"Failed to compute hash for '{filePath}': {ex.Message}");

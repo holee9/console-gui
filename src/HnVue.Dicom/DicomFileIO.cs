@@ -30,7 +30,7 @@ public sealed class DicomFileIO
         {
             throw;
         }
-        catch (Exception ex)
+        catch (Exception ex) when (ex is not OutOfMemoryException)
         {
             return Result.Failure<DicomFileWrapper>(
                 ErrorCode.ImageProcessingFailed, $"Failed to read DICOM file: {ex.Message}");
@@ -61,7 +61,7 @@ public sealed class DicomFileIO
         {
             throw;
         }
-        catch (Exception ex)
+        catch (Exception ex) when (ex is not OutOfMemoryException)
         {
             return Result.Failure(ErrorCode.ImageProcessingFailed,
                 $"Failed to write DICOM file: {ex.Message}");
@@ -86,7 +86,7 @@ public sealed class DicomFileIO
             var value = readResult.Value.DicomFile.Dataset.GetSingleValueOrDefault<string>(tag, string.Empty);
             return Result.SuccessNullable<string?>(string.IsNullOrEmpty(value) ? null : value);
         }
-        catch (Exception ex)
+        catch (Exception ex) when (ex is not OutOfMemoryException)
         {
             return Result.Failure<string?>(ErrorCode.Unknown, $"Failed to read tag '{tagKeyword}': {ex.Message}");
         }

@@ -30,7 +30,7 @@ internal sealed class UserRepository(HnVueDbContext context) : IUserRepository
         {
             throw;
         }
-        catch (Exception ex)
+        catch (Exception ex) when (ex is not OutOfMemoryException)
         {
             return Result.Failure<UserRecord>(
                 ErrorCode.DatabaseError,
@@ -57,7 +57,7 @@ internal sealed class UserRepository(HnVueDbContext context) : IUserRepository
         {
             throw;
         }
-        catch (Exception ex)
+        catch (Exception ex) when (ex is not OutOfMemoryException)
         {
             return Result.Failure<UserRecord>(
                 ErrorCode.DatabaseError,
@@ -157,7 +157,7 @@ internal sealed class UserRepository(HnVueDbContext context) : IUserRepository
         {
             throw;
         }
-        catch (Exception ex)
+        catch (Exception ex) when (ex is not OutOfMemoryException)
         {
             return Result.Failure<IReadOnlyList<UserRecord>>(
                 ErrorCode.DatabaseError,

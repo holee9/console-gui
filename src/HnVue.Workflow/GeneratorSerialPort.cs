@@ -148,7 +148,7 @@ public sealed class GeneratorSerialPort : IGeneratorInterface, IDisposable
             _port.Close();
             return Result.Failure(ErrorCode.OperationCancelled, "ConnectAsync was cancelled.");
         }
-        catch (Exception ex)
+        catch (Exception ex) when (ex is not OutOfMemoryException)
         {
             _port.Close();
             return Result.Failure(ErrorCode.GeneratorNotReady,
@@ -172,7 +172,7 @@ public sealed class GeneratorSerialPort : IGeneratorInterface, IDisposable
                 // Best-effort send; do not wait for ACK — port may be degraded.
                 SendRawCommand("RESET_ERROR");
             }
-            catch (Exception)
+            catch (Exception ex) when (ex is not OutOfMemoryException)
             {
                 // Swallow — we are disconnecting regardless.
             }
@@ -181,7 +181,7 @@ public sealed class GeneratorSerialPort : IGeneratorInterface, IDisposable
             {
                 _port.Close();
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is not OutOfMemoryException)
             {
                 return Result.Failure(ErrorCode.GeneratorNotReady,
                     $"Error closing serial port: {ex.Message}");
@@ -272,7 +272,7 @@ public sealed class GeneratorSerialPort : IGeneratorInterface, IDisposable
             TransitionState(GeneratorState.Error, "PrepareAsync cancelled.");
             return Result.Failure(ErrorCode.OperationCancelled, "PrepareAsync was cancelled.");
         }
-        catch (Exception ex)
+        catch (Exception ex) when (ex is not OutOfMemoryException)
         {
             TransitionState(GeneratorState.Error, ex.Message);
             return Result.Failure(ErrorCode.GeneratorNotReady,
@@ -333,7 +333,7 @@ public sealed class GeneratorSerialPort : IGeneratorInterface, IDisposable
             TransitionState(GeneratorState.Error, "TriggerExposureAsync cancelled.");
             return Result.Failure(ErrorCode.OperationCancelled, "TriggerExposureAsync was cancelled.");
         }
-        catch (Exception ex)
+        catch (Exception ex) when (ex is not OutOfMemoryException)
         {
             TransitionState(GeneratorState.Error, ex.Message);
             return Result.Failure(ErrorCode.ExposureAborted,
@@ -365,7 +365,7 @@ public sealed class GeneratorSerialPort : IGeneratorInterface, IDisposable
                 byte[] frame = BuildFrame("ABORT");
                 _port.BaseStream.Write(frame, 0, frame.Length);
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is not OutOfMemoryException)
             {
                 // Log is the only safe action here; state is already Error.
                 // Do NOT re-throw — AbortAsync must not fail silently (IEC 62304 safety).
@@ -441,7 +441,7 @@ public sealed class GeneratorSerialPort : IGeneratorInterface, IDisposable
 
         if (_port.IsOpen)
         {
-            try { _port.Close(); } catch (Exception) { /* best effort */ }
+            try { _port.Close(); } catch (Exception ex) when (ex is not OutOfMemoryException) { /* best effort */ }
         }
 
         _port.Dispose();
