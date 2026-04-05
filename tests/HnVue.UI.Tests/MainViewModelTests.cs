@@ -5,6 +5,9 @@ using HnVue.UI.ViewModels;
 using NSubstitute;
 using Xunit;
 
+// Suppress: child VMs need real objects in tests (NSubstitute cannot mock sealed source-generated partial classes)
+#pragma warning disable CA2000
+
 namespace HnVue.UI.Tests;
 
 /// <summary>
@@ -12,14 +15,24 @@ namespace HnVue.UI.Tests;
 /// </summary>
 public sealed class MainViewModelTests
 {
-    private static MainViewModel CreateSut(ISecurityContext context) => new(context);
+    private static MainViewModel CreateSut(ISecurityContext context) => new(
+        context,
+        new PatientListViewModel(Substitute.For<IPatientService>()),
+        new ImageViewerViewModel(Substitute.For<IImageProcessor>()),
+        new WorkflowViewModel(Substitute.For<IWorkflowEngine>(), Substitute.For<ISecurityContext>()),
+        new DoseDisplayViewModel(Substitute.For<IDoseService>()));
 
     // ── Constructor guard test ───────────────────────────────────────────────
 
     [Fact]
     public void Constructor_WhenContextIsNull_ThrowsArgumentNullException()
     {
-        var act = () => new MainViewModel(null!);
+        var act = () => new MainViewModel(
+            null!,
+            new PatientListViewModel(Substitute.For<IPatientService>()),
+            new ImageViewerViewModel(Substitute.For<IImageProcessor>()),
+            new WorkflowViewModel(Substitute.For<IWorkflowEngine>(), Substitute.For<ISecurityContext>()),
+            new DoseDisplayViewModel(Substitute.For<IDoseService>()));
         act.Should().Throw<ArgumentNullException>().WithParameterName("securityContext");
     }
 

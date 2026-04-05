@@ -13,13 +13,36 @@ public sealed partial class MainViewModel : ObservableObject
 {
     private readonly ISecurityContext _securityContext;
 
+    /// <summary>Gets the ViewModel for the patient list panel.</summary>
+    public PatientListViewModel PatientListViewModel { get; }
+
+    /// <summary>Gets the ViewModel for the image viewer panel.</summary>
+    public ImageViewerViewModel ImageViewerViewModel { get; }
+
+    /// <summary>Gets the ViewModel for the workflow/exposure panel.</summary>
+    public WorkflowViewModel WorkflowViewModel { get; }
+
+    /// <summary>Gets the ViewModel for the dose display panel.</summary>
+    public DoseDisplayViewModel DoseDisplayViewModel { get; }
+
     /// <summary>Initialises a new instance of <see cref="MainViewModel"/>.</summary>
-    /// <param name="securityContext">Provides information about the currently authenticated user.</param>
-    /// <exception cref="ArgumentNullException">Thrown when <paramref name="securityContext"/> is <see langword="null"/>.</exception>
-    public MainViewModel(ISecurityContext securityContext)
+    public MainViewModel(
+        ISecurityContext securityContext,
+        PatientListViewModel patientListViewModel,
+        ImageViewerViewModel imageViewerViewModel,
+        WorkflowViewModel workflowViewModel,
+        DoseDisplayViewModel doseDisplayViewModel)
     {
         ArgumentNullException.ThrowIfNull(securityContext, nameof(securityContext));
+        ArgumentNullException.ThrowIfNull(patientListViewModel, nameof(patientListViewModel));
+        ArgumentNullException.ThrowIfNull(imageViewerViewModel, nameof(imageViewerViewModel));
+        ArgumentNullException.ThrowIfNull(workflowViewModel, nameof(workflowViewModel));
+        ArgumentNullException.ThrowIfNull(doseDisplayViewModel, nameof(doseDisplayViewModel));
         _securityContext = securityContext;
+        PatientListViewModel = patientListViewModel;
+        ImageViewerViewModel = imageViewerViewModel;
+        WorkflowViewModel = workflowViewModel;
+        DoseDisplayViewModel = doseDisplayViewModel;
     }
 
     /// <summary>Gets or sets a value indicating whether the login view is visible.</summary>

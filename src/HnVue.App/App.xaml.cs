@@ -168,6 +168,10 @@ public partial class App : Application
                 // ── HnVue.UI ─────────────────────────────────────────────────
                 // ViewModels are transient (each window/navigation creates a fresh instance).
                 services.AddTransient<LoginViewModel>();
+                services.AddTransient<PatientListViewModel>();
+                services.AddTransient<ImageViewerViewModel>();
+                services.AddTransient<WorkflowViewModel>();
+                services.AddTransient<DoseDisplayViewModel>();
                 services.AddTransient<MainViewModel>();
 
                 // ── WPF main window ──────────────────────────────────────────
