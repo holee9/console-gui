@@ -409,9 +409,9 @@ public sealed class GeneratorSerialPort : IGeneratorInterface, IDisposable
                     _heatUnitPercentage = hu;
             }
         }
-        catch (Exception)
+        catch (Exception ex) when (ex is IOException or InvalidOperationException or TimeoutException)
         {
-            // Best-effort heat-unit poll; return cached value on failure.
+            // Best-effort heat-unit poll; return cached value on any I/O failure.
         }
 
         lock (_stateLock) state = _currentState;
@@ -613,9 +613,11 @@ public sealed class GeneratorSerialPort : IGeneratorInterface, IDisposable
                 }
             }
         }
-        catch (Exception)
+        catch (Exception ex) when (ex is not OutOfMemoryException)
         {
-            // DataReceived must not throw; suppress all exceptions.
+            // DataReceived handler MUST NOT throw (crashes serial port background thread).
+            // Transition to Error so the caller can detect the fault.
+            TransitionState(GeneratorState.Error, ex.Message);
         }
     }
 

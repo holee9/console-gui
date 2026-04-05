@@ -118,7 +118,7 @@ public sealed class DicomFindScu
 
             return new WorklistItem(accession, patientId, patientName, null, bodyPart, procedure);
         }
-        catch (Exception)
+        catch (Exception ex) when (ex is not OutOfMemoryException)
         {
             return null;
         }

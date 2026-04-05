@@ -117,7 +117,7 @@ public sealed class IncidentResponseService
             {
                 await callback(record).ConfigureAwait(false);
             }
-            catch (Exception)
+            catch (Exception ex) when (ex is not OutOfMemoryException)
             {
                 // Escalation failures must not suppress the incident record.
             }
