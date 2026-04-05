@@ -138,14 +138,7 @@ ANALYSIS-001에서 지적한 바와 같이, 기존 HnVUE 제품과 신규 Consol
 3. **시험 보고서 불일치**: DOC-022~028이 실제 구현된 기능 기준이 아닌 계획 기준으로 작성되어 있다.
 4. **규제 위험**: FDA/MFDS 심사 시 IFU 기재 기능과 실제 소프트웨어 불일치 → 즉각 Additional Information 요청.
 
-### 시험 보고서 불일치 현황 (ANALYSIS-001에서 확인된 사례)
-
-| 시험 보고서 기재 (Pass) | 실제 코드 상태 |
-|----------------------|--------------|
-| UT-IP-013: JPEG-LS Lossless 압축/해제 | `HnVue.Imaging`에 JPEG-LS 없음 |
-| UT-PM-012: FHIR Patient 리소스 변환 | FHIR 구현 없음 |
-| UT-WF-014: Generator 응답 Timeout | 실제 Generator 통신 없음 |
-| UT-WF-006: Generator CRC 검증 | 실제 Generator 프로토콜 없음 |
+> 시험 보고서 구체 불일치 사례는 [ANALYSIS-001 §5](ANALYSIS-001_Phase1_Review_v1.0.md#5-문서-코드-정합성-문제)를 참조.
 
 ---
 
@@ -189,27 +182,10 @@ Step 4: 시험 보고서 현실화
 
 ## 7. HnVue.Imaging 구현 계획
 
-### 현재 상태 (Stub)
+> Stub 상태 및 DICOM/파일 처리 목표 상세는 [ANALYSIS-001 §3-1](ANALYSIS-001_Phase1_Review_v1.0.md#3-critical-blockers)을 참조.
+> 작업 분류 및 Wave 구조는 [STRATEGY-002](STRATEGY-002_ParallelDevelopment_v1.0.md)를 참조.
 
-```csharp
-// src/HnVue.Imaging/ImageProcessor.cs — 실제 코드 발췌
-var side = (int)Math.Sqrt(pixelCount);  // 파일 크기 제곱근으로 이미지 크기 추정
-// "a production implementation would parse the DICOM/proprietary header"
-```
-
-### 구현 목표
-
-| 항목 | Stub 상태 | 목표 상태 |
-|------|----------|----------|
-| DICOM 이미지 파싱 | 파일 바이트 직접 처리 | fo-dicom 기반 Tag (0028,0010/0011) 읽기 |
-| 이미지 크기 | 바이트 수 제곱근 추정 | DICOM Rows/Columns 태그 |
-| 16-bit Grayscale | 미지원 | X-ray DR 표준 Pixel Depth |
-| Window/Level | 미구현 | DICOM VOI LUT / Linear 연산 |
-| Pan/Zoom | 오프셋 없이 동일 반환 | 실제 픽셀 오프셋 + 스케일 적용 |
-| GSDF LUT | 미구현 | DICOM Grayscale Standard Display Function |
-| FPD SDK 연동 | 없음 | `API_MANUAL_241206.pdf` 기반 SDK 통합 |
-
-### 구현 우선순위
+### 구현 단계 (HnVue.Imaging 고유 설계)
 
 ```
 Phase 1c-A: fo-dicom 기반 DICOM Header 파싱 (2-3주)
@@ -230,62 +206,24 @@ Phase 1c-C: FPD SDK 연동 (3-4주, API_MANUAL_241206.pdf 활용)
 
 ---
 
-## 8. 현실적 개발 로드맵 재검토
+## 8. 릴리즈 준비도 및 로드맵
 
-### Phase 1 완료 현황 (2026-04-05)
+> 종합 릴리즈 준비도 매트릭스와 개발 로드맵은 [ANALYSIS-001 §4, §7](ANALYSIS-001_Phase1_Review_v1.0.md#4-종합-현황-매트릭스)을 참조.
+> 단독/병렬 개발 분류, Wave 구조, 파일 소유권 매트릭스는 [STRATEGY-002](STRATEGY-002_ParallelDevelopment_v1.0.md)를 참조.
 
-| 영역 | 완성도 | 상태 |
-|------|:------:|------|
-| Architecture / Clean Architecture 6-layer | 90% | ✅ |
-| Security (JWT/RBAC/bcrypt/HMAC Audit) | 85% | ✅ |
-| Data Layer (EF Core 8 + SQLCipher) | 80% | ✅ |
-| DICOM Communication (C-STORE/C-FIND) | 75% | 보통 |
-| Workflow Engine (9-state StateMachine) | 80% | ✅ |
-| Unit Test Infrastructure (523개, 90%+) | 95% | ✅ |
-| Regulatory Framework (70개 문서) | 85% | 보통 |
-| **Image Processing** | **15%** | ❌ Stub |
-| **WPF UI Screens** | **20%** | ❌ 로그인만 |
-| **Hardware Integration** | **10%** | ❌ Simulator |
-| **1차 릴리즈 준비도** | **~45%** | ❌ |
-
-### 수정된 개발 로드맵
-
-| 단계 | 작업 | 기간 | 비고 |
-|------|------|:----:|------|
-| **Phase 1.5** | Gap 분석 + 시험 보고서 현실화 + 사양서 정합성 | 2주 | 즉시 착수 |
-| **Phase 2-A** | HnVue.Imaging 실구현 (fo-dicom + FPD SDK) | 3개월 | `API_MANUAL_241206.pdf` 활용 |
-| **Phase 2-B** | WPF UI 화면 완성 (4개 핵심 View) | 3개월 | `★HnVUE UI 변경 최종안_251118.pptx` 기준 |
-| **Phase 2-C** | Generator 실 프로토콜 구현 | 2개월 | `GENERATOR-001` 기준 |
-| **Phase 3-A** | Production 보안 설정 + DICOM 실 환경 검증 | 1개월 | |
-| **Phase 3-B** | 시험 재수행 (UT/IT/ST 실 데이터) | 2개월 | |
-| **Phase 4** | KTL 사이버보안 모의침투 + 인허가 문서 완성 | 3개월 | |
-
-**총 예상: 12-15개월 (2명 기준)**
-
-**현실적 1차 릴리즈 예상일: 2027년 Q2~Q3**
-
-> ⚠️ DOC-034 (Release Document) 기재 예정일 **2026-09-01은 달성 불가**. 문서 수정 필요.
+**현재 1차 릴리즈 준비도 ~45%. 현실적 릴리즈 예상일: 2027년 Q2~Q3.**
 
 ---
 
-## 9. 다음 단계 권고사항
+## 9. 다음 단계
 
-### 즉시 (이번 주)
+> 전체 권고사항은 [ANALYSIS-001 §7](ANALYSIS-001_Phase1_Review_v1.0.md#7-결론-및-권고사항)을 참조.
 
-1. **Phase 1.5 Gap 분석 착수** — `Instructions for Use(EN) HnVUE 250714.docx` 기반으로 Feature 목록 추출 및 신규 코드 매핑 시작
-2. **DOC-034 Release Document 수정** — 릴리즈 예정일을 현실적 날짜로 업데이트
+**본 문서(ANALYSIS-002) 고유 액션:**
 
-### 단기 (1개월 내)
-
-3. **HnVue.Imaging Phase 1c 설계 문서 작성** — `API_MANUAL_241206.pdf` 분석 후 FPD SDK 연동 설계 문서 (SDS 업데이트)
-4. **★HnVUE UI 변경 최종안 분석** — WPF View 구현 명세로 변환 (PatientListView, ImageViewerView, WorkflowView, DoseMonitorView)
-5. **시험 보고서 현실화** — DOC-022~028을 실제 구현 기능 기준으로 재작성
-
-### 중기 (3개월 내)
-
-6. **Phase 2-A 착수** — HnVue.Imaging 실구현
-7. **Phase 2-B 착수** — WPF UI 화면 완성
-8. **Generator 프로토콜 POC** — GENERATOR-001 기준으로 RS-232 연동 Proof of Concept
+1. **Phase 1.5 Gap 분석** — SRS/FRS 기반 Feature 목록 추출 후 코드 매핑. IFU `.docx` 파일 직접 분석은 바이너리 포맷 제약으로 사람이 수행 필요.
+2. **참고 자료 역할 A/B 분류** 활용 — Wave A/B 구현 시 역할 A(UI 기준), 역할 B(API/프로토콜) 문서 참조.
+3. **FPD SDK 연동 설계** — Phase 1c-C 착수 전 `API_MANUAL_241206.pdf` 기반 IFpdAcquisitionService 인터페이스 설계 선행.
 
 ---
 

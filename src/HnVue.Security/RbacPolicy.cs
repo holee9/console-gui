@@ -114,12 +114,27 @@ public static class RbacPolicy
 /// </summary>
 public static class Permissions
 {
+    /// <summary>Permission to view the patient list.</summary>
     public const string ViewPatients       = "patients.view";
+
+    /// <summary>Permission to register a new patient.</summary>
     public const string RegisterPatient    = "patients.register";
+
+    /// <summary>Permission to perform an X-ray exposure.</summary>
     public const string PerformExposure    = "workflow.expose";
+
+    /// <summary>Permission to review acquired images.</summary>
     public const string ReviewImages       = "images.review";
+
+    /// <summary>Permission to burn a study to CD/DVD.</summary>
     public const string BurnStudyToCd      = "cdburning.burn";
+
+    /// <summary>Permission to configure system settings.</summary>
     public const string ConfigureSystem    = "sysadmin.configure";
+
+    /// <summary>Permission to view the tamper-evident audit log.</summary>
     public const string ViewAuditLog       = "audit.view";
+
+    /// <summary>Permission to apply a software update package.</summary>
     public const string ApplySoftwareUpdate = "update.apply";
 }

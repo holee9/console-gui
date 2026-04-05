@@ -2,7 +2,7 @@ using HnVue.Common.Enums;
 
 namespace HnVue.Common.Models;
 
-/// <summary>Provides data for the <see cref="IGeneratorInterface.StateChanged"/> event.</summary>
+/// <summary>Provides data for the <see cref="HnVue.Common.Abstractions.IGeneratorInterface.StateChanged"/> event.</summary>
 public sealed class GeneratorStateChangedEventArgs : EventArgs
 {
     /// <summary>Gets the previous generator state.</summary>
