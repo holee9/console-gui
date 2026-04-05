@@ -167,4 +167,30 @@ public sealed class SWUpdateServiceTests : IDisposable
         result.IsFailure.Should().BeTrue();
         result.Error.Should().Be(ErrorCode.RollbackFailed);
     }
+
+    // ── ApplyUpdateAsync — additional paths ───────────────────────────────────
+
+    [Fact]
+    public async Task ApplyUpdate_EmptyPath_ReturnsValidationFailure()
+    {
+        var result = await _sut.ApplyUpdateAsync("   ");
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.ValidationFailed);
+    }
+
+    [Fact]
+    public async Task ApplyUpdate_PackageInfoFailure_PropagatesError()
+    {
+        var pkgPath = Path.Combine(_tempRoot, "pkg_info_fail.zip");
+        await File.WriteAllTextAsync(pkgPath, "content");
+
+        _repository.GetPackageInfoAsync(pkgPath, Arg.Any<CancellationToken>())
+            .Returns(Result.Failure<UpdateInfo>(ErrorCode.Unknown, "info fetch failed"));
+
+        var result = await _sut.ApplyUpdateAsync(pkgPath);
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.Unknown);
+    }
 }

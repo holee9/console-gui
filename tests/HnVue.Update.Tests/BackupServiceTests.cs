@@ -135,4 +135,50 @@ public sealed class BackupServiceTests : IDisposable
 
         backups.Should().BeEmpty();
     }
+
+    // ── CreateBackupAsync — cancellation ─────────────────────────────────────
+
+    [Fact]
+    public async Task CreateBackup_CancelledToken_ThrowsOperationCanceledException()
+    {
+        using var cts = new CancellationTokenSource();
+        cts.Cancel();
+
+        var act = async () => await _sut.CreateBackupAsync(cts.Token);
+
+        await act.Should().ThrowAsync<OperationCanceledException>();
+    }
+
+    // ── RestoreAsync — cancellation ───────────────────────────────────────────
+
+    [Fact]
+    public async Task Restore_CancelledToken_ThrowsOperationCanceledException()
+    {
+        var backupResult = await _sut.CreateBackupAsync();
+        backupResult.IsSuccess.Should().BeTrue();
+
+        using var cts = new CancellationTokenSource();
+        cts.Cancel();
+
+        var act = async () => await _sut.RestoreAsync(backupResult.Value, cts.Token);
+
+        await act.Should().ThrowAsync<OperationCanceledException>();
+    }
+
+    // ── CreateBackupAsync — subdirectory recursion ────────────────────────────
+
+    [Fact]
+    public async Task CreateBackup_WithSubdirectories_CopiesNestedFilesRecursively()
+    {
+        // Create a nested subdirectory in the app directory
+        var subDir = Path.Combine(_appDir, "modules");
+        Directory.CreateDirectory(subDir);
+        File.WriteAllText(Path.Combine(subDir, "plugin.dll"), "nested binary");
+
+        var result = await _sut.CreateBackupAsync();
+
+        result.IsSuccess.Should().BeTrue();
+        var nestedBackupFile = Path.Combine(result.Value, "modules", "plugin.dll");
+        File.Exists(nestedBackupFile).Should().BeTrue();
+    }
 }
