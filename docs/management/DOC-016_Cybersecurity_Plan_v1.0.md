@@ -7,7 +7,7 @@
 | 항목 | 내용 |
 |------|------|
 | **문서 ID** | CMP-XRAY-GUI-001 |
-| **문서명** | HnVue GUI Console SW 사이버보안 관리 계획서 |
+| **문서명** | HnVue Console SW 사이버보안 관리 계획서 |
 | **버전** | v1.0 |
 | **작성일** | 2026-03-16 |
 | **작성자** | 사이버보안 팀 (Cybersecurity Team) |
@@ -28,7 +28,7 @@
 
 ### 1.1 목적 (Purpose)
 
-본 문서는 HnVue GUI Console SW(이하 "제품")에 대한 사이버보안 관리 계획(Cybersecurity Management Plan, CMP)을 수립함으로써 다음 목적을 달성하기 위해 작성되었다.
+본 문서는 HnVue Console SW(이하 "제품")에 대한 사이버보안 관리 계획(Cybersecurity Management Plan, CMP)을 수립함으로써 다음 목적을 달성하기 위해 작성되었다.
 
 1. **FDA Section 524B (Omnibus 법안, 2022) 준수**: 의료기기 사이버보안 요구사항 충족을 위한 체계적 관리 계획 문서화
 2. **FDA Premarket Cybersecurity Guidance (2023) 적용**: SBOM 제출, 취약점 공개 정책(VDP), 지속적 사이버보안 모니터링 이행
@@ -41,7 +41,7 @@
 본 계획의 적용 범위는 아래와 같다.
 
 **대상 제품**:
-- HnVue GUI Console SW v1.x (IEC 62304 Class B)
+- HnVue Console SW v1.x (IEC 62304 Class B)
 - 운영 플랫폼: Windows 10/11 IoT Enterprise (의료기기 전용)
 - 연결 인터페이스: DICOM (PACS/RIS), HL7 (HIS), X-Ray Generator Control, LDAP/AD
 
@@ -1012,7 +1012,7 @@ ISO/IEC 29147 및 FDA 권고에 따른 VDP를 수립하여 보안 연구자 및 
       "supplier": {
         "name": "[Company Name]"
       },
-      "name": "HnVue GUI Console SW",
+      "name": "HnVue Console SW",
       "version": "1.0.0",
       "description": "Medical X-Ray Imaging Console Software",
       "licenses": [
@@ -1249,7 +1249,7 @@ ISO/IEC 29147 및 FDA 권고에 따른 VDP를 수립하여 보안 연구자 및 
 
 **문서 번호**: CTR-XRAY-GUI-[YYYYMMDD]  
 **보고서 유형**: [ ] SAST  [ ] DAST  [ ] 침투 테스트  [ ] 퍼즈 테스트  [ ] 네트워크 보안  
-**제품명**: HnVue GUI Console SW  
+**제품명**: HnVue Console SW  
 **테스트 대상 버전**: v___________  
 **테스트 기간**: __________ ~ __________  
 **테스트 수행자**: __________  
@@ -1384,5 +1384,5 @@ Low:      ██       N건
 ---
 
 **문서 끝 (End of Document)**  
-CMP-XRAY-GUI-001 v1.0 | HnVue GUI Console SW 사이버보안 관리 계획서  
+CMP-XRAY-GUI-001 v1.0 | HnVue Console SW 사이버보안 관리 계획서  
 © [Company Name] — 대외비 (Confidential)

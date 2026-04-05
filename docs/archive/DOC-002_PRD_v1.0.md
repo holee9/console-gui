@@ -159,7 +159,7 @@ flowchart LR
 
 | 항목 | 내용 |
 |------|------|
-| **제품명** | HnVue HnVue Console SW |
+| **제품명** | HnVue Console SW |
 | **버전** | v1.0 (Phase 1) / v2.0 (Phase 2) |
 | **대상 플랫폼** | Windows 10 / Windows 11 (64-bit) |
 | **하드웨어 대상** | 의료용 진단 고정식·이동식 DR(Digital Radiography) X-Ray 촬영장치 |

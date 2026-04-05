@@ -1,5 +1,5 @@
 # 위험 관리 계획서 (Risk Management Plan)
-## HnVue GUI Console SW
+## HnVue Console SW
 
 ---
 
@@ -12,7 +12,7 @@
 | **승인자** | 의료기기 규제 책임자 (Regulatory Affairs Manager) |
 | **상태** | 초안 (Draft) |
 | **기준 규격** | ISO 14971:2019, IEC 62304:2006+AMD1:2015, IEC 80002-1:2009, FDA 21 CFR 820.30 |
-| **적용 제품** | HnVue GUI Console SW |
+| **적용 제품** | HnVue Console SW |
 | **SW 안전 등급** | IEC 62304 Class B |
 | **인허가 대상** | FDA 510(k), CE MDR 2017/745, KFDA (식약처) |
 
@@ -55,11 +55,11 @@
 
 ### 1.1 목적 (Purpose)
 
-본 위험 관리 계획서 (Risk Management Plan, 이하 RMP)는 ISO 14971:2019의 전 조항을 준수하여 HnVue GUI Console SW의 설계, 개발, 검증, 출시 및 시판 후 활동 전반에 걸쳐 체계적인 소프트웨어 위험 관리 (Software Risk Management) 활동을 정의하고 수행하기 위한 계획을 수립한다.
+본 위험 관리 계획서 (Risk Management Plan, 이하 RMP)는 ISO 14971:2019의 전 조항을 준수하여 HnVue Console SW의 설계, 개발, 검증, 출시 및 시판 후 활동 전반에 걸쳐 체계적인 소프트웨어 위험 관리 (Software Risk Management) 활동을 정의하고 수행하기 위한 계획을 수립한다.
 
 본 계획서는 다음을 목적으로 한다:
 
-1. **위험 식별 (Hazard Identification)**: HnVue GUI Console SW에서 발생 가능한 모든 위험 상황 식별
+1. **위험 식별 (Hazard Identification)**: HnVue Console SW에서 발생 가능한 모든 위험 상황 식별
 2. **위험 추정 (Risk Estimation)**: 심각도 및 발생 확률 기반의 정량적 위험 수준 평가
 3. **위험 평가 (Risk Evaluation)**: 위험 수용 기준에 따른 수용 가능 여부 판정
 4. **위험 통제 (Risk Control)**: 위험을 수용 가능한 수준으로 저감하는 통제 조치 정의 및 검증
@@ -69,7 +69,7 @@
 ### 1.2 범위 (Scope)
 
 **적용 대상 SW**:
-- **제품명**: HnVue GUI Console SW
+- **제품명**: HnVue Console SW
 - **버전 범위**: v1.0 이상 (Phase 1 기능 전체 포함)
 - **SW 구성요소**: 환자 관리 (PM), 촬영 워크플로우 (WF), 영상 표시/처리 (IP), 선량 관리 (DM), DICOM/통신 (DC), 시스템 관리 (SA), 사이버보안 (CS), UI 프레임워크 (UI), 데이터 영속성 (DB), CD/DVD Burning (CD) — MR-072, 인시던트 대응 (INC) — MR-037, IEC 81001-5-1, SW 업데이트 (UPD) — MR-039, FDA 524B
 - **HW 인터페이스**: X-Ray Generator 제어 인터페이스, AEC (Automatic Exposure Control) 인터페이스, 디텍터 (Detector) 인터페이스
@@ -387,7 +387,7 @@ flowchart LR
 ### 6.1 의도된 사용 및 합리적으로 예측 가능한 오용 (Intended Use and Foreseeable Misuse)
 
 **의도된 사용 (Intended Use)**:
-HnVue GUI Console SW는 의료 방사선사 또는 방사선과 의사가 의료용 진단 X-Ray 장치를 조작하기 위해 사용하는 GUI 소프트웨어이다. 환자 촬영 파라미터 설정, 영상 취득 제어, DICOM 전송, 영상 표시 및 선량 관리 기능을 포함한다.
+HnVue Console SW는 의료 방사선사 또는 방사선과 의사가 의료용 진단 X-Ray 장치를 조작하기 위해 사용하는 GUI 소프트웨어이다. 환자 촬영 파라미터 설정, 영상 취득 제어, DICOM 전송, 영상 표시 및 선량 관리 기능을 포함한다.
 
 **합리적으로 예측 가능한 오용 (Reasonably Foreseeable Misuse)**:
 - 비훈련된 사용자에 의한 고선량 촬영 프로토콜 사용
@@ -566,7 +566,7 @@ pie title 잔여 위험 수준 분포 (Residual Risk Distribution)
 | 워크플로우 효율화 | DICOM/RIS 연동으로 촬영 오류 감소 및 판독 시간 단축 |
 | 데이터 무결성 보장 | 디지털 보관으로 필름 분실/손상 위험 제거 |
 
-**결론**: 모든 위험에 대해 통제 조치 적용 후 잔여 위험은 ALARP 또는 수용 가능 수준으로 감소하였으며, 수용 불가 잔여 위험은 0건이다. HnVue GUI Console SW의 의료적 편익은 관리된 잔여 위험을 명확히 초과하므로 **전체 잔여 위험을 수용 가능한 것으로 판정한다.**
+**결론**: 모든 위험에 대해 통제 조치 적용 후 잔여 위험은 ALARP 또는 수용 가능 수준으로 감소하였으며, 수용 불가 잔여 위험은 0건이다. HnVue Console SW의 의료적 편익은 관리된 잔여 위험을 명확히 초과하므로 **전체 잔여 위험을 수용 가능한 것으로 판정한다.**
 
 ---
 
@@ -684,7 +684,7 @@ flowchart TD
 위험 관리 보고서 (Risk Management Report)
 ISO 14971:2019 §9 준거
 
-제품명: HnVue GUI Console SW
+제품명: HnVue Console SW
 문서 ID: RMR-XRAY-GUI-001
 버전: [버전]
 작성일: [날짜]

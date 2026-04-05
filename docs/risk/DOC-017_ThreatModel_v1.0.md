@@ -1,5 +1,5 @@
 # 위협 모델링 보고서 (Threat Model Report — STRIDE)
-## HnVue GUI Console SW
+## HnVue Console SW
 
 ---
 
@@ -8,7 +8,7 @@
 | 항목 | 내용 |
 |------|------|
 | **문서 ID** | TM-XRAY-GUI-001 |
-| **문서명** | HnVue GUI Console SW 위협 모델링 보고서 |
+| **문서명** | HnVue Console SW 위협 모델링 보고서 |
 | **버전** | v2.0 |
 | **작성일** | 2026-03-18 |
 | **작성자** | 사이버보안 팀 (Cybersecurity Team) |
@@ -54,7 +54,7 @@
 
 ### 1.1 목적 (Purpose)
 
-본 문서는 HnVue GUI Console SW에 대한 **STRIDE 기반 위협 모델링 (Threat Modeling)** 결과를 문서화한다. FDA Section 524B 및 FDA Premarket Cybersecurity Guidance (2023)의 위협 모델링 요구사항을 충족하기 위해 작성되었다.
+본 문서는 HnVue Console SW에 대한 **STRIDE 기반 위협 모델링 (Threat Modeling)** 결과를 문서화한다. FDA Section 524B 및 FDA Premarket Cybersecurity Guidance (2023)의 위협 모델링 요구사항을 충족하기 위해 작성되었다.
 
 **위협 모델링 목표**:
 1. 시스템 경계 및 공격 표면 (Attack Surface) 식별
@@ -66,7 +66,7 @@
 
 | 구분 | 내용 |
 |------|------|
-| **대상** | HnVue GUI Console SW v1.x Phase 1 |
+| **대상** | HnVue Console SW v1.x Phase 1 |
 | **방법론** | Microsoft STRIDE, CVSS v3.1, Attack Tree |
 | **범위 내** | GUI 애플리케이션, DICOM 네트워크, HL7/FHIR 인터페이스, 로컬 DB, 업데이트 메커니즘 |
 | **범위 외** | 병원 IT 인프라, X-Ray 발생기 하드웨어, Phase 2 클라우드 |

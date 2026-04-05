@@ -3,7 +3,7 @@
 | 항목 | 내용 |
 |------|------|
 | **문서 ID** | DOC-003a (SDP-RC-001) |
-| **문서 제목** | HnVue GUI Console SW 개발 업무 절차서 |
+| **문서 제목** | HnVue Console SW 개발 업무 절차서 |
 | **버전** | v1.0 |
 | **작성일** | 2026-03-16 |
 | **작성자** | SW 개발팀 |
@@ -57,7 +57,7 @@
 
 ### 1.1 문서 목적
 
-본 절차서는 **HnVue GUI Console SW** (이하 "대상 SW") 개발 프로젝트에서 수행하는 모든 소프트웨어 개발 활동의 표준 절차 (Standard Procedure)를 정의한다. 
+본 절차서는 **HnVue Console SW** (이하 "대상 SW") 개발 프로젝트에서 수행하는 모든 소프트웨어 개발 활동의 표준 절차 (Standard Procedure)를 정의한다. 
 
 본 문서는 다음 사항을 목적으로 한다:
 
@@ -90,7 +90,7 @@
 
 | 항목 | 내용 |
 |------|------|
-| **제품명** | HnVue GUI Console SW |
+| **제품명** | HnVue Console SW |
 | **용도** | 의료용 진단 X-Ray 촬영장치의 GUI Console Software |
 | **디바이스 분류** | 의료기기 소프트웨어 (Software as a Medical Device 구성요소) |
 | **SW Safety Class** | **Class B** (IEC 62304 기준: 중대하지 않은 부상 가능) |
@@ -1642,7 +1642,7 @@ flowchart LR
 
 ---
 
-*본 문서는 HnVue GUI Console SW 개발 프로젝트의 공식 절차서입니다. 무단 배포를 금합니다.*
+*본 문서는 HnVue Console SW 개발 프로젝트의 공식 절차서입니다. 무단 배포를 금합니다.*
 
 *© 2026 HnVue Development Team. All Rights Reserved.*
 

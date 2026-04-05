@@ -72,7 +72,7 @@ FDA는 다음 두 조건을 모두 충족할 때 SE를 인정한다:
 | **SW 버전** | [TBD - 개발 완료 후 작성] |
 | **의도된 사용 (Intended Use)** | HnVue Console SW (HnVue)는 면허를 보유한 의료 전문가(방사선사, 영상의학과 전문의)가 디지털 방사선(Digital Radiography, DR) 검출기(FPD: Flat Panel Detector)로 취득한 진단용 X-ray 영상을 획득, 표시, 처리(후처리 기능), 저장 및 PACS로 전송하기 위한 처방용(Rx Only) 의료기기 소프트웨어이다. |
 | **의도된 사용 (Indications for Use)** | 일반 진단 X-ray 촬영 (흉부, 복부, 사지, 척추 등); 성인 및 소아 환자; 병원 촬영실(촬영용) 및 영상 판독실(판독용) 환경 |
-| **연계 하드웨어** | HnVue FPD (Flat Panel Detector) 번들; X-ray Generator 제어 인터페이스 |
+| **연계 하드웨어** | H&abyz FPD (Flat Panel Detector); X-ray Generator 제어 인터페이스 |
 
 ---
 
@@ -135,7 +135,7 @@ Predicate Device는 다음 기준을 충족하는 제품으로 선정한다:
 | **대상 사용자** | 면허를 보유한 방사선사(Radiologic Technologist), 영상의학과 전문의(Radiologist) | 의료 전문가 | 의료 전문가 | ✅ 동등 예상 |
 | **처방용/OTC** | Rx Only (처방용) | Rx Only | Rx Only | ✅ 동등 예상 |
 | **사용 환경** | 병원 촬영실 (영상 획득), 영상 판독실 (판독) | 병원/클리닉 | 병원/클리닉 | ✅ 동등 예상 |
-| **연계 하드웨어** | HnVue FPD (DR 검출기); 전용 번들 또는 호환 DR 시스템 | [TBD] | [TBD] | [TBD] |
+| **연계 하드웨어** | H&abyz FPD (DR 검출기); 자사 또는 호환 DR 시스템 | [TBD] | [TBD] | [TBD] |
 
 **의도된 사용 비교 결론**: [TBD - Predicate 510(k) 번호 확인 및 원문 비교 후 기재. 예상: HnVue Console SW는 Predicate Device와 의도된 사용이 동일함.]
 

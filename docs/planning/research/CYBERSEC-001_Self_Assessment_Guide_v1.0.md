@@ -4,7 +4,7 @@
 **버전**: 1.0  
 **작성일**: 2026-03-31  
 **적용 제품**: HnVue Console SW (HnVue)  
-**시스템**: HnVue (Detector + Console SW 번들)  
+**시스템**: HnVue Console SW  
 **분류**: 내부 기술 문서 (사이버보안 검증 가이드)
 
 ---
@@ -36,7 +36,7 @@
 | 항목 | 내용 |
 |------|------|
 | 제품명 | HnVue Console SW (HnVue) |
-| 시스템 | HnVue (X-ray Detector + Console SW 번들) |
+| 시스템 | HnVue Console SW |
 | 기술스택 | WPF .NET 8, fo-dicom 5.x, SQLite, Serilog |
 | 프로토콜 | DICOM 3.0, PACS 연동 (DIMSE over TCP/IP) |
 | 소프트웨어 안전등급 | IEC 62304 Class B |

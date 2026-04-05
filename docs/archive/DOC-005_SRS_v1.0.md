@@ -59,7 +59,7 @@
 
 ### 1.1 목적 (Purpose)
 
-본 문서는 **HnVue HnVue Console SW**의 **소프트웨어 요구사항 명세서 (Software Requirements Specification, SRS)**로서, IEC 62304:2006+A1:2015 §5.2 "소프트웨어 요구사항 분석 (Software Requirements Analysis)"에서 요구하는 소프트웨어 요구사항 (Software Requirements, SWR)을 IEC 62304 §5.2의 12개 분류 체계에 따라 체계적으로 재편성한다.
+본 문서는 **HnVue Console SW**의 **소프트웨어 요구사항 명세서 (Software Requirements Specification, SRS)**로서, IEC 62304:2006+A1:2015 §5.2 "소프트웨어 요구사항 분석 (Software Requirements Analysis)"에서 요구하는 소프트웨어 요구사항 (Software Requirements, SWR)을 IEC 62304 §5.2의 12개 분류 체계에 따라 체계적으로 재편성한다.
 
 본 SRS는 FRS-XRAY-GUI-001 v1.0에서 정의된 기능 요구사항 (SWR-xxx)을 **IEC 62304 §5.2 규격 구조에 맞게 재분류·통합**하며, 다음의 목적을 수행한다:
 
@@ -164,7 +164,7 @@ flowchart TD
 ```mermaid
 graph TB
     classDef default fill:#444,stroke:#666,color:#fff
-    subgraph HnVue["HnVue HnVue Console SW (IEC 62304 Class B)"]
+    subgraph HnVue["HnVue Console SW (IEC 62304 Class B)"]
         direction TB
         subgraph UI["UI Layer (WPF/MVVM)"]
             PM_UI["환자 관리 UI\nPatient Management"]
