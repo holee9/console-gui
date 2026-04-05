@@ -8,6 +8,8 @@
     <ProjectReference Include="..\HnVue.Common\HnVue.Common.csproj" />
     <ProjectReference Include="..\HnVue.Data\HnVue.Data.csproj" />
     <ProjectReference Include="..\HnVue.Security\HnVue.Security.csproj" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
   </ItemGroup>
 
 </Project>
