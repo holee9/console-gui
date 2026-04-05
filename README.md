@@ -517,7 +517,7 @@ services.AddScoped<IDoseService, DoseService>();
 | **Hardware Integration** | **10%** | ❌ Simulator만 |
 | **1차 릴리즈 준비도** | **~45%** | ❌ 추가 개발 필요 |
 
-> 상세 분석: [ANALYSIS-001](docs/ANALYSIS-001_Phase1_Review_v1.0.md) | [ANALYSIS-002](docs/ANALYSIS-002_InternalizationContext_v1.0.md)
+> 상세 분석: [ANALYSIS-001](docs/ANALYSIS-001_Phase1_Review_v1.0.md) | [ANALYSIS-002](docs/ANALYSIS-002_InternalizationContext_v1.0.md) | [개발 전략 STRATEGY-002](docs/STRATEGY-002_ParallelDevelopment_v1.0.md)
 
 ### 개발 단계별 요약
 
@@ -1003,6 +1003,8 @@ git clone http://10.11.1.40:7001/DR_RnD/Console-GUI.git
 | **WPF UI 화면 완성** (PatientListView, WorkflowView, ImageViewerView, DoseMonitorView) | 3개월 | `★HnVUE UI 변경 최종안_251118.pptx` |
 | **Generator 실 프로토콜 구현** (RS-232/RS-422, Sedecal/CPI) | 2개월 | `GENERATOR-001` |
 
+> **개발 전략**: Phase 2 작업은 단독 vs 병렬 개발로 세분화되어 있다 → [STRATEGY-002 개발 작업 분류](docs/STRATEGY-002_ParallelDevelopment_v1.0.md)
+
 ### Phase 3: 품질 완성 & 인허가 준비
 
 | 작업 | 기간 |
@@ -1183,6 +1185,7 @@ docs/
 |------|------|------|
 | **ANALYSIS-001** | Phase 1 현황 분석 — 1차 릴리즈 준비도 평가, Critical Blockers, 2차 업그레이드 계획 | [docs/ANALYSIS-001_Phase1_Review_v1.0.md](docs/ANALYSIS-001_Phase1_Review_v1.0.md) |
 | **ANALYSIS-002** | 내재화 개발 컨텍스트 — 기존 HnVUE 관계 정의, 참고 문서 역할 분류, Gap 분석 계획, 현실적 로드맵 | [docs/ANALYSIS-002_InternalizationContext_v1.0.md](docs/ANALYSIS-002_InternalizationContext_v1.0.md) |
+| **STRATEGY-002** | 개발 작업 분류 — 단독 진행 vs 병렬 Worktree 개발, Wave 구조, 파일 소유권 매트릭스, Claude Code 실행 가이드 | [docs/STRATEGY-002_ParallelDevelopment_v1.0.md](docs/STRATEGY-002_ParallelDevelopment_v1.0.md) |
 
 ---
 
