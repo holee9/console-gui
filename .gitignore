@@ -139,6 +139,11 @@ logs/
 # ===========================================
 # Secrets and Credentials (CRITICAL)
 # ===========================================
+# .NET secrets files (contain credentials, must not be committed)
+appsettings.Development.json
+appsettings.*.json
+!appsettings.json
+
 # Environment files
 .env
 .env.*

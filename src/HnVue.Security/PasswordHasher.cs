@@ -47,7 +47,7 @@ public sealed class PasswordHasher
                 ? Result.Success()
                 : Result.Failure(ErrorCode.AuthenticationFailed, "Password verification failed.");
         }
-        catch (Exception)
+        catch (Exception ex) when (ex is not OutOfMemoryException)
         {
             // Treat malformed hashes as failed verification to avoid leaking information.
             return Result.Failure(ErrorCode.AuthenticationFailed, "Password verification failed.");
@@ -67,7 +67,7 @@ public sealed class PasswordHasher
         {
             return BCrypt.Net.BCrypt.PasswordNeedsRehash(hash, WorkFactor);
         }
-        catch (Exception)
+        catch (Exception ex) when (ex is not OutOfMemoryException)
         {
             return true;
         }

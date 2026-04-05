@@ -106,8 +106,11 @@ public sealed class WorkflowEngine : IWorkflowEngine
         // SWR-IP-RBAC-001: Enforce RBAC before radiation exposure.
         if (targetState == WorkflowState.Exposing)
         {
-            var currentRole = _securityContext.CurrentRole ?? UserRole.Radiographer;
-            var rbacResult = RbacPolicy.Check(currentRole, Permissions.PerformExposure);
+            if (!_securityContext.CurrentRole.HasValue)
+                return Result.Failure(ErrorCode.AuthenticationFailed,
+                    "User must be authenticated to perform exposure.");
+
+            var rbacResult = RbacPolicy.Check(_securityContext.CurrentRole.Value, Permissions.PerformExposure);
             if (rbacResult.IsFailure)
                 return rbacResult;
         }
@@ -157,7 +160,7 @@ public sealed class WorkflowEngine : IWorkflowEngine
             {
                 await _generator.AbortAsync(cancellationToken).ConfigureAwait(false);
             }
-            catch (Exception)
+            catch (Exception ex) when (ex is not OutOfMemoryException)
             {
                 // Escalate to emergency if generator abort fails
                 lock (_lock)

@@ -216,6 +216,53 @@ public sealed class WorkflowEngineTests
         eventArgs.Reason.Should().Be("Patient requested abort");
     }
 
+    // ── RBAC enforcement ─────────────────────────────────────────────────────
+
+    [Fact]
+    public async Task TransitionAsync_ToExposing_WhenRoleIsNull_ReturnsUnauthorized()
+    {
+        _securityContext.CurrentRole.Returns((UserRole?)null);
+        await _sut.StartAsync("P001", "1.2.3");
+        await _sut.TransitionAsync(WorkflowState.ProtocolLoaded);
+        await _sut.TransitionAsync(WorkflowState.ReadyToExpose);
+
+        var result = await _sut.TransitionAsync(WorkflowState.Exposing);
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.AuthenticationFailed);
+    }
+
+    [Theory]
+    [InlineData(UserRole.Admin)]
+    [InlineData(UserRole.Service)]
+    public async Task TransitionAsync_ToExposing_WhenRoleHasNoExposurePermission_ReturnsFailure(UserRole role)
+    {
+        _securityContext.CurrentRole.Returns(role);
+        await _sut.StartAsync("P001", "1.2.3");
+        await _sut.TransitionAsync(WorkflowState.ProtocolLoaded);
+        await _sut.TransitionAsync(WorkflowState.ReadyToExpose);
+
+        var result = await _sut.TransitionAsync(WorkflowState.Exposing);
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.InsufficientPermission);
+    }
+
+    [Theory]
+    [InlineData(UserRole.Radiographer)]
+    [InlineData(UserRole.Radiologist)]
+    public async Task TransitionAsync_ToExposing_WhenRoleHasExposurePermission_Succeeds(UserRole role)
+    {
+        _securityContext.CurrentRole.Returns(role);
+        await _sut.StartAsync("P001", "1.2.3");
+        await _sut.TransitionAsync(WorkflowState.ProtocolLoaded);
+        await _sut.TransitionAsync(WorkflowState.ReadyToExpose);
+
+        var result = await _sut.TransitionAsync(WorkflowState.Exposing);
+
+        result.IsSuccess.Should().BeTrue();
+    }
+
     // ── Full happy path ───────────────────────────────────────────────────────
 
     [Fact]
