@@ -45,4 +45,23 @@ public interface IDicomService
         string dicomFilePath,
         string printerAeTitle,
         CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Requests Storage Commitment from the PACS after a successful C-STORE.
+    /// Sends N-ACTION and awaits N-EVENT-REPORT to confirm persistent storage.
+    /// SWR-DC-057 (N-ACTION SCU) / SWR-DC-058 (N-EVENT-REPORT). Issue #23.
+    /// </summary>
+    /// <param name="sopClassUid">SOP Class UID of the stored instance.</param>
+    /// <param name="sopInstanceUid">SOP Instance UID of the stored instance.</param>
+    /// <param name="pacsAeTitle">Called AE title of the PACS that received the C-STORE.</param>
+    /// <param name="cancellationToken">Token to cancel the asynchronous operation.</param>
+    /// <returns>
+    /// A successful <see cref="Result"/> when the PACS confirms commitment,
+    /// or a failure with <see cref="ErrorCode.DicomStoreFailed"/> when commitment is refused.
+    /// </returns>
+    Task<Result> RequestStorageCommitmentAsync(
+        string sopClassUid,
+        string sopInstanceUid,
+        string pacsAeTitle,
+        CancellationToken cancellationToken = default);
 }

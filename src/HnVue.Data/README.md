@@ -11,10 +11,17 @@ EF Core를 사용한 데이터 영속성 계층입니다. SQLCipher 암호화 DB
 | 타입 | 설명 |
 |------|------|
 | `HnVueDbContext` | EF Core DbContext — 전체 데이터베이스 스키마 |
-| `PatientEntity / StudyEntity / UserEntity` | DB 엔티티 클래스 |
-| `AuditLogEntity / DoseRecordEntity / ImageEntity` | 감사·선량·이미지 엔티티 |
+| `PatientEntity` | 환자 DB 엔티티 |
+| `StudyEntity` | 스터디 DB 엔티티 |
+| `UserEntity` | 사용자 DB 엔티티 |
+| `AuditLogEntity` | 감사 로그 엔티티 |
+| `DoseRecordEntity` | 선량 기록 엔티티 |
+| `ImageEntity` | 이미지 엔티티 |
 | `EntityMapper` | 엔티티 ↔ 도메인 모델 매핑 |
-| `PatientRepository / StudyRepository / UserRepository / AuditRepository` | 리포지토리 구현체 |
+| `PatientRepository` | `IPatientRepository` 구현체 |
+| `StudyRepository` | `IStudyRepository` 구현체 |
+| `UserRepository` | `IUserRepository` 구현체 |
+| `AuditRepository` | `IAuditRepository` 구현체 |
 
 ## 의존성
 
@@ -30,7 +37,30 @@ EF Core를 사용한 데이터 영속성 계층입니다. SQLCipher 암호화 DB
 
 ## DI 등록
 
-`AddHnVueData()` — DbContext, 리포지토리 등록
+`AddHnVueData(connectionString)` — DbContext, 리포지토리 일괄 등록:
+
+```csharp
+services.AddHnVueData("Data Source=hnvue.db");
+```
+
+## 테스트 현황
+
+- 테스트 프로젝트: `tests/HnVue.Data.Tests`
+- 테스트 파일 및 메서드 수:
+  - `HnVueDbContextTests.cs`: 2개
+  - `ResultExtensionsTests.cs`: 4개
+  - `EntityInstantiationTests.cs`: 4개
+  - `ServiceCollectionExtensionsTests.cs`: 2개
+  - `EntityMapperTests.cs`: 14개
+  - `AuditRepositoryTests.cs`: 12개
+  - `PatientRepositoryTests.cs`: 13개
+  - `StudyRepositoryTests.cs`: 9개
+  - `UserRepositoryTests.cs`: 9개
+  - **합계: 69개**
+
+## SWR 참조
+
+- FDA §524B — 저장 데이터 암호화 (SQLCipher)
 
 ## 비고
 

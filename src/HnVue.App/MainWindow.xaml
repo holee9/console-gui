@@ -40,6 +40,13 @@
                                VerticalAlignment="Center"
                                Margin="0,0,16,0"
                                FontFamily="{StaticResource HnVue.FontFamily}"/>
+                    <!-- Emergency button — SWR-NF-UX-026 (Safety-Critical, HAZ-RAD) / Issue #11
+                         Must be visible at all times; 44×44px minimum; ≤2 touch access. -->
+                    <Button Content="EMERGENCY"
+                            Command="{Binding EmergencyCommand}"
+                            Background="Red" Foreground="White" FontWeight="Bold"
+                            MinWidth="110" MinHeight="36"
+                            Margin="0,0,8,0" VerticalAlignment="Center"/>
                     <Button Content="로그아웃"
                             Command="{Binding LogoutCommand}"
                             VerticalAlignment="Center"/>
@@ -87,6 +94,24 @@
                 <views:LoginView x:Name="LoginViewControl" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Border>
         </Grid>
+
+        <!-- TLS Inactive Warning Banner — SWR-CS-079 (Security-related, HAZ-SEC) / Issue #13
+             Permanent yellow banner shown when DICOM TLS is disabled. -->
+        <Border Grid.Row="1" VerticalAlignment="Top" Background="#FFFF00" Padding="8,3"
+                Visibility="{Binding IsTlsInactive, Converter={StaticResource BoolToVisibilityConverter}}"
+                Panel.ZIndex="100">
+            <TextBlock Text="⚠ TLS 비활성 — 네트워크 데이터가 암호화되지 않습니다. 설정에서 TLS를 활성화하십시오."
+                       Foreground="Black" FontWeight="SemiBold" FontSize="12"/>
+        </Border>
+
+        <!-- Session Timeout Countdown Banner — SWR-CS-075 (Security-related) / Issue #14
+             Shown in footer area 3 minutes before session expires. -->
+        <Border Grid.Row="2" Background="#CC4400" Padding="8,2"
+                Visibility="{Binding IsTimeoutWarningVisible, Converter={StaticResource BoolToVisibilityConverter}}"
+                Panel.ZIndex="100" VerticalAlignment="Bottom">
+            <TextBlock Text="{Binding SessionTimeoutCountdown, StringFormat='세션 만료까지 {0}초 — 활동하거나 다시 로그인하십시오'}"
+                       Foreground="White" FontSize="11"/>
+        </Border>
 
         <!-- Footer: Status Bar -->
         <StatusBar Grid.Row="2" Background="{StaticResource HnVue.Background.Card.Brush}">

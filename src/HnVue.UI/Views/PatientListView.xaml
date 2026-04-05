@@ -22,16 +22,39 @@
                     Width="80" Margin="8,0,0,0"/>
         </StackPanel>
 
+        <!-- IsLoading indicator — SWR-NF-UX-025 / Issue #16 -->
+        <ProgressBar Grid.Row="2" IsIndeterminate="True" Height="4" VerticalAlignment="Top"
+                     Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+        <!-- ErrorMessage display — SWR-NF-UX-025 / Issue #16 -->
+        <TextBlock Grid.Row="2" Text="{Binding ErrorMessage}" Foreground="Red" VerticalAlignment="Top"
+                   Margin="0,8,0,0"
+                   Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}"/>
+
+        <!-- Patient list — SelectPatientCommand bound via InputBindings / Issue #15 -->
         <ListBox Grid.Row="2"
                  ItemsSource="{Binding Patients}"
-                 SelectedItem="{Binding SelectedPatient}">
+                 SelectedItem="{Binding SelectedPatient}"
+                 Margin="0,20,0,0">
+            <ListBox.InputBindings>
+                <MouseBinding MouseAction="LeftDoubleClick"
+                              Command="{Binding SelectPatientCommand}"
+                              CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType=ListBox}}"/>
+            </ListBox.InputBindings>
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock>
-                        <Run Text="{Binding PatientId}"/>
-                        <Run Text=" — "/>
-                        <Run Text="{Binding Name}"/>
-                    </TextBlock>
+                    <StackPanel Orientation="Horizontal">
+                        <!-- Emergency badge — SWR-PM-013 / Issue #15 -->
+                        <Border Background="Red" CornerRadius="2" Padding="3,1" Margin="0,0,6,0"
+                                Visibility="{Binding IsEmergency, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <TextBlock Text="EMRG" Foreground="White" FontSize="10" FontWeight="Bold"/>
+                        </Border>
+                        <TextBlock>
+                            <Run Text="{Binding PatientId}"/>
+                            <Run Text=" — "/>
+                            <Run Text="{Binding Name}"/>
+                        </TextBlock>
+                    </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>

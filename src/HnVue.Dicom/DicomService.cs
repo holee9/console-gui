@@ -232,6 +232,78 @@ public sealed partial class DicomService : HnVue.Common.Abstractions.IDicomServi
         }
     }
 
+    /// <inheritdoc/>
+    /// <remarks>
+    /// SWR-DC-057: Sends N-ACTION (Action Type 1) to request Storage Commitment.
+    /// SWR-DC-058: Awaits N-EVENT-REPORT on inbound association (simplified: uses N-ACTION response status).
+    /// Note: Full N-EVENT-REPORT reception requires a listener SCP, which is out of scope for Phase 1.
+    /// Issue #23.
+    /// </remarks>
+    public async Task<Result> RequestStorageCommitmentAsync(
+        string sopClassUid,
+        string sopInstanceUid,
+        string pacsAeTitle,
+        CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrEmpty(_options.PacsHost))
+            return Result.Failure(ErrorCode.DicomConnectionFailed,
+                "PACS host is not configured for Storage Commitment.");
+
+        ArgumentNullException.ThrowIfNull(sopClassUid);
+        ArgumentNullException.ThrowIfNull(sopInstanceUid);
+        ArgumentNullException.ThrowIfNull(pacsAeTitle);
+
+        var transactionUid = DicomUID.Generate();
+        var commitDataset = new DicomDataset
+        {
+            { DicomTag.TransactionUID, transactionUid },
+        };
+
+        // Add the referenced SOP instance
+        var refSequence = new DicomSequence(DicomTag.ReferencedSOPSequence,
+            new DicomDataset
+            {
+                { DicomTag.ReferencedSOPClassUID, sopClassUid },
+                { DicomTag.ReferencedSOPInstanceUID, sopInstanceUid },
+            });
+        commitDataset.Add(refSequence);
+
+        string? errorMessage = null;
+
+        var actionRequest = new DicomNActionRequest(
+            DicomUID.StorageCommitmentPushModel,
+            DicomUID.StorageCommitmentPushModel,
+            actionTypeId: 1)
+        {
+            Dataset = commitDataset
+        };
+        actionRequest.OnResponseReceived = (_, response) =>
+        {
+            if (response.Status != DicomStatus.Success)
+                errorMessage = $"Storage Commitment N-ACTION failed: {response.Status}";
+        };
+
+        try
+        {
+            var client = CreateClient(_options.PacsHost, _options.PacsPort, _options.LocalAeTitle, pacsAeTitle);
+            await client.AddRequestAsync(actionRequest).ConfigureAwait(false);
+            await client.SendAsync(cancellationToken).ConfigureAwait(false);
+
+            return errorMessage is not null
+                ? Result.Failure(ErrorCode.DicomStoreFailed, errorMessage)
+                : Result.Success();
+        }
+        catch (DicomNetworkException ex)
+        {
+            return Result.Failure(ErrorCode.DicomConnectionFailed,
+                $"Storage Commitment network error: {ex.Message}");
+        }
+        catch (OperationCanceledException)
+        {
+            return Result.Failure(ErrorCode.OperationCancelled, "Storage Commitment was cancelled.");
+        }
+    }
+
     // ── Private helpers ────────────────────────────────────────────────────────
 
     private IDicomClient CreateClient(string host, int port, string callingAeTitle, string calledAeTitle)

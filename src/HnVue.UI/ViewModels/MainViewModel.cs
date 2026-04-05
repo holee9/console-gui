@@ -1,3 +1,4 @@
+using System.Timers;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HnVue.Common.Abstractions;
@@ -9,9 +10,14 @@ namespace HnVue.UI.ViewModels;
 /// ViewModel for the main shell window.
 /// Manages navigation state and the currently active view.
 /// </summary>
-public sealed partial class MainViewModel : ObservableObject
+public sealed partial class MainViewModel : ObservableObject, IDisposable
 {
+    private const int SessionTimeoutMinutes = 15;
+    private const int TimeoutWarningSeconds = 180; // warn at 3 minutes remaining
+
     private readonly ISecurityContext _securityContext;
+    private readonly System.Timers.Timer _sessionTimer;
+    private int _secondsUntilTimeout;
 
     /// <summary>Gets the ViewModel for the patient list panel.</summary>
     public PatientListViewModel PatientListViewModel { get; }
@@ -25,24 +31,43 @@ public sealed partial class MainViewModel : ObservableObject
     /// <summary>Gets the ViewModel for the dose display panel.</summary>
     public DoseDisplayViewModel DoseDisplayViewModel { get; }
 
+    /// <summary>Gets the ViewModel for the CD/DVD burn panel.</summary>
+    public CDBurnViewModel CDBurnViewModel { get; }
+
+    /// <summary>Gets the ViewModel for the system administration panel.</summary>
+    public SystemAdminViewModel SystemAdminViewModel { get; }
+
     /// <summary>Initialises a new instance of <see cref="MainViewModel"/>.</summary>
+    /// <remarks>Issue #17 — CDBurnViewModel and SystemAdminViewModel added to navigation graph.</remarks>
     public MainViewModel(
         ISecurityContext securityContext,
         PatientListViewModel patientListViewModel,
         ImageViewerViewModel imageViewerViewModel,
         WorkflowViewModel workflowViewModel,
-        DoseDisplayViewModel doseDisplayViewModel)
+        DoseDisplayViewModel doseDisplayViewModel,
+        CDBurnViewModel cdburnViewModel,
+        SystemAdminViewModel systemAdminViewModel)
     {
         ArgumentNullException.ThrowIfNull(securityContext, nameof(securityContext));
         ArgumentNullException.ThrowIfNull(patientListViewModel, nameof(patientListViewModel));
         ArgumentNullException.ThrowIfNull(imageViewerViewModel, nameof(imageViewerViewModel));
         ArgumentNullException.ThrowIfNull(workflowViewModel, nameof(workflowViewModel));
         ArgumentNullException.ThrowIfNull(doseDisplayViewModel, nameof(doseDisplayViewModel));
+        ArgumentNullException.ThrowIfNull(cdburnViewModel, nameof(cdburnViewModel));
+        ArgumentNullException.ThrowIfNull(systemAdminViewModel, nameof(systemAdminViewModel));
         _securityContext = securityContext;
         PatientListViewModel = patientListViewModel;
         ImageViewerViewModel = imageViewerViewModel;
         WorkflowViewModel = workflowViewModel;
         DoseDisplayViewModel = doseDisplayViewModel;
+        CDBurnViewModel = cdburnViewModel;
+        SystemAdminViewModel = systemAdminViewModel;
+
+        // Session timeout timer — SWR-CS-075 / Issue #14
+        _secondsUntilTimeout = SessionTimeoutMinutes * 60;
+        _sessionTimer = new System.Timers.Timer(1000);
+        _sessionTimer.Elapsed += OnSessionTimerTick;
+        _sessionTimer.AutoReset = true;
     }
 
     /// <summary>Gets or sets a value indicating whether the login view is visible.</summary>
@@ -70,6 +95,27 @@ public sealed partial class MainViewModel : ObservableObject
     private string _activeNavItem = string.Empty;
 
     /// <summary>
+    /// Gets or sets a value indicating whether TLS is inactive on the DICOM network connection.
+    /// When true, a permanent yellow warning banner is shown. SWR-CS-079 / Issue #13.
+    /// </summary>
+    [ObservableProperty]
+    private bool _isTlsInactive;
+
+    /// <summary>
+    /// Gets or sets a value indicating whether the session timeout warning countdown is visible.
+    /// True when ≤3 minutes remain before automatic session logout. SWR-CS-075 / Issue #14.
+    /// </summary>
+    [ObservableProperty]
+    private bool _isTimeoutWarningVisible;
+
+    /// <summary>
+    /// Gets or sets the remaining seconds displayed in the session timeout countdown banner.
+    /// SWR-CS-075 / Issue #14.
+    /// </summary>
+    [ObservableProperty]
+    private int _sessionTimeoutCountdown;
+
+    /// <summary>
     /// Reads authentication state from <see cref="ISecurityContext"/> and updates
     /// <see cref="IsAuthenticated"/>, <see cref="CurrentUsername"/>, and <see cref="CurrentRoleDisplay"/>.
     /// </summary>
@@ -91,6 +137,16 @@ public sealed partial class MainViewModel : ObservableObject
         IsMainContentVisible = true;
         ActiveNavItem = "PatientList";
         RefreshFromContext();
+        ResetSessionTimer();
+        _sessionTimer.Start();
+    }
+
+    /// <summary>Resets the session inactivity timer to the full timeout duration.</summary>
+    public void ResetSessionTimer()
+    {
+        _secondsUntilTimeout = SessionTimeoutMinutes * 60;
+        SessionTimeoutCountdown = 0;
+        IsTimeoutWarningVisible = false;
     }
 
     /// <summary>Navigates to the specified section.</summary>
@@ -99,12 +155,25 @@ public sealed partial class MainViewModel : ObservableObject
     private void Navigate(string navItem)
     {
         ActiveNavItem = navItem;
+        ResetSessionTimer();
+    }
+
+    /// <summary>
+    /// Initiates emergency patient registration workflow.
+    /// SWR-NF-UX-026 (Safety-Critical, HAZ-RAD). Issue #11.
+    /// </summary>
+    [RelayCommand]
+    private void Emergency()
+    {
+        ActiveNavItem = "Emergency";
+        // TODO: Navigate to emergency patient registration view when implemented.
     }
 
     /// <summary>Logs out the current user and returns to the login screen.</summary>
     [RelayCommand]
     private void Logout()
     {
+        _sessionTimer.Stop();
         _securityContext.ClearCurrentUser();
         CurrentUsername = null;
         CurrentRoleDisplay = null;
@@ -112,5 +181,30 @@ public sealed partial class MainViewModel : ObservableObject
         IsMainContentVisible = false;
         IsLoginVisible = true;
         ActiveNavItem = string.Empty;
+        IsTimeoutWarningVisible = false;
+    }
+
+    private void OnSessionTimerTick(object? sender, ElapsedEventArgs e)
+    {
+        _secondsUntilTimeout--;
+        if (_secondsUntilTimeout <= 0)
+        {
+            _sessionTimer.Stop();
+            // Auto-logout on timeout — SWR-CS-075
+            LogoutCommand.Execute(null);
+            return;
+        }
+
+        if (_secondsUntilTimeout <= TimeoutWarningSeconds)
+        {
+            IsTimeoutWarningVisible = true;
+            SessionTimeoutCountdown = _secondsUntilTimeout;
+        }
+    }
+
+    /// <inheritdoc/>
+    public void Dispose()
+    {
+        _sessionTimer.Dispose();
     }
 }

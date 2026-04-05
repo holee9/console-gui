@@ -22,9 +22,30 @@
             <TextBlock Text="{Binding ZoomFactor, StringFormat=P0}" VerticalAlignment="Center"/>
         </StackPanel>
 
-        <Border Grid.Row="2" Background="#1A1A1A" CornerRadius="4">
-            <TextBlock Text="Image Viewer" VerticalAlignment="Center" HorizontalAlignment="Center"
-                       Foreground="Gray" FontSize="16"/>
+        <!-- Loading indicator — SWR-IP-020 / Issue #16 -->
+        <ProgressBar Grid.Row="2" IsIndeterminate="True" Height="4" VerticalAlignment="Top"
+                     Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+        <!-- Error message — SWR-NF-UX-025 / Issue #16 -->
+        <TextBlock Grid.Row="2" Text="{Binding ErrorMessage}" Foreground="Red" VerticalAlignment="Top"
+                   Margin="0,8,0,0"
+                   Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}"/>
+
+        <!-- Image display area — SWR-IP-020 / Issue #10 -->
+        <Border Grid.Row="2" Background="#1A1A1A" CornerRadius="4" ClipToBounds="True">
+            <!-- Placeholder shown when no image is loaded -->
+            <TextBlock Text="No image loaded. Select a patient and complete acquisition workflow."
+                       VerticalAlignment="Center" HorizontalAlignment="Center"
+                       Foreground="Gray" FontSize="14" TextWrapping="Wrap" Margin="32"
+                       Visibility="{Binding IsImageLoaded, Converter={StaticResource BoolToVisibilityConverter},
+                                    ConverterParameter=Invert}"/>
         </Border>
+
+        <!-- Actual image rendered over the border when loaded -->
+        <Image Grid.Row="2"
+               Source="{Binding ImageSource}"
+               Stretch="Uniform"
+               RenderOptions.BitmapScalingMode="HighQuality"
+               Visibility="{Binding IsImageLoaded, Converter={StaticResource BoolToVisibilityConverter}}"/>
     </Grid>
 </UserControl>

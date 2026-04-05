@@ -55,4 +55,24 @@ public interface IImageProcessor
         ProcessedImage image,
         int deltaX,
         int deltaY);
+
+    /// <summary>
+    /// Rotates the image by the specified angle in degrees.
+    /// Supported angles: 90, 180, 270 (clockwise). Uses Bilinear interpolation.
+    /// SWR-IP-027.
+    /// </summary>
+    /// <param name="image">Source image to rotate.</param>
+    /// <param name="degrees">Rotation angle in degrees clockwise. Must be 90, 180, or 270.</param>
+    Result<ProcessedImage> Rotate(ProcessedImage image, int degrees);
+
+    /// <summary>
+    /// Flips the image horizontally or vertically.
+    /// SWR-IP-027.
+    /// </summary>
+    /// <param name="image">Source image to flip.</param>
+    /// <param name="horizontal">
+    /// When <see langword="true"/>, flips left-right.
+    /// When <see langword="false"/>, flips top-bottom.
+    /// </param>
+    Result<ProcessedImage> Flip(ProcessedImage image, bool horizontal);
 }

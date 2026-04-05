@@ -20,7 +20,9 @@ public sealed class MainViewModelTests
         new PatientListViewModel(Substitute.For<IPatientService>()),
         new ImageViewerViewModel(Substitute.For<IImageProcessor>()),
         new WorkflowViewModel(Substitute.For<IWorkflowEngine>(), Substitute.For<ISecurityContext>()),
-        new DoseDisplayViewModel(Substitute.For<IDoseService>()));
+        new DoseDisplayViewModel(Substitute.For<IDoseService>()),
+        new CDBurnViewModel(Substitute.For<ICDDVDBurnService>()),
+        new SystemAdminViewModel(Substitute.For<ISystemAdminService>(), Substitute.For<ISecurityContext>()));
 
     // ── Constructor guard test ───────────────────────────────────────────────
 
@@ -32,7 +34,9 @@ public sealed class MainViewModelTests
             new PatientListViewModel(Substitute.For<IPatientService>()),
             new ImageViewerViewModel(Substitute.For<IImageProcessor>()),
             new WorkflowViewModel(Substitute.For<IWorkflowEngine>(), Substitute.For<ISecurityContext>()),
-            new DoseDisplayViewModel(Substitute.For<IDoseService>()));
+            new DoseDisplayViewModel(Substitute.For<IDoseService>()),
+            new CDBurnViewModel(Substitute.For<ICDDVDBurnService>()),
+            new SystemAdminViewModel(Substitute.For<ISystemAdminService>(), Substitute.For<ISecurityContext>()));
         act.Should().Throw<ArgumentNullException>().WithParameterName("securityContext");
     }
 

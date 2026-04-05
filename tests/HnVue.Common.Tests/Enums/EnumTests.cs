@@ -7,17 +7,19 @@ namespace HnVue.Common.Tests.Enums;
 public sealed class EnumTests
 {
     [Fact]
-    public void SafeState_HasFourValues()
+    public void SafeState_HasFiveValues()
     {
+        // SafeState.Warning added for WARN interlock level. Issue #21.
         var values = Enum.GetValues<SafeState>();
-        values.Should().HaveCount(4);
+        values.Should().HaveCount(5);
     }
 
     [Fact]
     public void SafeState_ContainsExpectedMembers()
     {
+        // Warning added for SWR-WF-023 WARN interlock. Issue #21.
         Enum.GetNames<SafeState>().Should().BeEquivalentTo(
-            new[] { "Idle", "Degraded", "Blocked", "Emergency" });
+            new[] { "Idle", "Warning", "Degraded", "Blocked", "Emergency" });
     }
 
     [Fact]

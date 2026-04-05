@@ -43,6 +43,10 @@ public sealed class ImageProcessor : IImageProcessor
             DicomFile? dicomFile = null;
             try
             {
+                // fo-dicom 5.x OpenAsync() does not expose a CancellationToken parameter.
+                // Check cancellation before the I/O call; the operation itself is not interruptible mid-flight.
+                // Issue #6 — partial fix; full cancellability requires fo-dicom 6+.
+                cancellationToken.ThrowIfCancellationRequested();
                 dicomFile = await DicomFile.OpenAsync(rawImagePath).ConfigureAwait(false);
             }
             catch (DicomException)
@@ -67,6 +71,12 @@ public sealed class ImageProcessor : IImageProcessor
     }
 
     /// <inheritdoc/>
+    /// <remarks>
+    /// SWR-IP-022: Applies the DICOM standard Window/Level LUT to the pixel buffer.
+    /// For 8-bit grayscale pixel data, each byte is remapped according to:
+    ///   output = clamp((input - (center - width/2)) / width, 0, 1) × 255
+    /// Issue #2.
+    /// </remarks>
     public Result<ProcessedImage> ApplyWindowLevel(
         ProcessedImage image,
         double windowCenter,
@@ -79,14 +89,27 @@ public sealed class ImageProcessor : IImageProcessor
                 ErrorCode.ImageProcessingFailed,
                 $"Window width must be at least {MinWindowWidth}.");
 
+        // Apply DICOM standard W/L linear rescale to 8-bit output buffer.
+        var srcPixels = image.PixelData;
+        var mapped = new byte[srcPixels.Length];
+        double lowerBound = windowCenter - windowWidth / 2.0;
+
+        for (int i = 0; i < srcPixels.Length; i++)
+        {
+            double normalised = (srcPixels[i] - lowerBound) / windowWidth;
+            mapped[i] = (byte)(Math.Clamp(normalised, 0.0, 1.0) * 255.0);
+        }
+
         var updated = new ProcessedImage(
             width: image.Width,
             height: image.Height,
             bitsPerPixel: image.BitsPerPixel,
-            pixelData: image.PixelData,
+            pixelData: mapped,
             windowCenter: windowCenter,
             windowWidth: windowWidth,
-            filePath: image.FilePath);
+            filePath: image.FilePath,
+            panOffsetX: image.PanOffsetX,
+            panOffsetY: image.PanOffsetY);
 
         return Result.Success(updated);
     }
@@ -108,12 +131,10 @@ public sealed class ImageProcessor : IImageProcessor
         if (newWidth < 1) newWidth = 1;
         if (newHeight < 1) newHeight = 1;
 
-        var resampledPixels = BilinearResample(
-            image.PixelData,
-            image.Width,
-            image.Height,
-            newWidth,
-            newHeight);
+        // SWR-IP-024: Bicubic for upscaling (factor > 1), Area Average for downscaling. Issue #4.
+        var resampledPixels = factor > 1.0
+            ? BicubicResample(image.PixelData, image.Width, image.Height, newWidth, newHeight)
+            : AreaAverageResample(image.PixelData, image.Width, image.Height, newWidth, newHeight);
 
         var zoomed = new ProcessedImage(
             width: newWidth,
@@ -128,12 +149,16 @@ public sealed class ImageProcessor : IImageProcessor
     }
 
     /// <inheritdoc/>
+    /// <remarks>
+    /// SWR-IP-026: Pan is a display-space operation.
+    /// Pixel data is unchanged; the cumulative offset is carried on PanOffsetX/PanOffsetY.
+    /// The rendering layer (WriteableBitmap viewport) uses these offsets for sub-pixel scrolling.
+    /// Issue #1.
+    /// </remarks>
     public Result<ProcessedImage> Pan(ProcessedImage image, int deltaX, int deltaY)
     {
         ArgumentNullException.ThrowIfNull(image);
 
-        // Pan is a display-space operation; dimensions and pixel data are unchanged.
-        // The offset is embedded in the returned image's metadata for the rendering layer.
         var panned = new ProcessedImage(
             width: image.Width,
             height: image.Height,
@@ -141,9 +166,79 @@ public sealed class ImageProcessor : IImageProcessor
             pixelData: image.PixelData,
             windowCenter: image.WindowCenter,
             windowWidth: image.WindowWidth,
-            filePath: image.FilePath);
+            filePath: image.FilePath,
+            panOffsetX: image.PanOffsetX + deltaX,
+            panOffsetY: image.PanOffsetY + deltaY);
 
         return Result.Success(panned);
+    }
+
+    /// <inheritdoc/>
+    /// <remarks>
+    /// SWR-IP-027: Supports 90°, 180°, 270° clockwise rotation via pixel coordinate mapping.
+    /// Issue #3.
+    /// </remarks>
+    public Result<ProcessedImage> Rotate(ProcessedImage image, int degrees)
+    {
+        ArgumentNullException.ThrowIfNull(image);
+
+        if (degrees is not (90 or 180 or 270))
+            return Result.Failure<ProcessedImage>(
+                ErrorCode.ImageProcessingFailed, "Rotation angle must be 90, 180, or 270 degrees.");
+
+        int srcW = image.Width, srcH = image.Height;
+        int dstW = degrees == 180 ? srcW : srcH;
+        int dstH = degrees == 180 ? srcH : srcW;
+        var src = image.PixelData;
+        var dst = new byte[src.Length];
+
+        for (int dstY = 0; dstY < dstH; dstY++)
+        {
+            for (int dstX = 0; dstX < dstW; dstX++)
+            {
+                int srcX, srcY;
+                switch (degrees)
+                {
+                    case 90:  srcX = dstY; srcY = srcH - 1 - dstX; break;
+                    case 180: srcX = srcW - 1 - dstX; srcY = srcH - 1 - dstY; break;
+                    default:  srcX = srcW - 1 - dstY; srcY = dstX; break; // 270
+                }
+                dst[dstY * dstW + dstX] = src[srcY * srcW + srcX];
+            }
+        }
+
+        return Result.Success(new ProcessedImage(
+            dstW, dstH, image.BitsPerPixel, dst,
+            image.WindowCenter, image.WindowWidth, image.FilePath));
+    }
+
+    /// <inheritdoc/>
+    /// <remarks>
+    /// SWR-IP-027: Horizontal (left-right) and vertical (top-bottom) flip.
+    /// Issue #3.
+    /// </remarks>
+    public Result<ProcessedImage> Flip(ProcessedImage image, bool horizontal)
+    {
+        ArgumentNullException.ThrowIfNull(image);
+
+        int w = image.Width, h = image.Height;
+        var src = image.PixelData;
+        var dst = new byte[src.Length];
+
+        for (int y = 0; y < h; y++)
+        {
+            for (int x = 0; x < w; x++)
+            {
+                int srcIdx = horizontal
+                    ? y * w + (w - 1 - x)
+                    : (h - 1 - y) * w + x;
+                dst[y * w + x] = src[srcIdx];
+            }
+        }
+
+        return Result.Success(new ProcessedImage(
+            w, h, image.BitsPerPixel, dst,
+            image.WindowCenter, image.WindowWidth, image.FilePath));
     }
 
     // ── Private helpers ────────────────────────────────────────────────────────
@@ -179,12 +274,18 @@ public sealed class ImageProcessor : IImageProcessor
         byte[] pixelBytes = ExtractDicomPixelBytes(dataset);
 
         // Normalise 16-bit pixel data to 8-bit display bytes for rendering.
+        // Preserve original 16-bit buffer in RawPixelData16 for ROI statistics
+        // and brightness offset operations (SWR-IP-036, SWR-IP-052). Issue #8.
         byte[] displayPixels;
         int effectiveBitsPerPixel;
+        ushort[]? rawPixelData16 = null;
 
         if (bitsAllocated == 16)
         {
-            displayPixels = Normalize16BitTo8Bit(pixelBytes, rows * columns);
+            // Preserve raw 16-bit values before normalisation.
+            int pixelCount = rows * columns;
+            rawPixelData16 = ExtractRaw16BitValues(pixelBytes, pixelCount);
+            displayPixels = Normalize16BitTo8Bit(pixelBytes, pixelCount);
             effectiveBitsPerPixel = 8;
         }
         else
@@ -232,9 +333,27 @@ public sealed class ImageProcessor : IImageProcessor
             pixelData: displayPixels,
             windowCenter: windowCenter,
             windowWidth: windowWidth,
-            filePath: rawImagePath);
+            filePath: rawImagePath)
+        {
+            RawPixelData16 = rawPixelData16
+        };
 
         return Result.Success(image);
+    }
+
+    /// <summary>
+    /// Extracts raw 16-bit pixel values from a little-endian byte buffer.
+    /// Used to preserve original DR/CR pixel data before 8-bit normalisation.
+    /// SWR-IP-036 (ROI statistics 0–65535 range) / Issue #8.
+    /// </summary>
+    private static ushort[] ExtractRaw16BitValues(byte[] rawBytes, int pixelCount)
+    {
+        if (rawBytes.Length < pixelCount * 2)
+            pixelCount = rawBytes.Length / 2;
+        var values = new ushort[pixelCount];
+        for (int i = 0; i < pixelCount; i++)
+            values[i] = BitConverter.ToUInt16(rawBytes, i * 2);
+        return values;
     }
 
     /// <summary>
@@ -267,12 +386,24 @@ public sealed class ImageProcessor : IImageProcessor
             windowWidth = 256.0;
         }
 
-        // Width/height are derived from a simple square estimate for raw files;
-        // a production implementation would parse the proprietary header.
-        var pixelCount = fileBytes.Length;
-        var side = (int)Math.Sqrt(pixelCount);
-        var width = side > 0 ? side : 1;
-        var height = pixelCount / width;
+        // Width/height: prefer caller-supplied dimensions (SWR-IP-020 / Issue #7).
+        // Fallback: square-root estimation (inaccurate for non-square DR images).
+        int width, height;
+        if (parameters.RawImageWidth.HasValue && parameters.RawImageHeight.HasValue
+            && parameters.RawImageWidth.Value > 0 && parameters.RawImageHeight.Value > 0)
+        {
+            width = parameters.RawImageWidth.Value;
+            height = parameters.RawImageHeight.Value;
+        }
+        else
+        {
+            // Fallback: assumes square image (incorrect for most DR/CR images).
+            // Callers should always provide explicit dimensions for production raw files.
+            var pixelCount = fileBytes.Length;
+            var side = (int)Math.Sqrt(pixelCount);
+            width = side > 0 ? side : 1;
+            height = pixelCount / width;
+        }
 
         var image = new ProcessedImage(
             width: width,
@@ -428,6 +559,89 @@ public sealed class ImageProcessor : IImageProcessor
             }
         }
 
+        return output;
+    }
+
+    /// <summary>
+    /// Resamples using Bicubic interpolation (Catmull-Rom kernel).
+    /// Used for upscaling (factor &gt; 1) per SWR-IP-024. Issue #4.
+    /// </summary>
+    private static byte[] BicubicResample(
+        byte[] source, int srcWidth, int srcHeight, int dstWidth, int dstHeight)
+    {
+        if (source.Length == 0 || srcWidth <= 0 || srcHeight <= 0)
+            return new byte[dstWidth * dstHeight];
+
+        var output = new byte[dstWidth * dstHeight];
+        double xScale = (double)srcWidth / dstWidth;
+        double yScale = (double)srcHeight / dstHeight;
+
+        static double CubicWeight(double t)
+        {
+            t = Math.Abs(t);
+            return t < 1.0
+                ? 1.5 * t * t * t - 2.5 * t * t + 1.0
+                : t < 2.0 ? -0.5 * t * t * t + 2.5 * t * t - 4.0 * t + 2.0 : 0.0;
+        }
+
+        for (int dstY = 0; dstY < dstHeight; dstY++)
+        {
+            for (int dstX = 0; dstX < dstWidth; dstX++)
+            {
+                double srcX = (dstX + 0.5) * xScale - 0.5;
+                double srcY = (dstY + 0.5) * yScale - 0.5;
+                int x0 = (int)Math.Floor(srcX);
+                int y0 = (int)Math.Floor(srcY);
+                double sum = 0, weightSum = 0;
+                for (int m = -1; m <= 2; m++)
+                    for (int n = -1; n <= 2; n++)
+                    {
+                        int sx = Math.Clamp(x0 + n, 0, srcWidth - 1);
+                        int sy = Math.Clamp(y0 + m, 0, srcHeight - 1);
+                        double w = CubicWeight(srcX - (x0 + n)) * CubicWeight(srcY - (y0 + m));
+                        sum += source[sy * srcWidth + sx] * w;
+                        weightSum += w;
+                    }
+                output[dstY * dstWidth + dstX] = (byte)Math.Clamp(
+                    weightSum > 0 ? Math.Round(sum / weightSum) : 0, 0, 255);
+            }
+        }
+        return output;
+    }
+
+    /// <summary>
+    /// Resamples using Area Average (box filter) for downscaling.
+    /// Prevents aliasing artefacts per SWR-IP-024. Issue #4.
+    /// </summary>
+    private static byte[] AreaAverageResample(
+        byte[] source, int srcWidth, int srcHeight, int dstWidth, int dstHeight)
+    {
+        if (source.Length == 0 || srcWidth <= 0 || srcHeight <= 0)
+            return new byte[dstWidth * dstHeight];
+
+        var output = new byte[dstWidth * dstHeight];
+        double xScale = (double)srcWidth / dstWidth;
+        double yScale = (double)srcHeight / dstHeight;
+
+        for (int dstY = 0; dstY < dstHeight; dstY++)
+        {
+            int sy0 = (int)Math.Floor(dstY * yScale);
+            int sy1 = Math.Min((int)Math.Ceiling((dstY + 1) * yScale), srcHeight);
+            for (int dstX = 0; dstX < dstWidth; dstX++)
+            {
+                int sx0 = (int)Math.Floor(dstX * xScale);
+                int sx1 = Math.Min((int)Math.Ceiling((dstX + 1) * xScale), srcWidth);
+                double sum = 0;
+                int count = 0;
+                for (int sy = sy0; sy < sy1; sy++)
+                    for (int sx = sx0; sx < sx1; sx++)
+                    {
+                        sum += source[sy * srcWidth + sx];
+                        count++;
+                    }
+                output[dstY * dstWidth + dstX] = (byte)Math.Round(count > 0 ? sum / count : 0);
+            }
+        }
         return output;
     }
 

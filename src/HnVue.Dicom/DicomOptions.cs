@@ -42,6 +42,17 @@ public sealed class DicomOptions
     /// <summary>Gets or sets the TCP port of the DICOM print SCP.</summary>
     public int PrinterPort { get; set; } = 104;
 
+    // ── MPPS (N-CREATE / N-SET destination) — SWR-DC-055/056 ──────────────────
+
+    /// <summary>Gets or sets the called AE title of the MPPS SCP.</summary>
+    public string MppsAeTitle { get; set; } = string.Empty;
+
+    /// <summary>Gets or sets the hostname or IP address of the MPPS SCP.</summary>
+    public string MppsHost { get; set; } = string.Empty;
+
+    /// <summary>Gets or sets the TCP port of the MPPS SCP.</summary>
+    public int MppsPort { get; set; } = 104;
+
     // ── TLS ────────────────────────────────────────────────────────────────────
 
     /// <summary>

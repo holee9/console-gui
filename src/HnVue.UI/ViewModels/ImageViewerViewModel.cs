@@ -1,3 +1,5 @@
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HnVue.Common.Abstractions;
@@ -53,6 +55,14 @@ public sealed partial class ImageViewerViewModel : ObservableObject
     private bool _isBusy;
 
     /// <summary>
+    /// Gets or sets the WPF image source rendered in the Image control.
+    /// Built from <see cref="ProcessedImage.PixelData"/> as an 8-bit grayscale <see cref="WriteableBitmap"/>.
+    /// SWR-IP-020 / Issue #10.
+    /// </summary>
+    [ObservableProperty]
+    private BitmapSource? _imageSource;
+
+    /// <summary>
     /// Loads the image at the specified file path and applies default windowing.
     /// </summary>
     /// <param name="imagePath">Absolute path to the raw DICOM or proprietary image file.</param>
@@ -76,6 +86,7 @@ public sealed partial class ImageViewerViewModel : ObservableObject
                 WindowWidth = result.Value.WindowWidth;
                 ZoomFactor = DefaultZoom;
                 IsImageLoaded = true;
+                ImageSource = BuildBitmapSource(result.Value);
             }
             else
             {
@@ -135,6 +146,30 @@ public sealed partial class ImageViewerViewModel : ObservableObject
         if (result.IsSuccess)
         {
             _currentImage = result.Value;
+            ImageSource = BuildBitmapSource(result.Value);
         }
+    }
+
+    /// <summary>
+    /// Converts a <see cref="ProcessedImage"/> pixel buffer into a WPF <see cref="BitmapSource"/>.
+    /// Assumes 8-bit grayscale output from <see cref="IImageProcessor"/>.
+    /// SWR-IP-020 / Issue #10.
+    /// </summary>
+    private static BitmapSource BuildBitmapSource(ProcessedImage image)
+    {
+        // PixelData is normalised to 8-bit grayscale by ImageProcessor.
+        // Stride = width × bytes-per-pixel (1 byte for Gray8).
+        int stride = image.Width * 1;
+        var bitmap = BitmapSource.Create(
+            image.Width,
+            image.Height,
+            dpiX: 96,
+            dpiY: 96,
+            PixelFormats.Gray8,
+            palette: null,
+            image.PixelData,
+            stride);
+        bitmap.Freeze(); // Required for cross-thread access from UI thread.
+        return bitmap;
     }
 }

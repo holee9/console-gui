@@ -14,6 +14,8 @@ public sealed class ProcessedImage
     /// <param name="windowCenter">DICOM window centre used for display mapping.</param>
     /// <param name="windowWidth">DICOM window width used for display mapping.</param>
     /// <param name="filePath">Optional file system path of the source image file.</param>
+    /// <param name="panOffsetX">Cumulative horizontal pan offset in pixels. SWR-IP-026.</param>
+    /// <param name="panOffsetY">Cumulative vertical pan offset in pixels. SWR-IP-026.</param>
     public ProcessedImage(
         int width,
         int height,
@@ -21,7 +23,9 @@ public sealed class ProcessedImage
         byte[] pixelData,
         double windowCenter,
         double windowWidth,
-        string? filePath = null)
+        string? filePath = null,
+        int panOffsetX = 0,
+        int panOffsetY = 0)
     {
         Width = width;
         Height = height;
@@ -30,6 +34,8 @@ public sealed class ProcessedImage
         WindowCenter = windowCenter;
         WindowWidth = windowWidth;
         FilePath = filePath;
+        PanOffsetX = panOffsetX;
+        PanOffsetY = panOffsetY;
     }
 
     /// <summary>Gets the image width in pixels.</summary>
@@ -52,4 +58,24 @@ public sealed class ProcessedImage
 
     /// <summary>Gets the optional file system path of the source image file.</summary>
     public string? FilePath { get; }
+
+    /// <summary>
+    /// Gets the cumulative horizontal pan offset in pixels from the image origin.
+    /// SWR-IP-026 / Issue #1.
+    /// </summary>
+    public int PanOffsetX { get; }
+
+    /// <summary>
+    /// Gets the cumulative vertical pan offset in pixels from the image origin.
+    /// SWR-IP-026 / Issue #1.
+    /// </summary>
+    public int PanOffsetY { get; }
+
+    /// <summary>
+    /// Gets the 16-bit raw pixel buffer preserved from DICOM input, or <see langword="null"/>
+    /// when the source was 8-bit or the 16-bit data was not retained.
+    /// Required for ROI statistics (SWR-IP-036, 0–65535 range) and brightness offset operations
+    /// (SWR-IP-052). SWR-DC-055 / Issue #8.
+    /// </summary>
+    public ushort[]? RawPixelData16 { get; init; }
 }

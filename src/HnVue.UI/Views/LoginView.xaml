@@ -12,11 +12,17 @@
             <TextBlock Text="Username" Margin="0,0,0,4"/>
             <TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,8"/>
             <TextBlock Text="Password" Margin="0,0,0,4"/>
-            <PasswordBox x:Name="PasswordBox" Margin="0,0,0,8"/>
+            <PasswordBox x:Name="PasswordBox" Margin="0,0,0,8"
+                         PasswordChanged="PasswordBox_PasswordChanged"/>
             <TextBlock Text="{Binding ErrorMessage}" Foreground="Red" TextWrapping="Wrap"
                        Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}"
                        Margin="0,0,0,8"/>
-            <Button Content="Login" Command="{Binding LoginCommand}" Height="36"/>
+            <Button Content="Login" Command="{Binding LoginCommand}" Height="36"
+                    IsEnabled="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter},
+                                ConverterParameter=Invert}"/>
+            <!-- IsLoading indicator — Issue #16 -->
+            <ProgressBar IsIndeterminate="True" Height="4" Margin="0,4,0,0"
+                         Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}"/>
         </StackPanel>
     </Grid>
 </UserControl>

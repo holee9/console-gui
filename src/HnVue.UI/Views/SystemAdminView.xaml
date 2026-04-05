@@ -16,8 +16,13 @@
         <TextBlock Grid.Row="0" Text="System Administration" FontSize="18" FontWeight="Bold" Margin="0,0,0,12"/>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,8">
-            <Button Content="Load Settings" Command="{Binding LoadSettingsCommand}" Width="120" Margin="0,0,8,0"/>
-            <Button Content="Save Settings" Command="{Binding SaveSettingsCommand}" Width="120"/>
+            <Button Content="Load Settings" Command="{Binding LoadSettingsCommand}" Width="120" Margin="0,0,8,0"
+                    IsEnabled="{Binding IsAdminUser}"/>
+            <Button Content="Save Settings" Command="{Binding SaveSettingsCommand}" Width="120"
+                    IsEnabled="{Binding IsAdminUser}"/>
+            <!-- IsBusy indicator — Issue #16 -->
+            <ProgressBar IsIndeterminate="True" Width="80" Height="20" Margin="12,0,0,0"
+                         Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibilityConverter}}"/>
         </StackPanel>
 
         <StackPanel Grid.Row="2" Margin="0,0,0,8">
@@ -30,11 +35,15 @@
         <GroupBox Grid.Row="3" Header="DICOM Settings">
             <StackPanel Margin="8">
                 <TextBlock Text="PACS AE Title"/>
-                <TextBox Text="{Binding Settings.Dicom.PacsAeTitle}" Margin="0,0,0,8"/>
+                <!-- IsAdminUser locks — Issue #16 -->
+                <TextBox Text="{Binding Settings.Dicom.PacsAeTitle}" Margin="0,0,0,8"
+                         IsEnabled="{Binding IsAdminUser}"/>
                 <TextBlock Text="PACS Host"/>
-                <TextBox Text="{Binding Settings.Dicom.PacsHost}" Margin="0,0,0,8"/>
+                <TextBox Text="{Binding Settings.Dicom.PacsHost}" Margin="0,0,0,8"
+                         IsEnabled="{Binding IsAdminUser}"/>
                 <TextBlock Text="PACS Port"/>
-                <TextBox Text="{Binding Settings.Dicom.PacsPort}" Margin="0,0,0,8"/>
+                <TextBox Text="{Binding Settings.Dicom.PacsPort}" Margin="0,0,0,8"
+                         IsEnabled="{Binding IsAdminUser}"/>
             </StackPanel>
         </GroupBox>
     </Grid>

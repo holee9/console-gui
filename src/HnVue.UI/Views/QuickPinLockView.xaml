@@ -1,0 +1,49 @@
+<UserControl x:Class="HnVue.UI.Views.QuickPinLockView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="400" d:DesignWidth="320">
+    <!-- Quick PIN lock overlay — SWR-CS-076 (Safety+Security-related) / Issue #12 -->
+    <Grid Background="#CC000000">
+        <Border VerticalAlignment="Center" HorizontalAlignment="Center"
+                Background="#1B4F8A" CornerRadius="8" Padding="32" Width="300">
+            <StackPanel>
+                <TextBlock Text="세션 잠금" FontSize="20" FontWeight="Bold"
+                           Foreground="White" HorizontalAlignment="Center" Margin="0,0,0,8"/>
+
+                <TextBlock Text="{Binding LockedUsername, StringFormat='사용자: {0}'}"
+                           Foreground="#B0BEC5" HorizontalAlignment="Center" Margin="0,0,0,16"/>
+
+                <TextBlock Text="Quick PIN 입력 (4~6자리)" Foreground="White" Margin="0,0,0,4"/>
+
+                <PasswordBox x:Name="PinBox" Margin="0,0,0,8"
+                             PasswordChanged="PinBox_PasswordChanged"
+                             MaxLength="6"/>
+
+                <!-- Error message -->
+                <TextBlock Text="{Binding ErrorMessage}" Foreground="#F44336"
+                           TextWrapping="Wrap" Margin="0,0,0,8"
+                           Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}"/>
+
+                <!-- Remaining attempts indicator -->
+                <TextBlock Foreground="#FF9800" Margin="0,0,0,8"
+                           Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}">
+                    <Run Text="남은 시도: "/>
+                    <Run Text="{Binding RemainingAttempts}"/>
+                    <Run Text="회"/>
+                </TextBlock>
+
+                <!-- Loading indicator -->
+                <ProgressBar IsIndeterminate="True" Height="4" Margin="0,0,0,8"
+                             Visibility="{Binding IsVerifying, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+                <Button Content="확인" Command="{Binding VerifyPinAsyncCommand}"
+                        Height="40" FontSize="14"
+                        IsEnabled="{Binding IsVerifying, Converter={StaticResource BoolToVisibilityConverter},
+                                    ConverterParameter=Invert}"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

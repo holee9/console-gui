@@ -1,3 +1,4 @@
+using System.Windows;
 using HnVue.UI.ViewModels;
 
 namespace HnVue.UI.Views;
@@ -16,5 +17,14 @@ public partial class LoginView : System.Windows.Controls.UserControl
     public LoginView(LoginViewModel viewModel) : this()
     {
         DataContext = viewModel;
+    }
+
+    // WPF PasswordBox.Password is not a DependencyProperty for security reasons,
+    // so {Binding Password} does not work. Forward changes via code-behind.
+    // SWR-CS-070 / Issue #9
+    private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+    {
+        if (DataContext is LoginViewModel vm)
+            vm.Password = PasswordBox.Password;
     }
 }

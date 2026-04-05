@@ -157,18 +157,53 @@ public sealed class ImageProcessorTests
     }
 
     [Fact]
-    [Trait("SWR", "SWR-IP-021")]
-    public void ApplyWindowLevel_PreservesPixelDataAndDimensions()
+    [Trait("SWR", "SWR-IP-022")]
+    public void ApplyWindowLevel_PreservesDimensionsAndAppliesLutToPixelData()
     {
+        // SWR-IP-022: W/L LUT must be applied to pixel data, not just stored as metadata.
+        // The result pixel buffer must differ from the original when W/L changes contrast.
+        // Issue #2 fix verification.
         var sut = CreateSut();
-        var original = MakeProcessedImage(width: 10, height: 10);
+        // Use a gradient (0..99) so that W/L remapping produces measurable differences.
+        var pixelData = Enumerable.Range(0, 100).Select(i => (byte)i).ToArray();
+        var original = new HnVue.Common.Models.ProcessedImage(
+            width: 10, height: 10, bitsPerPixel: 8, pixelData: pixelData,
+            windowCenter: 50.0, windowWidth: 100.0);
 
         var result = sut.ApplyWindowLevel(original, 128.0, 256.0);
 
         result.IsSuccess.Should().BeTrue();
         result.Value.Width.Should().Be(10);
         result.Value.Height.Should().Be(10);
-        result.Value.PixelData.Should().BeSameAs(original.PixelData);
+        // W/L metadata updated
+        result.Value.WindowCenter.Should().Be(128.0);
+        result.Value.WindowWidth.Should().Be(256.0);
+        // Pixel data is a new mapped buffer — NOT the same reference (LUT was applied)
+        result.Value.PixelData.Should().NotBeSameAs(original.PixelData);
+        // With center=128, width=256 → lower=0, upper=256: all original values [0..99]
+        // map to [0, (99-0)/256 * 255] ≈ [0, 98]. First pixel (0) → 0. Last pixel (99) < 255.
+        result.Value.PixelData[0].Should().Be(0);
+        result.Value.PixelData[99].Should().BeLessThan(255);
+    }
+
+    [Fact]
+    [Trait("SWR", "SWR-IP-026")]
+    public void Pan_AccumulatesOffset()
+    {
+        // SWR-IP-026: Pan offset must accumulate across calls. Issue #1 fix verification.
+        var sut = CreateSut();
+        var original = MakeProcessedImage(width: 10, height: 10);
+
+        var step1 = sut.Pan(original, 10, 20);
+        var step2 = sut.Pan(step1.Value, 5, -3);
+
+        step1.IsSuccess.Should().BeTrue();
+        step1.Value.PanOffsetX.Should().Be(10);
+        step1.Value.PanOffsetY.Should().Be(20);
+
+        step2.IsSuccess.Should().BeTrue();
+        step2.Value.PanOffsetX.Should().Be(15);  // 10 + 5
+        step2.Value.PanOffsetY.Should().Be(17);  // 20 + (-3)
     }
 
     [Fact]
@@ -510,5 +545,105 @@ public sealed class ImageProcessorTests
         {
             File.Delete(tempPath);
         }
+    }
+
+    // ── Rotate ─────────────────────────────────────────────────────────────────
+
+    [Fact]
+    [Trait("SWR", "SWR-IP-027")]
+    public void Rotate_90Degrees_SwapsDimensions()
+    {
+        // SWR-IP-027: 90° CW rotation should swap width and height. Issue #3 fix.
+        var sut = CreateSut();
+        var image = new HnVue.Common.Models.ProcessedImage(4, 2, 8, new byte[4 * 2], 128, 256);
+
+        var result = sut.Rotate(image, 90);
+
+        result.IsSuccess.Should().BeTrue();
+        result.Value.Width.Should().Be(2);   // srcH → dstW
+        result.Value.Height.Should().Be(4);  // srcW → dstH
+        result.Value.PixelData.Should().HaveCount(2 * 4);
+    }
+
+    [Fact]
+    [Trait("SWR", "SWR-IP-027")]
+    public void Rotate_180Degrees_PreservesDimensions()
+    {
+        var sut = CreateSut();
+        var image = new HnVue.Common.Models.ProcessedImage(4, 2, 8, new byte[4 * 2], 128, 256);
+
+        var result = sut.Rotate(image, 180);
+
+        result.IsSuccess.Should().BeTrue();
+        result.Value.Width.Should().Be(4);
+        result.Value.Height.Should().Be(2);
+    }
+
+    [Fact]
+    [Trait("SWR", "SWR-IP-027")]
+    public void Rotate_InvalidAngle_ReturnsFailure()
+    {
+        var sut = CreateSut();
+        var image = MakeProcessedImage();
+
+        var result = sut.Rotate(image, 45);
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.ImageProcessingFailed);
+    }
+
+    // ── Flip ───────────────────────────────────────────────────────────────────
+
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    [Trait("SWR", "SWR-IP-027")]
+    public void Flip_PreservesDimensionsAndPixelCount(bool horizontal)
+    {
+        // SWR-IP-027: Flip must preserve dimensions. Issue #3 fix.
+        var sut = CreateSut();
+        var pixelData = new byte[] { 1, 2, 3, 4, 5, 6 };
+        var image = new HnVue.Common.Models.ProcessedImage(3, 2, 8, pixelData, 128, 256);
+
+        var result = sut.Flip(image, horizontal);
+
+        result.IsSuccess.Should().BeTrue();
+        result.Value.Width.Should().Be(3);
+        result.Value.Height.Should().Be(2);
+        result.Value.PixelData.Should().HaveCount(6);
+        // Flipped result must differ from original (pixels are rearranged)
+        result.Value.PixelData.Should().NotBeEquivalentTo(pixelData);
+    }
+
+    // ── Zoom (Bicubic/AreaAverage) ─────────────────────────────────────────────
+
+    [Fact]
+    [Trait("SWR", "SWR-IP-024")]
+    public void Zoom_Upscale_UsesBicubicAndProducesLargerImage()
+    {
+        // SWR-IP-024: factor > 1 should produce a bicubic-interpolated image. Issue #4 fix.
+        var sut = CreateSut();
+        var image = MakeProcessedImage(width: 4, height: 4);
+
+        var result = sut.Zoom(image, 2.0);
+
+        result.IsSuccess.Should().BeTrue();
+        result.Value.Width.Should().Be(8);
+        result.Value.Height.Should().Be(8);
+    }
+
+    [Fact]
+    [Trait("SWR", "SWR-IP-024")]
+    public void Zoom_Downscale_UsesAreaAverageAndProducesSmallerImage()
+    {
+        // SWR-IP-024: factor <= 1 should produce an area-averaged image. Issue #4 fix.
+        var sut = CreateSut();
+        var image = MakeProcessedImage(width: 8, height: 8);
+
+        var result = sut.Zoom(image, 0.5);
+
+        result.IsSuccess.Should().BeTrue();
+        result.Value.Width.Should().Be(4);
+        result.Value.Height.Should().Be(4);
     }
 }

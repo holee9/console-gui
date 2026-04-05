@@ -28,6 +28,12 @@ public static class ServiceCollectionExtensions
         AuditOptions? auditOptions = null)
     {
         var opts = jwtOptions ?? new JwtOptions();
+        // Issue #18: Enforce minimum SecretKey length at startup to prevent empty-key vulnerability.
+        // An empty key would allow forging tokens with a known secret (effectively no signing).
+        if (string.IsNullOrEmpty(opts.SecretKey) || opts.SecretKey.Length < 32)
+            throw new InvalidOperationException(
+                "JWT SecretKey must be at least 32 characters. " +
+                "Set the 'Jwt:SecretKey' configuration key or 'HNVUE_JWT_SECRET' environment variable.");
         services.AddSingleton(opts);
         services.AddSingleton<JwtTokenService>();
         services.AddScoped<ISecurityService, SecurityService>();

@@ -13,7 +13,16 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Text="Dose Display" FontSize="18" FontWeight="Bold" Margin="0,0,0,12"/>
+        <TextBlock Grid.Row="0" Text="Dose Display" FontSize="18" FontWeight="Bold" Margin="0,0,0,4"/>
+
+        <!-- IsRefreshing indicator — Issue #16 -->
+        <ProgressBar Grid.Row="0" IsIndeterminate="True" Height="3" VerticalAlignment="Bottom"
+                     Visibility="{Binding IsRefreshing, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+        <!-- ErrorMessage display — Issue #16 -->
+        <TextBlock Grid.Row="0" Text="{Binding ErrorMessage}" Foreground="Red"
+                   VerticalAlignment="Bottom" Margin="0,0,0,0"
+                   Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}"/>
 
         <StackPanel Grid.Row="1" Margin="0,0,0,8">
             <StackPanel Orientation="Horizontal">

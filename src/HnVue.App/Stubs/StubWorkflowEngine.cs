@@ -44,4 +44,10 @@ internal sealed class StubWorkflowEngine : IWorkflowEngine
         string reason,
         CancellationToken cancellationToken = default)
         => Task.FromResult(Result.Failure(ErrorCode.Unknown, NotImplementedMessage));
+
+    /// <inheritdoc/>
+    public Task<Result<DoseValidationResult>> PrepareExposureAsync(
+        ExposureParameters parameters,
+        CancellationToken cancellationToken = default)
+        => Task.FromResult(Result.Failure<DoseValidationResult>(ErrorCode.Unknown, NotImplementedMessage));
 }

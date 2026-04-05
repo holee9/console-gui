@@ -6,15 +6,22 @@ namespace HnVue.Common.Enums;
 /// </summary>
 public enum SafeState
 {
-    /// <summary>SS-IDLE: Normal operating condition; all subsystems functional.</summary>
+    /// <summary>SS-IDLE: Normal operating condition; all subsystems functional. Maps to ALLOW interlock level.</summary>
     Idle,
+
+    /// <summary>
+    /// SS-WARNING: Dose reference level exceeded but within operator-override range.
+    /// Maps to WARN interlock level (SWR-WF-023). Exposure is permitted after acknowledgement.
+    /// Issue #21.
+    /// </summary>
+    Warning,
 
     /// <summary>SS-DEGRADED: Reduced functionality; a non-critical subsystem has failed.</summary>
     Degraded,
 
-    /// <summary>SS-BLOCKED: Operations are blocked; a safety interlock is active.</summary>
+    /// <summary>SS-BLOCKED: Operations are blocked; a safety interlock is active. Maps to BLOCK interlock level.</summary>
     Blocked,
 
-    /// <summary>SS-EMERGENCY: Immediate stop required; a critical failure has occurred.</summary>
+    /// <summary>SS-EMERGENCY: Immediate stop required; a critical failure has occurred. Maps to EMERGENCY interlock level.</summary>
     Emergency,
 }

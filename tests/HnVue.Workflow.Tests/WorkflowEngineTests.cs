@@ -280,4 +280,95 @@ public sealed class WorkflowEngineTests
         result.IsSuccess.Should().BeTrue();
         _sut.CurrentState.Should().Be(WorkflowState.Completed);
     }
+
+    // ── PrepareExposureAsync — Dose Interlock (SWR-WF-023~025, Issue #21) ──────
+
+    private static ExposureParameters MakeParams(string bodyPart = "CHEST", double kvp = 80.0, double mas = 5.0)
+        => new(bodyPart, kvp, mas, "1.2.3");
+
+    [Fact]
+    public async Task PrepareExposureAsync_DoseAllow_TransitionsToExposing()
+    {
+        var validation = new DoseValidationResult(IsAllowed: true, Level: DoseValidationLevel.Allow, Message: null);
+        _doseService.ValidateExposureAsync(Arg.Any<ExposureParameters>(), Arg.Any<CancellationToken>())
+            .Returns(Result.Success(validation));
+
+        await _sut.StartAsync("P001", "1.2.3");
+        await _sut.TransitionAsync(WorkflowState.ProtocolLoaded);
+        await _sut.TransitionAsync(WorkflowState.ReadyToExpose);
+
+        var result = await _sut.PrepareExposureAsync(MakeParams());
+
+        result.IsSuccess.Should().BeTrue();
+        result.Value.Level.Should().Be(DoseValidationLevel.Allow);
+        _sut.CurrentState.Should().Be(WorkflowState.Exposing);
+    }
+
+    [Fact]
+    public async Task PrepareExposureAsync_DoseWarn_TransitionsToExposingWithWarning()
+    {
+        var validation = new DoseValidationResult(IsAllowed: true, Level: DoseValidationLevel.Warn, Message: "DRL exceeded by 10%");
+        _doseService.ValidateExposureAsync(Arg.Any<ExposureParameters>(), Arg.Any<CancellationToken>())
+            .Returns(Result.Success(validation));
+
+        await _sut.StartAsync("P001", "1.2.3");
+        await _sut.TransitionAsync(WorkflowState.ProtocolLoaded);
+        await _sut.TransitionAsync(WorkflowState.ReadyToExpose);
+
+        var result = await _sut.PrepareExposureAsync(MakeParams());
+
+        result.IsSuccess.Should().BeTrue();
+        result.Value.Level.Should().Be(DoseValidationLevel.Warn);
+        _sut.CurrentState.Should().Be(WorkflowState.Exposing);
+    }
+
+    [Fact]
+    public async Task PrepareExposureAsync_DoseBlock_ReturnsDoseInterlockFailureAndSetsBlockedState()
+    {
+        var validation = new DoseValidationResult(IsAllowed: false, Level: DoseValidationLevel.Block, Message: "Dose exceeds 3× DRL");
+        _doseService.ValidateExposureAsync(Arg.Any<ExposureParameters>(), Arg.Any<CancellationToken>())
+            .Returns(Result.Success(validation));
+
+        await _sut.StartAsync("P001", "1.2.3");
+        await _sut.TransitionAsync(WorkflowState.ProtocolLoaded);
+        await _sut.TransitionAsync(WorkflowState.ReadyToExpose);
+
+        var result = await _sut.PrepareExposureAsync(MakeParams());
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.DoseInterlock);
+        _sut.CurrentState.Should().Be(WorkflowState.ReadyToExpose); // state unchanged
+        _sut.CurrentSafeState.Should().Be(SafeState.Blocked);
+    }
+
+    [Fact]
+    public async Task PrepareExposureAsync_DoseEmergency_SetsEmergencyStateAndReturnsFailure()
+    {
+        var validation = new DoseValidationResult(IsAllowed: false, Level: DoseValidationLevel.Emergency, Message: "Critical dose threshold");
+        _doseService.ValidateExposureAsync(Arg.Any<ExposureParameters>(), Arg.Any<CancellationToken>())
+            .Returns(Result.Success(validation));
+
+        await _sut.StartAsync("P001", "1.2.3");
+        await _sut.TransitionAsync(WorkflowState.ProtocolLoaded);
+        await _sut.TransitionAsync(WorkflowState.ReadyToExpose);
+
+        var result = await _sut.PrepareExposureAsync(MakeParams());
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.DoseInterlock);
+        _sut.CurrentSafeState.Should().Be(SafeState.Emergency);
+    }
+
+    [Fact]
+    public async Task PrepareExposureAsync_Unauthenticated_ReturnsAuthenticationFailed()
+    {
+        _securityContext.CurrentRole.Returns((UserRole?)null);
+
+        await _sut.StartAsync("P001", "1.2.3");
+
+        var result = await _sut.PrepareExposureAsync(MakeParams());
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.AuthenticationFailed);
+    }
 }

@@ -1,6 +1,7 @@
 <Application x:Class="HnVue.App.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:HnVue.UI.Converters;assembly=HnVue.UI">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -14,6 +15,9 @@
             </ResourceDictionary.MergedDictionaries>
             <!-- Common converters available application-wide -->
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <!-- HnVue custom converters — Issue #16 -->
+            <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+            <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

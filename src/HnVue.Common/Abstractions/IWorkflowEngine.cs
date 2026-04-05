@@ -42,6 +42,22 @@ public interface IWorkflowEngine
         CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// Validates exposure parameters against dose reference levels (DRL) and, when permitted,
+    /// transitions from <see cref="WorkflowState.ReadyToExpose"/> to
+    /// <see cref="WorkflowState.Exposing"/>.
+    /// Implements SWR-WF-023~025 dose interlock (ALLOW / WARN / BLOCK / EMERGENCY).
+    /// </summary>
+    /// <param name="parameters">Technique factors for the planned exposure.</param>
+    /// <param name="cancellationToken">Token to cancel the asynchronous operation.</param>
+    /// <returns>
+    /// Success with <see cref="DoseValidationResult"/> when the exposure is allowed (Allow or Warn).
+    /// Failure when the dose check blocks the exposure.
+    /// </returns>
+    Task<Result<DoseValidationResult>> PrepareExposureAsync(
+        ExposureParameters parameters,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// Aborts the current workflow session and transitions to <see cref="WorkflowState.Error"/>.
     /// Safe to call from any state.
     /// </summary>

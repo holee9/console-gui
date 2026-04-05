@@ -1,4 +1,6 @@
 using System.Collections.Concurrent;
+using System.IO;
+using System.Net.Sockets;
 using HnVue.Common.Abstractions;
 using HnVue.Common.Results;
 using Microsoft.Extensions.Logging;
@@ -33,8 +35,12 @@ public sealed partial class DicomOutbox
         _logger = logger;
 
         // Exponential backoff: 3 retries with 2 s, 4 s, 8 s delays.
+        // Issue #26: Added DicomNetworkException and IOException to retry on transient network faults.
         _retryPolicy = Policy
             .Handle<InvalidOperationException>()
+            .Or<FellowOakDicom.Network.DicomNetworkException>()
+            .Or<IOException>()
+            .Or<System.Net.Sockets.SocketException>()
             .WaitAndRetryAsync(
                 retryCount: 3,
                 sleepDurationProvider: attempt => TimeSpan.FromSeconds(Math.Pow(2, attempt)),

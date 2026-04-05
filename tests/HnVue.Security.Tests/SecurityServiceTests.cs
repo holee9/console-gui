@@ -284,7 +284,7 @@ public sealed class SecurityServiceTests
     public async Task ChangePassword_Valid_UpdatesHash()
     {
         const string currentPassword = "OldPass1";
-        const string newPassword = "NewPass1";
+        const string newPassword = "NewPass1!";
         var user = MakeUser(password: currentPassword);
         _userRepository.GetByIdAsync(user.UserId, Arg.Any<CancellationToken>())
             .Returns(Result.Success(user));
@@ -341,6 +341,36 @@ public sealed class SecurityServiceTests
     }
 
     [Fact]
+    public async Task ChangePassword_WeakPassword_NoSpecialChar_ReturnsPolicyViolation()
+    {
+        // SWR-NF-SC-042: special character is required. Issue #19.
+        const string currentPassword = "OldPass1";
+        var user = MakeUser(password: currentPassword);
+        _userRepository.GetByIdAsync(user.UserId, Arg.Any<CancellationToken>())
+            .Returns(Result.Success(user));
+
+        var result = await _sut.ChangePasswordAsync(user.UserId, currentPassword, "NoSpecial1");
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.PasswordPolicyViolation);
+    }
+
+    [Fact]
+    public async Task ChangePassword_WeakPassword_NoLowercase_ReturnsPolicyViolation()
+    {
+        // SWR-NF-SC-042: lowercase is required. Issue #19.
+        const string currentPassword = "OldPass1";
+        var user = MakeUser(password: currentPassword);
+        _userRepository.GetByIdAsync(user.UserId, Arg.Any<CancellationToken>())
+            .Returns(Result.Success(user));
+
+        var result = await _sut.ChangePasswordAsync(user.UserId, currentPassword, "NOLOWER1!");
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.PasswordPolicyViolation);
+    }
+
+    [Fact]
     public async Task ChangePassword_WrongCurrentPassword_ReturnsAuthFailed()
     {
         var user = MakeUser(password: "CorrectPass1");
@@ -375,7 +405,7 @@ public sealed class SecurityServiceTests
         _userRepository.UpdatePasswordHashAsync(user.UserId, Arg.Any<string>(), Arg.Any<CancellationToken>())
             .Returns(Result.Success());
 
-        await _sut.ChangePasswordAsync(user.UserId, currentPassword, "NewPass1");
+        await _sut.ChangePasswordAsync(user.UserId, currentPassword, "NewPass1!");
 
         await _auditRepository.Received(1).AppendAsync(
             Arg.Is<AuditEntry>(e => e.Action == "PASSWORD_CHANGED"),

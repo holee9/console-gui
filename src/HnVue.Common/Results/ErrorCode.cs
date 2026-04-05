@@ -71,6 +71,9 @@ public enum ErrorCode
     /// <summary>Calculated dose exceeds the configured safety limit.</summary>
     DoseLimitExceeded = 4004,
 
+    /// <summary>Exposure blocked or aborted by dose interlock (SWR-WF-023~025).</summary>
+    DoseInterlock = 4005,
+
     // ── DICOM (5xxx) ───────────────────────────────────────────────────────────
 
     /// <summary>Network connection to a DICOM peer failed.</summary>

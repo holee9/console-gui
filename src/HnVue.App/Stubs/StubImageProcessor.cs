@@ -41,4 +41,12 @@ internal sealed class StubImageProcessor : IImageProcessor
         int deltaX,
         int deltaY)
         => Result.Failure<ProcessedImage>(ErrorCode.ImageProcessingFailed, NotImplementedMessage);
+
+    /// <inheritdoc/>
+    public Result<ProcessedImage> Rotate(ProcessedImage image, int degrees)
+        => Result.Failure<ProcessedImage>(ErrorCode.ImageProcessingFailed, NotImplementedMessage);
+
+    /// <inheritdoc/>
+    public Result<ProcessedImage> Flip(ProcessedImage image, bool horizontal)
+        => Result.Failure<ProcessedImage>(ErrorCode.ImageProcessingFailed, NotImplementedMessage);
 }

@@ -28,9 +28,10 @@ public sealed class SecurityService(
     private readonly int _expiryMinutes = jwtOptions.ExpiryMinutes;
     private readonly byte[] _hmacKey = Encoding.UTF8.GetBytes(auditOptions.Value.HmacKey);
 
-    // Password policy: min 8 chars, at least 1 digit, at least 1 uppercase letter.
+    // Password policy: min 8 chars, at least 1 uppercase, 1 lowercase, 1 digit, 1 special char.
+    // SWR-NF-SC-042 / Issue #19
     private static readonly Regex PasswordPolicyRegex =
-        new(@"^(?=.*[A-Z])(?=.*\d).{8,}$", RegexOptions.Compiled, TimeSpan.FromMilliseconds(100));
+        new(@"^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*_\-]).{8,}$", RegexOptions.Compiled, TimeSpan.FromMilliseconds(100));
 
     /// <inheritdoc/>
     public async Task<Result<AuthenticationToken>> AuthenticateAsync(

@@ -135,6 +135,86 @@ public sealed class WorkflowEngine : IWorkflowEngine
     }
 
     /// <inheritdoc/>
+    /// <remarks>
+    /// SWR-WF-023~025: Dose interlock gate before radiation exposure.
+    /// - ALLOW: transition to Exposing, return success.
+    /// - WARN:  transition to Exposing, return success with warning message (caller shows alert).
+    /// - BLOCK: set SafeState.Blocked, do not transition, return failure.
+    /// - EMERGENCY: set SafeState.Emergency, abort generator if active, return failure.
+    /// Issue #21.
+    /// </remarks>
+    public async Task<Result<DoseValidationResult>> PrepareExposureAsync(
+        ExposureParameters parameters,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(parameters);
+
+        // RBAC check first (same as TransitionAsync Exposing path)
+        if (!_securityContext.CurrentRole.HasValue)
+            return Result.Failure<DoseValidationResult>(ErrorCode.AuthenticationFailed,
+                "User must be authenticated to perform exposure.");
+
+        var rbacResult = RbacPolicy.Check(_securityContext.CurrentRole.Value, Permissions.PerformExposure);
+        if (rbacResult.IsFailure)
+            return Result.Failure<DoseValidationResult>(
+                rbacResult.Error ?? ErrorCode.InsufficientPermission, rbacResult.ErrorMessage ?? string.Empty);
+
+        // Dose interlock validation — SWR-WF-023
+        var doseResult = await _doseService.ValidateExposureAsync(parameters, cancellationToken).ConfigureAwait(false);
+        if (doseResult.IsFailure)
+            return Result.Failure<DoseValidationResult>(
+                doseResult.Error ?? ErrorCode.DoseLimitExceeded, doseResult.ErrorMessage ?? string.Empty);
+
+        var validation = doseResult.Value;
+
+        // SWR-WF-025: EMERGENCY → abort and escalate safe state
+        if (validation.Level == DoseValidationLevel.Emergency)
+        {
+            lock (_lock)
+                _safeState = SafeState.Emergency;
+            return Result.Failure<DoseValidationResult>(ErrorCode.DoseInterlock,
+                $"EMERGENCY dose interlock: {validation.Message}");
+        }
+
+        // SWR-WF-024: BLOCK → set safe state, do not transition
+        if (validation.Level == DoseValidationLevel.Block)
+        {
+            lock (_lock)
+                _safeState = SafeState.Blocked;
+            return Result.Failure<DoseValidationResult>(ErrorCode.DoseInterlock,
+                $"Dose BLOCKED: {validation.Message}");
+        }
+
+        // ALLOW or WARN: proceed with transition to Exposing.
+        // WARN → set SafeState.Warning so callers can display acknowledgement prompt.
+        // Issue #21: SafeState.Warning added to represent WARN interlock level.
+        WorkflowState previous;
+        Result transitionResult;
+
+        lock (_lock)
+        {
+            if (_safeState == SafeState.Emergency || _safeState == SafeState.Blocked)
+                return Result.Failure<DoseValidationResult>(ErrorCode.InvalidStateTransition,
+                    $"Cannot expose: system is in safe state '{_safeState}'.");
+
+            if (validation.Level == DoseValidationLevel.Warn)
+                _safeState = SafeState.Warning;
+            else
+                _safeState = SafeState.Idle;
+
+            previous = _stateMachine.CurrentState;
+            transitionResult = _stateMachine.TryTransition(WorkflowState.Exposing);
+        }
+
+        if (transitionResult.IsFailure)
+            return Result.Failure<DoseValidationResult>(
+                transitionResult.Error ?? ErrorCode.InvalidStateTransition, transitionResult.ErrorMessage ?? string.Empty);
+
+        RaiseStateChanged(previous, WorkflowState.Exposing);
+        return Result.Success(validation);
+    }
+
+    /// <inheritdoc/>
     public async Task<Result> AbortAsync(
         string reason,
         CancellationToken cancellationToken = default)
