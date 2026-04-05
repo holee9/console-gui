@@ -674,7 +674,7 @@ scanners:
 
 | Version | Date | Change | Author |
 |---------|------|--------|--------|
-| 1.0 | YYYY-MM-DD | Initial template creation | MoAI Security Expert |
+| 1.0 | YYYY-MM-DD | Initial template creation | abyz-lab |
 
 ---
 

@@ -380,6 +380,6 @@ graph TD
 
 | 항목 | 내용 |
 |------|------|
-| 작성자 | Perplexity Computer |
+| 작성자 | abyz-lab |
 | 검증일 | 2026-03-18 |
 | 최종 판정 | ✅ PASS |
