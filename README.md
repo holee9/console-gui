@@ -24,7 +24,7 @@
 |------|------|
 | **제품명** | HnVue Console SW |
 | **제조사** | H&abyz (에이치앤아비즈) |
-| **프로젝트명** | HnX-R1 (Detector + Console SW 번들 retrofit) |
+| **프로젝트명** | HnVue (Detector + Console SW 번들 retrofit) |
 | **대체 대상** | IMFOU feel-DRCS (FDA K110033) |
 | **FDA Predicate** | DRTECH EConsole1 ([FDA K231225](https://www.accessdata.fda.gov/cdrh_docs/pdf23/K231225.pdf)) |
 | **IEC 62304 분류** | Class B (Software Safety Classification) |

@@ -4,7 +4,7 @@
 **버전**: 1.0  
 **작성일**: 2026-03-31  
 **적용 제품**: HnVue Console SW (HnVue)  
-**시스템**: HnX-R1 (Detector + Console SW 번들)  
+**시스템**: HnVue (Detector + Console SW 번들)  
 **분류**: 내부 기술 문서 (사이버보안 검증 가이드)
 
 ---
@@ -36,7 +36,7 @@
 | 항목 | 내용 |
 |------|------|
 | 제품명 | HnVue Console SW (HnVue) |
-| 시스템 | HnX-R1 (X-ray Detector + Console SW 번들) |
+| 시스템 | HnVue (X-ray Detector + Console SW 번들) |
 | 기술스택 | WPF .NET 8, fo-dicom 5.x, SQLite, Serilog |
 | 프로토콜 | DICOM 3.0, PACS 연동 (DIMSE over TCP/IP) |
 | 소프트웨어 안전등급 | IEC 62304 Class B |
@@ -58,7 +58,7 @@ HnVue Console SW의 주요 공격 표면은 다음과 같다:
       |
 [Serilog 감사 로그]
       |
-[OS / 하드웨어 (HnX-R1 Console PC)]
+[OS / 하드웨어 (HnVue Console PC)]
       |
 [네트워크 (병원 VLAN / WAN)]
 ```
@@ -386,7 +386,7 @@ grype sbom:./artifacts/sbom-hnvue-v1.0-cyclonedx.json --output json > artifacts/
 ```
 [테스트 네트워크 VLAN]
 │
-├── HnX-R1 Console PC (HnVue 설치)  ←── 스캔 대상
+├── HnVue Console PC  ←── 스캔 대상
 │     IP: 192.168.100.10
 │
 ├── Orthanc DICOM 서버 (PACS 시뮬레이터)    ←── 시뮬레이션 PACS

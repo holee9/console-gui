@@ -7,7 +7,7 @@
 | **문서 ID** | MRD-PRIORITY-REASSESS-001 |
 | **버전** | v1.0 |
 | **작성일** | 2026-04-02 |
-| **프로젝트** | HnX-R1 HnVue |
+| **프로젝트** | HnVue |
 | **작성자** | 전략마케팅본부 |
 | **적용 대상** | MRD v2.0 → v3.0 우선순위 체계 전환 |
 | **분류** | 대외비 (Confidential) |
@@ -447,7 +447,7 @@ Phase 2에서 달성해야 할 경쟁력 향상 항목:
 | 5 | MFDS 디지털의료기기SW 허가심사 가이드라인 2025 | 식약처 공식 고시 |
 | 6 | MFDS 의료기기 사이버보안 가이드라인 2024 개정 | 식약처 공식 고시 |
 | 7 | Vieworks VXvue FDA 510(k) K122866 | FDA CDRH 데이터베이스 |
-| 8 | STRATEGY-001 v2.0 — HnX-R1 회사 전략 포지셔닝 | /docs/planning/research/STRATEGY-001_Company_Positioning_v2.0.md |
+| 8 | STRATEGY-001 v2.0 — HnVue 회사 전략 포지셔닝 | /docs/planning/research/STRATEGY-001_Company_Positioning_v2.0.md |
 | 9 | MRD v2.0 — 시장 요구사항 문서 (기준 문서) | /docs/planning/DOC-001_MRD_v2.0.md |
 
 ---
