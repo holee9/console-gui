@@ -98,6 +98,11 @@ internal static class EntityMapper
             IsLocked: entity.IsLocked,
             LastLoginAt: entity.LastLoginAtTicks.HasValue
                 ? new DateTimeOffset(entity.LastLoginAtTicks.Value, TimeSpan.FromMinutes(entity.LastLoginAtOffsetMinutes ?? 0))
+                : null,
+            QuickPinHash: entity.QuickPinHash,
+            QuickPinFailedCount: entity.QuickPinFailedCount,
+            QuickPinLockedUntil: entity.QuickPinLockedUntilTicks.HasValue
+                ? new DateTimeOffset(entity.QuickPinLockedUntilTicks.Value, TimeSpan.Zero)
                 : null);
 
     /// <summary>Converts a <see cref="UserRecord"/> to a <see cref="UserEntity"/>.</summary>

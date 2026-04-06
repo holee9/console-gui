@@ -29,6 +29,7 @@ public sealed partial class WorkflowViewModel : ObservableObject, IDisposable
         // Initialise state from engine.
         CurrentState = _workflowEngine.CurrentState.ToString();
         UpdateDerivedProperties();
+        UpdateSafeStateDisplay();
     }
 
     /// <summary>Gets or sets the string representation of the current workflow state.</summary>
@@ -43,6 +44,20 @@ public sealed partial class WorkflowViewModel : ObservableObject, IDisposable
     /// <summary>Gets or sets a human-readable status message for the operator.</summary>
     [ObservableProperty]
     private string _statusMessage = "System idle. Select a patient to begin.";
+
+    /// <summary>
+    /// Gets or sets the current system-wide safety state.
+    /// Bound to the SafeState indicator bar in the view for colour-coded status display.
+    /// SWR-NF-SC-041 / Issue #31.
+    /// </summary>
+    [ObservableProperty]
+    private SafeState _currentSafeState = SafeState.Idle;
+
+    /// <summary>
+    /// Gets or sets the display label for the current safety state shown in the indicator bar.
+    /// </summary>
+    [ObservableProperty]
+    private string _safeStateLabel = "IDLE";
 
     /// <summary>
     /// Prepares the generator and detector for an exposure.
@@ -94,11 +109,26 @@ public sealed partial class WorkflowViewModel : ObservableObject, IDisposable
     {
         CurrentState = e.NewState.ToString();
         UpdateDerivedProperties();
+        UpdateSafeStateDisplay();
 
         if (!string.IsNullOrEmpty(e.Reason))
         {
             StatusMessage = e.Reason;
         }
+    }
+
+    private void UpdateSafeStateDisplay()
+    {
+        CurrentSafeState = _workflowEngine.CurrentSafeState;
+        SafeStateLabel = CurrentSafeState switch
+        {
+            SafeState.Idle => "IDLE",
+            SafeState.Warning => "WARNING",
+            SafeState.Degraded => "DEGRADED",
+            SafeState.Blocked => "BLOCKED",
+            SafeState.Emergency => "EMERGENCY",
+            _ => CurrentSafeState.ToString().ToUpperInvariant()
+        };
     }
 
     private void UpdateDerivedProperties()

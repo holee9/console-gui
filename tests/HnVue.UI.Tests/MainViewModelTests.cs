@@ -17,6 +17,7 @@ public sealed class MainViewModelTests
 {
     private static MainViewModel CreateSut(ISecurityContext context) => new(
         context,
+        Substitute.For<ISecurityService>(),
         new PatientListViewModel(Substitute.For<IPatientService>()),
         new ImageViewerViewModel(Substitute.For<IImageProcessor>()),
         new WorkflowViewModel(Substitute.For<IWorkflowEngine>(), Substitute.For<ISecurityContext>()),
@@ -31,6 +32,7 @@ public sealed class MainViewModelTests
     {
         var act = () => new MainViewModel(
             null!,
+            Substitute.For<ISecurityService>(),
             new PatientListViewModel(Substitute.For<IPatientService>()),
             new ImageViewerViewModel(Substitute.For<IImageProcessor>()),
             new WorkflowViewModel(Substitute.For<IWorkflowEngine>(), Substitute.For<ISecurityContext>()),

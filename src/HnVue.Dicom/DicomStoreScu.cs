@@ -52,6 +52,7 @@ public sealed class DicomStoreScu
                 _config.LocalAeTitle,
                 _config.PacsAeTitle);
 
+            // NegotiateAsyncOps() is a synchronous fo-dicom configuration call; no await needed. Issue #33.
             client.NegotiateAsyncOps();
 
             var storageRequest = new FellowOakDicom.Network.DicomCStoreRequest(dcmFile);

@@ -7,13 +7,14 @@ namespace HnVue.UI.ViewModels;
 /// <summary>
 /// ViewModel for the Quick PIN lock overlay shown during an active workflow session.
 /// Allows the operator to resume the session without full re-authentication.
-/// SWR-CS-076 (Safety+Security-related, HAZ-SEC, HAZ-RAD). Issue #12.
+/// SWR-CS-076 (Safety+Security-related, HAZ-SEC, HAZ-RAD). Issue #12, #34.
 /// </summary>
 public sealed partial class QuickPinLockViewModel : ObservableObject
 {
     private const int MaxPinAttempts = 3;
 
     private readonly ISecurityContext _securityContext;
+    private readonly ISecurityService _securityService;
     private int _failedAttempts;
 
     /// <summary>Raised when the PIN is verified and the session can resume.</summary>
@@ -23,9 +24,10 @@ public sealed partial class QuickPinLockViewModel : ObservableObject
     public event EventHandler? ForceLogout;
 
     /// <summary>Initialises a new instance of <see cref="QuickPinLockViewModel"/>.</summary>
-    public QuickPinLockViewModel(ISecurityContext securityContext)
+    public QuickPinLockViewModel(ISecurityContext securityContext, ISecurityService securityService)
     {
         _securityContext = securityContext ?? throw new ArgumentNullException(nameof(securityContext));
+        _securityService = securityService ?? throw new ArgumentNullException(nameof(securityService));
     }
 
     /// <summary>Gets or sets the PIN entered by the user (4-6 digits).</summary>
@@ -78,13 +80,15 @@ public sealed partial class QuickPinLockViewModel : ObservableObject
 
         try
         {
-            // TODO: Replace with actual PIN verification via ISecurityService.VerifyPinAsync()
-            // when that method is implemented (related to Issue #20 session management).
-            // For now, stub verification: any 4-6 digit PIN is accepted in development mode.
-            await Task.Delay(300).ConfigureAwait(true); // Simulate async verification
+            var userId = _securityContext.CurrentUserId;
+            if (string.IsNullOrEmpty(userId))
+            {
+                ErrorMessage = "No authenticated user.";
+                return;
+            }
 
-            bool verified = !string.IsNullOrEmpty(Pin) && Pin.All(char.IsDigit);
-            if (verified)
+            var result = await _securityService.VerifyQuickPinAsync(userId, Pin).ConfigureAwait(true);
+            if (result.IsSuccess)
             {
                 SessionResumed?.Invoke(this, EventArgs.Empty);
                 return;

@@ -49,4 +49,38 @@ internal sealed class StubImageProcessor : IImageProcessor
     /// <inheritdoc/>
     public Result<ProcessedImage> Flip(ProcessedImage image, bool horizontal)
         => Result.Failure<ProcessedImage>(ErrorCode.ImageProcessingFailed, NotImplementedMessage);
+
+    /// <inheritdoc/>
+    public Result<ProcessedImage> ApplyGainOffsetCorrection(
+        ProcessedImage image, float[]? gainMap, float[]? offsetMap)
+        => Result.Failure<ProcessedImage>(ErrorCode.ImageProcessingFailed, NotImplementedMessage);
+
+    /// <inheritdoc/>
+    public Result<ProcessedImage> ApplyNoiseReduction(ProcessedImage image, double strength)
+        => Result.Failure<ProcessedImage>(ErrorCode.ImageProcessingFailed, NotImplementedMessage);
+
+    /// <inheritdoc/>
+    public Result<ProcessedImage> ApplyEdgeEnhancement(ProcessedImage image, double strength)
+        => Result.Failure<ProcessedImage>(ErrorCode.ImageProcessingFailed, NotImplementedMessage);
+
+    /// <inheritdoc/>
+    public Result<ProcessedImage> ApplyScatterCorrection(ProcessedImage image)
+        => Result.Failure<ProcessedImage>(ErrorCode.ImageProcessingFailed, NotImplementedMessage);
+
+    /// <inheritdoc/>
+    public Result<ProcessedImage> ApplyAutoTrimming(ProcessedImage image, byte threshold = 10)
+        => Result.Failure<ProcessedImage>(ErrorCode.ImageProcessingFailed, NotImplementedMessage);
+
+    /// <inheritdoc/>
+    public Result<ProcessedImage> ApplyClahe(ProcessedImage image, double clipLimit = 2.0, int tileSize = 8)
+        => Result.Failure<ProcessedImage>(ErrorCode.ImageProcessingFailed, NotImplementedMessage);
+
+    /// <inheritdoc/>
+    public Result<ProcessedImage> ApplyBrightnessOffset(ProcessedImage image, int offset)
+        => Result.Failure<ProcessedImage>(ErrorCode.ImageProcessingFailed, NotImplementedMessage);
+
+    /// <inheritdoc/>
+    public Result<ProcessedImage> ApplyBlackMask(
+        ProcessedImage image, int left, int top, int right, int bottom, bool apply = true)
+        => Result.Failure<ProcessedImage>(ErrorCode.ImageProcessingFailed, NotImplementedMessage);
 }

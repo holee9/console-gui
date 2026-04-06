@@ -38,10 +38,14 @@ public sealed class HnVueDbContext(DbContextOptions<HnVueDbContext> options) : D
         {
             e.HasKey(p => p.PatientId);
             e.HasIndex(p => p.Name);
+
+            // IEC 62304 / IEC 62133 data integrity: Restrict prevents accidental
+            // deletion of audit-critical dose records when a patient record is removed.
+            // Callers must explicitly delete or reassign studies before removing a patient.
             e.HasMany(p => p.Studies)
              .WithOne(s => s.Patient)
              .HasForeignKey(s => s.PatientId)
-             .OnDelete(DeleteBehavior.Cascade);
+             .OnDelete(DeleteBehavior.Restrict);
         });
 
         // ── StudyEntity ────────────────────────────────────────────────────────
@@ -49,14 +53,20 @@ public sealed class HnVueDbContext(DbContextOptions<HnVueDbContext> options) : D
         {
             e.HasKey(s => s.StudyInstanceUid);
             e.HasIndex(s => s.PatientId);
+
+            // Images are non-regulatory data; cascade is acceptable here.
             e.HasMany(s => s.Images)
              .WithOne(i => i.Study)
              .HasForeignKey(i => i.StudyInstanceUid)
              .OnDelete(DeleteBehavior.Cascade);
+
+            // DoseRecords are regulatory audit data (SWR-NF-SC-041).
+            // Restrict prevents permanent loss of dose records when a study is deleted.
+            // Callers must archive or explicitly delete dose records before removing a study.
             e.HasMany(s => s.DoseRecords)
              .WithOne(d => d.Study)
              .HasForeignKey(d => d.StudyInstanceUid)
-             .OnDelete(DeleteBehavior.Cascade);
+             .OnDelete(DeleteBehavior.Restrict);
         });
 
         // ── ImageEntity ────────────────────────────────────────────────────────

@@ -646,4 +646,324 @@ public sealed class ImageProcessorTests
         result.Value.Width.Should().Be(4);
         result.Value.Height.Should().Be(4);
     }
+
+    // ── ApplyGainOffsetCorrection ──────────────────────────────────────────────
+
+    [Fact]
+    [Trait("SWR", "SWR-IP-039")]
+    public void ApplyGainOffsetCorrection_WithNullGainMap_ReturnsCalibrationError()
+    {
+        // SWR-IP-039 Safety: null gainMap must block operation with CalibrationDataMissing.
+        var sut = CreateSut();
+        var image = MakeProcessedImageWith16Bit(width: 4, height: 4);
+        var offsetMap = new float[16];
+
+        var result = sut.ApplyGainOffsetCorrection(image, gainMap: null, offsetMap);
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.CalibrationDataMissing);
+    }
+
+    [Fact]
+    [Trait("SWR", "SWR-IP-039")]
+    public void ApplyGainOffsetCorrection_WithValidMaps_CorrectsCalibratedPixels()
+    {
+        // SWR-IP-039: corrected[i] = clamp((pixel16 - offset) * gain, 0, 65535)
+        var sut = CreateSut();
+        int pixelCount = 4;
+        // Raw 16-bit pixels: all 1000
+        var raw16 = Enumerable.Repeat((ushort)1000, pixelCount).ToArray();
+        // gain = 2.0, offset = 500 → corrected = (1000 - 500) * 2 = 1000
+        var gainMap = Enumerable.Repeat(2.0f, pixelCount).ToArray();
+        var offsetMap = Enumerable.Repeat(500.0f, pixelCount).ToArray();
+
+        var image = new ProcessedImage(
+            width: 2, height: 2, bitsPerPixel: 8,
+            pixelData: new byte[pixelCount],
+            windowCenter: 128.0, windowWidth: 256.0)
+        {
+            RawPixelData16 = raw16
+        };
+
+        var result = sut.ApplyGainOffsetCorrection(image, gainMap, offsetMap);
+
+        result.IsSuccess.Should().BeTrue();
+        result.Value.RawPixelData16.Should().NotBeNull();
+        // All corrected 16-bit values should equal 1000 (flat → mid-grey display)
+        result.Value.RawPixelData16!.Should().OnlyContain(v => v == 1000);
+    }
+
+    // ── ApplyNoiseReduction ───────────────────────────────────────────────────
+
+    [Fact]
+    [Trait("SWR", "SWR-IP-041")]
+    public void ApplyNoiseReduction_WithZeroStrength_ReturnsUnchangedImage()
+    {
+        // SWR-IP-041: strength=0 must return image identical to the input.
+        var sut = CreateSut();
+        var image = MakeProcessedImage(width: 8, height: 8);
+
+        var result = sut.ApplyNoiseReduction(image, 0.0);
+
+        result.IsSuccess.Should().BeTrue();
+        result.Value.Should().BeSameAs(image);
+    }
+
+    [Fact]
+    [Trait("SWR", "SWR-IP-041")]
+    public void ApplyNoiseReduction_WithFullStrength_SmoothesNoisyImage()
+    {
+        // SWR-IP-041: strength=1 should produce a blurred output (lower variance).
+        var sut = CreateSut();
+        var rng = new Random(42);
+        var pixels = new byte[16 * 16];
+        for (int i = 0; i < pixels.Length; i++)
+            pixels[i] = (byte)rng.Next(0, 256);
+
+        var image = new ProcessedImage(16, 16, 8, pixels, 128.0, 256.0);
+
+        var result = sut.ApplyNoiseReduction(image, 1.0);
+
+        result.IsSuccess.Should().BeTrue();
+        // Output must differ from noisy input.
+        result.Value.PixelData.Should().NotEqual(pixels);
+        // Variance of smoothed image should be lower than input.
+        double inputVariance = ComputeVariance(pixels);
+        double outputVariance = ComputeVariance(result.Value.PixelData);
+        outputVariance.Should().BeLessThan(inputVariance);
+    }
+
+    // ── ApplyEdgeEnhancement ──────────────────────────────────────────────────
+
+    [Fact]
+    [Trait("SWR", "SWR-IP-043")]
+    public void ApplyEdgeEnhancement_WithZeroStrength_ReturnsUnchangedImage()
+    {
+        // SWR-IP-043: strength=0 must return image identical to the input.
+        var sut = CreateSut();
+        var image = MakeProcessedImage(width: 8, height: 8);
+
+        var result = sut.ApplyEdgeEnhancement(image, 0.0);
+
+        result.IsSuccess.Should().BeTrue();
+        result.Value.Should().BeSameAs(image);
+    }
+
+    // ── ApplyScatterCorrection ────────────────────────────────────────────────
+
+    [Fact]
+    [Trait("SWR", "SWR-IP-045")]
+    public void ApplyScatterCorrection_ReturnsReducedLowFrequencyContent()
+    {
+        // SWR-IP-045: after scatter correction the mean pixel value should decrease
+        // because the low-frequency scatter component is subtracted.
+        var sut = CreateSut();
+        // Uniform mid-grey image: scatter removal reduces mean.
+        var pixels = Enumerable.Repeat((byte)128, 32 * 32).ToArray();
+        var image = new ProcessedImage(32, 32, 8, pixels, 128.0, 256.0);
+
+        var result = sut.ApplyScatterCorrection(image);
+
+        result.IsSuccess.Should().BeTrue();
+        double inputMean = pixels.Average(b => (double)b);
+        double outputMean = result.Value.PixelData.Average(b => (double)b);
+        outputMean.Should().BeLessThan(inputMean);
+    }
+
+    // ── ApplyAutoTrimming ─────────────────────────────────────────────────────
+
+    [Fact]
+    [Trait("SWR", "SWR-IP-047")]
+    public void ApplyAutoTrimming_BlackBorderImage_MasksCorrectly()
+    {
+        // SWR-IP-047: border pixels (<=threshold) must be set to 0; interior preserved.
+        // Image: 4×4, all zeros except centre 2×2 which is 128.
+        var sut = CreateSut();
+        var pixels = new byte[4 * 4]; // all zeros
+        // Set centre 2×2 (rows 1-2, cols 1-2) to 128
+        pixels[1 * 4 + 1] = 128;
+        pixels[1 * 4 + 2] = 128;
+        pixels[2 * 4 + 1] = 128;
+        pixels[2 * 4 + 2] = 128;
+
+        var image = new ProcessedImage(4, 4, 8, pixels, 128.0, 256.0);
+
+        var result = sut.ApplyAutoTrimming(image, threshold: 10);
+
+        result.IsSuccess.Should().BeTrue();
+        // Corners (border) must be zero.
+        result.Value.PixelData[0 * 4 + 0].Should().Be(0);
+        result.Value.PixelData[3 * 4 + 3].Should().Be(0);
+        // Centre pixels must be preserved.
+        result.Value.PixelData[1 * 4 + 1].Should().Be(128);
+        result.Value.PixelData[2 * 4 + 2].Should().Be(128);
+        // Dimensions unchanged.
+        result.Value.Width.Should().Be(4);
+        result.Value.Height.Should().Be(4);
+    }
+
+    // ── ApplyClahe ────────────────────────────────────────────────────────────
+
+    [Fact]
+    [Trait("SWR", "SWR-IP-050")]
+    public void ApplyClahe_LowContrastImage_IncreasesContrast()
+    {
+        // SWR-IP-050: CLAHE must increase the contrast (pixel value spread) of a low-contrast image.
+        var sut = CreateSut();
+        // Low-contrast image: all pixels clustered around mid-grey (120-135).
+        var pixels = new byte[16 * 16];
+        for (int i = 0; i < pixels.Length; i++)
+            pixels[i] = (byte)(120 + (i % 16));
+
+        var image = new ProcessedImage(16, 16, 8, pixels, 128.0, 256.0);
+
+        var result = sut.ApplyClahe(image, clipLimit: 2.0, tileSize: 8);
+
+        result.IsSuccess.Should().BeTrue();
+        // Output pixel range should be wider than input range.
+        byte inputMin = pixels.Min();
+        byte inputMax = pixels.Max();
+        byte outputMin = result.Value.PixelData.Min();
+        byte outputMax = result.Value.PixelData.Max();
+        int inputRange = inputMax - inputMin;
+        int outputRange = outputMax - outputMin;
+        outputRange.Should().BeGreaterThan(inputRange);
+    }
+
+    // ── ApplyBrightnessOffset ─────────────────────────────────────────────────
+
+    [Fact]
+    [Trait("SWR", "SWR-IP-052")]
+    public void ApplyBrightnessOffset_PositiveOffset_IncreasesAllPixels()
+    {
+        // SWR-IP-052: positive offset must increase all pixel values (before clamping).
+        var sut = CreateSut();
+        var pixels = new byte[] { 0, 50, 100, 150 };
+        var image = new ProcessedImage(4, 1, 8, pixels, 128.0, 256.0);
+
+        var result = sut.ApplyBrightnessOffset(image, 10);
+
+        result.IsSuccess.Should().BeTrue();
+        result.Value.PixelData[0].Should().Be(10);
+        result.Value.PixelData[1].Should().Be(60);
+        result.Value.PixelData[2].Should().Be(110);
+        result.Value.PixelData[3].Should().Be(160);
+    }
+
+    [Fact]
+    [Trait("SWR", "SWR-IP-052")]
+    public void ApplyBrightnessOffset_ClampsMagnitude_NoOverflow()
+    {
+        // SWR-IP-052: values must be clamped to [0, 255]; no overflow or underflow.
+        var sut = CreateSut();
+        var pixels = new byte[] { 10, 250 };
+        var image = new ProcessedImage(2, 1, 8, pixels, 128.0, 256.0);
+
+        // Negative offset: first pixel (10 - 20) should clamp to 0.
+        var negResult = sut.ApplyBrightnessOffset(image, -20);
+        negResult.IsSuccess.Should().BeTrue();
+        negResult.Value.PixelData[0].Should().Be(0);
+
+        // Positive offset: second pixel (250 + 20) should clamp to 255.
+        var posResult = sut.ApplyBrightnessOffset(image, 20);
+        posResult.IsSuccess.Should().BeTrue();
+        posResult.Value.PixelData[1].Should().Be(255);
+    }
+
+    // ── Additional helpers ─────────────────────────────────────────────────────
+
+    /// <summary>Creates a ProcessedImage that also carries a synthetic 16-bit pixel buffer.</summary>
+    private static ProcessedImage MakeProcessedImageWith16Bit(int width, int height)
+    {
+        int pixelCount = width * height;
+        var pixels8 = new byte[pixelCount];
+        var pixels16 = new ushort[pixelCount];
+        for (int i = 0; i < pixelCount; i++)
+        {
+            pixels8[i] = (byte)(i % 256);
+            pixels16[i] = (ushort)(i * 256 % 65535);
+        }
+
+        return new ProcessedImage(
+            width: width,
+            height: height,
+            bitsPerPixel: 8,
+            pixelData: pixels8,
+            windowCenter: 128.0,
+            windowWidth: 256.0)
+        {
+            RawPixelData16 = pixels16
+        };
+    }
+
+    /// <summary>Computes variance of a byte pixel buffer.</summary>
+    private static double ComputeVariance(byte[] data)
+    {
+        if (data.Length == 0) return 0.0;
+        double mean = data.Average(b => (double)b);
+        return data.Sum(b => (b - mean) * (b - mean)) / data.Length;
+    }
+
+    // ── ApplyBlackMask (SWR-IP-049) ───────────────────────────────────────────
+
+    [Fact]
+    public void ApplyBlackMask_Apply_SetsOutsideBoundaryToZero()
+    {
+        var sut = CreateSut();
+        // 4×4 image, all pixels = 200
+        var pixels = Enumerable.Repeat((byte)200, 16).ToArray();
+        var image = new ProcessedImage(4, 4, 8, pixels, 128, 256);
+
+        // Mask keeps only center 2×2 (cols 1-2, rows 1-2)
+        var result = sut.ApplyBlackMask(image, left: 1, top: 1, right: 3, bottom: 3, apply: true);
+
+        result.IsSuccess.Should().BeTrue();
+        var output = result.Value.PixelData;
+        // Row 0 — all outside → 0
+        output[0].Should().Be(0); output[1].Should().Be(0);
+        output[2].Should().Be(0); output[3].Should().Be(0);
+        // Row 1, col 1-2 inside → 200; col 0,3 outside → 0
+        output[4].Should().Be(0);
+        output[5].Should().Be(200);
+        output[6].Should().Be(200);
+        output[7].Should().Be(0);
+    }
+
+    [Fact]
+    public void ApplyBlackMask_RemoveWithoutRaw16_ReturnsSamePixels()
+    {
+        var sut = CreateSut();
+        var pixels = new byte[] { 100, 150, 200, 250 };
+        var image = new ProcessedImage(2, 2, 8, pixels, 128, 256);
+
+        var result = sut.ApplyBlackMask(image, 1, 1, 2, 2, apply: false);
+
+        result.IsSuccess.Should().BeTrue();
+        // No Raw16 → source pixels copied unchanged
+        result.Value.PixelData.Should().BeEquivalentTo(pixels);
+    }
+
+    [Fact]
+    public void ApplyBlackMask_OutOfRangeBoundary_ReturnsFailure()
+    {
+        var sut = CreateSut();
+        var image = MakeProcessedImage(width: 4, height: 4);
+
+        var result = sut.ApplyBlackMask(image, left: -1, top: 0, right: 4, bottom: 4);
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.ImageProcessingFailed);
+    }
+
+    [Fact]
+    public void ApplyBlackMask_DegenerateBoundary_ReturnsFailure()
+    {
+        var sut = CreateSut();
+        var image = MakeProcessedImage(width: 4, height: 4);
+
+        // left >= right is degenerate
+        var result = sut.ApplyBlackMask(image, left: 3, top: 0, right: 2, bottom: 4);
+
+        result.IsFailure.Should().BeTrue();
+    }
 }

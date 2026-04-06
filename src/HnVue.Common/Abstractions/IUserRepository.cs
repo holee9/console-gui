@@ -62,4 +62,31 @@ public interface IUserRepository
     /// <param name="cancellationToken">Token to cancel the asynchronous operation.</param>
     Task<Result<IReadOnlyList<UserRecord>>> GetAllAsync(
         CancellationToken cancellationToken = default);
+
+    /// <summary>Updates or clears the Quick PIN hash for a user.</summary>
+    /// <param name="userId">Unique identifier of the user.</param>
+    /// <param name="pinHash">New bcrypt hash of the Quick PIN, or <see langword="null"/> to clear.</param>
+    /// <param name="cancellationToken">Token to cancel the asynchronous operation.</param>
+    Task<Result> SetQuickPinHashAsync(
+        string userId,
+        string? pinHash,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>Retrieves the Quick PIN hash for a user, or null if not set.</summary>
+    /// <param name="userId">Unique identifier of the user.</param>
+    /// <param name="cancellationToken">Token to cancel the asynchronous operation.</param>
+    Task<Result<string?>> GetQuickPinHashAsync(
+        string userId,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>Updates Quick PIN failure count and lockout expiry for a user.</summary>
+    /// <param name="userId">Unique identifier of the user.</param>
+    /// <param name="failedCount">New consecutive failure count to persist.</param>
+    /// <param name="lockedUntil">UTC timestamp when lockout expires, or null to clear lockout.</param>
+    /// <param name="cancellationToken">Token to cancel the asynchronous operation.</param>
+    Task<Result> UpdateQuickPinFailureAsync(
+        string userId,
+        int failedCount,
+        DateTimeOffset? lockedUntil,
+        CancellationToken cancellationToken = default);
 }

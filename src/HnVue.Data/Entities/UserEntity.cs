@@ -42,4 +42,14 @@ public sealed class UserEntity
 
     /// <summary>UTC offset minutes for <see cref="LastLoginAtTicks"/>; null when <see cref="LastLoginAtTicks"/> is null.</summary>
     public int? LastLoginAtOffsetMinutes { get; set; }
+
+    /// <summary>Bcrypt hash of the user's Quick PIN, or null if no PIN is set.</summary>
+    [MaxLength(256)]
+    public string? QuickPinHash { get; set; }
+
+    /// <summary>Number of consecutive Quick PIN verification failures.</summary>
+    public int QuickPinFailedCount { get; set; }
+
+    /// <summary>UTC ticks when Quick PIN lockout expires, or null if not locked.</summary>
+    public long? QuickPinLockedUntilTicks { get; set; }
 }

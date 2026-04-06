@@ -43,6 +43,12 @@ public enum ErrorCode
     /// <summary>New password does not meet complexity requirements.</summary>
     PasswordPolicyViolation = 2005,
 
+    /// <summary>Quick PIN has not been set for the user account.</summary>
+    PinNotSet = 2006,
+
+    /// <summary>Calibration data (Gain/Offset) is missing or expired. SWR-IP-039.</summary>
+    CalibrationDataMissing = 2007,
+
     // ── Data (3xxx) ────────────────────────────────────────────────────────────
 
     /// <summary>A database-level error occurred.</summary>

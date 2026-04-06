@@ -241,6 +241,489 @@ public sealed class ImageProcessor : IImageProcessor
             image.WindowCenter, image.WindowWidth, image.FilePath));
     }
 
+    /// <inheritdoc/>
+    /// <remarks>SWR-IP-039 (Safety-related, HAZ-RAD, HAZ-SW)</remarks>
+    public Result<ProcessedImage> ApplyGainOffsetCorrection(
+        ProcessedImage image,
+        float[]? gainMap,
+        float[]? offsetMap)
+    {
+        ArgumentNullException.ThrowIfNull(image);
+
+        if (gainMap is null || offsetMap is null)
+            return Result.Failure<ProcessedImage>(
+                ErrorCode.CalibrationDataMissing,
+                "Gain/Offset calibration data is missing. Exposure blocked. SWR-IP-039.");
+
+        var raw16 = image.RawPixelData16;
+        int pixelCount = image.Width * image.Height;
+
+        if (raw16 is null || raw16.Length < pixelCount)
+            return Result.Failure<ProcessedImage>(
+                ErrorCode.ImageProcessingFailed,
+                "RawPixelData16 is required for Gain/Offset correction.");
+
+        if (gainMap.Length < pixelCount || offsetMap.Length < pixelCount)
+            return Result.Failure<ProcessedImage>(
+                ErrorCode.ImageProcessingFailed,
+                "Gain/Offset maps must cover all pixels.");
+
+        // Correct each pixel: corrected = clamp((pixel16 - offset) * gain, 0, 65535)
+        var corrected16 = new ushort[pixelCount];
+        for (int i = 0; i < pixelCount; i++)
+        {
+            float correctedValue = (raw16[i] - offsetMap[i]) * gainMap[i];
+            corrected16[i] = (ushort)Math.Clamp((int)Math.Round(correctedValue), 0, 65535);
+        }
+
+        // Normalise corrected 16-bit values to 8-bit display buffer.
+        ushort min = corrected16[0], max = corrected16[0];
+        foreach (var v in corrected16)
+        {
+            if (v < min) min = v;
+            if (v > max) max = v;
+        }
+
+        var range = max - min;
+        var display = new byte[pixelCount];
+        if (range == 0)
+            Array.Fill(display, (byte)128);
+        else
+            for (int i = 0; i < pixelCount; i++)
+                display[i] = (byte)Math.Round((corrected16[i] - min) * 255.0 / range);
+
+        var result = new ProcessedImage(
+            width: image.Width,
+            height: image.Height,
+            bitsPerPixel: 8,
+            pixelData: display,
+            windowCenter: image.WindowCenter,
+            windowWidth: image.WindowWidth,
+            filePath: image.FilePath,
+            panOffsetX: image.PanOffsetX,
+            panOffsetY: image.PanOffsetY)
+        {
+            RawPixelData16 = corrected16
+        };
+
+        return Result.Success(result);
+    }
+
+    /// <inheritdoc/>
+    /// <remarks>SWR-IP-041 (Safety-related, HAZ-RAD)</remarks>
+    public Result<ProcessedImage> ApplyNoiseReduction(ProcessedImage image, double strength)
+    {
+        ArgumentNullException.ThrowIfNull(image);
+
+        if (strength < 0.0 || strength > 1.0)
+            return Result.Failure<ProcessedImage>(
+                ErrorCode.ImageProcessingFailed,
+                "Noise reduction strength must be in the range [0.0, 1.0].");
+
+        if (strength == 0.0)
+            return Result.Success(image);
+
+        // 3×3 Gaussian kernel: [1,2,1; 2,4,2; 1,2,1] / 16
+        var blurred = ApplyGaussian3x3(image.PixelData, image.Width, image.Height);
+
+        // Blend: output = (1 - strength) * original + strength * blurred
+        var output = new byte[image.PixelData.Length];
+        for (int i = 0; i < output.Length; i++)
+        {
+            double blended = (1.0 - strength) * image.PixelData[i] + strength * blurred[i];
+            output[i] = (byte)Math.Clamp((int)Math.Round(blended), 0, 255);
+        }
+
+        return Result.Success(new ProcessedImage(
+            width: image.Width,
+            height: image.Height,
+            bitsPerPixel: image.BitsPerPixel,
+            pixelData: output,
+            windowCenter: image.WindowCenter,
+            windowWidth: image.WindowWidth,
+            filePath: image.FilePath,
+            panOffsetX: image.PanOffsetX,
+            panOffsetY: image.PanOffsetY)
+        {
+            RawPixelData16 = image.RawPixelData16
+        });
+    }
+
+    /// <inheritdoc/>
+    /// <remarks>SWR-IP-043</remarks>
+    public Result<ProcessedImage> ApplyEdgeEnhancement(ProcessedImage image, double strength)
+    {
+        ArgumentNullException.ThrowIfNull(image);
+
+        if (strength < 0.0 || strength > 1.0)
+            return Result.Failure<ProcessedImage>(
+                ErrorCode.ImageProcessingFailed,
+                "Edge enhancement strength must be in the range [0.0, 1.0].");
+
+        if (strength == 0.0)
+            return Result.Success(image);
+
+        // 5×5 Gaussian blur for unsharp mask.
+        var blurred = ApplyGaussian5x5(image.PixelData, image.Width, image.Height);
+
+        // Unsharp mask: enhanced = clamp(original + strength * (original - blurred), 0, 255)
+        var output = new byte[image.PixelData.Length];
+        for (int i = 0; i < output.Length; i++)
+        {
+            double enhanced = image.PixelData[i] + strength * (image.PixelData[i] - blurred[i]);
+            output[i] = (byte)Math.Clamp((int)Math.Round(enhanced), 0, 255);
+        }
+
+        return Result.Success(new ProcessedImage(
+            width: image.Width,
+            height: image.Height,
+            bitsPerPixel: image.BitsPerPixel,
+            pixelData: output,
+            windowCenter: image.WindowCenter,
+            windowWidth: image.WindowWidth,
+            filePath: image.FilePath,
+            panOffsetX: image.PanOffsetX,
+            panOffsetY: image.PanOffsetY)
+        {
+            RawPixelData16 = image.RawPixelData16
+        });
+    }
+
+    /// <inheritdoc/>
+    /// <remarks>SWR-IP-045 (Safety-related, HAZ-RAD)</remarks>
+    public Result<ProcessedImage> ApplyScatterCorrection(ProcessedImage image)
+    {
+        ArgumentNullException.ThrowIfNull(image);
+
+        // Estimate scatter using a large-kernel Gaussian (radius 15).
+        // Subtract 30% of the scatter estimate from the original.
+        var scatterEstimate = ApplyLargeGaussian(image.PixelData, image.Width, image.Height, radius: 15);
+
+        var output = new byte[image.PixelData.Length];
+        for (int i = 0; i < output.Length; i++)
+        {
+            double corrected = image.PixelData[i] - 0.3 * scatterEstimate[i];
+            output[i] = (byte)Math.Clamp((int)Math.Round(corrected), 0, 255);
+        }
+
+        return Result.Success(new ProcessedImage(
+            width: image.Width,
+            height: image.Height,
+            bitsPerPixel: image.BitsPerPixel,
+            pixelData: output,
+            windowCenter: image.WindowCenter,
+            windowWidth: image.WindowWidth,
+            filePath: image.FilePath,
+            panOffsetX: image.PanOffsetX,
+            panOffsetY: image.PanOffsetY)
+        {
+            RawPixelData16 = image.RawPixelData16
+        });
+    }
+
+    /// <inheritdoc/>
+    /// <remarks>SWR-IP-047</remarks>
+    public Result<ProcessedImage> ApplyAutoTrimming(ProcessedImage image, byte threshold = 10)
+    {
+        ArgumentNullException.ThrowIfNull(image);
+
+        int w = image.Width, h = image.Height;
+        var src = image.PixelData;
+
+        // Find bounding box where pixel values exceed threshold.
+        int minX = w, maxX = 0, minY = h, maxY = 0;
+        for (int y = 0; y < h; y++)
+        {
+            for (int x = 0; x < w; x++)
+            {
+                if (src[y * w + x] > threshold)
+                {
+                    if (x < minX) minX = x;
+                    if (x > maxX) maxX = x;
+                    if (y < minY) minY = y;
+                    if (y > maxY) maxY = y;
+                }
+            }
+        }
+
+        // If no pixels exceed threshold, return all-black image.
+        if (minX > maxX || minY > maxY)
+            return Result.Success(new ProcessedImage(
+                width: w,
+                height: h,
+                bitsPerPixel: image.BitsPerPixel,
+                pixelData: new byte[src.Length],
+                windowCenter: image.WindowCenter,
+                windowWidth: image.WindowWidth,
+                filePath: image.FilePath,
+                panOffsetX: image.PanOffsetX,
+                panOffsetY: image.PanOffsetY)
+            {
+                RawPixelData16 = image.RawPixelData16
+            });
+
+        // Mask border region (outside bounding box) to 0, preserve interior.
+        var output = new byte[src.Length];
+        for (int y = 0; y < h; y++)
+        {
+            for (int x = 0; x < w; x++)
+            {
+                if (y >= minY && y <= maxY && x >= minX && x <= maxX)
+                    output[y * w + x] = src[y * w + x];
+                // else output[y * w + x] = 0 (already zero)
+            }
+        }
+
+        return Result.Success(new ProcessedImage(
+            width: w,
+            height: h,
+            bitsPerPixel: image.BitsPerPixel,
+            pixelData: output,
+            windowCenter: image.WindowCenter,
+            windowWidth: image.WindowWidth,
+            filePath: image.FilePath,
+            panOffsetX: image.PanOffsetX,
+            panOffsetY: image.PanOffsetY)
+        {
+            RawPixelData16 = image.RawPixelData16
+        });
+    }
+
+    /// <inheritdoc/>
+    /// <remarks>SWR-IP-050</remarks>
+    public Result<ProcessedImage> ApplyClahe(ProcessedImage image, double clipLimit = 2.0, int tileSize = 8)
+    {
+        ArgumentNullException.ThrowIfNull(image);
+
+        if (clipLimit < 1.0 || clipLimit > 4.0)
+            return Result.Failure<ProcessedImage>(
+                ErrorCode.ImageProcessingFailed,
+                "CLAHE clip limit must be in the range [1.0, 4.0].");
+
+        if (tileSize < 1)
+            return Result.Failure<ProcessedImage>(
+                ErrorCode.ImageProcessingFailed,
+                "CLAHE tile size must be at least 1.");
+
+        int w = image.Width, h = image.Height;
+        var src = image.PixelData;
+
+        if (src.Length == 0)
+            return Result.Success(image);
+
+        // Divide image into tileSize × tileSize grid and build per-tile LUTs.
+        int tilesX = Math.Max(1, (w + tileSize - 1) / tileSize);
+        int tilesY = Math.Max(1, (h + tileSize - 1) / tileSize);
+
+        // Compute LUT for each tile.
+        var luts = new byte[tilesY, tilesX, 256];
+
+        for (int ty = 0; ty < tilesY; ty++)
+        {
+            for (int tx = 0; tx < tilesX; tx++)
+            {
+                int x0 = tx * tileSize;
+                int y0 = ty * tileSize;
+                int x1 = Math.Min(x0 + tileSize, w);
+                int y1 = Math.Min(y0 + tileSize, h);
+                int tilePixels = (x1 - x0) * (y1 - y0);
+
+                // Build histogram for this tile.
+                var hist = new int[256];
+                for (int y = y0; y < y1; y++)
+                    for (int x = x0; x < x1; x++)
+                        hist[src[y * w + x]]++;
+
+                // Clip histogram at clipLimit.
+                // Minimum clip threshold of 1 ensures histogram values are never fully suppressed.
+                int clipThreshold = Math.Max(1, (int)Math.Round(clipLimit * tilePixels / 256.0));
+                int redistributed = 0;
+                for (int v = 0; v < 256; v++)
+                {
+                    if (hist[v] > clipThreshold)
+                    {
+                        redistributed += hist[v] - clipThreshold;
+                        hist[v] = clipThreshold;
+                    }
+                }
+
+                // Redistribute clipped values evenly.
+                int redistPerBin = redistributed / 256;
+                int redistRemainder = redistributed % 256;
+                for (int v = 0; v < 256; v++)
+                {
+                    hist[v] += redistPerBin;
+                    if (v < redistRemainder)
+                        hist[v]++;
+                }
+
+                // Build cumulative distribution function (CDF) and derive LUT.
+                int cdf = 0;
+                for (int v = 0; v < 256; v++)
+                {
+                    cdf += hist[v];
+                    luts[ty, tx, v] = (byte)Math.Clamp(
+                        (int)Math.Round((double)cdf * 255.0 / tilePixels), 0, 255);
+                }
+            }
+        }
+
+        // Bilinear interpolation between tile LUTs for each output pixel.
+        var output = new byte[src.Length];
+        for (int y = 0; y < h; y++)
+        {
+            for (int x = 0; x < w; x++)
+            {
+                byte pv = src[y * w + x];
+
+                // Find the four surrounding tile centres.
+                double tileXPos = (x - tileSize / 2.0) / tileSize;
+                double tileYPos = (y - tileSize / 2.0) / tileSize;
+
+                int tx0 = (int)Math.Floor(tileXPos);
+                int ty0 = (int)Math.Floor(tileYPos);
+                int tx1 = tx0 + 1;
+                int ty1 = ty0 + 1;
+
+                double fracX = tileXPos - tx0;
+                double fracY = tileYPos - ty0;
+
+                // Clamp tile indices.
+                int clTx0 = Math.Clamp(tx0, 0, tilesX - 1);
+                int clTx1 = Math.Clamp(tx1, 0, tilesX - 1);
+                int clTy0 = Math.Clamp(ty0, 0, tilesY - 1);
+                int clTy1 = Math.Clamp(ty1, 0, tilesY - 1);
+
+                double v00 = luts[clTy0, clTx0, pv];
+                double v10 = luts[clTy0, clTx1, pv];
+                double v01 = luts[clTy1, clTx0, pv];
+                double v11 = luts[clTy1, clTx1, pv];
+
+                double interpolated =
+                    v00 * (1 - fracX) * (1 - fracY) +
+                    v10 * fracX * (1 - fracY) +
+                    v01 * (1 - fracX) * fracY +
+                    v11 * fracX * fracY;
+
+                output[y * w + x] = (byte)Math.Clamp((int)Math.Round(interpolated), 0, 255);
+            }
+        }
+
+        return Result.Success(new ProcessedImage(
+            width: w,
+            height: h,
+            bitsPerPixel: image.BitsPerPixel,
+            pixelData: output,
+            windowCenter: image.WindowCenter,
+            windowWidth: image.WindowWidth,
+            filePath: image.FilePath,
+            panOffsetX: image.PanOffsetX,
+            panOffsetY: image.PanOffsetY)
+        {
+            RawPixelData16 = image.RawPixelData16
+        });
+    }
+
+    /// <inheritdoc/>
+    /// <remarks>SWR-IP-052</remarks>
+    public Result<ProcessedImage> ApplyBrightnessOffset(ProcessedImage image, int offset)
+    {
+        ArgumentNullException.ThrowIfNull(image);
+
+        if (offset < -255 || offset > 255)
+            return Result.Failure<ProcessedImage>(
+                ErrorCode.ImageProcessingFailed,
+                "Brightness offset must be in the range [-255, 255].");
+
+        var src = image.PixelData;
+        var output = new byte[src.Length];
+        for (int i = 0; i < src.Length; i++)
+            output[i] = (byte)Math.Clamp(src[i] + offset, 0, 255);
+
+        return Result.Success(new ProcessedImage(
+            width: image.Width,
+            height: image.Height,
+            bitsPerPixel: image.BitsPerPixel,
+            pixelData: output,
+            windowCenter: image.WindowCenter,
+            windowWidth: image.WindowWidth,
+            filePath: image.FilePath,
+            panOffsetX: image.PanOffsetX,
+            panOffsetY: image.PanOffsetY)
+        {
+            RawPixelData16 = image.RawPixelData16
+        });
+    }
+
+    /// <inheritdoc/>
+    /// <remarks>SWR-IP-049. Masking is O(W×H) — well within the ≤100ms requirement.</remarks>
+    public Result<ProcessedImage> ApplyBlackMask(
+        ProcessedImage image,
+        int left,
+        int top,
+        int right,
+        int bottom,
+        bool apply = true)
+    {
+        ArgumentNullException.ThrowIfNull(image);
+
+        if (left < 0 || top < 0 || right > image.Width || bottom > image.Height || left >= right || top >= bottom)
+            return Result.Failure<ProcessedImage>(
+                ErrorCode.ImageProcessingFailed,
+                "Black mask boundary is out of range or degenerate.");
+
+        var src = image.PixelData;
+        var output = new byte[src.Length];
+
+        if (apply)
+        {
+            // Mask pixels outside [left,right) × [top,bottom) to black (0).
+            for (int y = 0; y < image.Height; y++)
+            {
+                for (int x = 0; x < image.Width; x++)
+                {
+                    int idx = y * image.Width + x;
+                    output[idx] = (x >= left && x < right && y >= top && y < bottom)
+                        ? src[idx]
+                        : (byte)0;
+                }
+            }
+        }
+        else
+        {
+            // Remove mask: restore from RawPixelData16 (normalised to 8-bit) if available,
+            // otherwise return the source pixels unchanged (mask was not applied).
+            if (image.RawPixelData16 is { } raw16 && raw16.Length == src.Length)
+            {
+                // Re-normalise 16-bit source to 8-bit, respecting current W/L.
+                double lowerBound = image.WindowCenter - image.WindowWidth / 2.0;
+                for (int i = 0; i < raw16.Length; i++)
+                {
+                    double normalised = (raw16[i] - lowerBound) / image.WindowWidth;
+                    output[i] = (byte)(Math.Clamp(normalised, 0.0, 1.0) * 255.0);
+                }
+            }
+            else
+            {
+                Array.Copy(src, output, src.Length);
+            }
+        }
+
+        return Result.Success(new ProcessedImage(
+            width: image.Width,
+            height: image.Height,
+            bitsPerPixel: image.BitsPerPixel,
+            pixelData: output,
+            windowCenter: image.WindowCenter,
+            windowWidth: image.WindowWidth,
+            filePath: image.FilePath,
+            panOffsetX: image.PanOffsetX,
+            panOffsetY: image.PanOffsetY)
+        {
+            RawPixelData16 = image.RawPixelData16
+        });
+    }
+
     // ── Private helpers ────────────────────────────────────────────────────────
 
     /// <summary>
@@ -670,5 +1153,139 @@ public sealed class ImageProcessor : IImageProcessor
 
         var width = Math.Max(MinWindowWidth, stdDev * 2.0);
         return (mean, width);
+    }
+
+    /// <summary>
+    /// Applies a 3×3 Gaussian blur kernel to an 8-bit pixel buffer.
+    /// Kernel: [1,2,1; 2,4,2; 1,2,1] / 16. Border pixels use clamped sampling.
+    /// </summary>
+    private static byte[] ApplyGaussian3x3(byte[] source, int w, int h)
+    {
+        if (source.Length == 0 || w <= 0 || h <= 0)
+            return Array.Empty<byte>();
+
+        // 3×3 Gaussian kernel coefficients (sum = 16).
+        ReadOnlySpan<int> kernel = [1, 2, 1, 2, 4, 2, 1, 2, 1];
+        var output = new byte[source.Length];
+
+        for (int y = 0; y < h; y++)
+        {
+            for (int x = 0; x < w; x++)
+            {
+                int sum = 0;
+                int ki = 0;
+                for (int ky = -1; ky <= 1; ky++)
+                {
+                    int sy = Math.Clamp(y + ky, 0, h - 1);
+                    for (int kx = -1; kx <= 1; kx++, ki++)
+                    {
+                        int sx = Math.Clamp(x + kx, 0, w - 1);
+                        sum += source[sy * w + sx] * kernel[ki];
+                    }
+                }
+                output[y * w + x] = (byte)(sum / 16);
+            }
+        }
+
+        return output;
+    }
+
+    /// <summary>
+    /// Applies a 5×5 Gaussian blur kernel to an 8-bit pixel buffer.
+    /// Uses a separable approximation based on Pascal's triangle (binomial coefficients row 4).
+    /// Border pixels use clamped sampling.
+    /// </summary>
+    private static byte[] ApplyGaussian5x5(byte[] source, int w, int h)
+    {
+        if (source.Length == 0 || w <= 0 || h <= 0)
+            return Array.Empty<byte>();
+
+        // 5×5 Gaussian kernel coefficients (outer product of [1,4,6,4,1]).
+        // Sum = 256.
+        ReadOnlySpan<int> row = [1, 4, 6, 4, 1];
+        var output = new byte[source.Length];
+
+        for (int y = 0; y < h; y++)
+        {
+            for (int x = 0; x < w; x++)
+            {
+                int sum = 0;
+                for (int ky = -2; ky <= 2; ky++)
+                {
+                    int sy = Math.Clamp(y + ky, 0, h - 1);
+                    for (int kx = -2; kx <= 2; kx++)
+                    {
+                        int sx = Math.Clamp(x + kx, 0, w - 1);
+                        sum += source[sy * w + sx] * row[ky + 2] * row[kx + 2];
+                    }
+                }
+                output[y * w + x] = (byte)Math.Clamp(sum / 256, 0, 255);
+            }
+        }
+
+        return output;
+    }
+
+    /// <summary>
+    /// Applies a large box-approximated Gaussian blur to estimate low-frequency scatter content.
+    /// Uses iterated box filters to approximate a Gaussian of the requested radius.
+    /// </summary>
+    private static byte[] ApplyLargeGaussian(byte[] source, int w, int h, int radius)
+    {
+        if (source.Length == 0 || w <= 0 || h <= 0)
+            return Array.Empty<byte>();
+
+        // Use iterated box filter as an efficient Gaussian approximation.
+        // Three passes with box of size (2*r+1) converge to a Gaussian.
+        int boxSize = radius * 2 + 1;
+        var current = (byte[])source.Clone();
+
+        for (int pass = 0; pass < 3; pass++)
+            current = BoxBlur(current, w, h, boxSize);
+
+        return current;
+    }
+
+    /// <summary>
+    /// Applies a separable box blur of the given kernel size to an 8-bit pixel buffer.
+    /// Implements horizontal then vertical pass for O(N) per-pixel complexity.
+    /// </summary>
+    private static byte[] BoxBlur(byte[] source, int w, int h, int boxSize)
+    {
+        int half = boxSize / 2;
+        var temp = new byte[source.Length];
+        var output = new byte[source.Length];
+
+        // Horizontal pass.
+        for (int y = 0; y < h; y++)
+        {
+            for (int x = 0; x < w; x++)
+            {
+                int sum = 0;
+                for (int kx = -half; kx <= half; kx++)
+                {
+                    int sx = Math.Clamp(x + kx, 0, w - 1);
+                    sum += source[y * w + sx];
+                }
+                temp[y * w + x] = (byte)(sum / boxSize);
+            }
+        }
+
+        // Vertical pass.
+        for (int y = 0; y < h; y++)
+        {
+            for (int x = 0; x < w; x++)
+            {
+                int sum = 0;
+                for (int ky = -half; ky <= half; ky++)
+                {
+                    int sy = Math.Clamp(y + ky, 0, h - 1);
+                    sum += temp[sy * w + x];
+                }
+                output[y * w + x] = (byte)(sum / boxSize);
+            }
+        }
+
+        return output;
     }
 }

@@ -6,6 +6,12 @@ namespace HnVue.Dicom;
 /// <summary>
 /// Implements DICOM C-FIND SCU for Modality Worklist queries.
 /// </summary>
+/// <remarks>
+/// <b>Deprecated (Issue #24):</b> Use <see cref="HnVue.Common.Abstractions.IDicomService.QueryWorklistAsync"/>
+/// instead. This class is retained for reference but should not be used in new code.
+/// <c>DicomService</c> is the single entry point for all DICOM network operations.
+/// </remarks>
+[Obsolete("Use IDicomService.QueryWorklistAsync instead. See Issue #24.", error: false)]
 public sealed class DicomFindScu
 {
     private readonly IDicomNetworkConfig _config;
@@ -41,6 +47,7 @@ public sealed class DicomFindScu
                 _config.LocalAeTitle,
                 query.AeTitle);
 
+            // NegotiateAsyncOps() is a synchronous fo-dicom configuration call; no await needed. Issue #33.
             client.NegotiateAsyncOps();
 
             var cfindRequest = BuildWorklistCFindRequest(query);

@@ -22,6 +22,7 @@ public sealed class WorkflowEngine : IWorkflowEngine
     private readonly IDoseService _doseService;
     private readonly IGeneratorInterface _generator;
     private readonly ISecurityContext _securityContext;
+    private readonly IAuditService? _auditService;
     private readonly object _lock = new();
 
     private SafeState _safeState = SafeState.Idle;
@@ -34,11 +35,21 @@ public sealed class WorkflowEngine : IWorkflowEngine
     /// <param name="doseService">Dose validation service for pre-exposure checks.</param>
     /// <param name="generator">Generator hardware interface (real or simulated).</param>
     /// <param name="securityContext">Security context for RBAC enforcement.</param>
-    public WorkflowEngine(IDoseService doseService, IGeneratorInterface generator, ISecurityContext securityContext)
+    /// <param name="auditService">
+    /// Optional audit service for SWR-NF-SC-041 compliance logging.
+    /// When <see langword="null"/>, audit logging is silently skipped so that
+    /// existing unit tests and deployment configurations remain compatible.
+    /// </param>
+    public WorkflowEngine(
+        IDoseService doseService,
+        IGeneratorInterface generator,
+        ISecurityContext securityContext,
+        IAuditService? auditService = null)
     {
         _doseService = doseService ?? throw new ArgumentNullException(nameof(doseService));
         _generator = generator ?? throw new ArgumentNullException(nameof(generator));
         _securityContext = securityContext ?? throw new ArgumentNullException(nameof(securityContext));
+        _auditService = auditService;
     }
 
     /// <inheritdoc/>
@@ -171,7 +182,7 @@ public sealed class WorkflowEngine : IWorkflowEngine
         if (validation.Level == DoseValidationLevel.Emergency)
         {
             lock (_lock)
-                _safeState = SafeState.Emergency;
+                SetSafeState(SafeState.Emergency, $"doseMsg={validation.Message}");
             return Result.Failure<DoseValidationResult>(ErrorCode.DoseInterlock,
                 $"EMERGENCY dose interlock: {validation.Message}");
         }
@@ -180,7 +191,7 @@ public sealed class WorkflowEngine : IWorkflowEngine
         if (validation.Level == DoseValidationLevel.Block)
         {
             lock (_lock)
-                _safeState = SafeState.Blocked;
+                SetSafeState(SafeState.Blocked, $"doseMsg={validation.Message}");
             return Result.Failure<DoseValidationResult>(ErrorCode.DoseInterlock,
                 $"Dose BLOCKED: {validation.Message}");
         }
@@ -198,9 +209,9 @@ public sealed class WorkflowEngine : IWorkflowEngine
                     $"Cannot expose: system is in safe state '{_safeState}'.");
 
             if (validation.Level == DoseValidationLevel.Warn)
-                _safeState = SafeState.Warning;
+                SetSafeState(SafeState.Warning, $"doseMsg={validation.Message}");
             else
-                _safeState = SafeState.Idle;
+                SetSafeState(SafeState.Idle);
 
             previous = _stateMachine.CurrentState;
             transitionResult = _stateMachine.TryTransition(WorkflowState.Exposing);
@@ -211,6 +222,12 @@ public sealed class WorkflowEngine : IWorkflowEngine
                 transitionResult.Error ?? ErrorCode.InvalidStateTransition, transitionResult.ErrorMessage ?? string.Empty);
 
         RaiseStateChanged(previous, WorkflowState.Exposing);
+
+        // SWR-NF-SC-041: Log exposure preparation to the tamper-evident audit trail.
+        // Fire-and-forget: audit failure must never block the exposure workflow.
+        FireAndForgetAudit("EXPOSURE_PREPARE",
+            $"patientId={_currentPatientId};studyUid={_currentStudyInstanceUid};level={validation.Level}");
+
         return Result.Success(validation);
     }
 
@@ -220,6 +237,9 @@ public sealed class WorkflowEngine : IWorkflowEngine
         CancellationToken cancellationToken = default)
     {
         WorkflowState previous;
+        // Capture before nulling — Issue #35: audit log must record the patient that was active.
+        string? capturedPatientId;
+        string? capturedStudyUid;
 
         lock (_lock)
         {
@@ -228,6 +248,8 @@ public sealed class WorkflowEngine : IWorkflowEngine
             if (previous == WorkflowState.Error)
                 return Result.Success(); // Already in error state
 
+            capturedPatientId = _currentPatientId;
+            capturedStudyUid = _currentStudyInstanceUid;
             _stateMachine.ForceError();
             _currentPatientId = null;
             _currentStudyInstanceUid = null;
@@ -244,11 +266,18 @@ public sealed class WorkflowEngine : IWorkflowEngine
             {
                 // Escalate to emergency if generator abort fails
                 lock (_lock)
-                    _safeState = SafeState.Emergency;
+                    SetSafeState(SafeState.Emergency, "generatorAbortFailed");
             }
         }
 
         RaiseStateChanged(previous, WorkflowState.Error, reason);
+
+        // SWR-NF-SC-041: Log exposure abort to the tamper-evident audit trail.
+        // Fire-and-forget: audit failure must never suppress an abort.
+        // Issue #35: Use captured patientId (before null-clear) for accurate audit record.
+        FireAndForgetAudit("EXPOSURE_ABORT",
+            $"patientId={capturedPatientId};studyUid={capturedStudyUid};reason={reason};previousState={previous}");
+
         return Result.Success();
     }
 
@@ -258,5 +287,53 @@ public sealed class WorkflowEngine : IWorkflowEngine
     {
         var args = new WorkflowStateChangedEventArgs(previous, next, reason);
         StateChanged?.Invoke(this, args);
+    }
+
+    /// <summary>
+    /// Updates <see cref="_safeState"/> and logs the transition to the audit trail (SWR-NF-SC-041).
+    /// Must be called inside the <see cref="_lock"/> when changing safe state.
+    /// </summary>
+    /// <param name="newState">The new safe state to apply.</param>
+    /// <param name="context">Optional free-text context written to the audit details field.</param>
+    private void SetSafeState(SafeState newState, string? context = null)
+    {
+        var previous = _safeState;
+        _safeState = newState;
+
+        if (previous == newState)
+            return;
+
+        // SWR-NF-SC-041: Fire-and-forget audit log of safe-state transitions.
+        // Audit failure must never block safety state changes.
+        FireAndForgetAudit("SAFESTATE_CHANGED",
+            $"from={previous};to={newState}" + (context is not null ? $";{context}" : string.Empty));
+    }
+
+    /// <summary>
+    /// Writes an audit entry using fire-and-forget semantics.
+    /// Exceptions are swallowed so that audit failure never interrupts workflow execution.
+    /// </summary>
+    /// <param name="action">The audit action code (e.g., "EXPOSURE_PREPARE").</param>
+    /// <param name="details">Optional detail string stored in the audit entry.</param>
+    private void FireAndForgetAudit(string action, string? details = null)
+    {
+        if (_auditService is null)
+            return;
+
+        var userId = _securityContext.CurrentRole.HasValue
+            ? _securityContext.CurrentRole.Value.ToString()
+            : "UNKNOWN";
+
+        var entry = new HnVue.Common.Models.AuditEntry(
+            timestamp: DateTimeOffset.UtcNow,
+            userId: userId,
+            action: action,
+            currentHash: string.Empty, // Implementation computes the real hash chain
+            details: details);
+
+        // Intentionally not awaited — audit must not block or throw to callers.
+        _ = _auditService.WriteAuditAsync(entry).ContinueWith(
+            t => { /* swallow — do not let audit exceptions propagate */ },
+            TaskContinuationOptions.OnlyOnFaulted);
     }
 }

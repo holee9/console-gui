@@ -25,15 +25,22 @@ IEC 62304 §6.2.5 — 업데이트 패키지 적용 전 Authenticode 서명 및 
 
 `SWUpdateService.ApplyUpdateAsync(packagePath)` 실행 순서:
 
-1. `.sha256` 사이드카 파일 존재 시 SHA-256 해시 검증 (`SignatureVerifier.VerifyHash`)
-2. `UpdateOptions.RequireAuthenticodeSignature` 활성화 시 Authenticode 서명 검증 (`SignatureVerifier.VerifyAuthenticode`)
-3. `BackupManager.CreateBackupAsync()` — 현재 애플리케이션 디렉토리 백업
-4. `pending_update.txt` 마커 파일 기록 (재시작 후 설치 완료)
-5. 감사 로그 기록 (`UPDATE_STAGED`)
+1. **해시 검증:** `.sha256` 사이드카 파일 존재 시 SHA-256 해시 검증 (`SignatureVerifier.VerifyHash`)
+2. **서명 검증:** `UpdateOptions.RequireAuthenticodeSignature` 활성화 시 Authenticode 서명 검증 (`SignatureVerifier.VerifyAuthenticode`)
+3. **백업 생성:** `BackupManager.CreateBackupAsync()` — 현재 애플리케이션 디렉토리 백업
+4. **스테이징:** ZIP 파일을 `Updates/Staging/` 디렉토리로 추출 (`ZipFile.ExtractToDirectory`)
+5. **마커 작성:** `pending_update.json` 마커 파일 기록 (재시작 후 설치 완료 신호)
+6. **감사 로그:** `UPDATE_STAGED` 액션 기록
 
-### Wave 2 스테이징 방식
+### Staged Update 방식 (Wave 2)
 
-바이너리 교체는 재시작 시 수행 (프로세스 잠금 문제 회피). Wave 3에서 라이브 교체 구현 예정.
+Windows 실행 중 바이너리 직접 교체 불가 → **staged 방식** 적용:
+- 갱신 패키지는 별도 디렉토리(`Updates/Staging/`)로 추출 (현재 실행 바이너리 보존)
+- `pending_update.json` 마커 파일로 상태 추적
+- 재시작 후 런처가 마커 감지 → 스테이징된 파일 설치 (현재 파일 교체)
+- 설치 성공 시 마커 삭제, 실패 시 롤백
+
+**Wave 3 계획:** 라이브 교체 (DLL 언로드 + 재로드) 또는 Windows 서비스 기반 업데이트 구현
 
 ## UpdateOptions 설정 항목
 
@@ -78,14 +85,14 @@ services.AddScoped<ISWUpdateService, SWUpdateService>();
 
 - 테스트 프로젝트: `tests/HnVue.Update.Tests`
 - 테스트 파일 및 메서드 수:
-  - `SWUpdateServiceTests.cs`: 9개
+  - `SWUpdateServiceTests.cs`: 11개 (+2 ApplyPackageAsync ZIP 추출, pending_update.json 마커)
   - `BackupManagerTests.cs`: 12개
-  - `BackupServiceTests.cs`: 11개
+  - `BackupServiceTests.cs`: 14개 (+3 Timestamp 백업/복원 시나리오)
   - `CodeSignVerifierTests.cs`: 13개
   - `SignatureVerifierTests.cs`: 8개
   - `UpdateCheckerTests.cs`: 6개
   - `ServiceCollectionExtensionsTests.cs`: 4개
-  - **합계: 63개**
+  - **합계: 72개** (+9)
 
 ## SWR 참조
 

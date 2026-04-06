@@ -75,4 +75,92 @@ public interface IImageProcessor
     /// When <see langword="false"/>, flips top-bottom.
     /// </param>
     Result<ProcessedImage> Flip(ProcessedImage image, bool horizontal);
+
+    /// <summary>
+    /// Applies Gain/Offset calibration correction to a 16-bit raw image.
+    /// SWR-IP-039 (Safety-related, HAZ-RAD, HAZ-SW).
+    /// When gainMap or offsetMap is null, returns <see cref="ErrorCode.CalibrationDataMissing"/>
+    /// failure to block exposure.
+    /// </summary>
+    /// <param name="image">Source image whose <see cref="ProcessedImage.RawPixelData16"/> is used.</param>
+    /// <param name="gainMap">Per-pixel gain correction factors (must match pixel count).</param>
+    /// <param name="offsetMap">Per-pixel offset correction values (must match pixel count).</param>
+    Result<ProcessedImage> ApplyGainOffsetCorrection(
+        ProcessedImage image,
+        float[]? gainMap,
+        float[]? offsetMap);
+
+    /// <summary>
+    /// Applies adaptive noise reduction using a weighted Gaussian kernel.
+    /// SWR-IP-041 (Safety-related, HAZ-RAD).
+    /// </summary>
+    /// <param name="image">Source image to process.</param>
+    /// <param name="strength">NR strength 0.0–1.0. 0 = no change, 1 = maximum smoothing.</param>
+    Result<ProcessedImage> ApplyNoiseReduction(ProcessedImage image, double strength);
+
+    /// <summary>
+    /// Applies edge enhancement using unsharp masking.
+    /// SWR-IP-043. Strength 0.0 = no enhancement, 1.0 = maximum.
+    /// </summary>
+    /// <param name="image">Source image to process.</param>
+    /// <param name="strength">Enhancement strength 0.0–1.0.</param>
+    Result<ProcessedImage> ApplyEdgeEnhancement(ProcessedImage image, double strength);
+
+    /// <summary>
+    /// Applies software-based scatter correction using Gaussian blur subtraction.
+    /// SWR-IP-045 (Safety-related, HAZ-RAD).
+    /// </summary>
+    /// <param name="image">Source image to process.</param>
+    Result<ProcessedImage> ApplyScatterCorrection(ProcessedImage image);
+
+    /// <summary>
+    /// Auto-detects dark border regions and applies a black mask to trim them.
+    /// SWR-IP-047. Uses threshold-based border detection.
+    /// </summary>
+    /// <param name="image">Source image to process.</param>
+    /// <param name="threshold">
+    /// Pixel value threshold (0–255) below which border is considered black. Default 10.
+    /// </param>
+    Result<ProcessedImage> ApplyAutoTrimming(ProcessedImage image, byte threshold = 10);
+
+    /// <summary>
+    /// Applies Contrast Limited Adaptive Histogram Equalization (CLAHE).
+    /// SWR-IP-050. Operates on 8-bit pixel data.
+    /// </summary>
+    /// <param name="image">Source image to process.</param>
+    /// <param name="clipLimit">Contrast clip limit 1.0–4.0 (default 2.0). Higher = more contrast.</param>
+    /// <param name="tileSize">Tile grid size (default 8). Image divided into tileSize×tileSize grid.</param>
+    Result<ProcessedImage> ApplyClahe(ProcessedImage image, double clipLimit = 2.0, int tileSize = 8);
+
+    /// <summary>
+    /// Applies a brightness offset to the image.
+    /// SWR-IP-052. Adds offset to each pixel, clamped to [0, 255].
+    /// </summary>
+    /// <param name="image">Source image to process.</param>
+    /// <param name="offset">Brightness offset -255 to +255.</param>
+    Result<ProcessedImage> ApplyBrightnessOffset(ProcessedImage image, int offset);
+
+    /// <summary>
+    /// Applies or removes a Black Mask (Automatic Shutters) to the image.
+    /// SWR-IP-049 (Functional). Masks pixels outside the specified boundary to black (0).
+    /// When <paramref name="apply"/> is <see langword="false"/>, restores original pixels from
+    /// <see cref="ProcessedImage.RawPixelData16"/> if available, otherwise un-masks using stored data.
+    /// Masked pixels are excluded from Window/Level calculations.
+    /// </summary>
+    /// <param name="image">Source image to process.</param>
+    /// <param name="left">Left boundary (inclusive) of the unmasked region (pixels from left edge).</param>
+    /// <param name="top">Top boundary (inclusive) of the unmasked region (pixels from top edge).</param>
+    /// <param name="right">Right boundary (exclusive) of the unmasked region (pixels from left edge).</param>
+    /// <param name="bottom">Bottom boundary (exclusive) of the unmasked region (pixels from top edge).</param>
+    /// <param name="apply">
+    /// When <see langword="true"/>, applies the black mask outside the boundary.
+    /// When <see langword="false"/>, removes the mask (restores original pixel values).
+    /// </param>
+    Result<ProcessedImage> ApplyBlackMask(
+        ProcessedImage image,
+        int left,
+        int top,
+        int right,
+        int bottom,
+        bool apply = true);
 }

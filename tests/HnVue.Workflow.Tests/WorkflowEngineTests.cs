@@ -281,6 +281,55 @@ public sealed class WorkflowEngineTests
         _sut.CurrentState.Should().Be(WorkflowState.Completed);
     }
 
+    // ── Audit logging (SWR-NF-SC-041, Issue #30) ─────────────────────────────
+
+    [Fact]
+    public async Task PrepareExposureAsync_WithAuditService_WritesExposurePrepareAuditEntry()
+    {
+        // Arrange
+        var auditService = Substitute.For<IAuditService>();
+        auditService.WriteAuditAsync(Arg.Any<HnVue.Common.Models.AuditEntry>(), Arg.Any<CancellationToken>())
+            .Returns(Result.Success());
+
+        var sut = new WorkflowEngine(_doseService, _generator, _securityContext, auditService);
+
+        var validation = new DoseValidationResult(IsAllowed: true, Level: DoseValidationLevel.Allow, Message: null);
+        _doseService.ValidateExposureAsync(Arg.Any<ExposureParameters>(), Arg.Any<CancellationToken>())
+            .Returns(Result.Success(validation));
+
+        await sut.StartAsync("P001", "1.2.3");
+        await sut.TransitionAsync(WorkflowState.ProtocolLoaded);
+        await sut.TransitionAsync(WorkflowState.ReadyToExpose);
+
+        // Act
+        var result = await sut.PrepareExposureAsync(MakeParams());
+
+        // Assert
+        result.IsSuccess.Should().BeTrue();
+        // Allow brief propagation of fire-and-forget task
+        await Task.Delay(50);
+        await auditService.Received(1).WriteAuditAsync(
+            Arg.Is<HnVue.Common.Models.AuditEntry>(e => e.Action == "EXPOSURE_PREPARE"),
+            Arg.Any<CancellationToken>());
+    }
+
+    [Fact]
+    public async Task PrepareExposureAsync_WithNullAuditService_DoesNotThrow()
+    {
+        // Arrange — sut created without audit service (default null)
+        var validation = new DoseValidationResult(IsAllowed: true, Level: DoseValidationLevel.Allow, Message: null);
+        _doseService.ValidateExposureAsync(Arg.Any<ExposureParameters>(), Arg.Any<CancellationToken>())
+            .Returns(Result.Success(validation));
+
+        await _sut.StartAsync("P001", "1.2.3");
+        await _sut.TransitionAsync(WorkflowState.ProtocolLoaded);
+        await _sut.TransitionAsync(WorkflowState.ReadyToExpose);
+
+        // Act & Assert — must not throw even though IAuditService is absent
+        var act = async () => await _sut.PrepareExposureAsync(MakeParams());
+        await act.Should().NotThrowAsync();
+    }
+
     // ── PrepareExposureAsync — Dose Interlock (SWR-WF-023~025, Issue #21) ──────
 
     private static ExposureParameters MakeParams(string bodyPart = "CHEST", double kvp = 80.0, double mas = 5.0)

@@ -70,4 +70,44 @@ public interface ISecurityService
         string currentPassword,
         string newPassword,
         CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Records a logout event for the specified user.
+    /// Writes a LOGOUT entry to the tamper-evident audit log.
+    /// Issue #29: This method must be called on every logout to ensure audit completeness.
+    /// Note: JWT token itself is not server-side revoked in this desktop app context;
+    /// token expiry (configured via JwtOptions.ExpiryMinutes) is the primary revocation mechanism.
+    /// Full token denylist (Phase 2) will require persisting JTIs to the database.
+    /// </summary>
+    /// <param name="userId">Unique identifier of the user logging out.</param>
+    /// <param name="cancellationToken">Token to cancel the asynchronous operation.</param>
+    Task<Result> LogoutAsync(
+        string userId,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>Sets the Quick PIN for the specified user. PIN must be 4-6 digits.</summary>
+    /// <param name="userId">Unique identifier of the user.</param>
+    /// <param name="pin">Plain-text PIN (4-6 digits) to hash and store.</param>
+    /// <param name="cancellationToken">Token to cancel the asynchronous operation.</param>
+    /// <returns>
+    /// A successful <see cref="Result"/>, or a failure with
+    /// <see cref="ErrorCode.ValidationFailed"/> if the PIN is not 4-6 digits.
+    /// </returns>
+    Task<Result> SetQuickPinAsync(
+        string userId,
+        string pin,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>Verifies the Quick PIN for the specified user.</summary>
+    /// <param name="userId">Unique identifier of the user.</param>
+    /// <param name="pin">Plain-text PIN to verify against the stored hash.</param>
+    /// <param name="cancellationToken">Token to cancel the asynchronous operation.</param>
+    /// <returns>
+    /// A successful <see cref="Result"/> if the PIN matches;
+    /// otherwise a failure with <see cref="ErrorCode.PinNotSet"/> or <see cref="ErrorCode.AuthenticationFailed"/>.
+    /// </returns>
+    Task<Result> VerifyQuickPinAsync(
+        string userId,
+        string pin,
+        CancellationToken cancellationToken = default);
 }

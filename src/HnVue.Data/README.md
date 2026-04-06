@@ -13,7 +13,7 @@ EF Core를 사용한 데이터 영속성 계층입니다. SQLCipher 암호화 DB
 | `HnVueDbContext` | EF Core DbContext — 전체 데이터베이스 스키마 |
 | `PatientEntity` | 환자 DB 엔티티 |
 | `StudyEntity` | 스터디 DB 엔티티 |
-| `UserEntity` | 사용자 DB 엔티티 |
+| `UserEntity` | 사용자 DB 엔티티 (QuickPinHash, QuickPinFailedCount, QuickPinLockedUntilTicks 필드 추가) |
 | `AuditLogEntity` | 감사 로그 엔티티 |
 | `DoseRecordEntity` | 선량 기록 엔티티 |
 | `ImageEntity` | 이미지 엔티티 |
@@ -43,6 +43,17 @@ EF Core를 사용한 데이터 영속성 계층입니다. SQLCipher 암호화 DB
 services.AddHnVueData("Data Source=hnvue.db");
 ```
 
+## EF Core Cascade Delete 정책 (IEC 62304 §5.5)
+
+| 관계 | 이전 | 현재 | 사유 |
+|------|------|------|------|
+| Patient → Study | `DeleteBehavior.Cascade` | `DeleteBehavior.Restrict` | 환자 삭제 시 자동 삭제 금지 — 선량 기록 보호 (DICOM 스터디 참조 유지) |
+| Study → DoseRecord | `DeleteBehavior.Cascade` | `DeleteBehavior.Restrict` | 스터디 삭제 시 자동 삭제 금지 — 감사 기록 보호 (FDA §524B) |
+
+Restrict 정책 적용으로 인해 **Parent 레코드 삭제는 Child 존재 시 실패**합니다. 관리자가 의도적으로 수동 삭제해야 합니다 (감사 로그 남김).
+
+---
+
 ## 테스트 현황
 
 - 테스트 프로젝트: `tests/HnVue.Data.Tests`
@@ -56,7 +67,8 @@ services.AddHnVueData("Data Source=hnvue.db");
   - `PatientRepositoryTests.cs`: 13개
   - `StudyRepositoryTests.cs`: 9개
   - `UserRepositoryTests.cs`: 9개
-  - **합계: 69개**
+  - `CascadeDeleteTests.cs`: 2개 (Patient-Study, Study-DoseRecord Restrict 검증)
+  - **합계: 71개** (+2개)
 
 ## SWR 참조
 

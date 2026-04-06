@@ -164,4 +164,84 @@ internal sealed class UserRepository(HnVueDbContext context) : IUserRepository
                 ex.InnerException?.Message ?? ex.Message);
         }
     }
+
+    /// <inheritdoc/>
+    public async Task<Result> SetQuickPinHashAsync(string userId, string? pinHash, CancellationToken ct = default)
+    {
+        try
+        {
+            var entity = await context.Users
+                .FirstOrDefaultAsync(u => u.UserId == userId, ct)
+                .ConfigureAwait(false);
+
+            if (entity is null)
+                return Result.Failure(ErrorCode.NotFound, $"User '{userId}' not found.");
+
+            entity.QuickPinHash = pinHash;
+            await context.SaveChangesAsync(ct).ConfigureAwait(false);
+            return Result.Success();
+        }
+        catch (DbUpdateException ex)
+        {
+            return Result.Failure(
+                ErrorCode.DatabaseError,
+                ex.InnerException?.Message ?? ex.Message);
+        }
+    }
+
+    /// <inheritdoc/>
+    public async Task<Result<string?>> GetQuickPinHashAsync(string userId, CancellationToken ct = default)
+    {
+        try
+        {
+            var entity = await context.Users
+                .AsNoTracking()
+                .FirstOrDefaultAsync(u => u.UserId == userId, ct)
+                .ConfigureAwait(false);
+
+            if (entity is null)
+                return Result.Failure<string?>(ErrorCode.NotFound, $"User '{userId}' not found.");
+
+            return Result.SuccessNullable<string?>(entity.QuickPinHash);
+        }
+        catch (OperationCanceledException)
+        {
+            throw;
+        }
+        catch (Exception ex) when (ex is not OutOfMemoryException)
+        {
+            return Result.Failure<string?>(
+                ErrorCode.DatabaseError,
+                ex.InnerException?.Message ?? ex.Message);
+        }
+    }
+
+    /// <inheritdoc/>
+    public async Task<Result> UpdateQuickPinFailureAsync(
+        string userId,
+        int failedCount,
+        DateTimeOffset? lockedUntil,
+        CancellationToken ct = default)
+    {
+        try
+        {
+            var entity = await context.Users
+                .FirstOrDefaultAsync(u => u.UserId == userId, ct)
+                .ConfigureAwait(false);
+
+            if (entity is null)
+                return Result.Failure(ErrorCode.NotFound, $"User '{userId}' not found.");
+
+            entity.QuickPinFailedCount = failedCount;
+            entity.QuickPinLockedUntilTicks = lockedUntil?.UtcTicks;
+            await context.SaveChangesAsync(ct).ConfigureAwait(false);
+            return Result.Success();
+        }
+        catch (DbUpdateException ex)
+        {
+            return Result.Failure(
+                ErrorCode.DatabaseError,
+                ex.InnerException?.Message ?? ex.Message);
+        }
+    }
 }

@@ -43,7 +43,7 @@ public sealed class GeneratorSerialPort : IGeneratorInterface, IDisposable
     // ── Fields ────────────────────────────────────────────────────────────────
 
     private readonly GeneratorConfig _config;
-    private readonly SerialPort _port;
+    private readonly ISerialPortAdapter _port;
     private readonly object _stateLock = new();
 
     // Pending-response infrastructure: one outstanding wait at a time.
@@ -70,7 +70,7 @@ public sealed class GeneratorSerialPort : IGeneratorInterface, IDisposable
         ArgumentNullException.ThrowIfNull(config);
         _config = config;
 
-        _port = new SerialPort
+        var port = new SerialPort
         {
             PortName = config.PortName,
             BaudRate = config.BaudRate,
@@ -83,6 +83,22 @@ public sealed class GeneratorSerialPort : IGeneratorInterface, IDisposable
             Encoding = Encoding.ASCII,
         };
 
+        _port = new SerialPortAdapter(port);
+        _port.DataReceived += OnDataReceived;
+    }
+
+    /// <summary>
+    /// Initialises a new <see cref="GeneratorSerialPort"/> with an injected port adapter.
+    /// Intended for unit testing only — use the public constructor for production code.
+    /// </summary>
+    /// <param name="config">RS-232 port and protocol settings.</param>
+    /// <param name="adapter">The serial port adapter to use.</param>
+    internal GeneratorSerialPort(GeneratorConfig config, ISerialPortAdapter adapter)
+    {
+        ArgumentNullException.ThrowIfNull(config);
+        ArgumentNullException.ThrowIfNull(adapter);
+        _config = config;
+        _port = adapter;
         _port.DataReceived += OnDataReceived;
     }
 

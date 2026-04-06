@@ -16,6 +16,7 @@ public sealed partial class MainViewModel : ObservableObject, IDisposable
     private const int TimeoutWarningSeconds = 180; // warn at 3 minutes remaining
 
     private readonly ISecurityContext _securityContext;
+    private readonly ISecurityService _securityService;
     private readonly System.Timers.Timer _sessionTimer;
     private int _secondsUntilTimeout;
 
@@ -39,8 +40,10 @@ public sealed partial class MainViewModel : ObservableObject, IDisposable
 
     /// <summary>Initialises a new instance of <see cref="MainViewModel"/>.</summary>
     /// <remarks>Issue #17 — CDBurnViewModel and SystemAdminViewModel added to navigation graph.</remarks>
+    /// <remarks>Issue #29 — ISecurityService injected for logout audit logging.</remarks>
     public MainViewModel(
         ISecurityContext securityContext,
+        ISecurityService securityService,
         PatientListViewModel patientListViewModel,
         ImageViewerViewModel imageViewerViewModel,
         WorkflowViewModel workflowViewModel,
@@ -49,6 +52,7 @@ public sealed partial class MainViewModel : ObservableObject, IDisposable
         SystemAdminViewModel systemAdminViewModel)
     {
         ArgumentNullException.ThrowIfNull(securityContext, nameof(securityContext));
+        ArgumentNullException.ThrowIfNull(securityService, nameof(securityService));
         ArgumentNullException.ThrowIfNull(patientListViewModel, nameof(patientListViewModel));
         ArgumentNullException.ThrowIfNull(imageViewerViewModel, nameof(imageViewerViewModel));
         ArgumentNullException.ThrowIfNull(workflowViewModel, nameof(workflowViewModel));
@@ -56,6 +60,7 @@ public sealed partial class MainViewModel : ObservableObject, IDisposable
         ArgumentNullException.ThrowIfNull(cdburnViewModel, nameof(cdburnViewModel));
         ArgumentNullException.ThrowIfNull(systemAdminViewModel, nameof(systemAdminViewModel));
         _securityContext = securityContext;
+        _securityService = securityService;
         PatientListViewModel = patientListViewModel;
         ImageViewerViewModel = imageViewerViewModel;
         WorkflowViewModel = workflowViewModel;
@@ -170,10 +175,19 @@ public sealed partial class MainViewModel : ObservableObject, IDisposable
     }
 
     /// <summary>Logs out the current user and returns to the login screen.</summary>
+    /// <remarks>Issue #29 — Writes LOGOUT audit entry before clearing session context.</remarks>
     [RelayCommand]
     private void Logout()
     {
         _sessionTimer.Stop();
+
+        // Fire-and-forget audit log for logout. Audit failure must not block session teardown.
+        var userId = _securityContext.CurrentUserId;
+        if (userId is not null)
+        {
+            _ = _securityService.LogoutAsync(userId);
+        }
+
         _securityContext.ClearCurrentUser();
         CurrentUsername = null;
         CurrentRoleDisplay = null;

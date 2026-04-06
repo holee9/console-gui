@@ -14,6 +14,9 @@ namespace HnVue.Common.Models;
 /// <param name="FailedLoginCount">Number of consecutive failed login attempts since last success.</param>
 /// <param name="IsLocked">Whether the account is currently locked from logging in.</param>
 /// <param name="LastLoginAt">UTC timestamp of the most recent successful login, or null if never.</param>
+/// <param name="QuickPinHash">Bcrypt hash of the user's Quick PIN, or null if no PIN is set.</param>
+/// <param name="QuickPinFailedCount">Number of consecutive Quick PIN verification failures.</param>
+/// <param name="QuickPinLockedUntil">UTC timestamp when Quick PIN lockout expires, or null if not locked.</param>
 public sealed record UserRecord(
     string UserId,
     string Username,
@@ -22,4 +25,7 @@ public sealed record UserRecord(
     UserRole Role,
     int FailedLoginCount,
     bool IsLocked,
-    DateTimeOffset? LastLoginAt);
+    DateTimeOffset? LastLoginAt,
+    string? QuickPinHash = null,
+    int QuickPinFailedCount = 0,
+    DateTimeOffset? QuickPinLockedUntil = null);

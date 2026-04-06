@@ -412,6 +412,189 @@ public sealed class SecurityServiceTests
             Arg.Any<CancellationToken>());
     }
 
+    // ── SetQuickPinAsync ─────────────────────────────────────────────────────
+
+    [Theory]
+    [InlineData("abc")]
+    [InlineData("12ab")]
+    [InlineData("12 34")]
+    public async Task SetQuickPin_NonNumericPin_ReturnsValidationFailed(string badPin)
+    {
+        var result = await _sut.SetQuickPinAsync("user-1", badPin);
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.ValidationFailed);
+    }
+
+    [Theory]
+    [InlineData("123")]
+    [InlineData("12")]
+    [InlineData("1")]
+    public async Task SetQuickPin_TooShort_ReturnsValidationFailed(string shortPin)
+    {
+        var result = await _sut.SetQuickPinAsync("user-1", shortPin);
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.ValidationFailed);
+    }
+
+    [Theory]
+    [InlineData("1234567")]
+    [InlineData("12345678")]
+    public async Task SetQuickPin_TooLong_ReturnsValidationFailed(string longPin)
+    {
+        var result = await _sut.SetQuickPinAsync("user-1", longPin);
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.ValidationFailed);
+    }
+
+    [Theory]
+    [InlineData("1234")]
+    [InlineData("12345")]
+    [InlineData("123456")]
+    public async Task SetQuickPin_ValidPin_StoresHashedPin(string pin)
+    {
+        _userRepository.SetQuickPinHashAsync("user-1", Arg.Any<string>(), Arg.Any<CancellationToken>())
+            .Returns(Result.Success());
+
+        var result = await _sut.SetQuickPinAsync("user-1", pin);
+
+        result.IsSuccess.Should().BeTrue();
+        await _userRepository.Received(1).SetQuickPinHashAsync(
+            "user-1",
+            Arg.Is<string>(h => h != pin && h.StartsWith("$2")),
+            Arg.Any<CancellationToken>());
+    }
+
+    // ── VerifyQuickPinAsync ───────────────────────────────────────────────────
+
+    [Fact]
+    public async Task VerifyQuickPin_CorrectPin_ReturnsSuccess()
+    {
+        const string pin = "1234";
+        var hash = BCrypt.Net.BCrypt.HashPassword(pin, workFactor: 4);
+        var user = MakeUser(userId: "user-1") with { QuickPinHash = hash };
+        _userRepository.GetByIdAsync("user-1", Arg.Any<CancellationToken>())
+            .Returns(Result.Success(user));
+        _userRepository.UpdateQuickPinFailureAsync("user-1", Arg.Any<int>(), Arg.Any<DateTimeOffset?>(), Arg.Any<CancellationToken>())
+            .Returns(Result.Success());
+
+        var result = await _sut.VerifyQuickPinAsync("user-1", pin);
+
+        result.IsSuccess.Should().BeTrue();
+    }
+
+    [Fact]
+    public async Task VerifyQuickPin_CorrectPin_ResetsFailureCount()
+    {
+        const string pin = "1234";
+        var hash = BCrypt.Net.BCrypt.HashPassword(pin, workFactor: 4);
+        var user = MakeUser(userId: "user-1") with { QuickPinHash = hash, QuickPinFailedCount = 2 };
+        _userRepository.GetByIdAsync("user-1", Arg.Any<CancellationToken>())
+            .Returns(Result.Success(user));
+        _userRepository.UpdateQuickPinFailureAsync("user-1", Arg.Any<int>(), Arg.Any<DateTimeOffset?>(), Arg.Any<CancellationToken>())
+            .Returns(Result.Success());
+
+        var result = await _sut.VerifyQuickPinAsync("user-1", pin);
+
+        result.IsSuccess.Should().BeTrue();
+        await _userRepository.Received(1).UpdateQuickPinFailureAsync(
+            "user-1", 0, null, Arg.Any<CancellationToken>());
+    }
+
+    [Fact]
+    public async Task VerifyQuickPin_WrongPin_IncrementsFailureCount()
+    {
+        const string pin = "1234";
+        var hash = BCrypt.Net.BCrypt.HashPassword(pin, workFactor: 4);
+        var user = MakeUser(userId: "user-1") with { QuickPinHash = hash, QuickPinFailedCount = 0 };
+        _userRepository.GetByIdAsync("user-1", Arg.Any<CancellationToken>())
+            .Returns(Result.Success(user));
+        _userRepository.UpdateQuickPinFailureAsync("user-1", Arg.Any<int>(), Arg.Any<DateTimeOffset?>(), Arg.Any<CancellationToken>())
+            .Returns(Result.Success());
+
+        var result = await _sut.VerifyQuickPinAsync("user-1", "9999");
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.AuthenticationFailed);
+        await _userRepository.Received(1).UpdateQuickPinFailureAsync(
+            "user-1", 1, null, Arg.Any<CancellationToken>());
+    }
+
+    [Fact]
+    public async Task VerifyQuickPin_ThreeFailures_SetsLockout()
+    {
+        const string pin = "1234";
+        var hash = BCrypt.Net.BCrypt.HashPassword(pin, workFactor: 4);
+        var user = MakeUser(userId: "user-1") with { QuickPinHash = hash, QuickPinFailedCount = 2 };
+        _userRepository.GetByIdAsync("user-1", Arg.Any<CancellationToken>())
+            .Returns(Result.Success(user));
+        _userRepository.UpdateQuickPinFailureAsync("user-1", Arg.Any<int>(), Arg.Any<DateTimeOffset?>(), Arg.Any<CancellationToken>())
+            .Returns(Result.Success());
+
+        var result = await _sut.VerifyQuickPinAsync("user-1", "9999");
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.AccountLocked);
+        await _userRepository.Received(1).UpdateQuickPinFailureAsync(
+            "user-1",
+            3,
+            Arg.Is<DateTimeOffset?>(d => d.HasValue && d.Value > DateTimeOffset.UtcNow),
+            Arg.Any<CancellationToken>());
+    }
+
+    [Fact]
+    public async Task VerifyQuickPin_DuringLockout_ReturnsAccountLocked()
+    {
+        var user = MakeUser(userId: "user-1") with
+        {
+            QuickPinHash = BCrypt.Net.BCrypt.HashPassword("1234", workFactor: 4),
+            QuickPinFailedCount = 3,
+            QuickPinLockedUntil = DateTimeOffset.UtcNow.AddMinutes(4),
+        };
+        _userRepository.GetByIdAsync("user-1", Arg.Any<CancellationToken>())
+            .Returns(Result.Success(user));
+
+        var result = await _sut.VerifyQuickPinAsync("user-1", "1234");
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.AccountLocked);
+        // Should NOT call UpdateQuickPinFailureAsync when already locked.
+        await _userRepository.DidNotReceive().UpdateQuickPinFailureAsync(
+            Arg.Any<string>(), Arg.Any<int>(), Arg.Any<DateTimeOffset?>(), Arg.Any<CancellationToken>());
+    }
+
+    [Fact]
+    public async Task VerifyQuickPin_WrongPin_ReturnsAuthFailed()
+    {
+        const string pin = "1234";
+        var hash = BCrypt.Net.BCrypt.HashPassword(pin, workFactor: 4);
+        var user = MakeUser(userId: "user-1") with { QuickPinHash = hash };
+        _userRepository.GetByIdAsync("user-1", Arg.Any<CancellationToken>())
+            .Returns(Result.Success(user));
+        _userRepository.UpdateQuickPinFailureAsync("user-1", Arg.Any<int>(), Arg.Any<DateTimeOffset?>(), Arg.Any<CancellationToken>())
+            .Returns(Result.Success());
+
+        var result = await _sut.VerifyQuickPinAsync("user-1", "9999");
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.AuthenticationFailed);
+    }
+
+    [Fact]
+    public async Task VerifyQuickPin_NoPinSet_ReturnsPinNotSet()
+    {
+        var user = MakeUser(userId: "user-1") with { QuickPinHash = null };
+        _userRepository.GetByIdAsync("user-1", Arg.Any<CancellationToken>())
+            .Returns(Result.Success(user));
+
+        var result = await _sut.VerifyQuickPinAsync("user-1", "1234");
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.PinNotSet);
+    }
+
     // ── Helpers ───────────────────────────────────────────────────────────────
 
     private static UserRecord MakeUser(
@@ -432,5 +615,34 @@ public sealed class SecurityServiceTests
             FailedLoginCount: failedLoginCount,
             IsLocked: isLocked,
             LastLoginAt: null);
+    }
+
+    // ── LogoutAsync ───────────────────────────────────────────────────────────
+
+    [Fact]
+    public async Task LogoutAsync_ValidUserId_WritesLogoutAuditEntry()
+    {
+        // Issue #37: LogoutAsync must produce a LOGOUT audit entry.
+        var result = await _sut.LogoutAsync("user-1");
+
+        result.IsSuccess.Should().BeTrue();
+        await _auditRepository.Received(1).AppendAsync(
+            Arg.Is<AuditEntry>(e => e.Action == "LOGOUT" && e.UserId == "user-1"),
+            Arg.Any<CancellationToken>());
+    }
+
+    [Fact]
+    public async Task LogoutAsync_EmptyUserId_ThrowsArgumentException()
+    {
+        // Issue #37: Guard against empty userId.
+        var act = async () => await _sut.LogoutAsync(string.Empty);
+        await act.Should().ThrowAsync<ArgumentException>();
+    }
+
+    [Fact]
+    public async Task LogoutAsync_WhitespaceUserId_ThrowsArgumentException()
+    {
+        var act = async () => await _sut.LogoutAsync("   ");
+        await act.Should().ThrowAsync<ArgumentException>();
     }
 }
