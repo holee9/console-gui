@@ -23,7 +23,7 @@
 
 | 항목 | 내용 |
 |------|------|
-| **제품명** | HnVue Console SW |
+| **제품명** | HnVue Console SW ㅁㅁㅁ|
 | **제조사** | H&abyz (에이치앤아비즈) |
 | **프로젝트명** | Console-GUI |
 | **대체 대상** | IMFOU feel-DRCS (FDA K110033) |
