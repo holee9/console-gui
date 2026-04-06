@@ -18,6 +18,8 @@
     <ProjectReference Include="..\HnVue.SystemAdmin\HnVue.SystemAdmin.csproj" />
     <ProjectReference Include="..\HnVue.CDBurning\HnVue.CDBurning.csproj" />
     <ProjectReference Include="..\HnVue.UI\HnVue.UI.csproj" />
+    <ProjectReference Include="..\HnVue.UI.Contracts\HnVue.UI.Contracts.csproj" />
+    <ProjectReference Include="..\HnVue.UI.ViewModels\HnVue.UI.ViewModels.csproj" />
     <PackageReference Include="Microsoft.Extensions.Hosting" />
     <PackageReference Include="Microsoft.Extensions.Configuration" />
   </ItemGroup>

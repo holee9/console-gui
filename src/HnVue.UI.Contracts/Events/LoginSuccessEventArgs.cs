@@ -1,9 +1,12 @@
 using HnVue.Common.Models;
 
-namespace HnVue.UI.ViewModels;
+namespace HnVue.UI.Contracts.Events;
 
 /// <summary>
 /// Event arguments raised when a user successfully authenticates.
+/// Defined in HnVue.UI.Contracts so that both the interface (ILoginViewModel)
+/// and the implementation (LoginViewModel) can reference the same type without
+/// creating a circular dependency.
 /// </summary>
 public sealed class LoginSuccessEventArgs : EventArgs
 {

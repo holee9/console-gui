@@ -1,6 +1,8 @@
+using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HnVue.Common.Abstractions;
+using HnVue.UI.Contracts.ViewModels;
 
 namespace HnVue.UI.ViewModels;
 
@@ -9,7 +11,7 @@ namespace HnVue.UI.ViewModels;
 /// Allows the operator to resume the session without full re-authentication.
 /// SWR-CS-076 (Safety+Security-related, HAZ-SEC, HAZ-RAD). Issue #12, #34.
 /// </summary>
-public sealed partial class QuickPinLockViewModel : ObservableObject
+public sealed partial class QuickPinLockViewModel : ObservableObject, IQuickPinLockViewModel
 {
     private const int MaxPinAttempts = 3;
 
@@ -24,11 +26,21 @@ public sealed partial class QuickPinLockViewModel : ObservableObject
     public event EventHandler? ForceLogout;
 
     /// <summary>Initialises a new instance of <see cref="QuickPinLockViewModel"/>.</summary>
+    /// <param name="securityContext">Provides current user identity for PIN verification.</param>
+    /// <param name="securityService">Performs the actual PIN verification call.</param>
     public QuickPinLockViewModel(ISecurityContext securityContext, ISecurityService securityService)
     {
         _securityContext = securityContext ?? throw new ArgumentNullException(nameof(securityContext));
         _securityService = securityService ?? throw new ArgumentNullException(nameof(securityService));
     }
+
+    /// <summary>
+    /// Implements <see cref="IViewModelBase.IsLoading"/> by mapping to <see cref="IsVerifying"/>.
+    /// </summary>
+    bool IViewModelBase.IsLoading => IsVerifying;
+
+    // Explicit IQuickPinLockViewModel ICommand bridge — see LoginViewModel for rationale.
+    ICommand IQuickPinLockViewModel.VerifyPinCommand => VerifyPinCommand;
 
     /// <summary>Gets or sets the PIN entered by the user (4-6 digits).</summary>
     [ObservableProperty]

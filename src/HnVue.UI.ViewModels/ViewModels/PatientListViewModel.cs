@@ -1,8 +1,10 @@
 using System.Collections.ObjectModel;
+using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HnVue.Common.Abstractions;
 using HnVue.Common.Models;
+using HnVue.UI.Contracts.ViewModels;
 
 namespace HnVue.UI.ViewModels;
 
@@ -10,7 +12,7 @@ namespace HnVue.UI.ViewModels;
 /// ViewModel for the patient list and search screen.
 /// Provides patient search, selection, and registration entry points.
 /// </summary>
-public sealed partial class PatientListViewModel : ObservableObject
+public sealed partial class PatientListViewModel : ObservableObject, IPatientListViewModel
 {
     private readonly IPatientService _patientService;
 
@@ -45,6 +47,11 @@ public sealed partial class PatientListViewModel : ObservableObject
 
     /// <summary>Raised when the user requests the patient registration form.</summary>
     public event EventHandler? RegisterPatientRequested;
+
+    // Explicit IPatientListViewModel ICommand bridge — see LoginViewModel for rationale.
+    ICommand IPatientListViewModel.SearchCommand => SearchCommand;
+    ICommand IPatientListViewModel.SelectPatientCommand => SelectPatientCommand;
+    ICommand IPatientListViewModel.RegisterPatientCommand => RegisterPatientCommand;
 
     /// <summary>Searches for patients whose name or ID matches <see cref="SearchQuery"/>.</summary>
     [RelayCommand]

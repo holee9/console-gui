@@ -1,8 +1,10 @@
+using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HnVue.Common.Abstractions;
 using HnVue.Common.Enums;
 using HnVue.Common.Models;
+using HnVue.UI.Contracts.ViewModels;
 
 namespace HnVue.UI.ViewModels;
 
@@ -11,7 +13,7 @@ namespace HnVue.UI.ViewModels;
 /// Displays dose records for the active study and the associated validation level.
 /// </summary>
 /// <remarks>SWR-UI-030: Dose monitor ViewModel surfaces IDoseService data for the operator.</remarks>
-public sealed partial class DoseViewModel : ObservableObject
+public sealed partial class DoseViewModel : ObservableObject, IDoseViewModel
 {
     private readonly IDoseService _doseService;
 
@@ -44,6 +46,9 @@ public sealed partial class DoseViewModel : ObservableObject
     /// <summary>Gets or sets the error message displayed when a refresh fails.</summary>
     [ObservableProperty]
     private string? _errorMessage;
+
+    // Explicit IDoseViewModel ICommand bridge — see LoginViewModel for rationale.
+    ICommand IDoseViewModel.RefreshCommand => RefreshCommand;
 
     /// <summary>
     /// Refreshes the dose record for <see cref="ActiveStudyInstanceUid"/>.

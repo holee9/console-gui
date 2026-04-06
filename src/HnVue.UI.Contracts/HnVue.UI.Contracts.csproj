@@ -2,15 +2,12 @@
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <RootNamespace>HnVue.UI</RootNamespace>
+    <RootNamespace>HnVue.UI.Contracts</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\HnVue.Common\HnVue.Common.csproj" />
-    <ProjectReference Include="..\HnVue.UI.Contracts\HnVue.UI.Contracts.csproj" />
     <PackageReference Include="CommunityToolkit.Mvvm" />
-    <PackageReference Include="MahApps.Metro" />
-    <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" />
   </ItemGroup>
 
 </Project>

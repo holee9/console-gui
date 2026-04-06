@@ -1,8 +1,10 @@
+using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HnVue.Common.Abstractions;
 using HnVue.Common.Enums;
 using HnVue.Common.Models;
+using HnVue.UI.Contracts.ViewModels;
 
 namespace HnVue.UI.ViewModels;
 
@@ -12,7 +14,7 @@ namespace HnVue.UI.ViewModels;
 /// Only users with the <see cref="UserRole.Radiographer"/> or <see cref="UserRole.Radiologist"/> role
 /// may trigger an exposure.
 /// </summary>
-public sealed partial class WorkflowViewModel : ObservableObject, IDisposable
+public sealed partial class WorkflowViewModel : ObservableObject, IWorkflowViewModel, IDisposable
 {
     private readonly IWorkflowEngine _workflowEngine;
     private readonly ISecurityContext _securityContext;
@@ -31,6 +33,23 @@ public sealed partial class WorkflowViewModel : ObservableObject, IDisposable
         UpdateDerivedProperties();
         UpdateSafeStateDisplay();
     }
+
+    /// <summary>
+    /// Gets a value indicating whether an operation is in progress.
+    /// The workflow panel does not expose a generic loading indicator; this always returns <see langword="false"/>.
+    /// </summary>
+    public bool IsLoading => false;
+
+    /// <summary>
+    /// Gets the current error message.
+    /// Workflow errors are surfaced via <see cref="StatusMessage"/> instead; this always returns <see langword="null"/>.
+    /// </summary>
+    public string? ErrorMessage => null;
+
+    // Explicit IWorkflowViewModel ICommand bridge — see LoginViewModel for rationale.
+    ICommand IWorkflowViewModel.PrepareExposureCommand => PrepareExposureCommand;
+    ICommand IWorkflowViewModel.TriggerExposureCommand => TriggerExposureCommand;
+    ICommand IWorkflowViewModel.AbortCommand => AbortCommand;
 
     /// <summary>Gets or sets the string representation of the current workflow state.</summary>
     [ObservableProperty]
@@ -66,7 +85,7 @@ public sealed partial class WorkflowViewModel : ObservableObject, IDisposable
     [RelayCommand]
     private async Task PrepareExposureAsync()
     {
-        StatusMessage = "Preparing exposure…";
+        StatusMessage = "Preparing exposure\u2026";
         var result = await _workflowEngine.TransitionAsync(WorkflowState.ReadyToExpose);
         if (result.IsFailure)
         {
@@ -81,7 +100,7 @@ public sealed partial class WorkflowViewModel : ObservableObject, IDisposable
     [RelayCommand(CanExecute = nameof(CanTriggerExposure))]
     private async Task TriggerExposureAsync()
     {
-        StatusMessage = "Exposing…";
+        StatusMessage = "Exposing\u2026";
         var result = await _workflowEngine.TransitionAsync(WorkflowState.Exposing);
         if (result.IsFailure)
         {
@@ -97,7 +116,7 @@ public sealed partial class WorkflowViewModel : ObservableObject, IDisposable
     [RelayCommand]
     private async Task AbortAsync()
     {
-        StatusMessage = "Aborting workflow…";
+        StatusMessage = "Aborting workflow\u2026";
         var result = await _workflowEngine.AbortAsync("Operator abort.");
         if (result.IsFailure)
         {
@@ -143,9 +162,9 @@ public sealed partial class WorkflowViewModel : ObservableObject, IDisposable
             WorkflowState.PatientSelected => "Patient selected. Load a protocol.",
             WorkflowState.ProtocolLoaded => "Protocol loaded. Prepare for exposure.",
             WorkflowState.ReadyToExpose => "Ready to expose. Trigger when clear.",
-            WorkflowState.Exposing => "Exposure in progress…",
-            WorkflowState.ImageAcquiring => "Acquiring image…",
-            WorkflowState.ImageProcessing => "Processing image…",
+            WorkflowState.Exposing => "Exposure in progress\u2026",
+            WorkflowState.ImageAcquiring => "Acquiring image\u2026",
+            WorkflowState.ImageProcessing => "Processing image\u2026",
             WorkflowState.ImageReview => "Image ready for review.",
             WorkflowState.Completed => "Session complete.",
             WorkflowState.Error => "Error state. Manual intervention required.",

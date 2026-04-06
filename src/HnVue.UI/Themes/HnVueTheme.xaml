@@ -2,7 +2,42 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:System="clr-namespace:System;assembly=mscorlib">
 
-    <!-- HnVue Color Palette -->
+    <!-- ═══════════════════════════════════════════════════════════
+         HnVue Design Token Entry Point
+
+         Load order:
+           1. DarkTheme  — overrides Core color values (default: dark)
+           2. CoreTokens — raw primitives (typography, spacing, corners)
+           3. SemanticTokens — meaningful Brush aliases → Core
+           4. ComponentTokens — per-component Brush aliases → Semantic
+
+         To switch themes, swap DarkTheme for LightTheme or HighContrastTheme
+         before loading CoreTokens. All downstream resources use DynamicResource
+         so live switching is supported.
+         ═══════════════════════════════════════════════════════════ -->
+
+    <ResourceDictionary.MergedDictionaries>
+        <!-- Active theme: swap this entry to switch themes -->
+        <ResourceDictionary Source="dark/DarkTheme.xaml" />
+
+        <!-- Token layers -->
+        <ResourceDictionary Source="tokens/CoreTokens.xaml" />
+        <ResourceDictionary Source="tokens/SemanticTokens.xaml" />
+        <ResourceDictionary Source="tokens/ComponentTokens.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         BACKWARD COMPATIBILITY ALIASES
+
+         These keys preserve the original HnVueTheme.xaml API so that
+         MainWindow.xaml, App.xaml, and all View XAML files continue to
+         work without modification.
+
+         All aliases use DynamicResource to remain theme-switch-aware.
+         DO NOT remove these entries while legacy XAML files reference them.
+         ═══════════════════════════════════════════════════════════ -->
+
+    <!-- ── Color aliases (original Color resources) ── -->
     <Color x:Key="HnVue.Primary.Color">#1B4F8A</Color>
     <Color x:Key="HnVue.Primary.Light.Color">#2E6DB4</Color>
     <Color x:Key="HnVue.Accent.Color">#00AEEF</Color>
@@ -15,42 +50,58 @@
     <Color x:Key="HnVue.Warning.Color">#FF9800</Color>
     <Color x:Key="HnVue.Error.Color">#F44336</Color>
 
-    <SolidColorBrush x:Key="HnVue.Primary.Brush" Color="{StaticResource HnVue.Primary.Color}" />
-    <SolidColorBrush x:Key="HnVue.Accent.Brush" Color="{StaticResource HnVue.Accent.Color}" />
-    <SolidColorBrush x:Key="HnVue.Background.Dark.Brush" Color="{StaticResource HnVue.Background.Dark.Color}" />
-    <SolidColorBrush x:Key="HnVue.Background.Panel.Brush" Color="{StaticResource HnVue.Background.Panel.Color}" />
-    <SolidColorBrush x:Key="HnVue.Background.Card.Brush" Color="{StaticResource HnVue.Background.Card.Color}" />
-    <SolidColorBrush x:Key="HnVue.Text.Primary.Brush" Color="{StaticResource HnVue.Text.Primary.Color}" />
-    <SolidColorBrush x:Key="HnVue.Text.Secondary.Brush" Color="{StaticResource HnVue.Text.Secondary.Color}" />
-    <SolidColorBrush x:Key="HnVue.Success.Brush" Color="{StaticResource HnVue.Success.Color}" />
-    <SolidColorBrush x:Key="HnVue.Error.Brush" Color="{StaticResource HnVue.Error.Color}" />
+    <!-- ── Brush aliases (original SolidColorBrush resources) ── -->
+    <SolidColorBrush x:Key="HnVue.Primary.Brush"
+                     Color="{DynamicResource HnVue.Core.Color.Primary}" />
+    <SolidColorBrush x:Key="HnVue.Accent.Brush"
+                     Color="{DynamicResource HnVue.Core.Color.Accent}" />
+    <SolidColorBrush x:Key="HnVue.Background.Dark.Brush"
+                     Color="{DynamicResource HnVue.Core.Color.BackgroundPage}" />
+    <SolidColorBrush x:Key="HnVue.Background.Panel.Brush"
+                     Color="{DynamicResource HnVue.Core.Color.BackgroundPanel}" />
+    <SolidColorBrush x:Key="HnVue.Background.Card.Brush"
+                     Color="{DynamicResource HnVue.Core.Color.BackgroundCard}" />
+    <SolidColorBrush x:Key="HnVue.Text.Primary.Brush"
+                     Color="{DynamicResource HnVue.Core.Color.TextPrimary}" />
+    <SolidColorBrush x:Key="HnVue.Text.Secondary.Brush"
+                     Color="{DynamicResource HnVue.Core.Color.TextSecondary}" />
+    <SolidColorBrush x:Key="HnVue.Success.Brush"
+                     Color="{DynamicResource HnVue.Core.Color.StatusSafe}" />
+    <SolidColorBrush x:Key="HnVue.Error.Brush"
+                     Color="{DynamicResource HnVue.Core.Color.StatusEmergency}" />
 
-    <!-- Typography -->
+    <!-- ── Typography aliases ── -->
     <FontFamily x:Key="HnVue.FontFamily">Segoe UI</FontFamily>
     <System:Double x:Key="HnVue.FontSize.Small">11</System:Double>
     <System:Double x:Key="HnVue.FontSize.Normal">13</System:Double>
     <System:Double x:Key="HnVue.FontSize.Large">16</System:Double>
     <System:Double x:Key="HnVue.FontSize.Header">20</System:Double>
 
-    <!-- Spacing -->
+    <!-- ── Spacing aliases ── -->
     <Thickness x:Key="HnVue.Spacing.Small">4</Thickness>
     <Thickness x:Key="HnVue.Spacing.Normal">8</Thickness>
     <Thickness x:Key="HnVue.Spacing.Large">16</Thickness>
 
-    <!-- Button Styles -->
+    <!-- ═══════════════════════════════════════════════════════════
+         BUTTON STYLES
+         Kept here (not in ComponentTokens) to remain in a single
+         ResourceDictionary alongside the backward-compatible color keys
+         they depend on.
+         ═══════════════════════════════════════════════════════════ -->
+
     <Style x:Key="HnVue.PrimaryButton" TargetType="Button">
-        <Setter Property="Background" Value="{StaticResource HnVue.Primary.Brush}" />
-        <Setter Property="Foreground" Value="{StaticResource HnVue.Text.Primary.Brush}" />
+        <Setter Property="Background" Value="{DynamicResource HnVue.Semantic.Button.Primary}" />
+        <Setter Property="Foreground" Value="{DynamicResource HnVue.Semantic.Text.Primary}" />
         <Setter Property="Padding" Value="16,8" />
-        <Setter Property="FontSize" Value="{StaticResource HnVue.FontSize.Normal}" />
-        <Setter Property="FontFamily" Value="{StaticResource HnVue.FontFamily}" />
+        <Setter Property="FontSize" Value="{DynamicResource HnVue.Core.FontSize.Normal}" />
+        <Setter Property="FontFamily" Value="{DynamicResource HnVue.Core.FontFamily}" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Cursor" Value="Hand" />
     </Style>
 
     <Style x:Key="HnVue.SecondaryButton" TargetType="Button" BasedOn="{StaticResource HnVue.PrimaryButton}">
-        <Setter Property="Background" Value="Transparent" />
-        <Setter Property="BorderBrush" Value="{StaticResource HnVue.Accent.Brush}" />
+        <Setter Property="Background" Value="{DynamicResource HnVue.Semantic.Button.Secondary}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource HnVue.Semantic.Brand.Accent}" />
         <Setter Property="BorderThickness" Value="1" />
     </Style>
 

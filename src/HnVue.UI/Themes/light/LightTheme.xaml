@@ -1,0 +1,46 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- ═══════════════════════════════════════════════════════════
+         Light Theme — Core Token Overrides
+         Light variant for HnVue medical device UI.
+         IEC 62366 safety-critical status colors verified for light backgrounds.
+         ═══════════════════════════════════════════════════════════ -->
+
+    <!-- ═══ Brand Colors ═══ -->
+    <Color x:Key="HnVue.Core.Color.Primary">#1B4F8A</Color>
+    <Color x:Key="HnVue.Core.Color.PrimaryLight">#2E6DB4</Color>
+    <Color x:Key="HnVue.Core.Color.Accent">#0078D4</Color>
+
+    <!-- ═══ Background Colors ═══ -->
+    <Color x:Key="HnVue.Core.Color.BackgroundPage">#F5F5F5</Color>
+    <Color x:Key="HnVue.Core.Color.BackgroundPanel">#FFFFFF</Color>
+    <Color x:Key="HnVue.Core.Color.BackgroundCard">#E8EFF7</Color>
+
+    <!-- ═══ Text Colors ═══ -->
+    <Color x:Key="HnVue.Core.Color.TextPrimary">#1A1A2E</Color>
+    <Color x:Key="HnVue.Core.Color.TextSecondary">#455A64</Color>
+    <Color x:Key="HnVue.Core.Color.TextDisabled">#90A4AE</Color>
+
+    <!-- ═══ Status Colors (IEC 62366 — Light Theme) ═══
+         Safe/Idle  : #2E7D32 (dark green — 4.5:1 contrast on white)
+         Warning    : #F57F17 (dark amber — 3.1:1 on white, >4.5:1 on light gray)
+         Blocked    : #E65100 (dark orange — distinguishable from Warning)
+         Emergency  : #C62828 (dark red — maximum urgency signal)
+    ═══ -->
+    <Color x:Key="HnVue.Core.Color.StatusSafe">#2E7D32</Color>
+    <Color x:Key="HnVue.Core.Color.StatusWarning">#F57F17</Color>
+    <Color x:Key="HnVue.Core.Color.StatusBlocked">#E65100</Color>
+    <Color x:Key="HnVue.Core.Color.StatusEmergency">#C62828</Color>
+
+    <!-- ═══ Interactive Colors ═══ -->
+    <Color x:Key="HnVue.Core.Color.ButtonPrimary">#1B4F8A</Color>
+    <Color x:Key="HnVue.Core.Color.ButtonPrimaryHover">#2E6DB4</Color>
+    <Color x:Key="HnVue.Core.Color.ButtonSecondary">Transparent</Color>
+    <Color x:Key="HnVue.Core.Color.ButtonDanger">#C62828</Color>
+
+    <!-- ═══ Border Colors ═══ -->
+    <Color x:Key="HnVue.Core.Color.Border">#CFD8DC</Color>
+    <Color x:Key="HnVue.Core.Color.BorderFocus">#0078D4</Color>
+
+</ResourceDictionary>

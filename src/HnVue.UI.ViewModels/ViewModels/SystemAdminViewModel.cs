@@ -1,8 +1,10 @@
+using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HnVue.Common.Abstractions;
 using HnVue.Common.Enums;
 using HnVue.Common.Models;
+using HnVue.UI.Contracts.ViewModels;
 
 namespace HnVue.UI.ViewModels;
 
@@ -11,7 +13,7 @@ namespace HnVue.UI.ViewModels;
 /// Loading and saving system settings is restricted to users with
 /// <see cref="UserRole.Admin"/> or <see cref="UserRole.Service"/> role.
 /// </summary>
-public sealed partial class SystemAdminViewModel : ObservableObject
+public sealed partial class SystemAdminViewModel : ObservableObject, ISystemAdminViewModel
 {
     private readonly ISystemAdminService _systemAdminService;
     private readonly ISecurityContext _securityContext;
@@ -24,6 +26,15 @@ public sealed partial class SystemAdminViewModel : ObservableObject
         _systemAdminService = systemAdminService;
         _securityContext = securityContext;
     }
+
+    /// <summary>
+    /// Implements <see cref="IViewModelBase.IsLoading"/> by mapping to <see cref="IsBusy"/>.
+    /// </summary>
+    bool IViewModelBase.IsLoading => IsBusy;
+
+    // Explicit ISystemAdminViewModel ICommand bridge — see LoginViewModel for rationale.
+    ICommand ISystemAdminViewModel.LoadSettingsCommand => LoadSettingsCommand;
+    ICommand ISystemAdminViewModel.SaveSettingsCommand => SaveSettingsCommand;
 
     /// <summary>Gets or sets the system settings loaded from the service.</summary>
     [ObservableProperty]

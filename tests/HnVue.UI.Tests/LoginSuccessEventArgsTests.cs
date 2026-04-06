@@ -1,7 +1,7 @@
 using FluentAssertions;
 using HnVue.Common.Enums;
 using HnVue.Common.Models;
-using HnVue.UI.ViewModels;
+using HnVue.UI.Contracts.Events;
 using Xunit;
 
 namespace HnVue.UI.Tests;

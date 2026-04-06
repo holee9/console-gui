@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HnVue.Common.Abstractions;
 using HnVue.Common.Enums;
+using HnVue.UI.Contracts.ViewModels;
 
 namespace HnVue.UI.ViewModels;
 
@@ -10,7 +11,7 @@ namespace HnVue.UI.ViewModels;
 /// ViewModel for the main shell window.
 /// Manages navigation state and the currently active view.
 /// </summary>
-public sealed partial class MainViewModel : ObservableObject, IDisposable
+public sealed partial class MainViewModel : ObservableObject, IMainViewModel, IDisposable
 {
     private const int SessionTimeoutMinutes = 15;
     private const int TimeoutWarningSeconds = 180; // warn at 3 minutes remaining
@@ -21,22 +22,34 @@ public sealed partial class MainViewModel : ObservableObject, IDisposable
     private int _secondsUntilTimeout;
 
     /// <summary>Gets the ViewModel for the patient list panel.</summary>
-    public PatientListViewModel PatientListViewModel { get; }
+    public IPatientListViewModel PatientListViewModel { get; }
 
     /// <summary>Gets the ViewModel for the image viewer panel.</summary>
-    public ImageViewerViewModel ImageViewerViewModel { get; }
+    public IImageViewerViewModel ImageViewerViewModel { get; }
 
     /// <summary>Gets the ViewModel for the workflow/exposure panel.</summary>
-    public WorkflowViewModel WorkflowViewModel { get; }
+    public IWorkflowViewModel WorkflowViewModel { get; }
 
     /// <summary>Gets the ViewModel for the dose display panel.</summary>
-    public DoseDisplayViewModel DoseDisplayViewModel { get; }
+    public IDoseDisplayViewModel DoseDisplayViewModel { get; }
 
     /// <summary>Gets the ViewModel for the CD/DVD burn panel.</summary>
-    public CDBurnViewModel CDBurnViewModel { get; }
+    public ICDBurnViewModel CDBurnViewModel { get; }
 
     /// <summary>Gets the ViewModel for the system administration panel.</summary>
-    public SystemAdminViewModel SystemAdminViewModel { get; }
+    public ISystemAdminViewModel SystemAdminViewModel { get; }
+
+    /// <summary>
+    /// Gets a value indicating whether an operation is in progress.
+    /// The shell itself has no loading state; this always returns <see langword="false"/>.
+    /// </summary>
+    public bool IsLoading => false;
+
+    /// <summary>
+    /// Gets the current error message.
+    /// The shell itself does not surface errors; this always returns <see langword="null"/>.
+    /// </summary>
+    public string? ErrorMessage => null;
 
     /// <summary>Initialises a new instance of <see cref="MainViewModel"/>.</summary>
     /// <remarks>Issue #17 — CDBurnViewModel and SystemAdminViewModel added to navigation graph.</remarks>
@@ -44,12 +57,12 @@ public sealed partial class MainViewModel : ObservableObject, IDisposable
     public MainViewModel(
         ISecurityContext securityContext,
         ISecurityService securityService,
-        PatientListViewModel patientListViewModel,
-        ImageViewerViewModel imageViewerViewModel,
-        WorkflowViewModel workflowViewModel,
-        DoseDisplayViewModel doseDisplayViewModel,
-        CDBurnViewModel cdburnViewModel,
-        SystemAdminViewModel systemAdminViewModel)
+        IPatientListViewModel patientListViewModel,
+        IImageViewerViewModel imageViewerViewModel,
+        IWorkflowViewModel workflowViewModel,
+        IDoseDisplayViewModel doseDisplayViewModel,
+        ICDBurnViewModel cdburnViewModel,
+        ISystemAdminViewModel systemAdminViewModel)
     {
         ArgumentNullException.ThrowIfNull(securityContext, nameof(securityContext));
         ArgumentNullException.ThrowIfNull(securityService, nameof(securityService));

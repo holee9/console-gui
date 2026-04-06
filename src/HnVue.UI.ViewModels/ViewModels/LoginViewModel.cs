@@ -1,8 +1,11 @@
+using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HnVue.Common.Abstractions;
 using HnVue.Common.Models;
 using HnVue.Common.Results;
+using HnVue.UI.Contracts.Events;
+using HnVue.UI.Contracts.ViewModels;
 
 namespace HnVue.UI.ViewModels;
 
@@ -10,7 +13,7 @@ namespace HnVue.UI.ViewModels;
 /// ViewModel for the login screen.
 /// Handles user credential input and delegates authentication to <see cref="ISecurityService"/>.
 /// </summary>
-public sealed partial class LoginViewModel : ObservableObject
+public sealed partial class LoginViewModel : ObservableObject, ILoginViewModel
 {
     private readonly ISecurityService _securityService;
     private readonly ISecurityContext _securityContext;
@@ -45,6 +48,11 @@ public sealed partial class LoginViewModel : ObservableObject
     /// <summary>Raised when authentication succeeds.</summary>
     public event EventHandler<LoginSuccessEventArgs>? LoginSucceeded;
 
+    // Explicit ILoginViewModel implementation — CommunityToolkit.Mvvm generates typed RelayCommand
+    // properties; ICommand is the interface contract. The generated property satisfies ICommand
+    // at runtime, but the compiler requires an explicit bridge for covariant return types.
+    ICommand ILoginViewModel.LoginCommand => LoginCommand;
+
     /// <summary>Attempts to authenticate the user with the entered credentials.</summary>
     [RelayCommand(CanExecute = nameof(CanLogin))]
     private async Task LoginAsync()
@@ -69,7 +77,7 @@ public sealed partial class LoginViewModel : ObservableObject
             {
                 ErrorMessage = result.Error switch
                 {
-                    Common.Results.ErrorCode.AccountLocked => "계정이 잠겼습니다. 관리자에게 문의하세요.",
+                    ErrorCode.AccountLocked => "계정이 잠겼습니다. 관리자에게 문의하세요.",
                     _ => "사용자명 또는 비밀번호가 올바르지 않습니다."
                 };
             }

@@ -1,5 +1,5 @@
 using System.Windows;
-using HnVue.UI.ViewModels;
+using HnVue.UI.Contracts.ViewModels;
 
 namespace HnVue.UI.Views;
 
@@ -14,7 +14,7 @@ public partial class LoginView : System.Windows.Controls.UserControl
 
     /// <summary>Initialises a new instance of <see cref="LoginView"/> with the given ViewModel.</summary>
     /// <param name="viewModel">The ViewModel to bind to this view.</param>
-    public LoginView(LoginViewModel viewModel) : this()
+    public LoginView(ILoginViewModel viewModel) : this()
     {
         DataContext = viewModel;
     }
@@ -24,7 +24,7 @@ public partial class LoginView : System.Windows.Controls.UserControl
     // SWR-CS-070 / Issue #9
     private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
     {
-        if (DataContext is LoginViewModel vm)
+        if (DataContext is ILoginViewModel vm)
             vm.Password = PasswordBox.Password;
     }
 }

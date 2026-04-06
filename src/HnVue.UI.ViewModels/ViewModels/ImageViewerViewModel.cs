@@ -1,9 +1,11 @@
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HnVue.Common.Abstractions;
 using HnVue.Common.Models;
+using HnVue.UI.Contracts.ViewModels;
 
 namespace HnVue.UI.ViewModels;
 
@@ -11,7 +13,7 @@ namespace HnVue.UI.ViewModels;
 /// ViewModel for the radiographic image viewer.
 /// Wraps <see cref="IImageProcessor"/> to load, window, and zoom images.
 /// </summary>
-public sealed partial class ImageViewerViewModel : ObservableObject
+public sealed partial class ImageViewerViewModel : ObservableObject, IImageViewerViewModel
 {
     private const double ZoomStep = 0.25;
     private const double DefaultZoom = 1.0;
@@ -53,6 +55,18 @@ public sealed partial class ImageViewerViewModel : ObservableObject
     /// <summary>Gets or sets a value indicating whether an operation is in progress.</summary>
     [ObservableProperty]
     private bool _isBusy;
+
+    /// <summary>
+    /// Implements <see cref="IViewModelBase.IsLoading"/> by mapping to <see cref="IsBusy"/>.
+    /// The interface exposes a generic loading concept; this ViewModel uses IsBusy internally.
+    /// </summary>
+    bool IViewModelBase.IsLoading => IsBusy;
+
+    // Explicit IImageViewerViewModel ICommand bridge — see LoginViewModel for rationale.
+    ICommand IImageViewerViewModel.LoadImageCommand => LoadImageCommand;
+    ICommand IImageViewerViewModel.ZoomInCommand => ZoomInCommand;
+    ICommand IImageViewerViewModel.ZoomOutCommand => ZoomOutCommand;
+    ICommand IImageViewerViewModel.ResetWindowCommand => ResetWindowCommand;
 
     /// <summary>
     /// Gets or sets the WPF image source rendered in the Image control.

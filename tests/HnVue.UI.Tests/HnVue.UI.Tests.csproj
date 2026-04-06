@@ -7,6 +7,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\HnVue.UI\HnVue.UI.csproj" />
+    <ProjectReference Include="..\..\src\HnVue.UI.Contracts\HnVue.UI.Contracts.csproj" />
+    <ProjectReference Include="..\..\src\HnVue.UI.ViewModels\HnVue.UI.ViewModels.csproj" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="xunit" />
     <PackageReference Include="xunit.runner.visualstudio">

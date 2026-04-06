@@ -12,6 +12,8 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Dark.Steel.xaml" />
                 <!-- HnVue custom design tokens -->
                 <ResourceDictionary Source="pack://application:,,,/HnVue.UI;component/Themes/HnVueTheme.xaml" />
+                <!-- DataTemplate mappings: ViewModel type → View type (composition root) -->
+                <ResourceDictionary Source="DataTemplates/ViewMappings.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <!-- Common converters available application-wide -->
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />

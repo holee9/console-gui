@@ -3,6 +3,7 @@ using HnVue.Common.Abstractions;
 using HnVue.Common.Enums;
 using HnVue.Common.Models;
 using HnVue.Common.Results;
+using HnVue.UI.Contracts.Events;
 using HnVue.UI.ViewModels;
 using NSubstitute;
 using Xunit;

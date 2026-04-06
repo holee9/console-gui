@@ -1,0 +1,82 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- ═══════════════════════════════════════════════════════════
+         Level 3: Component Design Tokens
+         Per-component overrides that reference Semantic tokens.
+         All SolidColorBrush resources via DynamicResource.
+         ═══════════════════════════════════════════════════════════ -->
+
+    <!-- ═══ DataGrid Component ═══ -->
+    <SolidColorBrush x:Key="HnVue.Component.DataGrid.HeaderBg"
+                     Color="{DynamicResource HnVue.Core.Color.BackgroundPanel}" />
+    <SolidColorBrush x:Key="HnVue.Component.DataGrid.RowBg"
+                     Color="{DynamicResource HnVue.Core.Color.BackgroundCard}" />
+    <SolidColorBrush x:Key="HnVue.Component.DataGrid.RowAlternateBg"
+                     Color="{DynamicResource HnVue.Core.Color.BackgroundPanel}" />
+    <SolidColorBrush x:Key="HnVue.Component.DataGrid.SelectionBg"
+                     Color="{DynamicResource HnVue.Core.Color.Primary}" />
+    <SolidColorBrush x:Key="HnVue.Component.DataGrid.GridLine"
+                     Color="{DynamicResource HnVue.Core.Color.Border}" />
+    <SolidColorBrush x:Key="HnVue.Component.DataGrid.HeaderText"
+                     Color="{DynamicResource HnVue.Core.Color.TextSecondary}" />
+    <SolidColorBrush x:Key="HnVue.Component.DataGrid.CellText"
+                     Color="{DynamicResource HnVue.Core.Color.TextPrimary}" />
+
+    <!-- ═══ StatusBar Component ═══ -->
+    <SolidColorBrush x:Key="HnVue.Component.StatusBar.Bg"
+                     Color="{DynamicResource HnVue.Core.Color.BackgroundPanel}" />
+    <SolidColorBrush x:Key="HnVue.Component.StatusBar.Text"
+                     Color="{DynamicResource HnVue.Core.Color.TextSecondary}" />
+    <SolidColorBrush x:Key="HnVue.Component.StatusBar.Safe"
+                     Color="{DynamicResource HnVue.Core.Color.StatusSafe}" />
+    <SolidColorBrush x:Key="HnVue.Component.StatusBar.Warning"
+                     Color="{DynamicResource HnVue.Core.Color.StatusWarning}" />
+    <SolidColorBrush x:Key="HnVue.Component.StatusBar.Blocked"
+                     Color="{DynamicResource HnVue.Core.Color.StatusBlocked}" />
+    <SolidColorBrush x:Key="HnVue.Component.StatusBar.Emergency"
+                     Color="{DynamicResource HnVue.Core.Color.StatusEmergency}" />
+
+    <!-- ═══ ImageViewer Component ═══ -->
+    <SolidColorBrush x:Key="HnVue.Component.ImageViewer.Bg"
+                     Color="{DynamicResource HnVue.Core.Color.BackgroundPage}" />
+    <SolidColorBrush x:Key="HnVue.Component.ImageViewer.ToolbarBg"
+                     Color="{DynamicResource HnVue.Core.Color.BackgroundPanel}" />
+    <SolidColorBrush x:Key="HnVue.Component.ImageViewer.OverlayText"
+                     Color="{DynamicResource HnVue.Core.Color.TextPrimary}" />
+    <SolidColorBrush x:Key="HnVue.Component.ImageViewer.Crosshair"
+                     Color="{DynamicResource HnVue.Core.Color.Accent}" />
+
+    <!-- ═══ Chart Component ═══ -->
+    <SolidColorBrush x:Key="HnVue.Component.Chart.Bg"
+                     Color="{DynamicResource HnVue.Core.Color.BackgroundCard}" />
+    <SolidColorBrush x:Key="HnVue.Component.Chart.AxisLine"
+                     Color="{DynamicResource HnVue.Core.Color.Border}" />
+    <SolidColorBrush x:Key="HnVue.Component.Chart.AxisLabel"
+                     Color="{DynamicResource HnVue.Core.Color.TextSecondary}" />
+    <SolidColorBrush x:Key="HnVue.Component.Chart.SeriesPrimary"
+                     Color="{DynamicResource HnVue.Core.Color.Accent}" />
+    <SolidColorBrush x:Key="HnVue.Component.Chart.SeriesSecondary"
+                     Color="{DynamicResource HnVue.Core.Color.PrimaryLight}" />
+    <SolidColorBrush x:Key="HnVue.Component.Chart.Tooltip"
+                     Color="{DynamicResource HnVue.Core.Color.BackgroundPanel}" />
+
+    <!-- ═══ Navigation Component ═══ -->
+    <SolidColorBrush x:Key="HnVue.Component.Navigation.Bg"
+                     Color="{DynamicResource HnVue.Core.Color.BackgroundPanel}" />
+    <SolidColorBrush x:Key="HnVue.Component.Navigation.ItemHover"
+                     Color="{DynamicResource HnVue.Core.Color.Primary}" />
+    <SolidColorBrush x:Key="HnVue.Component.Navigation.ItemActive"
+                     Color="{DynamicResource HnVue.Core.Color.PrimaryLight}" />
+    <SolidColorBrush x:Key="HnVue.Component.Navigation.ItemText"
+                     Color="{DynamicResource HnVue.Core.Color.TextPrimary}" />
+
+    <!-- ═══ Dialog Component ═══ -->
+    <SolidColorBrush x:Key="HnVue.Component.Dialog.Bg"
+                     Color="{DynamicResource HnVue.Core.Color.BackgroundCard}" />
+    <SolidColorBrush x:Key="HnVue.Component.Dialog.Overlay"
+                     Color="{DynamicResource HnVue.Core.Color.BackgroundPage}" />
+    <SolidColorBrush x:Key="HnVue.Component.Dialog.TitleText"
+                     Color="{DynamicResource HnVue.Core.Color.TextPrimary}" />
+
+</ResourceDictionary>

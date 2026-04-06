@@ -65,25 +65,25 @@
                     <ColumnDefinition Width="260"/>
                 </Grid.ColumnDefinitions>
 
-                <!-- Left Panel: Patient List -->
+                <!-- Left Panel: Patient List (Shell Region — resolved via DataTemplate) -->
                 <Border Grid.Column="0" Background="{StaticResource HnVue.Background.Panel.Brush}">
-                    <views:PatientListView DataContext="{Binding PatientListViewModel}"/>
+                    <ContentControl Content="{Binding PatientListViewModel}"/>
                 </Border>
 
-                <!-- Center Panel: Image Viewer -->
+                <!-- Center Panel: Image Viewer (Shell Region — resolved via DataTemplate) -->
                 <Border Grid.Column="1" Background="{StaticResource HnVue.Background.Dark.Brush}" Margin="2,0">
-                    <views:ImageViewerView DataContext="{Binding ImageViewerViewModel}"/>
+                    <ContentControl Content="{Binding ImageViewerViewModel}"/>
                 </Border>
 
-                <!-- Right Panel: Workflow + Dose -->
+                <!-- Right Panel: Workflow + Dose (Shell Regions — resolved via DataTemplate) -->
                 <Border Grid.Column="2" Background="{StaticResource HnVue.Background.Panel.Brush}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <views:WorkflowView Grid.Row="0" DataContext="{Binding WorkflowViewModel}"/>
-                        <views:DoseDisplayView Grid.Row="1" DataContext="{Binding DoseDisplayViewModel}"/>
+                        <ContentControl Grid.Row="0" Content="{Binding WorkflowViewModel}"/>
+                        <ContentControl Grid.Row="1" Content="{Binding DoseDisplayViewModel}"/>
                     </Grid>
                 </Border>
             </Grid>

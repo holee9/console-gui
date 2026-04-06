@@ -1,8 +1,10 @@
 using System.Collections.ObjectModel;
+using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HnVue.Common.Abstractions;
 using HnVue.Common.Models;
+using HnVue.UI.Contracts.ViewModels;
 
 namespace HnVue.UI.ViewModels;
 
@@ -10,7 +12,7 @@ namespace HnVue.UI.ViewModels;
 /// ViewModel for the dose display panel.
 /// Shows current DAP, historical dose records, and alerts when the DRL reference level is exceeded.
 /// </summary>
-public sealed partial class DoseDisplayViewModel : ObservableObject
+public sealed partial class DoseDisplayViewModel : ObservableObject, IDoseDisplayViewModel
 {
     // Default DRL reference level in mGy·cm² for a general chest examination.
     private const double DefaultDrlReferenceLevel = 150.0;
@@ -23,6 +25,14 @@ public sealed partial class DoseDisplayViewModel : ObservableObject
     {
         _doseService = doseService;
     }
+
+    /// <summary>
+    /// Implements <see cref="IViewModelBase.IsLoading"/> by mapping to <see cref="IsRefreshing"/>.
+    /// </summary>
+    bool IViewModelBase.IsLoading => IsRefreshing;
+
+    // Explicit IDoseDisplayViewModel ICommand bridge — see LoginViewModel for rationale.
+    ICommand IDoseDisplayViewModel.RefreshCommand => RefreshCommand;
 
     /// <summary>Gets or sets the dose-area product (DAP) for the current exposure in mGy·cm².</summary>
     [ObservableProperty]

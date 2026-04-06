@@ -1,6 +1,8 @@
+using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HnVue.Common.Abstractions;
+using HnVue.UI.Contracts.ViewModels;
 
 namespace HnVue.UI.ViewModels;
 
@@ -8,7 +10,7 @@ namespace HnVue.UI.ViewModels;
 /// ViewModel for the CD/DVD burn screen.
 /// Allows the operator to burn a DICOM study to an optical disc.
 /// </summary>
-public sealed partial class CDBurnViewModel : ObservableObject, IDisposable
+public sealed partial class CDBurnViewModel : ObservableObject, ICDBurnViewModel, IDisposable
 {
     private readonly ICDDVDBurnService _burnService;
     private CancellationTokenSource? _burnCts;
@@ -19,6 +21,15 @@ public sealed partial class CDBurnViewModel : ObservableObject, IDisposable
     {
         _burnService = burnService;
     }
+
+    /// <summary>
+    /// Implements <see cref="IViewModelBase.IsLoading"/> by mapping to <see cref="IsBurning"/>.
+    /// </summary>
+    bool IViewModelBase.IsLoading => IsBurning;
+
+    // Explicit ICDBurnViewModel ICommand bridge — see LoginViewModel for rationale.
+    ICommand ICDBurnViewModel.StartBurnCommand => StartBurnCommand;
+    ICommand ICDBurnViewModel.CancelBurnCommand => CancelBurnCommand;
 
     /// <summary>Gets or sets the DICOM Study Instance UID of the study to burn.</summary>
     [ObservableProperty]
@@ -54,7 +65,7 @@ public sealed partial class CDBurnViewModel : ObservableObject, IDisposable
         IsBurning = true;
         BurnProgress = 0;
         ErrorMessage = null;
-        StatusMessage = "Burning disc…";
+        StatusMessage = "Burning disc\u2026";
         _burnCts = new CancellationTokenSource();
 
         try

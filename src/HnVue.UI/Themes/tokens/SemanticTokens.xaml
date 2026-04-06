@@ -1,0 +1,60 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- ═══════════════════════════════════════════════════════════
+         Level 2: Semantic Design Tokens
+         Meaningful names that reference Core tokens via DynamicResource.
+         All SolidColorBrush resources.
+         ═══════════════════════════════════════════════════════════ -->
+
+    <!-- ═══ Surface Colors ═══ -->
+    <SolidColorBrush x:Key="HnVue.Semantic.Surface.Page"
+                     Color="{DynamicResource HnVue.Core.Color.BackgroundPage}" />
+    <SolidColorBrush x:Key="HnVue.Semantic.Surface.Panel"
+                     Color="{DynamicResource HnVue.Core.Color.BackgroundPanel}" />
+    <SolidColorBrush x:Key="HnVue.Semantic.Surface.Card"
+                     Color="{DynamicResource HnVue.Core.Color.BackgroundCard}" />
+
+    <!-- ═══ Brand Colors ═══ -->
+    <SolidColorBrush x:Key="HnVue.Semantic.Brand.Primary"
+                     Color="{DynamicResource HnVue.Core.Color.Primary}" />
+    <SolidColorBrush x:Key="HnVue.Semantic.Brand.PrimaryLight"
+                     Color="{DynamicResource HnVue.Core.Color.PrimaryLight}" />
+    <SolidColorBrush x:Key="HnVue.Semantic.Brand.Accent"
+                     Color="{DynamicResource HnVue.Core.Color.Accent}" />
+
+    <!-- ═══ Text Colors ═══ -->
+    <SolidColorBrush x:Key="HnVue.Semantic.Text.Primary"
+                     Color="{DynamicResource HnVue.Core.Color.TextPrimary}" />
+    <SolidColorBrush x:Key="HnVue.Semantic.Text.Secondary"
+                     Color="{DynamicResource HnVue.Core.Color.TextSecondary}" />
+    <SolidColorBrush x:Key="HnVue.Semantic.Text.Disabled"
+                     Color="{DynamicResource HnVue.Core.Color.TextDisabled}" />
+
+    <!-- ═══ Status Colors (IEC 62366 Safety-Critical) ═══ -->
+    <SolidColorBrush x:Key="HnVue.Semantic.Status.Safe"
+                     Color="{DynamicResource HnVue.Core.Color.StatusSafe}" />
+    <SolidColorBrush x:Key="HnVue.Semantic.Status.Warning"
+                     Color="{DynamicResource HnVue.Core.Color.StatusWarning}" />
+    <SolidColorBrush x:Key="HnVue.Semantic.Status.Blocked"
+                     Color="{DynamicResource HnVue.Core.Color.StatusBlocked}" />
+    <SolidColorBrush x:Key="HnVue.Semantic.Status.Emergency"
+                     Color="{DynamicResource HnVue.Core.Color.StatusEmergency}" />
+
+    <!-- ═══ Interactive: Button ═══ -->
+    <SolidColorBrush x:Key="HnVue.Semantic.Button.Primary"
+                     Color="{DynamicResource HnVue.Core.Color.ButtonPrimary}" />
+    <SolidColorBrush x:Key="HnVue.Semantic.Button.PrimaryHover"
+                     Color="{DynamicResource HnVue.Core.Color.ButtonPrimaryHover}" />
+    <SolidColorBrush x:Key="HnVue.Semantic.Button.Secondary"
+                     Color="{DynamicResource HnVue.Core.Color.ButtonSecondary}" />
+    <SolidColorBrush x:Key="HnVue.Semantic.Button.Danger"
+                     Color="{DynamicResource HnVue.Core.Color.ButtonDanger}" />
+
+    <!-- ═══ Border ═══ -->
+    <SolidColorBrush x:Key="HnVue.Semantic.Border.Default"
+                     Color="{DynamicResource HnVue.Core.Color.Border}" />
+    <SolidColorBrush x:Key="HnVue.Semantic.Border.Focus"
+                     Color="{DynamicResource HnVue.Core.Color.BorderFocus}" />
+
+</ResourceDictionary>

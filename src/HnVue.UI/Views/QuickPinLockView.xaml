@@ -39,7 +39,7 @@
                 <ProgressBar IsIndeterminate="True" Height="4" Margin="0,0,0,8"
                              Visibility="{Binding IsVerifying, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
-                <Button Content="확인" Command="{Binding VerifyPinAsyncCommand}"
+                <Button Content="확인" Command="{Binding VerifyPinCommand}"
                         Height="40" FontSize="14"
                         IsEnabled="{Binding IsVerifying, Converter={StaticResource BoolToVisibilityConverter},
                                     ConverterParameter=Invert}"/>

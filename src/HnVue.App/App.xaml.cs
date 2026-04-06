@@ -4,6 +4,7 @@ using HnVue.Common.Abstractions;
 using HnVue.Common.Extensions;
 using HnVue.Common.Models;
 using HnVue.Common.Results;
+using HnVue.Data;
 using HnVue.Data.Extensions;
 using HnVue.Dicom;
 using HnVue.Dose;
@@ -13,6 +14,7 @@ using HnVue.PatientManagement;
 using HnVue.Security;
 using HnVue.Security.Extensions;
 using HnVue.SystemAdmin;
+using HnVue.UI.Contracts.ViewModels;
 using HnVue.UI.ViewModels;
 using HnVue.Update;
 using HnVue.Workflow;
@@ -54,8 +56,35 @@ public partial class App : Application
         _host = BuildHost();
         await _host.StartAsync().ConfigureAwait(false);
 
+        // Development: ensure DB exists and seed default admin account.
+        await EnsureDatabaseSeededAsync(_host.Services).ConfigureAwait(false);
+
         var mainWindow = _host.Services.GetRequiredService<MainWindow>();
         mainWindow.Show();
+    }
+
+    /// <summary>
+    /// Creates the SQLite schema (if absent) and seeds a default admin user for development.
+    /// This runs only when no users exist in the database.
+    /// </summary>
+    private static async Task EnsureDatabaseSeededAsync(IServiceProvider services)
+    {
+        using var scope = services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<HnVueDbContext>();
+        await db.Database.EnsureCreatedAsync().ConfigureAwait(false);
+
+        if (!db.Users.Any())
+        {
+            db.Users.Add(new Data.Entities.UserEntity
+            {
+                UserId       = Guid.NewGuid().ToString(),
+                Username     = "admin",
+                DisplayName  = "Administrator",
+                PasswordHash = HnVue.Security.PasswordHasher.HashPassword("Admin1234!"),
+                RoleValue    = (int)Common.Enums.UserRole.Admin,
+            });
+            await db.SaveChangesAsync().ConfigureAwait(false);
+        }
     }
 
     /// <summary>
@@ -185,16 +214,28 @@ public partial class App : Application
                 services.AddSingleton<DicomFileIO>();
 
                 // ── HnVue.Imaging ────────────────────────────────────────────
-                // ImageProcessor has no service interface — registered as concrete singleton.
-                services.AddSingleton<HnVue.Imaging.ImageProcessor>();
+                // ImageProcessor registered as IImageProcessor (interface-based DI).
+                services.AddSingleton<IImageProcessor, HnVue.Imaging.ImageProcessor>();
 
-                // ── HnVue.UI ─────────────────────────────────────────────────
-                // ViewModels are transient (each window/navigation creates a fresh instance).
-                services.AddTransient<LoginViewModel>();
-                services.AddTransient<PatientListViewModel>();
-                services.AddTransient<ImageViewerViewModel>();
-                services.AddTransient<WorkflowViewModel>();
-                services.AddTransient<DoseDisplayViewModel>();
+                // ── HnVue.UI ViewModels ───────────────────────────────────────
+                // Each concrete ViewModel is registered against its interface contract so
+                // the DI container resolves the interface wherever declared as a dependency.
+                // Concrete registrations are also provided for types resolved directly
+                // (e.g. MainWindow constructor, MainViewModel sub-ViewModel parameters).
+                services.AddTransient<ILoginViewModel, LoginViewModel>();
+                services.AddTransient<IPatientListViewModel, PatientListViewModel>();
+                services.AddTransient<IImageViewerViewModel, ImageViewerViewModel>();
+                services.AddTransient<IWorkflowViewModel, WorkflowViewModel>();
+                services.AddTransient<IDoseDisplayViewModel, DoseDisplayViewModel>();
+                services.AddTransient<IDoseViewModel, DoseViewModel>();
+                services.AddTransient<ICDBurnViewModel, CDBurnViewModel>();
+                services.AddTransient<ISystemAdminViewModel, SystemAdminViewModel>();
+                services.AddTransient<IQuickPinLockViewModel, QuickPinLockViewModel>();
+                services.AddTransient<IMainViewModel, MainViewModel>();
+                // Concrete-type registrations required where the DI container must resolve
+                // the concrete class (MainViewModel constructor args, MainWindow).
+                services.AddTransient<CDBurnViewModel>();
+                services.AddTransient<SystemAdminViewModel>();
                 services.AddTransient<MainViewModel>();
 
                 // ── WPF main window ──────────────────────────────────────────

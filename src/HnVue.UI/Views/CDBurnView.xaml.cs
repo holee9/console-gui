@@ -1,4 +1,4 @@
-using HnVue.UI.ViewModels;
+using HnVue.UI.Contracts.ViewModels;
 
 namespace HnVue.UI.Views;
 
@@ -13,7 +13,7 @@ public partial class CDBurnView : System.Windows.Controls.UserControl
 
     /// <summary>Initialises a new instance of <see cref="CDBurnView"/> with the given ViewModel.</summary>
     /// <param name="viewModel">The ViewModel to bind to this view.</param>
-    public CDBurnView(CDBurnViewModel viewModel) : this()
+    public CDBurnView(ICDBurnViewModel viewModel) : this()
     {
         DataContext = viewModel;
     }

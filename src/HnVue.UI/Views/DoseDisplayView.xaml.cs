@@ -1,4 +1,4 @@
-using HnVue.UI.ViewModels;
+using HnVue.UI.Contracts.ViewModels;
 
 namespace HnVue.UI.Views;
 
@@ -13,7 +13,7 @@ public partial class DoseDisplayView : System.Windows.Controls.UserControl
 
     /// <summary>Initialises a new instance of <see cref="DoseDisplayView"/> with the given ViewModel.</summary>
     /// <param name="viewModel">The ViewModel to bind to this view.</param>
-    public DoseDisplayView(DoseDisplayViewModel viewModel) : this()
+    public DoseDisplayView(IDoseDisplayViewModel viewModel) : this()
     {
         DataContext = viewModel;
     }
