@@ -6,9 +6,9 @@
 | 항목 | 내용 |
 |------|------|
 | **문서 ID** | PRD-XRAY-GUI-001 |
-| **버전** | v2.0 |
+| **버전** | v3.0 |
 | **작성일** | 2026-04-02 |
-| **개정일** | 2026-04-02 |
+| **개정일** | 2026-04-06 |
 | **이전 버전** | v1.2 |
 | **작성자** | 전략마케팅본부 |
 | **승인자** | (승인 대기) |
@@ -26,6 +26,7 @@
 | v1.1 | 2026-03-27 | 전략마케팅본부 | MRD P1-P4 우선순위 체계 연계 반영, 체크박스 선택 형식 도입 |
 | v1.2 | 2026-03-27 | 전략마케팅본부 | MRD-PRD 우선순위 교차검증: PR-SA-060(RBAC) P3→P1, US-007/010/012 P3→P2, US-013 P3→P1 |
 | v2.0 | 2026-04-02 | 전략마케팅본부 | MRD v3.0 4-Tier 체계 반영, MR 추적성 전면 추가, 보완 3건(인시던트대응/업데이트메커니즘/위협모델링) 반영, MR-072(CD Burning) 신규, Phase 재배정, 부록 A RTM 전면 재작성 |
+| v3.0 | 2026-04-06 | 전략마케팅본부 | MRD v4.0 연계: 신규 MR 20건(MR-073~092) 대응 PR 항목 추가, 교차검증 결과 반영, RTM 확장 |
 
 ---
 
@@ -423,6 +424,11 @@ journey
 | PR-WF-017 | MR-003 | Multi-study 지원 | 동일 환자의 복수 검사(study)를 하나의 세션에서 연속 수행 | Tier 2 | 1 | Study 전환 시 이전 Study 데이터 보존; DICOM Series 분리 정확도 100% | SWR-WF-028, SWR-WF-029 | T, I | HAZ-DATA | MR-003 |
 | PR-WF-018 | MR-003 | Suspend/Resume Exam | 진행 중인 검사를 일시 중단하고 나중에 재개; 다른 긴급 환자 처리 후 복귀 | Tier 2 | 1 | Suspend 시 모든 상태(촬영 순서, 획득 영상) 저장; Resume 시 동일 상태로 복귀 | SWR-WF-030, SWR-WF-031 | T, D | HAZ-DATA | MR-003 |
 | PR-WF-019 | MR-072 | CD/DVD Burning with DICOM Viewer | 촬영 영상을 환자 배포용 CD/DVD로 굽기; DICOMDIR 구조 + 내장 DICOM 뷰어(실행파일) + ISO 이미지 생성; 라이선스 없이 환자가 직접 열람 가능 | Tier 2 | 1 | DICOMDIR 파일 생성 및 ISO 이미지 구조 검증; 내장 뷰어 실행 확인; 영상 데이터 무결성 검증(체크섬); 매체 기록 성공 확인 | SWR-WF-032, SWR-WF-033, SWR-WF-034 | T, D | HAZ-DATA | MR-072 |
+| PR-WF-020 | MR-073 | **[NEW v3.0]** 자동 이미지 회전 (Auto-Rotate) | 촬영된 영상을 해부학적 표준 방향으로 자동 회전; 규칙 기반(body part+projection→rotation angle 매핑) 또는 AI 기반 해부학 인식 | Tier 3 | 2 | 표준 촬영 100건 중 95% 이상 올바른 방향 자동 적용; 수동 보정 가능 | SWR-WF-035, SWR-WF-036 | T, A | HAZ-UX-001 | MR-073 |
+| PR-WF-021 | MR-075 | **[NEW v3.0]** Barcode/QR 환자 식별 | USB HID 바코드 리더로 환자 손목밴드 스캔 시 워크리스트 자동 매칭; 매칭 실패 시 수동 검색으로 전환 | Tier 3 | 2 | 바코드 스캔 후 ≤1초 내 환자 매칭; 오매칭 시 확인 다이얼로그 표시 | SWR-WF-037, SWR-WF-038 | T, D | HAZ-WF-001 | MR-075 |
+| PR-WF-022 | MR-080 | **[NEW v3.0]** 디텍터 공유 | 복수 촬영실에서 1개 FPD를 공유 사용; 디텍터 등록/해제를 1-click으로 전환; 현재 소유 촬영실 표시 | Tier 3 | 2 | 디텍터 전환 후 ≤3초 내 연결 완료; 충돌 시 경고 표시 | SWR-WF-039, SWR-WF-040 | T, D | HAZ-HW-001 | MR-080 |
+| PR-WF-023 | MR-083 | **[NEW v3.0]** 훈련/시뮬레이션 모드 | X선 발생 없이 전체 워크플로우(환자선택→프로토콜→촬영→영상확인→전송) 시뮬레이션; 샘플 영상 사용 | Tier 4 | 3+ | 시뮬레이션 모드에서 실제 Generator/Detector 제어 신호 차단 확인; 실제 PACS 전송 방지 | SWR-WF-041, SWR-WF-042 | T, D | HAZ-RAD | MR-083 |
+| PR-WF-024 | MR-091 | **[NEW v3.0]** Pre-Exposure 모션 감지 | 촬영 직전 카메라/가속도 센서로 환자 움직임 감지; 임계치 초과 시 Exposure 차단 + 경고 | Tier 4 | 3+ | 모션 감지 정확도 ≥90%; 거짓 양성률 ≤5%; 감지 후 ≤500ms 내 경고 표시 | SWR-WF-043, SWR-WF-044 | T, A | HAZ-DM-001, HAZ-IP-001 | MR-091 |
 
 #### 3.2.1 촬영 워크플로우 상태 머신 (State Machine)
 
@@ -493,6 +499,10 @@ stateDiagram-v2
 | PR-IP-035 | MR-011 | Black Mask (Automatic Shutters) | 조사야 외부 영역을 검은색으로 마스킹하여 과도한 밝기 제거 | Tier 2 | 1 | 마스크 적용/해제 토글; 마스크 경계 수동 조정 가능 | SWR-IP-049 | T, D | — | MR-011 |
 | PR-IP-036 | MR-011 | Contrast Optimization | 히스토그램 분석 기반 자동 Contrast 최적화 (CLAHE 등); 외부 SDK 호출 | Tier 2 | 1 | 자동 최적화 후 수동 Fine-tuning 가능; "Original" 복원 버튼 제공 | SWR-IP-050, SWR-IP-051 | T, D | — | MR-011 |
 | PR-IP-037 | MR-012 | Brightness Control | 전체 밝기(Offset) 조정 | Tier 2 | 1 | -100%~+100% 범위; 슬라이더 + 숫자 입력 | SWR-IP-052 | T, D | — | MR-012 |
+| PR-IP-038 | MR-077 | **[NEW v3.0]** Dual-Energy Subtraction | 2회 노출(고/저 kVp)로 획득한 영상 쌍에서 weighted logarithmic subtraction으로 연조직 영상 및 골 영상 분리 생성 | Tier 3 | 2 | 연조직/골 분리 영상 생성 시간 ≤5초; 진단 품질 유지 | SWR-IP-053, SWR-IP-054 | T, A | HAZ-RAD, HAZ-IP-001 | MR-077 |
+| PR-IP-039 | MR-081 | **[NEW v3.0]** Multi-Frequency Processing | 영상을 다중 주파수 대역(고주파: 미세 구조, 저주파: 전체 대비)으로 분해하여 각 대역별 최적 파라미터 적용 후 합성 | Tier 3 | 2 | 단일 default look으로 전 부위 일관된 품질; 처리 시간 ≤2초 | SWR-IP-055, SWR-IP-056 | T, A | HAZ-IP-001 | MR-081 |
+| PR-IP-040 | MR-084 | **[NEW v3.0]** Dynamic Digital Radiography (DDR) | 최대 15fps 연속 촬영 모드; 획득된 프레임 시퀀스를 동영상으로 재생; 개별 프레임 추출 가능 | Tier 4 | 3+ | 15fps 연속 10초 촬영 시 150프레임 획득 및 재생; DICOM Multi-frame 저장 | SWR-IP-057, SWR-IP-058 | T, A | HAZ-RAD | MR-084 |
+| PR-IP-041 | MR-087 | **[NEW v3.0]** Cobb Angle 자동 측정 | 척추 전장 영상에서 상/하 종단추체를 자동 인식하고 Cobb angle 계산; 수동 조정 가능 | Tier 4 | 3+ | Cobb angle 측정 정확도 ±3° (vs 수동 측정); 자동 인식 실패 시 수동 모드 전환 | SWR-IP-059, SWR-IP-060 | T, A | HAZ-SW | MR-087 |
 
 #### 3.3.1 영상 처리 파이프라인 (Image Processing Pipeline)
 
@@ -531,6 +541,7 @@ flowchart TD
 | PR-DM-044 | MR-028 | DRL 비교 | 국가별 진단참고준위(DRL) 데이터베이스 내장; 검사별 선량과 비교하여 초과 시 경고 | Tier 3 | 2 | 한국 NCRP DRL 기준 내장; 병원 자체 DRL 설정 가능 | SWR-DM-049, SWR-DM-050 | T, A | HAZ-RAD | MR-028 |
 | PR-DM-045 | MR-032 | 전자 X-ray 로그북 | 모든 노출 데이터(환자 ID, 날짜, 부위, kVp, mAs, DAP, EI)를 자동 기록하는 전자 선량 일지 | Tier 3 | 2 | CSV/PDF 형식 내보내기 지원; 날짜 범위·기술자별 필터링 | SWR-DM-051, SWR-DM-052 | T, I | HAZ-RAD, HAZ-DATA | MR-032 |
 | PR-DM-046 | MR-016 | Reject Analysis | 거부된 영상의 원인(Positioning Error, Motion, Over/Under-exposure 등)을 기록하고 통계 리포트 생성 | Tier 3 | 2 | 거부 원인 카테고리 ≥10종; 주간/월간 리포트 자동 생성; 기술자별 거부율 비교 | SWR-DM-053, SWR-DM-054, SWR-DM-055 | T, A | HAZ-RAD | MR-016 |
+| PR-DM-047 | MR-078 | **[NEW v3.0]** 선량 크립 모니터링 | 프로토콜별/기술자별 평균 DAP 트렌드를 주간/월간 자동 계산; 기준선 대비 10% 이상 증가 시 관리자 경고 | Tier 3 | 2 | 트렌드 계산 주기 ≤24시간; 경고 임계치 설정 가능(기본 10%) | SWR-DM-056, SWR-DM-057 | T, A | HAZ-DM-001 | MR-078 |
 
 ### 3.5 DICOM 통신 (DICOM Services) — PR-DC
 
@@ -546,6 +557,10 @@ flowchart TD
 | PR-DC-055 | MR-019 | Query/Retrieve SCU | PACS에서 이전 영상 조회(C-FIND) 및 가져오기(C-MOVE/C-GET) | Tier 3 | 2 | 조회 결과 썸네일 표시; 비교 뷰어에서 표시 | SWR-DC-061, SWR-DC-062 | T, D | — | MR-019 |
 | PR-DC-056 | MR-034 | DICOM TLS | DICOM 통신 채널에 TLS 1.2 이상 암호화 적용; 인증서 기반 상호 인증(mTLS) 옵션 | Tier 1 | 1 | TLS 핸드셰이크 성공 확인; 인증서 만료 30일 전 관리자 경고; TLS 1.0/1.1 비활성화 확인 | SWR-DC-063, SWR-DC-064 | T, I | HAZ-SEC | MR-034 |
 | PR-DC-057 | MR-054 | DICOM Conformance Statement | 지원 SOP Class, Transfer Syntax, AE Title 정보를 DICOM Conformance Statement 문서로 작성 및 공개 | Tier 1 | 1 | DICOM PS3.2 기준 Conformance Statement 완전성 확인; IHE Integration Statement 포함 | SWR-DC-065 | I | HAZ-DATA | MR-054 |
+| PR-DC-058 | MR-074 | **[NEW v3.0]** DICOM GSPS 저장/로드 | fo-dicom으로 Grayscale Softcopy Presentation State IOD 생성; 주석, W/L, 변환 정보를 GSPS로 PACS에 저장; GSPS 로드 시 저장된 상태 재현 | Tier 3 | 2 | GSPS 저장/로드 왕복(round-trip) 정확도 100%; PACS에서 GSPS 적용 확인 | SWR-DC-066, SWR-DC-067 | T, I | HAZ-DATA | MR-074 |
+| PR-DC-059 | MR-076 | **[NEW v3.0]** DICOMweb 지원 | WADO-RS(영상 조회), STOW-RS(영상 저장) RESTful API 구현; 클라우드 PACS(Google Cloud Healthcare, Azure Health) 연동 | Tier 3 | 2 | WADO-RS 응답 ≤5초(5MP 기준); STOW-RS 업로드 성공률 ≥99%; TLS 필수 | SWR-DC-068, SWR-DC-069 | T, A | HAZ-CS-001, HAZ-DATA | MR-076 |
+| PR-DC-060 | MR-079 | **[NEW v3.0]** HL7v2 ADT/ORM 수신 | HL7 v2.x TCP/MLLP 리스너로 ADT^A01(입원), ORM^O01(검사오더) 메시지 수신; 파싱하여 워크리스트 자동 생성 | Tier 3 | 2 | HL7 메시지 수신 후 ≤2초 내 워크리스트 반영; ACK 자동 응답; 파싱 오류 시 로그 | SWR-DC-070, SWR-DC-071 | T, A | HAZ-WF-001, HAZ-DATA | MR-079 |
+| PR-DC-061 | MR-086 | **[NEW v3.0]** Zero-Footprint Web Viewer | HTML5/WebGL 기반 경량 DICOM 뷰어를 내장 웹서버로 제공; 브라우저에서 W/L, Zoom, Pan 기본 조작 | Tier 4 | 3+ | 브라우저 로딩 ≤5초; 5MP 영상 W/L 조작 ≤200ms 응답; Chrome/Edge/Safari 지원 | SWR-DC-072, SWR-DC-073 | T, D | — | MR-086 |
 
 #### 3.5.1 DICOM 통신 흐름 (Sequence Diagram — Phase 1)
 
@@ -658,6 +673,7 @@ sequenceDiagram
 | PR-NF-UX-024 | MR-042 | 사용성 | SUS 점수 | ≥70점 (Summative Usability Test, 방사선사 10명 이상 참여) | Tier 3 | 2 | SWR-NF-UX-024 | D, A | — | MR-042 |
 | PR-NF-UX-025 | MR-048 | 사용성 | 오류 복구 및 오류 메시지 | 사용자 오류 후 ≤3단계 내 정상 상태 복귀; 오류 메시지에 원인+해결방법 표시 | Tier 2 | 1 | SWR-NF-UX-025 | T, D | HAZ-RAD | MR-048 |
 | PR-NF-UX-026 | MR-003 | 사용성 | 응급 접근성 | Emergency 모드 진입 ≤2회 터치 (최상위 화면 어디서나) | Tier 2 | 1 | SWR-NF-UX-026 | T, D | HAZ-RAD | MR-003 |
+| PR-NF-UX-027 | MR-082 | **[NEW v3.0]** 사용성 | DICOM GSDF 디스플레이 교정 도구 | DICOM Part 14 GSDF 준수 | Tier 3 | 2 | SWR-NF-UX-027 | T, I | HAZ-IP-001 | MR-082 |
 
 ### 4.4 호환성 (Compatibility) — PR-NF-CP
 
@@ -701,6 +717,8 @@ sequenceDiagram
 | PR-NF-RG-063 | MR-052 | 규제 준수 | FDA 21 CFR 820.30 / ISO 13485 | Design Controls 전 단계 완비; ISO 13485 품질 관리 시스템 하에 개발 | Tier 1 | 1 | SWR-NF-RG-063 | I, A | HAZ-SW | MR-052 |
 | PR-NF-RG-064 | MR-054 | 규제 준수 | DICOM Conformance | DICOM Conformance Statement 문서 작성 및 유지; PS 3.2 준수 | Tier 1 | 1 | SWR-NF-RG-064 | I | HAZ-DATA | MR-054 |
 | PR-NF-RG-065 | MR-053 | 규제 준수 | 규제 승인 (MFDS/FDA/CE) | 모든 시장 출시 전 해당 지역 규제 승인 획득; SRS의 모든 요구사항이 System Test 결과로 역추적 가능 | Tier 1 | 1 | SWR-NF-RG-065 | I, A | — | MR-053 |
+| PR-NF-RG-066 | MR-089 | **[NEW v3.0]** 규제 준수 | EU AI Act 고위험 AI 준수: 의료기기 내 AI 모듈에 대한 기술문서, 편향성 검토, 인간 감독 체계 | EU Regulation 2024/1689 Article 6-49 | Tier 4 | 3+ | SWR-NF-RG-066 | I, A | HAZ-AI-001 | MR-089 |
+| PR-NF-RG-067 | MR-090 | **[NEW v3.0]** 규제 준수 | NIS2 인시던트 보고 체계: MDR 87a 기반 30일 이내 보고 | NIS2 Directive transposition | Tier 4 | 3+ | SWR-NF-RG-067 | I, A | HAZ-CS-004 | MR-090 |
 
 ---
 
@@ -1552,6 +1570,11 @@ flowchart LR
 | MR-003 | Tier 2 | PR-WF-017 | SWR-WF-028–029 | SAD: Acquisition / SDS: StudyManager.MultiStudy() | T, I | ST-PR-WF-017 | VT-UX-002 | HAZ-DATA | Open |
 | MR-003 | Tier 2 | PR-WF-018 | SWR-WF-030–031 | SAD: Acquisition / SDS: SessionManager.Suspend() | T, D | ST-PR-WF-018 | VT-UX-002 | HAZ-DATA | Open |
 | MR-072 | Tier 2 | PR-WF-019 | SWR-WF-032–035 | SAD: Acquisition / SDS: CDburner.Burn() | T, D | ST-PR-WF-019 | VT-CL-001, VT-UX-002 | HAZ-DATA | Open |
+| MR-073 | Tier 3 | PR-WF-020 | SWR-WF-035–036 | SAD: ImageProc / SDS: AutoRotation.Apply() | T, A | ST-PR-WF-020 | VT-UX-001 | HAZ-UX-001 | Open |
+| MR-075 | Tier 3 | PR-WF-021 | SWR-WF-037–038 | SAD: PatientMgmt / SDS: BarcodeService.Match() | T, D | ST-PR-WF-021 | VT-CL-001 | HAZ-WF-001 | Open |
+| MR-080 | Tier 3 | PR-WF-022 | SWR-WF-039–040 | SAD: HW_HAL / SDS: DetectorShareService.Transfer() | T, D | ST-PR-WF-022 | VT-CL-001 | HAZ-HW-001 | Open |
+| MR-083 | Tier 4 | PR-WF-023 | SWR-WF-041–042 | SAD: Acquisition / SDS: SimulationMode.Run() | T, D | ST-PR-WF-023 | VT-UX-003 | HAZ-RAD | Open |
+| MR-091 | Tier 4 | PR-WF-024 | SWR-WF-043–044 | SAD: HW_HAL / SDS: MotionDetector.Check() | T, A | ST-PR-WF-024 | VT-CL-001 | HAZ-DM-001, HAZ-IP-001 | Open |
 | MR-011, MR-023 | Tier 2 | PR-IP-020 | SWR-IP-020–021 | SAD: ImageProc / SDS: DisplayRenderer.Render() | T, A | ST-PR-IP-020 | VT-CL-001, VT-UX-002 | HAZ-RAD, HAZ-SW | Open |
 | MR-012 | Tier 2 | PR-IP-021 | SWR-IP-022–023 | SAD: ImageProc / SDS: WindowLevelController.Adjust() | T, D | ST-PR-IP-021 | VT-UX-002 | — | Open |
 | MR-012 | Tier 2 | PR-IP-022 | SWR-IP-024–025 | SAD: ImageProc / SDS: ZoomController.Apply() | T, D | ST-PR-IP-022 | VT-UX-002 | — | Open |
@@ -1570,6 +1593,10 @@ flowchart LR
 | MR-013 | Tier 2 | PR-IP-035 | SWR-IP-049 | SAD: ImageProc / SDS: BlackMask.Apply() | T, D | ST-PR-IP-035 | VT-UX-002 | — | Open |
 | MR-011 | Tier 2 | PR-IP-036 | SWR-IP-050–051 | SAD: ImageProc / SDS: ContrastOptimization.Apply() | T, D | ST-PR-IP-036 | VT-CL-001 | — | Open |
 | MR-012 | Tier 2 | PR-IP-037 | SWR-IP-052 | SAD: ImageProc / SDS: BrightnessController.Apply() | T, D | ST-PR-IP-037 | VT-UX-002 | — | Open |
+| MR-077 | Tier 3 | PR-IP-038 | SWR-IP-053–054 | SAD: ImageProc / SDS: DualEnergy.Subtract() | T, A | ST-PR-IP-038 | VT-CL-001 | HAZ-RAD, HAZ-IP-001 | Open |
+| MR-081 | Tier 3 | PR-IP-039 | SWR-IP-055–056 | SAD: ImageProc / SDS: MultiFrequency.Process() | T, A | ST-PR-IP-039 | VT-CL-001 | HAZ-IP-001 | Open |
+| MR-084 | Tier 4 | PR-IP-040 | SWR-IP-057–058 | SAD: ImageProc / SDS: DDRController.Acquire() | T, A | ST-PR-IP-040 | VT-CL-002 | HAZ-RAD | Open |
+| MR-087 | Tier 4 | PR-IP-041 | SWR-IP-059–060 | SAD: ImageProc / SDS: CobbAngle.Measure() | T, A | ST-PR-IP-041 | VT-CL-002 | HAZ-SW | Open |
 | MR-027 | Tier 3 | PR-DM-040 | SWR-DM-040–041 | SAD: DoseMgmt / SDS: DoseService.RecordDAP() | T, A | ST-PR-DM-040 | VT-CL-001 | HAZ-RAD | Open |
 | MR-027 | Tier 3 | PR-DM-041 | SWR-DM-042–043 | SAD: DoseMgmt / SDS: DoseService.CalculateESD() | T, A | ST-PR-DM-041 | VT-CL-001 | HAZ-RAD | Open |
 | MR-027 | Tier 3 | PR-DM-042 | SWR-DM-044–046 | SAD: DoseMgmt / SDS: RDSRGenerator.Generate() | T, I | ST-PR-DM-042 | VT-CL-001 | HAZ-RAD, HAZ-DATA | Open |
@@ -1577,6 +1604,7 @@ flowchart LR
 | MR-028 | Tier 3 | PR-DM-044 | SWR-DM-049–050 | SAD: DoseMgmt / SDS: DRLComparator.Alert() | T, A | ST-PR-DM-044 | VT-CL-001 | HAZ-RAD | Open |
 | MR-027 | Tier 3 | PR-DM-045 | SWR-DM-051–052 | SAD: DoseMgmt / SDS: DoseLogBook.Record() | T, I | ST-PR-DM-045 | VT-CL-001 | HAZ-RAD, HAZ-DATA | Open |
 | MR-016 | Tier 3 | PR-DM-046 | SWR-DM-053–055 | SAD: DoseMgmt / SDS: RejectAnalysis.Report() | T, A | ST-PR-DM-046 | VT-CL-002 | HAZ-RAD | Open |
+| MR-078 | Tier 3 | PR-DM-047 | SWR-DM-056–057 | SAD: DoseMgmt / SDS: DoseCreepMonitor.Analyze() | T, A | ST-PR-DM-047 | VT-CL-001 | HAZ-DM-001 | Open |
 | MR-019, MR-002 | Tier 1/2 | PR-DC-050 | SWR-DC-050–052 | SAD: DicomComm / SDS: StorageSCU.CStore() | T, A | ST-PR-DC-050 | VT-CL-001 | HAZ-DATA | Open |
 | MR-001, MR-025 | Tier 2 | PR-DC-051 | SWR-DC-053–054 | SAD: DicomComm / SDS: MWL_SCU.QueryWorklist() | T, A | ST-PR-DC-051 | VT-UX-001 | HAZ-DATA | Open |
 | MR-009 | Tier 3 | PR-DC-052 | SWR-DC-055–056 | SAD: DicomComm / SDS: MPPS_SCU.SendStatus() | T, A | ST-PR-DC-052 | VT-CL-001 | HAZ-DATA | Open |
@@ -1584,6 +1612,10 @@ flowchart LR
 | MR-024 | Tier 2 | PR-DC-054 | SWR-DC-059–060 | SAD: DicomComm / SDS: PrintSCU.Print() | T, D | ST-PR-DC-054 | VT-UX-002 | — | Open |
 | MR-021 | Tier 2 | PR-DC-055 | SWR-DC-061–062 | SAD: DicomComm / SDS: QueryRetrieveSCU.Fetch() | T, D | ST-PR-DC-055 | VT-UX-002 | — | Open |
 | MR-034, MR-019 | Tier 1/2 | PR-DC-056 | SWR-DC-063–064 | SAD: DicomComm / SDS: TLSManager.Handshake() | T, I | ST-PR-DC-056 | VT-SEC-001 | HAZ-SEC | Open |
+| MR-074 | Tier 3 | PR-DC-058 | SWR-DC-066–067 | SAD: DicomComm / SDS: GSPSService.SaveLoad() | T, I | ST-PR-DC-058 | VT-UX-002 | HAZ-DATA | Open |
+| MR-076 | Tier 3 | PR-DC-059 | SWR-DC-068–069 | SAD: DicomComm / SDS: DICOMwebClient.WADO() | T, A | ST-PR-DC-059 | VT-CL-001 | HAZ-DATA | Open |
+| MR-079 | Tier 3 | PR-DC-060 | SWR-DC-070–071 | SAD: DicomComm / SDS: HL7v2Listener.Receive() | T, A | ST-PR-DC-060 | VT-UX-001 | HAZ-DATA | Open |
+| MR-086 | Tier 4 | PR-DC-061 | SWR-DC-072–073 | SAD: WebServer / SDS: ZeroFootprintViewer.Serve() | T, D | ST-PR-DC-061 | VT-UX-002 | — | Open |
 | MR-033 | Tier 1 | PR-SA-060 | SWR-SA-060–062 | SAD: SystemAdmin / SDS: UserService.ManageRBAC() | T, I | ST-PR-SA-060 | VT-SEC-001 | HAZ-SEC | Open |
 | MR-004 | Tier 2 | PR-SA-061 | SWR-SA-063–064 | SAD: SystemAdmin / SDS: ProtocolEditor.Edit() | T, D | ST-PR-SA-061 | VT-UX-002 | HAZ-RAD | Open |
 | MR-044 | Tier 2 | PR-SA-062 | SWR-SA-065–066 | SAD: SystemAdmin / SDS: SystemConfig.Set() | T, D | ST-PR-SA-062 | VT-UX-002 | HAZ-DATA | Open |
@@ -1643,6 +1675,12 @@ flowchart LR
 | MR-052 | Tier 1 | PR-NF-MT-052 | SWR-NF-MT-052 | SAD: 전체 / API 문서화 | I | ST-PR-NF-MT-052 | — | — | Open |
 | MR-044 | Tier 2 | PR-NF-MT-053 | SWR-NF-MT-053 | SAD: SystemAdmin / 원격 진단 | T, D | ST-PR-NF-MT-053 | — | HAZ-SEC | Open |
 | MR-052 | Tier 1 | PR-NF-MT-054 | SWR-NF-MT-054 | SAD: DevOps / CI/CD | I, D | ST-PR-NF-MT-054 | — | — | Open |
+| MR-082 | Tier 3 | PR-NF-UX-027 | SWR-NF-UX-027 | SAD: UI / GSDF 교정 | T, I | ST-PR-NF-UX-027 | VT-CL-002 | HAZ-IP-001 | Open |
+| MR-089 | Tier 4 | PR-NF-RG-066 | SWR-NF-RG-066 | SAD: 전체 / EU AI Act | I, A | ST-PR-NF-RG-066 | — | HAZ-AI-001 | Open |
+| MR-090 | Tier 4 | PR-NF-RG-067 | SWR-NF-RG-067 | SAD: Security / NIS2 | I, A | ST-PR-NF-RG-067 | — | HAZ-CS-004 | Open |
+| MR-088 | Tier 4 | — | — | Phase 3+ 별도 문서 | — | — | — | — | Open |
+| MR-085 | Tier 4 | — | — | Phase 3+ 별도 문서 | — | — | — | — | Open |
+| MR-092 | Tier 4 | — | — | Phase 3+ 별도 문서 | — | — | — | — | Open |
 | MR-050 | Tier 1 | PR-NF-RG-060 | SWR-NF-RG-060 | SAD: 전체 / IEC 62304 산출물 | I, A | ST-PR-NF-RG-060 | — | HAZ-SW | Open |
 | MR-052 | Tier 1 | PR-NF-RG-061 | SWR-NF-RG-061 | SAD: 전체 / 위험 매핑 | I, A | ST-PR-NF-RG-061 | — | HAZ-RAD, HAZ-SW | Open |
 | MR-051 | Tier 1 | PR-NF-RG-062 | SWR-NF-RG-062 | SAD: UI / IEC 62366 | D, A | ST-PR-NF-RG-062 | VT-UX-001 | HAZ-RAD | Open |
