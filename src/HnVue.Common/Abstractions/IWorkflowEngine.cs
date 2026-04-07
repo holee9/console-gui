@@ -10,6 +10,7 @@ namespace HnVue.Common.Abstractions;
 /// State transitions are validated against an allowed-transitions table to ensure
 /// IEC 62304-compliant safety interlocks.
 /// </summary>
+// @MX:ANCHOR IWorkflowEngine — Central acquisition state machine; consumed by Workflow, UI, PatientManagement. State transitions are safety-critical.
 public interface IWorkflowEngine
 {
     /// <summary>Gets the current acquisition workflow state.</summary>

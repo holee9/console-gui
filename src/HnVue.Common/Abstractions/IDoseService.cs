@@ -7,6 +7,7 @@ namespace HnVue.Common.Abstractions;
 /// Defines dose validation and recording operations.
 /// Implemented by the HnVue.Dose module.
 /// </summary>
+// @MX:ANCHOR IDoseService — Safety-critical dose calculation interface; 7 downstream consumers. IEC 60601-2-54 compliance required.
 public interface IDoseService
 {
     /// <summary>

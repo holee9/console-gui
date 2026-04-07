@@ -3,11 +3,22 @@
 | 항목 | 내용 |
 |------|------|
 | **문서 ID** | ANALYSIS-001 |
-| **버전** | v1.0 |
+| **버전** | v1.1 |
 | **작성일** | 2026-04-05 |
+| **최종 수정** | 2026-04-07 |
 | **분석 대상** | HnVue Console SW (Phase 1 전체) |
 | **분석 범위** | 소스코드 14개 모듈 + 규제문서 70개 + 기존 제품 문서 교차검증 |
 | **결론** | **1차 릴리즈 불가 — 2차 업그레이드 작업 필요** |
+| **후속 문서** | [ANALYSIS-003](ANALYSIS-003_ModuleCrossVerification_v1.0.md) — 모듈 구현 교차검증 (2026-04-07) |
+
+---
+
+## 개정 이력
+
+| 버전 | 날짜 | 변경 내용 |
+|------|------|----------|
+| v1.0 | 2026-04-05 | 최초 작성 |
+| v1.1 | 2026-04-07 | 후속 분석 문서(ANALYSIS-003) 참조 추가 |
 
 ---
 
@@ -41,11 +52,11 @@
 | 영역 | 세부 내용 | 평가 |
 |------|----------|------|
 | **Architecture** | Clean Architecture 6계층, 14개 모듈 명확한 의존성 그래프 | 우수 |
-| **Security** | JWT HS256, bcrypt cost=12, RBAC 4계층, SQLCipher AES-256, HMAC-SHA256 Audit Chain | 우수 |
+| **Security** | JWT (JSON Web Token) HS256, bcrypt cost=12, RBAC (Role-Based Access Control) 4계층, SQLCipher AES (Advanced Encryption Standard)-256, HMAC (Hash-based Message Authentication Code)-SHA (Secure Hash Algorithm) 256 Audit Chain | 우수 |
 | **Unit Testing** | 523개 Tests 전체 통과, 안전임계 모듈 90%+ Coverage | 우수 |
-| **Regulatory Framework** | 70개 문서, IEC 62304/ISO 14971/FDA 21 CFR 820/FDA §524B 매핑 완료 | 우수 |
+| **Regulatory Framework** | 70개 문서, IEC (International Electrotechnical Commission) 62304/ISO (International Organization for Standardization) 14971/FDA (Food and Drug Administration) 21 CFR 820/FDA §524B 매핑 완료 | 우수 |
 | **Traceability** | MR→PR→SWR→TC 100% 양방향 추적 (CVR-002 검증 완료) | 우수 |
-| **Code Documentation** | 257/257 Public Members XML Doc Comments 완비, 14개 모듈 README | 우수 |
+| **Code Documentation** | 257/257 Public Members XML (eXtensible Markup Language) Doc Comments 완비, 14개 모듈 README | 우수 |
 | **Result<T> Pattern** | Railway-Oriented Programming 일관 적용, 에러 처리 체계화 | 우수 |
 
 ---
@@ -91,7 +102,7 @@ src/HnVue.UI/Views/
 |---------|----------|
 | X-ray Generator 통신 | `GeneratorSimulator.cs` (시뮬레이터만) |
 | FPD (Flat Panel Detector) SDK | 연동 없음 |
-| DICOM 네트워크 (C-STORE/C-FIND) | 구현됨 (실제 PACS 미검증) |
+| DICOM 네트워크 (C-STORE (DICOM C-STORE)/C-FIND (DICOM C-FIND)) | 구현됨 (실제 PACS (Picture Archiving and Communication System) 미검증) |
 
 ### 3-4. Production 보안 설정 미구현
 
@@ -99,8 +110,8 @@ src/HnVue.UI/Views/
 
 | 항목 | 파일 | 현재 값 (개발용) |
 |------|------|----------------|
-| JWT Secret | `JwtOptions.cs` | `"your-secret-key-at-least-32-characters"` |
-| HMAC Key | `AuditService.cs` | `"default-hmac-key-for-development"` |
+| JWT (JSON Web Token) Secret | `JwtOptions.cs` | `"your-secret-key-at-least-32-characters"` |
+| HMAC (Hash-based Message Authentication Code) Key | `AuditService.cs` | `"default-hmac-key-for-development"` |
 | DB Password | `appsettings.json` | `"dev-password-12345"` |
 
 ---
@@ -110,12 +121,12 @@ src/HnVue.UI/Views/
 | 영역 | 완성도 | 상태 | 비고 |
 |------|:------:|------|------|
 | Architecture / Clean Architecture | 90% | 우수 | 즉시 활용 가능 |
-| Security (JWT, RBAC, Audit) | 85% | 양호 | Production 설정 교체 필요 |
-| Data Layer (EF Core, Repository) | 80% | 양호 | |
-| DICOM Communication | 75% | 보통 | 실제 PACS 환경 미검증 |
+| Security (JWT (JSON Web Token), RBAC (Role-Based Access Control), Audit) | 85% | 양호 | Production 설정 교체 필요 |
+| Data Layer (EF (Entity Framework) Core, Repository) | 80% | 양호 | |
+| DICOM Communication | 75% | 보통 | 실제 PACS (Picture Archiving and Communication System) 환경 미검증 |
 | Workflow Engine (State Machine) | 80% | 양호 | |
 | **Image Processing (핵심)** | **15%** | **미완성** | Stub 수준 |
-| **WPF UI Screens** | **20%** | **미완성** | Login만 존재 |
+| **WPF (Windows Presentation Foundation) UI Screens** | **20%** | **미완성** | Login만 존재 |
 | Hardware Integration | 10% | 미완성 | Simulator만 |
 | Regulatory Document Framework | 85% | 양호 | 서명 및 실제 데이터 필요 |
 | **Test Reports (실제 데이터)** | **30%** | **불일치** | 아래 §5 참조 |

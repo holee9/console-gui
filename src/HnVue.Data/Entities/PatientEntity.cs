@@ -5,6 +5,7 @@ namespace HnVue.Data.Entities;
 /// <summary>
 /// EF Core entity that maps to the <c>Patients</c> table in the encrypted SQLite database.
 /// </summary>
+// @MX:TODO PatientEntity — Missing: AES-256-GCM encryption for Name, DateOfBirth, CreatedBy fields (SWR-CS-080). HIPAA/GDPR requirement.
 public sealed class PatientEntity
 {
     /// <summary>DICOM-compatible patient ID (primary key).</summary>

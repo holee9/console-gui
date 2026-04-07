@@ -17,6 +17,7 @@ namespace HnVue.Detector;
 ///   Any          → Error  (failure injection)
 ///   Any          → Disconnected (DisconnectAsync)
 /// </remarks>
+// @MX:NOTE DetectorSimulator — Hardware abstraction for FPD (GigE Vision/USB3). Production implementation pending vendor SDK integration.
 public sealed class DetectorSimulator : IDetectorInterface
 {
     /// <summary>Simulated arm time in milliseconds (default: 200 ms).</summary>
