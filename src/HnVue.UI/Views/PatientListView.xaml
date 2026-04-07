@@ -11,7 +11,7 @@
                  Issue #44: DataGrid with icon buttons and CoreTokens.
     -->
 
-    <Grid Background="{DynamicResource HnVue.Semantic.Surface.Panel}">
+    <Grid Background="#0d1527">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -28,35 +28,41 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Column="0"
-                       Text="Patient List"
-                       FontSize="16"
-                       FontWeight="Bold"
-                       Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
-                       VerticalAlignment="Center"
-                       FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
+            <!-- Section badge - PPT spec: 12px Bold #f9e04b on #2a3a5c background, padding 2px 8px, radius 3px -->
+            <Border Grid.Column="0"
+                    Background="#2a3a5c"
+                    CornerRadius="3"
+                    Padding="8,2"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Left">
+                <TextBlock Text="WORKLIST"
+                           Foreground="#f9e04b"
+                           FontSize="12"
+                           FontWeight="Bold"
+                           FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
+            </Border>
 
             <!-- Patient count badge -->
             <Border Grid.Column="1"
-                    Background="{DynamicResource HnVue.Semantic.Brand.Primary}"
+                    Background="#1f6fc7"
                     CornerRadius="10"
                     Padding="7,2"
                     VerticalAlignment="Center">
                 <TextBlock Text="{Binding Patients.Count}"
-                           Foreground="White"
+                           Foreground="#e0e6f0"
                            FontSize="11"
                            FontWeight="SemiBold"
                            FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
             </Border>
         </Grid>
 
-        <!-- Search area -->
+        <!-- Search area - PPT spec: 32px toolbar, filter bar 28px -->
         <Border Grid.Row="1"
                 Margin="12,0,12,6"
-                Height="36"
+                Height="32"
                 CornerRadius="4"
-                Background="{DynamicResource HnVue.Semantic.Surface.Card}"
-                BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
+                Background="#1a2540"
+                BorderBrush="#3a5080"
                 BorderThickness="1">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -69,19 +75,19 @@
                            Text="&#xE721;"
                            FontFamily="Segoe MDL2 Assets"
                            FontSize="14"
-                           Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}"
+                           Foreground="#b8cce0"
                            VerticalAlignment="Center"
                            Margin="10,0,6,0"/>
 
                 <TextBox Grid.Column="1"
                          Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}"
                          Background="Transparent"
-                         Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
+                         Foreground="#e0e6f0"
                          BorderThickness="0"
                          FontSize="13"
                          VerticalAlignment="Center"
                          Padding="0,0,8,0"
-                         CaretBrush="{DynamicResource HnVue.Semantic.Brand.Accent}"
+                         CaretBrush="#7bc8f5"
                          FontFamily="{DynamicResource HnVue.Core.FontFamily}">
                     <TextBox.Style>
                         <Style TargetType="TextBox">
@@ -89,7 +95,7 @@
                                 <VisualBrush x:Key="WatermarkBrush" TileMode="None" Stretch="None" AlignmentX="Left">
                                     <VisualBrush.Visual>
                                         <TextBlock Text="Search patients..."
-                                                   Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}"
+                                                   Foreground="#7090b0"
                                                    FontSize="13"
                                                    Margin="0"/>
                                     </VisualBrush.Visual>
@@ -108,11 +114,12 @@
             </Grid>
         </Border>
 
-        <!-- Period filter buttons — PPT Worklist 2안 -->
+        <!-- Period filter buttons — PPT spec: filter bar height 28px EXPLICIT -->
         <ScrollViewer Grid.Row="2"
                       HorizontalScrollBarVisibility="Auto"
                       VerticalScrollBarVisibility="Disabled"
-                      Margin="12,0,12,6">
+                      Margin="12,0,12,6"
+                      Height="28">
             <StackPanel Orientation="Horizontal">
                 <Button Content="Today"
                         Command="{Binding FilterByPeriodCommand}"
@@ -197,27 +204,23 @@
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
                     <Setter Property="Background" Value="Transparent"/>
-                    <Setter Property="Foreground" Value="{DynamicResource HnVue.Semantic.Text.Primary}"/>
+                    <Setter Property="Foreground" Value="#e0e6f0"/>
                     <Setter Property="Height" Value="44"/>
                     <Setter Property="Padding" Value="12,0"/>
                     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                     <Setter Property="Cursor" Value="Hand"/>
                     <Setter Property="BorderThickness" Value="0,0,0,1"/>
-                    <Setter Property="BorderBrush" Value="{DynamicResource HnVue.Semantic.Border.Default}"/>
+                    <Setter Property="BorderBrush" Value="#2a3a58"/>
                     <Style.Triggers>
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Background" Value="{DynamicResource HnVue.Semantic.Brand.Primary}"/>
+                            <Setter Property="Background" Value="#1f6fc7"/>
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsMouseOver" Value="True"/>
                                 <Condition Property="IsSelected" Value="False"/>
                             </MultiTrigger.Conditions>
-                            <Setter Property="Background">
-                                <Setter.Value>
-                                    <SolidColorBrush Color="{StaticResource HnVue.Core.Color.PrimaryLight}" Opacity="0.25"/>
-                                </Setter.Value>
-                            </Setter>
+                            <Setter Property="Background" Value="#1a2a44"/>
                         </MultiTrigger>
                     </Style.Triggers>
                 </Style>
@@ -230,16 +233,16 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <!-- Emergency badge — SWR-PM-013 / Issue #15 -->
+                        <!-- Emergency badge — PPT spec: EMRG badge -->
                         <Border Grid.Column="0"
-                                Background="{DynamicResource HnVue.Semantic.Status.Emergency}"
+                                Background="#e74c3c"
                                 CornerRadius="2"
                                 Padding="4,1"
                                 Margin="0,0,7,0"
                                 VerticalAlignment="Center"
                                 Visibility="{Binding IsEmergency, Converter={StaticResource BoolToVisibilityConverter}}">
                             <TextBlock Text="EMRG"
-                                       Foreground="White"
+                                       Foreground="#e0e6f0"
                                        FontSize="10"
                                        FontWeight="Bold"
                                        FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
@@ -249,14 +252,14 @@
                         <StackPanel Grid.Column="1" VerticalAlignment="Center">
                             <TextBlock FontSize="12"
                                        FontWeight="SemiBold"
-                                       Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
+                                       Foreground="#e0e6f0"
                                        TextTrimming="CharacterEllipsis"
                                        FontFamily="{DynamicResource HnVue.Core.FontFamily}">
                                 <Run Text="{Binding PatientId}"/>
                             </TextBlock>
                             <TextBlock Text="{Binding Name}"
                                        FontSize="12"
-                                       Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}"
+                                       Foreground="#b8cce0"
                                        TextTrimming="CharacterEllipsis"
                                        FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
                         </StackPanel>
@@ -271,12 +274,12 @@
             <ProgressBar IsIndeterminate="True"
                          Height="3"
                          Background="Transparent"
-                         Foreground="{DynamicResource HnVue.Semantic.Brand.Accent}"
+                         Foreground="#7bc8f5"
                          Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
             <!-- ErrorMessage display — SWR-NF-UX-025 / Issue #16 -->
             <TextBlock Text="{Binding ErrorMessage}"
-                       Foreground="{DynamicResource HnVue.Semantic.Status.Emergency}"
+                       Foreground="#e74c3c"
                        FontSize="11"
                        TextWrapping="Wrap"
                        Margin="12,4,12,4"
