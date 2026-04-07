@@ -1,4 +1,4 @@
-# 임상 평가 보고서 (Clinical Evaluation Report, CER)
+# 임상 평가 보고서 (Clinical Evaluation Report, CER (Clinical Evaluation Report))
 ## HnVue Console SW
 
 ---
@@ -14,7 +14,7 @@
 | **작성자** | RA/QA 팀, 임상 자문위원 |
 | **승인자** | 의료기기 RA/QA 책임자 |
 | **상태** | 승인됨 (Approved) |
-| **기준 규격** | EU MDR 2017/745 Article 61, MEDDEV 2.7/1 Rev.4, FDA 510(k) Clinical Data |
+| **기준 규격** | EU MDR (Medical Device Regulation) 2017/745 Article 61, MEDDEV (Medical Device Guidance) 2.7/1 Rev.4, FDA (Food and Drug Administration) 510(k) Clinical Data |
 | **참조 문서** | CEP-XRAY-GUI-001 (임상 평가 계획서) |
 
 ---
@@ -47,7 +47,7 @@ flowchart TD
 
 | 항목 | 내용 |
 |------|------|
-| **의도된 용도** | 의료용 진단 X-Ray 촬영장치의 GUI 콘솔 소프트웨어 |
+| **의도된 용도** | 의료용 진단 X-Ray 촬영장치의 GUI (User Interface) 콘솔 소프트웨어 |
 | **대상 환자** | 진단 X-Ray 검사가 필요한 모든 연령의 환자 |
 | **사용자** | 면허 방사선사, 영상의학과 전문의 |
 | **적용 범위** | 일반 진단 방사선 촬영 (흉부, 복부, 사지, 척추 등) |
@@ -61,11 +61,11 @@ flowchart TD
 | 비교 항목 | HnVue | 동등 기기 (Predicate) |
 |----------|-------------|---------------------|
 | **의도된 용도** | 진단 X-Ray GUI Console | 진단 X-Ray GUI Console |
-| **기술 특성** | WPF/.NET, DICOM, PACS 연동 | 유사 GUI 플랫폼, DICOM |
-| **SW 안전 분류** | IEC 62304 Class B | Class B |
+| **기술 특성** | WPF (Windows Presentation Foundation)/.NET, DICOM (Digital Imaging and Communications in Medicine), PACS (Picture Archiving and Communication System) 연동 | 유사 GUI 플랫폼, DICOM |
+| **SW 안전 분류** | IEC (International Electrotechnical Commission) 62304 Class B | Class B |
 | **사용자** | 방사선사, 전문의 | 동일 |
 | **영상 처리** | W/L, 측정, 필터 | 동일 기능 |
-| **DICOM 서비스** | C-STORE, C-FIND, MWL, MPPS, RDSR | 동일 서비스 |
+| **DICOM 서비스** | C-STORE, C-FIND, MWL (Modality Worklist), MPPS, RDSR (Radiation Dose Structured Report) | 동일 서비스 |
 
 **동등성 판정**: 기술적, 생물학적, 임상적으로 **동등함 (Equivalent)** 확인
 
@@ -104,7 +104,7 @@ flowchart TD
 | B-002 | 촬영 효율 향상 | 자동 Worklist, 프로토콜 프리셋 |
 | B-003 | 선량 최적화 | DRL 경고, 누적 선량 관리, RDSR |
 | B-004 | 환자 안전 향상 | 환자 확인 워크플로우, L/R 마커 강제 |
-| B-005 | 데이터 보안 | PHI 암호화, 접근 통제, 감사 추적 |
+| B-005 | 데이터 보안 | PHI (Protected Health Information) 암호화, 접근 통제, 감사 추적 |
 
 ### 5.2 위험 (Risks)
 
@@ -117,11 +117,11 @@ flowchart TD
 
 ### 5.3 이득-위험 결론
 
-모든 식별된 위험에 대해 ALARP (As Low As Reasonably Practicable) 원칙에 따른 위험 통제가 적용되었으며, **잔류 위험은 수용 가능 수준**이다. 이득이 잔류 위험을 명확히 상회하므로, 전반적 이득-위험 비율은 **양호 (Favorable)**하다.
+모든 식별된 위험에 대해 ALARP 원칙에 따른 위험 통제가 적용되었으며, **잔류 위험은 수용 가능 수준**이다. 이득이 잔류 위험을 명확히 상회하므로, 전반적 이득-위험 비율은 **양호 (Favorable)**하다.
 
 ---
 
-## 6. PMCF 계획 (Post-Market Clinical Follow-up)
+## 6. PMCF (Post-Market Clinical Follow-up) 계획 (Post-Market Clinical Follow-up)
 
 | 활동 | 주기 | 목적 |
 |------|------|------|

@@ -14,11 +14,11 @@
 | **작성자** | SW V&V Team |
 | **승인자** | 의료기기 RA/QA 책임자 |
 | **상태** | 승인됨 (Approved) |
-| **기준 규격** | IEC 62304 §5.5-§5.8, FDA 21 CFR 820.30(f)(g) |
+| **기준 규격** | IEC (International Electrotechnical Commission) 62304 §5.5-§5.8, FDA (Food and Drug Administration) 21 CFR 820.30(f)(g) |
 
 ---
 
-련 문서 (Related Documents)
+관련 문서 (Related Documents)
 
 | 문서 ID | 문서명 | 관계 |
 |---------|--------|------|
@@ -31,9 +31,9 @@
 
 ## 1. 종합 요약 (Executive Summary)
 
-### 1.1 V&V 종합 결과
+### 1.1 V&V (Verification & Validation) 종합 결과
 
-| V&V 단계 | TC 수 | Pass | Fail | Pass Rate | 판정 |
+| V&V 단계 | TC (Test Case) 수 | Pass | Fail | Pass Rate | 판정 |
 |----------|-------|------|------|-----------|------|
 | 단위 테스트 (Unit Test) | 76 | 74 | 0 | 97.4% | ✅ Pass |
 | 통합 테스트 (Integration Test) | 40 | 39 | 0 | 97.5% | ✅ Pass |
@@ -101,15 +101,15 @@ graph LR
 
 | 추적 체인 | Forward | Backward | 커버리지 |
 |----------|---------|----------|---------|
-| MR → PR | 62 MR → 114 PR | ✅ | 100% |
-| PR → SWR | 114 PR → 180 SWR | ✅ | 100% |
+| MR (Market Requirement) → PR (Product Requirement) | 62 MR → 114 PR | ✅ | 100% |
+| PR → SWR (Software Requirement) | 114 PR → 180 SWR | ✅ | 100% |
 | SWR → TC | 180 SWR → 201 TC | ✅ | 98.9% (Phase 2 제외) |
-| HAZ → RC → TC | 22 HAZ → 36 RC → TC | ✅ | 97.2% |
-| MR → VAL-TC | 62 MR → 36 VAL-TC | ✅ | 100% |
+| HAZ (Hazard) → RC (Risk Control) → TC | 22 HAZ → 36 RC → TC | ✅ | 97.2% |
+| MR → VAL-TC (Validation Test Case) | 62 MR → 36 VAL-TC | ✅ | 100% |
 
 ---
 
-## 5. V&V 종합 판정 (Overall Verdict)
+## 5. V&V (Verification & Validation) 종합 판정 (Overall Verdict)
 
 ### ✅ V&V 합격 (V&V PASSED)
 
