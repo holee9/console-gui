@@ -27,7 +27,7 @@
 ### 2. 기존 디자인 시스템 확인
 
 **DesignSystem2026.xaml 분석**:
-- 컬러 팔레트: #0066CC (Medical Blue) + 다크 모드 테마
+- 컬러 팔레트: #1B4F8A (MahApps.Metro Blue) + 다크 모드 테마
 - 타이포그래피: Segoe UI + Malgun Gothic (한국어 지원)
 - 스페이싱: 4px 기반 시스템 (XS~XXXL)
 - 모서리 반경: 4~16px (의료기기 최적화)
@@ -70,7 +70,7 @@
 
 #### 3단계: 디자인 토큰 추출
 - Pencil에서 PNG/PDF로 익스포트
-- 컬러 코드 추출 (#0066CC 등)
+- 컬러 코드 추출 (#1B4F8A 등)
 - 폰트 사이즈, 간격 값 확인
 
 #### 4단계: WPF XAML 변환

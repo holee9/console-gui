@@ -1811,4 +1811,128 @@ flowchart LR
 
 ---
 
+## 부록 D. UISPEC 추적성 매트릭스 (UI Design Specification Traceability)
+
+> 본 PRD의 FR(기능 요구사항) 및 NFR(비기능 요구사항)을 구현하는 UI 디자인 명세서(UISPEC)와의 추적성을 제공합니다.
+
+### D.1 UISPEC 개요
+
+| 항목 | 내용 |
+|------|------|
+| **목적** | PPT 디자인 시안과 WPF 코드 구현 사이의 브릿지 문서 |
+| **위치** | `docs/design/spec/` 폴더 |
+| **문서 수** | 9개 (UISPEC-001 ~ UISPEC-009) |
+| **추적성 대상** | FR-xx / NFR-xx → UISPEC → XAML 구현 |
+| **관계** | 3계층 문서 아키텍처: Layer1(MRD/PRD) → Layer2(UISPEC) → Layer3(SPEC/Code) |
+
+### D.2 UISPEC 문서 목록
+
+| UISPEC ID | 문서 제목 | PPT 참조 | 관련 FR 카테고리 | 구현 파일 |
+|----------|---------|---------|----------------|----------|
+| **UISPEC-001** | 로그인 화면 UI 디자인 명세서 | Slide 1-3 | FR-CS-001 (RBAC), FR-UX-001 (터치스크린) | LoginView.xaml |
+| **UISPEC-002** | 워크리스트 화면 UI 디자인 명세서 | Slide 2-4 | FR-WF-001 (MWL), FR-WF-002 (환자 선택) | PatientListView.xaml |
+| **UISPEC-003** | 스터디리스트 화면 UI 디자인 명세서 | Slide 5-7 | FR-WF-001 (MWL), FR-DC-002 (PACS) | StudylistView.xaml |
+| **UISPEC-004** | 촬영(Acquisition) 화면 UI 디자인 명세서 | Slide 9-11 | **모든 FR-WF-xx**, FR-DM-006 (AEC) | WorkflowView.xaml, ImageViewerView.xaml |
+| **UISPEC-005** | 환자/시술 추가 화면 UI 디자인 명세서 | Slide 8 | FR-PM-001 (환자 등록) | AddPatientProcedureView.xaml |
+| **UISPEC-006** | 영상 병합(Merge) 화면 UI 디자인 명세서 | Slide 12-13 | FR-IP-007 (스티칭) | MergeView.xaml |
+| **UISPEC-007** | 설정(Settings) 화면 UI 디자인 명세서 | Slide 14-22 | FR-DC-005 (DICOM 설정), FR-SA-001 (시스템 관리) | SettingsView.xaml, SystemAdminView.xaml |
+| **UISPEC-008** | 이미지 뷰어(ImageViewer) UI 디자인 명세서 | (내장) | FR-IP-003 (W/L), FR-IP-004 (후처리) | ImageViewerView.xaml |
+| **UISPEC-009** | 시스템 관리(SystemAdmin) UI 디자인 명세서 | Slide 14-22 | FR-CS-001 (RBAC), FR-CS-003 (감사 로그) | SystemAdminView.xaml |
+
+### D.3 FR 카테고리별 UISPEC 매핑
+
+| FR 카테고리 | 관련 UISPEC | 주요 UI 요구사항 |
+|-----------|-------------|----------------|
+| **환자 관리 (PR-PM)** | UISPEC-002, 005 | 환자 목록, 환자 등록 폼 |
+| **촬영 워크플로우 (PR-WF)** | UISPEC-002, 003, 004 | 워크리스트, 스터디리스트, 촬영 화면 |
+| **영상 표시/처리 (PR-IP)** | UISPEC-004, 008 | 촬영 화면 뷰어, 독립 이미지 뷰어 |
+| **선량 관리 (PR-DM)** | UISPEC-004, 007 | 선량 표시 UI, 선량 설정 |
+| **DICOM 통신 (PR-DC)** | UISPEC-003, 007 | PACS 연결, DICOM 설정 |
+| **시스템 관리 (PR-SA)** | UISPEC-007, 009 | 설정 화면, 관리자 화면 |
+| **사이버보안 (PR-CS)** | UISPEC-001, 009 | 로그인, 사용자 관리, 감사 로그 |
+| **UX (PR-NF-UX)** | **모든 UISPEC** | 전체 UI/UX 디자인 기준 |
+| **성능 (PR-NF-PF)** | UISPEC-002, 003, 004 | 목록 로딩 성능, 촬영 응답성 UI |
+
+### D.4 FR → UISPEC 상세 매핑
+
+| FR ID | FR 요구사항 | 연결 UISPEC | UISPEC 섹션 |
+|-------|-----------|-------------|--------------|
+| FR-WF-001 | MWL 지원 | UISPEC-002, 003 | 2.3 데이터 테이블 명세 |
+| FR-WF-002 | 환자 선택 | UISPEC-002, 003 | 2.5 우측 Detail Panel |
+| FR-WF-003 | 촬영 워크플로우 | UISPEC-004 | 2.1 3-패널 레이아웃 |
+| FR-IP-003 | W/L, Zoom, Pan | UISPEC-008 | 3.1 이미지 도구 명세 |
+| FR-IP-004 | 후처리 | UISPEC-008 | 3.2 영상 향상 기능 |
+| FR-DM-006 | AEC 파라미터 | UISPEC-004 | 2.4 우측 촬영 제어 패널 |
+| FR-DC-005 | DICOM 설정 | UISPEC-007 | 3.2 DICOM 설정 필드 |
+| FR-CS-001 | RBAC | UISPEC-001, 009 | 3.1 로그인 폼 / 3.1 권한 매트릭스 |
+| FR-CS-003 | 감사 로그 | UISPEC-009 | 2.4 감사 로그 탭 |
+| FR-UX-001 | 터치스크린 지원 | **모든 UISPEC** | 5. 상태 디자인 (터치 타겟) |
+| NFR-UX-008 | 시스템 상태 표시 | UISPEC-004, 007 | 4. 상태 디자인 |
+
+### D.5 NFR → UISPEC 매핑
+
+| NFR ID | NFR 요구사항 | 연결 UISPEC | UISPEC 섹션 |
+|--------|-------------|-------------|--------------|
+| NFR-UX-001 | 터치스크린 최소 44px | **모든 UISPEC** | 5. 상태 디자인 (IEC 62366) |
+| NFR-UX-002 | 닐섨 휴리스틱 75점 | UISPEC-002, 003, 004 | 6. IEC 62366 사용성 |
+| NFR-UX-008 | 색상/아이콘 상태 표시 | UISPEC-004, 007 | 4. 색상 토큰 매핑 |
+| NFR-SC-001 | RBAC 최소 권한 | UISPEC-001, 009 | 6. 접근 권한 UI |
+| NFR-RG-008 | IEC 62366 준수 | **모든 UISPEC** | 6. IEC 62366 섹션 |
+| NFR-PF-PF-001 | 30초 이내 촬영-전송 | UISPEC-004 | 2.3 촬영 버튼 반응성 |
+
+### D.6 3계층 문서 아키텍처 (Detailed)
+
+```
+Layer 1: 비즈니스 요구사항
+  ├─ MRD (DOC-001): MR-001 ~ MR-092 (72개 항목)
+  └─ PRD (본 문서): FR-xxx, NFR-xxx (시스템 Design Input)
+
+Layer 2: UI 디자인 명세 (UISPEC)
+  └─ 9개 UISPEC-001~009 (docs/design/spec/)
+      ├─ 화면별 레이아웃 명세
+      ├─ 컴포넌트 디자인 상세
+      ├─ 색상 토큰 매핑 (CoreTokens.xaml)
+      ├─ 상태 디자인 (기본/포커스/에러)
+      ├─ IEC 62366 사용성 고려사항
+      └─ Gap 분석 (구현 현황 vs PPT 명세)
+
+Layer 3: 구현 명세 및 코드
+  ├─ SPEC (SPEC-UI-001): MoAI 구현 계획
+  │   ├─ 작업 분해 (WBS)
+  │   ├─ 우선순위 (Tier 1→2→3)
+  │   └─ acceptance criteria
+  └─ Code (src/HnVue.UI/)
+      ├─ Views/*.xaml (WPF UI)
+      ├─ ViewModels/*.cs (MVVM)
+      └─ Themes/ (Design Tokens)
+```
+
+### D.7 UISPEC 활용 방법
+
+1. **개발자**:
+   - UISPEC의 "레이아웃 명세" 섹션을 참조하여 XAML 구현
+   - "색상 토큰 매핑"으로 StaticResource/DynamicResource 이름 확인
+   - "Gap 분석" 섹션으로 미구현 항목 파악
+
+2. **디자이너**:
+   - PPT 디자인 시안의 구체적인 수치/색상이 UISPEC에 문서화됨
+   - MRD/PRD 요구사항이 UI 요소에 어떻게 연결되는지 확인
+
+3. **QA/검증자**:
+   - UISPEC의 "상태 디자인" 섹션으로 테스트 시나리오 작성
+   - "Gap 분석" 섹션으로 검증 체크리스트 생성
+
+4. **규제 담당자**:
+   - IEC 62366 사용성 공학 문서로 활용
+   - MRD/PRD 요구사항의 UI 구현 증거로 활용
+
+### D.8 UISPEC 관리 가이드
+
+- **작성 주기**: PPT 디자인 수정 시 또는 MRD/PRD 요구사항 변경 시
+- **검토 주기**: Phase 시작 전 및 완료 후
+- **승인**: 디자인 리더 + 기술 리더 공동 승인
+- **버전 관리**: MRD/PRD 버전과 동기화 (예: v4.0 UISPEC은 MRD v4.0 기반)
+
+---
+
 **문서 끝 (End of Document)**

@@ -89,7 +89,7 @@ Business Modules (13):
 
 **컬러 팔레트** (의료기기 최적화):
 ```xml
-Primary: #0066CC (Medical Blue - 신뢰, 전문성)
+Primary: #1B4F8A (MahApps.Metro Blue - 신뢰, 전문성)
 Secondary: Teal(#00BFA5), Coral(#FF6B6B), Amber(#FFC107)
 Neutral (Dark Mode): BG(#1A1A2E), Surface(#252542), Border(#3E3E5E)
 Semantic: Error(#FF4757), Warning(#FFA502), Success(#2ED573), Info(#1E90FF)

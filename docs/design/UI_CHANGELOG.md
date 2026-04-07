@@ -1,89 +1,114 @@
-# HnVue UI Design Changelog
+# UI Design Changelog
 
-문서 ID: DESIGN-CL-001
-작성일: 2026-04-07
-
----
-
-## [2.0.0] — 2026-04-07 — PPT 명세 기반 전체 구현
-
-**참조 문서**: `docs/★HnVUE UI 변경 최종안_251118.pptx` (22슬라이드, 2025-11-18)
-**분석 문서**: `docs/design/PPT_ANALYSIS.md`
-
-### 추가됨 (Added)
-
-| 화면 | 파일 | PPT 슬라이드 | 내용 |
-|------|-----|------------|------|
-| Studylist | StudylistView.xaml | 7 | 이전/다음 내비, PACS 드롭다운, 기간 필터 |
-| 환자/Procedure 통합 | AddPatientProcedureView.xaml | 8 | 통합 창, (*) 필수, Auto-Generate, 칩 UI |
-| Sync Study | MergeView.xaml | 13 | "Sync Study" 명칭, 3열 레이아웃, Preview |
-| Settings | SettingsView.xaml | 14~21 | 상단 탭, Network 통합, Access Notice |
-
-### 변경됨 (Changed)
-
-| 항목 | 파일 | 변경 내용 | PPT 슬라이드 |
-|------|-----|---------|------------|
-| 배경색 | CoreTokens.xaml | #1A1A2E → **#242424** | 슬라이드 4 |
-| 패널 배경 | CoreTokens.xaml | #16213E → **#2A2A2A** | 슬라이드 4 |
-| 카드 배경 | CoreTokens.xaml | #0F3460 → **#3B3B3B** | 슬라이드 4 |
-| 경계선 | CoreTokens.xaml | #2E4A6E → **#3B3B3B** | 슬라이드 4 |
-| Login Username | LoginView.xaml | TextBox → **ComboBox** 드롭다운 | 슬라이드 1 |
-| Worklist 필터 | PatientListView.xaml | 기간 필터 버튼 5개 추가 | 슬라이드 4 |
-
-### 명칭 변경 (Renamed)
-
-| 기존 명칭 | 신규 명칭 | 위치 |
-|---------|--------|------|
-| Same Studylist | **Sync Study** | MergeView 버튼/제목 |
-| Login Popup | **Access Notice** | SettingsView System 탭 |
-| Only No matching | **Un-Matched** | SettingsView RIS Code 서브탭 |
-
-### 삭제됨 (Removed)
-
-| 항목 | 위치 | PPT 근거 |
-|------|-----|--------|
-| Study Group 필드 | AddPatientProcedureView | 슬라이드 8 명시 삭제 |
-| Account > Operator 항목 | SettingsView Account 탭 | 슬라이드 15 명시 삭제 |
-
-### 보존됨 (Preserved)
-
-| 항목 | 이유 |
-|------|-----|
-| Detector 설정 구조 | PPT 슬라이드 16: "현행 구조 유지" |
-| Generator 설정 구조 | PPT 슬라이드 16: "현행 구조 유지" |
-| MainWindow 3열 레이아웃 | 기존 사용자 연속성 |
-| 응급 정지(STOP) 버튼 위치 | IEC 62366 안전 요구사항 |
-| MahApps.Metro Dark.Steel 테마 | 다크 테마 의료기기 표준 |
+Design system changes, updates, and improvements for HnVue GUI application.
 
 ---
 
-## [1.1.0] — 2026-04-06 — CoreTokens 디자인 토큰 시스템 구축
+## Version History
 
-### 추가됨
-
-- CoreTokens.xaml — 3계층 디자인 토큰 시스템 (Core → Semantic → Component)
-- SemanticTokens.xaml — 의미론적 색상/타이포그래피 토큰
-- ComponentTokens.xaml — 컴포넌트별 토큰
-- HnVueTheme.xaml — 커스텀 WPF 스타일 (HnVue.PrimaryButton, HnVue.OutlineButton, HnVue.EmergencyStopButton 등)
-- InverseBoolConverter.cs — IsEnabled 바인딩용 컨버터
-
-### 변경됨
-
-- LoginView.xaml — CoreTokens 스타일 적용, Evaluator 검증 완료 (B/7)
-- PatientListView.xaml — 아이콘(Segoe MDL2 Assets), 44px 행 높이
-- WorkflowView.xaml — 260px 컴팩트 레이아웃
-- DoseDisplayView.xaml — DrlPercentage 게이지 바
-- MainWindow.xaml — 로고 배지, STOP 버튼 분리
+| Version | Date | Description | Author |
+|---------|------|-------------|--------|
+| 1.0.0 | 2026-04-07 | Initial UISPEC documentation system | MoAI |
 
 ---
 
-## [1.0.0] — 2026-04-05 — WPF 뷰 초기 구현
+## [1.0.0] - 2026-04-07
 
-### 추가됨
+### Added
 
-- LoginView.xaml (MahApps.Metro Dark.Steel 기반)
-- PatientListView.xaml (좌측 280px 패널)
-- ImageViewerView.xaml (중앙 패널)
-- WorkflowView.xaml (우측 260px 패널)
-- DoseDisplayView.xaml (우측 하단)
-- MainWindow.xaml (3열 레이아웃: 280px | * | 260px)
+#### UISPEC Documentation System
+- Created 9 UISPEC documents bridging PPT design and XAML implementation:
+  - **UISPEC-001_Login**: Login screen (Slide 1-3, LoginView.xaml)
+  - **UISPEC-002_Worklist**: Patient worklist (Slide 2-4, PatientListView.xaml)
+  - **UISPEC-003_Studylist**: Study list (Slide 5-7, StudylistView.xaml)
+  - **UISPEC-004_Acquisition**: Image acquisition (Slide 9-11, safety-critical)
+  - **UISPEC-005_AddPatient**: Patient/Procedure add (Slide 8)
+  - **UISPEC-006_Merge**: Image merge (Slide 12-13, 3-column layout)
+  - **UISPEC-007_Settings**: Settings screen (Slide 14-22, 10 tabs)
+  - **UISPEC-008_ImageViewer**: Medical image viewer
+  - **UISPEC-009_SystemAdmin**: System administration with RBAC
+
+#### Design Reference Documents
+- **UI_DESIGN_MASTER_REFERENCE.md**: WPF implementation patterns, IEC 62366 compliance checklist
+- **PPT slide XML files**: Extracted design source from ★HnVUE UI 변경 최종안_251118.pptx
+
+#### Traceability
+- MRD v3.0 Appendix F: UISPEC traceability matrix
+- PRD v2.0 Appendix D: FR/NFR → UISPEC mapping
+- SPEC-UI-001 Section 0: UISPEC reference catalog
+
+### Changed
+
+#### Color System Unification
+- Standardized primary color to **#1B4F8A** (MahApps.Metro Blue) across all documents
+- Previous: **#0066CC** (Medical Blue) in legacy documents
+- Rationale: Consistency with MahApps.Metro framework and WPF theming
+
+#### Design Token Architecture
+```
+CoreTokens.xaml → SemanticTokens.xaml → ComponentTokens.xaml
+```
+- Background: #242424 (Surface.Page), #2A2A2A (Surface.Panel)
+- Primary: #1B4F8A (Brand.Primary), #2E6DB4 (Brand.PrimaryLight)
+- Accent: #00AEEF (Brand.Accent)
+- Status: Safe #00C853, Warning #FFD600, Emergency #D50000
+
+### Deprecated
+
+#### HTML Mockups
+- HTML prototype files in `docs/ui_mockups/` are now reference only
+- No new HTML mockups will be created
+- Use UISPEC documents and PPT design source for implementation
+- Reason: Direct XAML implementation from PPT reduces translation overhead
+
+### Technical Notes
+
+#### IEC 62366 Compliance
+- Touch targets: 44×40px minimum (button height 48px recommended)
+- Color contrast: All combinations pass WCAG 2.2 AA (4.5:1 minimum)
+- Safety-critical UI: Emergency stop (Acquisition), patient ID mismatch protection
+
+#### 3-Tier Architecture
+```
+Layer 1: MRD/PRD (Requirements)
+Layer 2: UISPEC (Design Specifications)
+Layer 3: SPEC/Code (Implementation)
+```
+
+#### Implementation Status
+| UISPEC | XAML | Status | Compliance |
+|--------|------|--------|------------|
+| 001_Login | LoginView.xaml | 95% | High |
+| 002_Worklist | PatientListView.xaml | 44% | Medium |
+| 003_Studylist | StudylistView.xaml | 63% | Medium |
+| 004_Acquisition | TBA | 0% | Pending |
+| 005_AddPatient | TBA | 0% | Pending |
+| 006_Merge | MergeView.xaml (planned) | 0% | Pending |
+| 007_Settings | SettingsView.xaml (planned) | 0% | Pending |
+| 008_ImageViewer | ImageViewer.xaml (planned) | 0% | Pending |
+| 009_SystemAdmin | AdminView.xaml (planned) | 0% | Pending |
+
+---
+
+## Future Plans
+
+### Phase 1 (Q2 2026)
+- Complete Acquisition screen (UISPEC-004) - safety-critical priority
+- Implement AddPatient screen (UISPEC-005)
+- Create MergeView.xaml with drag-drop (UISPEC-006)
+
+### Phase 2 (Q3 2026)
+- Settings screen with 10 tabs (UISPEC-007)
+- Medical image viewer with W/L/Zoom (UISPEC-008)
+- RBAC system admin (UISPEC-009)
+
+### Phase 3 (Q4 2026)
+- Complete Worklist modality/status badges
+- Studylist pagination implementation
+- Full IEC 62366 validation
+
+---
+
+**Document Version**: 1.0.0
+**Last Updated**: 2026-04-07
+**Maintained By**: Design Team

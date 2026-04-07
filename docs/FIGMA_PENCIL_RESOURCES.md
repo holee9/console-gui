@@ -44,13 +44,13 @@
 ### Figma에서 WPF로 변환
 1. Figma Community에서 킷 복사
 2. Design Tokens export (JSON 형식)
-3. 컬러 코드 추출 (#0066CC 등)
+3. 컬러 코드 추출 (#1B4F8A 등)
 4. WPF ResourceDictionary로 변환
 
 ## 의료기기 UI 디자인 원칙
 
 ### 색상 (Color)
-- Primary: #0066CC (Medical Blue)
+- Primary: #1B4F8A (MahApps.Metro Blue)
 - Success: #2ED573
 - Warning: #FFA502
 - Error: #FF4757

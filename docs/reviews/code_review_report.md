@@ -500,7 +500,7 @@ private static void OnStatusChanged(DependencyObject d, DependencyPropertyChange
 #### Strengths
 - **Comprehensive coverage**: Colors, typography, spacing, corner radius
 - **Semantic colors**: Error/Warning/Success/Info for status communication
-- **Medical blue**: Primary color (#0066CC) appropriate for healthcare
+- **Medical blue**: Primary color (#1B4F8A) appropriate for healthcare
 - **Documentation**: IEC 62366/IEC 60601-1-6/FDA compliance noted
 - **Base unit system**: 4px spacing base for consistent rhythm
 

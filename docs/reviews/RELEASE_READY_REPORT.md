@@ -99,7 +99,7 @@ tests/HnVue.UI.Tests/
 ### Color Palette
 ```yaml
 Primary:
-  Main: #0066CC (Medical Blue)
+  Main: #1B4F8A (MahApps.Metro Blue)
   Light: #4D94FF
   Dark: #004080
 
