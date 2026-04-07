@@ -21,6 +21,7 @@ public sealed class WorkflowEngine : IWorkflowEngine
     private readonly WorkflowStateMachine _stateMachine = new();
     private readonly IDoseService _doseService;
     private readonly IGeneratorInterface _generator;
+    private readonly IDetectorInterface? _detector;
     private readonly ISecurityContext _securityContext;
     private readonly IAuditService? _auditService;
     private readonly object _lock = new();
@@ -40,16 +41,24 @@ public sealed class WorkflowEngine : IWorkflowEngine
     /// When <see langword="null"/>, audit logging is silently skipped so that
     /// existing unit tests and deployment configurations remain compatible.
     /// </param>
+    /// <param name="detector">
+    /// Optional FPD detector interface (real or simulated).
+    /// When provided, the engine arms and aborts the detector as part of the
+    /// exposure workflow (SWR-WF-030~032).
+    /// When <see langword="null"/>, detector control is skipped (legacy / generator-only mode).
+    /// </param>
     public WorkflowEngine(
         IDoseService doseService,
         IGeneratorInterface generator,
         ISecurityContext securityContext,
-        IAuditService? auditService = null)
+        IAuditService? auditService = null,
+        IDetectorInterface? detector = null)
     {
         _doseService = doseService ?? throw new ArgumentNullException(nameof(doseService));
         _generator = generator ?? throw new ArgumentNullException(nameof(generator));
         _securityContext = securityContext ?? throw new ArgumentNullException(nameof(securityContext));
         _auditService = auditService;
+        _detector = detector;
     }
 
     /// <inheritdoc/>
@@ -225,6 +234,29 @@ public sealed class WorkflowEngine : IWorkflowEngine
 
         RaiseStateChanged(previous, WorkflowState.Exposing);
 
+        // SWR-WF-031: Arm the detector for the upcoming exposure (Sync trigger mode).
+        // Detector arm is non-blocking from the caller's perspective; the detector will
+        // fire ImageAcquired when readout is complete after the X-ray exposure.
+        // @MX:NOTE Detector arm is initiated here and runs concurrently with the exposure trigger
+        if (_detector is not null)
+        {
+            var armResult = await _detector.ArmAsync(
+                DetectorTriggerMode.Sync, cancellationToken).ConfigureAwait(false);
+
+            if (armResult.IsFailure)
+            {
+                // Abort workflow: detector not ready means exposure must not proceed.
+                lock (_lock)
+                    _stateMachine.ForceError();
+                RaiseStateChanged(WorkflowState.Exposing, WorkflowState.Error, "detectorArmFailed");
+                FireAndForgetAudit("DETECTOR_ARM_FAILED",
+                    $"patientId={_currentPatientId};reason={armResult.ErrorMessage}");
+                return Result.Failure<DoseValidationResult>(
+                    ErrorCode.DetectorNotReady,
+                    $"Detector arm failed: {armResult.ErrorMessage}");
+            }
+        }
+
         // SWR-NF-SC-041: Log exposure preparation to the tamper-evident audit trail.
         // Fire-and-forget: audit failure must never block the exposure workflow.
         // @MX:NOTE Fire-and-forget audit pattern: _auditService.WriteAuditAsync not awaited, exceptions swallowed via ContinueWith
@@ -259,8 +291,10 @@ public sealed class WorkflowEngine : IWorkflowEngine
             _currentStudyInstanceUid = null;
         }
 
-        // Attempt to abort generator if it is active
-        if (previous is WorkflowState.Exposing or WorkflowState.ReadyToExpose)
+        // Attempt to abort generator and detector if active (SWR-WF-022, SWR-WF-032).
+        // Both aborts are attempted regardless of individual failures.
+        if (previous is WorkflowState.Exposing or WorkflowState.ReadyToExpose
+            or WorkflowState.ImageAcquiring)
         {
             try
             {
@@ -271,6 +305,20 @@ public sealed class WorkflowEngine : IWorkflowEngine
                 // Escalate to emergency if generator abort fails
                 lock (_lock)
                     SetSafeState(SafeState.Emergency, "generatorAbortFailed");
+            }
+
+            // @MX:NOTE Detector abort is fire-and-forget safety path; failure logged but does not override generator emergency escalation
+            if (_detector is not null)
+            {
+                try
+                {
+                    await _detector.AbortAsync(cancellationToken).ConfigureAwait(false);
+                }
+                catch (Exception ex) when (ex is not OutOfMemoryException)
+                {
+                    // Log but do not escalate: generator emergency state already captures the abort context.
+                    FireAndForgetAudit("DETECTOR_ABORT_FAILED", $"reason={ex.Message}");
+                }
             }
         }
 

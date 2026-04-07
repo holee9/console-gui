@@ -17,6 +17,7 @@ using HnVue.SystemAdmin;
 using HnVue.UI.Contracts.ViewModels;
 using HnVue.UI.ViewModels;
 using HnVue.Update;
+using HnVue.Detector;
 using HnVue.Workflow;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -163,9 +164,12 @@ public partial class App : Application
                     });
 
                 // ── HnVue.Workflow ───────────────────────────────────────────
-                // WorkflowEngine depends on IDoseService and IGeneratorInterface.
+                // WorkflowEngine depends on IDoseService, IGeneratorInterface, and IDetectorInterface.
                 // IGeneratorInterface: GeneratorSimulator (safe, no real hardware).
+                // IDetectorInterface: DetectorSimulator (safe, no real hardware).
+                // Production: replace DetectorSimulator with OwnDetectorAdapter — see sdk/own-detector/README.md
                 services.AddSingleton<IGeneratorInterface, GeneratorSimulator>();
+                services.AddSingleton<IDetectorInterface, DetectorSimulator>();
                 services.AddScoped<IWorkflowEngine, WorkflowEngine>();
 
                 // ── HnVue.Dose ───────────────────────────────────────────────

@@ -66,7 +66,7 @@ public sealed class CrossModuleIntegrationTests
         auditRepo.AppendAsync(Arg.Any<AuditEntry>(), Arg.Any<CancellationToken>())
             .Returns(Result.Success());
 
-        var secService = new SecurityService(userRepo, auditRepo, secContext, TestJwtOptions, TestAuditOptions);
+        var secService = new SecurityService(userRepo, auditRepo, secContext, TestJwtOptions, TestAuditOptions, Substitute.For<ITokenDenylist>());
 
         // Act — Step 1: Authenticate
         var authResult = await secService.AuthenticateAsync(user.Username, password);
@@ -120,7 +120,7 @@ public sealed class CrossModuleIntegrationTests
         auditRepo.AppendAsync(Arg.Any<AuditEntry>(), Arg.Any<CancellationToken>())
             .Returns(Result.Success());
 
-        var secService = new SecurityService(userRepo, auditRepo, secContext, TestJwtOptions, TestAuditOptions);
+        var secService = new SecurityService(userRepo, auditRepo, secContext, TestJwtOptions, TestAuditOptions, Substitute.For<ITokenDenylist>());
 
         // Act
         var lockedAuthResult = await secService.AuthenticateAsync(lockedUser.Username, "Pass1");

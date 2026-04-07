@@ -1,0 +1,9 @@
+# SDK DLL 파일은 버전 관리에서 제외 (바이너리이며 라이선스 제약이 있을 수 있음)
+*.dll
+*.lib
+*.pdb
+*.exp
+
+# 폴더 구조는 유지 (README 및 .gitkeep 파일 포함)
+!README.md
+!.gitignore
