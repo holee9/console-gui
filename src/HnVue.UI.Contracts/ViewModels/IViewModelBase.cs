@@ -1,5 +1,6 @@
 using System.ComponentModel;
 
+// @MX:NOTE Base interface for all ViewModels; provides standard IsLoading/ErrorMessage for UI binding
 namespace HnVue.UI.Contracts.ViewModels;
 
 /// <summary>

@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HnVue.Data.Repositories;
 
+// @MX:ANCHOR PatientRepository - @MX:REASON: PHI persistence with 5 CRUD operations, encrypted SQLite backend
 /// <summary>
 /// EF Core implementation of <see cref="IPatientRepository"/> backed by the encrypted SQLite database.
 /// </summary>

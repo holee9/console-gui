@@ -7,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace HnVue.Security;
 
+// @MX:NOTE JwtTokenService - HS256 JWT issuer/validator, 15-min expiry default, Role claim for RBAC, JTI for revocation
 /// <summary>
 /// Internal helper that issues and validates JWT bearer tokens using HS256 signing.
 /// </summary>
@@ -15,14 +16,15 @@ internal sealed class JwtTokenService(JwtOptions options)
     private readonly JwtOptions _options = options;
 
     /// <summary>
-    /// Issues a signed JWT containing userId, username, and role claims.
+    /// Issues a signed JWT containing userId, username, role, and JTI claims.
     /// </summary>
     /// <param name="userId">Unique identifier of the authenticated user.</param>
     /// <param name="username">Login name of the authenticated user.</param>
     /// <param name="role">Role assigned to the user.</param>
-    /// <returns>Encoded JWT string.</returns>
-    public string Issue(string userId, string username, UserRole role)
+    /// <returns>A tuple containing the encoded JWT string and its unique JTI identifier.</returns>
+    public (string Token, string Jti) Issue(string userId, string username, UserRole role)
     {
+        var jti = Guid.NewGuid().ToString();
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecretKey));
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
         var claims = new[]
@@ -30,6 +32,7 @@ internal sealed class JwtTokenService(JwtOptions options)
             new Claim(JwtRegisteredClaimNames.Sub, userId),
             new Claim(JwtRegisteredClaimNames.UniqueName, username),
             new Claim(ClaimTypes.Role, role.ToString()),
+            new Claim(JwtRegisteredClaimNames.Jti, jti), // SWR-CS-077: JTI claim for revocation
         };
         var token = new JwtSecurityToken(
             issuer: _options.Issuer,
@@ -37,18 +40,21 @@ internal sealed class JwtTokenService(JwtOptions options)
             claims: claims,
             expires: DateTime.UtcNow.AddMinutes(_options.ExpiryMinutes),
             signingCredentials: credentials);
-        return new JwtSecurityTokenHandler().WriteToken(token);
+        var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+        return (tokenString, jti);
     }
 
     /// <summary>
     /// Validates a JWT token and returns its claims principal on success.
     /// </summary>
     /// <param name="token">The encoded JWT string to validate.</param>
+    /// <param name="tokenDenylist">Optional denylist to check for revoked tokens.</param>
     /// <returns>
     /// A successful <see cref="Result{T}"/> containing the <see cref="ClaimsPrincipal"/> on valid token;
-    /// otherwise a failure with <see cref="ErrorCode.TokenInvalid"/> or <see cref="ErrorCode.TokenExpired"/>.
+    /// otherwise a failure with <see cref="ErrorCode.TokenInvalid"/>, <see cref="ErrorCode.TokenExpired"/>,
+    /// or <see cref="ErrorCode.TokenRevoked"/> (SWR-CS-077).
     /// </returns>
-    public Result<ClaimsPrincipal> Validate(string token)
+    public Result<ClaimsPrincipal> Validate(string token, ITokenDenylist? tokenDenylist = null)
     {
         ArgumentNullException.ThrowIfNull(token);
 
@@ -69,6 +75,20 @@ internal sealed class JwtTokenService(JwtOptions options)
         {
             var handler = new JwtSecurityTokenHandler();
             var principal = handler.ValidateToken(token, validationParameters, out _);
+
+            // SWR-CS-077: Check JTI denylist for token revocation
+            if (tokenDenylist != null)
+            {
+                var jti = principal.FindFirst(JwtRegisteredClaimNames.Jti)?.Value;
+                if (jti != null)
+                {
+                    // Synchronously block on the async check (validation path is typically synchronous)
+                    var isRevoked = tokenDenylist.IsRevokedAsync(jti, CancellationToken.None).GetAwaiter().GetResult();
+                    if (isRevoked)
+                        return Result.Failure<ClaimsPrincipal>(ErrorCode.TokenRevoked, "Token has been revoked.");
+                }
+            }
+
             return Result.Success(principal);
         }
         catch (SecurityTokenExpiredException)

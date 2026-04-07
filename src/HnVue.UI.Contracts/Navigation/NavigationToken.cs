@@ -1,3 +1,4 @@
+// @MX:NOTE Type-safe navigation enum replaces magic strings; prevents typos in navigation calls
 namespace HnVue.UI.Contracts.Navigation;
 
 /// <summary>

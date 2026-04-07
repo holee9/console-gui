@@ -75,6 +75,61 @@ public sealed class DoseRepository : IDoseRepository
         }
     }
 
+    /// <inheritdoc/>
+    /// <remarks>
+    /// SWR-DM-051~052: Retrieves cumulative dose history for a patient.
+    /// Joins DoseRecords → Studies to resolve PatientId without denormalising the schema.
+    /// </remarks>
+    public async Task<Result<IReadOnlyList<DoseRecord>>> GetByPatientAsync(
+        string patientId,
+        DateTimeOffset? from,
+        DateTimeOffset? until,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(patientId);
+
+        try
+        {
+            var query = _dbContext.DoseRecords
+                .AsNoTracking()
+                .Include(d => d.Study)
+                .Where(d => d.Study != null && d.Study.PatientId == patientId);
+
+            if (from.HasValue)
+            {
+                var fromTicks = from.Value.UtcTicks;
+                query = query.Where(d => d.RecordedAtTicks >= fromTicks);
+            }
+
+            if (until.HasValue)
+            {
+                var untilTicks = until.Value.UtcTicks;
+                query = query.Where(d => d.RecordedAtTicks <= untilTicks);
+            }
+
+            var entities = await query
+                .OrderBy(d => d.RecordedAtTicks)
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+
+            IReadOnlyList<DoseRecord> records = entities
+                .Select(e => ToRecord(e, patientId))
+                .ToList()
+                .AsReadOnly();
+
+            return Result.Success(records);
+        }
+        catch (OperationCanceledException)
+        {
+            throw;
+        }
+        catch (Exception ex) when (ex is not OutOfMemoryException)
+        {
+            return Result.Failure<IReadOnlyList<DoseRecord>>(ErrorCode.DatabaseError,
+                $"Failed to query dose history for patient '{patientId}': {ex.Message}");
+        }
+    }
+
     // ── Mapping helpers ────────────────────────────────────────────────────────
 
     private static DoseRecordEntity ToEntity(DoseRecord record) =>
@@ -90,7 +145,7 @@ public sealed class DoseRepository : IDoseRepository
             RecordedAtOffsetMinutes = (int)record.RecordedAt.Offset.TotalMinutes,
         };
 
-    private static DoseRecord ToRecord(DoseRecordEntity entity) =>
+    private static DoseRecord ToRecord(DoseRecordEntity entity, string? patientId = null) =>
         new(
             DoseId: entity.DoseId,
             StudyInstanceUid: entity.StudyInstanceUid,
@@ -99,5 +154,6 @@ public sealed class DoseRepository : IDoseRepository
             EffectiveDose: entity.EffectiveDose,
             BodyPart: entity.BodyPart,
             RecordedAt: new DateTimeOffset(entity.RecordedAtTicks,
-                TimeSpan.FromMinutes(entity.RecordedAtOffsetMinutes)));
+                TimeSpan.FromMinutes(entity.RecordedAtOffsetMinutes)),
+            PatientId: patientId ?? entity.Study?.PatientId);
 }

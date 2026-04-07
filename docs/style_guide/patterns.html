@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patterns - HnVue Style Guide</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <h2>HnVue</h2>
+            <p>Style Guide v1.0</p>
+        </div>
+        <ul class="nav-menu">
+            <li><a href="index.html">Introduction</a></li>
+            <li><a href="visual-identity.html">Visual Identity</a></li>
+            <li><a href="components.html">Components</a></li>
+            <li><a href="patterns.html" class="active">Patterns</a></li>
+            <li><a href="accessibility.html">Accessibility</a></li>
+            <li><a href="api.html">API Reference</a></li>
+        </ul>
+        <div class="sidebar-footer">
+            <button onclick="window.print()" class="btn-secondary">
+                <span>Download PDF</span>
+            </button>
+        </div>
+    </nav>
+
+    <main class="content">
+        <header class="page-header">
+            <h1>Layout Patterns</h1>
+            <p class="subtitle">Screen layouts, navigation patterns, and grid systems</p>
+        </header>
+
+        <section class="section">
+            <h2>Screen Layouts</h2>
+
+            <h3>Login Screen</h3>
+            <p>Centered card layout for authentication.</p>
+            <div class="layout-demo">
+                <div class="layout-login">
+                    <div class="layout-login-card">
+                        <div class="layout-login-logo">HnVue</div>
+                        <input type="text" class="demo-input" placeholder="User ID" style="width: 100%; margin-bottom: 12px;">
+                        <input type="password" class="demo-input" placeholder="Password" style="width: 100%; margin-bottom: 16px;">
+                        <button class="demo-btn demo-btn-primary" style="width: 100%;">Login</button>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Main Application Layout</h3>
+            <p>Three-panel layout with sidebar, main content, and detail panel.</p>
+            <div class="layout-demo">
+                <div class="layout-main">
+                    <div class="layout-sidebar">
+                        <div class="sidebar-item active">Worklist</div>
+                        <div class="sidebar-item">Studylist</div>
+                        <div class="sidebar-item">Acquisition</div>
+                        <div class="sidebar-item">Settings</div>
+                    </div>
+                    <div class="layout-content">
+                        <div class="content-header">Worklist</div>
+                        <div class="content-filters">
+                            <button class="demo-btn demo-btn-primary">Today</button>
+                            <button class="demo-btn demo-btn-secondary">3 Days</button>
+                            <button class="demo-btn demo-btn-secondary">1 Week</button>
+                        </div>
+                        <div class="content-list">
+                            <div class="list-item">Patient 1 - Chest PA</div>
+                            <div class="list-item selected">Patient 2 - Hand AP</div>
+                            <div class="list-item">Patient 3 - Abdomen AP</div>
+                        </div>
+                    </div>
+                    <div class="layout-detail">
+                        <div class="detail-header">Patient Details</div>
+                        <div class="detail-content">
+                            <p><strong>Name:</strong> 김철수</p>
+                            <p><strong>ID:</strong> 20251013003</p>
+                            <p><strong>Procedure:</strong> Hand AP</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Acquisition Screen Layout</h3>
+            <p>Specialized layout for image acquisition with controls.</p>
+            <div class="layout-demo">
+                <div class="layout-acquisition">
+                    <div class="acquisition-left">
+                        <div class="patient-mini">
+                            <h4>Patient</h4>
+                            <p>홍길동</p>
+                            <p>20251013002</p>
+                        </div>
+                    </div>
+                    <div class="acquisition-center">
+                        <div class="image-preview">
+                            <div class="preview-placeholder">Live Image Preview</div>
+                        </div>
+                        <div class="image-strip">
+                            <div class="thumbnail"></div>
+                            <div class="thumbnail"></div>
+                            <div class="thumbnail"></div>
+                        </div>
+                    </div>
+                    <div class="acquisition-right">
+                        <div class="control-group">
+                            <h4>Exposure</h4>
+                            <div class="control-row">
+                                <span>kVp</span>
+                                <input type="number" class="demo-input" value="120" style="width: 80px;">
+                            </div>
+                            <div class="control-row">
+                                <span>mAs</span>
+                                <input type="number" class="demo-input" value="10" style="width: 80px;">
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <h4>Body Part</h4>
+                            <select class="demo-input" style="width: 100%;">
+                                <option>Chest</option>
+                                <option>Hand</option>
+                                <option>Abdomen</option>
+                            </select>
+                        </div>
+                        <button class="demo-btn demo-btn-primary" style="width: 100%;">Acquire</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Navigation Patterns</h2>
+
+            <h3>Primary Navigation</h3>
+            <p>Sidebar navigation with keyboard shortcuts.</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>XAML</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code>&lt;!-- Sidebar Navigation --&gt;
+&lt;UserControl x:Class="HnVue.UI.Components.NavigationSidebar"&gt;
+    &lt;ItemsControl ItemsSource="{Binding NavigationItems}"&gt;
+        &lt;ItemsControl.ItemTemplate&gt;
+            &lt;DataTemplate&gt;
+                &lt;Border Style="{StaticResource NavItem.Container}"
+                        Command="{Binding NavigateCommand}"&gt;
+                    &lt;StackPanel Orientation="Horizontal" Spacing="12"&gt;
+                        &lt;TextBlock Text="{Binding Icon}"/&gt;
+                        &lt;TextBlock Text="{Binding Label}"/&gt;
+                        &lt;TextBlock Text="{Binding Shortcut}"
+                                   Foreground="{StaticResource Neutral.TextMuted}"
+                                   Margin="Auto,0,0,0"/&gt;
+                    &lt;/StackPanel&gt;
+                &lt;/Border&gt;
+            &lt;/DataTemplate&gt;
+        &lt;/ItemsControl.ItemTemplate&gt;
+    &lt;/ItemsControl&gt;
+&lt;/UserControl&gt;
+
+&lt;!-- ViewModel with keyboard shortcuts --&gt;
+public class NavigationItem {
+    public string Label { get; set; }
+    public string Icon { get; set; }
+    public string Shortcut { get; set; }
+    public ICommand NavigateCommand { get; set; }
+}
+
+// Keyboard shortcut binding
+var items = new List&lt;NavigationItem&gt; {
+    new() { Label = "Worklist", Shortcut = "Alt+1", Icon = "≣" },
+    new() { Label = "Studylist", Shortcut = "Alt+2", Icon = "📁" },
+    new() { Label = "Acquisition", Shortcut = "Alt+3", Icon = "◎" },
+    new() { Label = "Settings", Shortcut = "Alt+4", Icon = "⚙" }
+};</code></pre>
+            </div>
+
+            <h3>Breadcrumb Navigation</h3>
+            <p>Hierarchical navigation for deep screens.</p>
+            <div class="component-showcase">
+                <div class="breadcrumb">
+                    <span class="breadcrumb-item">Worklist</span>
+                    <span class="breadcrumb-separator">›</span>
+                    <span class="breadcrumb-item">ACC2026001</span>
+                    <span class="breadcrumb-separator">›</span>
+                    <span class="breadcrumb-item current">Acquisition</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Grid System</h2>
+
+            <h3>Responsive Grid</h3>
+            <p>12-column grid system for flexible layouts.</p>
+
+            <div class="component-showcase">
+                <div class="grid-demo">
+                    <div class="grid-col-4">Column 4</div>
+                    <div class="grid-col-4">Column 4</div>
+                    <div class="grid-col-4">Column 4</div>
+                </div>
+            </div>
+
+            <div class="component-showcase">
+                <div class="grid-demo">
+                    <div class="grid-col-6">Column 6</div>
+                    <div class="grid-col-6">Column 6</div>
+                </div>
+            </div>
+
+            <div class="component-showcase">
+                <div class="grid-demo">
+                    <div class="grid-col-8">Column 8</div>
+                    <div class="grid-col-4">Column 4</div>
+                </div>
+            </div>
+
+            <h3>XAML Grid Usage</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>XAML</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code>&lt;!-- 12-Column Grid System --&gt;
+&lt;Grid&gt;
+    &lt;Grid.ColumnDefinitions&gt;
+        &lt;ColumnDefinition Width="*"/&gt;
+        &lt;ColumnDefinition Width="*"/&gt;
+        &lt;ColumnDefinition Width="*"/&gt;
+        &lt;ColumnDefinition Width="*"/&gt;
+        &lt;ColumnDefinition Width="*"/&gt;
+        &lt;ColumnDefinition Width="*"/&gt;
+        &lt;ColumnDefinition Width="*"/&gt;
+        &lt;ColumnDefinition Width="*"/&gt;
+        &lt;ColumnDefinition Width="*"/&gt;
+        &lt;ColumnDefinition Width="*"/&gt;
+        &lt;ColumnDefinition Width="*"/&gt;
+        &lt;ColumnDefinition Width="*"/&gt;
+    &lt;/Grid.ColumnDefinitions&gt;
+
+    &lt;!-- 4-4-4 Layout --&gt;
+    &lt;Border Grid.Column="0" Grid.ColumnSpan="4"&gt;Column 1&lt;/Border&gt;
+    &lt;Border Grid.Column="4" Grid.ColumnSpan="4"&gt;Column 2&lt;/Border&gt;
+    &lt;Border Grid.Column="8" Grid.ColumnSpan="4"&gt;Column 3&lt;/Border&gt;
+
+    &lt;!-- 6-6 Layout --&gt;
+    &lt;Border Grid.Column="0" Grid.ColumnSpan="6"&gt;Left&lt;/Border&gt;
+    &lt;Border Grid.Column="6" Grid.ColumnSpan="6"&gt;Right&lt;/Border&gt;
+
+    &lt;!-- 8-4 Layout --&gt;
+    &lt;Border Grid.Column="0" Grid.ColumnSpan="8"&gt;Main Content&lt;/Border&gt;
+    &lt;Border Grid.Column="8" Grid.ColumnSpan="4"&gt;Sidebar&lt;/Border&gt;
+&lt;/Grid&gt;
+
+&lt;!-- With Spacing Helper --&gt;
+&lt;Grid Helper.GridSpacing="16"&gt;
+    &lt;!-- Auto-spacing between columns --&gt;
+&lt;/Grid&gt;</code></pre>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Form Layouts</h2>
+
+            <h3>Single Column Form</h3>
+            <p>Standard vertical form for data entry.</p>
+            <div class="component-showcase">
+                <div class="demo-form">
+                    <div class="demo-form-group">
+                        <label>Patient Name *</label>
+                        <input type="text" class="demo-input" placeholder="Enter full name" style="width: 100%;">
+                    </div>
+                    <div class="demo-form-group">
+                        <label>Patient ID</label>
+                        <input type="text" class="demo-input" placeholder="Auto-generated or manual" style="width: 100%;">
+                    </div>
+                    <div class="demo-form-group">
+                        <label>Date of Birth *</label>
+                        <input type="date" class="demo-input" style="width: 100%;">
+                    </div>
+                    <div class="demo-form-group">
+                        <label>Sex *</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="sex"> Male</label>
+                            <label><input type="radio" name="sex"> Female</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Two-Column Form</h3>
+            <p>Dense form for related fields.</p>
+            <div class="component-showcase">
+                <div class="demo-form demo-form-2col">
+                    <div class="demo-form-group">
+                        <label>First Name</label>
+                        <input type="text" class="demo-input" style="width: 100%;">
+                    </div>
+                    <div class="demo-form-group">
+                        <label>Last Name</label>
+                        <input type="text" class="demo-input" style="width: 100%;">
+                    </div>
+                    <div class="demo-form-group">
+                        <label>Height (cm)</label>
+                        <input type="number" class="demo-input" style="width: 100%;">
+                    </div>
+                    <div class="demo-form-group">
+                        <label>Weight (kg)</label>
+                        <input type="number" class="demo-input" style="width: 100%;">
+                    </div>
+                </div>
+            </div>
+
+            <h3>XAML Form Layout</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>XAML</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code>&lt;!-- Form with Validation --&gt;
+&lt;UserControl x:Class="HnVue.UI.Components.PatientRegistrationForm"&gt;
+    &lt;ScrollViewer VerticalScrollBarVisibility="Auto"&gt;
+        &lt;StackPanel Spacing="16" Margin="24"&gt;
+            &lt;TextBlock Text="Patient Registration"
+                       Style="{StaticResource TextStyle.H1}"/&gt;
+
+            &lt;!-- Required Fields --&gt;
+            &lt;WrapPanel Orientation="Horizontal"&gt;
+                &lt;TextBox Width="300"
+                         hw:TextField.HintText="Patient Name *"
+                         Text="{Binding PatientName, UpdateSourceTrigger=PropertyChanged}"/&gt;
+                &lt;TextBox Width="200"
+                         hw:TextField.HintText="Patient ID"
+                         Text="{Binding PatientId, UpdateSourceTrigger=PropertyChanged}"
+                         IsReadOnly="{Binding IsPatientIdAutoGenerated}"/&gt;
+            &lt;/WrapPanel&gt;
+
+            &lt;!-- Date of Birth --&gt;
+            &lt;DatePicker SelectedDate="{Binding DateOfBirth}"
+                        DisplayDateStart="{Binding MinDate}"
+                        DisplayDateEnd="{Binding MaxDate}"/&gt;
+
+            &lt;!-- Sex Selection --&gt;
+            &lt;StackPanel Orientation="Horizontal" Spacing="16"&gt;
+                &lt;RadioButton Content="Male"
+                             IsChecked="{Binding IsMale}"/&gt;
+                &lt;RadioButton Content="Female"
+                             IsChecked="{Binding IsFemale}"/&gt;
+            &lt;/StackPanel&gt;
+
+            &lt;!-- Form Actions --&gt;
+            &lt;StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Right"
+                        Spacing="12"&gt;
+                &lt;Button Content="Cancel"
+                        Style="{StaticResource Button.Secondary}"
+                        Command="{Binding CancelCommand}"/&gt;
+                &lt;Button Content="Register"
+                        Style="{StaticResource Button.Primary}"
+                        Command="{Binding RegisterCommand}"/&gt;
+            &lt;/StackPanel&gt;
+        &lt;/StackPanel&gt;
+    &lt;/ScrollViewer&gt;
+&lt;/UserControl&gt;</code></pre>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>State Patterns</h2>
+
+            <h3>Loading States</h3>
+            <div class="component-showcase">
+                <div class="loading-demo">
+                    <div class="spinner"></div>
+                    <p>Loading patient data...</p>
+                </div>
+            </div>
+
+            <h3>Empty States</h3>
+            <div class="component-showcase">
+                <div class="empty-state">
+                    <div class="empty-icon">📋</div>
+                    <h3>No worklist items</h3>
+                    <p>There are no pending examinations for today.</p>
+                    <button class="demo-btn demo-btn-primary">Refresh</button>
+                </div>
+            </div>
+
+            <h3>Error States</h3>
+            <div class="component-showcase">
+                <div class="error-state">
+                    <div class="error-icon">⚠</div>
+                    <h3>Connection Failed</h3>
+                    <p>Unable to connect to the DICOM server.</p>
+                    <button class="demo-btn demo-btn-primary">Retry</button>
+                    <button class="demo-btn demo-btn-secondary">View Details</button>
+                </div>
+            </div>
+
+            <h3>XAML State Patterns</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>XAML</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code>&lt;!-- Loading State --&gt;
+&lt;Grid Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibility}}"&gt;
+    &lt;StackPanel VerticalAlignment="Center" HorizontalAlignment="Center"&gt;
+        &lt;controls:ProgressRing IsActive="True"
+                           Width="48"
+                           Height="48"/&gt;
+        &lt;TextBlock Text="Loading..."
+                   HorizontalAlignment="Center"
+                   Margin="0,12,0,0"/&gt;
+    &lt;/StackPanel&gt;
+&lt;/Grid&gt;
+
+&lt;!-- Empty State --&gt;
+&lt;Grid Visibility="{Binding IsEmpty, Converter={StaticResource BoolToVisibility}}"&gt;
+    &lt;StackPanel VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                Spacing="16"&gt;
+        &lt;TextBlock Text="📋"
+                   FontSize="64"
+                   HorizontalAlignment="Center"/&gt;
+        &lt;TextBlock Text="No items found"
+                   Style="{StaticResource TextStyle.H3}"
+                   HorizontalAlignment="Center"/&gt;
+        &lt;TextBlock Text="Try adjusting your filters"
+                   Style="{StaticResource TextStyle.Body}"
+                   Foreground="{StaticResource Neutral.TextMuted}"
+                   HorizontalAlignment="Center"/&gt;
+        &lt;Button Content="Clear Filters"
+                 Command="{Binding ClearFiltersCommand}"/&gt;
+    &lt;/StackPanel&gt;
+&lt;/Grid&gt;
+
+&lt;!-- Error State --&gt;
+&lt;Grid Visibility="{Binding HasError, Converter={StaticResource BoolToVisibility}}"&gt;
+    &lt;StackPanel VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                Spacing="16"&gt;
+        &lt;TextBlock Text="⚠"
+                   FontSize="64"
+                   Foreground="{StaticResource Semantic.Error}"/&gt;
+        &lt;TextBlock Text="{Binding ErrorMessage}"
+                   Style="{StaticResource TextStyle.H3}"/&gt;
+        &lt;StackPanel Orientation="Horizontal" Spacing="12"&gt;
+            &lt;Button Content="Retry"
+                     Command="{Binding RetryCommand}"/&gt;
+            &lt;Button Content="Cancel"
+                     Style="{StaticResource Button.Secondary}"/&gt;
+        &lt;/StackPanel&gt;
+    &lt;/StackPanel&gt;
+&lt;/Grid&gt;</code></pre>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p>HnVue Style Guide v1.0 | Last Updated: 2026-04-06</p>
+            <p>For internal use by HnVue development team</p>
+        </footer>
+    </main>
+
+    <style>
+        /* Layout Demo Styles */
+        .layout-demo {
+            background-color: #0d1117;
+            border: 1px solid #3E3E5E;
+            border-radius: 8px;
+            padding: 24px;
+            overflow-x: auto;
+        }
+
+        .layout-login {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 300px;
+        }
+        .layout-login-card {
+            background-color: #252542;
+            border: 1px solid #3E3E5E;
+            border-radius: 12px;
+            padding: 32px;
+            width: 350px;
+        }
+        .layout-login-logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: #4D94FF;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .layout-main {
+            display: grid;
+            grid-template-columns: 200px 1fr 300px;
+            gap: 1px;
+            background-color: #3E3E5E;
+            min-height: 400px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .layout-sidebar {
+            background-color: #252542;
+            padding: 16px;
+        }
+        .sidebar-item {
+            padding: 12px;
+            margin-bottom: 4px;
+            border-radius: 6px;
+            cursor: pointer;
+            color: #E0E0E0;
+        }
+        .sidebar-item:hover {
+            background-color: #1A1A2E;
+        }
+        .sidebar-item.active {
+            background-color: #0066CC;
+        }
+        .layout-content {
+            background-color: #1A1A2E;
+            padding: 16px;
+        }
+        .content-header {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #E0E0E0;
+        }
+        .content-filters {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        .content-list {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .list-item {
+            padding: 12px;
+            background-color: #252542;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .list-item:hover {
+            background-color: #2E2E4A;
+        }
+        .list-item.selected {
+            background-color: #0066CC;
+        }
+        .layout-detail {
+            background-color: #252542;
+            padding: 16px;
+        }
+        .detail-header {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #4D94FF;
+        }
+        .detail-content p {
+            margin: 8px 0;
+            font-size: 14px;
+        }
+
+        .layout-acquisition {
+            display: grid;
+            grid-template-columns: 250px 1fr 280px;
+            gap: 16px;
+            min-height: 400px;
+        }
+        .patient-mini {
+            background-color: #252542;
+            border: 1px solid #3E3E5E;
+            border-radius: 8px;
+            padding: 16px;
+        }
+        .patient-mini h4 {
+            color: #4D94FF;
+            margin-bottom: 8px;
+        }
+        .patient-mini p {
+            margin: 4px 0;
+            font-size: 14px;
+        }
+        .acquisition-center {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .image-preview {
+            flex: 1;
+            background-color: #0d1117;
+            border: 2px solid #3E3E5E;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 300px;
+        }
+        .preview-placeholder {
+            color: #A0A0B0;
+            font-size: 18px;
+        }
+        .image-strip {
+            display: flex;
+            gap: 8px;
+            height: 80px;
+        }
+        .thumbnail {
+            flex: 1;
+            background-color: #0d1117;
+            border: 1px solid #3E3E5E;
+            border-radius: 6px;
+        }
+        .acquisition-right {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .control-group {
+            background-color: #252542;
+            border: 1px solid #3E3E5E;
+            border-radius: 8px;
+            padding: 16px;
+        }
+        .control-group h4 {
+            margin: 0 0 12px 0;
+            color: #4D94FF;
+        }
+        .control-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .breadcrumb-item {
+            color: #A0A0B0;
+        }
+        .breadcrumb-item.current {
+            color: #4D94FF;
+        }
+        .breadcrumb-separator {
+            color: #3E3E5E;
+        }
+
+        .grid-demo {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 8px;
+        }
+        .grid-col-4 {
+            grid-column: span 4;
+            background-color: #252542;
+            border: 1px solid #3E3E5E;
+            border-radius: 6px;
+            padding: 16px;
+            text-align: center;
+        }
+        .grid-col-6 {
+            grid-column: span 6;
+            background-color: #252542;
+            border: 1px solid #3E3E5E;
+            border-radius: 6px;
+            padding: 16px;
+            text-align: center;
+        }
+        .grid-col-8 {
+            grid-column: span 8;
+            background-color: #252542;
+            border: 1px solid #3E3E5E;
+            border-radius: 6px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .demo-form {
+            background-color: #252542;
+            border: 1px solid #3E3E5E;
+            border-radius: 8px;
+            padding: 16px;
+        }
+        .demo-form-2col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .radio-group {
+            display: flex;
+            gap: 16px;
+        }
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .loading-demo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 48px;
+            gap: 16px;
+        }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #3E3E5E;
+            border-top-color: #4D94FF;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .empty-state,
+        .error-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 48px;
+            gap: 16px;
+            text-align: center;
+        }
+        .empty-icon,
+        .error-icon {
+            font-size: 64px;
+            opacity: 0.5;
+        }
+        .error-icon {
+            color: #FF4757;
+        }
+    </style>
+
+    <script>
+        function copyCode(button) {
+            const codeBlock = button.parentElement.nextElementSibling;
+            const code = codeBlock.querySelector('code').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                button.textContent = 'Copied!';
+                setTimeout(() => button.textContent = 'Copy', 2000);
+            });
+        }
+    </script>
+</body>
+</html>

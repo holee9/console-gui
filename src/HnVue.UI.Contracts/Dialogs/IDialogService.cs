@@ -1,3 +1,4 @@
+// @MX:NOTE Async dialog operations prevent UI thread blocking; all methods return Task for awaitable calls
 namespace HnVue.UI.Contracts.Dialogs;
 
 /// <summary>

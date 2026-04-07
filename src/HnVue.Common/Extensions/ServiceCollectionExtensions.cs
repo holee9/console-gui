@@ -82,6 +82,17 @@ internal sealed class ThreadLocalSecurityContext : ISecurityContext, IDisposable
     }
 
     /// <inheritdoc/>
+    public string? CurrentJti
+    {
+        get
+        {
+            _lock.EnterReadLock();
+            try { return _currentUser?.Jti; }
+            finally { _lock.ExitReadLock(); }
+        }
+    }
+
+    /// <inheritdoc/>
     public bool HasRole(UserRole role)
     {
         _lock.EnterReadLock();

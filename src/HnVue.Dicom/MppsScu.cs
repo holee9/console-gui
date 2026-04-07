@@ -26,6 +26,7 @@ public sealed class MppsScu
         _options = options ?? throw new ArgumentNullException(nameof(options));
     }
 
+    // @MX:NOTE N-CREATE sets PerformedProcedureStepStatus IN PROGRESS, Modality DX, SOP Class 1.2.840.10008.3.1.2.3.3
     /// <summary>
     /// Sends MPPS N-CREATE to mark a procedure step as In-Progress.
     /// SWR-DC-055.
@@ -100,6 +101,7 @@ public sealed class MppsScu
         }
     }
 
+    // @MX:NOTE N-SET updates PerformedProcedureStepStatus to COMPLETED or DISCONTINUED with UTC end timestamp
     /// <summary>
     /// Sends MPPS N-SET to mark a procedure step as Completed or Discontinued.
     /// SWR-DC-056.

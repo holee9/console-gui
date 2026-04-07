@@ -20,7 +20,8 @@ public sealed class LoginViewModelTests
         Username: "admin",
         Role: UserRole.Admin,
         Token: "jwt.test.token",
-        ExpiresAt: DateTimeOffset.UtcNow.AddHours(8));
+        ExpiresAt: DateTimeOffset.UtcNow.AddHours(8),
+        Jti: "test-jti-123");
 
     private static (LoginViewModel Vm, ISecurityService SecurityService, ISecurityContext SecurityContext) CreateSut()
     {

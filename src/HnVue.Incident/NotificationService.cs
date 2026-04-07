@@ -4,6 +4,8 @@ using Microsoft.Extensions.Logging;
 
 namespace HnVue.Incident;
 
+// @MX:TODO Wave 4 requires external notification channels (email, SMS, PACS alert)
+// @MX:NOTE LoggerMessage delegates provide high-performance structured logging (CA1848)
 /// <summary>
 /// Provides severity-appropriate logging notifications for incident records.
 /// Wave 2 implementation: external notification channels (email, SMS, PACS alert) are deferred.
@@ -30,6 +32,7 @@ internal sealed partial class NotificationService(ILogger<NotificationService> l
         Message = "LOW INCIDENT [{IncidentId}] reported by {UserId} — Category: {Category} — {Description}")]
     private partial void LogLow(string incidentId, string userId, string category, string description);
 
+    // @MX:ANCHOR Notify - @MX:REASON: Called by ReportAsync for all incidents
     /// <summary>
     /// Emits a log notification appropriate to the incident's severity level.
     /// Critical and High incidents are logged at error/warning level to ensure

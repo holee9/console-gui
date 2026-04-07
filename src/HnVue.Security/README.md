@@ -161,3 +161,68 @@ services.AddHnVueSecurity(jwtOptions, auditOptions);
 | 테스트 프로젝트 | `tests/HnVue.Security.Tests/` |
 | 테스트 파일 | `AuditServiceTests.cs`, `JwtTokenServiceTests.cs`, `PasswordHasherTests.cs`, `RbacPolicyTests.cs`, `SecurityServiceTests.cs` |
 | 테스트 케이스 수 | **120개** (`[Fact]` / `[Theory]`) — LogoutAsync/SetQuickPinAsync/VerifyQuickPinAsync 신규 21개 시나리오 포함 |
+| 테스트 커버리지 | **91.5%** (SWR-NF-MT-051 충족) |
+
+---
+
+## JWT Token Denylist (로그아웃 토큰 폐기 — Issue #29)
+
+### 개요
+
+`LogoutAsync()` 호출 시 JWT JTI(JWT ID)를 폐기 목록(Denylist)에 추가하여 로그아웃된 토큰이 재사용되지 않도록 합니다.
+이는 세션 탈취 시나리오에서 강제 로그아웃 기능을 제공합니다.
+
+### 주요 타입
+
+| 타입 | 설명 | 위치 |
+|------|------|------|
+| `ITokenDenylist` | 토큰 폐기 목록 인터페이스 | `src/HnVue.Security/ITokenDenylist.cs` |
+| `InMemoryTokenDenylist` | 메모리 기반 구현체 (프로세스 생존 기간 동안 유지) | `src/HnVue.Security/InMemoryTokenDenylist.cs` |
+
+### 동작 원리
+
+#### Step 1: LogoutAsync 호출
+```
+SecurityService.LogoutAsync(token)
+  ↓
+JWT에서 JTI 추출 (예: "jti-abc123")
+  ↓
+ITokenDenylist.AddAsync(jti, expiry) 호출
+  ↓
+메모리에 저장
+```
+
+#### Step 2: 이후 요청에서 토큰 검증
+```
+SecurityService.ValidateTokenAsync(token)
+  ↓
+JWT 디코딩 및 기본 검증 (서명, 만료 등)
+  ↓
+ITokenDenylist.IsRevokedAsync(jti) 호출
+  ↓
+폐기되었으면 Unauthorized 반환
+  ↓
+정상이면 계속 진행
+```
+
+### 메서드
+
+| 메서드 | 설명 |
+|--------|------|
+| `AddAsync(jti, expiry)` | JTI를 폐기 목록에 추가 (만료 시간 지정) |
+| `IsRevokedAsync(jti)` | JTI가 폐기되었는지 확인 |
+| `RemoveAsync(jti)` | JTI를 폐기 목록에서 제거 (선택사항) |
+
+### 보안 고려사항
+
+- **메모리 유지**: `InMemoryTokenDenylist`는 프로세스 재시작 시 초기화됩니다.
+  영속적인 폐기가 필요한 경우, Redis 또는 데이터베이스 기반 구현으로 교체할 수 있습니다.
+  
+- **만료 시간**: JWT의 `exp` 클레임과 동일한 시간을 폐기 목록 만료로 설정하여 메모리 누수 방지.
+
+- **성능**: 메모리 기반 이므로 조회(`IsRevokedAsync`) 성능 우수.
+
+### SWR 준수
+
+- **SWR-SEC-029** (JWT 로그아웃 토큰 무효화): 이 섹션에서 구현
+- **SWR-NF-SC-041** (LogoutAsync 감사 기록): 이미 구현 완료

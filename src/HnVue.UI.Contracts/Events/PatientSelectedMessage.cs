@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.Messaging.Messages;
 
+// @MX:NOTE CommunityToolkit.Mvvm messenger pattern for loosely-coupled ViewModel-to-ViewModel communication
 namespace HnVue.UI.Contracts.Events;
 
 /// <summary>Message broadcast when the user selects a patient.</summary>

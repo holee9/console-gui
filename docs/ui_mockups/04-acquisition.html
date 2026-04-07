@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acquisition - PROTYPER</title>
+    <style>
+        /* CoreTokens.xaml authoritative values — IEC 62366 safety colors */
+        :root {
+            --primary-main: #1B4F8A;
+            --primary-light: #2E6DB4;
+            --accent: #00AEEF;
+            --bg-base: #1A1A2E;
+            --bg-surface: #16213E;
+            --bg-card: #0F3460;
+            --bg-border: #2E4A6E;
+            --bg-hover: rgba(0, 174, 239, 0.08);
+            --text-primary: #FFFFFF;
+            --text-muted: #B0BEC5;
+            --text-disabled: #546E7A;
+            --color-error: #D50000;
+            --color-warning: #FFD600;
+            --color-blocked: #FF6D00;
+            --color-success: #00C853;
+            --color-info: #00AEEF;
+            --border-focus: #00AEEF;
+            /* Emergency Stop — IEC 62366 mandatory */
+            --emergency-stop-bg: #D50000;
+            --emergency-stop-height: 56px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", "Malgun Gothic", sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            height: 56px;
+            background: var(--bg-surface);
+            border-bottom: 1px solid var(--bg-border);
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            gap: 16px;
+        }
+
+        .logo {
+            width: 80px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--primary-main), var(--primary-light));
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .header-title {
+            font-size: 18px;
+            font-weight: 600;
+            flex: 1;
+        }
+
+        .btn {
+            height: 40px;
+            padding: 0 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-danger {
+            background: var(--color-error);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: var(--secondary-coral);
+        }
+
+        .btn-primary {
+            background: var(--primary-main);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-light);
+        }
+
+        .btn-secondary {
+            background: var(--bg-border);
+            color: var(--text-primary);
+        }
+
+        /* Main Layout */
+        .main-layout {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* Left Panel - Patient Info */
+        .left-panel {
+            width: 320px;
+            background: var(--bg-surface);
+            border-right: 1px solid var(--bg-border);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .panel-header {
+            height: 48px;
+            padding: 0 16px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid var(--bg-border);
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .panel-content {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+        }
+
+        .info-section {
+            margin-bottom: 24px;
+        }
+
+        .info-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--bg-border);
+            font-size: 14px;
+        }
+
+        .info-label {
+            color: var(--text-muted);
+        }
+
+        .info-value {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .patient-name {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .patient-meta {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        .alert-box {
+            background: rgba(255, 71, 87, 0.1);
+            border: 1px solid var(--color-error);
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 13px;
+            color: var(--color-error);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .alert-box.warning {
+            background: rgba(255, 165, 2, 0.1);
+            border-color: var(--color-warning);
+            color: var(--color-warning);
+        }
+
+        /* Center - Image Preview */
+        .center-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #0f0f1a;
+        }
+
+        .image-preview {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .preview-container {
+            width: 90%;
+            height: 90%;
+            background: var(--bg-surface);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--bg-border);
+        }
+
+        .preview-placeholder {
+            font-size: 72px;
+            opacity: 0.3;
+        }
+
+        .live-indicator {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+        }
+
+        .live-dot {
+            width: 10px;
+            height: 10px;
+            background: var(--color-error);
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .exposure-indicator {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+        }
+
+        .exposure-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-light);
+        }
+
+        /* Image Strip */
+        .image-strip {
+            height: 120px;
+            background: var(--bg-surface);
+            border-top: 1px solid var(--bg-border);
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            gap: 12px;
+            overflow-x: auto;
+        }
+
+        .strip-item {
+            width: 100px;
+            height: 100px;
+            background: var(--bg-base);
+            border-radius: 8px;
+            border: 2px solid var(--bg-border);
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .strip-item:hover {
+            border-color: var(--primary-light);
+        }
+
+        .strip-item.selected {
+            border-color: var(--primary-main);
+            box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.3);
+        }
+
+        .strip-item span {
+            font-size: 32px;
+            opacity: 0.3;
+        }
+
+        .strip-add {
+            width: 100px;
+            height: 100px;
+            border: 2px dashed var(--bg-border);
+            border-radius: 8px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 32px;
+            color: var(--text-muted);
+        }
+
+        .strip-add:hover {
+            border-color: var(--primary-light);
+            color: var(--primary-light);
+        }
+
+        /* Right Panel - Controls */
+        .right-panel {
+            width: 360px;
+            background: var(--bg-surface);
+            border-left: 1px solid var(--bg-border);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .control-section {
+            border-bottom: 1px solid var(--bg-border);
+        }
+
+        .control-header {
+            height: 44px;
+            padding: 0 16px;
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            font-size: 14px;
+            background: var(--bg-base);
+        }
+
+        .control-content {
+            padding: 16px;
+        }
+
+        /* Exposure Settings */
+        .exposure-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .exposure-item {
+            background: var(--bg-base);
+            border-radius: 8px;
+            padding: 12px;
+        }
+
+        .exposure-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .exposure-value {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .exposure-unit {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-left: 2px;
+        }
+
+        .exposure-adjust {
+            display: flex;
+            gap: 4px;
+            margin-top: 8px;
+        }
+
+        .adjust-btn {
+            flex: 1;
+            height: 28px;
+            border: 1px solid var(--bg-border);
+            background: var(--bg-surface);
+            color: var(--text-primary);
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .adjust-btn:hover {
+            background: var(--bg-hover);
+        }
+
+        /* Body Part Selection */
+        .body-part-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .body-part-btn {
+            height: 56px;
+            border: 1px solid var(--bg-border);
+            background: var(--bg-base);
+            color: var(--text-muted);
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .body-part-btn:hover {
+            border-color: var(--primary-light);
+            color: var(--text-primary);
+        }
+
+        .body-part-btn.active {
+            background: var(--primary-main);
+            border-color: var(--primary-main);
+            color: white;
+        }
+
+        /* Projection Buttons */
+        .projection-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
+        .projection-btn {
+            height: 48px;
+            border: 1px solid var(--bg-border);
+            background: var(--bg-base);
+            color: var(--text-primary);
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .projection-btn:hover {
+            border-color: var(--primary-light);
+        }
+
+        .projection-btn.active {
+            background: var(--primary-main);
+            border-color: var(--primary-main);
+            color: white;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: auto;
+        }
+
+        .acquire-btn {
+            height: 60px;
+            background: var(--primary-main);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .acquire-btn:hover {
+            background: var(--primary-light);
+            transform: scale(1.02);
+        }
+
+        .acquire-btn:active {
+            transform: scale(0.98);
+        }
+
+        .acquire-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .cancel-btn {
+            height: 48px;
+            background: var(--bg-border);
+            color: var(--text-primary);
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .cancel-btn:hover {
+            background: var(--color-error);
+        }
+
+        /* Emergency Stop */
+        .emergency-stop {
+            margin: 16px;
+            padding: 16px;
+            background: rgba(255, 71, 87, 0.1);
+            border: 2px solid var(--color-error);
+            border-radius: 8px;
+        }
+
+        .emergency-btn {
+            width: 100%;
+            height: 56px;
+            background: var(--color-error);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .emergency-btn:hover {
+            background: var(--secondary-coral);
+        }
+
+        /* Status Bar */
+        .status-bar {
+            height: 36px;
+            background: var(--bg-surface);
+            border-top: 1px solid var(--bg-border);
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-right: 24px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .status-dot.online {
+            background: var(--color-success);
+        }
+
+        .status-dot.warning {
+            background: var(--color-warning);
+        }
+
+        /* Toast */
+        .toast-container {
+            position: fixed;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+        }
+
+        .toast {
+            background: var(--bg-surface);
+            border: 1px solid var(--bg-border);
+            border-radius: 8px;
+            padding: 16px 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideUp 0.3s;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .toast.success {
+            border-color: var(--color-success);
+        }
+
+        .toast.error {
+            border-color: var(--color-error);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">PROTYPER</div>
+        <div class="header-title">Acquisition</div>
+        <button class="btn btn-secondary">환자 변경</button>
+        <button class="btn btn-secondary">Worklist</button>
+        <button class="btn btn-danger">긴급 정지</button>
+    </header>
+
+    <!-- Main Layout -->
+    <div class="main-layout">
+        <!-- Left Panel - Patient Info -->
+        <aside class="left-panel">
+            <div class="panel-header">환자 정보</div>
+            <div class="panel-content">
+                <div class="patient-name">홍길동</div>
+                <div class="patient-meta">P20250113001 | M | 1988-01-01 (만 38세)</div>
+
+                <div class="alert-box">
+                    <span>⚠</span>
+                    <span>임신 여부 확인 필요</span>
+                </div>
+
+                <div class="info-section" style="margin-top: 20px;">
+                    <div class="info-title">검사 정보</div>
+                    <div class="info-row">
+                        <span class="info-label">Accession No</span>
+                        <span class="info-value">A20260406001</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">검사일</span>
+                        <span class="info-value">2026-04-06</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">의뢰 의사</span>
+                        <span class="info-value">김의사</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">임상 증상</span>
+                        <span class="info-value">발열, 기침 3일</span>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <div class="info-title">장비 상태</div>
+                    <div class="info-row">
+                        <span class="info-label">Generator</span>
+                        <span class="info-value" style="color: var(--color-success);">정상</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Detector</span>
+                        <span class="info-value" style="color: var(--color-success);">정상</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Bucky</span>
+                        <span class="info-value" style="color: var(--color-success);">정상</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Collimator</span>
+                        <span class="info-value" style="color: var(--color-success);">정상</span>
+                    </div>
+                </div>
+
+                <div class="alert-box warning">
+                    <span>⚠</span>
+                    <span>방사선 피로도: 45%</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Center - Image Preview -->
+        <main class="center-panel">
+            <div class="image-preview">
+                <div class="preview-container">
+                    <span class="preview-placeholder">📷</span>
+                </div>
+                <div class="live-indicator">
+                    <span class="live-dot"></span>
+                    <span>LIVE PREVIEW</span>
+                </div>
+                <div class="exposure-indicator">
+                    <div>예상 노출량</div>
+                    <div class="exposure-value">2.5 mAs</div>
+                </div>
+            </div>
+            <div class="image-strip">
+                <div class="strip-item selected"><span>📷</span></div>
+                <div class="strip-item"><span>📷</span></div>
+                <div class="strip-item"><span>📷</span></div>
+                <div class="strip-add">+</div>
+            </div>
+        </main>
+
+        <!-- Right Panel - Controls -->
+        <aside class="right-panel">
+            <!-- Exposure Settings -->
+            <div class="control-section">
+                <div class="control-header">노출 설정</div>
+                <div class="control-content">
+                    <div class="exposure-grid">
+                        <div class="exposure-item">
+                            <div class="exposure-label">kVp</div>
+                            <div class="exposure-value">110<span class="exposure-unit">kV</span></div>
+                            <div class="exposure-adjust">
+                                <button class="adjust-btn">−</button>
+                                <button class="adjust-btn">+</button>
+                            </div>
+                        </div>
+                        <div class="exposure-item">
+                            <div class="exposure-label">mAs</div>
+                            <div class="exposure-value">2.5<span class="exposure-unit">mAs</span></div>
+                            <div class="exposure-adjust">
+                                <button class="adjust-btn">−</button>
+                                <button class="adjust-btn">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Body Part -->
+            <div class="control-section">
+                <div class="control-header">촬영 부위</div>
+                <div class="control-content">
+                    <div class="body-part-grid">
+                        <button class="body-part-btn active">Chest</button>
+                        <button class="body-part-btn">Abdomen</button>
+                        <button class="body-part-btn">Spine</button>
+                        <button class="body-part-btn">Pelvis</button>
+                        <button class="body-part-btn">Upper Ext.</button>
+                        <button class="body-part-btn">Lower Ext.</button>
+                        <button class="body-part-btn">Skull</button>
+                        <button class="body-part-btn">Neck</button>
+                        <button class="body-part-btn">기타</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Projection -->
+            <div class="control-section">
+                <div class="control-header">투영 방향</div>
+                <div class="control-content">
+                    <div class="projection-grid">
+                        <button class="projection-btn active">PA</button>
+                        <button class="projection-btn">AP</button>
+                        <button class="projection-btn">Lateral</button>
+                        <button class="projection-btn">Oblique</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button class="acquire-btn" id="acquireBtn">ACQUIRE</button>
+                <button class="cancel-btn">취소</button>
+            </div>
+
+            <!-- Emergency Stop -->
+            <div class="emergency-stop">
+                <button class="emergency-btn">
+                    <span>🛑</span>
+                    <span>EMERGENCY STOP</span>
+                </button>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Status Bar -->
+    <footer class="status-bar">
+        <div class="status-item">
+            <span class="status-dot online"></span>
+            <span>Generator: Online</span>
+        </div>
+        <div class="status-item">
+            <span class="status-dot online"></span>
+            <span>Detector: Ready</span>
+        </div>
+        <div class="status-item">
+            <span class="status-dot online"></span>
+            <span>Network: Connected</span>
+        </div>
+        <div style="margin-left: auto;">
+            <span>방사선 작업: 00:15:32</span>
+        </div>
+    </footer>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        // Acquire button
+        const acquireBtn = document.getElementById('acquireBtn');
+        acquireBtn.addEventListener('click', function() {
+            this.classList.add('disabled');
+            this.textContent = '촬영 중...';
+
+            showToast('촬영을 시작합니다', 'success');
+
+            setTimeout(() => {
+                this.classList.remove('disabled');
+                this.textContent = 'ACQUIRE';
+                showToast('촬영 완료', 'success');
+            }, 2000);
+        });
+
+        // Body part buttons
+        const bodyPartBtns = document.querySelectorAll('.body-part-btn');
+        bodyPartBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                bodyPartBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Projection buttons
+        const projectionBtns = document.querySelectorAll('.projection-btn');
+        projectionBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                projectionBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Image strip selection
+        const stripItems = document.querySelectorAll('.strip-item');
+        stripItems.forEach(item => {
+            item.addEventListener('click', function() {
+                stripItems.forEach(i => i.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+
+        // Toast notification
+        function showToast(message, type) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `<span>${type === 'success' ? '✓' : '✕'}</span><span>${message}</span>`;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.code === 'Space' && e.target.tagName !== 'BUTTON') {
+                e.preventDefault();
+                acquireBtn.click();
+            }
+        });
+
+        // Emergency stop
+        document.querySelector('.emergency-btn').addEventListener('click', function() {
+            showToast('긴급 정지가 활성화되었습니다', 'error');
+        });
+    </script>
+</body>
+</html>

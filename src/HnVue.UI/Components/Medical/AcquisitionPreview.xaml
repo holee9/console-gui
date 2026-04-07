@@ -1,0 +1,173 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:HnVue.UI.Components.Medical">
+
+    <!-- ═══════════════════════════════════════════════════════════
+         Acquisition Preview Component
+         Real-time preview for medical image acquisition
+         ═══════════════════════════════════════════════════════════ -->
+
+    <Style TargetType="local:AcquisitionPreview">
+        <Setter Property="Background" Value="#000000" />
+        <Setter Property="BorderBrush" Value="{StaticResource DS2026.Brush.Border}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:AcquisitionPreview">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{StaticResource DS2026.CornerRadius.LG}">
+                        <Grid>
+                            <!-- Main Image Display -->
+                            <Image Source="{TemplateBinding ImageSource}"
+                                   Stretch="Uniform"
+                                   x:Name="MainImage" />
+
+                            <!-- No Image Placeholder -->
+                            <Grid x:Name="PlaceholderGrid" Visibility="Collapsed">
+                                <TextBlock Text="No Signal"
+                                           Foreground="{StaticResource DS2026.Brush.TextMuted}"
+                                           FontSize="{StaticResource DS2026.FontSize.H2}"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center" />
+                            </Grid>
+
+                            <!-- Exposure Indicator (when exposing) -->
+                            <Grid x:Name="ExposureIndicator" Visibility="Collapsed">
+                                <Border Background="#AA000000" CornerRadius="{StaticResource DS2026.CornerRadius.LG}">
+                                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <Ellipse Width="80" Height="80"
+                                                 Fill="Transparent"
+                                                 Stroke="{StaticResource DS2026.Brash.Error}"
+                                                 StrokeThickness="4">
+                                            <Ellipse.RenderTransform>
+                                                <RotateTransform Angle="{Binding ExposureAngle, RelativeSource={RelativeSource TemplatedParent}}"
+                                                                CenterX="40"
+                                                                CenterY="40" />
+                                            </Ellipse.RenderTransform>
+                                        </Ellipse>
+                                        <TextBlock Text="EXPOSING..."
+                                                   Foreground="{StaticResource DS2026.Brush.Error}"
+                                                   FontSize="{StaticResource DS2026.FontSize.H3}"
+                                                   FontWeight="Bold"
+                                                   HorizontalAlignment="Center"
+                                                   Margin="0,16,0,0" />
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+
+                            <!-- Top Info Bar -->
+                            <Border VerticalAlignment="Top"
+                                    Background="#AA000000"
+                                    Padding="12,8"
+                                    CornerRadius="{StaticResource DS2026.CornerRadius.LG}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- Live Badge -->
+                                    <Border Grid.Column="0"
+                                            Background="{StaticResource DS2026.Brush.Success}"
+                                            CornerRadius="{StaticResource DS2026.CornerRadius.SM}"
+                                            Padding="8,4"
+                                            Visibility="{TemplateBinding IsLive, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Ellipse Width="8" Height="8" Fill="White" Margin="0,0,4,0" />
+                                            <TextBlock Text="LIVE"
+                                                       Foreground="White"
+                                                       FontWeight="Bold"
+                                                       FontSize="{StaticResource DS2026.FontSize.Caption}" />
+                                        </StackPanel>
+                                    </Border>
+
+                                    <!-- Exposure Info -->
+                                    <TextBlock Grid.Column="1"
+                                               Text="{TemplateBinding ExposureInfo}"
+                                               Foreground="{StaticResource DS2026.Brush.Text}"
+                                               FontSize="{StaticResource DS2026.FontSize.Caption}"
+                                               HorizontalAlignment="Center"
+                                               Margin="12,0" />
+
+                                    <!-- Resolution -->
+                                    <TextBlock Grid.Column="2"
+                                               Text="{TemplateBinding Resolution}"
+                                               Foreground="{StaticResource DS2026.Brush.TextMuted}"
+                                               FontSize="{StaticResource DS2026.FontSize.Caption}" />
+                                </Grid>
+                            </Border>
+
+                            <!-- Bottom Controls -->
+                            <Border VerticalAlignment="Bottom"
+                                    Background="#AA000000"
+                                    Padding="12,8"
+                                    CornerRadius="0,0,12,12">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- Body Part / Projection -->
+                                    <StackPanel Grid.Column="0" Orientation="Horizontal">
+                                        <TextBlock Text="{TemplateBinding BodyPart}"
+                                                   Foreground="{StaticResource DS2026.Brush.Text}"
+                                                   FontSize="{StaticResource DS2026.FontSize.Body}"
+                                                   FontWeight="SemiBold" />
+                                        <TextBlock Text=" / "
+                                                   Foreground="{StaticResource DS2026.Brush.TextMuted}"
+                                                   FontSize="{StaticResource DS2026.FontSize.Body}" />
+                                        <TextBlock Text="{TemplateBinding Projection}"
+                                                   Foreground="{StaticResource DS2026.Brush.Text}"
+                                                   FontSize="{StaticResource DS2026.FontSize.Body}" />
+                                    </StackPanel>
+
+                                    <!-- Dose Indicator -->
+                                    <Border Grid.Column="1"
+                                            Background="{TemplateBinding DoseIndicatorBackground}"
+                                            CornerRadius="{StaticResource DS2026.CornerRadius.SM}"
+                                            Padding="8,4">
+                                        <TextBlock Text="{TemplateBinding DoseInfo}"
+                                                   Foreground="White"
+                                                   FontSize="{StaticResource DS2026.FontSize.Caption}"
+                                                   FontWeight="SemiBold" />
+                                    </Border>
+                                </Grid>
+                            </Border>
+
+                            <!-- Center Crosshair (optional) -->
+                            <Path x:Name="Crosshair"
+                                  Data="M 0,-1 L 0,1 M -1,0 L 1,0"
+                                  Stroke="{StaticResource DS2026.Brush.Success}"
+                                  StrokeThickness="2"
+                                  Stretch="Fill"
+                                  Width="40"
+                                  Height="40"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  Opacity="0.5"
+                                  Visibility="{TemplateBinding ShowCrosshair, Converter={StaticResource BoolToVisibilityConverter}}" />
+                        </Grid>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <!-- Show placeholder when no image -->
+                        <Trigger Property="ImageSource" Value="{x:Null}">
+                            <Setter TargetName="MainImage" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PlaceholderGrid" Property="Visibility" Value="Visible" />
+                        </Trigger>
+
+                        <!-- Show exposure indicator -->
+                        <Trigger Property="IsExposing" Value="True">
+                            <Setter TargetName="ExposureIndicator" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

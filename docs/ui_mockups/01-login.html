@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인 - PROTYPER</title>
+    <style>
+        /* CoreTokens.xaml authoritative values */
+        :root {
+            --primary-main: #1B4F8A;
+            --primary-light: #2E6DB4;
+            --accent: #00AEEF;
+            --bg-base: #1A1A2E;
+            --bg-surface: #16213E;
+            --bg-card: #0F3460;
+            --bg-border: #2E4A6E;
+            --bg-hover: rgba(0, 174, 239, 0.1);
+            --text-primary: #FFFFFF;
+            --text-muted: #B0BEC5;
+            --text-disabled: #546E7A;
+            --color-error: #D50000;
+            --color-warning: #FFD600;
+            --color-blocked: #FF6D00;
+            --color-success: #00C853;
+            --border-focus: #00AEEF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", "Malgun Gothic", sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-card {
+            background: var(--bg-surface);
+            border-radius: 16px;
+            padding: 48px 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            text-align: center;
+        }
+
+        .logo {
+            width: 120px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary-main), var(--primary-light));
+            border-radius: 8px;
+            margin: 0 auto 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .login-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .login-subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 32px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .form-input {
+            width: 100%;
+            height: 44px;
+            padding: 12px;
+            border: 1px solid var(--bg-border);
+            border-radius: 6px;
+            background: var(--bg-base);
+            color: var(--text-primary);
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(77, 148, 255, 0.2);
+        }
+
+        .form-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .form-input.error {
+            border-color: var(--color-error);
+        }
+
+        .error-message {
+            color: var(--color-error);
+            font-size: 12px;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            font-size: 13px;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        .checkbox-label input {
+            margin-right: 8px;
+            width: 16px;
+            height: 16px;
+        }
+
+        .forgot-link {
+            color: var(--primary-light);
+            text-decoration: none;
+        }
+
+        .forgot-link:hover {
+            text-decoration: underline;
+        }
+
+        .login-button {
+            width: 100%;
+            height: 44px;
+            background: var(--primary-main);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 16px;
+        }
+
+        .login-button:hover {
+            background: var(--primary-light);
+        }
+
+        .login-button:active {
+            background: var(--primary-dark);
+        }
+
+        .login-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .capslock-warning {
+            background: rgba(255, 165, 2, 0.2);
+            color: #FFA502;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-bottom: 16px;
+            display: none;
+            align-items: center;
+        }
+
+        .capslock-warning.show {
+            display: flex;
+        }
+
+        .language-selector {
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px solid var(--bg-border);
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .language-select {
+            background: var(--bg-base);
+            color: var(--text-muted);
+            border: 1px solid var(--bg-border);
+            border-radius: 4px;
+            padding: 6px 12px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .keyboard-hint {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 16px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .keyboard-hint kbd {
+            background: var(--bg-base);
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid var(--bg-border);
+            font-family: monospace;
+        }
+
+        /* Loading state */
+        .login-button.loading {
+            position: relative;
+            color: transparent;
+        }
+
+        .login-button.loading::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            top: 50%;
+            left: 50%;
+            margin-left: -10px;
+            margin-top: -10px;
+            border: 2px solid transparent;
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Focus visible indicator */
+        .form-input:focus-visible {
+            outline: 2px solid var(--primary-light);
+            outline-offset: 2px;
+        }
+
+        /* High contrast mode support */
+        @media (prefers-contrast: high) {
+            .login-card {
+                border: 2px solid var(--text-primary);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="logo">PROTYPER</div>
+            <h1 class="login-title">시스템 로그인</h1>
+            <p class="login-subtitle">의료영상 장비 제어 콘솔</p>
+
+            <form id="loginForm" onsubmit="return false;">
+                <div class="form-group">
+                    <label class="form-label" for="userId">사용자 ID</label>
+                    <input
+                        type="text"
+                        id="userId"
+                        class="form-input"
+                        placeholder="ID를 입력하세요"
+                        autocomplete="username"
+                        required
+                        autofocus
+                    >
+                    <div class="error-message" id="userIdError">ID를 입력해주세요</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password">비밀번호</label>
+                    <input
+                        type="password"
+                        id="password"
+                        class="form-input"
+                        placeholder="비밀번호를 입력하세요"
+                        autocomplete="current-password"
+                        required
+                    >
+                    <div class="capslock-warning" id="capslockWarning">
+                        <span> Caps Lock이 켜져 있습니다</span>
+                    </div>
+                    <div class="error-message" id="passwordError">비밀번호를 입력해주세요</div>
+                </div>
+
+                <div class="form-options">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="rememberMe">
+                        로그인 상태 유지
+                    </label>
+                    <a href="#" class="forgot-link">비밀번호 찾기</a>
+                </div>
+
+                <button type="submit" class="login-button" id="loginButton">로그인</button>
+
+                <div class="keyboard-hint">
+                    <span><kbd>Tab</kbd> 이동</span>
+                    <span><kbd>Enter</kbd> 확인</span>
+                    <span><kbd>Esc</kbd> 취소</span>
+                </div>
+
+                <div class="language-selector">
+                    <select class="language-select" aria-label="언어 선택">
+                        <option value="ko">한국어</option>
+                        <option value="en">English</option>
+                        <option value="ja">日本語</option>
+                        <option value="zh">中文</option>
+                    </select>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Caps Lock detection
+        const passwordInput = document.getElementById('password');
+        const capslockWarning = document.getElementById('capslockWarning');
+
+        passwordInput.addEventListener('keypress', function(e) {
+            capslockWarning.classList.toggle('show',
+                e.getModifierState && e.getModifierState('CapsLock')
+            );
+        });
+
+        passwordInput.addEventListener('keydown', function(e) {
+            if (e.key === 'CapsLock') {
+                capslockWarning.classList.toggle('show');
+            }
+        });
+
+        // Form validation
+        const loginForm = document.getElementById('loginForm');
+        const userIdInput = document.getElementById('userId');
+        const userIdError = document.getElementById('userIdError');
+        const passwordError = document.getElementById('passwordError');
+        const loginButton = document.getElementById('loginButton');
+
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            let isValid = true;
+
+            // Validate User ID
+            if (!userIdInput.value.trim()) {
+                userIdInput.classList.add('error');
+                userIdError.classList.add('show');
+                isValid = false;
+            } else {
+                userIdInput.classList.remove('error');
+                userIdError.classList.remove('show');
+            }
+
+            // Validate Password
+            if (!passwordInput.value) {
+                passwordInput.classList.add('error');
+                passwordError.classList.add('show');
+                isValid = false;
+            } else {
+                passwordInput.classList.remove('error');
+                passwordError.classList.remove('show');
+            }
+
+            if (isValid) {
+                loginButton.classList.add('loading');
+                loginButton.disabled = true;
+
+                // Simulate login (replace with actual login)
+                setTimeout(function() {
+                    loginButton.classList.remove('loading');
+                    loginButton.disabled = false;
+                    alert('로그인 성공 (데모)');
+                }, 1500);
+            }
+        });
+
+        // Clear errors on input
+        userIdInput.addEventListener('input', function() {
+            this.classList.remove('error');
+            userIdError.classList.remove('show');
+        });
+
+        passwordInput.addEventListener('input', function() {
+            this.classList.remove('error');
+            passwordError.classList.remove('show');
+        });
+    </script>
+</body>
+</html>

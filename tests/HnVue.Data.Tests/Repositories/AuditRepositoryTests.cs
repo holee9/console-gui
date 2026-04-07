@@ -1,5 +1,7 @@
 using HnVue.Common.Models;
 using HnVue.Data.Repositories;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 
 namespace HnVue.Data.Tests.Repositories;
 
@@ -8,6 +10,18 @@ namespace HnVue.Data.Tests.Repositories;
 /// </summary>
 public sealed class AuditRepositoryTests
 {
+    private static (HnVueDbContext Context, SqliteConnection Connection) CreateSqliteContext()
+    {
+        var connection = new SqliteConnection("Data Source=:memory:");
+        connection.Open();
+        var options = new DbContextOptionsBuilder<HnVueDbContext>()
+            .UseSqlite(connection)
+            .Options;
+        var ctx = new HnVueDbContext(options);
+        ctx.Database.EnsureCreated();
+        return (ctx, connection);
+    }
+
     private static AuditEntry CreateEntry(
         string action = "LOGIN",
         string userId = "U001",
@@ -174,5 +188,150 @@ public sealed class AuditRepositoryTests
 
         result.IsSuccess.Should().BeTrue();
         result.Value.Should().BeEmpty();
+    }
+
+    [Fact]
+    public async Task QueryAsync_FilterByFromDateOnly_ReturnsEntriesOnOrAfter()
+    {
+        await using var ctx = TestDbContextFactory.Create();
+        var repo = new AuditRepository(ctx);
+
+        var t1 = new DateTimeOffset(2026, 1, 1, 0, 0, 0, TimeSpan.Zero);
+        var t2 = new DateTimeOffset(2026, 3, 1, 0, 0, 0, TimeSpan.Zero);
+
+        await repo.AppendAsync(CreateEntry(timestamp: t1));
+        await repo.AppendAsync(CreateEntry(timestamp: t2));
+
+        var from = new DateTimeOffset(2026, 2, 1, 0, 0, 0, TimeSpan.Zero);
+        var result = await repo.QueryAsync(new AuditQueryFilter(FromDate: from));
+
+        result.IsSuccess.Should().BeTrue();
+        result.Value.Should().HaveCount(1);
+        result.Value[0].Timestamp.UtcTicks.Should().Be(t2.UtcTicks);
+    }
+
+    [Fact]
+    public async Task QueryAsync_FilterByToDateOnly_ReturnsEntriesOnOrBefore()
+    {
+        await using var ctx = TestDbContextFactory.Create();
+        var repo = new AuditRepository(ctx);
+
+        var t1 = new DateTimeOffset(2026, 1, 1, 0, 0, 0, TimeSpan.Zero);
+        var t2 = new DateTimeOffset(2026, 3, 1, 0, 0, 0, TimeSpan.Zero);
+
+        await repo.AppendAsync(CreateEntry(timestamp: t1));
+        await repo.AppendAsync(CreateEntry(timestamp: t2));
+
+        var to = new DateTimeOffset(2026, 2, 1, 0, 0, 0, TimeSpan.Zero);
+        var result = await repo.QueryAsync(new AuditQueryFilter(ToDate: to));
+
+        result.IsSuccess.Should().BeTrue();
+        result.Value.Should().HaveCount(1);
+        result.Value[0].Timestamp.UtcTicks.Should().Be(t1.UtcTicks);
+    }
+
+    [Fact]
+    public async Task GetLastHashAsync_SingleEntry_ReturnsItsHash()
+    {
+        await using var ctx = TestDbContextFactory.Create();
+        var repo = new AuditRepository(ctx);
+        var entry = new AuditEntry(Guid.NewGuid().ToString(),
+            new DateTimeOffset(2026, 5, 1, 0, 0, 0, TimeSpan.Zero),
+            "U001", "LOGIN", null, null, "only-hash");
+
+        await repo.AppendAsync(entry);
+
+        var result = await repo.GetLastHashAsync();
+
+        result.IsSuccess.Should().BeTrue();
+        result.Value.Should().Be("only-hash");
+    }
+
+    [Fact]
+    public async Task QueryAsync_OrderedByTimestamp_ReturnedInAscendingOrder()
+    {
+        await using var ctx = TestDbContextFactory.Create();
+        var repo = new AuditRepository(ctx);
+
+        var t1 = new DateTimeOffset(2026, 1, 1, 0, 0, 0, TimeSpan.Zero);
+        var t2 = new DateTimeOffset(2026, 2, 1, 0, 0, 0, TimeSpan.Zero);
+        var t3 = new DateTimeOffset(2026, 3, 1, 0, 0, 0, TimeSpan.Zero);
+
+        // Insert out of order
+        await repo.AppendAsync(CreateEntry(timestamp: t3));
+        await repo.AppendAsync(CreateEntry(timestamp: t1));
+        await repo.AppendAsync(CreateEntry(timestamp: t2));
+
+        var result = await repo.QueryAsync(new AuditQueryFilter());
+
+        result.IsSuccess.Should().BeTrue();
+        result.Value[0].Timestamp.UtcTicks.Should().Be(t1.UtcTicks);
+        result.Value[1].Timestamp.UtcTicks.Should().Be(t2.UtcTicks);
+        result.Value[2].Timestamp.UtcTicks.Should().Be(t3.UtcTicks);
+    }
+
+    // ── CancellationToken propagation ─────────────────────────────────────────
+
+    [Fact]
+    public async Task GetLastHashAsync_CancelledToken_ThrowsOperationCanceledException()
+    {
+        await using var ctx = TestDbContextFactory.Create();
+        var repo = new AuditRepository(ctx);
+        await repo.AppendAsync(CreateEntry());
+        using var cts = new CancellationTokenSource();
+        cts.Cancel();
+
+        var act = async () => await repo.GetLastHashAsync(cts.Token);
+
+        await act.Should().ThrowAsync<OperationCanceledException>();
+    }
+
+    [Fact]
+    public async Task QueryAsync_CancelledToken_ThrowsOperationCanceledException()
+    {
+        await using var ctx = TestDbContextFactory.Create();
+        var repo = new AuditRepository(ctx);
+        await repo.AppendAsync(CreateEntry());
+        using var cts = new CancellationTokenSource();
+        cts.Cancel();
+
+        var act = async () => await repo.QueryAsync(new AuditQueryFilter(), cts.Token);
+
+        await act.Should().ThrowAsync<OperationCanceledException>();
+    }
+
+    // ── DbUpdateException paths (SQLite to enforce PK constraint) ─────────────
+
+    [Fact]
+    public async Task AppendAsync_DuplicateEntryId_ReturnsDbError()
+    {
+        var entryId = Guid.NewGuid().ToString();
+        var first = new AuditEntry(entryId, DateTimeOffset.UtcNow, "U001", "LOGIN",
+            null, null, "hash-a");
+        var duplicate = new AuditEntry(entryId, DateTimeOffset.UtcNow, "U001", "LOGOUT",
+            null, "hash-a", "hash-b");
+
+        // Use a shared SQLite connection so both contexts see the same data
+        using var sharedConn = new SqliteConnection("Data Source=:memory:");
+        sharedConn.Open();
+        var opts = new DbContextOptionsBuilder<HnVueDbContext>()
+            .UseSqlite(sharedConn)
+            .Options;
+
+        await using (var ctxA = new HnVueDbContext(opts))
+        {
+            ctxA.Database.EnsureCreated();
+            var repoA = new AuditRepository(ctxA);
+            await repoA.AppendAsync(first);
+        }
+
+        await using (var ctxB = new HnVueDbContext(opts))
+        {
+            var repoB = new AuditRepository(ctxB);
+            var result = await repoB.AppendAsync(duplicate); // same PK — SQLite PK constraint fails
+
+            result.IsFailure.Should().BeTrue();
+            result.Error.Should().Be(ErrorCode.DatabaseError);
+        }
     }
 }

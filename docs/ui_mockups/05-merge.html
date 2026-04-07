@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merge - PROTYPER</title>
+    <style>
+        /* CoreTokens.xaml authoritative values */
+        :root {
+            --primary-main: #1B4F8A;
+            --primary-light: #2E6DB4;
+            --accent: #00AEEF;
+            --bg-base: #1A1A2E;
+            --bg-surface: #16213E;
+            --bg-card: #0F3460;
+            --bg-border: #2E4A6E;
+            --bg-hover: rgba(0, 174, 239, 0.08);
+            --text-primary: #FFFFFF;
+            --text-muted: #B0BEC5;
+            --text-disabled: #546E7A;
+            --color-error: #D50000;
+            --color-warning: #FFD600;
+            --color-success: #00C853;
+            --color-info: #00AEEF;
+            --border-focus: #00AEEF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", "Malgun Gothic", sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            height: 60px;
+            background: var(--bg-surface);
+            border-bottom: 1px solid var(--bg-border);
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            gap: 24px;
+        }
+
+        .logo {
+            width: 100px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--primary-main), var(--primary-light));
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .header-title {
+            font-size: 20px;
+            font-weight: 600;
+            flex: 1;
+        }
+
+        .btn {
+            height: 36px;
+            padding: 0 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--primary-main);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-light);
+        }
+
+        .btn-secondary {
+            background: var(--bg-border);
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--secondary-teal);
+        }
+
+        /* Main Layout */
+        .main-layout {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Selection Bar */
+        .selection-bar {
+            height: 80px;
+            background: var(--bg-surface);
+            border-bottom: 1px solid var(--bg-border);
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            gap: 24px;
+        }
+
+        .selection-group {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .selection-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-muted);
+            min-width: 80px;
+        }
+
+        .selection-input {
+            flex: 1;
+            height: 40px;
+            padding: 0 16px;
+            border: 1px solid var(--bg-border);
+            border-radius: 6px;
+            background: var(--bg-base);
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+
+        .selection-input:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 2px rgba(77, 148, 255, 0.2);
+        }
+
+        .search-btn {
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--bg-border);
+            background: var(--bg-surface);
+            border-radius: 6px;
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .search-btn:hover {
+            border-color: var(--primary-light);
+        }
+
+        /* Content Area */
+        .content-area {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* Image Panels */
+        .image-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-base);
+        }
+
+        .panel-header {
+            height: 48px;
+            padding: 0 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--bg-surface);
+            border-bottom: 1px solid var(--bg-border);
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .panel-patient {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .patient-badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            background: var(--bg-border);
+        }
+
+        .panel-a {
+            border-right: 1px solid var(--bg-border);
+        }
+
+        .panel-c {
+            border-left: 1px solid var(--bg-border);
+        }
+
+        .image-display {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .image-container {
+            width: 100%;
+            max-width: 400px;
+            aspect-ratio: 1;
+            background: var(--bg-surface);
+            border-radius: 8px;
+            border: 2px solid var(--bg-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .image-placeholder {
+            font-size: 64px;
+            opacity: 0.3;
+        }
+
+        .image-strip {
+            height: 100px;
+            background: var(--bg-surface);
+            border-top: 1px solid var(--bg-border);
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            gap: 8px;
+            overflow-x: auto;
+        }
+
+        .strip-item {
+            width: 80px;
+            height: 80px;
+            background: var(--bg-base);
+            border-radius: 6px;
+            border: 2px solid var(--bg-border);
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .strip-item:hover {
+            border-color: var(--primary-light);
+        }
+
+        .strip-item.selected {
+            border-color: var(--primary-main);
+        }
+
+        .strip-item span {
+            font-size: 28px;
+            opacity: 0.3;
+        }
+
+        /* Center Controls */
+        .center-controls {
+            width: 280px;
+            background: var(--bg-surface);
+            border-left: 1px solid var(--bg-border);
+            border-right: 1px solid var(--bg-border);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .control-section {
+            padding: 16px;
+            border-bottom: 1px solid var(--bg-border);
+        }
+
+        .control-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .merge-options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 12px;
+            background: var(--bg-base);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .option-item:hover {
+            background: var(--bg-hover);
+        }
+
+        .option-item.active {
+            background: rgba(0, 102, 204, 0.2);
+            border: 1px solid var(--primary-main);
+        }
+
+        .option-radio {
+            margin-right: 10px;
+            width: 18px;
+            height: 18px;
+        }
+
+        .option-label {
+            font-size: 14px;
+        }
+
+        .action-buttons {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: auto;
+        }
+
+        .action-btn {
+            height: 48px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .preview-btn {
+            background: var(--primary-main);
+            color: white;
+        }
+
+        .preview-btn:hover {
+            background: var(--primary-light);
+        }
+
+        .sync-btn {
+            background: var(--secondary-teal);
+            color: white;
+        }
+
+        .sync-btn:hover {
+            background: #00E6C8;
+        }
+
+        /* Preview Panel */
+        .preview-panel {
+            height: 200px;
+            background: var(--bg-surface);
+            border-top: 1px solid var(--bg-border);
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .preview-container {
+            width: 100%;
+            height: 100%;
+            background: var(--bg-base);
+            border-radius: 8px;
+            border: 2px dashed var(--bg-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .preview-container.has-result {
+            border-style: solid;
+            border-color: var(--primary-main);
+        }
+
+        /* Footer */
+        .footer {
+            height: 64px;
+            background: var(--bg-surface);
+            border-top: 1px solid var(--bg-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+        }
+
+        .footer-info {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .footer-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .footer-btn {
+            height: 40px;
+            padding: 0 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-cancel {
+            background: var(--bg-border);
+            color: var(--text-primary);
+        }
+
+        .btn-save {
+            background: var(--primary-main);
+            color: white;
+        }
+
+        .btn-save:hover {
+            background: var(--primary-light);
+        }
+
+        /* Drag Overlay */
+        .drag-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 102, 204, 0.1);
+            border: 2px dashed var(--primary-light);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: var(--primary-light);
+            z-index: 10;
+        }
+
+        .drag-overlay.active {
+            display: flex;
+        }
+
+        /* Status Bar */
+        .status-bar {
+            height: 32px;
+            background: var(--bg-surface);
+            border-top: 1px solid var(--bg-border);
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">PROTYPER</div>
+        <h1 class="header-title">Merge</h1>
+        <button class="btn btn-secondary">도움말</button>
+    </header>
+
+    <!-- Main Layout -->
+    <div class="main-layout">
+        <!-- Selection Bar -->
+        <div class="selection-bar">
+            <div class="selection-group">
+                <span class="selection-label">Study A</span>
+                <input type="text" class="selection-input" value="S20260406001" id="studyA">
+                <button class="search-btn">🔍</button>
+            </div>
+            <div class="selection-group">
+                <span class="selection-label">Study B</span>
+                <input type="text" class="selection-input" value="S20260406002" id="studyB">
+                <button class="search-btn">🔍</button>
+            </div>
+        </div>
+
+        <!-- Content Area -->
+        <div class="content-area">
+            <!-- Panel A -->
+            <div class="image-panel panel-a">
+                <div class="panel-header">
+                    <div class="panel-patient">
+                        <span>Study A</span>
+                        <span class="patient-badge">홍길동</span>
+                    </div>
+                </div>
+                <div class="image-display">
+                    <div class="image-container">
+                        <span class="image-placeholder">📷</span>
+                        <div class="drag-overlay" id="dragOverlayA">여기에 놓으세요</div>
+                    </div>
+                </div>
+                <div class="image-strip">
+                    <div class="strip-item selected"><span>📷</span></div>
+                    <div class="strip-item"><span>📷</span></div>
+                    <div class="strip-item"><span>📷</span></div>
+                </div>
+            </div>
+
+            <!-- Center Controls -->
+            <div class="center-controls">
+                <div class="control-section">
+                    <div class="control-title">병합 모드</div>
+                    <div class="merge-options">
+                        <div class="option-item active">
+                            <input type="radio" name="mergeMode" class="option-radio" checked>
+                            <span class="option-label">수평 병합</span>
+                        </div>
+                        <div class="option-item">
+                            <input type="radio" name="mergeMode" class="option-radio">
+                            <span class="option-label">수직 병합</span>
+                        </div>
+                        <div class="option-item">
+                            <input type="radio" name="mergeMode" class="option-radio">
+                            <span class="option-label">겹치기</span>
+                        </div>
+                        <div class="option-item">
+                            <input type="radio" name="mergeMode" class="option-radio">
+                            <span class="option-label">비교 모드</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-section">
+                    <div class="control-title">조정</div>
+                    <div class="merge-options">
+                        <div class="option-item">
+                            <input type="checkbox" checked>
+                            <span class="option-label">자동 정렬</span>
+                        </div>
+                        <div class="option-item">
+                            <input type="checkbox">
+                            <span class="option-label">밝기 보정</span>
+                        </div>
+                        <div class="option-item">
+                            <input type="checkbox" checked>
+                            <span class="option-label">크기 조정</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="action-btn preview-btn" id="previewBtn">
+                        <span>👁</span> 미리보기
+                    </button>
+                    <button class="action-btn sync-btn" id="syncBtn">
+                        <span>🔄</span> 동기화
+                    </button>
+                </div>
+
+                <div class="preview-panel">
+                    <div class="preview-container" id="previewContainer">
+                        미리보기 영역
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panel C (Result) -->
+            <div class="image-panel panel-c">
+                <div class="panel-header">
+                    <div class="panel-patient">
+                        <span>병합 결과</span>
+                        <span class="patient-badge">Preview</span>
+                    </div>
+                </div>
+                <div class="image-display">
+                    <div class="image-container">
+                        <span class="image-placeholder">📷</span>
+                    </div>
+                </div>
+                <div class="image-strip">
+                    <div class="strip-item"><span>+</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-info">
+                Study A: Chest PA (2 images) | Study B: Chest PA (2 images)
+            </div>
+            <div class="footer-actions">
+                <button class="footer-btn btn-cancel">취소</button>
+                <button class="footer-btn btn-save" id="saveBtn">저장</button>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Status Bar -->
+    <div class="status-bar">
+        <span>준비 완료</span>
+        <span style="margin-left: auto;">Study A와 Study B를 선택한 후 미리보기를 실행하세요</span>
+    </div>
+
+    <script>
+        // Merge mode selection
+        const optionItems = document.querySelectorAll('.option-item');
+        optionItems.forEach(item => {
+            item.addEventListener('click', function() {
+                const radio = this.querySelector('input[type="radio"]');
+                if (radio) {
+                    optionItems.forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                    radio.checked = true;
+                }
+            });
+        });
+
+        // Preview button
+        const previewBtn = document.getElementById('previewBtn');
+        const previewContainer = document.getElementById('previewContainer');
+
+        previewBtn.addEventListener('click', function() {
+            previewContainer.innerHTML = '<span style="font-size: 48px;">📷</span>';
+            previewContainer.classList.add('has-result');
+            this.textContent = '✓ 미리보기 완료';
+            setTimeout(() => {
+                this.innerHTML = '<span>👁</span> 미리보기';
+            }, 2000);
+        });
+
+        // Sync button
+        const syncBtn = document.getElementById('syncBtn');
+        syncBtn.addEventListener('click', function() {
+            this.textContent = '✓ 동기화 완료';
+            setTimeout(() => {
+                this.innerHTML = '<span>🔄</span> 동기화';
+            }, 2000);
+        });
+
+        // Image strip selection
+        const stripItems = document.querySelectorAll('.strip-item');
+        stripItems.forEach(item => {
+            item.addEventListener('click', function() {
+                const parent = this.closest('.image-strip');
+                parent.querySelectorAll('.strip-item').forEach(i => i.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+
+        // Save button
+        const saveBtn = document.getElementById('saveBtn');
+        saveBtn.addEventListener('click', function() {
+            if (confirm('병합된 영상을 저장하시겠습니까?')) {
+                alert('저장되었습니다.');
+            }
+        });
+
+        // Drag and drop simulation
+        const imageContainers = document.querySelectorAll('.image-container');
+        imageContainers.forEach(container => {
+            container.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                const overlay = this.querySelector('.drag-overlay');
+                if (overlay) overlay.classList.add('active');
+            });
+
+            container.addEventListener('dragleave', function(e) {
+                const overlay = this.querySelector('.drag-overlay');
+                if (overlay) overlay.classList.remove('active');
+            });
+
+            container.addEventListener('drop', function(e) {
+                e.preventDefault();
+                const overlay = this.querySelector('.drag-overlay');
+                if (overlay) overlay.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>

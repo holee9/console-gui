@@ -3,6 +3,7 @@ using HnVue.Common.Results;
 
 namespace HnVue.Common.Abstractions;
 
+// @MX:ANCHOR IPatientService - @MX:REASON: Patient data contract with 14+ consumers, PHI handling boundary
 /// <summary>
 /// Defines patient management business-logic operations.
 /// Implemented by the HnVue.PatientManagement module.
@@ -48,4 +49,23 @@ public interface IPatientService
     /// </summary>
     /// <remarks>Requires active study check before deletion. SWR-PM-050.</remarks>
     Task<Result> DeleteAsync(string patientId, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Quick-registers an emergency patient with minimal data.
+    /// SWR-PM-030~033: Emergency patient registration.
+    /// </summary>
+    /// <param name="emergencyPatientId">Auto-generated emergency patient ID (format: EMERG-{yyyyMMddHHmmss}).</param>
+    /// <param name="patientName">Optional patient name (may be null for unknown trauma patients).</param>
+    /// <param name="cancellationToken">Token to cancel the asynchronous operation.</param>
+    /// <returns>
+    /// A successful <see cref="Result{T}"/> containing the persisted <see cref="PatientRecord"/> with IsEmergency=true.
+    /// </returns>
+    /// <remarks>
+    /// Skips duplicate detection to allow immediate trauma care.
+    /// Sets IsEmergency=true on the record for later identification and follow-up.
+    /// </remarks>
+    Task<Result<PatientRecord>> QuickRegisterEmergencyAsync(
+        string emergencyPatientId,
+        string? patientName,
+        CancellationToken cancellationToken = default);
 }

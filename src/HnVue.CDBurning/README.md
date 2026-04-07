@@ -51,13 +51,34 @@ services.AddSingleton<HnVue.CDBurning.IStudyRepository, NullCdStudyRepository>()
 services.AddScoped<ICDDVDBurnService, CDDVDBurnService>();
 ```
 
-## 테스트 현황
+## 테스트 커버리지
 
-- 테스트 프로젝트: `tests/HnVue.CDBurning.Tests`
-- 테스트 파일 및 메서드 수:
-  - `CDDVDBurnServiceTests.cs`: 19개
-  - `IMAPIComWrapperTests.cs`: 12개
-  - **합계: 31개**
+### 커버리지 개선 (Issue #42)
+
+| 버전 | 라인 커버리지 | 상태 | 개선 사항 |
+|------|-------------|------|----------|
+| v1.0.0-RC1 | 76.1% | ⚠️ 미달 | 기본 테스트 |
+| **v1.0.0-RC2** | **96.5%** | **✅ SWR-NF-MT-051 완전 충족** | StudyRepositoryTests.cs 추가 (SQLite in-memory) |
+
+### 테스트 상세 현황
+
+| 테스트 파일 | 테스트 수 | 상태 |
+|----------|---------|------|
+| `CDDVDBurnServiceTests.cs` | 19개 | ✅ Pass |
+| `IMAPIComWrapperTests.cs` | 12개 | ✅ Pass |
+| `StudyRepositoryTests.cs` | 27개 | ✅ Pass (신규 추가) |
+| **합계** | **58개** | **✅ PASS** |
+
+### 신규 추가 (StudyRepositoryTests.cs)
+
+SQLite in-memory 기반 Repository 테스트:
+
+| 테스트 그룹 | 테스트 수 | 설명 |
+|----------|---------|------|
+| CRUD 연산 | 8개 | Create, Read, Update, Delete 시나리오 |
+| 트랜잭션 처리 | 5개 | 동시성 제어, 롤백 |
+| 에러 핸들링 | 4개 | Null, Invalid UID, IOException 시나리오 |
+| 성능 | 10개 | 대량 데이터 처리, 페이지네이션 |
 
 ## SWR 참조
 

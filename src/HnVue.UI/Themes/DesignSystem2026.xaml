@@ -1,0 +1,91 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <!-- ═══════════════════════════════════════════════════════════
+         HnVue Design System 2026
+
+         Based on docs/ui_design_plan_2026.md
+         IEC 62366 / IEC 60601-1-6 / FDA Human Factors compliant
+         ═══════════════════════════════════════════════════════════ -->
+
+    <!-- ═══ Primary Colors (Medical Blue) ═══ -->
+    <Color x:Key="DS2026.Primary.Main">#0066CC</Color>
+    <Color x:Key="DS2026.Primary.Light">#4D94FF</Color>
+    <Color x:Key="DS2026.Primary.Dark">#004080</Color>
+
+    <!-- ═══ Secondary Colors ═══ -->
+    <Color x:Key="DS2026.Secondary.Teal">#00BFA5</Color>
+    <Color x:Key="DS2026.Secondary.Coral">#FF6B6B</Color>
+    <Color x:Key="DS2026.Secondary.Amber">#FFC107</Color>
+
+    <!-- ═══ Neutral Colors (Dark Mode Base) ═══ -->
+    <Color x:Key="DS2026.Neutral.Background">#1A1A2E</Color>
+    <Color x:Key="DS2026.Neutral.Surface">#252542</Color>
+    <Color x:Key="DS2026.Neutral.Border">#3E3E5E</Color>
+    <Color x:Key="DS2026.Neutral.Text">#E0E0E0</Color>
+    <Color x:Key="DS2026.Neutral.TextMuted">#A0A0B0</Color>
+
+    <!-- ═══ Semantic Colors (Safety-Critical) ═══ -->
+    <Color x:Key="DS2026.Semantic.Error">#FF4757</Color>
+    <Color x:Key="DS2026.Semantic.Warning">#FFA502</Color>
+    <Color x:Key="DS2026.Semantic.Success">#2ED573</Color>
+    <Color x:Key="DS2026.Semantic.Info">#1E90FF</Color>
+
+    <!-- ═══ Brushes ═══ -->
+    <SolidColorBrush x:Key="DS2026.Brush.Primary" Color="{StaticResource DS2026.Primary.Main}" />
+    <SolidColorBrush x:Key="DS2026.Brush.Primary.Light" Color="{StaticResource DS2026.Primary.Light}" />
+    <SolidColorBrush x:Key="DS2026.Brush.Primary.Dark" Color="{StaticResource DS2026.Primary.Dark}" />
+    <SolidColorBrush x:Key="DS2026.Brush.Teal" Color="{StaticResource DS2026.Secondary.Teal}" />
+    <SolidColorBrush x:Key="DS2026.Brush.Coral" Color="{StaticResource DS2026.Secondary.Coral}" />
+    <SolidColorBrush x:Key="DS2026.Brush.Amber" Color="{StaticResource DS2026.Secondary.Amber}" />
+    <SolidColorBrush x:Key="DS2026.Brush.Background" Color="{StaticResource DS2026.Neutral.Background}" />
+    <SolidColorBrush x:Key="DS2026.Brush.Surface" Color="{StaticResource DS2026.Neutral.Surface}" />
+    <SolidColorBrush x:Key="DS2026.Brush.Border" Color="{StaticResource DS2026.Neutral.Border}" />
+    <SolidColorBrush x:Key="DS2026.Brush.Text" Color="{StaticResource DS2026.Neutral.Text}" />
+    <SolidColorBrush x:Key="DS2026.Brush.TextMuted" Color="{StaticResource DS2026.Neutral.TextMuted}" />
+    <SolidColorBrush x:Key="DS2026.Brush.Error" Color="{StaticResource DS2026.Semantic.Error}" />
+    <SolidColorBrush x:Key="DS2026.Brush.Warning" Color="{StaticResource DS2026.Semantic.Warning}" />
+    <SolidColorBrush x:Key="DS2026.Brush.Success" Color="{StaticResource DS2026.Semantic.Success}" />
+    <SolidColorBrush x:Key="DS2026.Brush.Info" Color="{StaticResource DS2026.Semantic.Info}" />
+
+    <!-- ═══ Typography ═══ -->
+    <FontFamily x:Key="DS2026.FontFamily.Primary">Segoe UI</FontFamily>
+    <FontFamily x:Key="DS2026.FontFamily.Monospace">Consolas</FontFamily>
+
+    <sys:Double x:Key="DS2026.FontSize.Display">32</sys:Double>
+    <sys:Double x:Key="DS2026.FontSize.H1">24</sys:Double>
+    <sys:Double x:Key="DS2026.FontSize.H2">18</sys:Double>
+    <sys:Double x:Key="DS2026.FontSize.H3">16</sys:Double>
+    <sys:Double x:Key="DS2026.FontSize.Body">14</sys:Double>
+    <sys:Double x:Key="DS2026.FontSize.Caption">12</sys:Double>
+
+    <sys:Double x:Key="DS2026.LineHeight.Display">48</sys:Double>
+    <sys:Double x:Key="DS2026.LineHeight.H1">36</sys:Double>
+    <sys:Double x:Key="DS2026.LineHeight.H2">28</sys:Double>
+    <sys:Double x:Key="DS2026.LineHeight.H3">24</sys:Double>
+    <sys:Double x:Key="DS2026.LineHeight.Body">22</sys:Double>
+    <sys:Double x:Key="DS2026.LineHeight.Caption">18</sys:Double>
+
+    <!-- ═══ Spacing (Base Unit: 4px) ═══ -->
+    <sys:Double x:Key="DS2026.Spacing.XS">4</sys:Double>
+    <sys:Double x:Key="DS2026.Spacing.SM">8</sys:Double>
+    <sys:Double x:Key="DS2026.Spacing.MD">16</sys:Double>
+    <sys:Double x:Key="DS2026.Spacing.LG">24</sys:Double>
+    <sys:Double x:Key="DS2026.Spacing.XL">32</sys:Double>
+    <sys:Double x:Key="DS2026.Spacing.XXL">48</sys:Double>
+    <sys:Double x:Key="DS2026.Spacing.XXXL">64</sys:Double>
+
+    <Thickness x:Key="DS2026.Padding.XS">4</Thickness>
+    <Thickness x:Key="DS2026.Padding.SM">8</Thickness>
+    <Thickness x:Key="DS2026.Padding.MD">16</Thickness>
+    <Thickness x:Key="DS2026.Padding.LG">24</Thickness>
+    <Thickness x:Key="DS2026.Padding.XL">32</Thickness>
+
+    <!-- ═══ Corner Radius ═══ -->
+    <CornerRadius x:Key="DS2026.CornerRadius.SM">4</CornerRadius>
+    <CornerRadius x:Key="DS2026.CornerRadius.MD">6</CornerRadius>
+    <CornerRadius x:Key="DS2026.CornerRadius.LG">12</CornerRadius>
+    <CornerRadius x:Key="DS2026.CornerRadius.XL">16</CornerRadius>
+
+</ResourceDictionary>

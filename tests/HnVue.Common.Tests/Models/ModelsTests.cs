@@ -51,7 +51,7 @@ public sealed class ModelsTests
     [Fact]
     public void DoseValidationResult_Allow_IsAllowedTrue()
     {
-        var result = new DoseValidationResult(true, DoseValidationLevel.Allow, null);
+        var result = new DoseValidationResult(true, DoseValidationLevel.Allow, null, 0.0, 0.0, 0.0);
 
         result.IsAllowed.Should().BeTrue();
         result.Level.Should().Be(DoseValidationLevel.Allow);
@@ -61,7 +61,7 @@ public sealed class ModelsTests
     [Fact]
     public void DoseValidationResult_Block_IsAllowedFalse()
     {
-        var result = new DoseValidationResult(false, DoseValidationLevel.Block, "Dose exceeds limit");
+        var result = new DoseValidationResult(false, DoseValidationLevel.Block, "Dose exceeds limit", 0.0, 0.0, 0.0);
 
         result.IsAllowed.Should().BeFalse();
         result.Level.Should().Be(DoseValidationLevel.Block);

@@ -19,6 +19,12 @@ public interface IDoseDisplayViewModel : IViewModelBase
     /// <summary>Gets a value indicating whether the current dose has exceeded the DRL threshold.</summary>
     bool IsDoseAlert { get; }
 
+    /// <summary>
+    /// Gets the current dose as a percentage of the DRL reference level (0–100).
+    /// FR-DM-001 / FR-DM-015: drives the DRL gauge bar in the UI.
+    /// </summary>
+    double DrlPercentage { get; }
+
     /// <summary>Gets a value indicating whether a dose refresh operation is in progress.</summary>
     bool IsRefreshing { get; }
 

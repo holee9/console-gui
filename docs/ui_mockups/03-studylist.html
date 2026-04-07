@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studylist - PROTYPER</title>
+    <style>
+        /* CoreTokens.xaml authoritative values */
+        :root {
+            --primary-main: #1B4F8A;
+            --primary-light: #2E6DB4;
+            --accent: #00AEEF;
+            --bg-base: #1A1A2E;
+            --bg-surface: #16213E;
+            --bg-card: #0F3460;
+            --bg-border: #2E4A6E;
+            --bg-hover: rgba(0, 174, 239, 0.08);
+            --text-primary: #FFFFFF;
+            --text-muted: #B0BEC5;
+            --text-disabled: #546E7A;
+            --color-error: #D50000;
+            --color-warning: #FFD600;
+            --color-blocked: #FF6D00;
+            --color-success: #00C853;
+            --color-info: #00AEEF;
+            --border-focus: #00AEEF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", "Malgun Gothic", sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            height: 60px;
+            background: var(--bg-surface);
+            border-bottom: 1px solid var(--bg-border);
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            gap: 24px;
+        }
+
+        .logo {
+            width: 100px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--primary-main), var(--primary-light));
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .header-title {
+            font-size: 20px;
+            font-weight: 600;
+            flex: 1;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            height: 36px;
+            padding: 0 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--primary-main);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-light);
+        }
+
+        .btn-secondary {
+            background: var(--bg-border);
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--secondary-teal);
+        }
+
+        .btn-icon {
+            width: 36px;
+            height: 36px;
+            padding: 0;
+            border-radius: 6px;
+            background: var(--bg-border);
+            border: none;
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-icon:hover {
+            background: var(--bg-hover);
+        }
+
+        .btn-icon.active {
+            background: var(--primary-main);
+        }
+
+        /* Search Bar */
+        .search-bar {
+            height: 64px;
+            background: var(--bg-surface);
+            border-bottom: 1px solid var(--bg-border);
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            gap: 16px;
+        }
+
+        .search-input {
+            flex: 1;
+            max-width: 300px;
+            height: 40px;
+            padding: 0 16px;
+            border: 1px solid var(--bg-border);
+            border-radius: 6px;
+            background: var(--bg-base);
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 2px rgba(77, 148, 255, 0.2);
+        }
+
+        .date-range {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .date-input {
+            width: 140px;
+            height: 40px;
+            padding: 0 12px;
+            border: 1px solid var(--bg-border);
+            border-radius: 6px;
+            background: var(--bg-base);
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+
+        .date-separator {
+            color: var(--text-muted);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* Sidebar Filters */
+        .sidebar {
+            width: 280px;
+            background: var(--bg-surface);
+            border-right: 1px solid var(--bg-border);
+            padding: 16px;
+            overflow-y: auto;
+        }
+
+        .filter-section {
+            margin-bottom: 24px;
+        }
+
+        .filter-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            padding: 10px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-bottom: 4px;
+            transition: background 0.15s;
+        }
+
+        .filter-option:hover {
+            background: var(--bg-hover);
+        }
+
+        .filter-option.active {
+            background: rgba(0, 102, 204, 0.2);
+            color: var(--primary-light);
+        }
+
+        .filter-count {
+            margin-left: auto;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .filter-checkbox {
+            margin-right: 10px;
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Study Grid */
+        .study-container {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        /* Grid View */
+        .study-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .study-card {
+            background: var(--bg-surface);
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+
+        .study-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            border-color: var(--primary-light);
+        }
+
+        .study-thumbnail {
+            height: 180px;
+            background: linear-gradient(135deg, var(--bg-base), var(--bg-border));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .thumbnail-placeholder {
+            font-size: 48px;
+            opacity: 0.3;
+        }
+
+        .study-status-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .status-completed {
+            background: rgba(46, 213, 115, 0.2);
+            color: var(--color-success);
+        }
+
+        .status-emergency {
+            background: rgba(255, 71, 87, 0.2);
+            color: var(--color-error);
+        }
+
+        .study-card-body {
+            padding: 16px;
+        }
+
+        .study-patient-name {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .study-info-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .study-procedure {
+            font-size: 14px;
+            color: var(--text-primary);
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--bg-border);
+        }
+
+        /* List View */
+        .study-list {
+            display: none;
+        }
+
+        .study-list.active {
+            display: block;
+        }
+
+        .study-list-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .study-list-table th {
+            height: 44px;
+            padding: 0 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--bg-border);
+            font-weight: 600;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        .study-list-table td {
+            height: 64px;
+            padding: 0 16px;
+            border-bottom: 1px solid var(--bg-border);
+            color: var(--text-primary);
+        }
+
+        .study-list-table tbody tr {
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .study-list-table tbody tr:hover {
+            background: var(--bg-hover);
+        }
+
+        /* Detail Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: var(--bg-surface);
+            border-radius: 16px;
+            width: 900px;
+            max-width: 90%;
+            max-height: 80vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-header {
+            height: 60px;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--bg-border);
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: var(--bg-border);
+            border-radius: 6px;
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+
+        .modal-body {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+            display: flex;
+            gap: 24px;
+        }
+
+        .modal-images {
+            flex: 1;
+        }
+
+        .modal-image-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .modal-image-item {
+            aspect-ratio: 1;
+            background: var(--bg-base);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--bg-border);
+            cursor: pointer;
+        }
+
+        .modal-image-item:hover {
+            border-color: var(--primary-light);
+        }
+
+        .modal-details {
+            width: 300px;
+        }
+
+        .detail-section {
+            margin-bottom: 24px;
+        }
+
+        .detail-section-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--bg-border);
+            font-size: 14px;
+        }
+
+        .detail-label {
+            color: var(--text-muted);
+        }
+
+        .detail-value {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .modal-footer {
+            height: 64px;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 12px;
+            border-top: 1px solid var(--bg-border);
+        }
+
+        /* Status Bar */
+        .status-bar {
+            height: 36px;
+            background: var(--bg-surface);
+            border-top: 1px solid var(--bg-border);
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .status-info strong {
+            color: var(--primary-light);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">PROTYPER</div>
+        <h1 class="header-title">Studylist</h1>
+        <div class="header-actions">
+            <button class="btn btn-secondary">DICOM Export</button>
+            <button class="btn btn-secondary">CD Burning</button>
+            <button class="btn btn-primary">비교 모드</button>
+        </div>
+    </header>
+
+    <!-- Search Bar -->
+    <div class="search-bar">
+        <input type="text" class="search-input" placeholder="환자명, 환자ID, Accession No 검색...">
+        <div class="date-range">
+            <input type="date" class="date-input" value="2026-04-01">
+            <span class="date-separator">~</span>
+            <input type="date" class="date-input" value="2026-04-06">
+        </div>
+        <button class="btn btn-primary">검색</button>
+        <button class="btn btn-secondary">초기화</button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="filter-section">
+                <div class="filter-title">검사 상태</div>
+                <div class="filter-option active">
+                    <input type="checkbox" class="filter-checkbox" checked>
+                    <span>전체</span>
+                    <span class="filter-count">24</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" class="filter-checkbox" checked>
+                    <span>완료</span>
+                    <span class="filter-count">18</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" class="filter-checkbox" checked>
+                    <span>검토 중</span>
+                    <span class="filter-count">4</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" class="filter-checkbox">
+                    <span>취소</span>
+                    <span class="filter-count">2</span>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <div class="filter-title">검사 종류</div>
+                <div class="filter-option active">
+                    <input type="checkbox" class="filter-checkbox" checked>
+                    <span>전체</span>
+                    <span class="filter-count">24</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" class="filter-checkbox">
+                    <span>Chest</span>
+                    <span class="filter-count">8</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" class="filter-checkbox">
+                    <span>Abdomen</span>
+                    <span class="filter-count">5</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" class="filter-checkbox">
+                    <span>Extremity</span>
+                    <span class="filter-count">6</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" class="filter-checkbox">
+                    <span>Spine</span>
+                    <span class="filter-count">3</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" class="filter-checkbox">
+                    <span>Pelvis</span>
+                    <span class="filter-count">2</span>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <div class="filter-title">Modality</div>
+                <div class="filter-option active">
+                    <input type="checkbox" class="filter-checkbox" checked>
+                    <span>CR (Computed Radiography)</span>
+                    <span class="filter-count">24</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" class="filter-checkbox">
+                    <span>DR (Digital Radiography)</span>
+                    <span class="filter-count">0</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Study Container -->
+        <div class="study-container">
+            <div class="view-toggle">
+                <button class="btn-icon active" title="Grid View">⊞</button>
+                <button class="btn-icon" title="List View">☰</button>
+            </div>
+
+            <!-- Grid View -->
+            <div class="study-grid" id="gridView">
+                <div class="study-card" onclick="openStudyDetail('S20260406001')">
+                    <div class="study-thumbnail">
+                        <span class="thumbnail-placeholder">📷</span>
+                        <span class="study-status-badge status-completed">완료</span>
+                    </div>
+                    <div class="study-card-body">
+                        <div class="study-patient-name">홍길동</div>
+                        <div class="study-info-row">
+                            <span>P20250113001</span>
+                            <span>M / 38세</span>
+                        </div>
+                        <div class="study-info-row">
+                            <span>2026-04-06 10:30</span>
+                        </div>
+                        <div class="study-procedure">Chest PA</div>
+                    </div>
+                </div>
+
+                <div class="study-card" onclick="openStudyDetail('S20260406002')">
+                    <div class="study-thumbnail">
+                        <span class="thumbnail-placeholder">📷</span>
+                        <span class="study-status-badge status-completed">완료</span>
+                    </div>
+                    <div class="study-card-body">
+                        <div class="study-patient-name">김철수</div>
+                        <div class="study-info-row">
+                            <span>P20250113002</span>
+                            <span>M / 51세</span>
+                        </div>
+                        <div class="study-info-row">
+                            <span>2026-04-06 11:15</span>
+                        </div>
+                        <div class="study-procedure">Hand AP</div>
+                    </div>
+                </div>
+
+                <div class="study-card" onclick="openStudyDetail('S20260406003')">
+                    <div class="study-thumbnail">
+                        <span class="thumbnail-placeholder">📷</span>
+                        <span class="study-status-badge status-emergency">긴급</span>
+                    </div>
+                    <div class="study-card-body">
+                        <div class="study-patient-name">이영희</div>
+                        <div class="study-info-row">
+                            <span>P20250113003</span>
+                            <span>F / 36세</span>
+                        </div>
+                        <div class="study-info-row">
+                            <span>2026-04-06 12:00</span>
+                        </div>
+                        <div class="study-procedure">Abdomen AP</div>
+                    </div>
+                </div>
+
+                <div class="study-card" onclick="openStudyDetail('S20260406004')">
+                    <div class="study-thumbnail">
+                        <span class="thumbnail-placeholder">📷</span>
+                        <span class="study-status-badge status-completed">완료</span>
+                    </div>
+                    <div class="study-card-body">
+                        <div class="study-patient-name">최민수</div>
+                        <div class="study-info-row">
+                            <span>P20250113004</span>
+                            <span>M / 61세</span>
+                        </div>
+                        <div class="study-info-row">
+                            <span>2026-04-05 16:45</span>
+                        </div>
+                        <div class="study-procedure">Spine AP</div>
+                    </div>
+                </div>
+
+                <div class="study-card" onclick="openStudyDetail('S20260406005')">
+                    <div class="study-thumbnail">
+                        <span class="thumbnail-placeholder">📷</span>
+                        <span class="study-status-badge status-completed">완료</span>
+                    </div>
+                    <div class="study-card-body">
+                        <div class="study-patient-name">정수진</div>
+                        <div class="study-info-row">
+                            <span>P20250113005</span>
+                            <span>F / 44세</span>
+                        </div>
+                        <div class="study-info-row">
+                            <span>2026-04-05 14:20</span>
+                        </div>
+                        <div class="study-procedure">Pelvis AP</div>
+                    </div>
+                </div>
+
+                <div class="study-card" onclick="openStudyDetail('S20260406006')">
+                    <div class="study-thumbnail">
+                        <span class="thumbnail-placeholder">📷</span>
+                        <span class="study-status-badge status-completed">완료</span>
+                    </div>
+                    <div class="study-card-body">
+                        <div class="study-patient-name">강동원</div>
+                        <div class="study-info-row">
+                            <span>P20250113006</span>
+                            <span>M / 48세</span>
+                        </div>
+                        <div class="study-info-row">
+                            <span>2026-04-05 13:10</span>
+                        </div>
+                        <div class="study-procedure">Knee AP/Lat</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- List View -->
+            <div class="study-list" id="listView">
+                <table class="study-list-table">
+                    <thead>
+                        <tr>
+                            <th>환자명</th>
+                            <th>환자 ID</th>
+                            <th>검사일</th>
+                            <th>검사 종류</th>
+                            <th>영상 수</th>
+                            <th>상태</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr onclick="openStudyDetail('S20260406001')">
+                            <td>홍길동</td>
+                            <td>P20250113001</td>
+                            <td>2026-04-06 10:30</td>
+                            <td>Chest PA</td>
+                            <td>2</td>
+                            <td><span class="study-status-badge status-completed">완료</span></td>
+                        </tr>
+                        <tr onclick="openStudyDetail('S20260406002')">
+                            <td>김철수</td>
+                            <td>P20250113002</td>
+                            <td>2026-04-06 11:15</td>
+                            <td>Hand AP</td>
+                            <td>2</td>
+                            <td><span class="study-status-badge status-completed">완료</span></td>
+                        </tr>
+                        <tr onclick="openStudyDetail('S20260406003')">
+                            <td>이영희</td>
+                            <td>P20250113003</td>
+                            <td>2026-04-06 12:00</td>
+                            <td>Abdomen AP</td>
+                            <td>1</td>
+                            <td><span class="study-status-badge status-emergency">긴급</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Status Bar -->
+    <footer class="status-bar">
+        <span class="status-info">총 <strong>24</strong> 건</span>
+        <span class="status-info">완료: <strong>18</strong></span>
+        <span class="status-info">검토 중: <strong>4</strong></span>
+        <span class="status-info">취소: <strong>2</strong></span>
+    </footer>
+
+    <!-- Study Detail Modal -->
+    <div class="modal-overlay" id="studyModal" onclick="closeModal(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h2 class="modal-title">검사 상세</h2>
+                <button class="modal-close" onclick="closeModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-images">
+                    <div class="modal-image-grid">
+                        <div class="modal-image-item"><span class="thumbnail-placeholder">📷</span></div>
+                        <div class="modal-image-item"><span class="thumbnail-placeholder">📷</span></div>
+                        <div class="modal-image-item"><span class="thumbnail-placeholder">📷</span></div>
+                        <div class="modal-image-item"><span class="thumbnail-placeholder">📷</span></div>
+                    </div>
+                </div>
+                <div class="modal-details">
+                    <div class="detail-section">
+                        <div class="detail-section-title">환자 정보</div>
+                        <div class="detail-row">
+                            <span class="detail-label">이름</span>
+                            <span class="detail-value">홍길동</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">환자 ID</span>
+                            <span class="detail-value">P20250113001</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">생년월일</span>
+                            <span class="detail-value">1988-01-01</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">성별</span>
+                            <span class="detail-value">남</span>
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <div class="detail-section-title">검사 정보</div>
+                        <div class="detail-row">
+                            <span class="detail-label">검사일</span>
+                            <span class="detail-value">2026-04-06 10:30</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">검사 종류</span>
+                            <span class="detail-value">Chest PA</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">영상 수</span>
+                            <span class="detail-value">2</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">상태</span>
+                            <span class="detail-value">완료</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary">인쇄</button>
+                <button class="btn btn-secondary">DICOM Export</button>
+                <button class="btn btn-primary">닫기</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // View toggle
+        const gridView = document.getElementById('gridView');
+        const listView = document.getElementById('listView');
+        const toggleBtns = document.querySelectorAll('.view-toggle .btn-icon');
+
+        toggleBtns[0].addEventListener('click', function() {
+            this.classList.add('active');
+            toggleBtns[1].classList.remove('active');
+            gridView.style.display = 'grid';
+            listView.classList.remove('active');
+        });
+
+        toggleBtns[1].addEventListener('click', function() {
+            this.classList.add('active');
+            toggleBtns[0].classList.remove('active');
+            gridView.style.display = 'none';
+            listView.classList.add('active');
+        });
+
+        // Modal
+        const modal = document.getElementById('studyModal');
+
+        function openStudyDetail(studyId) {
+            modal.classList.add('show');
+        }
+
+        function closeModal(event) {
+            if (!event || event.target === modal) {
+                modal.classList.remove('show');
+            }
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>

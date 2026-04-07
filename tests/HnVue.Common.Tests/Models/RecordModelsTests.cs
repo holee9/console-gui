@@ -17,7 +17,7 @@ public sealed class RecordModelsTests
     public void AuthenticationToken_SetsAllProperties()
     {
         var expires = DateTimeOffset.UtcNow.AddMinutes(15);
-        var token = new AuthenticationToken("u1", "alice", UserRole.Radiographer, "jwt.token.sig", expires);
+        var token = new AuthenticationToken("u1", "alice", UserRole.Radiographer, "jwt.token.sig", expires, "jti-test-001");
 
         token.UserId.Should().Be("u1");
         token.Username.Should().Be("alice");
@@ -30,8 +30,8 @@ public sealed class RecordModelsTests
     public void AuthenticationToken_ValueEquality()
     {
         var exp = DateTimeOffset.UtcNow;
-        var a = new AuthenticationToken("u1", "alice", UserRole.Admin, "tok", exp);
-        var b = new AuthenticationToken("u1", "alice", UserRole.Admin, "tok", exp);
+        var a = new AuthenticationToken("u1", "alice", UserRole.Admin, "tok", exp, "jti-same");
+        var b = new AuthenticationToken("u1", "alice", UserRole.Admin, "tok", exp, "jti-same");
 
         a.Should().Be(b);
     }

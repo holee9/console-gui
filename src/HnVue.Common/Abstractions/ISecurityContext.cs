@@ -21,6 +21,9 @@ public interface ISecurityContext
     /// <summary>Gets a value indicating whether a user is currently authenticated.</summary>
     bool IsAuthenticated { get; }
 
+    /// <summary>Gets the JWT identifier (JTI) of the current session token, or <see langword="null"/>.</summary>
+    string? CurrentJti { get; }
+
     /// <summary>
     /// Returns <see langword="true"/> when the current user holds exactly the specified <paramref name="role"/>.
     /// </summary>

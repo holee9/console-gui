@@ -39,6 +39,7 @@ public partial class App : Application
     /// Production deployments should supply an encrypted connection string via
     /// configuration (<c>appsettings.json</c> or environment variable).
     /// </summary>
+    // @MX:WARN DefaultConnectionString - @MX:REASON: Hardcoded SQLite connection string; production requires encrypted config
     private const string DefaultConnectionString = "Data Source=hnvue.db";
 
     private IHost? _host;
@@ -49,6 +50,7 @@ public partial class App : Application
     /// Builds the DI host and opens the main window.
     /// Invoked by WPF before the first window is displayed.
     /// </summary>
+    // @MX:WARN OnStartup - @MX:REASON: async void WPF event handler; exceptions on unobserved task crash app
     protected override async void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
@@ -91,6 +93,7 @@ public partial class App : Application
     /// Stops the DI host and releases all managed resources.
     /// Invoked after the last window closes.
     /// </summary>
+    // @MX:WARN OnExit - @MX:REASON: async void WPF event handler; exceptions on unobserved task during app shutdown
     protected override async void OnExit(ExitEventArgs e)
     {
         if (_host is not null)
@@ -112,6 +115,7 @@ public partial class App : Application
     /// Repositories without EF implementations in Phase 1d use lightweight no-op stubs
     /// (inner sealed classes in this file) marked with <c>// STUB</c>.
     /// </remarks>
+    // @MX:ANCHOR BuildHost - @MX:REASON: Composition root for entire 13-module DI graph; all services registered here
     private static IHost BuildHost()
     {
         return Host.CreateDefaultBuilder()
@@ -252,13 +256,24 @@ public partial class App : Application
     /// <summary>No-op stub for <see cref="IDoseRepository"/>.</summary>
     private sealed class NullDoseRepository : IDoseRepository
     {
+        private const string NoStorageMessage = "NullDoseRepository: no storage configured.";
+
         /// <inheritdoc/>
         public Task<Result> SaveAsync(DoseRecord dose, CancellationToken cancellationToken = default)
-            => Task.FromResult(Result.Failure(ErrorCode.NotFound, "NullDoseRepository: no storage configured."));
+            => Task.FromResult(Result.Failure(ErrorCode.NotFound, NoStorageMessage));
 
         /// <inheritdoc/>
         public Task<Result<DoseRecord?>> GetByStudyAsync(string studyInstanceUid, CancellationToken cancellationToken = default)
             => Task.FromResult(Result.Success<DoseRecord?>(null));
+
+        /// <inheritdoc/>
+        public Task<Result<IReadOnlyList<DoseRecord>>> GetByPatientAsync(
+            string patientId,
+            DateTimeOffset? from,
+            DateTimeOffset? until,
+            CancellationToken cancellationToken = default)
+            => Task.FromResult(Result.Success<IReadOnlyList<DoseRecord>>(
+                new List<DoseRecord>().AsReadOnly()));
     }
 
     /// <summary>No-op stub for <see cref="IWorklistRepository"/>.</summary>

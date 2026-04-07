@@ -68,6 +68,7 @@ public sealed partial class ImageViewerViewModel : ObservableObject, IImageViewe
     ICommand IImageViewerViewModel.ZoomOutCommand => ZoomOutCommand;
     ICommand IImageViewerViewModel.ResetWindowCommand => ResetWindowCommand;
 
+    // @MX:NOTE WPF Image control binding requires BitmapSource.Freeze() for cross-thread UI updates
     /// <summary>
     /// Gets or sets the WPF image source rendered in the Image control.
     /// Built from <see cref="ProcessedImage.PixelData"/> as an 8-bit grayscale <see cref="WriteableBitmap"/>.

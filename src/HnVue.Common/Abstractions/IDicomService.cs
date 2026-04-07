@@ -3,6 +3,7 @@ using HnVue.Common.Results;
 
 namespace HnVue.Common.Abstractions;
 
+// @MX:ANCHOR IDicomService - @MX:REASON: DICOM networking contract with 8+ consumers, PACS integration boundary
 /// <summary>
 /// Defines DICOM networking operations: store to PACS, worklist query, and print.
 /// Implemented by the HnVue.Dicom module.

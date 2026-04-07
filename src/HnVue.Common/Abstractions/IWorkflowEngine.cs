@@ -68,6 +68,27 @@ public interface IWorkflowEngine
         CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// Starts an emergency/trauma exposure workflow bypassing normal patient registration.
+    /// SWR-WF-026~027: Allows immediate exposure with minimal patient data.
+    /// The system auto-generates a temporary patient ID and defers full registration.
+    /// </summary>
+    /// <param name="patientName">Optional patient name (may be null for unknown trauma patients).</param>
+    /// <param name="parameters">Exposure parameters for the emergency exposure.</param>
+    /// <param name="cancellationToken">Token to cancel the asynchronous operation.</param>
+    /// <returns>
+    /// Success with <see cref="DoseValidationResult"/> when the emergency exposure is allowed.
+    /// Failure when RBAC check fails or dose validation blocks the exposure.
+    /// </returns>
+    /// <remarks>
+    /// Emergency workflow still enforces dose interlock (IEC 60601-2-54) and RBAC (SWR-IP-RBAC-001).
+    /// Audit trail is logged for regulatory compliance (SWR-NF-SC-041).
+    /// </remarks>
+    Task<Result<DoseValidationResult>> StartEmergencyExposureAsync(
+        string? patientName,
+        ExposureParameters parameters,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// Raised whenever the workflow state changes.
     /// Subscribers receive a <see cref="WorkflowStateChangedEventArgs"/> describing the transition.
     /// </summary>

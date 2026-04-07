@@ -20,7 +20,8 @@ public sealed class LoginSuccessEventArgsTests
             Username: "testuser",
             Role: UserRole.Radiographer,
             Token: "jwt.token.here",
-            ExpiresAt: DateTimeOffset.UtcNow.AddHours(1));
+            ExpiresAt: DateTimeOffset.UtcNow.AddHours(1),
+            Jti: "test-jti-123");
 
         // Act
         var args = new LoginSuccessEventArgs(token);

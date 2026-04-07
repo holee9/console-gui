@@ -966,4 +966,186 @@ public sealed class ImageProcessorTests
 
         result.IsFailure.Should().BeTrue();
     }
+
+    // ── ApplyEdgeEnhancement (additional) ────────────────────────────────────
+
+    [Fact]
+    [Trait("SWR", "SWR-IP-043")]
+    public void ApplyEdgeEnhancement_WithValidStrength_ReturnsModifiedImage()
+    {
+        // SWR-IP-043: strength > 0 must produce output different from input.
+        var sut = CreateSut();
+        // Gradient image: useful edges for enhancement to act on.
+        var pixels = new byte[16 * 16];
+        for (int i = 0; i < pixels.Length; i++)
+            pixels[i] = (byte)(i % 256);
+        var image = new ProcessedImage(16, 16, 8, pixels, 128.0, 256.0);
+
+        var result = sut.ApplyEdgeEnhancement(image, 0.5);
+
+        result.IsSuccess.Should().BeTrue();
+        result.Value.Width.Should().Be(16);
+        result.Value.Height.Should().Be(16);
+        result.Value.PixelData.Length.Should().Be(pixels.Length);
+        // Output should differ from input since edges were enhanced.
+        result.Value.PixelData.Should().NotBeEquivalentTo(pixels);
+    }
+
+    [Theory]
+    [InlineData(-0.1)]
+    [InlineData(1.1)]
+    [Trait("SWR", "SWR-IP-043")]
+    public void ApplyEdgeEnhancement_InvalidStrength_ReturnsFailure(double strength)
+    {
+        var sut = CreateSut();
+        var image = MakeProcessedImage();
+
+        var result = sut.ApplyEdgeEnhancement(image, strength);
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.ImageProcessingFailed);
+    }
+
+    [Fact]
+    [Trait("SWR", "SWR-IP-043")]
+    public void ApplyEdgeEnhancement_WithFullStrength_ClampsOutput()
+    {
+        // strength=1.0 should still produce valid byte-range output.
+        var sut = CreateSut();
+        var pixels = new byte[8 * 8];
+        for (int i = 0; i < pixels.Length; i++)
+            pixels[i] = (byte)(i % 256);
+        var image = new ProcessedImage(8, 8, 8, pixels, 128.0, 256.0);
+
+        var result = sut.ApplyEdgeEnhancement(image, 1.0);
+
+        result.IsSuccess.Should().BeTrue();
+        result.Value.PixelData.Should().OnlyContain(v => v >= 0 && v <= 255);
+    }
+
+    // ── ApplyAutoTrimming (additional) ───────────────────────────────────────
+
+    [Fact]
+    [Trait("SWR", "SWR-IP-047")]
+    public void ApplyAutoTrimming_AllBlackImage_ReturnsAllBlack()
+    {
+        // SWR-IP-047: if no pixels exceed threshold, result must be all-black.
+        var sut = CreateSut();
+        var pixels = new byte[8 * 8]; // all zeros
+        var image = new ProcessedImage(8, 8, 8, pixels, 128.0, 256.0);
+
+        var result = sut.ApplyAutoTrimming(image, threshold: 10);
+
+        result.IsSuccess.Should().BeTrue();
+        result.Value.Width.Should().Be(8);
+        result.Value.Height.Should().Be(8);
+        result.Value.PixelData.Should().OnlyContain(v => v == 0);
+    }
+
+    // ── ApplyGainOffsetCorrection (additional) ────────────────────────────────
+
+    [Fact]
+    [Trait("SWR", "SWR-IP-039")]
+    public void ApplyGainOffsetCorrection_WithNullRaw16_ReturnsFailure()
+    {
+        // SWR-IP-039 Safety: null RawPixelData16 must block gain/offset correction.
+        var sut = CreateSut();
+        int pixelCount = 4;
+        var image = new ProcessedImage(
+            width: 2, height: 2, bitsPerPixel: 8,
+            pixelData: new byte[pixelCount],
+            windowCenter: 128.0, windowWidth: 256.0)
+        {
+            RawPixelData16 = null // no raw 16-bit data
+        };
+        var gainMap = new float[pixelCount];
+        var offsetMap = new float[pixelCount];
+
+        var result = sut.ApplyGainOffsetCorrection(image, gainMap, offsetMap);
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.ImageProcessingFailed);
+    }
+
+    [Fact]
+    [Trait("SWR", "SWR-IP-039")]
+    public void ApplyGainOffsetCorrection_WithTooSmallMaps_ReturnsFailure()
+    {
+        // SWR-IP-039 Safety: gain/offset maps smaller than image must be rejected.
+        var sut = CreateSut();
+        int pixelCount = 16;
+        var raw16 = new ushort[pixelCount];
+        var image = new ProcessedImage(
+            width: 4, height: 4, bitsPerPixel: 8,
+            pixelData: new byte[pixelCount],
+            windowCenter: 128.0, windowWidth: 256.0)
+        {
+            RawPixelData16 = raw16
+        };
+        // Maps only cover half the pixels.
+        var gainMap = new float[pixelCount / 2];
+        var offsetMap = new float[pixelCount / 2];
+
+        var result = sut.ApplyGainOffsetCorrection(image, gainMap, offsetMap);
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.ImageProcessingFailed);
+    }
+
+    // ── ProcessAsync IOException path ─────────────────────────────────────────
+
+    [Fact]
+    public async Task ProcessAsync_LockedFile_ReturnsIOFailure()
+    {
+        // ProcessAsync must return failure (not throw) when IOException occurs.
+        var sut = CreateSut();
+        var tempPath = Path.Combine(Path.GetTempPath(), $"hnvue_locked_{Guid.NewGuid():N}.raw");
+        File.WriteAllBytes(tempPath, new byte[256]);
+
+        try
+        {
+            // Lock the file exclusively so ProcessAsync triggers an IOException.
+            using var lockStream = new FileStream(
+                tempPath,
+                FileMode.Open,
+                FileAccess.ReadWrite,
+                FileShare.None); // exclusive — no other reader allowed
+
+            var result = await sut.ProcessAsync(tempPath, new ProcessingParameters());
+
+            result.IsFailure.Should().BeTrue();
+            result.Error.Should().Be(ErrorCode.ImageProcessingFailed);
+            result.ErrorMessage.Should().Contain("I/O error");
+        }
+        finally
+        {
+            if (File.Exists(tempPath))
+                File.Delete(tempPath);
+        }
+    }
+
+    // ── ApplyNoiseReduction (additional) ─────────────────────────────────────
+
+    [Fact]
+    [Trait("SWR", "SWR-IP-041")]
+    public void ApplyNoiseReduction_WithHighStrengthGradient_SmoothesImage()
+    {
+        // Verify that strength near 1.0 smoothes a noisy image toward a uniform mean.
+        var sut = CreateSut();
+        var rng = new Random(42);
+        var pixels = new byte[16 * 16];
+        for (int i = 0; i < pixels.Length; i++)
+            pixels[i] = (byte)rng.Next(0, 256);
+        var image = new ProcessedImage(16, 16, 8, pixels, 128.0, 256.0);
+
+        var result = sut.ApplyNoiseReduction(image, 0.8);
+
+        result.IsSuccess.Should().BeTrue();
+        result.Value.Width.Should().Be(16);
+        result.Value.Height.Should().Be(16);
+        // A smoothed image should have lower variance than noisy input.
+        double inputVariance = ComputeVariance(pixels);
+        double outputVariance = ComputeVariance(result.Value.PixelData);
+        outputVariance.Should().BeLessThan(inputVariance);
+    }
 }

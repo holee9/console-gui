@@ -5,6 +5,7 @@ using HnVue.Common.Enums;
 
 namespace HnVue.UI.Converters;
 
+// @MX:NOTE Safety-critical color coding for equipment state (SWR-NF-SC-041); visual feedback for operators
 /// <summary>
 /// Converts a <see cref="SafeState"/> value to a <see cref="SolidColorBrush"/>
 /// for the safety state indicator bar.

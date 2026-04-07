@@ -1,5 +1,6 @@
 namespace HnVue.Common.Models;
 
+// @MX:NOTE AuditEntry record - Hash chain node for tamper-evident audit, IEC 62304 regulatory compliance
 /// <summary>
 /// Represents a single tamper-evident audit log entry.
 /// Each entry is linked to the previous via <see cref="PreviousHash"/> to form a hash chain,

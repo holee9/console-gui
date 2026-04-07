@@ -8,6 +8,7 @@ using HnVue.UI.Contracts.ViewModels;
 
 namespace HnVue.UI.ViewModels;
 
+// @MX:NOTE Role-based access control: only Admin/Service roles can load/save system settings
 /// <summary>
 /// ViewModel for the system administration screen.
 /// Loading and saving system settings is restricted to users with

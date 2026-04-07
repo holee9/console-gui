@@ -4,6 +4,8 @@ using System.Security.Cryptography;
 
 namespace HnVue.Update;
 
+// @MX:WARN SignatureVerifier - @MX:REASON: P/Invoke to wintrust.dll requires Windows-only execution
+// @MX:NOTE WinVerifyTrust validates certificate chain and revocation status
 /// <summary>
 /// Provides Windows Authenticode digital-signature verification and SHA-256 hash checking
 /// for update package files.
@@ -22,6 +24,7 @@ internal static class SignatureVerifier
     // WinVerifyTrust return codes
     private const uint ErrorSuccess = 0x00000000;
 
+    // @MX:ANCHOR VerifyAuthenticode - @MX:REASON: Critical security gate for all update packages
     /// <summary>
     /// Verifies the Authenticode digital signature of the specified file using <c>WinVerifyTrust</c>.
     /// </summary>
@@ -77,6 +80,7 @@ internal static class SignatureVerifier
         }
     }
 
+    // @MX:ANCHOR VerifyHash - @MX:REASON: Called by ApplyUpdateAsync for integrity verification
     /// <summary>
     /// Computes the SHA-256 hash of the specified file and compares it against the expected value.
     /// </summary>

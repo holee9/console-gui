@@ -1,5 +1,6 @@
 namespace HnVue.Security;
 
+// @MX:NOTE JwtOptions - JWT config with SecretKey (32+ chars), 15-min expiry, issuer/audience claims
 /// <summary>
 /// Configuration options for JWT token issuance and validation.
 /// Bind from the "Jwt" section of application configuration.

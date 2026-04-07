@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visual Identity - HnVue Style Guide</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <h2>HnVue</h2>
+            <p>Style Guide v1.0</p>
+        </div>
+        <ul class="nav-menu">
+            <li><a href="index.html">Introduction</a></li>
+            <li><a href="visual-identity.html" class="active">Visual Identity</a></li>
+            <li><a href="components.html">Components</a></li>
+            <li><a href="patterns.html">Patterns</a></li>
+            <li><a href="accessibility.html">Accessibility</a></li>
+            <li><a href="api.html">API Reference</a></li>
+        </ul>
+        <div class="sidebar-footer">
+            <button onclick="window.print()" class="btn-secondary">
+                <span>Download PDF</span>
+            </button>
+        </div>
+    </nav>
+
+    <main class="content">
+        <header class="page-header">
+            <h1>Visual Identity</h1>
+            <p class="subtitle">Colors, typography, and spacing system</p>
+        </header>
+
+        <section class="section">
+            <h2>Color Palette</h2>
+
+            <!-- CoreTokens.xaml authoritative source — updated 2026-04-06 -->
+            <h3>Primary Colors</h3>
+            <p>Primary colors convey trust, professionalism, and medical authority.</p>
+            <div class="color-grid">
+                <div class="color-swatch">
+                    <div class="color-preview" style="background-color: #1B4F8A;"></div>
+                    <div class="color-info">
+                        <div class="color-name">Primary (Button.Primary)</div>
+                        <div class="color-hex">#1B4F8A</div>
+                    </div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-preview" style="background-color: #2E6DB4;"></div>
+                    <div class="color-info">
+                        <div class="color-name">Primary Light (Hover)</div>
+                        <div class="color-hex">#2E6DB4</div>
+                    </div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-preview" style="background-color: #00AEEF;"></div>
+                    <div class="color-info">
+                        <div class="color-name">Accent / Info / Focus</div>
+                        <div class="color-hex">#00AEEF</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Background Colors (Dark Mode Only)</h3>
+            <p>Dark mode is the only supported mode. No light mode variant exists.</p>
+            <div class="color-grid">
+                <div class="color-swatch">
+                    <div class="color-preview" style="background-color: #1A1A2E;"></div>
+                    <div class="color-info">
+                        <div class="color-name">Background Page</div>
+                        <div class="color-hex">#1A1A2E</div>
+                    </div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-preview" style="background-color: #16213E;"></div>
+                    <div class="color-info">
+                        <div class="color-name">Background Panel</div>
+                        <div class="color-hex">#16213E</div>
+                    </div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-preview" style="background-color: #0F3460;"></div>
+                    <div class="color-info">
+                        <div class="color-name">Background Card</div>
+                        <div class="color-hex">#0F3460</div>
+                    </div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-preview" style="background-color: #FFFFFF; border: 1px solid #2E4A6E;"></div>
+                    <div class="color-info">
+                        <div class="color-name">Text Primary</div>
+                        <div class="color-hex">#FFFFFF</div>
+                    </div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-preview" style="background-color: #B0BEC5;"></div>
+                    <div class="color-info">
+                        <div class="color-name">Text Secondary</div>
+                        <div class="color-hex">#B0BEC5</div>
+                    </div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-preview" style="background-color: #2E4A6E;"></div>
+                    <div class="color-info">
+                        <div class="color-name">Border Default</div>
+                        <div class="color-hex">#2E4A6E</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Status Colors (IEC 62366 Safety Compliant)</h3>
+            <p>Status colors communicate system states. These meet IEC 62366 safety color requirements for medical devices.</p>
+            <div class="color-grid">
+                <div class="color-swatch">
+                    <div class="color-preview" style="background-color: #D50000;"></div>
+                    <div class="color-info">
+                        <div class="color-name">Emergency / Error / Danger</div>
+                        <div class="color-hex">#D50000</div>
+                    </div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-preview" style="background-color: #FF6D00;"></div>
+                    <div class="color-info">
+                        <div class="color-name">Blocked / Attention</div>
+                        <div class="color-hex">#FF6D00</div>
+                    </div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-preview" style="background-color: #FFD600;"></div>
+                    <div class="color-info">
+                        <div class="color-name">Warning</div>
+                        <div class="color-hex">#FFD600</div>
+                    </div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-preview" style="background-color: #00C853;"></div>
+                    <div class="color-info">
+                        <div class="color-name">Safe / Success / Completed</div>
+                        <div class="color-hex">#00C853</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Typography</h2>
+
+            <h3>Font Families</h3>
+            <div class="component-showcase">
+                <div class="component-row">
+                    <div style="flex: 1;">
+                        <h4>Primary</h4>
+                        <p style="font-family: 'Segoe UI', sans-serif; font-size: 18px;">
+                            Segoe UI, Malgun Gothic, Apple SD Gothic Neo, system-ui
+                        </p>
+                    </div>
+                </div>
+                <div class="component-row">
+                    <div style="flex: 1;">
+                        <h4>Monospace</h4>
+                        <p style="font-family: 'Consolas', monospace; font-size: 18px;">
+                            Consolas, SF Mono, monospace
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Type Scale</h3>
+            <div class="type-scale">
+                <div class="type-scale-item">
+                    <div class="type-size">32px / 48px</div>
+                    <div class="type-example">
+                        <span style="font-size: 32px; line-height: 48px; font-weight: 700;">
+                            Display Text
+                        </span>
+                    </div>
+                </div>
+                <div class="type-scale-item">
+                    <div class="type-size">24px / 36px</div>
+                    <div class="type-example">
+                        <span style="font-size: 24px; line-height: 36px; font-weight: 600;">
+                            Heading Level 1
+                        </span>
+                    </div>
+                </div>
+                <div class="type-scale-item">
+                    <div class="type-size">18px / 28px</div>
+                    <div class="type-example">
+                        <span style="font-size: 18px; line-height: 28px; font-weight: 500;">
+                            Heading Level 2
+                        </span>
+                    </div>
+                </div>
+                <div class="type-scale-item">
+                    <div class="type-size">16px / 24px</div>
+                    <div class="type-example">
+                        <span style="font-size: 16px; line-height: 24px; font-weight: 500;">
+                            Heading Level 3
+                        </span>
+                    </div>
+                </div>
+                <div class="type-scale-item">
+                    <div class="type-size">14px / 22px</div>
+                    <div class="type-example">
+                        <span style="font-size: 14px; line-height: 22px; font-weight: 400;">
+                            Body text for regular content display
+                        </span>
+                    </div>
+                </div>
+                <div class="type-scale-item">
+                    <div class="type-size">12px / 18px</div>
+                    <div class="type-example">
+                        <span style="font-size: 12px; line-height: 18px; font-weight: 400; color: #B0BEC5;">
+                            Caption text for labels and metadata
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Font Weights</h3>
+            <div class="component-showcase">
+                <div class="component-row">
+                    <span style="font-weight: 400;">Regular (400) - Body text</span>
+                </div>
+                <div class="component-row">
+                    <span style="font-weight: 500;">Medium (500) - Subheaders</span>
+                </div>
+                <div class="component-row">
+                    <span style="font-weight: 600;">Semibold (600) - Emphasis</span>
+                </div>
+                <div class="component-row">
+                    <span style="font-weight: 700;">Bold (700) - Titles</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Spacing System</h2>
+
+            <p>The spacing system is based on a 4px base unit with consistent scale.</p>
+
+            <h3>Spacing Scale</h3>
+            <div class="component-showcase">
+                <div class="component-row">
+                    <div style="width: 4px; height: 40px; background: #1B4F8A;"></div>
+                    <div>
+                        <strong>xs: 4px</strong><br>
+                        <span style="font-size: 12px; color: #B0BEC5;">Micro spacing, tight gaps</span>
+                    </div>
+                </div>
+                <div class="component-row">
+                    <div style="width: 8px; height: 40px; background: #1B4F8A;"></div>
+                    <div>
+                        <strong>sm: 8px</strong><br>
+                        <span style="font-size: 12px; color: #B0BEC5;">Small spacing, icon padding</span>
+                    </div>
+                </div>
+                <div class="component-row">
+                    <div style="width: 16px; height: 40px; background: #1B4F8A;"></div>
+                    <div>
+                        <strong>md: 16px</strong><br>
+                        <span style="font-size: 12px; color: #B0BEC5;">Default spacing, component gaps</span>
+                    </div>
+                </div>
+                <div class="component-row">
+                    <div style="width: 24px; height: 40px; background: #1B4F8A;"></div>
+                    <div>
+                        <strong>lg: 24px</strong><br>
+                        <span style="font-size: 12px; color: #B0BEC5;">Large spacing, section margins</span>
+                    </div>
+                </div>
+                <div class="component-row">
+                    <div style="width: 32px; height: 40px; background: #1B4F8A;"></div>
+                    <div>
+                        <strong>xl: 32px</strong><br>
+                        <span style="font-size: 12px; color: #B0BEC5;">Extra large, component groups</span>
+                    </div>
+                </div>
+                <div class="component-row">
+                    <div style="width: 48px; height: 40px; background: #1B4F8A;"></div>
+                    <div>
+                        <strong>2xl: 48px</strong><br>
+                        <span style="font-size: 12px; color: #B0BEC5;">Section spacing</span>
+                    </div>
+                </div>
+                <div class="component-row">
+                    <div style="width: 64px; height: 40px; background: #1B4F8A;"></div>
+                    <div>
+                        <strong>3xl: 64px</strong><br>
+                        <span style="font-size: 12px; color: #B0BEC5;">Page-level spacing</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>XAML Resource Usage</h2>
+
+            <h3>Using Colors</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>XAML</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code>&lt;!-- Reference from Theme Resources --&gt;
+&lt;TextBlock Text="Primary Text"
+           Foreground="{StaticResource Primary.Main}"/&gt;
+
+&lt;Border Background="{StaticResource Neutral.Surface}"
+        BorderBrush="{StaticResource Neutral.Border}"
+        BorderThickness="1"/&gt;</code></pre>
+            </div>
+
+            <h3>Using Typography</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>XAML</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code>&lt;!-- Apply predefined text styles --&gt;
+&lt;TextBlock Text="Screen Title"
+           Style="{StaticResource TextStyle.H1}"/&gt;
+
+&lt;TextBlock Text="Body content goes here"
+           Style="{StaticResource TextStyle.Body}"/&gt;
+
+&lt;!-- Manual typography --&gt;
+&lt;TextBlock Text="Custom text"
+           FontFamily="{StaticResource Font.Primary}"
+           FontSize="{StaticResource Size.Body}"
+           FontWeight="{StaticResource Weight.Regular}"/&gt;</code></pre>
+            </div>
+
+            <h3>Using Spacing</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>XAML</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code>&lt;!-- Standard spacing values --&gt;
+&lt;Grid Margin="{StaticResource Spacing.Md}"&gt;
+    &lt;!-- Content --&gt;
+&lt;/Grid&gt;
+
+&lt;StackPanel Spacing="{StaticResource Spacing.Sm}"&gt;
+    &lt;!-- Items --&gt;
+&lt;/StackPanel&gt;</code></pre>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Accessibility Guidelines</h2>
+
+            <h3>Color Contrast</h3>
+            <p>All color combinations meet WCAG 2.2 Level AA requirements:</p>
+            <ul>
+                <li>Normal text: Minimum 4.5:1 contrast ratio</li>
+                <li>Large text (18px+): Minimum 3:1 contrast ratio</li>
+                <li>UI components: Minimum 3:1 contrast ratio</li>
+            </ul>
+
+            <h3>Color Independence</h3>
+            <div class="do-dont">
+                <div class="do-dont-card do">
+                    <h4>Do</h4>
+                    <p>Use color alongside text labels and icons</p>
+                    <div class="component-showcase" style="margin-top: 12px;">
+                        <button style="background: #00C853; color: white; padding: 8px 16px; border: none; border-radius: 4px;">
+                            ✓ Success
+                        </button>
+                    </div>
+                </div>
+                <div class="do-dont-card dont">
+                    <h4>Don't</h4>
+                    <p>Rely on color alone to convey meaning</p>
+                    <div class="component-showcase" style="margin-top: 12px;">
+                        <button style="background: #00C853; color: white; padding: 8px 16px; border: none; border-radius: 4px;">
+                            Button
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p>HnVue Style Guide v1.0 | Last Updated: 2026-04-06</p>
+            <p>For internal use by HnVue development team</p>
+        </footer>
+    </main>
+
+    <script>
+        function copyCode(button) {
+            const codeBlock = button.parentElement.nextElementSibling;
+            const code = codeBlock.querySelector('code').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                button.textContent = 'Copied!';
+                setTimeout(() => button.textContent = 'Copy', 2000);
+            });
+        }
+    </script>
+</body>
+</html>

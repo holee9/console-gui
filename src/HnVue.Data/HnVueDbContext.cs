@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HnVue.Data;
 
+// @MX:ANCHOR HnVueDbContext - @MX:REASON: EF Core context with 6 DbSets, IEC 62304 cascade rules for dose records
 /// <summary>
 /// EF Core database context for the HnVue console application.
 /// Uses SQLite with optional SQLCipher AES-256 encryption.

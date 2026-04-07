@@ -4,6 +4,8 @@ using HnVue.Common.Results;
 
 namespace HnVue.Update;
 
+// @MX:TODO Integration test required with real Authenticode certificate to verify P/Invoke behavior
+// @MX:NOTE SHA-256 verification prevents tampered updates - IEC 62304 §6.2.5 requirement
 /// <summary>
 /// Verifies the integrity of software update packages using SHA-256 hash comparison.
 /// </summary>
@@ -14,6 +16,7 @@ namespace HnVue.Update;
 /// </remarks>
 public sealed class CodeSignVerifier
 {
+    // @MX:ANCHOR VerifyHashAsync - @MX:REASON: Called by SWUpdateService for integrity verification
     /// <summary>
     /// Verifies that the file at <paramref name="filePath"/> matches the expected
     /// <paramref name="expectedSha256"/> hash (hex-encoded, case-insensitive).

@@ -1,0 +1,3 @@
+{
+    "body":  "## 테스트 커버리지 목표 달성\n\nSWR-NF-MT-051 요구사항(\u003e=85%) 전체 충족\n\n| 모듈 | Before | After | 상태 |\n|------|--------|-------|------|\n| HnVue.Security | 91.53% | 91.53% | OK |\n| HnVue.Workflow | 96.34% | 96.34% | OK |\n| HnVue.Imaging | 80.4% | **88.66%** | OK |\n| HnVue.Data | 71.78% | **85.64%** | OK |\n| HnVue.CDBurning | 76.1% | **96.46%** | OK |\n\n**총 테스트: 1124개, 실패: 0**"
+}

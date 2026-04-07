@@ -6,6 +6,7 @@ using HnVue.UI.Contracts.ViewModels;
 
 namespace HnVue.UI.ViewModels;
 
+// @MX:NOTE Security-critical: 3 PIN attempts trigger forced logout; balances security vs workflow continuity (SWR-CS-076)
 /// <summary>
 /// ViewModel for the Quick PIN lock overlay shown during an active workflow session.
 /// Allows the operator to resume the session without full re-authentication.

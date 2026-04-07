@@ -3,6 +3,7 @@ namespace HnVue.UI.Contracts.Theming;
 /// <summary>
 /// Defines the contract for runtime theme switching.
 /// </summary>
+// @MX:NOTE Theme switching uses MahApps.Metro ThemeManager; supports Dark/Light/HighContrast themes
 public interface IThemeService
 {
     /// <summary>Gets the currently active theme.</summary>

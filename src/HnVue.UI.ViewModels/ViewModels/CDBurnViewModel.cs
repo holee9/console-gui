@@ -13,6 +13,7 @@ namespace HnVue.UI.ViewModels;
 public sealed partial class CDBurnViewModel : ObservableObject, ICDBurnViewModel, IDisposable
 {
     private readonly ICDDVDBurnService _burnService;
+    // @MX:NOTE CancellationTokenSource pattern for long-running async operations; Dispose() cleans up
     private CancellationTokenSource? _burnCts;
 
     /// <summary>Initialises a new instance of <see cref="CDBurnViewModel"/>.</summary>

@@ -1,0 +1,555 @@
+<!--
+    @MX:NOTE AddPatientProcedureView — PPT slide 8: merged Add Patient + Procedure dialog.
+             Width=700, Height=650. Two-column form: Patient Info (left) | Procedure Info (right).
+             Required fields marked with (*) in HnVue.Semantic.Status.Emergency (red).
+             Auto-Generate toggles for PatientId and AccessionNumber.
+             View Projection and Description shown as removable chips (WrapPanel + Border).
+             Study Group field removed per PPT specification.
+-->
+<UserControl x:Class="HnVue.UI.Views.AddPatientProcedureView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:converters="clr-namespace:HnVue.UI.Converters"
+             mc:Ignorable="d"
+             d:DesignHeight="650" d:DesignWidth="700"
+             Background="{DynamicResource HnVue.Semantic.Surface.Page}">
+
+    <UserControl.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterInverted" IsInverted="True"/>
+        <converters:InverseBoolConverter x:Key="InverseBoolConverter"/>
+        <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
+        <!-- Auto-Generate button active state style (accent fill when ON) -->
+        <Style x:Key="AutoGenButton" TargetType="Button" BasedOn="{StaticResource HnVue.OutlineButton}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsPatientIdAutoGenerate}" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource HnVue.Semantic.Brand.Accent}"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="AutoGenAccButton" TargetType="Button" BasedOn="{StaticResource HnVue.OutlineButton}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsAccNoAutoGenerate}" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource HnVue.Semantic.Brand.Accent}"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <!-- Row 0: Title header bar -->
+            <RowDefinition Height="48"/>
+            <!-- Row 1: Two-column form body -->
+            <RowDefinition Height="*"/>
+            <!-- Row 2: Error message -->
+            <RowDefinition Height="Auto"/>
+            <!-- Row 3: Action buttons -->
+            <RowDefinition Height="56"/>
+        </Grid.RowDefinitions>
+
+        <!-- ── Row 0: Header ── -->
+        <Border Grid.Row="0"
+                Background="{DynamicResource HnVue.Semantic.Surface.Panel}"
+                BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
+                BorderThickness="0,0,0,1"
+                Padding="16,0">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <!-- Person-add icon: Segoe MDL2 &#xE8FA; -->
+                <TextBlock Text="&#xE8FA;"
+                           FontFamily="Segoe MDL2 Assets"
+                           FontSize="16"
+                           Foreground="{DynamicResource HnVue.Semantic.Brand.Accent}"
+                           VerticalAlignment="Center"
+                           Margin="0,0,10,0"/>
+                <TextBlock Text="Add Patient / Procedure"
+                           Style="{StaticResource HnVue.SectionHeader}"
+                           FontSize="15"
+                           VerticalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+
+        <!-- ── Row 1: Two-column form ── -->
+        <Grid Grid.Row="1" Margin="16,12,16,4">
+            <Grid.ColumnDefinitions>
+                <!-- Left: Patient Info -->
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="12"/>
+                <!-- Right: Procedure Info -->
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- ════════════════════════════════════════ -->
+            <!--  LEFT COLUMN — Patient Info             -->
+            <!-- ════════════════════════════════════════ -->
+            <Border Grid.Column="0"
+                    Background="{DynamicResource HnVue.Semantic.Surface.Panel}"
+                    CornerRadius="6"
+                    Padding="14,12">
+                <StackPanel>
+                    <!-- Section title -->
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                        <TextBlock Text="&#xE77B;"
+                                   FontFamily="Segoe MDL2 Assets"
+                                   FontSize="12"
+                                   Foreground="{DynamicResource HnVue.Semantic.Brand.Accent}"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,6,0"/>
+                        <TextBlock Text="Patient Info"
+                                   Style="{StaticResource HnVue.SectionHeader}"
+                                   FontSize="13"/>
+                    </StackPanel>
+
+                    <!-- Patient ID row -->
+                    <StackPanel Margin="0,0,0,8">
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <TextBlock Text="Patient ID"
+                                       Style="{StaticResource HnVue.MutedLabel}"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="8"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox Grid.Column="0"
+                                     Text="{Binding PatientId, UpdateSourceTrigger=PropertyChanged}"
+                                     IsEnabled="{Binding IsPatientIdAutoGenerate, Converter={StaticResource InverseBoolConverter}}"
+                                     Height="32"
+                                     Padding="8,0"
+                                     VerticalContentAlignment="Center"
+                                     Background="{DynamicResource HnVue.Semantic.Surface.Card}"
+                                     Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
+                                     BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
+                                     BorderThickness="1"
+                                     FontFamily="{DynamicResource HnVue.Core.FontFamily}"
+                                     FontSize="{DynamicResource HnVue.Core.FontSize.Normal}">
+                                <TextBox.Style>
+                                    <Style TargetType="TextBox">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsPatientIdAutoGenerate}" Value="True">
+                                                <Setter Property="Opacity" Value="0.55"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBox.Style>
+                            </TextBox>
+                            <Button Grid.Column="2"
+                                    Content="Auto-Generate"
+                                    Command="{Binding TogglePatientIdAutoGenerateCommand}"
+                                    Height="32"
+                                    Padding="10,0"
+                                    FontSize="11"
+                                    Style="{StaticResource AutoGenButton}"
+                                    Cursor="Hand"/>
+                        </Grid>
+                    </StackPanel>
+
+                    <!-- Patient Name (*) -->
+                    <StackPanel Margin="0,0,0,8">
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <TextBlock Text="Patient Name"
+                                       Style="{StaticResource HnVue.MutedLabel}"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock Text=" (*)"
+                                       Foreground="{DynamicResource HnVue.Semantic.Status.Emergency}"
+                                       FontSize="11"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <TextBox Text="{Binding PatientName, UpdateSourceTrigger=PropertyChanged}"
+                                 Height="32"
+                                 Padding="8,0"
+                                 VerticalContentAlignment="Center"
+                                 Background="{DynamicResource HnVue.Semantic.Surface.Card}"
+                                 Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
+                                 BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
+                                 BorderThickness="1"
+                                 FontFamily="{DynamicResource HnVue.Core.FontFamily}"
+                                 FontSize="{DynamicResource HnVue.Core.FontSize.Normal}"/>
+                    </StackPanel>
+
+                    <!-- Birth Date (*) -->
+                    <StackPanel Margin="0,0,0,8">
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <TextBlock Text="Birth Date"
+                                       Style="{StaticResource HnVue.MutedLabel}"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock Text=" (*)"
+                                       Foreground="{DynamicResource HnVue.Semantic.Status.Emergency}"
+                                       FontSize="11"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <TextBox Text="{Binding BirthDate, UpdateSourceTrigger=PropertyChanged}"
+                                 Height="32"
+                                 Padding="8,0"
+                                 VerticalContentAlignment="Center"
+                                 Background="{DynamicResource HnVue.Semantic.Surface.Card}"
+                                 Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
+                                 BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
+                                 BorderThickness="1"
+                                 FontFamily="{DynamicResource HnVue.Core.FontFamily}"
+                                 FontSize="{DynamicResource HnVue.Core.FontSize.Normal}">
+                            <TextBox.ToolTip>Format: yyyy-MM-dd</TextBox.ToolTip>
+                        </TextBox>
+                    </StackPanel>
+
+                    <!-- Gender (*) -->
+                    <StackPanel Margin="0,0,0,8">
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <TextBlock Text="Gender"
+                                       Style="{StaticResource HnVue.MutedLabel}"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock Text=" (*)"
+                                       Foreground="{DynamicResource HnVue.Semantic.Status.Emergency}"
+                                       FontSize="11"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <ComboBox SelectedValue="{Binding Gender, UpdateSourceTrigger=PropertyChanged}"
+                                  Height="32"
+                                  VerticalContentAlignment="Center"
+                                  Background="{DynamicResource HnVue.Semantic.Surface.Card}"
+                                  Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
+                                  BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
+                                  BorderThickness="1"
+                                  FontFamily="{DynamicResource HnVue.Core.FontFamily}"
+                                  FontSize="{DynamicResource HnVue.Core.FontSize.Normal}">
+                            <ComboBoxItem Content="M" Tag="M"/>
+                            <ComboBoxItem Content="F" Tag="F"/>
+                            <ComboBoxItem Content="Other" Tag="Other"/>
+                        </ComboBox>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- ════════════════════════════════════════ -->
+            <!--  RIGHT COLUMN — Procedure Info          -->
+            <!-- ════════════════════════════════════════ -->
+            <Border Grid.Column="2"
+                    Background="{DynamicResource HnVue.Semantic.Surface.Panel}"
+                    CornerRadius="6"
+                    Padding="14,12">
+                <StackPanel>
+                    <!-- Section title -->
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                        <TextBlock Text="&#xE9D9;"
+                                   FontFamily="Segoe MDL2 Assets"
+                                   FontSize="12"
+                                   Foreground="{DynamicResource HnVue.Semantic.Brand.Accent}"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,6,0"/>
+                        <TextBlock Text="Procedure Info"
+                                   Style="{StaticResource HnVue.SectionHeader}"
+                                   FontSize="13"/>
+                    </StackPanel>
+
+                    <!-- Accession Number (*) row -->
+                    <StackPanel Margin="0,0,0,8">
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <TextBlock Text="Acc No"
+                                       Style="{StaticResource HnVue.MutedLabel}"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock Text=" (*)"
+                                       Foreground="{DynamicResource HnVue.Semantic.Status.Emergency}"
+                                       FontSize="11"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="8"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox Grid.Column="0"
+                                     Text="{Binding AccessionNumber, UpdateSourceTrigger=PropertyChanged}"
+                                     Height="32"
+                                     Padding="8,0"
+                                     VerticalContentAlignment="Center"
+                                     Background="{DynamicResource HnVue.Semantic.Surface.Card}"
+                                     Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
+                                     BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
+                                     BorderThickness="1"
+                                     FontFamily="{DynamicResource HnVue.Core.FontFamily}"
+                                     FontSize="{DynamicResource HnVue.Core.FontSize.Normal}">
+                                <TextBox.Style>
+                                    <Style TargetType="TextBox">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsAccNoAutoGenerate}" Value="True">
+                                                <Setter Property="Opacity" Value="0.55"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBox.Style>
+                            </TextBox>
+                            <Button Grid.Column="2"
+                                    Content="Auto-Generate"
+                                    Command="{Binding ToggleAccNoAutoGenerateCommand}"
+                                    Height="32"
+                                    Padding="10,0"
+                                    FontSize="11"
+                                    Style="{StaticResource AutoGenAccButton}"
+                                    Cursor="Hand"/>
+                        </Grid>
+                    </StackPanel>
+
+                    <!-- View Projection (*) -->
+                    <StackPanel Margin="0,0,0,8">
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <TextBlock Text="View Projection"
+                                       Style="{StaticResource HnVue.MutedLabel}"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock Text=" (*)"
+                                       Foreground="{DynamicResource HnVue.Semantic.Status.Emergency}"
+                                       FontSize="11"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                        <!-- Projection chips -->
+                        <ItemsControl ItemsSource="{Binding SelectedProjections}"
+                                      Margin="0,0,0,4"
+                                      Visibility="{Binding SelectedProjections.Count, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="{DynamicResource HnVue.Semantic.Brand.Primary}"
+                                            CornerRadius="12"
+                                            Padding="8,3"
+                                            Margin="0,0,4,4">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding}"
+                                                       Foreground="White"
+                                                       FontSize="11"
+                                                       VerticalAlignment="Center"
+                                                       FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
+                                            <Button Content="&#xE711;"
+                                                    Command="{Binding DataContext.RemoveProjectionCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                    CommandParameter="{Binding}"
+                                                    Background="Transparent"
+                                                    BorderThickness="0"
+                                                    Foreground="White"
+                                                    FontFamily="Segoe MDL2 Assets"
+                                                    FontSize="9"
+                                                    Margin="4,0,0,0"
+                                                    Padding="0"
+                                                    Cursor="Hand"
+                                                    ToolTip="Remove"/>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <!-- Projection dropdown + Add button -->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="8"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <ComboBox x:Name="ProjectionCombo"
+                                      Grid.Column="0"
+                                      ItemsSource="{Binding AvailableProjections}"
+                                      Height="32"
+                                      VerticalContentAlignment="Center"
+                                      Background="{DynamicResource HnVue.Semantic.Surface.Card}"
+                                      Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
+                                      BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
+                                      BorderThickness="1"
+                                      FontFamily="{DynamicResource HnVue.Core.FontFamily}"
+                                      FontSize="{DynamicResource HnVue.Core.FontSize.Normal}"/>
+                            <Button Grid.Column="2"
+                                    Content="+ Add"
+                                    Height="32"
+                                    Padding="10,0"
+                                    FontSize="12"
+                                    Style="{StaticResource HnVue.OutlineButton}"
+                                    Cursor="Hand"
+                                    Command="{Binding AddProjectionCommand}"
+                                    CommandParameter="{Binding ElementName=ProjectionCombo, Path=SelectedItem}"/>
+                        </Grid>
+                    </StackPanel>
+
+                    <!-- Description multi-select -->
+                    <StackPanel Margin="0,0,0,8">
+                        <TextBlock Text="Description"
+                                   Style="{StaticResource HnVue.MutedLabel}"
+                                   Margin="0,0,0,4"/>
+
+                        <!-- Description chips -->
+                        <ItemsControl ItemsSource="{Binding SelectedDescriptions}"
+                                      Margin="0,0,0,4">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="{DynamicResource HnVue.Semantic.Surface.Card}"
+                                            BorderBrush="{DynamicResource HnVue.Semantic.Brand.Accent}"
+                                            BorderThickness="1"
+                                            CornerRadius="12"
+                                            Padding="8,3"
+                                            Margin="0,0,4,4">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding}"
+                                                       Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
+                                                       FontSize="11"
+                                                       VerticalAlignment="Center"
+                                                       FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
+                                            <Button Content="&#xE711;"
+                                                    Command="{Binding DataContext.RemoveDescriptionCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                    CommandParameter="{Binding}"
+                                                    Background="Transparent"
+                                                    BorderThickness="0"
+                                                    Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
+                                                    FontFamily="Segoe MDL2 Assets"
+                                                    FontSize="9"
+                                                    Margin="4,0,0,0"
+                                                    Padding="0"
+                                                    Cursor="Hand"/>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <!-- Description dropdown + manual input + Add -->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="8"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <ComboBox x:Name="DescriptionCombo"
+                                      Grid.Column="0"
+                                      ItemsSource="{Binding AvailableDescriptions}"
+                                      Text="{Binding DescriptionInput, UpdateSourceTrigger=PropertyChanged}"
+                                      IsEditable="True"
+                                      Height="32"
+                                      VerticalContentAlignment="Center"
+                                      Background="{DynamicResource HnVue.Semantic.Surface.Card}"
+                                      Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
+                                      BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
+                                      BorderThickness="1"
+                                      FontFamily="{DynamicResource HnVue.Core.FontFamily}"
+                                      FontSize="{DynamicResource HnVue.Core.FontSize.Normal}"/>
+                            <Button Grid.Column="2"
+                                    Content="+ Add"
+                                    Height="32"
+                                    Padding="10,0"
+                                    FontSize="12"
+                                    Style="{StaticResource HnVue.OutlineButton}"
+                                    Cursor="Hand"
+                                    Command="{Binding AddDescriptionCommand}"
+                                    CommandParameter="{Binding ElementName=DescriptionCombo, Path=Text}"/>
+                        </Grid>
+                    </StackPanel>
+
+                    <!-- RIS Code -->
+                    <StackPanel Margin="0,0,0,0">
+                        <TextBlock Text="RIS Code"
+                                   Style="{StaticResource HnVue.MutedLabel}"
+                                   Margin="0,0,0,4"/>
+                        <TextBox Text="{Binding RisCode, UpdateSourceTrigger=PropertyChanged}"
+                                 Height="32"
+                                 Padding="8,0"
+                                 VerticalContentAlignment="Center"
+                                 Background="{DynamicResource HnVue.Semantic.Surface.Card}"
+                                 Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
+                                 BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
+                                 BorderThickness="1"
+                                 FontFamily="{DynamicResource HnVue.Core.FontFamily}"
+                                 FontSize="{DynamicResource HnVue.Core.FontSize.Normal}">
+                            <TextBox.ToolTip>Enter RIS code to link with external RIS system</TextBox.ToolTip>
+                        </TextBox>
+                    </StackPanel>
+
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- ── Row 2: Error message area ── -->
+        <Border Grid.Row="2"
+                Margin="16,4,16,0"
+                Padding="12,6"
+                CornerRadius="4"
+                Background="{DynamicResource HnVue.Semantic.Status.Emergency}"
+                Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}">
+            <StackPanel Orientation="Horizontal">
+                <!-- Warning icon: Segoe MDL2 &#xE7BA; -->
+                <TextBlock Text="&#xE7BA;"
+                           FontFamily="Segoe MDL2 Assets"
+                           FontSize="13"
+                           Foreground="White"
+                           VerticalAlignment="Center"
+                           Margin="0,0,8,0"/>
+                <TextBlock Text="{Binding ErrorMessage}"
+                           Foreground="White"
+                           FontSize="12"
+                           VerticalAlignment="Center"
+                           TextWrapping="Wrap"
+                           FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
+            </StackPanel>
+        </Border>
+
+        <!-- ── Row 3: Action buttons ── -->
+        <Border Grid.Row="3"
+                Background="{DynamicResource HnVue.Semantic.Surface.Panel}"
+                BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
+                BorderThickness="0,1,0,0"
+                Padding="16,0">
+            <Grid VerticalAlignment="Center">
+                <!-- Loading indicator (left) -->
+                <StackPanel Orientation="Horizontal"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Left"
+                            Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <!-- Sync/loading icon: Segoe MDL2 &#xE72C; -->
+                    <TextBlock Text="&#xE72C;"
+                               FontFamily="Segoe MDL2 Assets"
+                               FontSize="14"
+                               Foreground="{DynamicResource HnVue.Semantic.Brand.Accent}"
+                               VerticalAlignment="Center"
+                               Margin="0,0,6,0"/>
+                    <TextBlock Text="Saving..."
+                               Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
+                               FontSize="12"
+                               VerticalAlignment="Center"
+                               FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
+                </StackPanel>
+
+                <!-- Cancel + Save buttons (right) -->
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center">
+                    <Button Content="Cancel"
+                            Command="{Binding CancelCommand}"
+                            Style="{StaticResource HnVue.OutlineButton}"
+                            Width="100"
+                            Height="36"
+                            Margin="0,0,8,0"
+                            FontSize="13"
+                            IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBoolConverter}}"
+                            Cursor="Hand"/>
+                    <Button Content="Save"
+                            Command="{Binding SaveCommand}"
+                            Style="{StaticResource HnVue.PrimaryButton}"
+                            Width="100"
+                            Height="36"
+                            FontSize="13"
+                            IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBoolConverter}}"
+                            Cursor="Hand"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

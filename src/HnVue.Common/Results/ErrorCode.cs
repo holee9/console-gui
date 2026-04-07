@@ -1,5 +1,6 @@
 namespace HnVue.Common.Results;
 
+// @MX:ANCHOR ErrorCode enum - @MX:REASON: IEC 62304 safety classification mapping, 270+ consumers system-wide
 /// <summary>
 /// Standard error codes used across all HnVue modules, grouped by domain.
 /// IEC 62304 traceability: each range maps to a functional domain.
@@ -46,8 +47,11 @@ public enum ErrorCode
     /// <summary>Quick PIN has not been set for the user account.</summary>
     PinNotSet = 2006,
 
+    /// <summary>Authentication token has been revoked via JTI denylist. SWR-CS-077.</summary>
+    TokenRevoked = 2007,
+
     /// <summary>Calibration data (Gain/Offset) is missing or expired. SWR-IP-039.</summary>
-    CalibrationDataMissing = 2007,
+    CalibrationDataMissing = 2008,
 
     // ── Data (3xxx) ────────────────────────────────────────────────────────────
 

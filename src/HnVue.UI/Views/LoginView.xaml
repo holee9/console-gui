@@ -4,25 +4,149 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
-             d:DesignHeight="400" d:DesignWidth="300">
-    <Grid>
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="280">
-            <TextBlock Text="HnVue Login" FontSize="20" FontWeight="Bold"
-                       HorizontalAlignment="Center" Margin="0,0,0,16"/>
-            <TextBlock Text="Username" Margin="0,0,0,4"/>
-            <TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,8"/>
-            <TextBlock Text="Password" Margin="0,0,0,4"/>
-            <PasswordBox x:Name="PasswordBox" Margin="0,0,0,8"
-                         PasswordChanged="PasswordBox_PasswordChanged"/>
-            <TextBlock Text="{Binding ErrorMessage}" Foreground="Red" TextWrapping="Wrap"
-                       Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}"
-                       Margin="0,0,0,8"/>
-            <Button Content="Login" Command="{Binding LoginCommand}" Height="36"
-                    IsEnabled="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter},
-                                ConverterParameter=Invert}"/>
-            <!-- IsLoading indicator — Issue #16 -->
-            <ProgressBar IsIndeterminate="True" Height="4" Margin="0,4,0,0"
-                         Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}"/>
-        </StackPanel>
+             d:DesignHeight="500" d:DesignWidth="400">
+    <!--
+        @MX:NOTE LoginView — authentication entry point.
+                 Uses HnVue.Semantic.Surface.Panel as card background.
+                 Keep centered form layout matching existing screenshot.
+                 Issue #48: CoreTokens styling applied.
+    -->
+
+    <Grid Background="{DynamicResource HnVue.Semantic.Surface.Page}">
+
+        <!-- Login card — centered -->
+        <Border HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Width="320"
+                CornerRadius="12"
+                Background="{DynamicResource HnVue.Semantic.Surface.Panel}"
+                BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
+                BorderThickness="1"
+                Padding="32,28">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="32" ShadowDepth="8" Opacity="0.5" Color="#000000" Direction="270"/>
+            </Border.Effect>
+
+            <StackPanel>
+
+                <!-- Logo area -->
+                <Border Height="56"
+                        CornerRadius="8"
+                        Margin="0,0,0,24"
+                        ClipToBounds="True">
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                            <GradientStop Color="{StaticResource HnVue.Core.Color.Primary}" Offset="0"/>
+                            <GradientStop Color="{StaticResource HnVue.Core.Color.PrimaryLight}" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <TextBlock Text="HnVue"
+                               FontSize="18"
+                               FontWeight="Bold"
+                               Foreground="White"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
+                </Border>
+
+                <!-- Title -->
+                <TextBlock Text="HnVue Login"
+                           FontSize="20"
+                           FontWeight="Bold"
+                           Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,4"
+                           FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
+
+                <!-- Subtitle -->
+                <TextBlock Text="Medical Imaging Console"
+                           FontSize="13"
+                           Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,24"
+                           FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
+
+                <!-- Username label -->
+                <TextBlock Text="Username"
+                           FontSize="13"
+                           Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
+                           Margin="0,0,0,4"
+                           FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
+
+                <!-- Username input -->
+                <Border Height="44"
+                        CornerRadius="4"
+                        Background="{DynamicResource HnVue.Semantic.Surface.Card}"
+                        BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
+                        BorderThickness="1"
+                        Margin="0,0,0,12"
+                        Padding="12,0">
+                    <ComboBox SelectedValue="{Binding Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              ItemsSource="{Binding AvailableUserIds}"
+                              IsEditable="True"
+                              Background="Transparent"
+                              Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
+                              BorderThickness="0"
+                              FontSize="13"
+                              VerticalAlignment="Center"
+                              FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
+                </Border>
+
+                <!-- Password label -->
+                <TextBlock Text="Password"
+                           FontSize="13"
+                           Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
+                           Margin="0,0,0,4"
+                           FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
+
+                <!-- Password input -->
+                <Border Height="44"
+                        CornerRadius="4"
+                        Background="{DynamicResource HnVue.Semantic.Surface.Card}"
+                        BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
+                        BorderThickness="1"
+                        Margin="0,0,0,16"
+                        Padding="12,0">
+                    <PasswordBox x:Name="PasswordBox"
+                                 Background="Transparent"
+                                 Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
+                                 BorderThickness="0"
+                                 FontSize="13"
+                                 VerticalAlignment="Center"
+                                 CaretBrush="{DynamicResource HnVue.Semantic.Brand.Accent}"
+                                 FontFamily="{DynamicResource HnVue.Core.FontFamily}"
+                                 PasswordChanged="PasswordBox_PasswordChanged"/>
+                </Border>
+
+                <!-- Error message -->
+                <TextBlock Text="{Binding ErrorMessage}"
+                           Foreground="{DynamicResource HnVue.Semantic.Status.Emergency}"
+                           FontSize="12"
+                           TextWrapping="Wrap"
+                           Margin="0,0,0,8"
+                           FontFamily="{DynamicResource HnVue.Core.FontFamily}"
+                           Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}"/>
+
+                <!-- LOGIN button -->
+                <Button Content="LOGIN"
+                        Command="{Binding LoginCommand}"
+                        Style="{StaticResource HnVue.PrimaryButton}"
+                        Height="44"
+                        HorizontalAlignment="Stretch"
+                        FontSize="14"
+                        FontWeight="SemiBold"
+                        FontFamily="{DynamicResource HnVue.Core.FontFamily}"
+                        IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBoolConverter}}"/>
+
+                <!-- Loading indicator — Issue #16 -->
+                <ProgressBar IsIndeterminate="True"
+                             Height="3"
+                             Margin="0,8,0,0"
+                             Background="Transparent"
+                             Foreground="{DynamicResource HnVue.Semantic.Brand.Accent}"
+                             Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+            </StackPanel>
+        </Border>
     </Grid>
 </UserControl>

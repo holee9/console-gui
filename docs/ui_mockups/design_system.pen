@@ -1,0 +1,192 @@
+{
+  "version": "3.1.0",
+  "name": "HnVue Design System",
+  "description": "Medical Device UI Component Library - WPF Desktop Application (IEC 62366 compliant)",
+  "theme": "dark",
+  "_source": "CoreTokens.xaml (src/HnVue.UI/Themes/tokens/CoreTokens.xaml)",
+  "_lastSync": "2026-04-06",
+
+  "colors": {
+    "brand": {
+      "primary": "#1B4F8A",
+      "primaryLight": "#2E6DB4",
+      "accent": "#00AEEF"
+    },
+    "background": {
+      "page": "#1A1A2E",
+      "panel": "#16213E",
+      "card": "#0F3460",
+      "imageViewer": "#0a0a1a"
+    },
+    "text": {
+      "primary": "#FFFFFF",
+      "secondary": "#B0BEC5",
+      "disabled": "#546E7A"
+    },
+    "safety": {
+      "_standard": "IEC 62366 safety-critical color coding",
+      "safe": "#00C853",
+      "warning": "#FFD600",
+      "blocked": "#FF6D00",
+      "emergency": "#D50000"
+    },
+    "interactive": {
+      "buttonPrimary": "#1B4F8A",
+      "buttonPrimaryHover": "#2E6DB4",
+      "buttonDanger": "#D50000",
+      "border": "#2E4A6E",
+      "borderFocus": "#00AEEF"
+    }
+  },
+
+  "typography": {
+    "fontFamily": {
+      "primary": "Segoe UI",
+      "fallback": "system-ui, sans-serif",
+      "korean": "Malgun Gothic, Apple SD Gothic Neo",
+      "monospace": "Consolas, SF Mono, monospace"
+    },
+    "fontSize": {
+      "xsmall": 10,
+      "small": 11,
+      "normal": 13,
+      "large": 16,
+      "header": 20,
+      "display": 28
+    }
+  },
+
+  "spacing": {
+    "_unit": 4,
+    "xsmall": 4,
+    "small": 8,
+    "medium": 12,
+    "normal": 16,
+    "large": 24,
+    "xlarge": 32
+  },
+
+  "cornerRadius": {
+    "none": 0,
+    "small": 2,
+    "normal": 4,
+    "large": 8,
+    "round": 16
+  },
+
+  "opacity": {
+    "disabled": 0.38,
+    "hover": 0.08,
+    "overlay": 0.54
+  },
+
+  "components": {
+    "button": {
+      "heightNormal": 36,
+      "heightLarge": 44,
+      "heightCritical": 56,
+      "_note": "heightCritical for Emergency Stop / Acquire - IEC 62366 min 44x44px touch target",
+      "radius": 4,
+      "paddingNormal": [0, 16],
+      "paddingLarge": [0, 24]
+    },
+    "input": {
+      "height": 36,
+      "padding": [8, 12],
+      "radius": 4,
+      "borderWidth": 1,
+      "borderColor": "$interactive.border",
+      "focusBorderColor": "$interactive.borderFocus"
+    },
+    "card": {
+      "radius": 8,
+      "padding": 16,
+      "backgroundColor": "$background.panel"
+    },
+    "emergencyStop": {
+      "_critical": "ALWAYS VISIBLE - IEC 62366 requirement",
+      "minWidth": 44,
+      "minHeight": 44,
+      "preferredHeight": 56,
+      "backgroundColor": "$safety.emergency",
+      "textColor": "$text.primary",
+      "fontWeight": "bold",
+      "requiresImmediateAction": true,
+      "requiresConfirmation": false
+    },
+    "statusBadge": {
+      "_note": "IEC 62366 color coding",
+      "safe": { "bg": "$safety.safe", "text": "#000000" },
+      "warning": { "bg": "$safety.warning", "text": "#000000" },
+      "blocked": { "bg": "$safety.blocked", "text": "#FFFFFF" },
+      "emergency": { "bg": "$safety.emergency", "text": "#FFFFFF" }
+    },
+    "table": {
+      "rowHeight": 44,
+      "headerHeight": 40,
+      "borderColor": "$interactive.border"
+    },
+    "panel": {
+      "leftWidth": 280,
+      "rightWidth": 320,
+      "bottomHeight": 100
+    }
+  },
+
+  "screens": {
+    "login": {
+      "id": "SCR-LOGIN-001",
+      "layout": "centered-card",
+      "cardWidth": 400,
+      "cardPadding": 48,
+      "background": "$background.page"
+    },
+    "worklist": {
+      "id": "SCR-WORKLIST-001",
+      "layout": "full-screen-table",
+      "hasFilterBar": true,
+      "hasSearchInput": true
+    },
+    "studylist": {
+      "id": "SCR-STUDY-001",
+      "layout": "search-and-cards",
+      "hasDateRangePicker": true
+    },
+    "acquisition": {
+      "id": "SCR-ACQ-001",
+      "priority": "CRITICAL_PATH",
+      "layout": "three-column",
+      "emergencyStopAlwaysVisible": true,
+      "columns": {
+        "left": { "width": 280, "content": "patient-info" },
+        "center": { "flex": 1, "content": "image-preview" },
+        "right": { "width": 320, "content": "controls" }
+      },
+      "bottom": { "height": 100, "content": "thumbnail-strip" }
+    },
+    "merge": {
+      "id": "SCR-MERGE-001",
+      "layout": "dual-panel",
+      "hasPatientIdDisplay": true
+    },
+    "settings": {
+      "id": "SCR-SETTINGS-001",
+      "layout": "sidebar-content",
+      "sidebarWidth": 240
+    },
+    "addPatient": {
+      "id": "SCR-PATIENT-001",
+      "layout": "form-centered",
+      "hasRequiredFields": true
+    }
+  },
+
+  "accessibility": {
+    "_standard": "IEC 62366 + WCAG 2.1 AA guidance",
+    "minimumTouchTarget": 44,
+    "minimumContrastRatio": 4.5,
+    "focusIndicator": "2px solid $interactive.borderFocus",
+    "keyboardNavigation": true,
+    "screenReaderSupport": true
+  }
+}

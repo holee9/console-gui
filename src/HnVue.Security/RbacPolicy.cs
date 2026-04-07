@@ -30,6 +30,7 @@ public static class RbacPolicy
             Permissions.ViewPatients,
             Permissions.RegisterPatient,
             Permissions.PerformExposure,
+            Permissions.PerformEmergencyExposure,
             Permissions.ReviewImages,
             Permissions.BurnStudyToCd,
         },
@@ -122,6 +123,9 @@ public static class Permissions
 
     /// <summary>Permission to perform an X-ray exposure.</summary>
     public const string PerformExposure    = "workflow.expose";
+
+    /// <summary>Permission to perform an emergency/trauma fast-path exposure (SWR-WF-026~027). Requires Radiologist or higher.</summary>
+    public const string PerformEmergencyExposure = "workflow.emergency.expose";
 
     /// <summary>Permission to review acquired images.</summary>
     public const string ReviewImages       = "images.review";

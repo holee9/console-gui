@@ -1,5 +1,6 @@
 using HnVue.Common.Models;
 
+// @MX:NOTE Event args defined in Contracts project to avoid circular dependency between Contracts and ViewModels
 namespace HnVue.UI.Contracts.Events;
 
 /// <summary>

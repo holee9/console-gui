@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace HnVue.Incident;
 
+// @MX:WARN IncidentService - @MX:REASON: Safety-critical module for IEC 62304 Class B incident tracking
 /// <summary>
 /// Default implementation of <see cref="IIncidentService"/>.
 /// Every incident mutation produces a tamper-evident audit entry via <see cref="IAuditService"/>.
@@ -34,6 +35,7 @@ internal sealed partial class IncidentService(
         Message = "Audit write failed for resolved incident {IncidentId}: {Error}")]
     private partial void LogAuditWriteFailedOnResolve(string incidentId, string? error);
 
+    // @MX:ANCHOR ReportAsync - @MX:REASON: High fan_in - called by all UI ViewModels and test fixtures
     /// <inheritdoc/>
     public async Task<Result<IncidentRecord>> ReportAsync(
         string reportedByUserId,
@@ -58,6 +60,7 @@ internal sealed partial class IncidentService(
         if (addResult.IsFailure)
             return Result.Failure<IncidentRecord>(ErrorCode.IncidentLogFailed, addResult.ErrorMessage ?? "Failed to store incident.");
 
+        // @MX:NOTE IEC 62304 risk management: Critical incidents require special audit marker
         // Build audit details; Critical incidents get an additional safety marker.
         var details = severity == IncidentSeverity.Critical
             ? $"severity={severity},category={category},description={description},CRITICAL_INCIDENT"
@@ -97,6 +100,7 @@ internal sealed partial class IncidentService(
         return await _repository.QueryAsync(severityFilter, from, toDate, cancellationToken).ConfigureAwait(false);
     }
 
+    // @MX:ANCHOR ResolveAsync - @MX:REASON: Core incident lifecycle operation, used by incident management UI
     /// <inheritdoc/>
     public async Task<Result<IncidentRecord>> ResolveAsync(
         string incidentId,

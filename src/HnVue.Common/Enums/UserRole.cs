@@ -1,5 +1,6 @@
 namespace HnVue.Common.Enums;
 
+// @MX:ANCHOR UserRole enum - @MX:REASON: RBAC foundation with 4 roles, 20+ consumers for authorization checks
 /// <summary>
 /// Defines the roles available to authenticated users of the HnVue console.
 /// Role-based access control (RBAC) is enforced by <c>ISecurityService</c>.

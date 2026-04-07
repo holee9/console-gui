@@ -1,0 +1,1496 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HnVue UI Mockups 2026</title>
+    <style>
+        /* Design System Variables */
+        :root {
+            --primary-main: #0066CC;
+            --primary-light: #4D94FF;
+            --primary-dark: #004080;
+            --secondary-teal: #00BFA5;
+            --secondary-coral: #FF6B6B;
+            --secondary-amber: #FFC107;
+            --neutral-bg: #1A1A2E;
+            --neutral-surface: #252542;
+            --neutral-border: #3E3E5E;
+            --neutral-text: #E0E0E0;
+            --neutral-text-muted: #A0A0B0;
+            --semantic-error: #FF4757;
+            --semantic-warning: #FFA502;
+            --semantic-success: #2ED573;
+            --semantic-info: #1E90FF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Malgun Gothic', system-ui, sans-serif;
+            background-color: var(--neutral-bg);
+            color: var(--neutral-text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        .mockup-nav {
+            background: var(--neutral-surface);
+            border-bottom: 1px solid var(--neutral-border);
+            padding: 16px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .mockup-nav h1 {
+            font-size: 18px;
+            margin-bottom: 12px;
+        }
+
+        .mockup-nav-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background: var(--neutral-bg);
+            border: 1px solid var(--neutral-border);
+            color: var(--neutral-text);
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            background: var(--primary-main);
+            border-color: var(--primary-main);
+        }
+
+        /* Screen Container */
+        .screen-container {
+            padding: 32px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        .screen-header {
+            margin-bottom: 24px;
+            border-bottom: 1px solid var(--neutral-border);
+            padding-bottom: 16px;
+        }
+
+        .screen-header h2 {
+            font-size: 32px;
+            color: var(--primary-light);
+        }
+
+        /* Components */
+        .btn {
+            height: 44px;
+            padding: 0 24px;
+            border-radius: 6px;
+            border: none;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--primary-main);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-light);
+        }
+
+        .btn-secondary {
+            background: var(--neutral-surface);
+            border: 1px solid var(--neutral-border);
+            color: var(--neutral-text);
+        }
+
+        .btn-secondary:hover {
+            background: var(--neutral-bg);
+            border-color: var(--primary-light);
+        }
+
+        .btn-danger {
+            background: var(--semantic-error);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: var(--secondary-coral);
+        }
+
+        .input {
+            height: 36px;
+            padding: 8px 12px;
+            border: 1px solid var(--neutral-border);
+            border-radius: 6px;
+            background: var(--neutral-bg);
+            color: var(--neutral-text);
+            font-size: 14px;
+            width: 100%;
+            transition: all 0.2s;
+        }
+
+        .input:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 2px rgba(77, 148, 255, 0.2);
+        }
+
+        .card {
+            background: var(--neutral-surface);
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Login Screen */
+        .login-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 70vh;
+        }
+
+        .login-card {
+            width: 400px;
+            padding: 48px;
+        }
+
+        .login-logo {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .login-logo h1 {
+            font-size: 32px;
+            color: var(--primary-light);
+        }
+
+        .login-form .form-group {
+            margin-bottom: 16px;
+        }
+
+        .login-form label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: var(--neutral-text-muted);
+        }
+
+        .login-form .btn {
+            width: 100%;
+            margin-top: 24px;
+        }
+
+        .login-footer {
+            text-align: right;
+            margin-top: 16px;
+        }
+
+        .login-footer select {
+            background: var(--neutral-bg);
+            border: 1px solid var(--neutral-border);
+            color: var(--neutral-text);
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        /* Worklist Screen */
+        .worklist-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .filter-bar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            background: var(--neutral-bg);
+            border: 1px solid var(--neutral-border);
+            border-radius: 6px;
+            color: var(--neutral-text);
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .filter-btn.active {
+            background: var(--primary-main);
+            border-color: var(--primary-main);
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--neutral-surface);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--neutral-border);
+        }
+
+        .data-table th {
+            background: var(--neutral-bg);
+            font-weight: 600;
+            color: var(--neutral-text-muted);
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+
+        .data-table tr:hover {
+            background: rgba(77, 148, 255, 0.1);
+        }
+
+        .data-table tr.selected {
+            border-left: 3px solid var(--primary-main);
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-waiting { background: #3E3E5E; color: #A0A0B0; }
+        .status-progress { background: rgba(30, 144, 255, 0.2); color: #1E90FF; }
+        .status-completed { background: rgba(46, 213, 115, 0.2); color: #2ED573; }
+        .status-emergency { background: rgba(255, 71, 87, 0.2); color: #FF4757; }
+
+        /* Studylist Screen */
+        .studylist-layout {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 16px;
+        }
+
+        .sidebar {
+            background: var(--neutral-surface);
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .sidebar h3 {
+            font-size: 14px;
+            color: var(--neutral-text-muted);
+            margin-bottom: 16px;
+            text-transform: uppercase;
+        }
+
+        .sidebar-filter {
+            padding: 8px 12px;
+            margin-bottom: 4px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sidebar-filter:hover {
+            background: var(--neutral-bg);
+        }
+
+        .sidebar-filter.active {
+            background: var(--primary-main);
+        }
+
+        .filter-count {
+            margin-left: auto;
+            background: var(--neutral-bg);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+        }
+
+        /* Acquisition Screen */
+        .acquisition-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr 320px;
+            gap: 16px;
+            height: calc(100vh - 180px);
+        }
+
+        .acquisition-panel {
+            background: var(--neutral-surface);
+            border-radius: 12px;
+            padding: 16px;
+            overflow-y: auto;
+        }
+
+        .panel-header {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--neutral-border);
+        }
+
+        .patient-info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--neutral-border);
+        }
+
+        .patient-info-label {
+            color: var(--neutral-text-muted);
+            font-size: 14px;
+        }
+
+        .patient-info-value {
+            font-weight: 600;
+        }
+
+        .image-preview {
+            background: #0a0a1a;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
+            position: relative;
+        }
+
+        .preview-placeholder {
+            text-align: center;
+            color: var(--neutral-text-muted);
+        }
+
+        .exposure-indicator {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 71, 87, 0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+        }
+
+        .exposure-dot {
+            width: 12px;
+            height: 12px;
+            background: var(--semantic-error);
+            border-radius: 50%;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .control-section {
+            margin-bottom: 24px;
+        }
+
+        .control-section h4 {
+            font-size: 14px;
+            color: var(--neutral-text-muted);
+            margin-bottom: 12px;
+        }
+
+        .body-part-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .body-part-btn {
+            padding: 12px;
+            background: var(--neutral-bg);
+            border: 1px solid var(--neutral-border);
+            border-radius: 6px;
+            color: var(--neutral-text);
+            cursor: pointer;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        .body-part-btn:hover, .body-part-btn.active {
+            background: var(--primary-main);
+            border-color: var(--primary-main);
+        }
+
+        .acquire-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .btn-acquire {
+            height: 56px;
+            font-size: 18px;
+            background: var(--primary-main);
+        }
+
+        .btn-emergency {
+            height: 56px;
+            font-size: 18px;
+            background: var(--semantic-error);
+        }
+
+        .image-strip {
+            display: flex;
+            gap: 8px;
+            padding: 16px 0;
+            overflow-x: auto;
+        }
+
+        .thumbnail {
+            width: 100px;
+            height: 100px;
+            background: var(--neutral-bg);
+            border: 2px solid var(--neutral-border);
+            border-radius: 8px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--neutral-text-muted);
+            font-size: 12px;
+        }
+
+        .thumbnail:hover, .thumbnail.active {
+            border-color: var(--primary-main);
+        }
+
+        /* Merge Screen */
+        .merge-layout {
+            display: grid;
+            grid-template-columns: 1fr 200px 1fr;
+            gap: 16px;
+            height: calc(100vh - 200px);
+        }
+
+        .merge-panel {
+            background: var(--neutral-surface);
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .merge-panel h3 {
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .study-selector {
+            margin-bottom: 16px;
+        }
+
+        .merge-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .merge-arrow {
+            font-size: 32px;
+            color: var(--primary-light);
+        }
+
+        /* Settings Screen */
+        .settings-layout {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 16px;
+        }
+
+        .settings-nav {
+            background: var(--neutral-surface);
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .settings-nav-item {
+            padding: 12px 16px;
+            margin-bottom: 4px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .settings-nav-item:hover {
+            background: var(--neutral-bg);
+        }
+
+        .settings-nav-item.active {
+            background: var(--primary-main);
+        }
+
+        .settings-content {
+            background: var(--neutral-surface);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .settings-section {
+            margin-bottom: 32px;
+        }
+
+        .settings-section h3 {
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--neutral-border);
+        }
+
+        .setting-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--neutral-border);
+        }
+
+        .setting-row:last-child {
+            border-bottom: none;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 48px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--neutral-border);
+            border-radius: 24px;
+            transition: 0.3s;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background: white;
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+
+        .toggle-switch input:checked + .toggle-slider {
+            background: var(--primary-main);
+        }
+
+        .toggle-switch input:checked + .toggle-slider:before {
+            transform: translateX(24px);
+        }
+
+        /* Add Patient Screen */
+        .patient-form-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .form-section {
+            background: var(--neutral-surface);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .form-section h3 {
+            margin-bottom: 20px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .form-full {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: var(--neutral-text-muted);
+        }
+
+        .form-group label .required {
+            color: var(--semantic-error);
+        }
+
+        .procedure-list {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid var(--neutral-border);
+            border-radius: 6px;
+        }
+
+        .procedure-item {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--neutral-border);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .procedure-item:hover {
+            background: var(--neutral-bg);
+        }
+
+        .procedure-item.selected {
+            background: var(--primary-main);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid var(--neutral-border);
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            padding: 12px 24px;
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .toast-success { background: var(--semantic-success); bottom: 24px; right: 24px; }
+        .toast-error { background: var(--semantic-error); bottom: 24px; left: 50%; transform: translateX(-50%); }
+        .toast-warning { background: var(--semantic-warning); bottom: 24px; left: 50%; transform: translateX(-50%); }
+        .toast-info { background: var(--semantic-info); bottom: 24px; right: 24px; }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .acquisition-layout {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+            .merge-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="mockup-nav">
+        <h1>HnVue UI Mockups 2026</h1>
+        <div class="mockup-nav-buttons">
+            <button class="nav-btn active" onclick="showScreen('login')">Login</button>
+            <button class="nav-btn" onclick="showScreen('worklist')">Worklist</button>
+            <button class="nav-btn" onclick="showScreen('studylist')">Studylist</button>
+            <button class="nav-btn" onclick="showScreen('acquisition')">Acquisition</button>
+            <button class="nav-btn" onclick="showScreen('merge')">Merge</button>
+            <button class="nav-btn" onclick="showScreen('settings')">Settings</button>
+            <button class="nav-btn" onclick="showScreen('patient')">Add Patient</button>
+        </div>
+    </nav>
+
+    <div class="screen-container">
+        <!-- Login Screen -->
+        <div id="screen-login" class="screen active">
+            <div class="screen-header">
+                <h2>1. Login Screen</h2>
+                <p>User authentication and access control</p>
+            </div>
+            <div class="login-container">
+                <div class="card login-card">
+                    <div class="login-logo">
+                        <h1>HnVue</h1>
+                        <p style="color: var(--neutral-text-muted); margin-top: 8px;">Medical Imaging Console</p>
+                    </div>
+                    <form class="login-form" onsubmit="event.preventDefault(); showToast('success', 'Login successful!'); showScreen('worklist');">
+                        <div class="form-group">
+                            <label>User ID</label>
+                            <input type="text" class="input" placeholder="Enter your ID" value="radiographer1">
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" class="input" placeholder="Enter password" value="********">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </form>
+                    <div class="login-footer">
+                        <select>
+                            <option>English</option>
+                            <option selected>Korean</option>
+                            <option>Japanese</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Worklist Screen -->
+        <div id="screen-worklist" class="screen">
+            <div class="screen-header">
+                <h2>2. Worklist Screen</h2>
+                <p>Daily examination task list management</p>
+            </div>
+            <div class="worklist-header">
+                <div>
+                    <input type="text" class="input" style="width: 300px;" placeholder="Search by Patient ID, Name, or Accession No...">
+                </div>
+                <div style="display: flex; gap: 8px;">
+                    <button class="btn btn-secondary">Refresh</button>
+                    <button class="btn btn-secondary">Export</button>
+                </div>
+            </div>
+            <div class="filter-bar">
+                <button class="filter-btn active">Today</button>
+                <button class="filter-btn">3 Days</button>
+                <button class="filter-btn">1 Week</button>
+                <button class="filter-btn">1 Month</button>
+                <button class="filter-btn">All</button>
+            </div>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Accession No</th>
+                        <th>Patient ID</th>
+                        <th>Name</th>
+                        <th>Exam Date</th>
+                        <th>Procedure</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="selected" onclick="selectRow(this)">
+                        <td>ACC20260406001</td>
+                        <td>P20260315001</td>
+                        <td>Kim, Min-jun</td>
+                        <td>2026-04-06</td>
+                        <td>Chest PA</td>
+                        <td><span class="status-badge status-progress">In Progress</span></td>
+                    </tr>
+                    <tr onclick="selectRow(this)">
+                        <td>ACC20260406002</td>
+                        <td>P20260315002</td>
+                        <td>Park, Su-jin</td>
+                        <td>2026-04-06</td>
+                        <td>Abdomen AP</td>
+                        <td><span class="status-badge status-waiting">Waiting</span></td>
+                    </tr>
+                    <tr onclick="selectRow(this)">
+                        <td>ACC20260406003</td>
+                        <td>P20260315003</td>
+                        <td>Lee, Jin-woo</td>
+                        <td>2026-04-06</td>
+                        <td>Hand PA</td>
+                        <td><span class="status-badge status-emergency">Emergency</span></td>
+                    </tr>
+                    <tr onclick="selectRow(this)">
+                        <td>ACC20260406004</td>
+                        <td>P20260315004</td>
+                        <td>Choi, Eun-ji</td>
+                        <td>2026-04-06</td>
+                        <td>Chest LAT</td>
+                        <td><span class="status-badge status-completed">Completed</span></td>
+                    </tr>
+                    <tr onclick="selectRow(this)">
+                        <td>ACC20260406005</td>
+                        <td>P20260315005</td>
+                        <td>Jung, Tae-hoon</td>
+                        <td>2026-04-06</td>
+                        <td>Knee AP</td>
+                        <td><span class="status-badge status-waiting">Waiting</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Studylist Screen -->
+        <div id="screen-studylist" class="screen">
+            <div class="screen-header">
+                <h2>3. Studylist Screen</h2>
+                <p>Historical examination records and management</p>
+            </div>
+            <div class="studylist-layout">
+                <div class="sidebar">
+                    <h3>Status Filter</h3>
+                    <div class="sidebar-filter active">
+                        <span>All Studies</span>
+                        <span class="filter-count">156</span>
+                    </div>
+                    <div class="sidebar-filter">
+                        <span>Completed</span>
+                        <span class="filter-count">142</span>
+                    </div>
+                    <div class="sidebar-filter">
+                        <span>In Progress</span>
+                        <span class="filter-count">8</span>
+                    </div>
+                    <div class="sidebar-filter">
+                        <span>Cancelled</span>
+                        <span class="filter-count">6</span>
+                    </div>
+                    <div class="sidebar-filter">
+                        <span>Reported</span>
+                        <span class="filter-count">98</span>
+                    </div>
+                </div>
+                <div>
+                    <div class="worklist-header">
+                        <div>
+                            <input type="text" class="input" style="width: 300px;" placeholder="Search studies...">
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <input type="date" class="input" value="2026-04-01">
+                            <span>~</span>
+                            <input type="date" class="input" value="2026-04-06">
+                            <button class="btn btn-secondary">Export DICOM</button>
+                        </div>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Study Date</th>
+                                <th>Patient ID</th>
+                                <th>Name</th>
+                                <th>Modality</th>
+                                <th>Body Part</th>
+                                <th>Images</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr onclick="showToast('info', 'Opening study details...')">
+                                <td>2026-04-06</td>
+                                <td>P20260315001</td>
+                                <td>Kim, Min-jun</td>
+                                <td>CR</td>
+                                <td>Chest</td>
+                                <td>2</td>
+                                <td><span class="status-badge status-completed">Completed</span></td>
+                            </tr>
+                            <tr onclick="showToast('info', 'Opening study details...')">
+                                <td>2026-04-05</td>
+                                <td>P20260314002</td>
+                                <td>Yoon, Seo-ah</td>
+                                <td>CR</td>
+                                <td>Hand</td>
+                                <td>3</td>
+                                <td><span class="status-badge status-completed">Reported</span></td>
+                            </tr>
+                            <tr onclick="showToast('info', 'Opening study details...')">
+                                <td>2026-04-05</td>
+                                <td>P20260314001</td>
+                                <td>Kang, Min-seo</td>
+                                <td>CR</td>
+                                <td>Abdomen</td>
+                                <td>1</td>
+                                <td><span class="status-badge status-completed">Completed</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Acquisition Screen -->
+        <div id="screen-acquisition" class="screen">
+            <div class="screen-header">
+                <h2>4. Acquisition Screen</h2>
+                <p>Image acquisition control - CRITICAL PATH</p>
+            </div>
+            <div class="acquisition-layout">
+                <div class="acquisition-panel">
+                    <div class="panel-header">Patient Information</div>
+                    <div class="patient-info-row">
+                        <span class="patient-info-label">Patient ID</span>
+                        <span class="patient-info-value">P20260315001</span>
+                    </div>
+                    <div class="patient-info-row">
+                        <span class="patient-info-label">Name</span>
+                        <span class="patient-info-value">Kim, Min-jun</span>
+                    </div>
+                    <div class="patient-info-row">
+                        <span class="patient-info-label">DOB / Age</span>
+                        <span class="patient-info-value">1985-03-15 / 41y</span>
+                    </div>
+                    <div class="patient-info-row">
+                        <span class="patient-info-label">Sex</span>
+                        <span class="patient-info-value">Male</span>
+                    </div>
+                    <div class="patient-info-row">
+                        <span class="patient-info-label">Accession No</span>
+                        <span class="patient-info-value">ACC20260406001</span>
+                    </div>
+                    <div class="patient-info-row">
+                        <span class="patient-info-label">Procedure</span>
+                        <span class="patient-info-value">Chest PA</span>
+                    </div>
+                </div>
+                <div>
+                    <div class="image-preview">
+                        <div class="exposure-indicator">
+                            <div class="exposure-dot"></div>
+                            <span>READY</span>
+                        </div>
+                        <div class="preview-placeholder">
+                            <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                                <rect x="2" y="3" width="20" height="14" rx="2"/>
+                                <circle cx="12" cy="10" r="3"/>
+                                <path d="M12 13v6M8 19h8"/>
+                            </svg>
+                            <p style="margin-top: 16px;">Image Preview Area</p>
+                            <p style="font-size: 12px; color: var(--neutral-text-muted);">1600 x 1200 pixels</p>
+                        </div>
+                    </div>
+                    <div class="image-strip">
+                        <div class="thumbnail active">1/2</div>
+                        <div class="thumbnail">2/2</div>
+                    </div>
+                </div>
+                <div class="acquisition-panel">
+                    <div class="panel-header">Acquisition Controls</div>
+                    <div class="control-section">
+                        <h4>Body Part</h4>
+                        <div class="body-part-grid">
+                            <button class="body-part-btn active">Chest</button>
+                            <button class="body-part-btn">Abdomen</button>
+                            <button class="body-part-btn">Skull</button>
+                            <button class="body-part-btn">Spine</button>
+                            <button class="body-part-btn">Pelvis</button>
+                            <button class="body-part-btn">Extremity</button>
+                        </div>
+                    </div>
+                    <div class="control-section">
+                        <h4>Projection</h4>
+                        <div class="body-part-grid">
+                            <button class="body-part-btn active">PA</button>
+                            <button class="body-part-btn">AP</button>
+                            <button class="body-part-btn">LAT</button>
+                            <button class="body-part-btn">OBL</button>
+                        </div>
+                    </div>
+                    <div class="control-section">
+                        <h4>Exposure Settings</h4>
+                        <div class="form-group">
+                            <label>kVp</label>
+                            <input type="number" class="input" value="110">
+                        </div>
+                        <div class="form-group" style="margin-top: 8px;">
+                            <label>mAs</label>
+                            <input type="number" class="input" value="2.5">
+                        </div>
+                    </div>
+                    <div class="acquire-buttons">
+                        <button class="btn btn-acquire" onclick="showToast('success', 'Image acquired successfully!')">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                            Acquire
+                        </button>
+                        <button class="btn btn-emergency" onclick="showToast('error', 'Acquisition stopped!')">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="6" y="6" width="12" height="12"/>
+                            </svg>
+                            Emergency Stop
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Merge Screen -->
+        <div id="screen-merge" class="screen">
+            <div class="screen-header">
+                <h2>5. Merge Screen</h2>
+                <p>Image merge functionality for comparative studies</p>
+            </div>
+            <div class="merge-layout">
+                <div class="merge-panel">
+                    <h3>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                            <circle cx="9" cy="7" r="4"/>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                        </svg>
+                        Study A
+                    </h3>
+                    <div class="study-selector">
+                        <input type="text" class="input" placeholder="Select Study A..." value="ACC20260405001">
+                    </div>
+                    <div class="image-preview" style="min-height: 300px;">
+                        <div class="preview-placeholder">
+                            <p>Previous Study</p>
+                            <p style="font-size: 12px;">2026-04-05, Chest PA</p>
+                        </div>
+                    </div>
+                    <div class="image-strip">
+                        <div class="thumbnail">A-1</div>
+                        <div class="thumbnail">A-2</div>
+                        <div class="thumbnail">A-3</div>
+                    </div>
+                </div>
+                <div class="merge-controls">
+                    <div class="merge-arrow">-></div>
+                    <button class="btn btn-primary" onclick="showToast('info', 'Syncing previews...')">Sync</button>
+                    <button class="btn btn-secondary">Preview</button>
+                    <div class="merge-arrow">-></div>
+                </div>
+                <div class="merge-panel">
+                    <h3>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                            <circle cx="9" cy="7" r="4"/>
+                        </svg>
+                        Study B
+                    </h3>
+                    <div class="study-selector">
+                        <input type="text" class="input" placeholder="Select Study B..." value="ACC20260406001">
+                    </div>
+                    <div class="image-preview" style="min-height: 300px;">
+                        <div class="preview-placeholder">
+                            <p>Current Study</p>
+                            <p style="font-size: 12px;">2026-04-06, Chest PA</p>
+                        </div>
+                    </div>
+                    <div class="image-strip">
+                        <div class="thumbnail active">B-1</div>
+                        <div class="thumbnail">B-2</div>
+                    </div>
+                </div>
+            </div>
+            <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 16px;">
+                <button class="btn btn-secondary">Cancel</button>
+                <button class="btn btn-primary" onclick="showToast('success', 'Studies merged successfully!')">Save Merge</button>
+            </div>
+        </div>
+
+        <!-- Settings Screen -->
+        <div id="screen-settings" class="screen">
+            <div class="screen-header">
+                <h2>6. Settings Screen</h2>
+                <p>System configuration and preferences</p>
+            </div>
+            <div class="settings-layout">
+                <div class="settings-nav">
+                    <div class="settings-nav-item active" onclick="showSettingsTab(this, 'priority')">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                        Priority
+                    </div>
+                    <div class="settings-nav-item" onclick="showSettingsTab(this, 'display')">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="3" width="20" height="14" rx="2"/>
+                            <line x1="8" y1="21" x2="16" y2="21"/>
+                            <line x1="12" y1="17" x2="12" y2="21"/>
+                        </svg>
+                        Display
+                    </div>
+                    <div class="settings-nav-item" onclick="showSettingsTab(this, 'network')">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="2" width="20" height="8" rx="2"/>
+                            <rect x="2" y="14" width="20" height="8" rx="2"/>
+                            <line x1="6" y1="6" x2="6" y2="6"/>
+                            <line x1="6" y1="18" x2="6" y2="18"/>
+                        </svg>
+                        Network
+                    </div>
+                    <div class="settings-nav-item" onclick="showSettingsTab(this, 'storage')">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="17,8 12,3 7,8"/>
+                            <line x1="12" y1="3" x2="12" y2="15"/>
+                        </svg>
+                        Storage
+                    </div>
+                    <div class="settings-nav-item" onclick="showSettingsTab(this, 'devices')">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="4" y="4" width="16" height="16" rx="2"/>
+                            <rect x="9" y="9" width="6" height="6"/>
+                            <line x1="9" y1="1" x2="9" y2="4"/>
+                            <line x1="15" y1="1" x2="15" y2="4"/>
+                            <line x1="9" y1="20" x2="9" y2="23"/>
+                            <line x1="15" y1="20" x2="15" y2="23"/>
+                            <line x1="20" y1="9" x2="23" y2="9"/>
+                            <line x1="20" y1="14" x2="23" y2="14"/>
+                            <line x1="1" y1="9" x2="4" y2="9"/>
+                            <line x1="1" y1="14" x2="4" y2="14"/>
+                        </svg>
+                        Devices
+                    </div>
+                </div>
+                <div class="settings-content">
+                    <div id="settings-priority">
+                        <div class="settings-section">
+                            <h3>User Privileges</h3>
+                            <div class="setting-row">
+                                <div>
+                                    <div style="font-weight: 600;">Administrator Access</div>
+                                    <div style="font-size: 12px; color: var(--neutral-text-muted);">Full system control</div>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="setting-row">
+                                <div>
+                                    <div style="font-weight: 600;">Modify Patient Data</div>
+                                    <div style="font-size: 12px; color: var(--neutral-text-muted);">Allow editing patient information</div>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="setting-row">
+                                <div>
+                                    <div style="font-weight: 600;">Export DICOM</div>
+                                    <div style="font-size: 12px; color: var(--neutral-text-muted);">Allow data export</div>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="settings-display" style="display: none;">
+                        <div class="settings-section">
+                            <h3>Display Settings</h3>
+                            <div class="setting-row">
+                                <div>
+                                    <div style="font-weight: 600;">Language</div>
+                                </div>
+                                <select class="input" style="width: 150px;">
+                                    <option>English</option>
+                                    <option selected>Korean</option>
+                                    <option>Japanese</option>
+                                </select>
+                            </div>
+                            <div class="setting-row">
+                                <div>
+                                    <div style="font-weight: 600;">Theme</div>
+                                </div>
+                                <select class="input" style="width: 150px;">
+                                    <option selected>Dark Mode</option>
+                                    <option>Light Mode</option>
+                                </select>
+                            </div>
+                            <div class="setting-row">
+                                <div>
+                                    <div style="font-weight: 600;">Font Size</div>
+                                </div>
+                                <select class="input" style="width: 150px;">
+                                    <option>Small</option>
+                                    <option selected>Normal</option>
+                                    <option>Large</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="settings-network" style="display: none;">
+                        <div class="settings-section">
+                            <h3>DICOM Settings</h3>
+                            <div class="form-group">
+                                <label>AETitle</label>
+                                <input type="text" class="input" value="HNVUE_SCU">
+                            </div>
+                            <div class="form-group" style="margin-top: 16px;">
+                                <label>Port</label>
+                                <input type="number" class="input" value="104">
+                            </div>
+                            <div class="form-group" style="margin-top: 16px;">
+                                <label>Timeout (sec)</label>
+                                <input type="number" class="input" value="30">
+                            </div>
+                        </div>
+                    </div>
+                    <div id="settings-storage" style="display: none;">
+                        <div class="settings-section">
+                            <h3>Storage Configuration</h3>
+                            <div class="form-group">
+                                <label>Database Path</label>
+                                <input type="text" class="input" value="C:\HnVue\Data\Database">
+                            </div>
+                            <div class="form-group" style="margin-top: 16px;">
+                                <label>Image Storage</label>
+                                <input type="text" class="input" value="D:\HnVue\Images">
+                            </div>
+                            <div class="form-group" style="margin-top: 16px;">
+                                <label>Export Path</label>
+                                <input type="text" class="input" value="E:\Export">
+                            </div>
+                        </div>
+                    </div>
+                    <div id="settings-devices" style="display: none;">
+                        <div class="settings-section">
+                            <h3>Device Calibration</h3>
+                            <div class="setting-row">
+                                <div>
+                                    <div style="font-weight: 600;">Detector Status</div>
+                                    <div style="font-size: 12px; color: var(--semantic-success);">Connected</div>
+                                </div>
+                                <button class="btn btn-secondary" style="height: 36px;">Calibrate</button>
+                            </div>
+                            <div class="setting-row">
+                                <div>
+                                    <div style="font-weight: 600;">Generator Status</div>
+                                    <div style="font-size: 12px; color: var(--semantic-success);">Ready</div>
+                                </div>
+                                <button class="btn btn-secondary" style="height: 36px;">Test</button>
+                            </div>
+                            <div class="setting-row">
+                                <div>
+                                    <div style="font-weight: 600;">Last Calibration</div>
+                                    <div style="font-size: 12px; color: var(--neutral-text-muted);">2026-03-15</div>
+                                </div>
+                                <span class="status-badge status-completed">Valid</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px;">
+                <button class="btn btn-secondary">Reset</button>
+                <button class="btn btn-secondary">Cancel</button>
+                <button class="btn btn-primary" onclick="showToast('success', 'Settings saved!')">Apply</button>
+            </div>
+        </div>
+
+        <!-- Add Patient Screen -->
+        <div id="screen-patient" class="screen">
+            <div class="screen-header">
+                <h2>7. Add Patient/Procedure Screen</h2>
+                <p>New patient registration and procedure scheduling</p>
+            </div>
+            <div class="patient-form-layout">
+                <div class="form-section">
+                    <h3>Patient Information</h3>
+                    <div class="form-grid">
+                        <div class="form-group form-full">
+                            <label>Patient ID <span class="required">*</span></label>
+                            <div style="display: flex; gap: 8px;">
+                                <input type="text" class="input" placeholder="Auto-generated or manual entry">
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; white-space: nowrap;">
+                                    <input type="checkbox"> Auto-generate
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Name <span class="required">*</span></label>
+                            <input type="text" class="input" placeholder="Enter patient name">
+                        </div>
+                        <div class="form-group">
+                            <label>Date of Birth <span class="required">*</span></label>
+                            <input type="date" class="input">
+                        </div>
+                        <div class="form-group">
+                            <label>Sex <span class="required">*</span></label>
+                            <select class="input">
+                                <option value="">Select</option>
+                                <option value="M">Male</option>
+                                <option value="F">Female</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Accession No</label>
+                            <input type="text" class="input" placeholder="Optional">
+                        </div>
+                        <div class="form-group form-full">
+                            <label>Referring Physician</label>
+                            <input type="text" class="input" placeholder="Search physician..." list="physicians">
+                            <datalist id="physicians">
+                                <option value="Dr. Kim - Radiology">
+                                <option value="Dr. Park - Internal Medicine">
+                                <option value="Dr. Lee - Emergency">
+                            </datalist>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-section">
+                    <h3>Procedure Selection</h3>
+                    <div class="form-group">
+                        <label>Search Procedure</label>
+                        <input type="text" class="input" placeholder="Type to search procedures...">
+                    </div>
+                    <div class="form-group" style="margin-top: 16px;">
+                        <label>Available Procedures</label>
+                        <div class="procedure-list">
+                            <div class="procedure-item" onclick="toggleProcedure(this)">
+                                <input type="checkbox">
+                                <span>Chest PA</span>
+                            </div>
+                            <div class="procedure-item" onclick="toggleProcedure(this)">
+                                <input type="checkbox">
+                                <span>Chest LAT</span>
+                            </div>
+                            <div class="procedure-item" onclick="toggleProcedure(this)">
+                                <input type="checkbox">
+                                <span>Abdomen AP</span>
+                            </div>
+                            <div class="procedure-item" onclick="toggleProcedure(this)">
+                                <input type="checkbox">
+                                <span>Hand PA</span>
+                            </div>
+                            <div class="procedure-item" onclick="toggleProcedure(this)">
+                                <input type="checkbox">
+                                <span>Foot AP</span>
+                            </div>
+                            <div class="procedure-item" onclick="toggleProcedure(this)">
+                                <input type="checkbox">
+                                <span>Knee AP</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 16px;">
+                        <label>Selected Procedures</label>
+                        <div style="background: var(--neutral-bg); padding: 12px; border-radius: 6px; min-height: 60px; color: var(--neutral-text-muted);">
+                            None selected
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button class="btn btn-secondary" onclick="showScreen('worklist')">Cancel</button>
+                <button class="btn btn-primary" onclick="showToast('success', 'Patient registered successfully!'); showScreen('worklist');">Register Patient</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showScreen(screenId) {
+            // Hide all screens
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+
+            // Show selected screen
+            document.getElementById('screen-' + screenId).classList.add('active');
+
+            // Update nav button
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                if (btn.textContent.toLowerCase().includes(screenId) ||
+                    (screenId === 'patient' && btn.textContent === 'Add Patient')) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        function selectRow(row) {
+            document.querySelectorAll('.data-table tr').forEach(r => r.classList.remove('selected'));
+            row.classList.add('selected');
+            showToast('info', 'Study selected');
+        }
+
+        function toggleProcedure(item) {
+            const checkbox = item.querySelector('input[type="checkbox"]');
+            checkbox.checked = !checkbox.checked;
+            item.classList.toggle('selected', checkbox.checked);
+        }
+
+        function showSettingsTab(element, tabId) {
+            // Update nav
+            document.querySelectorAll('.settings-nav-item').forEach(item => item.classList.remove('active'));
+            element.classList.add('active');
+
+            // Show content
+            document.querySelectorAll('[id^="settings-"]').forEach(content => content.style.display = 'none');
+            document.getElementById('settings-' + tabId).style.display = 'block';
+        }
+
+        function showToast(type, message) {
+            const toast = document.createElement('div');
+            toast.className = 'toast toast-' + type;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+
+        // Filter button click handlers
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Body part button click handlers
+        document.querySelectorAll('.body-part-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                this.closest('.body-part-grid').querySelectorAll('.body-part-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

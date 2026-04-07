@@ -1,0 +1,33 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- ═══════════════════════════════════════════════════════════
+         HnVue Design System 2026 - Component Library Entry Point
+
+         Merges all component resources for easy inclusion in App.xaml
+         ═══════════════════════════════════════════════════════════ -->
+
+    <ResourceDictionary.MergedDictionaries>
+        <!-- Design System Colors & Tokens -->
+        <ResourceDictionary Source="DesignSystem2026.xaml" />
+
+        <!-- Component Styles -->
+        <ResourceDictionary Source="Styles/ButtonStyles.xaml" />
+        <ResourceDictionary Source="Styles/InputStyles.xaml" />
+        <ResourceDictionary Source="Styles/CardStyles.xaml" />
+
+        <!-- Component Templates -->
+        <ResourceDictionary Source="Components/Common/Modal.xaml" />
+        <ResourceDictionary Source="Components/Common/Toast.xaml" />
+
+        <!-- Medical Components -->
+        <ResourceDictionary Source="Components/Medical/PatientInfoCard.xaml" />
+        <ResourceDictionary Source="Components/Medical/StudyThumbnail.xaml" />
+        <ResourceDictionary Source="Components/Medical/AcquisitionPreview.xaml" />
+
+        <!-- Layout Components -->
+        <ResourceDictionary Source="Components/Layout/StatusBar.xaml" />
+        <ResourceDictionary Source="Components/Layout/Header.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+</ResourceDictionary>

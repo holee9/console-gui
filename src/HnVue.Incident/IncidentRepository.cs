@@ -5,6 +5,8 @@ using HnVue.Incident.Models;
 
 namespace HnVue.Incident;
 
+// @MX:TODO IncidentRepository needs database persistence (deferred to Wave 4 per README)
+// @MX:NOTE Thread-safe via ConcurrentDictionary - no additional synchronization needed
 /// <summary>
 /// In-memory repository for <see cref="IncidentRecord"/> instances.
 /// Thread-safe via <see cref="ConcurrentDictionary{TKey,TValue}"/>.
@@ -44,6 +46,7 @@ internal sealed class IncidentRepository
             : Task.FromResult(Result.Failure<IncidentRecord>(ErrorCode.NotFound, $"Incident '{id}' was not found."));
     }
 
+    // @MX:ANCHOR QueryAsync - @MX:REASON: Used by incident list UI and reporting dashboards
     /// <summary>
     /// Queries incidents with optional severity and date-range filters.
     /// </summary>

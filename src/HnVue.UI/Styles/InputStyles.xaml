@@ -1,0 +1,225 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- ═══════════════════════════════════════════════════════════
+         DS2026 Input Styles
+         IEC 62366 compliant - clear focus indicators
+         ═══════════════════════════════════════════════════════════ -->
+
+    <!-- ═══ TextBox Base Style ═══ -->
+    <Style x:Key="DS2026.TextBox.Base" TargetType="TextBox">
+        <Setter Property="Background" Value="{StaticResource DS2026.Brush.Surface}" />
+        <Setter Property="Foreground" Value="{StaticResource DS2026.Brush.Text}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="{StaticResource DS2026.Brush.Border}" />
+        <Setter Property="Padding" Value="12,8" />
+        <Setter Property="Height" Value="36" />
+        <Setter Property="FontSize" Value="{StaticResource DS2026.FontSize.Body}" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="CaretBrush" Value="{StaticResource DS2026.Brush.Primary}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Border x:Name="RootBorder"
+                            Background="{TemplateBinding Background}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            CornerRadius="{StaticResource DS2026.CornerRadius.MD}"
+                            Padding="{TemplateBinding Padding}"
+                            Height="{TemplateBinding Height}"
+                            SnapsToDevicePixels="True">
+                        <ScrollViewer x:Name="PART_ContentHost"
+                                      HorizontalScrollBarVisibility="Hidden"
+                                      VerticalScrollBarVisibility="Hidden"
+                                      VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="RootBorder" Property="BorderBrush" Value="{StaticResource DS2026.Brush.Primary.Light}" />
+                            <Setter TargetName="RootBorder" Property="BorderThickness" Value="2" />
+                            <Setter TargetName="RootBorder" Property="Margin" Value="1" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="RootBorder" Property="Opacity" Value="0.5" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ═══ TextBox Default ═══ -->
+    <Style x:Key="DS2026.TextBox" TargetType="TextBox" BasedOn="{StaticResource DS2026.TextBox.Base}" />
+
+    <!-- ═══ PasswordBox ═══ -->
+    <Style x:Key="DS2026.PasswordBox" TargetType="PasswordBox">
+        <Setter Property="Background" Value="{StaticResource DS2026.Brush.Surface}" />
+        <Setter Property="Foreground" Value="{StaticResource DS2026.Brush.Text}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="{StaticResource DS2026.Brush.Border}" />
+        <Setter Property="Padding" Value="12,8" />
+        <Setter Property="Height" Value="36" />
+        <Setter Property="FontSize" Value="{StaticResource DS2026.FontSize.Body}" />
+        <Setter Property="CaretBrush" Value="{StaticResource DS2026.Brush.Primary}" />
+        <Setter Property="SelectionBrush" Value="{StaticResource DS2026.Brush.Primary.Light}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="PasswordBox">
+                    <Border x:Name="RootBorder"
+                            Background="{TemplateBinding Background}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            CornerRadius="{StaticResource DS2026.CornerRadius.MD}"
+                            Padding="{TemplateBinding Padding}"
+                            Height="{TemplateBinding Height}"
+                            SnapsToDevicePixels="True">
+                        <ScrollViewer x:Name="PART_ContentHost"
+                                      HorizontalScrollBarVisibility="Hidden"
+                                      VerticalScrollBarVisibility="Hidden"
+                                      VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="RootBorder" Property="BorderBrush" Value="{StaticResource DS2026.Brush.Primary.Light}" />
+                            <Setter TargetName="RootBorder" Property="BorderThickness" Value="2" />
+                            <Setter TargetName="RootBorder" Property="Margin" Value="1" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="RootBorder" Property="Opacity" Value="0.5" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ═══ ComboBox ═══ -->
+    <Style x:Key="DS2026.ComboBox" TargetType="ComboBox">
+        <Setter Property="Background" Value="{StaticResource DS2026.Brush.Surface}" />
+        <Setter Property="Foreground" Value="{StaticResource DS2026.Brush.Text}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="{StaticResource DS2026.Brush.Border}" />
+        <Setter Property="Padding" Value="12,8" />
+        <Setter Property="Height" Value="36" />
+        <Setter Property="FontSize" Value="{StaticResource DS2026.FontSize.Body}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ComboBox">
+                    <Grid>
+                        <Border x:Name="RootBorder"
+                                Background="{TemplateBinding Background}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                CornerRadius="{StaticResource DS2026.CornerRadius.MD}"
+                                Padding="{TemplateBinding Padding}"
+                                Height="{TemplateBinding Height}"
+                                SnapsToDevicePixels="True">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <ContentPresenter x:Name="ContentSite"
+                                                  Margin="0,3,0,0"
+                                                  VerticalAlignment="Center"
+                                                  HorizontalAlignment="Left"
+                                                  Content="{TemplateBinding SelectionBoxItem}"
+                                                  ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                                  ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" />
+                                <Path x:Name="Arrow"
+                                      Grid.Column="1"
+                                      Data="M 0 0 L 4 4 L 8 0 Z"
+                                      Fill="{StaticResource DS2026.Brush.TextMuted}"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"
+                                      Width="10"
+                                      Height="6"
+                                      Stretch="Fill"
+                                      Margin="0,0,8,0" />
+                            </Grid>
+                        </Border>
+                        <Popup x:Name="PART_Popup"
+                               AllowsTransparency="True"
+                               Placement="Bottom"
+                               PopupAnimation="Slide"
+                               IsOpen="{TemplateBinding IsDropDownOpen}">
+                            <Grid x:Name="Shdw"
+                                  MinWidth="{TemplateBinding ActualWidth}"
+                                  MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                <Border x:Name="DropDownBorder"
+                                        Background="{StaticResource DS2026.Brush.Surface}"
+                                        BorderThickness="1"
+                                        BorderBrush="{StaticResource DS2026.Brush.Border}"
+                                        CornerRadius="{StaticResource DS2026.CornerRadius.MD}"
+                                        Padding="4">
+                                    <ScrollViewer x:Name="DropDownScrollViewer"
+                                                  VerticalScrollBarVisibility="Auto">
+                                        <ItemsPresenter x:Name="ItemsPresenter"
+                                                        KeyboardNavigation.DirectionalNavigation="Contained" />
+                                    </ScrollViewer>
+                                </Border>
+                            </Grid>
+                        </Popup>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="RootBorder" Property="BorderBrush" Value="{StaticResource DS2026.Brush.Primary.Light}" />
+                            <Setter TargetName="RootBorder" Property="BorderThickness" Value="2" />
+                            <Setter TargetName="RootBorder" Property="Margin" Value="1" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="RootBorder" Property="Opacity" Value="0.5" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ═══ CheckBox ═══ -->
+    <Style x:Key="DS2026.CheckBox" TargetType="CheckBox">
+        <Setter Property="Foreground" Value="{StaticResource DS2026.Brush.Text}" />
+        <Setter Property="FontSize" Value="{StaticResource DS2026.FontSize.Body}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="CheckBox">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Border x:Name="CheckBorder"
+                                Width="20"
+                                Height="20"
+                                Background="{StaticResource DS2026.Brush.Surface}"
+                                BorderThickness="1"
+                                BorderBrush="{StaticResource DS2026.Brush.Border}"
+                                CornerRadius="{StaticResource DS2026.CornerRadius.SM}"
+                                SnapsToDevicePixels="True">
+                            <Path x:Name="CheckMark"
+                                  Data="M 4 8 L 7 11 L 12 4"
+                                  Stroke="{StaticResource DS2026.Brush.Primary}"
+                                  StrokeThickness="2"
+                                  Stretch="Fill"
+                                  Visibility="Collapsed" />
+                        </Border>
+                        <ContentPresenter x:Name="ContentSite"
+                                          Margin="8,0,0,0"
+                                          VerticalAlignment="Center"
+                                          Content="{TemplateBinding Content}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}" />
+                    </StackPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="CheckMark" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="CheckBorder" Property="BorderBrush" Value="{StaticResource DS2026.Brush.Primary}" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="CheckBorder" Property="BorderBrush" Value="{StaticResource DS2026.Brush.Primary.Light}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="CheckBorder" Property="Opacity" Value="0.5" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

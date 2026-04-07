@@ -4,7 +4,7 @@
                  xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
                  xmlns:views="clr-namespace:HnVue.UI.Views;assembly=HnVue.UI"
                  Title="HnVue Console" Height="900" Width="1400"
-                 Background="{StaticResource HnVue.Background.Dark.Brush}">
+                 Background="{DynamicResource HnVue.Background.Dark.Brush}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="48"/>
@@ -13,43 +13,89 @@
         </Grid.RowDefinitions>
 
         <!-- Header -->
-        <Border Grid.Row="0" Background="{StaticResource HnVue.Primary.Brush}">
+        <Border Grid.Row="0" Background="{DynamicResource HnVue.Primary.Brush}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0"
-                           Text="HnVue Console"
-                           Foreground="{StaticResource HnVue.Text.Primary.Brush}"
-                           VerticalAlignment="Center"
-                           Margin="16,0"
-                           FontSize="{StaticResource HnVue.FontSize.Large}"
-                           FontFamily="{StaticResource HnVue.FontFamily}" />
-                <!-- User info + Logout (visible when authenticated) -->
+
+                <!-- Logo + title -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="12,0">
+                    <!-- Logo badge -->
+                    <Border Background="{DynamicResource HnVue.Semantic.Brand.Accent}"
+                            CornerRadius="4"
+                            Width="28"
+                            Height="28"
+                            Margin="0,0,8,0">
+                        <TextBlock Text="H"
+                                   FontWeight="Bold"
+                                   FontSize="14"
+                                   Foreground="White"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
+                    </Border>
+                    <TextBlock Text="HnVue Console"
+                               Foreground="{DynamicResource HnVue.Text.Primary.Brush}"
+                               VerticalAlignment="Center"
+                               FontSize="{DynamicResource HnVue.Core.FontSize.Large}"
+                               FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
+                </StackPanel>
+
+                <!-- Right side of header: Emergency Stop always visible + auth-gated user info -->
                 <StackPanel Grid.Column="1" Orientation="Horizontal"
-                            Margin="0,0,16,0"
-                            Visibility="{Binding IsAuthenticated, Converter={StaticResource BooleanToVisibilityConverter}}">
-                    <TextBlock Text="{Binding CurrentUsername}"
-                               Foreground="{StaticResource HnVue.Text.Primary.Brush}"
-                               VerticalAlignment="Center"
-                               Margin="0,0,8,0"
-                               FontFamily="{StaticResource HnVue.FontFamily}"/>
-                    <TextBlock Text="{Binding CurrentRoleDisplay}"
-                               Foreground="{StaticResource HnVue.Text.Secondary.Brush}"
-                               VerticalAlignment="Center"
-                               Margin="0,0,16,0"
-                               FontFamily="{StaticResource HnVue.FontFamily}"/>
+                            Margin="0,0,12,0"
+                            VerticalAlignment="Center">
+
                     <!-- Emergency button — SWR-NF-UX-026 (Safety-Critical, HAZ-RAD) / Issue #11
-                         Must be visible at all times; 44×44px minimum; ≤2 touch access. -->
-                    <Button Content="EMERGENCY"
+                         MUST be outside auth Visibility binding — visible even on login screen.
+                         IEC 62366: Emergency Stop is always accessible regardless of auth state. -->
+                    <Button Content="&#x26D4;  STOP"
+                            Style="{StaticResource HnVue.EmergencyStopButton}"
                             Command="{Binding EmergencyCommand}"
-                            Background="Red" Foreground="White" FontWeight="Bold"
-                            MinWidth="110" MinHeight="36"
-                            Margin="0,0,8,0" VerticalAlignment="Center"/>
-                    <Button Content="로그아웃"
-                            Command="{Binding LogoutCommand}"
+                            Margin="0,0,8,0"
                             VerticalAlignment="Center"/>
+
+                    <!-- User info + Logout (visible only when authenticated) -->
+                    <StackPanel Orientation="Horizontal"
+                                VerticalAlignment="Center"
+                                Visibility="{Binding IsAuthenticated, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <TextBlock Text="{Binding CurrentUsername}"
+                                   Foreground="{DynamicResource HnVue.Text.Primary.Brush}"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,8,0"
+                                   FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
+                        <TextBlock Text="{Binding CurrentRoleDisplay}"
+                                   Foreground="{DynamicResource HnVue.Text.Secondary.Brush}"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,12,0"
+                                   FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
+
+                        <!-- Logout button with border styling -->
+                        <Button Style="{x:Null}"
+                                Background="Transparent"
+                                BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
+                                BorderThickness="1"
+                                Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
+                                Height="32"
+                                Padding="12,0"
+                                Command="{Binding LogoutCommand}"
+                                VerticalAlignment="Center"
+                                Cursor="Hand">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xF3B1;"
+                                           FontFamily="Segoe MDL2 Assets"
+                                           FontSize="13"
+                                           VerticalAlignment="Center"
+                                           Margin="0,0,6,0"/>
+                                <TextBlock Text="로그아웃"
+                                           FontSize="12"
+                                           FontFamily="{DynamicResource HnVue.Core.FontFamily}"
+                                           VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
                 </StackPanel>
             </Grid>
         </Border>
@@ -66,17 +112,17 @@
                 </Grid.ColumnDefinitions>
 
                 <!-- Left Panel: Patient List (Shell Region — resolved via DataTemplate) -->
-                <Border Grid.Column="0" Background="{StaticResource HnVue.Background.Panel.Brush}">
+                <Border Grid.Column="0" Background="{DynamicResource HnVue.Background.Panel.Brush}">
                     <ContentControl Content="{Binding PatientListViewModel}"/>
                 </Border>
 
                 <!-- Center Panel: Image Viewer (Shell Region — resolved via DataTemplate) -->
-                <Border Grid.Column="1" Background="{StaticResource HnVue.Background.Dark.Brush}" Margin="2,0">
+                <Border Grid.Column="1" Background="{DynamicResource HnVue.Background.Dark.Brush}" Margin="2,0">
                     <ContentControl Content="{Binding ImageViewerViewModel}"/>
                 </Border>
 
                 <!-- Right Panel: Workflow + Dose (Shell Regions — resolved via DataTemplate) -->
-                <Border Grid.Column="2" Background="{StaticResource HnVue.Background.Panel.Brush}">
+                <Border Grid.Column="2" Background="{DynamicResource HnVue.Background.Panel.Brush}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
@@ -90,36 +136,99 @@
 
             <!-- Login overlay (visible when not authenticated) -->
             <Border Visibility="{Binding IsLoginVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
-                    Background="{StaticResource HnVue.Background.Dark.Brush}">
+                    Background="{DynamicResource HnVue.Background.Dark.Brush}">
                 <views:LoginView x:Name="LoginViewControl" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Border>
         </Grid>
 
         <!-- TLS Inactive Warning Banner — SWR-CS-079 (Security-related, HAZ-SEC) / Issue #13
              Permanent yellow banner shown when DICOM TLS is disabled. -->
-        <Border Grid.Row="1" VerticalAlignment="Top" Background="#FFFF00" Padding="8,3"
+        <Border Grid.Row="1" VerticalAlignment="Top"
+                Background="{DynamicResource HnVue.Semantic.Status.Warning}"
+                Padding="8,3"
                 Visibility="{Binding IsTlsInactive, Converter={StaticResource BoolToVisibilityConverter}}"
                 Panel.ZIndex="100">
-            <TextBlock Text="⚠ TLS 비활성 — 네트워크 데이터가 암호화되지 않습니다. 설정에서 TLS를 활성화하십시오."
-                       Foreground="Black" FontWeight="SemiBold" FontSize="12"/>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="&#xE7BA;"
+                           FontFamily="Segoe MDL2 Assets"
+                           FontSize="13"
+                           Foreground="Black"
+                           VerticalAlignment="Center"
+                           Margin="0,0,6,0"/>
+                <TextBlock Text="TLS 비활성 — 네트워크 데이터가 암호화되지 않습니다. 설정에서 TLS를 활성화하십시오."
+                           Foreground="Black"
+                           FontWeight="SemiBold"
+                           FontSize="12"
+                           FontFamily="{DynamicResource HnVue.Core.FontFamily}"
+                           VerticalAlignment="Center"/>
+            </StackPanel>
         </Border>
 
         <!-- Session Timeout Countdown Banner — SWR-CS-075 (Security-related) / Issue #14
              Shown in footer area 3 minutes before session expires. -->
-        <Border Grid.Row="2" Background="#CC4400" Padding="8,2"
+        <Border Grid.Row="2"
+                Background="{DynamicResource HnVue.Semantic.Status.Blocked}"
+                Padding="8,2"
                 Visibility="{Binding IsTimeoutWarningVisible, Converter={StaticResource BoolToVisibilityConverter}}"
-                Panel.ZIndex="100" VerticalAlignment="Bottom">
-            <TextBlock Text="{Binding SessionTimeoutCountdown, StringFormat='세션 만료까지 {0}초 — 활동하거나 다시 로그인하십시오'}"
-                       Foreground="White" FontSize="11"/>
+                Panel.ZIndex="100"
+                VerticalAlignment="Bottom">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="&#xE823;"
+                           FontFamily="Segoe MDL2 Assets"
+                           FontSize="11"
+                           Foreground="White"
+                           VerticalAlignment="Center"
+                           Margin="0,0,6,0"/>
+                <TextBlock Text="{Binding SessionTimeoutCountdown, StringFormat='세션 만료까지 {0}초 — 활동하거나 다시 로그인하십시오'}"
+                           Foreground="White"
+                           FontSize="11"
+                           FontFamily="{DynamicResource HnVue.Core.FontFamily}"
+                           VerticalAlignment="Center"/>
+            </StackPanel>
         </Border>
 
         <!-- Footer: Status Bar -->
-        <StatusBar Grid.Row="2" Background="{StaticResource HnVue.Background.Card.Brush}">
+        <StatusBar Grid.Row="2" Background="{DynamicResource HnVue.Component.StatusBar.Bg}">
             <StatusBarItem>
                 <TextBlock Text="{Binding ActiveNavItem, StringFormat='섹션: {0}', FallbackValue='준비'}"
-                           Foreground="{StaticResource HnVue.Text.Secondary.Brush}"
-                           FontSize="{StaticResource HnVue.FontSize.Small}"
-                           FontFamily="{StaticResource HnVue.FontFamily}" />
+                           Foreground="{DynamicResource HnVue.Component.StatusBar.Text}"
+                           FontSize="{DynamicResource HnVue.Core.FontSize.Small}"
+                           FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
+            </StatusBarItem>
+            <Separator/>
+            <StatusBarItem HorizontalAlignment="Right">
+                <StackPanel Orientation="Horizontal">
+                    <!-- DICOM connection status indicator -->
+                    <Ellipse Width="8" Height="8"
+                             VerticalAlignment="Center"
+                             Margin="0,0,5,0">
+                        <Ellipse.Style>
+                            <Style TargetType="Ellipse">
+                                <Setter Property="Fill" Value="{DynamicResource HnVue.Component.StatusBar.Safe}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsDicomConnected, FallbackValue=False}" Value="False">
+                                        <Setter Property="Fill" Value="{DynamicResource HnVue.Component.StatusBar.Emergency}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Ellipse.Style>
+                    </Ellipse>
+                    <TextBlock FontSize="{DynamicResource HnVue.Core.FontSize.Small}"
+                               FontFamily="{DynamicResource HnVue.Core.FontFamily}">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Text" Value="Connected"/>
+                                <Setter Property="Foreground" Value="{DynamicResource HnVue.Component.StatusBar.Safe}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsDicomConnected, FallbackValue=False}" Value="False">
+                                        <Setter Property="Text" Value="Disconnected"/>
+                                        <Setter Property="Foreground" Value="{DynamicResource HnVue.Component.StatusBar.Emergency}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </StackPanel>
             </StatusBarItem>
         </StatusBar>
     </Grid>

@@ -42,6 +42,11 @@ public sealed partial class PatientListViewModel : ObservableObject, IPatientLis
     [ObservableProperty]
     private string? _errorMessage;
 
+    /// <summary>Gets or sets the active period filter key ("Today","3Days","1Week","All","1Month").</summary>
+    [ObservableProperty]
+    private string _activePeriodFilter = "All";
+
+    // @MX:NOTE ViewModel-to-ViewModel communication via events; MainViewModel subscribes to PatientSelected
     /// <summary>Raised when the user selects a patient record.</summary>
     public event EventHandler<PatientRecord>? PatientSelected;
 
@@ -52,6 +57,7 @@ public sealed partial class PatientListViewModel : ObservableObject, IPatientLis
     ICommand IPatientListViewModel.SearchCommand => SearchCommand;
     ICommand IPatientListViewModel.SelectPatientCommand => SelectPatientCommand;
     ICommand IPatientListViewModel.RegisterPatientCommand => RegisterPatientCommand;
+    ICommand IPatientListViewModel.FilterByPeriodCommand => FilterByPeriodCommand;
 
     /// <summary>Searches for patients whose name or ID matches <see cref="SearchQuery"/>.</summary>
     [RelayCommand]
@@ -81,6 +87,15 @@ public sealed partial class PatientListViewModel : ObservableObject, IPatientLis
         {
             IsLoading = false;
         }
+    }
+
+    /// <summary>Applies a date-range filter and refreshes the patient list.</summary>
+    /// <param name="period">One of "Today", "3Days", "1Week", "All", or "1Month".</param>
+    [RelayCommand]
+    private async Task FilterByPeriodAsync(string? period)
+    {
+        ActivePeriodFilter = period ?? "All";
+        await SearchAsync();
     }
 
     /// <summary>Opens the patient registration dialog.</summary>

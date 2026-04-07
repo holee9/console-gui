@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Windows.Input;
 using HnVue.UI.Contracts.Events;
 
@@ -8,6 +9,9 @@ public interface ILoginViewModel : IViewModelBase
 {
     /// <summary>Gets or sets the username input value.</summary>
     string Username { get; set; }
+
+    /// <summary>Gets the list of registered user IDs available for login selection.</summary>
+    IReadOnlyList<string> AvailableUserIds { get; }
 
     /// <summary>Gets or sets the password input value.</summary>
     string Password { get; set; }

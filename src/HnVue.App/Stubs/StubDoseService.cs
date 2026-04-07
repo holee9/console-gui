@@ -32,4 +32,26 @@ internal sealed class StubDoseService : IDoseService
         string studyInstanceUid,
         CancellationToken cancellationToken = default)
         => Task.FromResult(Result.SuccessNullable<DoseRecord?>(null));
+
+    /// <inheritdoc/>
+    public double CalculateEsd(double dap, double fieldAreaCm2, double backscatterFactor = 1.35)
+        => 0.0;
+
+    /// <inheritdoc/>
+    public double CalculateExposureIndex(double meanPixelValue, double targetPixelValue)
+        => targetPixelValue > 0.0 ? meanPixelValue / targetPixelValue * 1000.0 : 0.0;
+
+    /// <inheritdoc/>
+    public Task<Result<DoseRecord>> GenerateRdsrSummaryAsync(
+        string studyInstanceUid,
+        CancellationToken cancellationToken = default)
+        => Task.FromResult(Result.Failure<DoseRecord>(ErrorCode.Unknown, NotImplementedMessage));
+
+    /// <inheritdoc/>
+    public Task<Result<IReadOnlyList<DoseRecord>>> GetDoseHistoryAsync(
+        string patientId,
+        DateTimeOffset? from = null,
+        DateTimeOffset? until = null,
+        CancellationToken cancellationToken = default)
+        => Task.FromResult(Result.Failure<IReadOnlyList<DoseRecord>>(ErrorCode.Unknown, NotImplementedMessage));
 }

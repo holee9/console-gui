@@ -1,0 +1,74 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <!-- Font Families -->
+    <FontFamily x:Key="Font.Primary">Segoe UI, Malgun Gothic, Apple SD Gothic Neo, system-ui, sans-serif</FontFamily>
+    <FontFamily x:Key="Font.Monospace">Consolas, SF Mono, monospace</FontFamily>
+    <FontFamily x:Key="Font.Korean">Malgun Gothic, Apple SD Gothic Neo</FontFamily>
+
+    <!-- Font Sizes -->
+    <sys:Double x:Key="Size.Display">32</sys:Double>
+    <sys:Double x:Key="Size.H1">24</sys:Double>
+    <sys:Double x:Key="Size.H2">18</sys:Double>
+    <sys:Double x:Key="Size.H3">16</sys:Double>
+    <sys:Double x:Key="Size.Body">14</sys:Double>
+    <sys:Double x:Key="Size.Caption">12</sys:Double>
+    <sys:Double x:Key="Size.Button">14</sys:Double>
+
+    <!-- Font Weights -->
+    <FontWeight x:Key="Weight.Regular">Regular</FontWeight>
+    <FontWeight x:Key="Weight.Medium">Medium</FontWeight>
+    <FontWeight x:Key="Weight.Semibold">Semibold</FontWeight>
+    <FontWeight x:Key="Weight.Bold">Bold</FontWeight>
+
+    <!-- Line Heights -->
+    <sys:Double x:Key="LineHeight.Display">48</sys:Double>
+    <sys:Double x:Key="LineHeight.H1">36</sys:Double>
+    <sys:Double x:Key="LineHeight.H2">28</sys:Double>
+    <sys:Double x:Key="LineHeight.H3">24</sys:Double>
+    <sys:Double x:Key="LineHeight.Body">22</sys:Double>
+    <sys:Double x:Key="LineHeight.Caption">18</sys:Double>
+
+    <!-- Text Styles -->
+    <Style x:Key="TextStyle.Display" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource Font.Primary}"/>
+        <Setter Property="FontSize" Value="{StaticResource Size.Display}"/>
+        <Setter Property="FontWeight" Value="{StaticResource Weight.Bold}"/>
+        <Setter Property="Foreground" Value="{StaticResource Neutral.Text}"/>
+        <Setter Property="Margin" Value="0,0,0,16"/>
+    </Style>
+
+    <Style x:Key="TextStyle.H1" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource Font.Primary}"/>
+        <Setter Property="FontSize" Value="{StaticResource Size.H1}"/>
+        <Setter Property="FontWeight" Value="{StaticResource Weight.Semibold}"/>
+        <Setter Property="Foreground" Value="{StaticResource Neutral.Text}"/>
+        <Setter Property="Margin" Value="0,0,0,12"/>
+    </Style>
+
+    <Style x:Key="TextStyle.H2" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource Font.Primary}"/>
+        <Setter Property="FontSize" Value="{StaticResource Size.H2}"/>
+        <Setter Property="FontWeight" Value="{StaticResource Weight.Medium}"/>
+        <Setter Property="Foreground" Value="{StaticResource Neutral.Text}"/>
+        <Setter Property="Margin" Value="0,0,0,8"/>
+    </Style>
+
+    <Style x:Key="TextStyle.Body" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource Font.Primary}"/>
+        <Setter Property="FontSize" Value="{StaticResource Size.Body}"/>
+        <Setter Property="FontWeight" Value="{StaticResource Weight.Regular}"/>
+        <Setter Property="Foreground" Value="{StaticResource Neutral.Text}"/>
+        <Setter Property="Margin" Value="0,0,0,4"/>
+    </Style>
+
+    <Style x:Key="TextStyle.Caption" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource Font.Primary}"/>
+        <Setter Property="FontSize" Value="{StaticResource Size.Caption}"/>
+        <Setter Property="FontWeight" Value="{StaticResource Weight.Regular}"/>
+        <Setter Property="Foreground" Value="{StaticResource Neutral.TextMuted}"/>
+        <Setter Property="Margin" Value="0,0,0,2"/>
+    </Style>
+
+</ResourceDictionary>

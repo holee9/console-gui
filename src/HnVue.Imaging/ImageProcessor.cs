@@ -18,6 +18,7 @@ public sealed class ImageProcessor : IImageProcessor
     private const int MinWindowWidth = 1;
     private const double MinZoomFactor = 0.01;
 
+    // @MX:ANCHOR ProcessAsync - @MX:REASON: Core image processing entry point, handles DICOM parsing, 16-bit to 8-bit normalization, preserves RawPixelData16 for ROI statistics (SWR-IP-036, Issue #8)
     /// <inheritdoc/>
     /// <remarks>SWR-IP-020</remarks>
     public async Task<Result<ProcessedImage>> ProcessAsync(
@@ -77,6 +78,7 @@ public sealed class ImageProcessor : IImageProcessor
     ///   output = clamp((input - (center - width/2)) / width, 0, 1) × 255
     /// Issue #2.
     /// </remarks>
+    // @MX:NOTE Window level LUT formula: output = clamp((px - (center - width/2)) / width, 0, 1) × 255 per DICOM standard
     public Result<ProcessedImage> ApplyWindowLevel(
         ProcessedImage image,
         double windowCenter,
@@ -116,6 +118,7 @@ public sealed class ImageProcessor : IImageProcessor
 
     /// <inheritdoc/>
     /// <remarks>SWR-IP-022</remarks>
+    // @MX:NOTE Zoom uses BicubicResample for upscaling (> 1.0), AreaAverageResample for downscaling (< 1.0) per SWR-IP-024
     public Result<ProcessedImage> Zoom(ProcessedImage image, double factor)
     {
         ArgumentNullException.ThrowIfNull(image);
@@ -241,6 +244,7 @@ public sealed class ImageProcessor : IImageProcessor
             image.WindowCenter, image.WindowWidth, image.FilePath));
     }
 
+    // @MX:WARN ApplyGainOffsetCorrection - @MX:REASON: Safety-related (SWR-IP-039, HAZ-RAD, HAZ-SW), requires calibration data, returns ErrorCode.CalibrationDataMissing if gainMap/offsetMap null, blocks exposure without calibration
     /// <inheritdoc/>
     /// <remarks>SWR-IP-039 (Safety-related, HAZ-RAD, HAZ-SW)</remarks>
     public Result<ProcessedImage> ApplyGainOffsetCorrection(
@@ -269,6 +273,7 @@ public sealed class ImageProcessor : IImageProcessor
                 "Gain/Offset maps must cover all pixels.");
 
         // Correct each pixel: corrected = clamp((pixel16 - offset) * gain, 0, 65535)
+        // @MX:NOTE Gain/Offset formula: corrected = clamp((pixel16 - offset) * gain, 0, 65535) per SWR-IP-039
         var corrected16 = new ushort[pixelCount];
         for (int i = 0; i < pixelCount; i++)
         {
@@ -942,6 +947,7 @@ public sealed class ImageProcessor : IImageProcessor
     /// </summary>
     /// <param name="rawBytes">Raw pixel byte buffer from the DICOM PixelData tag.</param>
     /// <param name="pixelCount">Expected number of pixels (rows × columns).</param>
+    // @MX:NOTE Normalize16BitTo8Bit preserves full 0-65535 range for ROI statistics (SWR-IP-036), Issue #8
     private static byte[] Normalize16BitTo8Bit(byte[] rawBytes, int pixelCount)
     {
         // Guard: require at least 2 bytes per pixel.
@@ -989,6 +995,7 @@ public sealed class ImageProcessor : IImageProcessor
     /// <param name="srcHeight">Height of the source image in pixels.</param>
     /// <param name="dstWidth">Desired output width in pixels.</param>
     /// <param name="dstHeight">Desired output height in pixels.</param>
+    // @MX:NOTE Bilinear resampling maps each destination pixel back to source coordinates, interpolates among 4 nearest pixels
     private static byte[] BilinearResample(
         byte[] source,
         int srcWidth,
@@ -1049,6 +1056,7 @@ public sealed class ImageProcessor : IImageProcessor
     /// Resamples using Bicubic interpolation (Catmull-Rom kernel).
     /// Used for upscaling (factor &gt; 1) per SWR-IP-024. Issue #4.
     /// </summary>
+    // @MX:NOTE Bicubic uses Catmull-Rom kernel, 4×4 neighborhood for upscaling (factor > 1), prevents aliasing per SWR-IP-024
     private static byte[] BicubicResample(
         byte[] source, int srcWidth, int srcHeight, int dstWidth, int dstHeight)
     {
@@ -1096,6 +1104,7 @@ public sealed class ImageProcessor : IImageProcessor
     /// Resamples using Area Average (box filter) for downscaling.
     /// Prevents aliasing artefacts per SWR-IP-024. Issue #4.
     /// </summary>
+    // @MX:NOTE Area Average uses box filter for downscaling (factor < 1), prevents aliasing per SWR-IP-024
     private static byte[] AreaAverageResample(
         byte[] source, int srcWidth, int srcHeight, int dstWidth, int dstHeight)
     {

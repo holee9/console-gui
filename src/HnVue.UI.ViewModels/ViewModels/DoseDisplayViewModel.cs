@@ -8,6 +8,7 @@ using HnVue.UI.Contracts.ViewModels;
 
 namespace HnVue.UI.ViewModels;
 
+// @MX:NOTE Diagnostic Reference Level (DRL) alerts when dose exceeds 150 mGy·cm² for chest exams (radiation safety)
 /// <summary>
 /// ViewModel for the dose display panel.
 /// Shows current DAP, historical dose records, and alerts when the DRL reference level is exceeded.
@@ -37,6 +38,7 @@ public sealed partial class DoseDisplayViewModel : ObservableObject, IDoseDispla
     /// <summary>Gets or sets the dose-area product (DAP) for the current exposure in mGy·cm².</summary>
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsDoseAlert))]
+    [NotifyPropertyChangedFor(nameof(DrlPercentage))]
     private double _currentDoseDap;
 
     /// <summary>Gets the collection of historical dose records for the current session.</summary>
@@ -48,6 +50,7 @@ public sealed partial class DoseDisplayViewModel : ObservableObject, IDoseDispla
     /// </summary>
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsDoseAlert))]
+    [NotifyPropertyChangedFor(nameof(DrlPercentage))]
     private double _drlReferenceLevel = DefaultDrlReferenceLevel;
 
     /// <summary>Gets or sets a message describing the most recent error, or <see langword="null"/> on success.</summary>
@@ -62,6 +65,15 @@ public sealed partial class DoseDisplayViewModel : ObservableObject, IDoseDispla
     /// Gets a value indicating whether the current DAP exceeds the DRL reference level.
     /// </summary>
     public bool IsDoseAlert => CurrentDoseDap > DrlReferenceLevel;
+
+    /// <summary>
+    /// Gets the current dose as a percentage of the DRL reference level (0–100+).
+    /// Used by <c>DoseDisplayView.xaml</c> to drive the DRL gauge bar width.
+    /// Returns 0 when <see cref="DrlReferenceLevel"/> is zero to avoid division by zero.
+    /// FR-DM-001 / FR-DM-015: thresholds 70%, 90%, 100%.
+    /// </summary>
+    public double DrlPercentage =>
+        DrlReferenceLevel > 0 ? Math.Min(CurrentDoseDap / DrlReferenceLevel * 100.0, 100.0) : 0.0;
 
     /// <summary>Refreshes the dose history for the given study UID.</summary>
     /// <param name="studyInstanceUid">DICOM Study Instance UID to retrieve dose data for.</param>

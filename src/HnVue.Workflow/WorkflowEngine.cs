@@ -145,6 +145,7 @@ public sealed class WorkflowEngine : IWorkflowEngine
         return await Task.FromResult(transitionResult).ConfigureAwait(false);
     }
 
+    // @MX:ANCHOR PrepareExposureAsync - @MX:REASON: Safety-critical dose interlock gate (4-tier IEC 60601-2-54), called by WorkflowViewModel, coordinates RBAC + dose validation + state transition
     /// <inheritdoc/>
     /// <remarks>
     /// SWR-WF-023~025: Dose interlock gate before radiation exposure.
@@ -179,6 +180,7 @@ public sealed class WorkflowEngine : IWorkflowEngine
         var validation = doseResult.Value;
 
         // SWR-WF-025: EMERGENCY → abort and escalate safe state
+        // @MX:NOTE Emergency interlock triggers immediate safe-state escalation, blocks exposure, requires physical reset
         if (validation.Level == DoseValidationLevel.Emergency)
         {
             lock (_lock)
@@ -225,6 +227,7 @@ public sealed class WorkflowEngine : IWorkflowEngine
 
         // SWR-NF-SC-041: Log exposure preparation to the tamper-evident audit trail.
         // Fire-and-forget: audit failure must never block the exposure workflow.
+        // @MX:NOTE Fire-and-forget audit pattern: _auditService.WriteAuditAsync not awaited, exceptions swallowed via ContinueWith
         FireAndForgetAudit("EXPOSURE_PREPARE",
             $"patientId={_currentPatientId};studyUid={_currentStudyInstanceUid};level={validation.Level}");
 
@@ -232,6 +235,7 @@ public sealed class WorkflowEngine : IWorkflowEngine
     }
 
     /// <inheritdoc/>
+    // @MX:WARN AbortAsync - @MX:REASON: Safety-critical abort path, escalates to Emergency if generator abort fails, captures patient context before nulling for audit (Issue #35)
     public async Task<Result> AbortAsync(
         string reason,
         CancellationToken cancellationToken = default)
@@ -281,6 +285,127 @@ public sealed class WorkflowEngine : IWorkflowEngine
         return Result.Success();
     }
 
+    // @MX:ANCHOR StartEmergencyExposureAsync - @MX:REASON: Safety-critical emergency fast-path, bypasses normal registration, enforces dose interlock + RBAC, auto-generates EMERG patient ID
+    /// <inheritdoc/>
+    /// <remarks>
+    /// SWR-WF-026~027: Emergency/trauma fast-path workflow.
+    /// - Auto-generates emergency patient ID: EMERG-{yyyyMMddHHmmss}
+    /// - Bypasses full patient registration validation
+    /// - Skips duplicate detection (emergency override)
+    /// - Directly transitions to Exposing state
+    /// - Still enforces RBAC (SWR-IP-RBAC-001) and dose interlock (SWR-WF-023~025)
+    /// - Logs emergency start in audit trail (SWR-NF-SC-041)
+    /// </remarks>
+    public async Task<Result<DoseValidationResult>> StartEmergencyExposureAsync(
+        string? patientName,
+        ExposureParameters parameters,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(parameters);
+
+        // RBAC check: emergency exposure requires Radiologist or higher (SWR-WF-026, SWR-IP-RBAC-001).
+        if (!_securityContext.CurrentRole.HasValue)
+            return Result.Failure<DoseValidationResult>(ErrorCode.AuthenticationFailed,
+                "User must be authenticated to perform emergency exposure.");
+
+        var rbacResult = RbacPolicy.Check(_securityContext.CurrentRole.Value, Permissions.PerformEmergencyExposure);
+        if (rbacResult.IsFailure)
+            return Result.Failure<DoseValidationResult>(
+                rbacResult.Error ?? ErrorCode.InsufficientPermission, rbacResult.ErrorMessage ?? string.Empty);
+
+        // Generate emergency patient ID
+        string emergencyPatientId = $"EMERG-{DateTime.UtcNow:yyyyMMddHHmmss}";
+        string emergencyStudyUid = $"EMERG-STUDY-{Guid.NewGuid():D}";
+
+        WorkflowState previous;
+
+        lock (_lock)
+        {
+            if (_safeState == SafeState.Emergency || _safeState == SafeState.Blocked)
+                return Result.Failure<DoseValidationResult>(ErrorCode.InvalidStateTransition,
+                    $"Cannot start emergency exposure: system is in safe state '{_safeState}'.");
+
+            previous = _stateMachine.CurrentState;
+
+            // Emergency workflow: force direct transition to Exposing bypassing intermediate states.
+            // @MX:NOTE Emergency fast-path bypasses PatientSelected, ProtocolLoaded, ReadyToExpose states for trauma care (SWR-WF-026)
+            // If currently in Error state (e.g. after Abort), reset to Idle first, then force to Exposing.
+            if (_stateMachine.CurrentState == WorkflowState.Error)
+                _stateMachine.Reset();
+
+            _stateMachine.ForceExposing();
+            _currentPatientId = emergencyPatientId;
+            _currentStudyInstanceUid = emergencyStudyUid;
+        }
+
+        // Dose interlock validation — SWR-WF-023 (enforced even for emergency)
+        var doseResult = await _doseService.ValidateExposureAsync(parameters, cancellationToken).ConfigureAwait(false);
+        if (doseResult.IsFailure)
+        {
+            // Rollback state transition on dose validation failure
+            lock (_lock)
+            {
+                _stateMachine.ForceError();
+                _currentPatientId = null;
+                _currentStudyInstanceUid = null;
+            }
+            RaiseStateChanged(previous, WorkflowState.Error, "Dose validation failed");
+            return Result.Failure<DoseValidationResult>(
+                doseResult.Error ?? ErrorCode.DoseLimitExceeded, doseResult.ErrorMessage ?? string.Empty);
+        }
+
+        var validation = doseResult.Value;
+
+        // SWR-WF-025: EMERGENCY dose level → abort and escalate safe state
+        if (validation.Level == DoseValidationLevel.Emergency)
+        {
+            lock (_lock)
+            {
+                SetSafeState(SafeState.Emergency, $"emergencyDose;msg={validation.Message}");
+                _stateMachine.ForceError();
+                _currentPatientId = null;
+                _currentStudyInstanceUid = null;
+            }
+            RaiseStateChanged(previous, WorkflowState.Error, "EMERGENCY dose interlock");
+            return Result.Failure<DoseValidationResult>(ErrorCode.DoseInterlock,
+                $"EMERGENCY dose interlock: {validation.Message}");
+        }
+
+        // SWR-WF-024: BLOCK dose level → set safe state, do not allow exposure
+        if (validation.Level == DoseValidationLevel.Block)
+        {
+            lock (_lock)
+            {
+                SetSafeState(SafeState.Blocked, $"emergencyDose;msg={validation.Message}");
+                _stateMachine.ForceError();
+                _currentPatientId = null;
+                _currentStudyInstanceUid = null;
+            }
+            RaiseStateChanged(previous, WorkflowState.Error, "Dose BLOCKED");
+            return Result.Failure<DoseValidationResult>(ErrorCode.DoseInterlock,
+                $"Dose BLOCKED: {validation.Message}");
+        }
+
+        // ALLOW or WARN: proceed with exposure
+        // WARN → set SafeState.Warning
+        lock (_lock)
+        {
+            if (validation.Level == DoseValidationLevel.Warn)
+                SetSafeState(SafeState.Warning, $"emergencyDose;msg={validation.Message}");
+            else
+                SetSafeState(SafeState.Idle);
+        }
+
+        RaiseStateChanged(previous, WorkflowState.Exposing, "Emergency fast-path");
+
+        // SWR-NF-SC-041: Log emergency exposure to audit trail
+        FireAndForgetAudit("EMERGENCY_EXPOSURE",
+            $"patientId={emergencyPatientId};patientName={patientName};studyUid={emergencyStudyUid};" +
+            $"level={validation.Level};kvp={parameters.Kvp};mas={parameters.Mas}");
+
+        return Result.Success(validation);
+    }
+
     // ── Helpers ───────────────────────────────────────────────────────────────
 
     private void RaiseStateChanged(WorkflowState previous, WorkflowState next, string? reason = null)
@@ -295,6 +420,7 @@ public sealed class WorkflowEngine : IWorkflowEngine
     /// </summary>
     /// <param name="newState">The new safe state to apply.</param>
     /// <param name="context">Optional free-text context written to the audit details field.</param>
+    // @MX:WARN SetSafeState - @MX:REASON: Safety-state transitions are audit-logged (SWR-NF-SC-041), must be called inside _lock, fire-and-forget audit pattern
     private void SetSafeState(SafeState newState, string? context = null)
     {
         var previous = _safeState;
@@ -315,6 +441,7 @@ public sealed class WorkflowEngine : IWorkflowEngine
     /// </summary>
     /// <param name="action">The audit action code (e.g., "EXPOSURE_PREPARE").</param>
     /// <param name="details">Optional detail string stored in the audit entry.</param>
+    // @MX:WARN Fire-and-forget pattern - Task not awaited, exceptions swallowed via ContinueWith, ensures audit failure never blocks safety-critical paths
     private void FireAndForgetAudit(string action, string? details = null)
     {
         if (_auditService is null)

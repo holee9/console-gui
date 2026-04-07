@@ -1,0 +1,34 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+/* CoreTokens.xaml authoritative values — do not change independently */
+:root {
+    --bg-page: #1A1A2E;
+    --bg-panel: #16213E;
+    --bg-card: #0F3460;
+    --color-primary: #1B4F8A;
+    --color-primary-light: #2E6DB4;
+    --color-accent: #00AEEF;
+    --text-primary: #FFFFFF;
+    --text-secondary: #B0BEC5;
+    --text-disabled: #546E7A;
+    --status-safe: #00C853;
+    --status-warning: #FFD600;
+    --status-blocked: #FF6D00;
+    --status-emergency: #D50000;
+    --border-default: #2E4A6E;
+    --border-focus: #00AEEF;
+    /* Legacy aliases kept for gradual migration */
+    --bg-primary: var(--bg-page);
+    --bg-surface: var(--bg-panel);
+    --bg-border: var(--border-default);
+}
+body { font-family: 'Segoe UI', sans-serif; background: var(--bg-primary); color: var(--text-primary); }
+.sidebar { position: fixed; left: 0; top: 0; width: 260px; height: 100vh; background: var(--bg-surface); padding: 24px; }
+.logo { display: flex; align-items: center; gap: 12px; margin-bottom: 32px; }
+.content { margin-left: 260px; padding: 48px; }
+.page-header h1 { font-size: 48px; font-weight: 700; margin-bottom: 8px; }
+.compliance-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.compliance-list li { padding: 12px; background: var(--bg-surface); border-radius: 8px; }
+.value-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 24px; }
+.value-card { padding: 24px; background: var(--bg-surface); border-radius: 12px; text-align: center; }
+.color-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 16px; }
+.color-swatch { width: 80px; height: 80px; border-radius: 12px; margin: 0 auto 8px; }

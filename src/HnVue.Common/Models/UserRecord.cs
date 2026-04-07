@@ -2,6 +2,7 @@ using HnVue.Common.Enums;
 
 namespace HnVue.Common.Models;
 
+// @MX:NOTE UserRecord record - Account entity with bcrypt hash, lockout flags, PIN tracking fields
 /// <summary>
 /// Represents a user account as stored in the data layer.
 /// Passwords are never stored in plain text; only the hash is persisted.

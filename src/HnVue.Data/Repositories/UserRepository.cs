@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HnVue.Data.Repositories;
 
+// @MX:ANCHOR UserRepository - @MX:REASON: Credential persistence with 10 operations, lockout & PIN tracking
 /// <summary>
 /// EF Core implementation of <see cref="IUserRepository"/> backed by the encrypted SQLite database.
 /// </summary>

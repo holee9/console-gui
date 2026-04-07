@@ -20,6 +20,10 @@
             <!-- HnVue custom converters — Issue #16 -->
             <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
             <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
+            <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
+            <!-- Settings tab converters -->
+            <converters:ActiveTabToVisibilityConverter x:Key="ActiveTabToVisibilityConverter" />
+            <converters:StringEqualityToBoolConverter x:Key="StringEqualityToBoolConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

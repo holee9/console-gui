@@ -1,5 +1,6 @@
 namespace HnVue.Common.Results;
 
+// @MX:ANCHOR Result monad pattern - @MX:REASON: Railway-oriented error handling core, 600+ consumers across all modules
 /// <summary>
 /// Static factory class for creating <see cref="Result{T}"/> instances without having to
 /// specify the generic type parameter at the call site.
@@ -134,6 +135,7 @@ public sealed class Result<T>
     /// <summary>Gets the human-readable error message, or <see langword="null"/> on success.</summary>
     public string? ErrorMessage => _errorMessage;
 
+    // @MX:ANCHOR Map method - @MX:REASON: Functional transformation primitive, 50+ consumers for Result chaining
     /// <summary>
     /// Transforms the value using <paramref name="mapper"/> if the result is successful;
     /// otherwise propagates the existing failure.
@@ -148,6 +150,7 @@ public sealed class Result<T>
             : Result<TOut>.CreateFailure(Error!.Value, _errorMessage!);
     }
 
+    // @MX:ANCHOR Bind method - @MX:REASON: Railway composition core, 40+ consumers for monadic chaining
     /// <summary>
     /// Chains result-returning operations. If the current result is successful,
     /// applies <paramref name="binder"/> to the value; otherwise propagates the failure.

@@ -2,6 +2,13 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:System="clr-namespace:System;assembly=mscorlib">
 
+    <!--
+        @MX:NOTE Theme merge order is critical: DarkTheme MUST load before CoreTokens.
+                 CoreTokens provides raw Color primitives; DarkTheme overrides them.
+                 SemanticTokens and ComponentTokens consume via DynamicResource so they
+                 always reflect the active theme without recompilation.
+                 Do NOT reorder the MergedDictionaries entries below.
+    -->
     <!-- ═══════════════════════════════════════════════════════════
          HnVue Design Token Entry Point
 
@@ -46,9 +53,11 @@
     <Color x:Key="HnVue.Background.Card.Color">#0F3460</Color>
     <Color x:Key="HnVue.Text.Primary.Color">#FFFFFF</Color>
     <Color x:Key="HnVue.Text.Secondary.Color">#B0BEC5</Color>
-    <Color x:Key="HnVue.Success.Color">#4CAF50</Color>
-    <Color x:Key="HnVue.Warning.Color">#FF9800</Color>
-    <Color x:Key="HnVue.Error.Color">#F44336</Color>
+    <!-- IEC 62366 safety-critical status colors — must match CoreTokens exactly -->
+    <Color x:Key="HnVue.Success.Color">#00C853</Color>
+    <Color x:Key="HnVue.Warning.Color">#FFD600</Color>
+    <Color x:Key="HnVue.Blocked.Color">#FF6D00</Color>
+    <Color x:Key="HnVue.Error.Color">#D50000</Color>
 
     <!-- ── Brush aliases (original SolidColorBrush resources) ── -->
     <SolidColorBrush x:Key="HnVue.Primary.Brush"
@@ -67,6 +76,10 @@
                      Color="{DynamicResource HnVue.Core.Color.TextSecondary}" />
     <SolidColorBrush x:Key="HnVue.Success.Brush"
                      Color="{DynamicResource HnVue.Core.Color.StatusSafe}" />
+    <SolidColorBrush x:Key="HnVue.Warning.Brush"
+                     Color="{DynamicResource HnVue.Core.Color.StatusWarning}" />
+    <SolidColorBrush x:Key="HnVue.Blocked.Brush"
+                     Color="{DynamicResource HnVue.Core.Color.StatusBlocked}" />
     <SolidColorBrush x:Key="HnVue.Error.Brush"
                      Color="{DynamicResource HnVue.Core.Color.StatusEmergency}" />
 
@@ -93,16 +106,124 @@
         <Setter Property="Background" Value="{DynamicResource HnVue.Semantic.Button.Primary}" />
         <Setter Property="Foreground" Value="{DynamicResource HnVue.Semantic.Text.Primary}" />
         <Setter Property="Padding" Value="16,8" />
+        <Setter Property="MinHeight" Value="44" />
         <Setter Property="FontSize" Value="{DynamicResource HnVue.Core.FontSize.Normal}" />
         <Setter Property="FontFamily" Value="{DynamicResource HnVue.Core.FontFamily}" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Cursor" Value="Hand" />
     </Style>
 
+    <!-- Emergency Stop button style — IEC 62366 safety-critical, always 56px, #D50000 -->
+    <Style x:Key="HnVue.EmergencyStopButton" TargetType="Button">
+        <Setter Property="Background" Value="{DynamicResource HnVue.Semantic.Status.Emergency}" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="MinHeight" Value="56" />
+        <Setter Property="MinWidth" Value="100" />
+        <Setter Property="Padding" Value="16,8" />
+        <Setter Property="FontSize" Value="{DynamicResource HnVue.Core.FontSize.Large}" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="FontFamily" Value="{DynamicResource HnVue.Core.FontFamily}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="AutomationProperties.Name" Value="Emergency Stop" />
+        <Setter Property="AutomationProperties.HelpText" Value="Immediately stops radiation exposure. Keyboard: Escape" />
+        <!-- Never disable this button — IEC 62366 requires it always be operable -->
+        <Setter Property="IsEnabled" Value="True" />
+    </Style>
+
+    <!-- Danger button — for high-risk actions (delete, override) -->
+    <Style x:Key="HnVue.DangerButton" TargetType="Button" BasedOn="{StaticResource HnVue.PrimaryButton}">
+        <Setter Property="Background" Value="{DynamicResource HnVue.Semantic.Button.Danger}" />
+    </Style>
+
     <Style x:Key="HnVue.SecondaryButton" TargetType="Button" BasedOn="{StaticResource HnVue.PrimaryButton}">
         <Setter Property="Background" Value="{DynamicResource HnVue.Semantic.Button.Secondary}" />
         <Setter Property="BorderBrush" Value="{DynamicResource HnVue.Semantic.Brand.Accent}" />
         <Setter Property="BorderThickness" Value="1" />
+    </Style>
+
+    <!--
+        White outline button — matches current UI screenshot style exactly.
+        Used by: ImageViewerView (ZOOM IN/OUT/RESET W/L), toolbar actions.
+        @MX:NOTE This preserves the existing white-border-on-dark look from the current app.
+    -->
+    <Style x:Key="HnVue.OutlineButton" TargetType="Button">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource HnVue.Semantic.Text.Primary}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource HnVue.Semantic.Text.Primary}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Padding" Value="12,5" />
+        <Setter Property="Height" Value="32" />
+        <Setter Property="FontSize" Value="{DynamicResource HnVue.Core.FontSize.Small}" />
+        <Setter Property="FontFamily" Value="{DynamicResource HnVue.Core.FontFamily}" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="3"
+                            Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Background"
+                                    Value="{DynamicResource HnVue.Semantic.Border.Default}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="border" Property="Background"
+                                    Value="{DynamicResource HnVue.Semantic.Brand.Primary}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="border" Property="Opacity" Value="0.4"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Accent outline button — for focused/active toolbar items -->
+    <Style x:Key="HnVue.AccentOutlineButton" TargetType="Button"
+           BasedOn="{StaticResource HnVue.OutlineButton}">
+        <Setter Property="BorderBrush" Value="{DynamicResource HnVue.Semantic.Brand.Accent}" />
+        <Setter Property="Foreground" Value="{DynamicResource HnVue.Semantic.Brand.Accent}" />
+    </Style>
+
+    <!-- Compact text input style for dark theme -->
+    <Style x:Key="HnVue.DarkTextBox" TargetType="TextBox">
+        <Setter Property="Background" Value="{DynamicResource HnVue.Semantic.Surface.Card}" />
+        <Setter Property="Foreground" Value="{DynamicResource HnVue.Semantic.Text.Primary}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource HnVue.Semantic.Border.Default}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Padding" Value="8,6" />
+        <Setter Property="Height" Value="36" />
+        <Setter Property="FontFamily" Value="{DynamicResource HnVue.Core.FontFamily}" />
+        <Setter Property="FontSize" Value="{DynamicResource HnVue.Core.FontSize.Normal}" />
+        <Setter Property="CaretBrush" Value="{DynamicResource HnVue.Semantic.Brand.Accent}" />
+        <Style.Triggers>
+            <Trigger Property="IsFocused" Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource HnVue.Semantic.Border.Focus}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Section header text style -->
+    <Style x:Key="HnVue.SectionHeader" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="{DynamicResource HnVue.Core.FontSize.Large}" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{DynamicResource HnVue.Semantic.Text.Primary}" />
+        <Setter Property="FontFamily" Value="{DynamicResource HnVue.Core.FontFamily}" />
+    </Style>
+
+    <!-- Muted label text style -->
+    <Style x:Key="HnVue.MutedLabel" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="{DynamicResource HnVue.Core.FontSize.Small}" />
+        <Setter Property="Foreground" Value="{DynamicResource HnVue.Semantic.Text.Secondary}" />
+        <Setter Property="FontFamily" Value="{DynamicResource HnVue.Core.FontFamily}" />
     </Style>
 
 </ResourceDictionary>

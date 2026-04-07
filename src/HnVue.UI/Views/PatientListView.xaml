@@ -4,59 +4,285 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
-             d:DesignHeight="600" d:DesignWidth="800">
-    <Grid Margin="16">
+             d:DesignHeight="600" d:DesignWidth="280">
+    <!--
+        @MX:NOTE PatientListView — patient/worklist panel (left sidebar, 280px).
+                 Implements HRUS-001: patient identification with status badges.
+                 Issue #44: DataGrid with icon buttons and CoreTokens.
+    -->
+
+    <Grid Background="{DynamicResource HnVue.Semantic.Surface.Panel}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Text="Patient List" FontSize="18" FontWeight="Bold" Margin="0,0,0,12"/>
+        <!-- Header row: title + patient count badge -->
+        <Grid Grid.Row="0" Margin="12,12,12,8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,8">
-            <TextBox Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}"
-                     Width="300" Margin="0,0,8,0"/>
-            <Button Content="Search" Command="{Binding SearchCommand}" Width="80"/>
-            <Button Content="Register" Command="{Binding RegisterPatientCommand}"
-                    Width="80" Margin="8,0,0,0"/>
-        </StackPanel>
+            <TextBlock Grid.Column="0"
+                       Text="Patient List"
+                       FontSize="16"
+                       FontWeight="Bold"
+                       Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
+                       VerticalAlignment="Center"
+                       FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
 
-        <!-- IsLoading indicator — SWR-NF-UX-025 / Issue #16 -->
-        <ProgressBar Grid.Row="2" IsIndeterminate="True" Height="4" VerticalAlignment="Top"
-                     Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            <!-- Patient count badge -->
+            <Border Grid.Column="1"
+                    Background="{DynamicResource HnVue.Semantic.Brand.Primary}"
+                    CornerRadius="10"
+                    Padding="7,2"
+                    VerticalAlignment="Center">
+                <TextBlock Text="{Binding Patients.Count}"
+                           Foreground="White"
+                           FontSize="11"
+                           FontWeight="SemiBold"
+                           FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
+            </Border>
+        </Grid>
 
-        <!-- ErrorMessage display — SWR-NF-UX-025 / Issue #16 -->
-        <TextBlock Grid.Row="2" Text="{Binding ErrorMessage}" Foreground="Red" VerticalAlignment="Top"
-                   Margin="0,8,0,0"
-                   Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}"/>
+        <!-- Search area -->
+        <Border Grid.Row="1"
+                Margin="12,0,12,6"
+                Height="36"
+                CornerRadius="4"
+                Background="{DynamicResource HnVue.Semantic.Surface.Card}"
+                BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
+                BorderThickness="1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-        <!-- Patient list — SelectPatientCommand bound via InputBindings / Issue #15 -->
-        <ListBox Grid.Row="2"
+                <!-- Search icon — Segoe MDL2 Assets -->
+                <TextBlock Grid.Column="0"
+                           Text="&#xE721;"
+                           FontFamily="Segoe MDL2 Assets"
+                           FontSize="14"
+                           Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}"
+                           VerticalAlignment="Center"
+                           Margin="10,0,6,0"/>
+
+                <TextBox Grid.Column="1"
+                         Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}"
+                         Background="Transparent"
+                         Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
+                         BorderThickness="0"
+                         FontSize="13"
+                         VerticalAlignment="Center"
+                         Padding="0,0,8,0"
+                         CaretBrush="{DynamicResource HnVue.Semantic.Brand.Accent}"
+                         FontFamily="{DynamicResource HnVue.Core.FontFamily}">
+                    <TextBox.Style>
+                        <Style TargetType="TextBox">
+                            <Style.Resources>
+                                <VisualBrush x:Key="WatermarkBrush" TileMode="None" Stretch="None" AlignmentX="Left">
+                                    <VisualBrush.Visual>
+                                        <TextBlock Text="Search patients..."
+                                                   Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}"
+                                                   FontSize="13"
+                                                   Margin="0"/>
+                                    </VisualBrush.Visual>
+                                </VisualBrush>
+                            </Style.Resources>
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="BorderThickness" Value="0"/>
+                            <Style.Triggers>
+                                <Trigger Property="Text" Value="">
+                                    <Setter Property="Background" Value="{StaticResource WatermarkBrush}"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
+            </Grid>
+        </Border>
+
+        <!-- Period filter buttons — PPT Worklist 2안 -->
+        <ScrollViewer Grid.Row="2"
+                      HorizontalScrollBarVisibility="Auto"
+                      VerticalScrollBarVisibility="Disabled"
+                      Margin="12,0,12,6">
+            <StackPanel Orientation="Horizontal">
+                <Button Content="Today"
+                        Command="{Binding FilterByPeriodCommand}"
+                        CommandParameter="Today"
+                        Style="{StaticResource HnVue.OutlineButton}"
+                        Height="26"
+                        Padding="8,0"
+                        Margin="0,0,4,0"
+                        FontSize="11"
+                        FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
+                <Button Content="3Days"
+                        Command="{Binding FilterByPeriodCommand}"
+                        CommandParameter="3Days"
+                        Style="{StaticResource HnVue.OutlineButton}"
+                        Height="26"
+                        Padding="8,0"
+                        Margin="0,0,4,0"
+                        FontSize="11"
+                        FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
+                <Button Content="1Week"
+                        Command="{Binding FilterByPeriodCommand}"
+                        CommandParameter="1Week"
+                        Style="{StaticResource HnVue.OutlineButton}"
+                        Height="26"
+                        Padding="8,0"
+                        Margin="0,0,4,0"
+                        FontSize="11"
+                        FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
+                <Button Content="All"
+                        Command="{Binding FilterByPeriodCommand}"
+                        CommandParameter="All"
+                        Style="{StaticResource HnVue.OutlineButton}"
+                        Height="26"
+                        Padding="8,0"
+                        Margin="0,0,4,0"
+                        FontSize="11"
+                        FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
+                <Button Content="1Month"
+                        Command="{Binding FilterByPeriodCommand}"
+                        CommandParameter="1Month"
+                        Style="{StaticResource HnVue.OutlineButton}"
+                        Height="26"
+                        Padding="8,0"
+                        FontSize="11"
+                        FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Action button row: Register -->
+        <Grid Grid.Row="3" Margin="12,0,12,8">
+            <Button Command="{Binding RegisterPatientCommand}"
+                    Style="{StaticResource HnVue.OutlineButton}"
+                    Height="32"
+                    HorizontalAlignment="Stretch">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="&#xE710;"
+                               FontFamily="Segoe MDL2 Assets"
+                               FontSize="13"
+                               VerticalAlignment="Center"
+                               Margin="0,0,5,0"/>
+                    <TextBlock Text="Register"
+                               FontSize="13"
+                               VerticalAlignment="Center"
+                               FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
+                </StackPanel>
+            </Button>
+        </Grid>
+
+        <!-- Patient list -->
+        <ListBox Grid.Row="4"
                  ItemsSource="{Binding Patients}"
                  SelectedItem="{Binding SelectedPatient}"
-                 Margin="0,20,0,0">
+                 Background="Transparent"
+                 BorderThickness="0"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 FontFamily="{DynamicResource HnVue.Core.FontFamily}">
             <ListBox.InputBindings>
                 <MouseBinding MouseAction="LeftDoubleClick"
                               Command="{Binding SelectPatientCommand}"
                               CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType=ListBox}}"/>
             </ListBox.InputBindings>
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Foreground" Value="{DynamicResource HnVue.Semantic.Text.Primary}"/>
+                    <Setter Property="Height" Value="44"/>
+                    <Setter Property="Padding" Value="12,0"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    <Setter Property="Cursor" Value="Hand"/>
+                    <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                    <Setter Property="BorderBrush" Value="{DynamicResource HnVue.Semantic.Border.Default}"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource HnVue.Semantic.Brand.Primary}"/>
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver" Value="True"/>
+                                <Condition Property="IsSelected" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background">
+                                <Setter.Value>
+                                    <SolidColorBrush Color="{StaticResource HnVue.Core.Color.PrimaryLight}" Opacity="0.25"/>
+                                </Setter.Value>
+                            </Setter>
+                        </MultiTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ListBox.ItemContainerStyle>
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
+                    <Grid VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
                         <!-- Emergency badge — SWR-PM-013 / Issue #15 -->
-                        <Border Background="Red" CornerRadius="2" Padding="3,1" Margin="0,0,6,0"
+                        <Border Grid.Column="0"
+                                Background="{DynamicResource HnVue.Semantic.Status.Emergency}"
+                                CornerRadius="2"
+                                Padding="4,1"
+                                Margin="0,0,7,0"
+                                VerticalAlignment="Center"
                                 Visibility="{Binding IsEmergency, Converter={StaticResource BoolToVisibilityConverter}}">
-                            <TextBlock Text="EMRG" Foreground="White" FontSize="10" FontWeight="Bold"/>
+                            <TextBlock Text="EMRG"
+                                       Foreground="White"
+                                       FontSize="10"
+                                       FontWeight="Bold"
+                                       FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
                         </Border>
-                        <TextBlock>
-                            <Run Text="{Binding PatientId}"/>
-                            <Run Text=" — "/>
-                            <Run Text="{Binding Name}"/>
-                        </TextBlock>
-                    </StackPanel>
+
+                        <!-- Patient ID and Name -->
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                            <TextBlock FontSize="12"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
+                                       TextTrimming="CharacterEllipsis"
+                                       FontFamily="{DynamicResource HnVue.Core.FontFamily}">
+                                <Run Text="{Binding PatientId}"/>
+                            </TextBlock>
+                            <TextBlock Text="{Binding Name}"
+                                       FontSize="12"
+                                       Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}"
+                                       TextTrimming="CharacterEllipsis"
+                                       FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
+                        </StackPanel>
+                    </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+
+        <!-- Status area: loading + error -->
+        <StackPanel Grid.Row="5" Margin="0,0,0,0">
+            <!-- IsLoading indicator — SWR-NF-UX-025 / Issue #16 -->
+            <ProgressBar IsIndeterminate="True"
+                         Height="3"
+                         Background="Transparent"
+                         Foreground="{DynamicResource HnVue.Semantic.Brand.Accent}"
+                         Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+            <!-- ErrorMessage display — SWR-NF-UX-025 / Issue #16 -->
+            <TextBlock Text="{Binding ErrorMessage}"
+                       Foreground="{DynamicResource HnVue.Semantic.Status.Emergency}"
+                       FontSize="11"
+                       TextWrapping="Wrap"
+                       Margin="12,4,12,4"
+                       FontFamily="{DynamicResource HnVue.Core.FontFamily}"
+                       Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}"/>
+        </StackPanel>
+
     </Grid>
 </UserControl>

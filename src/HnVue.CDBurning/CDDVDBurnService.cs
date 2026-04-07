@@ -4,6 +4,8 @@ using HnVue.Common.Results;
 
 namespace HnVue.CDBurning;
 
+// @MX:WARN CDDVDBurnService - @MX:REASON: IMAPI2 COM interop requires STA thread, long-running blocking operations
+// @MX:NOTE Disc verification ensures patient data portability for regulatory compliance
 /// <summary>
 /// Implements optical disc burning for DICOM study export.
 /// </summary>
@@ -25,6 +27,7 @@ public sealed class CDDVDBurnService : ICDDVDBurnService
         _studyRepository = studyRepository ?? throw new ArgumentNullException(nameof(studyRepository));
     }
 
+    // @MX:ANCHOR BurnStudyAsync - @MX:REASON: High fan_in - called by CD burning UI and export workflows
     /// <inheritdoc/>
     public async Task<Result> BurnStudyAsync(
         string studyInstanceUid,
@@ -37,6 +40,7 @@ public sealed class CDDVDBurnService : ICDDVDBurnService
         if (string.IsNullOrWhiteSpace(studyInstanceUid))
             return Result.Failure(ErrorCode.ValidationFailed, "Study Instance UID is required.");
 
+        // @MX:NOTE ISO 9660 volume label limit prevents burn failures on legacy systems
         if (outputLabel.Length > 32)
             return Result.Failure(ErrorCode.ValidationFailed,
                 "Volume label must be 32 characters or fewer (ISO 9660 limit).");

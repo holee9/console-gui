@@ -23,7 +23,7 @@ public sealed class JwtTokenServiceTests
     {
         var sut = CreateSut();
 
-        var token = sut.Issue("user-1", "testuser", UserRole.Radiographer);
+        var (token, _) = sut.Issue("user-1", "testuser", UserRole.Radiographer);
 
         token.Should().NotBeNullOrEmpty();
         var handler = new JwtSecurityTokenHandler();
@@ -35,7 +35,7 @@ public sealed class JwtTokenServiceTests
     {
         var sut = CreateSut();
 
-        var token = sut.Issue("user-42", "alice", UserRole.Admin);
+        var (token, _) = sut.Issue("user-42", "alice", UserRole.Admin);
 
         var handler = new JwtSecurityTokenHandler();
         var jwt = handler.ReadJwtToken(token);
@@ -47,7 +47,7 @@ public sealed class JwtTokenServiceTests
     {
         var sut = CreateSut();
 
-        var token = sut.Issue("user-1", "bob", UserRole.Radiologist);
+        var (token, _) = sut.Issue("user-1", "bob", UserRole.Radiologist);
 
         var handler = new JwtSecurityTokenHandler();
         var jwt = handler.ReadJwtToken(token);
@@ -62,7 +62,7 @@ public sealed class JwtTokenServiceTests
         var sut = CreateSut();
         var before = DateTime.UtcNow;
 
-        var token = sut.Issue("user-1", "testuser", UserRole.Radiographer);
+        var (token, _) = sut.Issue("user-1", "testuser", UserRole.Radiographer);
 
         var handler = new JwtSecurityTokenHandler();
         var jwt = handler.ReadJwtToken(token);
@@ -75,7 +75,7 @@ public sealed class JwtTokenServiceTests
     {
         var sut = CreateSut();
 
-        var token = sut.Issue("user-1", "testuser", UserRole.Service);
+        var (token, _) = sut.Issue("user-1", "testuser", UserRole.Service);
 
         var handler = new JwtSecurityTokenHandler();
         var jwt = handler.ReadJwtToken(token);
@@ -90,7 +90,7 @@ public sealed class JwtTokenServiceTests
     {
         var sut = CreateSut();
 
-        var token = sut.Issue("user-1", "testuser", UserRole.Admin);
+        var (token, _) = sut.Issue("user-1", "testuser", UserRole.Admin);
 
         var handler = new JwtSecurityTokenHandler();
         var jwt = handler.ReadJwtToken(token);
@@ -102,7 +102,7 @@ public sealed class JwtTokenServiceTests
     public void Validate_ValidToken_ReturnsSuccessWithPrincipal()
     {
         var sut = CreateSut();
-        var token = sut.Issue("user-1", "testuser", UserRole.Radiographer);
+        var (token, _) = sut.Issue("user-1", "testuser", UserRole.Radiographer);
 
         var result = sut.Validate(token);
 
@@ -134,7 +134,7 @@ public sealed class JwtTokenServiceTests
             Audience = "HnVue",
         };
         var otherSut = new JwtTokenService(otherOptions);
-        var tokenFromOtherKey = otherSut.Issue("user-1", "testuser", UserRole.Admin);
+        var (tokenFromOtherKey, _) = otherSut.Issue("user-1", "testuser", UserRole.Admin);
 
         var sut = CreateSut();
         var result = sut.Validate(tokenFromOtherKey);
@@ -154,7 +154,7 @@ public sealed class JwtTokenServiceTests
             Audience = "HnVue",
         };
         var expiredSut = new JwtTokenService(expiredOptions);
-        var expiredToken = expiredSut.Issue("user-1", "testuser", UserRole.Radiographer);
+        var (expiredToken, _) = expiredSut.Issue("user-1", "testuser", UserRole.Radiographer);
 
         var sut = CreateSut();
         var result = sut.Validate(expiredToken);

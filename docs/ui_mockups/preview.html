@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HnVue UI Mockups Preview</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #1A1A2E;
+            --bg-surface: #252542;
+            --bg-border: #3E3E5E;
+            --text-primary: #E0E0E0;
+            --text-muted: #A0A0B0;
+            --color-primary: #0066CC;
+            --color-primary-light: #4D94FF;
+            --color-danger: #FF4757;
+            --color-warning: #FFA502;
+            --color-success: #2ED573;
+            --color-info: #1E90FF;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 48px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--bg-border);
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .screen-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        .screen-card {
+            background: var(--bg-surface);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .screen-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        .screen-header {
+            padding: 16px;
+            border-bottom: 1px solid var(--bg-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .screen-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .screen-priority {
+            font-size: 12px;
+            padding: 4px 12px;
+            border-radius: 12px;
+            background: var(--bg-border);
+        }
+
+        .screen-priority.critical {
+            background: var(--color-danger);
+            color: white;
+        }
+
+        .screen-priority.high {
+            background: var(--color-warning);
+            color: var(--bg-primary);
+        }
+
+        .screen-preview {
+            padding: 24px;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        /* Mock Elements */
+        .mock-button {
+            height: 36px;
+            border-radius: 6px;
+            background: var(--color-primary);
+            color: white;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .mock-button:hover {
+            background: var(--color-primary-light);
+        }
+
+        .mock-input {
+            height: 36px;
+            border-radius: 6px;
+            border: 1px solid var(--bg-border);
+            background: var(--bg-surface);
+            padding: 0 12px;
+            color: var(--text-primary);
+        }
+
+        .mock-card {
+            background: var(--bg-surface);
+            border-radius: 8px;
+            padding: 12px;
+            border: 1px solid var(--bg-border);
+        }
+
+        .mock-table-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px;
+            border-bottom: 1px solid var(--bg-border);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge.waiting { background: #6B7280; }
+        .badge.progress { background: var(--color-info); }
+        .badge.completed { background: var(--color-success); }
+        .badge.emergency { background: var(--color-danger); }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+
+        .color-palette {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+        }
+
+        .color-swatch {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            color: white;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        }
+
+        footer {
+            text-align: center;
+            padding: 24px;
+            color: var(--text-muted);
+            font-size: 14px;
+            border-top: 1px solid var(--bg-border);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>HnVue UI Design System</h1>
+            <p class="subtitle">의료영상 장비 Console UI Mockups Preview</p>
+        </header>
+
+        <section>
+            <h2 class="section-title">Color Palette</h2>
+            <div class="color-palette">
+                <div class="color-swatch" style="background: #0066CC">Primary<br>#0066CC</div>
+                <div class="color-swatch" style="background: #4D94FF">Light<br>#4D94FF</div>
+                <div class="color-swatch" style="background: #00BFA5">Teal<br>#00BFA5</div>
+                <div class="color-swatch" style="background: #FF6B6B">Coral<br>#FF6B6B</div>
+                <div class="color-swatch" style="background: #FFC107">Amber<br>#FFC107</div>
+                <div class="color-swatch" style="background: #FF4757">Error<br>#FF4757</div>
+                <div class="color-swatch" style="background: #2ED573">Success<br>#2ED573</div>
+                <div class="color-swatch" style="background: #1A1A2E">BG<br>#1A1A2E</div>
+            </div>
+        </section>
+
+        <h2 class="section-title">Screen Mockups</h2>
+        <div class="screen-grid">
+            <!-- Login Screen -->
+            <div class="screen-card">
+                <div class="screen-header">
+                    <span class="screen-title">로그인 창</span>
+                    <span class="screen-priority high">High</span>
+                </div>
+                <div class="screen-preview" style="align-items: center; justify-content: center;">
+                    <div class="mock-card" style="width: 100%; max-width: 280px;">
+                        <div style="text-align: center; margin-bottom: 16px; font-size: 24px;">🏥</div>
+                        <input type="text" class="mock-input" placeholder="ID" style="width: 100%; margin-bottom: 8px;">
+                        <input type="password" class="mock-input" placeholder="Password" style="width: 100%; margin-bottom: 16px;">
+                        <button class="mock-button" style="width: 100%;">로그인</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Worklist Screen -->
+            <div class="screen-card">
+                <div class="screen-header">
+                    <span class="screen-title">Worklist 창</span>
+                    <span class="screen-priority critical">Critical</span>
+                </div>
+                <div class="screen-preview">
+                    <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+                        <button class="mock-button" style="flex: 1;">Today</button>
+                        <button class="mock-input" style="flex: 1; background: var(--bg-primary);">3Days</button>
+                        <button class="mock-input" style="flex: 1; background: var(--bg-primary);">1Week</button>
+                    </div>
+                    <div class="mock-table-row">
+                        <span>20251013002 홍길동</span>
+                        <span class="badge waiting">대기</span>
+                    </div>
+                    <div class="mock-table-row">
+                        <span>20251013001 김철수</span>
+                        <span class="badge progress">진행</span>
+                    </div>
+                    <div class="mock-table-row">
+                        <span>20251013003 이영희</span>
+                        <span class="badge emergency">긴급</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Acquisition Screen -->
+            <div class="screen-card">
+                <div class="screen-header">
+                    <span class="screen-title">Acquisition 창</span>
+                    <span class="screen-priority critical">Critical</span>
+                </div>
+                <div class="screen-preview">
+                    <div class="mock-card" style="flex: 1; display: flex; align-items: center; justify-content: center; min-height: 120px; background: #000;">
+                        <span style="color: var(--text-muted);">Live Preview</span>
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="mock-button" style="flex: 1; background: var(--color-danger);">정지</button>
+                        <button class="mock-button" style="flex: 2;">촬영 (SPACE)</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Studylist Screen -->
+            <div class="screen-card">
+                <div class="screen-header">
+                    <span class="screen-title">Studylist 창</span>
+                    <span class="screen-priority critical">Critical</span>
+                </div>
+                <div class="screen-preview">
+                    <input type="text" class="mock-input" placeholder="검색..." style="width: 100%; margin-bottom: 12px;">
+                    <div class="mock-table-row">
+                        <span>Chest AP</span>
+                        <span class="badge completed">완료</span>
+                    </div>
+                    <div class="mock-table-row">
+                        <span>Hand PA</span>
+                        <span class="badge completed">완료</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Patient Registration -->
+            <div class="screen-card">
+                <div class="screen-header">
+                    <span class="screen-title">환자 등록</span>
+                    <span class="screen-priority high">High</span>
+                </div>
+                <div class="screen-preview">
+                    <input type="text" class="mock-input" placeholder="환자 ID (자동 생성)" style="width: 100%; margin-bottom: 8px;">
+                    <input type="text" class="mock-input" placeholder="이름 *" style="width: 100%; margin-bottom: 8px;">
+                    <div style="display: flex; gap: 8px;">
+                        <input type="date" class="mock-input" placeholder="생년월일 *" style="flex: 2;">
+                        <select class="mock-input" style="flex: 1;">
+                            <option>M</option>
+                            <option>F</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Screen -->
+            <div class="screen-card">
+                <div class="screen-header">
+                    <span class="screen-title">설정 창</span>
+                    <span class="screen-priority high">High</span>
+                </div>
+                <div class="screen-preview">
+                    <div class="mock-table-row">
+                        <span>언어</span>
+                        <span>한국어 ▼</span>
+                    </div>
+                    <div class="mock-table-row">
+                        <span>테마</span>
+                        <span>Dark ▼</span>
+                    </div>
+                    <div class="mock-table-row">
+                        <span>글자 크기</span>
+                        <span>보통 ▼</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Merge Screen -->
+            <div class="screen-card">
+                <div class="screen-header">
+                    <span class="screen-title">Merge 창</span>
+                    <span class="screen-priority">Medium</span>
+                </div>
+                <div class="screen-preview">
+                    <div style="display: flex; gap: 12px; flex: 1;">
+                        <div class="mock-card" style="flex: 1; text-align: center;">Patient A</div>
+                        <div style="display: flex; align-items: center;">→</div>
+                        <div class="mock-card" style="flex: 1; text-align: center;">Patient B</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>HnVue UI Design System v1.0 | Generated: 2026-04-06</p>
+            <p style="margin-top: 8px; font-size: 12px;">Compliant with FDA Human Factors, IEC 62366, WCAG 2.2 AA</p>
+        </footer>
+    </div>
+</body>
+</html>

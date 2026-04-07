@@ -1,5 +1,6 @@
 namespace HnVue.Common.Enums;
 
+// @MX:NOTE IncidentSeverity enum - IEC 62304 risk classification for escalation logic (Critical/High/Medium/Low)
 /// <summary>
 /// Classifies the severity of an incident recorded by the incident management module.
 /// Severity determines escalation and notification behaviour per IEC 62304 risk management.

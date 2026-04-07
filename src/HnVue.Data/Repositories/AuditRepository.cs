@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HnVue.Data.Repositories;
 
+// @MX:ANCHOR AuditRepository - @MX:REASON: Audit log persistence with hash chain queries, IEC 62304 compliance
 /// <summary>
 /// EF Core implementation of <see cref="IAuditRepository"/> backed by the encrypted SQLite database.
 /// Hash chain computation is performed by the Security layer; this repository only persists and retrieves entries.

@@ -1,5 +1,7 @@
 using HnVue.Common.Models;
 using HnVue.Data.Repositories;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 
 namespace HnVue.Data.Tests.Repositories;
 
@@ -8,6 +10,18 @@ namespace HnVue.Data.Tests.Repositories;
 /// </summary>
 public sealed class StudyRepositoryTests
 {
+    private static (HnVueDbContext Context, SqliteConnection Connection) CreateSqliteContext()
+    {
+        var connection = new SqliteConnection("Data Source=:memory:");
+        connection.Open();
+        var options = new DbContextOptionsBuilder<HnVueDbContext>()
+            .UseSqlite(connection)
+            .Options;
+        var ctx = new HnVueDbContext(options);
+        ctx.Database.EnsureCreated();
+        return (ctx, connection);
+    }
+
     private static StudyRecord CreateSampleStudy(string uid = "1.2.3.4.5", string patientId = "P001") =>
         new(
             StudyInstanceUid: uid,
@@ -149,5 +163,65 @@ public sealed class StudyRepositoryTests
 
         result.IsFailure.Should().BeTrue();
         result.Error.Should().Be(ErrorCode.NotFound);
+    }
+
+    // ── CancellationToken propagation ─────────────────────────────────────────
+
+    [Fact]
+    public async Task GetByPatientAsync_CancelledToken_ThrowsOperationCanceledException()
+    {
+        await using var ctx = TestDbContextFactory.Create();
+        var repo = new StudyRepository(ctx);
+        await repo.AddAsync(CreateSampleStudy());
+        using var cts = new CancellationTokenSource();
+        cts.Cancel();
+
+        var act = async () => await repo.GetByPatientAsync("P001", cts.Token);
+
+        await act.Should().ThrowAsync<OperationCanceledException>();
+    }
+
+    [Fact]
+    public async Task GetByUidAsync_CancelledToken_ThrowsOperationCanceledException()
+    {
+        await using var ctx = TestDbContextFactory.Create();
+        var repo = new StudyRepository(ctx);
+        await repo.AddAsync(CreateSampleStudy());
+        using var cts = new CancellationTokenSource();
+        cts.Cancel();
+
+        var act = async () => await repo.GetByUidAsync("1.2.3.4.5", cts.Token);
+
+        await act.Should().ThrowAsync<OperationCanceledException>();
+    }
+
+    // ── DbUpdateException paths (SQLite shared connection for PK constraint) ──────
+
+    [Fact]
+    public async Task AddAsync_DuplicateStudyUid_ReturnsDbError()
+    {
+        var study = CreateSampleStudy("1.2.3.DUP");
+
+        using var sharedConn = new SqliteConnection("Data Source=:memory:");
+        sharedConn.Open();
+        var opts = new DbContextOptionsBuilder<HnVueDbContext>()
+            .UseSqlite(sharedConn)
+            .Options;
+
+        await using (var ctxA = new HnVueDbContext(opts))
+        {
+            ctxA.Database.EnsureCreated();
+            var repoA = new StudyRepository(ctxA);
+            await repoA.AddAsync(study);
+        }
+
+        await using (var ctxB = new HnVueDbContext(opts))
+        {
+            var repoB = new StudyRepository(ctxB);
+            var result = await repoB.AddAsync(study); // duplicate PK
+
+            result.IsFailure.Should().BeTrue();
+            result.Error.Should().Be(ErrorCode.DatabaseError);
+        }
     }
 }

@@ -85,13 +85,33 @@ services.AddSingleton<IImageProcessor, ImageProcessor>();
 
 ---
 
-## 테스트
+## 테스트 커버리지
+
+### 커버리지 개선 (Issue #42)
+
+| 버전 | 라인 커버리지 | 상태 | 개선 사항 |
+|------|-------------|------|----------|
+| v1.0.0-RC1 | 80.4% | ⚠️ 미달 | 기본 기능 테스트 |
+| **v1.0.0-RC2** | **88.7%** | **✅ SWR-NF-MT-051 충족** | 엣지 강화, 자동 가장자리 제거, 이득/오프셋, IOException 처리 추가 |
+
+### 테스트 상세 현황
 
 | 항목 | 내용 |
 |------|------|
 | 테스트 프로젝트 | `tests/HnVue.Imaging.Tests/` |
 | 테스트 파일 | `ImageProcessorTests.cs` |
-| 테스트 케이스 수 | **45개** (`[Fact]` / `[Theory]`) — 신규 8개 메서드 각 1-2개 시나리오 포함 |
+| 테스트 케이스 수 | **54개** (`[Fact]` / `[Theory]`) |
+
+### 신규 추가 테스트 (Issue #42)
+
+| 기능 | 테스트 케이스 | 설명 | 상태 |
+|------|------------|------|------|
+| ApplyEdgeEnhancement | 3개 | Valid/Invalid strength, Clamp 경계값 | ✅ Pass |
+| ApplyAutoTrimming | 2개 | Normal, All-black 이미지 | ✅ Pass |
+| ApplyGainOffsetCorrection | 2개 | Null map, Small map 시나리오 | ✅ Pass |
+| ProcessAsync IOException | 2개 | File not found, IOException 복구 | ✅ Pass |
+| ApplyNoiseReduction | 3개 | High-strength gradient, 강렬한 노이즈 | ✅ Pass |
+| **신규 총합** | **9개** | 추가 커버리지 강화 | **✅ PASS** |
 
 ---
 

@@ -17,6 +17,7 @@ namespace HnVue.Workflow;
 public sealed class WorkflowStateMachine
 {
     // ── Allowed transitions table ─────────────────────────────────────────────
+    // @MX:NOTE IEC 62304 §5.3.6 state machine safety - only valid transitions permitted, abort path always available
 
     private static readonly Dictionary<WorkflowState, IReadOnlySet<WorkflowState>> _allowedTransitions
         = new Dictionary<WorkflowState, IReadOnlySet<WorkflowState>>
@@ -81,6 +82,7 @@ public sealed class WorkflowStateMachine
     /// <summary>Gets the current workflow state.</summary>
     public WorkflowState CurrentState => _currentState;
 
+    // @MX:ANCHOR TryTransition - @MX:REASON: Core state machine transition, called by WorkflowEngine (3 paths), enforces IEC 62304 §5.3.6 safety
     /// <summary>
     /// Attempts to transition to <paramref name="targetState"/>.
     /// </summary>
@@ -105,9 +107,21 @@ public sealed class WorkflowStateMachine
     /// Forces the state to <see cref="WorkflowState.Error"/> regardless of the current state.
     /// Used by the abort path — always succeeds.
     /// </summary>
+    // @MX:WARN ForceError - @MX:REASON: Safety-critical abort path, bypasses state validation, only callable from WorkflowEngine.AbortAsync
     public void ForceError()
     {
         _currentState = WorkflowState.Error;
+    }
+
+    /// <summary>
+    /// Forces the state to <see cref="WorkflowState.Exposing"/> regardless of the current state.
+    /// Used exclusively by the emergency fast-path (SWR-WF-026~027) which bypasses normal
+    /// state transitions for trauma care scenarios.
+    /// </summary>
+    // @MX:WARN ForceExposing - @MX:REASON: Emergency fast-path only, bypasses state validation, only callable from WorkflowEngine.StartEmergencyExposureAsync
+    public void ForceExposing()
+    {
+        _currentState = WorkflowState.Exposing;
     }
 
     /// <summary>

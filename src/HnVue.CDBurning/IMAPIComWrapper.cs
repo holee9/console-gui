@@ -2,6 +2,8 @@ using HnVue.Common.Results;
 
 namespace HnVue.CDBurning;
 
+// @MX:WARN IMAPIComWrapper - @MX:REASON: COM interop to IMAPI2, simulation mode for testing only
+// @MX:TODO Production implementation requires real IMAPI2 IDiscFormat2Data P/Invoke calls
 /// <summary>
 /// Wraps the Windows IMAPI2 COM interface for optical disc burning operations.
 /// </summary>
@@ -18,6 +20,7 @@ public sealed class IMAPIComWrapper : IBurnSession
     private bool _discIsBlank = true;
     private long _discCapacityBytes = 700L * 1024 * 1024; // 700 MB CD
 
+    // @MX:NOTE Test helper method - not for production use
     /// <summary>
     /// Injects disc state for simulation/testing.
     /// Call this to simulate a disc being inserted.
@@ -64,6 +67,7 @@ public sealed class IMAPIComWrapper : IBurnSession
             return Result.Failure(ErrorCode.BurnFailed,
                 $"Total file size ({totalSize:N0} bytes) exceeds disc capacity ({_discCapacityBytes:N0} bytes).");
 
+        // @MX:WARN Task.Delay simulates burn time - production requires async IMAPI2 progress events
         // Simulate burn progress
         for (var i = 0; i < fileList.Count; i++)
         {

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -17,6 +18,7 @@ public sealed partial class LoginViewModel : ObservableObject, ILoginViewModel
 {
     private readonly ISecurityService _securityService;
     private readonly ISecurityContext _securityContext;
+    private readonly List<string> _availableUserIds = new() { "admin", "operator", "technician" };
 
     /// <summary>Initialises a new instance of <see cref="LoginViewModel"/>.</summary>
     /// <param name="securityService">Service used to authenticate users.</param>
@@ -45,9 +47,14 @@ public sealed partial class LoginViewModel : ObservableObject, ILoginViewModel
     [ObservableProperty]
     private string? _errorMessage;
 
+    /// <summary>Gets the list of registered user IDs for dropdown selection.</summary>
+    public IReadOnlyList<string> AvailableUserIds => _availableUserIds;
+
     /// <summary>Raised when authentication succeeds.</summary>
     public event EventHandler<LoginSuccessEventArgs>? LoginSucceeded;
 
+    // @MX:NOTE Explicit ICommand bridge required because CommunityToolkit.Mvvm generates typed RelayCommand<T>;
+    // interface contract requires ICommand covariance for ViewModel-to-View data binding
     // Explicit ILoginViewModel implementation — CommunityToolkit.Mvvm generates typed RelayCommand
     // properties; ICommand is the interface contract. The generated property satisfies ICommand
     // at runtime, but the compiler requires an explicit bridge for covariant return types.

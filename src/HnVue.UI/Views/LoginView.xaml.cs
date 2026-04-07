@@ -19,6 +19,7 @@ public partial class LoginView : System.Windows.Controls.UserControl
         DataContext = viewModel;
     }
 
+    // @MX:NOTE PasswordBox.Password is not a DependencyProperty (WPF security design); requires code-behind binding
     // WPF PasswordBox.Password is not a DependencyProperty for security reasons,
     // so {Binding Password} does not work. Forward changes via code-behind.
     // SWR-CS-070 / Issue #9

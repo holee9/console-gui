@@ -18,6 +18,7 @@ public sealed partial class MainViewModel : ObservableObject, IMainViewModel, ID
 
     private readonly ISecurityContext _securityContext;
     private readonly ISecurityService _securityService;
+    // @MX:NOTE Session timeout uses System.Timers.Timer (thread-safe, not UI thread); requires Dispatcher.Invoke for UI updates
     private readonly System.Timers.Timer _sessionTimer;
     private int _secondsUntilTimeout;
 
@@ -146,6 +147,7 @@ public sealed partial class MainViewModel : ObservableObject, IMainViewModel, ID
             : null;
     }
 
+    // @MX:ANCHOR OnLoginSuccess - @MX:REASON: Called by MainWindow after authentication; transitions UI to main content
     /// <summary>Handles a successful login event and transitions to the main content.</summary>
     /// <param name="user">The authenticated user.</param>
     public void OnLoginSuccess(Common.Models.AuthenticatedUser user)
@@ -176,6 +178,7 @@ public sealed partial class MainViewModel : ObservableObject, IMainViewModel, ID
         ResetSessionTimer();
     }
 
+    // @MX:TODO Emergency patient registration view not yet implemented (SWR-NF-UX-026 / Issue #11)
     /// <summary>
     /// Initiates emergency patient registration workflow.
     /// SWR-NF-UX-026 (Safety-Critical, HAZ-RAD). Issue #11.
@@ -187,6 +190,7 @@ public sealed partial class MainViewModel : ObservableObject, IMainViewModel, ID
         // TODO: Navigate to emergency patient registration view when implemented.
     }
 
+    // @MX:ANCHOR Logout - @MX:REASON: Session termination with audit logging; critical security operation
     /// <summary>Logs out the current user and returns to the login screen.</summary>
     /// <remarks>Issue #29 — Writes LOGOUT audit entry before clearing session context.</remarks>
     [RelayCommand]

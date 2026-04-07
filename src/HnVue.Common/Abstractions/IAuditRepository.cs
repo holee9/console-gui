@@ -3,6 +3,7 @@ using HnVue.Common.Results;
 
 namespace HnVue.Common.Abstractions;
 
+// @MX:ANCHOR IAuditRepository - @MX:REASON: Audit persistence contract, hash-chain primitives for tamper evidence
 /// <summary>
 /// Defines low-level persistence operations for the tamper-evident audit log.
 /// Implemented by the HnVue.Data module; consumed only by <c>IAuditService</c>.

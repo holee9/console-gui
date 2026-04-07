@@ -3,6 +3,7 @@ using HnVue.Common.Results;
 
 namespace HnVue.Common.Abstractions;
 
+// @MX:ANCHOR IUserRepository - @MX:REASON: Credential persistence with 10 ops, lockout & PIN tracking
 /// <summary>
 /// Defines data-access operations for user account records.
 /// Implemented by the HnVue.Data module.

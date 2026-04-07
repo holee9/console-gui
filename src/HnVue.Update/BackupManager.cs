@@ -4,6 +4,8 @@ using Microsoft.Extensions.Logging;
 
 namespace HnVue.Update;
 
+// @MX:WARN BackupManager - @MX:REASON: Recursive async directory copy for large application directories
+// @MX:NOTE Timestamped backup folders enable rollback to specific restore points
 /// <summary>
 /// Manages application directory backups before applying a software update.
 /// Backup folders are timestamped to allow selecting the most recent restore point.
@@ -24,6 +26,7 @@ internal sealed class BackupManager
         _logger = logger;
     }
 
+    // @MX:ANCHOR CreateBackupAsync - @MX:REASON: Required by ApplyUpdateAsync before any update staging
     /// <summary>
     /// Creates a timestamped backup of the current application directory.
     /// </summary>
@@ -61,6 +64,7 @@ internal sealed class BackupManager
         }
     }
 
+    // @MX:ANCHOR RestoreFromBackupAsync - @MX:REASON: Called by RollbackAsync for update recovery
     /// <summary>
     /// Restores the application directory from the most recent backup.
     /// </summary>

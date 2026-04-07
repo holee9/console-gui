@@ -8,6 +8,7 @@ using HnVue.UI.Contracts.ViewModels;
 
 namespace HnVue.UI.ViewModels;
 
+// @MX:NOTE Dose validation levels (Allow/Warn/Block) enforce radiation safety limits per SWR-UI-030
 /// <summary>
 /// ViewModel for the dose monitor panel.
 /// Displays dose records for the active study and the associated validation level.

@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Worklist - PROTYPER</title>
+    <style>
+        /* CoreTokens.xaml authoritative values */
+        :root {
+            --primary-main: #1B4F8A;
+            --primary-light: #2E6DB4;
+            --accent: #00AEEF;
+            --bg-base: #1A1A2E;
+            --bg-surface: #16213E;
+            --bg-card: #0F3460;
+            --bg-border: #2E4A6E;
+            --bg-hover: rgba(0, 174, 239, 0.08);
+            --bg-selected: rgba(27, 79, 138, 0.25);
+            --text-primary: #FFFFFF;
+            --text-muted: #B0BEC5;
+            --text-disabled: #546E7A;
+            --color-error: #D50000;
+            --color-warning: #FFD600;
+            --color-blocked: #FF6D00;
+            --color-success: #00C853;
+            --color-info: #00AEEF;
+            --border-focus: #00AEEF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", "Malgun Gothic", sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            height: 60px;
+            background: var(--bg-surface);
+            border-bottom: 1px solid var(--bg-border);
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            gap: 24px;
+        }
+
+        .logo {
+            width: 100px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--primary-main), var(--primary-light));
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .header-title {
+            font-size: 20px;
+            font-weight: 600;
+            flex: 1;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            height: 36px;
+            padding: 0 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--primary-main);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-light);
+        }
+
+        .btn-secondary {
+            background: var(--bg-border);
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--secondary-teal);
+        }
+
+        .btn-icon {
+            width: 36px;
+            height: 36px;
+            padding: 0;
+            border-radius: 6px;
+            background: var(--bg-border);
+            border: none;
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-icon:hover {
+            background: var(--bg-hover);
+        }
+
+        /* Filter Bar */
+        .filter-bar {
+            height: 56px;
+            background: var(--bg-surface);
+            border-bottom: 1px solid var(--bg-border);
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            gap: 16px;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 4px;
+        }
+
+        .filter-btn {
+            height: 36px;
+            padding: 0 16px;
+            border: none;
+            border-radius: 6px;
+            background: transparent;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-btn:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+        }
+
+        .filter-btn.active {
+            background: var(--primary-main);
+            color: white;
+        }
+
+        .search-box {
+            flex: 1;
+            max-width: 400px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            height: 36px;
+            padding: 8px 40px 8px 12px;
+            border: 1px solid var(--bg-border);
+            border-radius: 6px;
+            background: var(--bg-base);
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 2px rgba(77, 148, 255, 0.2);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 18px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* Table Container */
+        .table-container {
+            flex: 1;
+            overflow: auto;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .data-table thead {
+            position: sticky;
+            top: 0;
+            background: var(--bg-surface);
+            z-index: 10;
+        }
+
+        .data-table th {
+            height: 48px;
+            padding: 0 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--bg-border);
+            font-weight: 600;
+            color: var(--text-primary);
+            white-space: nowrap;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .data-table th:hover {
+            background: var(--bg-hover);
+        }
+
+        .data-table th.sortable::after {
+            content: ' ⇅';
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        .data-table th.sort-asc::after {
+            content: ' ↑';
+            color: var(--primary-light);
+        }
+
+        .data-table th.sort-desc::after {
+            content: ' ↓';
+            color: var(--primary-light);
+        }
+
+        .data-table td {
+            height: 52px;
+            padding: 0 16px;
+            border-bottom: 1px solid var(--bg-border);
+            color: var(--text-muted);
+        }
+
+        .data-table tbody tr {
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .data-table tbody tr:hover {
+            background: var(--bg-hover);
+        }
+
+        .data-table tbody tr.selected {
+            background: var(--bg-selected);
+            border-left: 3px solid var(--primary-main);
+        }
+
+        .data-table tbody tr.selected td {
+            color: var(--text-primary);
+        }
+
+        /* Status Badge */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-waiting {
+            background: var(--bg-border);
+            color: var(--text-muted);
+        }
+
+        .status-progress {
+            background: rgba(30, 144, 255, 0.2);
+            color: var(--color-info);
+        }
+
+        .status-completed {
+            background: rgba(46, 213, 115, 0.2);
+            color: var(--color-success);
+        }
+
+        .status-emergency {
+            background: rgba(255, 71, 87, 0.2);
+            color: var(--color-error);
+        }
+
+        /* Priority Indicator */
+        .priority-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .priority-high {
+            background: var(--color-error);
+        }
+
+        .priority-medium {
+            background: var(--secondary-amber);
+        }
+
+        .priority-normal {
+            background: var(--color-success);
+        }
+
+        /* Detail Panel */
+        .detail-panel {
+            width: 360px;
+            background: var(--bg-surface);
+            border-left: 1px solid var(--bg-border);
+            display: flex;
+            flex-direction: column;
+            transform: translateX(100%);
+            transition: transform 0.3s;
+        }
+
+        .detail-panel.show {
+            transform: translateX(0);
+        }
+
+        .detail-header {
+            height: 60px;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--bg-border);
+        }
+
+        .detail-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .detail-close {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: var(--bg-border);
+            border-radius: 6px;
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .detail-content {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+        }
+
+        .detail-section {
+            margin-bottom: 24px;
+        }
+
+        .detail-section-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--bg-border);
+        }
+
+        .detail-label {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .detail-value {
+            color: var(--text-primary);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .detail-actions {
+            padding: 16px 24px;
+            border-top: 1px solid var(--bg-border);
+            display: flex;
+            gap: 12px;
+        }
+
+        /* Status Bar */
+        .status-bar {
+            height: 36px;
+            background: var(--bg-surface);
+            border-top: 1px solid var(--bg-border);
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .status-info {
+            margin-right: 24px;
+        }
+
+        .status-info strong {
+            color: var(--primary-light);
+        }
+
+        /* Keyboard Shortcuts */
+        .keyboard-shortcuts {
+            display: flex;
+            gap: 16px;
+            margin-left: auto;
+        }
+
+        .shortcut {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .shortcut kbd {
+            background: var(--bg-base);
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid var(--bg-border);
+            font-family: monospace;
+            font-size: 11px;
+        }
+
+        /* Empty State */
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 400px;
+            color: var(--text-muted);
+        }
+
+        .empty-state-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        /* Loading Overlay */
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(26, 26, 46, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            display: none;
+        }
+
+        .loading-overlay.show {
+            display: flex;
+        }
+
+        .spinner {
+            width: 48px;
+            height: 48px;
+            border: 3px solid var(--bg-border);
+            border-top-color: var(--primary-light);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">PROTYPER</div>
+        <h1 class="header-title">Worklist</h1>
+        <div class="header-actions">
+            <button class="btn btn-secondary">
+                <span>+</span> 신규 환자
+            </button>
+            <button class="btn btn-primary">
+                <span>▶</span> 검사 시작
+            </button>
+        </div>
+    </header>
+
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+        <div class="filter-group">
+            <button class="filter-btn active">전체</button>
+            <button class="filter-btn">오늘</button>
+            <button class="filter-btn">3일</button>
+            <button class="filter-btn">1주일</button>
+            <button class="filter-btn">1개월</button>
+        </div>
+        <div class="search-box">
+            <input type="text" class="search-input" placeholder="환자명, 환자ID, Accession No 검색...">
+            <span class="search-icon">🔍</span>
+        </div>
+        <div class="header-actions">
+            <button class="btn-icon" title="새로고침 (F5)">↻</button>
+            <button class="btn-icon" title="내보내기">↓</button>
+            <button class="btn-icon" title="설정">⚙</button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Table -->
+        <div class="table-container">
+            <table class="data-table" id="worklistTable">
+                <thead>
+                    <tr>
+                        <th class="sortable">우선순위</th>
+                        <th class="sortable sort-asc">Accession No</th>
+                        <th class="sortable">환자 ID</th>
+                        <th class="sortable">환자명</th>
+                        <th class="sortable">생년월일</th>
+                        <th class="sortable">검사일</th>
+                        <th class="sortable">검사 종류</th>
+                        <th class="sortable">의뢰 의사</th>
+                        <th>상태</th>
+                    </tr>
+                </thead>
+                <tbody id="worklistBody">
+                    <tr class="selected" data-id="A20260406001">
+                        <td><span class="priority-dot priority-high"></span></td>
+                        <td>A20260406001</td>
+                        <td>P20250113001</td>
+                        <td><strong>홍길동</strong></td>
+                        <td>1988-01-01</td>
+                        <td>2026-04-06</td>
+                        <td>Chest PA</td>
+                        <td>김의사</td>
+                        <td><span class="status-badge status-progress">진행 중</span></td>
+                    </tr>
+                    <tr data-id="A20260406002">
+                        <td><span class="priority-dot priority-normal"></span></td>
+                        <td>A20260406002</td>
+                        <td>P20250113002</td>
+                        <td>김철수</td>
+                        <td>1975-05-15</td>
+                        <td>2026-04-06</td>
+                        <td>Hand AP</td>
+                        <td>이의사</td>
+                        <td><span class="status-badge status-waiting">대기 중</span></td>
+                    </tr>
+                    <tr data-id="A20260406003">
+                        <td><span class="priority-dot priority-high"></span></td>
+                        <td>A20260406003</td>
+                        <td>P20250113003</td>
+                        <td>이영희</td>
+                        <td>1990-03-20</td>
+                        <td>2026-04-06</td>
+                        <td>Abdomen AP</td>
+                        <td>박의사</td>
+                        <td><span class="status-badge status-emergency">긴급</span></td>
+                    </tr>
+                    <tr data-id="A20260406004">
+                        <td><span class="priority-dot priority-normal"></span></td>
+                        <td>A20260406004</td>
+                        <td>P20250113004</td>
+                        <td>최민수</td>
+                        <td>1965-11-08</td>
+                        <td>2026-04-06</td>
+                        <td>Spine AP</td>
+                        <td>김의사</td>
+                        <td><span class="status-badge status-completed">완료</span></td>
+                    </tr>
+                    <tr data-id="A20260406005">
+                        <td><span class="priority-dot priority-medium"></span></td>
+                        <td>A20260406005</td>
+                        <td>P20250113005</td>
+                        <td>정수진</td>
+                        <td>1982-07-25</td>
+                        <td>2026-04-05</td>
+                        <td>Pelvis AP</td>
+                        <td>이의사</td>
+                        <td><span class="status-badge status-completed">완료</span></td>
+                    </tr>
+                    <tr data-id="A20260406006">
+                        <td><span class="priority-dot priority-normal"></span></td>
+                        <td>A20260406006</td>
+                        <td>P20250113006</td>
+                        <td>강동원</td>
+                        <td>1978-09-12</td>
+                        <td>2026-04-05</td>
+                        <td>Knee AP/Lat</td>
+                        <td>박의사</td>
+                        <td><span class="status-badge status-waiting">대기 중</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Detail Panel -->
+        <aside class="detail-panel" id="detailPanel">
+            <div class="detail-header">
+                <h2 class="detail-title">검사 상세</h2>
+                <button class="detail-close" onclick="closeDetailPanel()">✕</button>
+            </div>
+            <div class="detail-content">
+                <div class="detail-section">
+                    <div class="detail-section-title">환자 정보</div>
+                    <div class="detail-row">
+                        <span class="detail-label">환자명</span>
+                        <span class="detail-value">홍길동</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">환자 ID</span>
+                        <span class="detail-value">P20250113001</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">생년월일</span>
+                        <span class="detail-value">1988-01-01 (만 38세)</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">성별</span>
+                        <span class="detail-value">남</span>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <div class="detail-section-title">검사 정보</div>
+                    <div class="detail-row">
+                        <span class="detail-label">Accession No</span>
+                        <span class="detail-value">A20260406001</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">검사일</span>
+                        <span class="detail-value">2026-04-06</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">검사 종류</span>
+                        <span class="detail-value">Chest PA</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">의뢰 의사</span>
+                        <span class="detail-value">김의사</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">상태</span>
+                        <span class="detail-value">
+                            <span class="status-badge status-progress">진행 중</span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <div class="detail-section-title">임상 정보</div>
+                    <div class="detail-row">
+                        <span class="detail-label">임상 증상</span>
+                        <span class="detail-value">발열, 기침 3일</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">의뢰 내용</span>
+                        <span class="detail-value">폐렴 의심</span>
+                    </div>
+                </div>
+            </div>
+            <div class="detail-actions">
+                <button class="btn btn-secondary" style="flex: 1">수정</button>
+                <button class="btn btn-primary" style="flex: 1">검사 시작</button>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Status Bar -->
+    <footer class="status-bar">
+        <span class="status-info">총 <strong>6</strong> 건</span>
+        <span class="status-info">대기: <strong>2</strong></span>
+        <span class="status-info">진행 중: <strong>1</strong></span>
+        <span class="status-info">완료: <strong>2</strong></span>
+        <span class="status-info">긴급: <strong>1</strong></span>
+        <div class="keyboard-shortcuts">
+            <span class="shortcut"><kbd>F5</kbd> 새로고침</span>
+            <span class="shortcut"><kbd>Ctrl</kbd>+<kbd>N</kbd> 신규</span>
+            <span class="shortcut"><kbd>Enter</kbd> 상세보기</span>
+        </div>
+    </footer>
+
+    <script>
+        // Table row selection
+        const table = document.getElementById('worklistTable');
+        const detailPanel = document.getElementById('detailPanel');
+        const rows = table.querySelectorAll('tbody tr');
+
+        rows.forEach(row => {
+            row.addEventListener('click', function() {
+                rows.forEach(r => r.classList.remove('selected'));
+                this.classList.add('selected');
+                detailPanel.classList.add('show');
+            });
+
+            row.addEventListener('dblclick', function() {
+                // Open acquisition screen
+                alert('검사 화면으로 이동: ' + this.dataset.id);
+            });
+        });
+
+        function closeDetailPanel() {
+            detailPanel.classList.remove('show');
+        }
+
+        // Filter buttons
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F5') {
+                e.preventDefault();
+                alert('새로고침 (데모)');
+            }
+            if (e.key === 'Escape') {
+                closeDetailPanel();
+            }
+            if (e.key === 'Enter') {
+                const selected = table.querySelector('.selected');
+                if (selected) {
+                    alert('검사 시작: ' + selected.dataset.id);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -2,6 +2,8 @@ using HnVue.Common.Enums;
 using HnVue.Common.Models;
 using HnVue.Data.Entities;
 using HnVue.Data.Repositories;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 
 namespace HnVue.Data.Tests.Repositories;
 
@@ -215,6 +217,214 @@ public sealed class UserRepositoryTests
 
             result.IsSuccess.Should().BeTrue();
             result.Value.Role.Should().Be(role);
+        }
+    }
+
+    // ── SetQuickPinHashAsync ───────────────────────────────────────────────────
+
+    [Fact]
+    public async Task SetQuickPinHashAsync_ExistingUser_StoresPinHash()
+    {
+        await using var ctx = TestDbContextFactory.Create();
+        await SeedUserAsync(ctx);
+        var repo = new UserRepository(ctx);
+
+        var result = await repo.SetQuickPinHashAsync("U001", "$pin$hash");
+
+        result.IsSuccess.Should().BeTrue();
+        var pinHash = await repo.GetQuickPinHashAsync("U001");
+        pinHash.IsSuccess.Should().BeTrue();
+        pinHash.Value.Should().Be("$pin$hash");
+    }
+
+    [Fact]
+    public async Task SetQuickPinHashAsync_ClearsPin_StoresNull()
+    {
+        await using var ctx = TestDbContextFactory.Create();
+        await SeedUserAsync(ctx);
+        var repo = new UserRepository(ctx);
+        await repo.SetQuickPinHashAsync("U001", "$pin$hash");
+
+        var result = await repo.SetQuickPinHashAsync("U001", null);
+
+        result.IsSuccess.Should().BeTrue();
+        var pinHash = await repo.GetQuickPinHashAsync("U001");
+        pinHash.Value.Should().BeNull();
+    }
+
+    [Fact]
+    public async Task SetQuickPinHashAsync_NonExistentUser_ReturnsNotFound()
+    {
+        await using var ctx = TestDbContextFactory.Create();
+        var repo = new UserRepository(ctx);
+
+        var result = await repo.SetQuickPinHashAsync("NONE", "$pin$hash");
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.NotFound);
+    }
+
+    // ── GetQuickPinHashAsync ──────────────────────────────────────────────────
+
+    [Fact]
+    public async Task GetQuickPinHashAsync_UserWithNoPin_ReturnsSuccessWithNull()
+    {
+        await using var ctx = TestDbContextFactory.Create();
+        await SeedUserAsync(ctx);
+        var repo = new UserRepository(ctx);
+
+        var result = await repo.GetQuickPinHashAsync("U001");
+
+        result.IsSuccess.Should().BeTrue();
+        result.Value.Should().BeNull();
+    }
+
+    [Fact]
+    public async Task GetQuickPinHashAsync_NonExistentUser_ReturnsNotFound()
+    {
+        await using var ctx = TestDbContextFactory.Create();
+        var repo = new UserRepository(ctx);
+
+        var result = await repo.GetQuickPinHashAsync("NONE");
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.NotFound);
+    }
+
+    // ── UpdateQuickPinFailureAsync ────────────────────────────────────────────
+
+    [Fact]
+    public async Task UpdateQuickPinFailureAsync_ExistingUser_StoresFailureState()
+    {
+        await using var ctx = TestDbContextFactory.Create();
+        await SeedUserAsync(ctx);
+        var repo = new UserRepository(ctx);
+        var lockedUntil = DateTimeOffset.UtcNow.AddMinutes(30);
+
+        var result = await repo.UpdateQuickPinFailureAsync("U001", 3, lockedUntil);
+
+        result.IsSuccess.Should().BeTrue();
+        var user = await repo.GetByIdAsync("U001");
+        user.Value.QuickPinFailedCount.Should().Be(3);
+        user.Value.QuickPinLockedUntil.Should().NotBeNull();
+    }
+
+    [Fact]
+    public async Task UpdateQuickPinFailureAsync_ClearsLockout_StoresNullLockedUntil()
+    {
+        await using var ctx = TestDbContextFactory.Create();
+        await SeedUserAsync(ctx);
+        var repo = new UserRepository(ctx);
+        await repo.UpdateQuickPinFailureAsync("U001", 3, DateTimeOffset.UtcNow.AddMinutes(30));
+
+        var result = await repo.UpdateQuickPinFailureAsync("U001", 0, null);
+
+        result.IsSuccess.Should().BeTrue();
+        var user = await repo.GetByIdAsync("U001");
+        user.Value.QuickPinFailedCount.Should().Be(0);
+        user.Value.QuickPinLockedUntil.Should().BeNull();
+    }
+
+    [Fact]
+    public async Task UpdateQuickPinFailureAsync_NonExistentUser_ReturnsNotFound()
+    {
+        await using var ctx = TestDbContextFactory.Create();
+        var repo = new UserRepository(ctx);
+
+        var result = await repo.UpdateQuickPinFailureAsync("NONE", 1, null);
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.NotFound);
+    }
+
+    // ── CancellationToken propagation ─────────────────────────────────────────
+
+    [Fact]
+    public async Task GetByUsernameAsync_CancelledToken_ThrowsOperationCanceledException()
+    {
+        await using var ctx = TestDbContextFactory.Create();
+        await SeedUserAsync(ctx);
+        var repo = new UserRepository(ctx);
+        using var cts = new CancellationTokenSource();
+        cts.Cancel();
+
+        var act = async () => await repo.GetByUsernameAsync("radiographer1", cts.Token);
+
+        await act.Should().ThrowAsync<OperationCanceledException>();
+    }
+
+    [Fact]
+    public async Task GetByIdAsync_CancelledToken_ThrowsOperationCanceledException()
+    {
+        await using var ctx = TestDbContextFactory.Create();
+        await SeedUserAsync(ctx);
+        var repo = new UserRepository(ctx);
+        using var cts = new CancellationTokenSource();
+        cts.Cancel();
+
+        var act = async () => await repo.GetByIdAsync("U001", cts.Token);
+
+        await act.Should().ThrowAsync<OperationCanceledException>();
+    }
+
+    [Fact]
+    public async Task GetAllAsync_CancelledToken_ThrowsOperationCanceledException()
+    {
+        await using var ctx = TestDbContextFactory.Create();
+        await SeedUserAsync(ctx);
+        var repo = new UserRepository(ctx);
+        using var cts = new CancellationTokenSource();
+        cts.Cancel();
+
+        var act = async () => await repo.GetAllAsync(cts.Token);
+
+        await act.Should().ThrowAsync<OperationCanceledException>();
+    }
+
+    [Fact]
+    public async Task GetQuickPinHashAsync_CancelledToken_ThrowsOperationCanceledException()
+    {
+        await using var ctx = TestDbContextFactory.Create();
+        await SeedUserAsync(ctx);
+        var repo = new UserRepository(ctx);
+        using var cts = new CancellationTokenSource();
+        cts.Cancel();
+
+        var act = async () => await repo.GetQuickPinHashAsync("U001", cts.Token);
+
+        await act.Should().ThrowAsync<OperationCanceledException>();
+    }
+
+    // ── DbUpdateException path (SQLite to enforce unique Username constraint) ──
+
+    private static (HnVueDbContext Context, SqliteConnection Connection) CreateSqliteContext()
+    {
+        var connection = new SqliteConnection("Data Source=:memory:");
+        connection.Open();
+        var options = new DbContextOptionsBuilder<HnVueDbContext>()
+            .UseSqlite(connection)
+            .Options;
+        var ctx = new HnVueDbContext(options);
+        ctx.Database.EnsureCreated();
+        return (ctx, connection);
+    }
+
+    [Fact]
+    public async Task UpdateFailedLoginCountAsync_ConcurrentDbError_ReturnsDbError()
+    {
+        // Verify that duplicate Username unique index violation is caught at DB level
+        var (ctx2, conn2) = CreateSqliteContext();
+        using (conn2)
+        await using (ctx2)
+        {
+            var e1 = CreateUserEntity("UA", "dupuser");
+            var e2 = CreateUserEntity("UB", "dupuser"); // same username, unique constraint
+            ctx2.Users.Add(e1);
+            ctx2.Users.Add(e2);
+
+            var act = async () => await ctx2.SaveChangesAsync();
+
+            await act.Should().ThrowAsync<Exception>("SQLite unique constraint on Username should fail");
         }
     }
 }

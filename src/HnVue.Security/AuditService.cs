@@ -7,6 +7,7 @@ using Microsoft.Extensions.Options;
 
 namespace HnVue.Security;
 
+// @MX:ANCHOR AuditService - @MX:REASON: Tamper-evident audit log with HMAC-SHA256 chain, IEC 62304 incident tracking
 /// <summary>
 /// Implements tamper-evident audit logging using an HMAC-SHA256 hash chain.
 /// Each entry references the hash of the preceding entry, forming a chain that

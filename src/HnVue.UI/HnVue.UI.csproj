@@ -3,6 +3,12 @@
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <RootNamespace>HnVue.UI</RootNamespace>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <!-- CS1591: missing XML doc on public members — IValueConverter implementations
+         use inherited interface contracts; suppress to reduce doc noise on converter
+         boilerplate. -->
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,5 +18,8 @@
     <PackageReference Include="MahApps.Metro" />
     <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" />
   </ItemGroup>
+
+  <!-- Explicit Page items removed: .NET SDK auto-includes *.xaml as Page items.
+       Adding them explicitly caused NETSDK1022 duplicate item errors. -->
 
 </Project>

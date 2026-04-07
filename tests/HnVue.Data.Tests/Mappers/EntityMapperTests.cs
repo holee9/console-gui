@@ -305,4 +305,96 @@ public sealed class EntityMapperTests
         entity.CurrentHash.Should().Be("curr-hash");
         entity.TimestampTicks.Should().Be(ts.UtcTicks);
     }
+
+    // ── UserRecord — QuickPin fields ───────────────────────────────────────────
+
+    [Fact]
+    public void ToRecord_UserEntity_WithQuickPinLockedUntil_MapsCorrectly()
+    {
+        var lockedUntilTicks = new DateTimeOffset(2026, 6, 1, 10, 0, 0, TimeSpan.Zero).UtcTicks;
+        var entity = new UserEntity
+        {
+            UserId = "U001",
+            Username = "admin",
+            DisplayName = "Admin User",
+            PasswordHash = "$2b$12$hash",
+            RoleValue = (int)UserRole.Admin,
+            FailedLoginCount = 0,
+            IsLocked = false,
+            LastLoginAtTicks = null,
+            QuickPinHash = "$pin$abc",
+            QuickPinFailedCount = 2,
+            QuickPinLockedUntilTicks = lockedUntilTicks,
+        };
+
+        var record = EntityMapper.ToRecord(entity);
+
+        record.QuickPinHash.Should().Be("$pin$abc");
+        record.QuickPinFailedCount.Should().Be(2);
+        record.QuickPinLockedUntil.Should().NotBeNull();
+        record.QuickPinLockedUntil!.Value.UtcTicks.Should().Be(lockedUntilTicks);
+    }
+
+    [Fact]
+    public void ToRecord_UserEntity_WithNullQuickPinLockedUntil_ReturnsNullLockedUntil()
+    {
+        var entity = new UserEntity
+        {
+            UserId = "U001",
+            Username = "admin",
+            DisplayName = "Admin User",
+            PasswordHash = "$2b$12$hash",
+            RoleValue = (int)UserRole.Radiographer,
+            FailedLoginCount = 0,
+            IsLocked = false,
+            LastLoginAtTicks = null,
+            QuickPinHash = null,
+            QuickPinFailedCount = 0,
+            QuickPinLockedUntilTicks = null,
+        };
+
+        var record = EntityMapper.ToRecord(entity);
+
+        record.QuickPinHash.Should().BeNull();
+        record.QuickPinLockedUntil.Should().BeNull();
+    }
+
+    [Fact]
+    public void ToRecord_PatientEntity_WithNonZeroOffset_PreservesOffset()
+    {
+        var offsetMinutes = 540; // KST +9:00
+        var ticks = new DateTimeOffset(2026, 3, 15, 9, 0, 0, TimeSpan.FromMinutes(offsetMinutes)).UtcTicks;
+        var entity = new PatientEntity
+        {
+            PatientId = "P-KST",
+            Name = "KST^Patient",
+            DateOfBirth = "1990-01-01",
+            IsEmergency = false,
+            CreatedAtTicks = ticks,
+            CreatedAtOffsetMinutes = offsetMinutes,
+            CreatedBy = "user-kst",
+        };
+
+        var record = EntityMapper.ToRecord(entity);
+
+        record.CreatedAt.Offset.TotalMinutes.Should().Be(offsetMinutes);
+    }
+
+    [Fact]
+    public void ToRecord_StudyEntity_WithNonZeroOffset_PreservesOffset()
+    {
+        var offsetMinutes = -300; // EST -5:00
+        var ticks = new DateTimeOffset(2026, 4, 1, 8, 0, 0, TimeSpan.FromMinutes(offsetMinutes)).UtcTicks;
+        var entity = new StudyEntity
+        {
+            StudyInstanceUid = "1.2.3.EST",
+            PatientId = "P001",
+            StudyDateTicks = ticks,
+            StudyDateOffsetMinutes = offsetMinutes,
+        };
+
+        var record = EntityMapper.ToRecord(entity);
+
+        record.StudyDate.Offset.TotalMinutes.Should().Be(offsetMinutes);
+    }
 }

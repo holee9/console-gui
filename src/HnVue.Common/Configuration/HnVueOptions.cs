@@ -1,5 +1,6 @@
 namespace HnVue.Common.Configuration;
 
+// @MX:NOTE HnVueOptions - Root config with Security (lockout, timeout) and Dicom (AE title, port) sections
 /// <summary>
 /// Root configuration options for the HnVue application.
 /// Bind from the <c>"HnVue"</c> section of <c>appsettings.json</c> or environment variables.

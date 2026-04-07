@@ -15,6 +15,7 @@ public sealed class SecurityServiceTests
     private readonly IUserRepository _userRepository;
     private readonly IAuditRepository _auditRepository;
     private readonly ISecurityContext _securityContext;
+    private readonly ITokenDenylist _tokenDenylist;
     private readonly SecurityService _sut;
 
     private static readonly JwtOptions TestJwtOptions = new()
@@ -33,7 +34,8 @@ public sealed class SecurityServiceTests
         _userRepository = Substitute.For<IUserRepository>();
         _auditRepository = Substitute.For<IAuditRepository>();
         _securityContext = Substitute.For<ISecurityContext>();
-        _sut = new SecurityService(_userRepository, _auditRepository, _securityContext, TestJwtOptions, TestAuditOptions);
+        _tokenDenylist = Substitute.For<ITokenDenylist>();
+        _sut = new SecurityService(_userRepository, _auditRepository, _securityContext, TestJwtOptions, TestAuditOptions, _tokenDenylist);
 
         // Default: audit repository GetLastHashAsync returns NotFound (empty log = null previous hash).
         _auditRepository.GetLastHashAsync(Arg.Any<CancellationToken>())
@@ -628,6 +630,36 @@ public sealed class SecurityServiceTests
         result.IsSuccess.Should().BeTrue();
         await _auditRepository.Received(1).AppendAsync(
             Arg.Is<AuditEntry>(e => e.Action == "LOGOUT" && e.UserId == "user-1"),
+            Arg.Any<CancellationToken>());
+    }
+
+    [Fact]
+    public async Task LogoutAsync_WithActiveSession_RevokesJtiToken()
+    {
+        // SWR-CS-077: JTI must be revoked on logout.
+        const string testJti = "test-jti-abc123";
+        _securityContext.CurrentJti.Returns(testJti);
+        _securityContext.IsAuthenticated.Returns(true);
+
+        await _sut.LogoutAsync("user-1");
+
+        await _tokenDenylist.Received(1).RevokeAsync(
+            testJti,
+            Arg.Any<TimeSpan?>(),
+            Arg.Any<CancellationToken>());
+    }
+
+    [Fact]
+    public async Task LogoutAsync_WithNoActiveSession_DoesNotRevokeToken()
+    {
+        // No JTI when not authenticated — denylist must not be called.
+        _securityContext.CurrentJti.Returns((string?)null);
+
+        await _sut.LogoutAsync("user-1");
+
+        await _tokenDenylist.DidNotReceive().RevokeAsync(
+            Arg.Any<string>(),
+            Arg.Any<TimeSpan?>(),
             Arg.Any<CancellationToken>());
     }
 

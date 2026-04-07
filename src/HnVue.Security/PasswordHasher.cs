@@ -2,6 +2,7 @@ using HnVue.Common.Results;
 
 namespace HnVue.Security;
 
+// @MX:ANCHOR PasswordHasher - @MX:REASON: BCrypt with cost=12 for IEC 62304 Class B, timing-attack resistant verification
 /// <summary>
 /// Provides password hashing and verification using bcrypt with a cost factor of 12.
 /// Satisfies IEC 62304 Class B security requirements for credential storage.

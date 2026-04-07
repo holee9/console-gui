@@ -79,4 +79,62 @@
     <SolidColorBrush x:Key="HnVue.Component.Dialog.TitleText"
                      Color="{DynamicResource HnVue.Core.Color.TextPrimary}" />
 
+    <!-- ═══ DoseMonitoringPanel Component (IEC 62366 + FR-DM-001, FR-DM-015) ═══ -->
+    <SolidColorBrush x:Key="HnVue.Component.DosePanel.Bg"
+                     Color="{DynamicResource HnVue.Core.Color.BackgroundPanel}" />
+    <SolidColorBrush x:Key="HnVue.Component.DosePanel.LabelText"
+                     Color="{DynamicResource HnVue.Core.Color.TextSecondary}" />
+    <SolidColorBrush x:Key="HnVue.Component.DosePanel.ValueText"
+                     Color="{DynamicResource HnVue.Core.Color.TextPrimary}" />
+    <!-- DRL gauge: 0-69% safe, 70-89% warning, 90-99% blocked, 100%+ emergency -->
+    <SolidColorBrush x:Key="HnVue.Component.DosePanel.GaugeSafe"
+                     Color="{DynamicResource HnVue.Core.Color.StatusSafe}" />
+    <SolidColorBrush x:Key="HnVue.Component.DosePanel.GaugeWarning"
+                     Color="{DynamicResource HnVue.Core.Color.StatusWarning}" />
+    <SolidColorBrush x:Key="HnVue.Component.DosePanel.GaugeBlocked"
+                     Color="{DynamicResource HnVue.Core.Color.StatusBlocked}" />
+    <SolidColorBrush x:Key="HnVue.Component.DosePanel.GaugeEmergency"
+                     Color="{DynamicResource HnVue.Core.Color.StatusEmergency}" />
+    <SolidColorBrush x:Key="HnVue.Component.DosePanel.GaugeTrack"
+                     Color="{DynamicResource HnVue.Core.Color.Border}" />
+
+    <!-- ═══ EmergencyStop Component (always-visible, IEC 62366, PR-UX-026) ═══ -->
+    <SolidColorBrush x:Key="HnVue.Component.EmergencyStop.Bg"
+                     Color="{DynamicResource HnVue.Core.Color.StatusEmergency}" />
+    <SolidColorBrush x:Key="HnVue.Component.EmergencyStop.BgPulsing"
+                     Color="{DynamicResource HnVue.Core.Color.StatusBlocked}" />
+    <SolidColorBrush x:Key="HnVue.Component.EmergencyStop.Text"
+                     Color="{DynamicResource HnVue.Core.Color.TextPrimary}" />
+
+    <!-- ═══ PatientConfirmationModal Component (HRUS-001 mitigation) ═══ -->
+    <SolidColorBrush x:Key="HnVue.Component.PatientConfirm.Bg"
+                     Color="{DynamicResource HnVue.Core.Color.BackgroundCard}" />
+    <SolidColorBrush x:Key="HnVue.Component.PatientConfirm.PhotoBorder"
+                     Color="{DynamicResource HnVue.Core.Color.Accent}" />
+    <SolidColorBrush x:Key="HnVue.Component.PatientConfirm.WarningText"
+                     Color="{DynamicResource HnVue.Core.Color.StatusWarning}" />
+
+    <!-- ═══ ExposureIndicator Component (acquisition screen badge) ═══ -->
+    <SolidColorBrush x:Key="HnVue.Component.ExposureIndicator.Ready"
+                     Color="{DynamicResource HnVue.Core.Color.StatusSafe}" />
+    <SolidColorBrush x:Key="HnVue.Component.ExposureIndicator.Exposing"
+                     Color="{DynamicResource HnVue.Core.Color.StatusEmergency}" />
+    <SolidColorBrush x:Key="HnVue.Component.ExposureIndicator.Processing"
+                     Color="{DynamicResource HnVue.Core.Color.StatusWarning}" />
+    <SolidColorBrush x:Key="HnVue.Component.ExposureIndicator.Error"
+                     Color="{DynamicResource HnVue.Core.Color.StatusEmergency}" />
+    <SolidColorBrush x:Key="HnVue.Component.ExposureIndicator.Bg"
+                     Color="{DynamicResource HnVue.Core.Color.BackgroundPanel}" />
+
+    <!-- ═══ WorklistStatusBadge Component ═══ -->
+    <!-- Status badge colors per IEC 62366 safety color semantics -->
+    <SolidColorBrush x:Key="HnVue.Component.StatusBadge.Waiting"
+                     Color="{DynamicResource HnVue.Core.Color.TextSecondary}" />
+    <SolidColorBrush x:Key="HnVue.Component.StatusBadge.InProgress"
+                     Color="{DynamicResource HnVue.Core.Color.Accent}" />
+    <SolidColorBrush x:Key="HnVue.Component.StatusBadge.Completed"
+                     Color="{DynamicResource HnVue.Core.Color.StatusSafe}" />
+    <SolidColorBrush x:Key="HnVue.Component.StatusBadge.Emergency"
+                     Color="{DynamicResource HnVue.Core.Color.StatusEmergency}" />
+
 </ResourceDictionary>

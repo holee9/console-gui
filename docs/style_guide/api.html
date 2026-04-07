@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Reference - HnVue Style Guide</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <h2>HnVue</h2>
+            <p>Style Guide v1.0</p>
+        </div>
+        <ul class="nav-menu">
+            <li><a href="index.html">Introduction</a></li>
+            <li><a href="visual-identity.html">Visual Identity</a></li>
+            <li><a href="components.html">Components</a></li>
+            <li><a href="patterns.html">Patterns</a></li>
+            <li><a href="accessibility.html">Accessibility</a></li>
+            <li><a href="api.html" class="active">API Reference</a></li>
+        </ul>
+        <div class="sidebar-footer">
+            <button onclick="window.print()" class="btn-secondary">
+                <span>Download PDF</span>
+            </button>
+        </div>
+    </nav>
+
+    <main class="content">
+        <header class="page-header">
+            <h1>API Reference</h1>
+            <p class="subtitle">Complete C# and XAML API documentation</p>
+        </header>
+
+        <section class="section">
+            <h2>Color Resources</h2>
+
+            <h3>Color Brushes (XAML)</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>XAML Resource Keys</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code>&lt;!-- Primary Colors --&gt;
+{StaticResource Primary.Main}      <!-- #0066CC -->
+{StaticResource Primary.Light}     <!-- #4D94FF -->
+{StaticResource Primary.Dark}      <!-- #004080 -->
+
+&lt;!-- Secondary Colors --&gt;
+{StaticResource Secondary.Teal}    <!-- #00BFA5 -->
+{StaticResource Secondary.Coral}   <!-- #FF6B6B -->
+{StaticResource Secondary.Amber}   <!-- #FFC107 -->
+
+&lt;!-- Neutral Colors --&gt;
+{StaticResource Neutral.Background} <!-- #1A1A2E -->
+{StaticResource Neutral.Surface}    <!-- #252542 -->
+{StaticResource Neutral.Border}     <!-- #3E3E5E -->
+{StaticResource Neutral.Text}       <!-- #E0E0E0 -->
+{StaticResource Neutral.TextMuted}  <!-- #A0A0B0 -->
+
+&lt;!-- Semantic Colors --&gt;
+{StaticResource Semantic.Error}   <!-- #FF4757 -->
+{StaticResource Semantic.Warning} <!-- #FFA502 -->
+{StaticResource Semantic.Success} <!-- #2ED573 -->
+{StaticResource Semantic.Info}    <!-- #1E90FF --></code></pre>
+            </div>
+
+            <h3>ColorHelper (C#)</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>C#</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code>namespace HnVue.UI.Themes;
+
+/// &lt;summary&gt;
+/// Helper class for accessing theme colors in code
+/// &lt;/summary&gt;
+public static class ColorHelper
+{
+    /// &lt;summary&gt;
+    /// Gets the primary color brush
+    /// &lt;/summary&gt;
+    public static SolidColorBrush Primary => GetBrush("Primary.Main");
+
+    /// &lt;summary&gt;
+    /// Gets the error color brush
+    /// &lt;/summary&gt;
+    public static SolidColorBrush Error => GetBrush("Semantic.Error");
+
+    /// &lt;summary&gt;
+    /// Gets the success color brush
+    /// &lt;/summary&gt;
+    public static SolidColorBrush Success => GetBrush("Semantic.Success");
+
+    /// &lt;summary&gt;
+    /// Creates a color from hex string
+    /// &lt;/summary&gt;
+    public static Color FromHex(string hex)
+    {
+        if (hex.StartsWith("#"))
+            hex = hex.Substring(1);
+
+        byte a = 255;
+        byte r = byte.Parse(hex.Substring(0, 2), NumberStyles.HexNumber);
+        byte g = byte.Parse(hex.Substring(2, 2), NumberStyles.HexNumber);
+        byte b = byte.Parse(hex.Substring(4, 2), NumberStyles.HexNumber);
+
+        if (hex.Length == 8)
+            a = byte.Parse(hex.Substring(6, 2), NumberStyles.HexNumber);
+
+        return Color.FromArgb(a, r, g, b);
+    }
+
+    private static SolidColorBrush GetBrush(string resourceKey)
+    {
+        return Application.Current.FindResource(resourceKey) as SolidColorBrush
+            ?? throw new KeyNotFoundException($"Resource '{resourceKey}' not found.");
+    }
+}</code></pre>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Typography Resources</h2>
+
+            <h3>Text Styles (XAML)</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>XAML Styles</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code>&lt;!-- Text Styles --&gt;
+{StaticResource TextStyle.Display}  <!-- 32px, Bold -->
+{StaticResource TextStyle.H1}       <!-- 24px, Semibold -->
+{StaticResource TextStyle.H2}       <!-- 18px, Medium -->
+{StaticResource TextStyle.H3}       <!-- 16px, Medium -->
+{StaticResource TextStyle.Body}     <!-- 14px, Regular -->
+{StaticResource TextStyle.Caption}  <!-- 12px, Regular, Muted -->
+
+&lt;!-- Font Sizes --&gt;
+{StaticResource Size.Display}  <!-- 32 -->
+{StaticResource Size.H1}       <!-- 24 -->
+{StaticResource Size.H2}       <!-- 18 -->
+{StaticResource Size.H3}       <!-- 16 -->
+{StaticResource Size.Body}     <!-- 14 -->
+{StaticResource Size.Caption}  <!-- 12 -->
+
+&lt;!-- Font Families --&gt;
+{StaticResource Font.Primary}    <!-- Segoe UI, Malgun Gothic -->
+{StaticResource Font.Monospace}  <!-- Consolas -->
+{StaticResource Font.Korean}     <!-- Malgun Gothic -->
+
+&lt;!-- Font Weights --&gt;
+{StaticResource Weight.Regular}  <!-- 400 -->
+{StaticResource Weight.Medium}   <!-- 500 -->
+{StaticResource Weight.Semibold} <!-- 600 -->
+{StaticResource Weight.Bold}     <!-- 700 --></code></pre>
+            </div>
+
+            <h3>TypographyHelper (C#)</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>C#</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code>namespace HnVue.UI.Themes;
+
+/// &lt;summary&gt;
+/// Helper class for typography-related operations
+/// &lt;/summary&gt;
+public static class TypographyHelper
+{
+    /// &lt;summary&gt;
+    /// Gets the appropriate font size for the given text style
+    /// &lt;/summary&gt;
+    public static double GetFontSize(TextStyle style) => style switch
+    {
+        TextStyle.Display => 32,
+        TextStyle.H1 => 24,
+        TextStyle.H2 => 18,
+        TextStyle.H3 => 16,
+        TextStyle.Body => 14,
+        TextStyle.Caption => 12,
+        _ => 14
+    };
+
+    /// &lt;summary&gt;
+    /// Gets the font weight for the given text style
+    /// &lt;/summary&gt;
+    public static FontWeight GetFontWeight(TextStyle style) => style switch
+    {
+        TextStyle.Display => FontWeights.Bold,
+        TextStyle.H1 => FontWeights.SemiBold,
+        TextStyle.H2 => FontWeights.Medium,
+        TextStyle.H3 => FontWeights.Medium,
+        _ => FontWeights.Normal
+    };
+}
+
+public enum TextStyle
+{
+    Display,
+    H1,
+    H2,
+    H3,
+    Body,
+    Caption
+}</code></pre>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Button Components</h2>
+
+            <h3>Button Styles (XAML)</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>XAML</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code>&lt;!-- Button Styles --&gt;
+{StaticResource Button.Primary}
+{StaticResource Button.Secondary}
+{StaticResource Button.Danger}
+{StaticResource Button.Icon}
+{StaticResource Button.Text}
+
+&lt;!-- Usage Examples --&gt;
+&lt;Button Content="Save"
+        Style="{StaticResource Button.Primary}"
+        Command="{Binding SaveCommand}"/&gt;
+
+&lt;Button Content="Cancel"
+        Style="{StaticResource Button.Secondary}"
+        Command="{Binding CancelCommand}"/&gt;
+
+&lt;Button Content="Delete"
+        Style="{StaticResource Button.Danger}"
+        Command="{Binding DeleteCommand}"/&gt;
+
+&lt;Button Style="{StaticResource Button.Icon}"
+        Command="{Binding AddCommand}"&gt;
+    &lt;TextBlock Text="+" FontSize="20"/&gt;
+&lt;/Button&gt;</code></pre>
+            </div>
+
+            <h3>ButtonHelper (C#)</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>C#</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code>namespace HnVue.UI.Controls;
+
+/// &lt;summary&gt;
+/// Attached properties for button customization
+/// &lt;/summary&gt;
+public static class ButtonHelper
+{
+    /// &lt;summary&gt;
+    /// Gets or sets the button size variant
+    /// &lt;/summary&gt;
+    public static readonly DependencyProperty SizeProperty =
+        DependencyProperty.RegisterAttached(
+            "Size",
+            typeof(ButtonSize),
+            typeof(ButtonHelper),
+            new PropertyMetadata(ButtonSize.Medium, OnSizeChanged));
+
+    public static ButtonSize GetSize(DependencyObject obj) =>
+        (ButtonSize)obj.GetValue(SizeProperty);
+
+    public static void SetSize(DependencyObject obj, ButtonSize value) =>
+        obj.SetValue(SizeProperty, value);
+
+    /// &lt;summary&gt;
+    /// Gets or sets whether the button is in loading state
+    /// &lt;/summary&gt;
+    public static readonly DependencyProperty IsLoadingProperty =
+        DependencyProperty.RegisterAttached(
+            "IsLoading",
+            typeof(bool),
+            typeof(ButtonHelper),
+            new PropertyMetadata(false, OnIsLoadingChanged));
+
+    public static bool GetIsLoading(DependencyObject obj) =>
+        (bool)obj.GetValue(IsLoadingProperty);
+
+    public static void SetIsLoading(DependencyObject obj, bool value) =>
+        obj.SetValue(IsLoadingProperty, value);
+
+    private static void OnIsLoadingChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        if (d is Button button)
+        {
+            bool isLoading = (bool)e.NewValue;
+            button.IsEnabled = !isLoading;
+            button.Content = isLoading ? "Loading..." : button.Content;
+        }
+    }
+}
+
+public enum ButtonSize
+{
+    Small,   // 28px height
+    Medium,  // 36px height
+    Large    // 44px height
+}</code></pre>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Input Components</h2>
+
+            <h3>Input Styles (XAML)</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>XAML</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code>&lt;!-- Input Styles --&gt;
+{StaticResource Input.Standard}
+{StaticResource Input.Search}
+{StaticResource Input.ReadOnly}
+{StaticResource Input.Error}
+{StaticResource Input.Success}
+
+&lt;!-- Standard TextBox with Hint --&gt;
+&lt;TextBox Text="{Binding PatientName, UpdateSourceTrigger=PropertyChanged}"
+         Style="{StaticResource Input.Standard}"
+         hw:TextField.HintText="Patient Name"/&gt;
+
+&lt;!-- Search Input --&gt;
+&lt;TextBox Text="{Binding SearchQuery}"
+         Style="{StaticResource Input.Search}"
+         hw:TextField.HintText="Search patients..."/&gt;
+
+&lt;!-- Read-only Input --&gt;
+&lt;TextBox Text="{Binding PatientId}"
+         IsReadOnly="True"
+         Style="{StaticResource Input.ReadOnly}"/&gt;
+
+&lt;!-- Input with Validation --&gt;
+&lt;TextBox Text="{Binding PatientId, UpdateSourceTrigger=PropertyChanged}"
+         Style="{StaticResource Input.Standard}"&gt;
+    &lt;Validation.ErrorTemplate&gt;
+        &lt;StaticResource ResourceKey="ValidationErrorTemplate"/&gt;
+    &lt;/Validation.ErrorTemplate&gt;
+&lt;/TextBox&gt;</code></pre>
+            </div>
+
+            <h3>TextField Attached Properties (C#)</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>C#</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code>namespace HnVue.UI.Controls;
+
+/// &lt;summary&gt;
+/// Attached properties for TextField enhancements
+/// &lt;/summary&gt;
+public static class TextField
+{
+    /// &lt;summary&gt;
+    /// Gets or sets the hint text (placeholder)
+    /// &lt;/summary&gt;
+    public static readonly DependencyProperty HintTextProperty =
+        DependencyProperty.RegisterAttached(
+            "HintText",
+            typeof(string),
+            typeof(TextField),
+            new PropertyMetadata(string.Empty));
+
+    public static string GetHintText(DependencyObject obj) =>
+        (string)obj.GetValue(HintTextProperty);
+
+    public static void SetHintText(DependencyObject obj, string value) =>
+        obj.SetValue(HintTextProperty, value);
+
+    /// &lt;summary&gt;
+    /// Gets or sets the input clear button visibility
+    /// &lt;/summary&gt;
+    public static readonly DependencyProperty ShowClearButtonProperty =
+        DependencyProperty.RegisterAttached(
+            "ShowClearButton",
+            typeof(bool),
+            typeof(TextField),
+            new PropertyMetadata(false));
+
+    public static bool GetShowClearButton(DependencyObject obj) =>
+        (bool)obj.GetValue(ShowClearButtonProperty);
+
+    public static void SetShowClearButton(DependencyObject obj, bool value) =>
+        obj.SetValue(ShowClearButtonProperty, value);
+}</code></pre>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Value Converters</h2>
+
+            <h3>Common Converters (XAML)</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>XAML Usage</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code>&lt;!-- Include Converters --&gt;
+&lt;ResourceDictionary&gt;
+    &lt;converters:BoolToVisibilityConverter x:Key="BoolToVisibility"/&gt;
+    &lt;converters:InverseBoolConverter x:Key="InverseBool"/&gt;
+    &lt;converters:NullToVisibilityConverter x:Key="NullToVisibility"/&gt;
+    &lt;converters:StringEmptyConverter x:Key="StringEmpty"/&gt;
+    &lt;converters:EnumToDescriptionConverter x:Key="EnumToDescription"/&gt;
+&lt;/ResourceDictionary&gt;
+
+&lt;!-- Usage Examples --&gt;
+
+&lt;!-- Boolean to Visibility --&gt;
+&lt;TextBlock Text="Loading..."
+           Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibility}}"/&gt;
+
+&lt;!-- Inverse Boolean --&gt;
+&lt;Button Content="Submit"
+        IsEnabled="{Binding HasErrors, Converter={StaticResource InverseBool}}"/&gt;
+
+&lt;!-- Null to Visibility --&gt;
+&lt;TextBlock Text="No item selected"
+           Visibility="{Binding SelectedItem, Converter={StaticResource NullToVisibility}}"/&gt;
+
+&lt;!-- String Empty Check --&gt;
+&lt;Button Content="Save"
+        IsEnabled="{Binding PatientName, Converter={StaticResource StringEmpty}, ConverterParameter=Inverse}"/&gt;
+
+&lt;!-- Enum to Description --&gt;
+&lt;TextBlock Text="{Binding Status, Converter={StaticResource EnumToDescription}}"/&gt;</code></pre>
+            </div>
+
+            <h3>Converter Implementations (C#)</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>C#</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code>namespace HnVue.UI.Converters;
+
+/// &lt;summary&gt;
+/// Converts boolean values to visibility
+/// &lt;/summary&gt;
+public class BoolToVisibilityConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        bool boolValue = value is bool b && b;
+        bool invert = parameter?.ToString() == "Inverse";
+        return (boolValue ^ invert) ? Visibility.Visible : Visibility.Collapsed;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        return value is Visibility visibility && visibility == Visibility.Visible;
+    }
+}
+
+/// &lt;summary&gt;
+/// Converts null values to visibility
+/// &lt;/summary&gt;
+public class NullToVisibilityConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        bool invert = parameter?.ToString() == "Inverse";
+        bool isNull = value == null;
+        return (isNull ^ invert) ? Visibility.Collapsed : Visibility.Visible;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
+    }
+}
+
+/// &lt;summary&gt;
+/// Checks if string is empty or whitespace
+/// &lt;/summary&gt;
+public class StringEmptyConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        bool isEmpty = string.IsNullOrWhiteSpace(value as string);
+        bool invert = parameter?.ToString() == "Inverse";
+        return isEmpty ^ invert;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
+    }
+}</code></pre>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Medical Components</h2>
+
+            <h3>PatientInfoCard (XAML)</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>XAML</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code>&lt;!-- Namespace Declaration --&gt;
+&lt;UserControl xmlns:medical="clr-namespace:HnVue.UI.Components.Medical"&gt;
+
+&lt;!-- Patient Info Card --&gt;
+&lt;medical:PatientInfoCard Patient="{Binding SelectedPatient}"
+                            Style="{StaticResource Card.Patient}"/&gt;
+
+&lt;!-- With Custom Options --&gt;
+&lt;medical:PatientInfoCard Patient="{Binding SelectedPatient}"
+                            ShowPatientId="True"
+                            ShowDateOfBirth="True"
+                            ShowAccessionNumber="True"
+                            OnPatientClick="{Binding OpenPatientDetail}"/&gt;</code></pre>
+            </div>
+
+            <h3>PatientInfoCard (C#)</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>C#</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code>namespace HnVue.UI.Components.Medical;
+
+/// &lt;summary&gt;
+/// Displays patient information in a standardized card format
+/// &lt;/summary&gt;
+public class PatientInfoCard : Control
+{
+    static PatientInfoCard()
+    {
+        DefaultStyleKeyProperty.OverrideMetadata(typeof(PatientInfoCard),
+            new FrameworkPropertyMetadata(typeof(PatientInfoCard)));
+    }
+
+    #region Patient Property
+
+    public static readonly DependencyProperty PatientProperty =
+        DependencyProperty.Register(
+            nameof(Patient),
+            typeof(Patient),
+            typeof(PatientInfoCard),
+            new PropertyMetadata(null, OnPatientChanged));
+
+    public Patient Patient
+    {
+        get => (Patient)GetValue(PatientProperty);
+        set => SetValue(PatientProperty, value);
+    }
+
+    private static void OnPatientChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        if (d is PatientInfoCard card)
+            card.OnPatientChanged((Patient)e.OldValue, (Patient)e.NewValue);
+    }
+
+    #endregion
+
+    #region Show Options
+
+    public bool ShowPatientId
+    {
+        get => (bool)GetValue(ShowPatientIdProperty);
+        set => SetValue(ShowPatientIdProperty, value);
+    }
+
+    public static readonly DependencyProperty ShowPatientIdProperty =
+        DependencyProperty.Register(
+            nameof(ShowPatientId),
+            typeof(bool),
+            typeof(PatientInfoCard),
+            new PropertyMetadata(true));
+
+    #endregion
+
+    public event EventHandler&lt;PatientEventArgs&gt; PatientClick;
+
+    public override void OnApplyTemplate()
+    {
+        base.OnApplyTemplate();
+        // Attach event handlers to template parts
+    }
+}
+
+/// &lt;summary&gt;
+/// Patient data model
+/// &lt;/summary&gt;
+public class Patient : ObservableObject
+{
+    public string PatientId { get; set; }
+    public string Name { get; set; }
+    public DateTime DateOfBirth { get; set; }
+    public Sex Sex { get; set; }
+    public string AccessionNumber { get; set; }
+
+    public int Age => DateTime.Today.Year - DateOfBirth.Year;
+}
+
+public enum Sex
+{
+    Male,
+    Female,
+    Other
+}</code></pre>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Notification System</h2>
+
+            <h3>ToastService (C#)</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>C#</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code>namespace HnVue.UI.Services;
+
+/// &lt;summary&gt;
+/// Service for displaying toast notifications
+/// &lt;/summary&gt;
+public interface IToastService
+{
+    /// &lt;summary&gt;
+    /// Shows a toast notification with the specified message
+    /// &lt;/summary&gt;
+    void Show(string message, ToastType type = ToastType.Info, TimeSpan? duration = null);
+
+    /// &lt;summary&gt;
+    /// Shows a success toast
+    /// &lt;/summary&gt;
+    void ShowSuccess(string message);
+
+    /// &lt;summary&gt;
+    /// Shows an error toast
+    /// &lt;/summary&gt;
+    void ShowError(string message);
+
+    /// &lt;summary&gt;
+    /// Shows a warning toast
+    /// &lt;/summary&gt;
+    void ShowWarning(string message);
+}
+
+/// &lt;summary&gt;
+/// Default toast service implementation
+/// &lt;/summary&gt;
+public class ToastService : IToastService
+{
+    private readonly UIElement _parent;
+
+    public ToastService(UIElement parent)
+    {
+        _parent = parent;
+    }
+
+    public void Show(string message, ToastType type = ToastType.Info, TimeSpan? duration = null)
+    {
+        Application.Current.Dispatcher.Invoke(() =>
+        {
+            var toast = new ToastControl
+            {
+                Message = message,
+                Type = type
+            };
+
+            // Position and show toast
+            var adorner = new ToastAdorner(_parent, toast);
+            var layer = AdornerLayer.GetAdornerLayer(_parent);
+            layer?.Add(adorner);
+
+            // Auto-dismiss after duration
+            var dismissDuration = duration ?? GetDefaultDuration(type);
+            Task.Delay(dismissDuration).ContinueWith(_ =>
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    layer?.Remove(adorner);
+                });
+            });
+        });
+    }
+
+    public void ShowSuccess(string message) =>
+        Show(message, ToastType.Success);
+
+    public void ShowError(string message) =>
+        Show(message, ToastType.Error);
+
+    public void ShowWarning(string message) =>
+        Show(message, ToastType.Warning);
+
+    private TimeSpan GetDefaultDuration(ToastType type) => type switch
+    {
+        ToastType.Success => TimeSpan.FromSeconds(3),
+        ToastType.Error => TimeSpan.FromSeconds(5),
+        ToastType.Warning => TimeSpan.FromSeconds(4),
+        _ => TimeSpan.FromSeconds(3)
+    };
+}
+
+public enum ToastType
+{
+    Info,
+    Success,
+    Warning,
+    Error
+}</code></pre>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Extension Methods</h2>
+
+            <h3>UI Extensions (C#)</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>C#</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code>namespace HnVue.UI.Extensions;
+
+/// &lt;summary&gt;
+/// UI-related extension methods
+/// &lt;/summary&gt;
+public static class UIExtensions
+{
+    /// &lt;summary&gt;
+    /// Finds a child element by type
+    /// &lt;/summary&gt;
+    public static T FindChild&lt;T&gt;(this DependencyObject parent) where T : DependencyObject
+    {
+        if (parent == null) return null;
+
+        for (int i = 0; i &lt; VisualTreeHelper.GetChildrenCount(parent); i++)
+        {
+            var child = VisualTreeHelper.GetChild(parent, i);
+
+            if (child is T result)
+                return result;
+
+            var childResult = FindChild&lt;T&gt;(child);
+            if (childResult != null)
+                return childResult;
+        }
+
+        return null;
+    }
+
+    /// &lt;summary&gt;
+    /// Finds a parent element by type
+    /// &lt;/summary&gt;
+    public static T FindParent&lt;T&gt;(this DependencyObject child) where T : DependencyObject
+    {
+        while (child != null)
+        {
+            if (child is T parent)
+                return parent;
+
+            child = VisualTreeHelper.GetParent(child);
+        }
+
+        return null;
+    }
+
+    /// &lt;summary&gt;
+    /// Gets all descendants of a specific type
+    /// &lt;/summary&gt;
+    public static IEnumerable&lt;T&gt; GetDescendants&lt;T&gt;(this DependencyObject parent) where T : DependencyObject
+    {
+        if (parent == null) yield break;
+
+        for (int i = 0; i &lt; VisualTreeHelper.GetChildrenCount(parent); i++)
+        {
+            var child = VisualTreeHelper.GetChild(parent, i);
+
+            if (child is T t)
+                yield return t;
+
+            foreach (var descendant in GetDescendants&lt;T&gt;(child))
+                yield return descendant;
+        }
+    }
+
+    /// &lt;summary&gt;
+    /// Sets focus to element with delay (useful for async operations)
+    /// &lt;/summary&gt;
+    public static async Task FocusAsync(this UIElement element)
+    {
+        await Task.Delay(50); // Allow UI to settle
+        element.Focus();
+        Keyboard.Focus(element);
+    }
+}
+
+/// &lt;summary&gt;
+/// Binding extensions for simplified MVVM
+/// &lt;/summary&gt;
+public static class BindingExtensions
+{
+    /// &lt;summary&gt;
+    /// Creates a one-way binding
+    /// &lt;/summary&gt;
+    public static BindingBase OneWay&lt;T&gt;(Expression&lt;Func&lt;T&gt;&gt; propertyAccessor)
+    {
+        var propertyName = GetPropertyName(propertyAccessor);
+        return new Binding(propertyName) { Mode = BindingMode.OneWay };
+    }
+
+    /// &lt;summary&gt;
+    /// Creates a two-way binding
+    /// &lt;/summary&gt;
+    public static BindingBase TwoWay&lt;T&gt;(Expression&lt;Func&lt;T&gt;&gt; propertyAccessor)
+    {
+        var propertyName = GetPropertyName(propertyAccessor);
+        return new Binding(propertyName) { Mode = BindingMode.TwoWay, UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged };
+    }
+
+    private static string GetPropertyName&lt;T&gt;(Expression&lt;Func&lt;T&gt;&gt; propertyAccessor)
+    {
+        var memberExpression = propertyAccessor.Body as MemberExpression;
+        return memberExpression?.Member.Name ?? string.Empty;
+    }
+}</code></pre>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Resource Dictionary Structure</h2>
+
+            <h3>Theme Organization</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>App.xaml</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code>&lt;Application.Resources&gt;
+    &lt;ResourceDictionary&gt;
+        &lt;ResourceDictionary.MergedDictionaries&gt;
+            &lt;!-- Primary Theme Resources --&gt;
+            &lt;ResourceDictionary Source="pack://application:,,,/HnVue.UI;component/Themes/Colors.xaml"/&gt;
+            &lt;ResourceDictionary Source="pack://application:,,,/HnVue.UI;component/Themes/Typography.xaml"/&gt;
+            &lt;ResourceDictionary Source="pack://application:,,,/HnVue.UI;component/Themes/Spacing.xaml"/&gt;
+
+            &lt;!-- Component Styles --&gt;
+            &lt;ResourceDictionary Source="pack://application:,,,/HnVue.UI;component/Styles/ButtonStyles.xaml"/&gt;
+            &lt;ResourceDictionary Source="pack://application:,,,/HnVue.UI;component/Styles/InputStyles.xaml"/&gt;
+            &lt;ResourceDictionary Source="pack://application:,,,/HnVue.UI;component/Styles/CardStyles.xaml"/&gt;
+            &lt;ResourceDictionary Source="pack://application:,,,/HnVue.UI;component/Styles/ModalStyles.xaml"/&gt;
+
+            &lt;!-- Converters --&gt;
+            &lt;ResourceDictionary Source="pack://application:,,,/HnVue.UI;component/Converters/Converters.xaml"/&gt;
+        &lt;/ResourceDictionary.MergedDictionaries&gt;
+    &lt;/ResourceDictionary&gt;
+&lt;/Application.Resources&gt;</code></pre>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p>HnVue Style Guide v1.0 | Last Updated: 2026-04-06</p>
+            <p>For internal use by HnVue development team</p>
+        </footer>
+    </main>
+
+    <style>
+        .code-block {
+            background-color: #0d1117;
+            border: 1px solid var(--neutral-border);
+            border-radius: 8px;
+            overflow: hidden;
+            margin: var(--spacing-md) 0;
+        }
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-sm) var(--spacing-md);
+            background-color: var(--neutral-surface);
+            border-bottom: 1px solid var(--neutral-border);
+        }
+        .code-header span {
+            font-size: 12px;
+            color: var(--neutral-text-muted);
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        .copy-btn {
+            background: none;
+            border: 1px solid var(--neutral-border);
+            color: var(--neutral-text);
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .copy-btn:hover {
+            background-color: var(--primary-main);
+            border-color: var(--primary-main);
+            color: white;
+        }
+        .code-block pre {
+            padding: var(--spacing-md);
+            overflow-x: auto;
+        }
+        .code-block code {
+            font-family: var(--font-monospace);
+            font-size: 14px;
+            color: #c9d1d9;
+            line-height: 1.6;
+        }
+    </style>
+
+    <script>
+        function copyCode(button) {
+            const codeBlock = button.parentElement.nextElementSibling;
+            const code = codeBlock.querySelector('code').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                button.textContent = 'Copied!';
+                setTimeout(() => button.textContent = 'Copy', 2000);
+            });
+        }
+    </script>
+</body>
+</html>

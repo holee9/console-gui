@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Patient - PROTYPER</title>
+    <style>
+        /* CoreTokens.xaml authoritative values */
+        :root {
+            --primary-main: #1B4F8A;
+            --primary-light: #2E6DB4;
+            --accent: #00AEEF;
+            --bg-base: #1A1A2E;
+            --bg-surface: #16213E;
+            --bg-card: #0F3460;
+            --bg-border: #2E4A6E;
+            --bg-hover: rgba(0, 174, 239, 0.08);
+            --text-primary: #FFFFFF;
+            --text-muted: #B0BEC5;
+            --text-disabled: #546E7A;
+            --color-error: #D50000;
+            --color-warning: #FFD600;
+            --color-blocked: #FF6D00;
+            --color-success: #00C853;
+            --border-focus: #00AEEF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", "Malgun Gothic", sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            height: 60px;
+            background: var(--bg-surface);
+            border-bottom: 1px solid var(--bg-border);
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            gap: 24px;
+        }
+
+        .logo {
+            width: 100px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--primary-main), var(--primary-light));
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .header-title {
+            font-size: 20px;
+            font-weight: 600;
+            flex: 1;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* Form Container */
+        .form-container {
+            flex: 1;
+            padding: 32px;
+            overflow-y: auto;
+            display: flex;
+            gap: 32px;
+        }
+
+        .form-section {
+            flex: 1;
+            background: var(--bg-surface);
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .section-header {
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--bg-border);
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .section-subtitle {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* Form Groups */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .form-label {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .required {
+            color: var(--color-error);
+            margin-left: 4px;
+        }
+
+        .form-input {
+            width: 100%;
+            height: 40px;
+            padding: 0 16px;
+            border: 1px solid var(--bg-border);
+            border-radius: 6px;
+            background: var(--bg-base);
+            color: var(--text-primary);
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 2px rgba(77, 148, 255, 0.2);
+        }
+
+        .form-input:disabled {
+            background: var(--bg-surface);
+            color: var(--text-muted);
+        }
+
+        .form-input.error {
+            border-color: var(--color-error);
+        }
+
+        .form-textarea {
+            width: 100%;
+            min-height: 80px;
+            padding: 12px 16px;
+            border: 1px solid var(--bg-border);
+            border-radius: 6px;
+            background: var(--bg-base);
+            color: var(--text-primary);
+            font-size: 14px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 2px rgba(77, 148, 255, 0.2);
+        }
+
+        /* Radio Group */
+        .radio-group {
+            display: flex;
+            gap: 16px;
+        }
+
+        .radio-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 16px;
+            border: 1px solid var(--bg-border);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .radio-item:hover {
+            border-color: var(--primary-light);
+        }
+
+        .radio-item.selected {
+            background: var(--primary-main);
+            border-color: var(--primary-main);
+            color: white;
+        }
+
+        .radio-input {
+            margin-right: 8px;
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Checkbox */
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .checkbox-input {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Procedure List */
+        .procedure-list {
+            flex: 1;
+            overflow-y: auto;
+            border: 1px solid var(--bg-border);
+            border-radius: 8px;
+            background: var(--bg-base);
+        }
+
+        .procedure-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--bg-border);
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .procedure-item:hover {
+            background: var(--bg-hover);
+        }
+
+        .procedure-item.selected {
+            background: rgba(0, 102, 204, 0.2);
+        }
+
+        .procedure-checkbox {
+            margin-right: 12px;
+            width: 18px;
+            height: 18px;
+        }
+
+        .procedure-info {
+            flex: 1;
+        }
+
+        .procedure-name {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+
+        .procedure-code {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* Search Box */
+        .search-box {
+            position: relative;
+            margin-bottom: 16px;
+        }
+
+        .search-input {
+            width: 100%;
+            height: 40px;
+            padding: 0 40px 0 16px;
+            border: 1px solid var(--bg-border);
+            border-radius: 6px;
+            background: var(--bg-base);
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 2px rgba(77, 148, 255, 0.2);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        /* Selected Procedures */
+        .selected-procedures {
+            margin-top: 16px;
+            padding: 16px;
+            background: var(--bg-base);
+            border-radius: 8px;
+            border: 1px solid var(--bg-border);
+            min-height: 80px;
+        }
+
+        .selected-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            background: var(--primary-main);
+            border-radius: 16px;
+            font-size: 13px;
+            margin: 4px;
+        }
+
+        .selected-tag button {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 0;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Warning Box */
+        .warning-box {
+            background: rgba(255, 165, 2, 0.1);
+            border: 1px solid var(--color-warning);
+            border-radius: 8px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            font-size: 13px;
+        }
+
+        .warning-box.error {
+            background: rgba(255, 71, 87, 0.1);
+            border-color: var(--color-error);
+        }
+
+        .warning-icon {
+            font-size: 20px;
+        }
+
+        /* Footer */
+        .footer {
+            height: 64px;
+            background: var(--bg-surface);
+            border-top: 1px solid var(--bg-border);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 0 32px;
+            gap: 12px;
+        }
+
+        .btn {
+            height: 40px;
+            padding: 0 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-secondary {
+            background: var(--bg-border);
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--secondary-teal);
+        }
+
+        .btn-primary {
+            background: var(--primary-main);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-light);
+        }
+
+        /* Error Message */
+        .error-message {
+            color: var(--color-error);
+            font-size: 12px;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        /* Auto ID Badge */
+        .auto-id-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 8px;
+            background: rgba(46, 213, 115, 0.2);
+            color: var(--color-success);
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">PROTYPER</div>
+        <h1 class="header-title">환자/검사 등록</h1>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="form-container">
+            <!-- Patient Info Form -->
+            <div class="form-section">
+                <div class="section-header">
+                    <h2 class="section-title">환자 정보</h2>
+                    <p class="section-subtitle">새로운 환자의 기본 정보를 입력하세요</p>
+                </div>
+
+                <div class="warning-box" id="duplicateWarning" style="display: none;">
+                    <span class="warning-icon">⚠</span>
+                    <span>동일한 이름과 생년월일의 환자가 존재합니다. 확인 후 등록하세요.</span>
+                </div>
+
+                <form id="patientForm">
+                    <!-- Patient ID -->
+                    <div class="form-group">
+                        <div class="form-label">
+                            환자 ID
+                            <label class="checkbox-item" style="margin-left: auto;">
+                                <input type="checkbox" class="checkbox-input" id="autoId" checked>
+                                <span>자동 생성</span>
+                            </label>
+                        </div>
+                        <input type="text" class="form-input" id="patientId" value="P20250113007" disabled>
+                        <span class="auto-id-badge">AUTO</span>
+                    </div>
+
+                    <!-- Name -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            환자명
+                            <span class="required">*</span>
+                        </label>
+                        <input type="text" class="form-input" id="patientName" placeholder="홍길동" required>
+                        <div class="error-message" id="nameError">환자명을 입력하세요</div>
+                    </div>
+
+                    <!-- DOB and Sex -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">
+                                생년월일
+                                <span class="required">*</span>
+                            </label>
+                            <input type="date" class="form-input" id="dob" required>
+                            <div class="error-message" id="dobError">생년월일을 입력하세요</div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">
+                                성별
+                                <span class="required">*</span>
+                            </label>
+                            <div class="radio-group">
+                                <label class="radio-item selected">
+                                    <input type="radio" name="sex" value="M" class="radio-input" checked>
+                                    <span>남</span>
+                                </label>
+                                <label class="radio-item">
+                                    <input type="radio" name="sex" value="F" class="radio-input">
+                                    <span>여</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Phone and Emergency Contact -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">연락처</label>
+                            <input type="tel" class="form-input" id="phone" placeholder="010-0000-0000">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">비상 연락처</label>
+                            <input type="tel" class="form-input" id="emergencyPhone" placeholder="010-0000-0000">
+                        </div>
+                    </div>
+
+                    <!-- Address -->
+                    <div class="form-group">
+                        <label class="form-label">주소</label>
+                        <input type="text" class="form-input" id="address" placeholder="서울시 강남구...">
+                    </div>
+
+                    <!-- Notes -->
+                    <div class="form-group">
+                        <label class="form-label">특이사항</label>
+                        <textarea class="form-textarea" id="notes" placeholder="알레르기, 기저질환 등 특이사항을 입력하세요"></textarea>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Procedure Selection -->
+            <div class="form-section">
+                <div class="section-header">
+                    <h2 class="section-title">검사 등록</h2>
+                    <p class="section-subtitle">등록할 검사를 선택하세요</p>
+                </div>
+
+                <!-- Accession No -->
+                <div class="form-group">
+                    <label class="form-label">Accession No</label>
+                    <input type="text" class="form-input" id="accessionNo" value="A20260406007">
+                </div>
+
+                <!-- Referring Physician -->
+                <div class="form-group">
+                    <label class="form-label">의뢰 의사</label>
+                    <input type="text" class="form-input" id="physician" placeholder="의사명 검색..." list="physicians">
+                    <datalist id="physicians">
+                        <option value="김의사">
+                        <option value="이의사">
+                        <option value="박의사">
+                        <option value="최의사">
+                    </datalist>
+                </div>
+
+                <!-- Clinical Info -->
+                <div class="form-group">
+                    <label class="form-label">임상 증상</label>
+                    <input type="text" class="form-input" id="clinicalInfo" placeholder="발열, 기침 등">
+                </div>
+
+                <!-- Procedure Search -->
+                <div class="form-group">
+                    <label class="form-label">검사 선택 (다중 선택 가능)</label>
+                    <div class="search-box">
+                        <input type="text" class="search-input" id="procedureSearch" placeholder="검사명 또는 코드로 검색...">
+                        <span class="search-icon">🔍</span>
+                    </div>
+                </div>
+
+                <!-- Procedure List -->
+                <div class="procedure-list" id="procedureList">
+                    <div class="procedure-item" data-code="RP001" data-name="Chest PA">
+                        <input type="checkbox" class="procedure-checkbox">
+                        <div class="procedure-info">
+                            <div class="procedure-name">Chest PA</div>
+                            <div class="procedure-code">RP001</div>
+                        </div>
+                    </div>
+                    <div class="procedure-item" data-code="RP002" data-name="Chest AP">
+                        <input type="checkbox" class="procedure-checkbox">
+                        <div class="procedure-info">
+                            <div class="procedure-name">Chest AP</div>
+                            <div class="procedure-code">RP002</div>
+                        </div>
+                    </div>
+                    <div class="procedure-item" data-code="RP003" data-name="Abdomen AP">
+                        <input type="checkbox" class="procedure-checkbox">
+                        <div class="procedure-info">
+                            <div class="procedure-name">Abdomen AP</div>
+                            <div class="procedure-code">RP003</div>
+                        </div>
+                    </div>
+                    <div class="procedure-item" data-code="RP004" data-name="Hand AP">
+                        <input type="checkbox" class="procedure-checkbox">
+                        <div class="procedure-info">
+                            <div class="procedure-name">Hand AP</div>
+                            <div class="procedure-code">RP004</div>
+                        </div>
+                    </div>
+                    <div class="procedure-item" data-code="RP005" data-name="Hand PA">
+                        <input type="checkbox" class="procedure-checkbox">
+                        <div class="procedure-info">
+                            <div class="procedure-name">Hand PA</div>
+                            <div class="procedure-code">RP005</div>
+                        </div>
+                    </div>
+                    <div class="procedure-item" data-code="RP006" data-name="Foot AP">
+                        <input type="checkbox" class="procedure-checkbox">
+                        <div class="procedure-info">
+                            <div class="procedure-name">Foot AP</div>
+                            <div class="procedure-code">RP006</div>
+                        </div>
+                    </div>
+                    <div class="procedure-item" data-code="RP007" data-name="Spine AP">
+                        <input type="checkbox" class="procedure-checkbox">
+                        <div class="procedure-info">
+                            <div class="procedure-name">Spine AP</div>
+                            <div class="procedure-code">RP007</div>
+                        </div>
+                    </div>
+                    <div class="procedure-item" data-code="RP008" data-name="Pelvis AP">
+                        <input type="checkbox" class="procedure-checkbox">
+                        <div class="procedure-info">
+                            <div class="procedure-name">Pelvis AP</div>
+                            <div class="procedure-code">RP008</div>
+                        </div>
+                    </div>
+                    <div class="procedure-item" data-code="RP009" data-name="Knee AP">
+                        <input type="checkbox" class="procedure-checkbox">
+                        <div class="procedure-info">
+                            <div class="procedure-name">Knee AP</div>
+                            <div class="procedure-code">RP009</div>
+                        </div>
+                    </div>
+                    <div class="procedure-item" data-code="RP010" data-name="Skull AP">
+                        <input type="checkbox" class="procedure-checkbox">
+                        <div class="procedure-info">
+                            <div class="procedure-name">Skull AP</div>
+                            <div class="procedure-code">RP010</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Selected Procedures -->
+                <div class="selected-procedures" id="selectedProcedures">
+                    <div style="color: var(--text-muted); font-size: 13px;" id="noSelection">선택된 검사가 없습니다</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <button class="btn btn-secondary" id="cancelBtn">취소</button>
+        <button class="btn btn-primary" id="registerBtn">등록</button>
+    </footer>
+
+    <script>
+        // Auto ID toggle
+        const autoIdCheckbox = document.getElementById('autoId');
+        const patientIdInput = document.getElementById('patientId');
+        const autoIdBadge = document.querySelector('.auto-id-badge');
+
+        autoIdCheckbox.addEventListener('change', function() {
+            patientIdInput.disabled = this.checked;
+            if (this.checked) {
+                autoIdBadge.style.display = 'inline-flex';
+                patientIdInput.value = 'P20250113007';
+            } else {
+                autoIdBadge.style.display = 'none';
+                patientIdInput.value = '';
+                patientIdInput.focus();
+            }
+        });
+
+        // Radio button styling
+        const radioItems = document.querySelectorAll('.radio-item');
+        radioItems.forEach(item => {
+            item.addEventListener('click', function() {
+                const name = this.querySelector('input').name;
+                document.querySelectorAll(`.radio-item input[name="${name}"]`).forEach(input => {
+                    input.closest('.radio-item').classList.remove('selected');
+                });
+                this.classList.add('selected');
+                this.querySelector('input').checked = true;
+            });
+        });
+
+        // Procedure selection
+        const procedureItems = document.querySelectorAll('.procedure-item');
+        const selectedProcedures = document.getElementById('selectedProcedures');
+        const noSelection = document.getElementById('noSelection');
+        const selected = [];
+
+        procedureItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                if (e.target.classList.contains('procedure-checkbox')) {
+                    e.stopPropagation();
+                }
+
+                const checkbox = this.querySelector('.procedure-checkbox');
+                const code = this.dataset.code;
+                const name = this.dataset.name;
+
+                if (checkbox.checked) {
+                    checkbox.checked = false;
+                    this.classList.remove('selected');
+                    const index = selected.findIndex(s => s.code === code);
+                    if (index > -1) selected.splice(index, 1);
+                } else {
+                    checkbox.checked = true;
+                    this.classList.add('selected');
+                    selected.push({ code, name });
+                }
+
+                updateSelectedProcedures();
+            });
+        });
+
+        function updateSelectedProcedures() {
+            if (selected.length === 0) {
+                selectedProcedures.innerHTML = '<div style="color: var(--text-muted); font-size: 13px;" id="noSelection">선택된 검사가 없습니다</div>';
+            } else {
+                selectedProcedures.innerHTML = selected.map(s => `
+                    <span class="selected-tag">
+                        ${s.name}
+                        <button onclick="removeProcedure('${s.code}')">×</button>
+                    </span>
+                `).join('');
+            }
+        }
+
+        function removeProcedure(code) {
+            const index = selected.findIndex(s => s.code === code);
+            if (index > -1) {
+                selected.splice(index, 1);
+                const item = document.querySelector(`.procedure-item[data-code="${code}"]`);
+                if (item) {
+                    item.classList.remove('selected');
+                    item.querySelector('.procedure-checkbox').checked = false;
+                }
+                updateSelectedProcedures();
+            }
+        }
+
+        // Procedure search
+        const procedureSearch = document.getElementById('procedureSearch');
+        procedureSearch.addEventListener('input', function() {
+            const query = this.value.toLowerCase();
+            procedureItems.forEach(item => {
+                const name = item.dataset.name.toLowerCase();
+                const code = item.dataset.code.toLowerCase();
+                item.style.display = (name.includes(query) || code.includes(query)) ? 'flex' : 'none';
+            });
+        });
+
+        // Form validation
+        const patientName = document.getElementById('patientName');
+        const dob = document.getElementById('dob');
+        const nameError = document.getElementById('nameError');
+        const dobError = document.getElementById('dobError');
+
+        patientName.addEventListener('blur', function() {
+            if (this.value.trim()) {
+                // Simulate duplicate check
+                if (this.value === '홍길동') {
+                    document.getElementById('duplicateWarning').style.display = 'flex';
+                }
+                this.classList.remove('error');
+                nameError.classList.remove('show');
+            }
+        });
+
+        dob.addEventListener('blur', function() {
+            if (this.value) {
+                this.classList.remove('error');
+                dobError.classList.remove('show');
+            }
+        });
+
+        // Register button
+        const registerBtn = document.getElementById('registerBtn');
+        registerBtn.addEventListener('click', function() {
+            let isValid = true;
+
+            if (!patientName.value.trim()) {
+                patientName.classList.add('error');
+                nameError.classList.add('show');
+                isValid = false;
+            }
+
+            if (!dob.value) {
+                dob.classList.add('error');
+                dobError.classList.add('show');
+                isValid = false;
+            }
+
+            if (selected.length === 0) {
+                alert('최소 하나의 검사를 선택하세요.');
+                isValid = false;
+            }
+
+            if (isValid) {
+                if (confirm('환자를 등록하시겠습니까?')) {
+                    alert('등록되었습니다.');
+                    // Reset form or redirect
+                }
+            }
+        });
+
+        // Cancel button
+        document.getElementById('cancelBtn').addEventListener('click', function() {
+            if (confirm('입력한 내용이 저장되지 않습니다. 계속하시겠습니까?')) {
+                // Close or reset
+            }
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 's') {
+                e.preventDefault();
+                registerBtn.click();
+            }
+            if (e.key === 'Escape') {
+                document.getElementById('cancelBtn').click();
+            }
+        });
+    </script>
+</body>
+</html>

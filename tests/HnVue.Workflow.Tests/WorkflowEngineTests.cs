@@ -293,7 +293,7 @@ public sealed class WorkflowEngineTests
 
         var sut = new WorkflowEngine(_doseService, _generator, _securityContext, auditService);
 
-        var validation = new DoseValidationResult(IsAllowed: true, Level: DoseValidationLevel.Allow, Message: null);
+        var validation = new DoseValidationResult(IsAllowed: true, Level: DoseValidationLevel.Allow, Message: null, EstimatedDap: 0.5, EstimatedEsd: 0.5, ExposureIndex: 0.5);
         _doseService.ValidateExposureAsync(Arg.Any<ExposureParameters>(), Arg.Any<CancellationToken>())
             .Returns(Result.Success(validation));
 
@@ -317,7 +317,7 @@ public sealed class WorkflowEngineTests
     public async Task PrepareExposureAsync_WithNullAuditService_DoesNotThrow()
     {
         // Arrange — sut created without audit service (default null)
-        var validation = new DoseValidationResult(IsAllowed: true, Level: DoseValidationLevel.Allow, Message: null);
+        var validation = new DoseValidationResult(IsAllowed: true, Level: DoseValidationLevel.Allow, Message: null, EstimatedDap: 0.5, EstimatedEsd: 0.5, ExposureIndex: 0.5);
         _doseService.ValidateExposureAsync(Arg.Any<ExposureParameters>(), Arg.Any<CancellationToken>())
             .Returns(Result.Success(validation));
 
@@ -338,7 +338,7 @@ public sealed class WorkflowEngineTests
     [Fact]
     public async Task PrepareExposureAsync_DoseAllow_TransitionsToExposing()
     {
-        var validation = new DoseValidationResult(IsAllowed: true, Level: DoseValidationLevel.Allow, Message: null);
+        var validation = new DoseValidationResult(IsAllowed: true, Level: DoseValidationLevel.Allow, Message: null, EstimatedDap: 0.5, EstimatedEsd: 0.5, ExposureIndex: 0.5);
         _doseService.ValidateExposureAsync(Arg.Any<ExposureParameters>(), Arg.Any<CancellationToken>())
             .Returns(Result.Success(validation));
 
@@ -356,7 +356,7 @@ public sealed class WorkflowEngineTests
     [Fact]
     public async Task PrepareExposureAsync_DoseWarn_TransitionsToExposingWithWarning()
     {
-        var validation = new DoseValidationResult(IsAllowed: true, Level: DoseValidationLevel.Warn, Message: "DRL exceeded by 10%");
+        var validation = new DoseValidationResult(IsAllowed: true, Level: DoseValidationLevel.Warn, Message: "DRL exceeded by 10%", EstimatedDap: 0.5, EstimatedEsd: 0.5, ExposureIndex: 0.5);
         _doseService.ValidateExposureAsync(Arg.Any<ExposureParameters>(), Arg.Any<CancellationToken>())
             .Returns(Result.Success(validation));
 
@@ -374,7 +374,7 @@ public sealed class WorkflowEngineTests
     [Fact]
     public async Task PrepareExposureAsync_DoseBlock_ReturnsDoseInterlockFailureAndSetsBlockedState()
     {
-        var validation = new DoseValidationResult(IsAllowed: false, Level: DoseValidationLevel.Block, Message: "Dose exceeds 3× DRL");
+        var validation = new DoseValidationResult(IsAllowed: false, Level: DoseValidationLevel.Block, Message: "Dose exceeds 3× DRL", EstimatedDap: 0.5, EstimatedEsd: 0.5, ExposureIndex: 0.5);
         _doseService.ValidateExposureAsync(Arg.Any<ExposureParameters>(), Arg.Any<CancellationToken>())
             .Returns(Result.Success(validation));
 
@@ -393,7 +393,7 @@ public sealed class WorkflowEngineTests
     [Fact]
     public async Task PrepareExposureAsync_DoseEmergency_SetsEmergencyStateAndReturnsFailure()
     {
-        var validation = new DoseValidationResult(IsAllowed: false, Level: DoseValidationLevel.Emergency, Message: "Critical dose threshold");
+        var validation = new DoseValidationResult(IsAllowed: false, Level: DoseValidationLevel.Emergency, Message: "Critical dose threshold", EstimatedDap: 0.5, EstimatedEsd: 0.5, ExposureIndex: 0.5);
         _doseService.ValidateExposureAsync(Arg.Any<ExposureParameters>(), Arg.Any<CancellationToken>())
             .Returns(Result.Success(validation));
 

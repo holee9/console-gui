@@ -3,6 +3,7 @@ using HnVue.Common.Results;
 
 namespace HnVue.Common.Abstractions;
 
+// @MX:ANCHOR IPatientRepository - @MX:REASON: PHI data access with 5 CRUD ops, encrypted SQLite persistence
 /// <summary>
 /// Defines CRUD operations for patient demographic records.
 /// Implemented by the HnVue.Data module.

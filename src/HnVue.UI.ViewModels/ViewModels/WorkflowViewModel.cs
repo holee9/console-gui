@@ -8,6 +8,7 @@ using HnVue.UI.Contracts.ViewModels;
 
 namespace HnVue.UI.ViewModels;
 
+// @MX:NOTE Role-based exposure control: only Radiographer/Radiologist roles can trigger exposure (safety-critical)
 /// <summary>
 /// ViewModel for the acquisition workflow control panel.
 /// Manages workflow state transitions and enforces role-based exposure permissions.

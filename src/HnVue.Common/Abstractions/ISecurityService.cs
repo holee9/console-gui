@@ -4,6 +4,7 @@ using HnVue.Common.Results;
 
 namespace HnVue.Common.Abstractions;
 
+// @MX:ANCHOR ISecurityService - @MX:REASON: Authentication contract with 15+ consumers, medical device security boundary
 /// <summary>
 /// Defines authentication and account management operations.
 /// Implemented by the HnVue.Security module.

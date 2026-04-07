@@ -39,4 +39,24 @@
         <views:QuickPinLockView />
     </DataTemplate>
 
+    <!-- PPT 슬라이드 7: Studylist with prev/next nav, PACS dropdown, period filters -->
+    <DataTemplate DataType="{x:Type vm:StudylistViewModel}">
+        <views:StudylistView />
+    </DataTemplate>
+
+    <!-- PPT 슬라이드 8: Merged Add Patient/Procedure dialog -->
+    <DataTemplate DataType="{x:Type vm:AddPatientProcedureViewModel}">
+        <views:AddPatientProcedureView />
+    </DataTemplate>
+
+    <!-- PPT 슬라이드 13: Sync Study (renamed from "Same Studylist") -->
+    <DataTemplate DataType="{x:Type vm:MergeViewModel}">
+        <views:MergeView />
+    </DataTemplate>
+
+    <!-- PPT 슬라이드 14~21: Settings with top tabs, Network consolidation -->
+    <DataTemplate DataType="{x:Type vm:SettingsViewModel}">
+        <views:SettingsView />
+    </DataTemplate>
+
 </ResourceDictionary>

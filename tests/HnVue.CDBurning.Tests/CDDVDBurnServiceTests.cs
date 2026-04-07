@@ -164,6 +164,119 @@ public sealed class CDDVDBurnServiceTests : IDisposable
         result.Error.Should().Be(ErrorCode.DiscVerificationFailed);
     }
 
+    [Fact]
+    public async Task BurnStudy_NullOutputLabel_ThrowsArgumentNullException()
+    {
+        var act = async () => await _sut.BurnStudyAsync("1.2.3", null!);
+
+        await act.Should().ThrowAsync<ArgumentNullException>();
+    }
+
+    [Fact]
+    public async Task BurnStudy_WhitespaceStudyUid_ReturnsValidationFailure()
+    {
+        var result = await _sut.BurnStudyAsync("   ", "LABEL");
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.ValidationFailed);
+    }
+
+    [Fact]
+    public async Task BurnStudy_LabelExactly32Chars_PassesValidation()
+    {
+        var label32 = new string('X', 32);
+        _burnSession.IsDiscInsertedAsync(Arg.Any<CancellationToken>()).Returns(Result.Success(true));
+        _burnSession.IsDiscBlankAsync(Arg.Any<CancellationToken>()).Returns(Result.Success(true));
+        var emptyFiles = (IReadOnlyList<string>)Array.Empty<string>();
+        _studyRepo.GetFilesForStudyAsync("1.2.3", Arg.Any<CancellationToken>())
+            .Returns(Result.Success(emptyFiles));
+
+        var result = await _sut.BurnStudyAsync("1.2.3", label32);
+
+        // Validation passes but returns NotFound (no files) — proves label length check allows 32
+        result.Error.Should().Be(ErrorCode.NotFound);
+    }
+
+    [Fact]
+    public async Task BurnStudy_IsDiscInsertedReturnsFailure_ReturnsBurnFailed()
+    {
+        _burnSession.IsDiscInsertedAsync(Arg.Any<CancellationToken>())
+            .Returns(Result.Failure<bool>(ErrorCode.BurnFailed, "Hardware error"));
+
+        var result = await _sut.BurnStudyAsync("1.2.3", "LABEL");
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.BurnFailed);
+    }
+
+    [Fact]
+    public async Task BurnStudy_IsDiscBlankReturnsFailure_ReturnsBurnFailed()
+    {
+        _burnSession.IsDiscInsertedAsync(Arg.Any<CancellationToken>()).Returns(Result.Success(true));
+        _burnSession.IsDiscBlankAsync(Arg.Any<CancellationToken>())
+            .Returns(Result.Failure<bool>(ErrorCode.BurnFailed, "Hardware error"));
+
+        var result = await _sut.BurnStudyAsync("1.2.3", "LABEL");
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.BurnFailed);
+    }
+
+    [Fact]
+    public async Task BurnStudy_GetFilesReturnsFailure_PropagatesError()
+    {
+        _burnSession.IsDiscInsertedAsync(Arg.Any<CancellationToken>()).Returns(Result.Success(true));
+        _burnSession.IsDiscBlankAsync(Arg.Any<CancellationToken>()).Returns(Result.Success(true));
+        _studyRepo.GetFilesForStudyAsync("1.2.3", Arg.Any<CancellationToken>())
+            .Returns(Result.Failure<IReadOnlyList<string>>(ErrorCode.NotFound, "Study not found in DICOM store"));
+
+        var result = await _sut.BurnStudyAsync("1.2.3", "LABEL");
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.NotFound);
+    }
+
+    [Fact]
+    public async Task BurnStudy_BurnFilesReturnsFailure_PropagatesBurnError()
+    {
+        var filePath = CreateTempFile("burn_fail.dcm");
+        var files = (IReadOnlyList<string>)new[] { filePath };
+
+        _burnSession.IsDiscInsertedAsync(Arg.Any<CancellationToken>()).Returns(Result.Success(true));
+        _burnSession.IsDiscBlankAsync(Arg.Any<CancellationToken>()).Returns(Result.Success(true));
+        _studyRepo.GetFilesForStudyAsync("1.2.3", Arg.Any<CancellationToken>())
+            .Returns(Result.Success(files));
+        _burnSession.BurnFilesAsync(Arg.Any<IEnumerable<BurnFileEntry>>(), Arg.Any<string>(),
+            Arg.Any<IProgress<double>?>(), Arg.Any<CancellationToken>())
+            .Returns(Result.Failure(ErrorCode.BurnFailed, "Burn hardware error"));
+
+        var result = await _sut.BurnStudyAsync("1.2.3", "LABEL");
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.BurnFailed);
+    }
+
+    [Fact]
+    public async Task BurnStudy_VerifyReturnsFailureResult_ReturnsDiscVerificationFailed()
+    {
+        var filePath = CreateTempFile("verify_fail2.dcm");
+        var files = (IReadOnlyList<string>)new[] { filePath };
+
+        _burnSession.IsDiscInsertedAsync(Arg.Any<CancellationToken>()).Returns(Result.Success(true));
+        _burnSession.IsDiscBlankAsync(Arg.Any<CancellationToken>()).Returns(Result.Success(true));
+        _studyRepo.GetFilesForStudyAsync("1.2.3", Arg.Any<CancellationToken>())
+            .Returns(Result.Success(files));
+        _burnSession.BurnFilesAsync(Arg.Any<IEnumerable<BurnFileEntry>>(), Arg.Any<string>(),
+            Arg.Any<IProgress<double>?>(), Arg.Any<CancellationToken>()).Returns(Result.Success());
+        _burnSession.VerifyAsync(Arg.Any<IEnumerable<BurnFileEntry>>(), Arg.Any<CancellationToken>())
+            .Returns(Result.Failure<bool>(ErrorCode.DiscVerificationFailed, "Checksum mismatch"));
+
+        var result = await _sut.BurnStudyAsync("1.2.3", "LABEL");
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.DiscVerificationFailed);
+    }
+
     // ── VerifyDiscAsync ───────────────────────────────────────────────────────
 
     [Fact]
@@ -188,5 +301,17 @@ public sealed class CDDVDBurnServiceTests : IDisposable
 
         result.IsSuccess.Should().BeTrue();
         result.Value.Should().BeFalse();
+    }
+
+    [Fact]
+    public async Task VerifyDisc_IsDiscInsertedReturnsFailure_ReturnsDiscVerificationFailed()
+    {
+        _burnSession.IsDiscInsertedAsync(Arg.Any<CancellationToken>())
+            .Returns(Result.Failure<bool>(ErrorCode.DiscVerificationFailed, "Drive not responding"));
+
+        var result = await _sut.VerifyDiscAsync();
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.DiscVerificationFailed);
     }
 }

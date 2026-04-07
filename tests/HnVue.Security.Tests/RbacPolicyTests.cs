@@ -127,11 +127,11 @@ public sealed class RbacPolicyTests
     }
 
     [Fact]
-    public void GetPermissions_Radiologist_ReturnsFivePermissions()
+    public void GetPermissions_Radiologist_ReturnsSixPermissions()
     {
         var permissions = RbacPolicy.GetPermissions(UserRole.Radiologist);
 
-        permissions.Should().HaveCount(5);
+        permissions.Should().HaveCount(6);
     }
 
     // ── HasRoleOrHigher ───────────────────────────────────────────────────────

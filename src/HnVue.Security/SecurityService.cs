@@ -8,6 +8,7 @@ using Microsoft.Extensions.Options;
 
 namespace HnVue.Security;
 
+// @MX:ANCHOR SecurityService - @MX:REASON: IEC 62304 Class B auth implementation, 9 methods with audit logging
 /// <summary>
 /// Implements authentication, authorisation, and account management operations.
 /// Satisfies IEC 62304 Class B requirements for safety-critical access control.
@@ -17,7 +18,8 @@ public sealed class SecurityService(
     IAuditRepository auditRepository,
     ISecurityContext securityContext,
     JwtOptions jwtOptions,
-    IOptions<AuditOptions> auditOptions) : ISecurityService
+    IOptions<AuditOptions> auditOptions,
+    ITokenDenylist tokenDenylist) : ISecurityService
 {
     private const int MaxFailedAttempts = 5;
     private const int MaxPinAttempts = 3;
@@ -29,13 +31,16 @@ public sealed class SecurityService(
     private readonly JwtTokenService _jwtTokenService = new(jwtOptions);
     private readonly int _expiryMinutes = jwtOptions.ExpiryMinutes;
     private readonly byte[] _hmacKey = Encoding.UTF8.GetBytes(auditOptions.Value.HmacKey);
+    private readonly ITokenDenylist _tokenDenylist = tokenDenylist;
 
     // Password policy: min 8 chars, at least 1 uppercase, 1 lowercase, 1 digit, 1 special char.
     // SWR-NF-SC-042 / Issue #19
+    // @MX:NOTE PasswordPolicyRegex - Compiled regex with 100ms timeout, SWR-NF-SC-042 compliance
     private static readonly Regex PasswordPolicyRegex =
         new(@"^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*_\-]).{8,}$", RegexOptions.Compiled, TimeSpan.FromMilliseconds(100));
 
     // Quick PIN policy: exactly 4-6 numeric digits. SWR-CS-076 / Issue #34.
+    // @MX:NOTE QuickPinPolicyRegex - 4-6 digit PIN validation, SWR-CS-076 compliance
     private static readonly Regex QuickPinPolicyRegex =
         new(@"^\d{4,6}$", RegexOptions.Compiled, TimeSpan.FromMilliseconds(100));
 
@@ -72,11 +77,11 @@ public sealed class SecurityService(
         // Successful login: reset failed login counter.
         await _userRepository.UpdateFailedLoginCountAsync(user.UserId, 0, cancellationToken).ConfigureAwait(false);
 
-        var tokenString = _jwtTokenService.Issue(user.UserId, user.Username, user.Role);
+        var (tokenString, jti) = _jwtTokenService.Issue(user.UserId, user.Username, user.Role);
         var expiresAt = DateTimeOffset.UtcNow.AddMinutes(_expiryMinutes);
-        var authToken = new AuthenticationToken(user.UserId, user.Username, user.Role, tokenString, expiresAt);
+        var authToken = new AuthenticationToken(user.UserId, user.Username, user.Role, tokenString, expiresAt, jti);
 
-        _securityContext.SetCurrentUser(new AuthenticatedUser(user.UserId, user.Username, user.Role));
+        _securityContext.SetCurrentUser(new AuthenticatedUser(user.UserId, user.Username, user.Role, jti));
 
         await WriteAuditInternalAsync(user.UserId, "LOGIN", null, cancellationToken).ConfigureAwait(false);
 
@@ -134,9 +139,14 @@ public sealed class SecurityService(
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(userId);
 
-        // Write audit log for logout. Issue #29.
-        // Note: JWT token expiry (JwtOptions.ExpiryMinutes) is the primary revocation mechanism for
-        // this desktop application. A persistent JTI denylist is planned for Phase 2.
+        // SWR-CS-077: Revoke current session token via JTI denylist.
+        // JTI is stored in the security context alongside the authenticated user.
+        var jti = _securityContext.CurrentJti;
+        if (jti is not null)
+            await _tokenDenylist.RevokeAsync(jti, cancellationToken: cancellationToken).ConfigureAwait(false);
+
+        _securityContext.ClearCurrentUser();
+
         await WriteAuditInternalAsync(userId, "LOGOUT", null, cancellationToken).ConfigureAwait(false);
         return Result.Success();
     }

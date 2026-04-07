@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\HnVue.PatientManagement\HnVue.PatientManagement.csproj" />
+    <ProjectReference Include="..\..\src\HnVue.Common\HnVue.Common.csproj" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="xunit" />
     <PackageReference Include="xunit.runner.visualstudio" />

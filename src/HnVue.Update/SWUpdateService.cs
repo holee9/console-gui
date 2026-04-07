@@ -8,6 +8,8 @@ using Microsoft.Extensions.Options;
 
 namespace HnVue.Update;
 
+// @MX:WARN SWUpdateService - @MX:REASON: Safety-critical update orchestration, IEC 62304 §6.2.5 compliance
+// @MX:NOTE Update staging prevents live binary replacement - safe for medical devices
 /// <summary>
 /// Implements the software update lifecycle: check, apply, and rollback.
 /// Satisfies IEC 62304 §6.2.5 by verifying Authenticode signatures and SHA-256 hashes
@@ -60,6 +62,7 @@ public sealed class SWUpdateService : ISWUpdateService
         return await checker.CheckAsync(cancellationToken).ConfigureAwait(false);
     }
 
+    // @MX:ANCHOR ApplyUpdateAsync - @MX:REASON: High fan_in - called by update UI and auto-update scheduler
     /// <inheritdoc/>
     /// <remarks>
     /// Wave 2 implementation stages the update rather than performing a live binary replacement.
@@ -71,6 +74,7 @@ public sealed class SWUpdateService : ISWUpdateService
     {
         _logger?.LogInformation("Applying update from package: {PackagePath}", packagePath);
 
+        // @MX:NOTE SHA-256 verification prevents tampered updates - IEC 62304 integrity requirement
         // Step 1: Verify SHA-256 hash integrity.
         // The expected hash must be obtained from the manifest or passed by the caller;
         // here we derive it from the accompanying .sha256 sidecar file if available.
@@ -88,6 +92,7 @@ public sealed class SWUpdateService : ISWUpdateService
             _logger?.LogInformation("SHA-256 hash verified successfully");
         }
 
+        // @MX:NOTE Authenticode verification ensures trusted publisher - prevents supply chain attacks
         // Step 2: Verify Authenticode digital signature (when required by policy).
         if (_options.RequireAuthenticodeSignature)
         {
@@ -125,6 +130,7 @@ public sealed class SWUpdateService : ISWUpdateService
         return Result.Success();
     }
 
+    // @MX:ANCHOR RollbackAsync - @MX:REASON: Critical recovery operation for failed updates
     /// <inheritdoc/>
     public async Task<Result> RollbackAsync(CancellationToken cancellationToken = default)
     {

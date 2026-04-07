@@ -1,0 +1,121 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:HnVue.UI.Components.Common">
+
+    <!-- ═══════════════════════════════════════════════════════════
+         DS2026 Toast Notification Component
+         IEC 62366 compliant feedback mechanism
+         ═══════════════════════════════════════════════════════════ -->
+
+    <!-- ═══ Toast Container ═══ -->
+    <Style x:Key="DS2026.Toast.Container" TargetType="ItemsControl">
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Vertical" />
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ═══ Toast Item Template ═══ -->
+    <DataTemplate x:Key="DS2026.Toast.ItemTemplate" DataType="{x:Type local:ToastItem}">
+        <Border Background="{Binding BackgroundBrush}"
+                BorderThickness="1"
+                BorderBrush="{Binding BorderBrush}"
+                CornerRadius="{StaticResource DS2026.CornerRadius.MD}"
+                Padding="12,8"
+                Margin="0,0,0,8"
+                MinWidth="300"
+                MaxWidth="400"
+                HorizontalAlignment="Right">
+            <Border.Effect>
+                <DropShadowEffect Color="Black" BlurRadius="8" ShadowDepth="0" Opacity="0.2" />
+            </Border.Effect>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Icon -->
+                <ContentControl Grid.Column="0"
+                                Template="{Binding IconTemplate}"
+                                Margin="0,0,12,0"
+                                VerticalAlignment="Center" />
+
+                <!-- Message -->
+                <TextBlock Grid.Column="1"
+                           Text="{Binding Message}"
+                           Foreground="{StaticResource DS2026.Brush.Text}"
+                           FontSize="{StaticResource DS2026.FontSize.Body}"
+                           TextWrapping="Wrap"
+                           VerticalAlignment="Center"
+                           MaxWidth="320" />
+
+                <!-- Close Button -->
+                <Button Grid.Column="2"
+                        Command="{Binding CloseCommand}"
+                        Width="24"
+                        Height="24"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Padding="0"
+                        Margin="8,0,0,0">
+                    <Path Data="M 6 6 L 18 18 M 18 6 L 6 18"
+                          Stroke="{StaticResource DS2026.Brush.TextMuted}"
+                          StrokeThickness="2"
+                          Stretch="Uniform"
+                          Width="12"
+                          Height="12" />
+                </Button>
+            </Grid>
+        </Border>
+    </DataTemplate>
+
+    <!-- ═══ Icon Templates ═══ -->
+    <ControlTemplate x:Key="DS2026.Toast.Icon.Success">
+        <Ellipse Width="20" Height="20" Fill="{StaticResource DS2026.Brush.Success}">
+            <Path Data="M 6 10 L 9 13 L 14 7"
+                  Stroke="White"
+                  StrokeThickness="2"
+                  Stretch="Fill"
+                  Margin="3" />
+        </Ellipse>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="DS2026.Toast.Icon.Error">
+        <Ellipse Width="20" Height="20" Fill="{StaticResource DS2026.Brush.Error}">
+            <Path Data="M 7 7 L 13 13 M 13 7 L 7 13"
+                  Stroke="White"
+                  StrokeThickness="2"
+                  Stretch="Uniform"
+                  Margin="3" />
+        </Ellipse>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="DS2026.Toast.Icon.Warning">
+        <Ellipse Width="20" Height="20" Fill="{StaticResource DS2026.Brush.Warning}">
+            <TextBlock Text="!"
+                       Foreground="White"
+                       FontWeight="Bold"
+                       FontSize="14"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center" />
+        </Ellipse>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="DS2026.Toast.Icon.Info">
+        <Ellipse Width="20" Height="20" Fill="{StaticResource DS2026.Brush.Info}">
+            <TextBlock Text="i"
+                       Foreground="White"
+                       FontWeight="Bold"
+                       FontSize="14"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center" />
+        </Ellipse>
+    </ControlTemplate>
+
+</ResourceDictionary>

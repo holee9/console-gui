@@ -31,6 +31,7 @@ public sealed partial class DicomService : HnVue.Common.Abstractions.IDicomServi
     }
 
     /// <inheritdoc/>
+    // @MX:ANCHOR StoreAsync - @MX:REASON: C-STORE SCU for sending images to PACS, called by DicomOutbox and directly, implements fo-dicom async client pattern with OnResponseReceived callback
     public async Task<Result> StoreAsync(
         string dicomFilePath,
         string pacsAeTitle,
@@ -51,6 +52,7 @@ public sealed partial class DicomService : HnVue.Common.Abstractions.IDicomServi
 
             var storeResult = Result.Success();
             var request = new DicomCStoreRequest(dicomFile);
+            // @MX:NOTE OnResponseReceived callback handles DICOM association response, Success status indicates PACS accepted the C-STORE
             request.OnResponseReceived = (req, response) =>
             {
                 if (response.Status != DicomStatus.Success)
@@ -89,6 +91,7 @@ public sealed partial class DicomService : HnVue.Common.Abstractions.IDicomServi
     }
 
     /// <inheritdoc/>
+    // @MX:NOTE QueryWorklistAsync builds CFindRequest with date range filter, collects Pending responses via callback, returns read-only list
     public async Task<Result<IReadOnlyList<WorklistItem>>> QueryWorklistAsync(
         WorklistQuery query,
         CancellationToken cancellationToken = default)
@@ -102,6 +105,7 @@ public sealed partial class DicomService : HnVue.Common.Abstractions.IDicomServi
         try
         {
             var request = BuildWorklistRequest(query);
+            // @MX:NOTE OnResponseReceived callback collects Pending responses (C-FIND pending matches), Success status indicates final response
             request.OnResponseReceived = (req, response) =>
             {
                 if (response.Status == DicomStatus.Pending && response.Dataset != null)

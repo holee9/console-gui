@@ -1,5 +1,6 @@
 namespace HnVue.Common.Models;
 
+// @MX:NOTE PatientRecord record - PHI container with data minimisation, DICOM PN format for name field
 /// <summary>
 /// Represents a patient demographic record as stored in the local database.
 /// Minimal PHI is retained in accordance with data minimisation principles.

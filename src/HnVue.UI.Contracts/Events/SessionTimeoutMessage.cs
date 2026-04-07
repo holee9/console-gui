@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.Messaging.Messages;
 
+// @MX:NOTE Session timeout warning broadcast at 3 minutes remaining; enforces SWR-CS-075 security policy
 namespace HnVue.UI.Contracts.Events;
 
 /// <summary>Message broadcast when session timeout is imminent.</summary>

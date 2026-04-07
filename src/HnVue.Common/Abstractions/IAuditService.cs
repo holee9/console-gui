@@ -3,6 +3,7 @@ using HnVue.Common.Results;
 
 namespace HnVue.Common.Abstractions;
 
+// @MX:ANCHOR IAuditService - @MX:REASON: Tamper-evident audit contract with 3 methods, IEC 62304 incident logging
 /// <summary>
 /// Defines tamper-evident audit log operations.
 /// The implementation maintains a hash chain across all entries.

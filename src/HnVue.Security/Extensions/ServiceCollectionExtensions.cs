@@ -36,6 +36,11 @@ public static class ServiceCollectionExtensions
                 "Set the 'Jwt:SecretKey' configuration key or 'HNVUE_JWT_SECRET' environment variable.");
         services.AddSingleton(opts);
         services.AddSingleton<JwtTokenService>();
+
+        // SWR-CS-077: Register in-memory token denylist for session revocation
+        var tokenDenylist = new InMemoryTokenDenylist(TimeSpan.FromMinutes(opts.ExpiryMinutes));
+        services.AddSingleton<ITokenDenylist>(tokenDenylist);
+
         services.AddScoped<ISecurityService, SecurityService>();
 
         var audit = auditOptions ?? new AuditOptions();

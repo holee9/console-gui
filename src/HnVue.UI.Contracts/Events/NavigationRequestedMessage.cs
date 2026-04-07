@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using HnVue.UI.Contracts.Navigation;
 
+// @MX:NOTE Navigation with parameter passing supports View-to-ViewModel communication (e.g., patient selection)
 namespace HnVue.UI.Contracts.Events;
 
 /// <summary>Message requesting shell navigation to a target view.</summary>

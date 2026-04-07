@@ -1,6 +1,16 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    <!--
+        @MX:ANCHOR CoreTokens — Single source of truth for ALL design tokens.
+        @MX:NOTE   All color values are IEC 62366 safety-color compliant.
+                   Never change values here without updating:
+                   1. docs/ui_mockups/design_system.pen (Pencil design file)
+                   2. docs/ui_mockups/PENCIL_DESIGN_SUMMARY.md
+                   3. docs/usability/METRICS_HISTORY.md (baseline reference)
+                   SemanticTokens.xaml, ComponentTokens.xaml, HnVueTheme.xaml
+                   all use DynamicResource and will pick up changes automatically.
+    -->
 
     <!-- ═══════════════════════════════════════════════════════════
          Level 1: Core Design Tokens
@@ -14,9 +24,9 @@
     <Color x:Key="HnVue.Core.Color.Accent">#00AEEF</Color>
 
     <!-- ═══ Background Colors ═══ -->
-    <Color x:Key="HnVue.Core.Color.BackgroundPage">#1A1A2E</Color>
-    <Color x:Key="HnVue.Core.Color.BackgroundPanel">#16213E</Color>
-    <Color x:Key="HnVue.Core.Color.BackgroundCard">#0F3460</Color>
+    <Color x:Key="HnVue.Core.Color.BackgroundPage">#242424</Color>
+    <Color x:Key="HnVue.Core.Color.BackgroundPanel">#2A2A2A</Color>
+    <Color x:Key="HnVue.Core.Color.BackgroundCard">#3B3B3B</Color>
 
     <!-- ═══ Text Colors ═══ -->
     <Color x:Key="HnVue.Core.Color.TextPrimary">#FFFFFF</Color>
@@ -40,7 +50,7 @@
     <Color x:Key="HnVue.Core.Color.ButtonDanger">#D50000</Color>
 
     <!-- ═══ Border Colors ═══ -->
-    <Color x:Key="HnVue.Core.Color.Border">#2E4A6E</Color>
+    <Color x:Key="HnVue.Core.Color.Border">#3B3B3B</Color>
     <Color x:Key="HnVue.Core.Color.BorderFocus">#00AEEF</Color>
 
     <!-- ═══ Typography ═══ -->

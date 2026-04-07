@@ -1,5 +1,6 @@
 namespace HnVue.Security;
 
+// @MX:NOTE AuditOptions - HMAC-SHA256 key (32+ chars) for audit hash chain, IEC 62304 tamper evidence
 /// <summary>
 /// Configuration options for the tamper-evident audit logging service.
 /// The HMAC key must be supplied externally via configuration or environment variable.

@@ -46,4 +46,21 @@ internal sealed class StubPatientService : IPatientService
         string patientId,
         CancellationToken cancellationToken = default)
         => Task.FromResult(Result.Failure(ErrorCode.Unknown, NotImplementedMessage));
+
+    /// <inheritdoc/>
+    public Task<Result<PatientRecord>> QuickRegisterEmergencyAsync(
+        string emergencyPatientId,
+        string? patientName,
+        CancellationToken cancellationToken = default)
+    {
+        var record = new PatientRecord(
+            PatientId: emergencyPatientId,
+            Name: patientName ?? string.Empty,
+            DateOfBirth: null,
+            Sex: null,
+            IsEmergency: true,
+            CreatedAt: DateTimeOffset.UtcNow,
+            CreatedBy: "STUB");
+        return Task.FromResult(Result.Success(record));
+    }
 }

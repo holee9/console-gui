@@ -50,4 +50,11 @@ internal sealed class StubWorkflowEngine : IWorkflowEngine
         ExposureParameters parameters,
         CancellationToken cancellationToken = default)
         => Task.FromResult(Result.Failure<DoseValidationResult>(ErrorCode.Unknown, NotImplementedMessage));
+
+    /// <inheritdoc/>
+    public Task<Result<DoseValidationResult>> StartEmergencyExposureAsync(
+        string? patientName,
+        ExposureParameters parameters,
+        CancellationToken cancellationToken = default)
+        => Task.FromResult(Result.Failure<DoseValidationResult>(ErrorCode.Unknown, NotImplementedMessage));
 }

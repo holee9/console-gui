@@ -5,6 +5,7 @@ using HnVue.Common.Results;
 
 namespace HnVue.SystemAdmin;
 
+// @MX:NOTE Audit export provides tamper-evident chain for regulatory compliance
 /// <summary>
 /// Implements system administration operations: settings management and audit log export.
 /// </summary>
@@ -52,6 +53,7 @@ public sealed class SystemAdminService : ISystemAdminService
         return await _settingsRepository.SaveAsync(settings, cancellationToken).ConfigureAwait(false);
     }
 
+    // @MX:ANCHOR ExportAuditLogAsync - @MX:REASON: Regulatory compliance feature for audit review
     /// <inheritdoc/>
     public async Task<Result> ExportAuditLogAsync(
         string outputPath,
@@ -98,6 +100,9 @@ public sealed class SystemAdminService : ISystemAdminService
 
     // ── Internals ─────────────────────────────────────────────────────────────
 
+    // @MX:NOTE Port range validation prevents DICOM connection failures
+    // @MX:NOTE AE title validation ensures DICOM network protocol compliance
+    // @MX:NOTE Security settings validation prevents authentication bypass
     private static string? ValidateSettings(SystemSettings settings)
     {
         if (settings.Dicom.PacsPort is < 1 or > 65535)
@@ -115,6 +120,7 @@ public sealed class SystemAdminService : ISystemAdminService
         return null;
     }
 
+    // @MX:NOTE RFC 4180 CSV escaping prevents injection and malformed export files
     private static string CsvEscape(string? value)
     {
         if (value is null)

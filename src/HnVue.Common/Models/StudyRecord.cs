@@ -1,5 +1,6 @@
 namespace HnVue.Common.Models;
 
+// @MX:NOTE StudyRecord record - DICOM study container with RIS accession number, body part exam code
 /// <summary>
 /// Represents a DICOM study associated with a patient.
 /// </summary>
