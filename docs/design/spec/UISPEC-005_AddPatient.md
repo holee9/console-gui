@@ -81,7 +81,7 @@ Col 2: Width="*"   → 시술 정보
 
 **자식 요소:**
 - 아이콘: Segoe MDL2 Assets `&#xE8FA;` (Person-Add), FontSize=16, 색상=`HnVue.Semantic.Brand.Accent` = `#00AEEF`, Margin=`0,0,10,0`
-- 텍스트: `"Add Patient / Procedure"`, Style=`HnVue.SectionHeader`, FontSize=15
+- 텍스트: `"Add Patient / Procedure"`, Style=`HSH (HnVue.SectionHeader)`, FontSize=15
 
 ### 2.3 환자 정보 패널 (Left Column)
 
@@ -93,7 +93,7 @@ Col 2: Width="*"   → 시술 정보
 
 **섹션 타이틀:**
 - 아이콘: Segoe MDL2 Assets `&#xE77B;` (Person), FontSize=12, 색상=Accent `#00AEEF`, Margin=`0,0,6,0`
-- 텍스트: `"Patient Info"`, Style=`HnVue.SectionHeader`, FontSize=13, Margin=`0,0,0,10`
+- 텍스트: `"Patient Info"`, Style=`HSH (HnVue.SectionHeader)`, FontSize=13, Margin=`0,0,0,10`
 
 ### 2.4 시술 정보 패널 (Right Column)
 
@@ -105,7 +105,7 @@ Col 2: Width="*"   → 시술 정보
 
 **섹션 타이틀:**
 - 아이콘: Segoe MDL2 Assets `&#xE9D9;` (Stethoscope), FontSize=12, 색상=Accent `#00AEEF`, Margin=`0,0,6,0`
-- 텍스트: `"Procedure Info"`, Style=`HnVue.SectionHeader`, FontSize=13, Margin=`0,0,0,10`
+- 텍스트: `"Procedure Info"`, Style=`HSH (HnVue.SectionHeader)`, FontSize=13, Margin=`0,0,0,10`
 
 ### 2.5 에러 배너 (Row 2, 조건부)
 
@@ -139,8 +139,8 @@ Col 2: Width="*"   → 시술 정보
 
 | 버튼 | Content | Style | Width | Height | Margin |
 |------|---------|-------|-------|--------|--------|
-| 취소 | `"Cancel"` | `HnVue.OutlineButton` | 100px | 36px | `0,0,8,0` |
-| 저장 | `"Save"` | `HnVue.PrimaryButton` | 100px | 36px | 없음 |
+| 취소 | `"Cancel"` | `HOB (HnVue.OutlineButton)` | 100px | 36px | `0,0,8,0` |
+| 저장 | `"Save"` | `HPB (HnVue.PrimaryButton)` | 100px | 36px | 없음 |
 
 - 두 버튼 모두 `IsLoading == true`일 때 `IsEnabled=False`
 
@@ -171,13 +171,13 @@ Col 2: Width="*"   → 시술 정보
 |------|-----|
 | 필드명 | Patient ID |
 | 필수 여부 | 선택 (자동 생성 시 자동 채움) |
-| 레이블 스타일 | `HnVue.MutedLabel` (text-muted `#B0BEC5`, FontSize 12) |
+| 레이블 스타일 | `HML (HnVue.MutedLabel)` (text-muted `#B0BEC5`, FontSize 12) |
 | 입력 타입 | TextBox |
 | Binding | `PatientId` |
 | 비활성화 조건 | `IsPatientIdAutoGenerate == true` → `IsEnabled=False`, Opacity=0.55 |
 | 자동 생성 버튼 | Content=`"Auto-Generate"`, Height=32, Padding=`10,0`, FontSize=11 |
 | 자동 생성 버튼 활성 상태 | Background=`HnVue.Semantic.Brand.Accent` (#00AEEF), Foreground=White |
-| 자동 생성 버튼 비활성 상태 | Style=`HnVue.OutlineButton` (기본 outline) |
+| 자동 생성 버튼 비활성 상태 | Style=`HOB (HnVue.OutlineButton)` (기본 outline) |
 | 레이아웃 | Grid 2-컬럼: TextBox(flex) + Gap(8px) + Button(Auto) |
 | Margin 하단 | 8px |
 
@@ -203,7 +203,7 @@ Col 2: Width="*"   → 시술 정보
 | 입력 타입 | TextBox (형식: yyyy-MM-dd) |
 | Binding | `BirthDate`, UpdateSourceTrigger=PropertyChanged |
 | ToolTip | `"Format: yyyy-MM-dd"` |
-| 구현 갭 | HTML 목업은 `<input type="date">` 사용 — WPF는 TextBox + 포맷 검증으로 구현. DatePicker 위젯 도입 권장 |
+| 구현 갭 | HTML 목업은 `<input type="date">` 사용 — WPF (Windows Presentation Foundation)는 TextBox + 포맷 검증으로 구현. DatePicker 위젯 도입 권장 |
 | Margin 하단 | 8px |
 
 #### Gender (필수)
@@ -227,7 +227,7 @@ Col 2: Width="*"   → 시술 정보
 
 | 속성 | 값 |
 |------|-----|
-| 필드명 | Acc No |
+| 필드명 | Acc No (Accession Number) |
 | 필수 여부 | 필수 (*) |
 | 필수 마커 | 레이블 뒤 `" (*)"`, Foreground=`#D50000`, FontSize=11 |
 | 입력 타입 | TextBox + Auto-Generate 버튼 |
@@ -298,7 +298,7 @@ Col 2: Width="*"   → 시술 정보
 | 입력 필드 배경 | `HnVue.Semantic.Surface.Card` | `#3B3B3B` | TextBox, ComboBox bg |
 | 기본 테두리 | `HnVue.Semantic.Border.Default` | `#3B3B3B` | 비포커스 상태 |
 | 기본 텍스트 | `HnVue.Semantic.Text.Primary` | `#FFFFFF` | 입력값, 버튼 레이블 |
-| 뮤트 레이블 | `HnVue.Semantic.Text.Secondary` | `#B0BEC5` | 필드 레이블 (`HnVue.MutedLabel`) |
+| 뮤트 레이블 | `HSTS (HnVue.Semantic.Text.Secondary)` | `#B0BEC5` | 필드 레이블 (`HML (HnVue.MutedLabel)`) |
 | 브랜드 액센트 | `HnVue.Semantic.Brand.Accent` | `#00AEEF` | 포커스 테두리, 아이콘, Auto-Generate 활성 |
 | 프라이머리 버튼 bg | `HnVue.Semantic.Brand.Primary` | `#1B4F8A` | Save 버튼, View Projection 칩 |
 | 필수 표시자 (*) | `HnVue.Semantic.Status.Emergency` | `#D50000` | 필수 필드 마커 |
@@ -308,7 +308,7 @@ Col 2: Width="*"   → 시술 정보
 ```
 CoreTokens.xaml (색상 원시값)
   → SemanticTokens.xaml (HnVue.Semantic.Surface.*, HnVue.Semantic.Brand.*, HnVue.Semantic.Status.*)
-    → ComponentTokens.xaml (HnVue.PrimaryButton, HnVue.OutlineButton, HnVue.SectionHeader, HnVue.MutedLabel)
+    → ComponentTokens.xaml (HPB (HnVue.PrimaryButton), HOB (HnVue.OutlineButton), HSH (HnVue.SectionHeader), HML (HnVue.MutedLabel))
 ```
 
 ---
@@ -392,7 +392,7 @@ CoreTokens.xaml (색상 원시값)
 
 ### 6.5 진단 데이터 보호
 
-- 환자 이름, 생년월일, 성별은 DICOM 필수 식별자에 해당
+- 환자 이름, 생년월일, 성별은 DICOM (Digital Imaging and Communications in Medicine) 필수 식별자에 해당
 - 이 화면에서 입력된 데이터는 DICOM Study/Patient Module과 직접 매핑됨
 - 자동 생성 ID(`PatientId`, `AccessionNumber`)의 고유성은 시스템 수준에서 보장되어야 함
 

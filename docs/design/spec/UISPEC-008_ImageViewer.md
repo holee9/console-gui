@@ -10,7 +10,7 @@
 | PPT 참조 | Slide 10 (Acquisition 중앙 패널 이미지 뷰어) |
 | HTML 목업 | `docs/ui_mockups/04-acquisition.html` (중앙 패널 부분) |
 | 구현 파일 | `src/HnVue.UI/Views/ImageViewerView.xaml` |
-| ViewModel | `src/HnVue.UI/ViewModels/ImageViewerViewModel.cs` |
+| ViewModel | `src/HnVue.UI/ViewModels/ImageViewerViewModel.cs` (Model-View-ViewModel) |
 | 관련 SPEC | SPEC-UI-001 |
 | 준수율 | 70% (기본 레이아웃 완료, 도구/오버레이 미구현) |
 
@@ -47,7 +47,7 @@
 └──────────────────────────────────────────────────────┘
 ```
 
-**XAML Grid RowDefinitions:**
+**XAML Grid RowDefinitions: (WPF - Windows Presentation Foundation)**
 ```
 Height="Auto"  <!-- Header -->
 Height="Auto"  <!-- Toolbar -->

@@ -11,14 +11,14 @@
 | Element | Current Value | Source |
 |---------|---------------|--------|
 | Window title | "HNVUE CONSOLE" ALL CAPS | Windows title bar |
-| Header bar | MahApps.Metro blue (#1B4F8A) | `HnVue.Primary.Brush` |
+| Header bar | MAH (MahApps.Metro) blue (#1B4F8A) | `HnVue.Primary.Brush` |
 | Header text | "HnVue Console" white left-aligned | `HnVue.Text.Primary.Brush` |
 | Background | Dark gray (#242424) | `HnVue.Background.Dark.Brush` |
 | Left panel | "Patient List" title + search + list | PatientListView.xaml |
 | Center | "Image Viewer" + toolbar + viewer | ImageViewerView.xaml |
 | Right | Workflow controls + Dose monitor | WorkflowView + DoseDisplayView |
 | Buttons | White border outline, white ALL CAPS text | MahApps Dark.Steel defaults |
-| Font | Segoe UI (Windows system) | MahApps default |
+| Font | Segoe UI (Windows system) | MAH default |
 | EMERGENCY | Red button in header when authenticated | MainWindow.xaml |
 
 ### Layout Measurements (MainWindow.xaml)
@@ -107,7 +107,7 @@
 **Implementation:**
 ```xml
 <TextBlock Text="&#xE721;"
-           FontFamily="Segoe MDL2 Assets"
+           FontFamily="SMA (Segoe MDL2 Assets)"
            FontSize="14"
            VerticalAlignment="Center"/>
 ```
@@ -116,9 +116,9 @@
 
 | Action | Unicode | Description |
 |--------|---------|-------------|
-| Search | &#xE721; | Magnifying glass |
-| Add/Plus | &#xE710; | Plus sign |
-| Person | &#xE77B; | Single person |
+| Search | &#xE721; | Magnifying glass (SMA) |
+| Add/Plus | &#xE710; | Plus sign (SMA) |
+| Person | &#xE77B; | Single person (SMA) |
 | Zoom In | &#xE8A3; | Magnify+ |
 | Zoom Out | &#xE71F; | Magnify- |
 | Reset | &#xE777; | Reset/Refresh arrows |
@@ -184,7 +184,7 @@
 
 ## 6. Screen-by-Screen Design Specifications
 
-### 6.1 Login Screen (LoginView.xaml)
+### 5.1 Login Screen (LoginView.xaml)
 
 ```
 Background: HnVue.Semantic.Surface.Page (#1A1A2E)
@@ -210,7 +210,7 @@ Error:      Status.Emergency (#D50000), 12px
 Loading:    3px bar, Brand.Accent (#00AEEF)
 ```
 
-### 6.2 Patient List (PatientListView.xaml — 280px panel)
+### 5.2 Patient List (PatientListView.xaml — 280px panel)
 
 ```
 Background: HnVue.Semantic.Surface.Panel (#16213E)
@@ -239,7 +239,7 @@ EMRG badge: Status.Emergency (#D50000) background
             "EMRG" Bold 10px white, CornerRadius=2
 ```
 
-### 6.3 Image Viewer (ImageViewerView.xaml — center panel)
+### 5.3 Image Viewer (ImageViewerView.xaml — center panel)
 
 ```
 Background: HnVue.Semantic.Surface.Page (#1A1A2E)
@@ -264,7 +264,7 @@ Image area: Background=#090909 (near-black, NOT CoreToken)
 Placeholder: &#xEB9F; 48px #444455 + text 13px #555566
 ```
 
-### 6.4 Workflow/Acquisition (WorkflowView.xaml — 260px right panel)
+### 5.4 Workflow/Acquisition (WorkflowView.xaml — 260px right panel)
 
 ```
 Background: HnVue.Semantic.Surface.Panel (#16213E)
@@ -291,7 +291,7 @@ STOP:       HnVue.EmergencyStopButton (red, #D50000)
             Escape KeyBinding at UserControl level
 ```
 
-### 6.5 Dose Monitor (DoseDisplayView.xaml — below WorkflowView)
+### 5.5 Dose Monitor (DoseDisplayView.xaml — below WorkflowView)
 
 ```
 Background: HnVue.Component.DosePanel.Bg
@@ -317,7 +317,7 @@ Alert banner: Status.Emergency background
               Visible: IsDoseAlert=True
 ```
 
-### 6.6 Main Window Header (MainWindow.xaml — 48px)
+### 5.6 Main Window Header (MainWindow.xaml — 48px)
 
 ```
 Background: HnVue.Primary.Brush (#1B4F8A)
@@ -340,9 +340,9 @@ Logout:     White outline style
 
 ---
 
-## 7. WPF Implementation Patterns
+## 6. WPF (Windows Presentation Foundation) Implementation Patterns
 
-### Pattern 1: DynamicResource Colors (ALWAYS use this)
+### Pattern 1: DRC (DynamicResource Colors) (ALWAYS use this)
 ```xml
 <!-- ✅ Correct -->
 <TextBlock Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"/>
@@ -351,7 +351,7 @@ Logout:     White outline style
 <TextBlock Foreground="#FFFFFF"/>
 ```
 
-### Pattern 2: White Outline Button (toolbar actions)
+### Pattern 2: WOB (White Outline Button) (toolbar actions)
 ```xml
 <Button Style="{x:Null}"
         Background="Transparent"
@@ -368,7 +368,7 @@ Logout:     White outline style
 </Button>
 ```
 
-### Pattern 3: Emergency Stop (NEVER modify)
+### Pattern 3: ES (Emergency Stop) (NEVER modify)
 ```xml
 <Button Command="{Binding AbortCommand}"
         Style="{StaticResource HnVue.EmergencyStopButton}"
@@ -378,7 +378,7 @@ Logout:     White outline style
 <!-- Never add IsEnabled binding to Emergency Stop! -->
 ```
 
-### Pattern 4: Status Badge
+### Pattern 4: SB (Status Badge)
 ```xml
 <Border Background="{DynamicResource HnVue.Semantic.Status.Emergency}"
         CornerRadius="2" Padding="4,1">
@@ -387,7 +387,7 @@ Logout:     White outline style
 </Border>
 ```
 
-### Pattern 5: Dark Input Field
+### Pattern 5: DIF (Dark Input Field)
 ```xml
 <Border Height="44" CornerRadius="4"
         Background="{DynamicResource HnVue.Semantic.Surface.Card}"
@@ -402,7 +402,7 @@ Logout:     White outline style
 
 ---
 
-## 8. IEC 62366 Compliance Checklist
+## 7. IEC 62366 (International Electrotechnical Commission) Compliance Checklist
 
 ### Safety-Critical Controls
 
@@ -430,7 +430,7 @@ Logout:     White outline style
 
 ---
 
-## 9. Available WPF Styles Reference
+## 8. Available WPF (Windows Presentation Foundation) Styles Reference
 
 | Style Key | Type | Usage |
 |-----------|------|-------|
@@ -446,7 +446,7 @@ Logout:     White outline style
 
 ---
 
-## 10. Pending Improvements (Next Phase)
+## 9. Pending Improvements (Next Phase)
 
 ### Phase 2 Targets
 1. **Animated Emergency Stop** — Pulsing red glow during exposure (WPF Storyboard)

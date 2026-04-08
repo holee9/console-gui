@@ -18,7 +18,7 @@
 
 ## 1. 화면 개요
 
-스터디리스트(Study List) 화면은 PACS 서버에서 검색·조회한 기존 검사(Study) 목록을 표시하는 화면이다. 워크리스트가 RIS 기반 신규 오더 목록을 표시하는 것과 달리, 스터디리스트는 이미 촬영이 완료되어 PACS에 저장된 영상 데이터를 기준으로 조회한다.
+스터디리스트(Study List) 화면은 PACS (Picture Archiving and Communication System) 서버에서 검색·조회한 기존 검사(Study) 목록을 표시하는 화면이다. 워크리스트가 RIS 기반 신규 오더 목록을 표시하는 것과 달리, 스터디리스트는 이미 촬영이 완료되어 PACS에 저장된 영상 데이터를 기준으로 조회한다.
 
 **주요 기능:**
 - PACS 서버 선택 및 연결 상태 표시
@@ -55,11 +55,11 @@
 └──────────────────────────────────────────────────────────────────┘
 ```
 
-**WPF Grid 행 정의:**
+**WPF (Windows Presentation Foundation) Grid 행 정의:**
 
 | Row | Height | 내용 |
 |-----|--------|------|
-| 0 | 48px | 헤더 (Prev/Next + 타이틀 + PACS 드롭다운) |
+| 0 | 48px | 헤더 (Prev/Next + 타이틀 + PACS (Picture Archiving and Communication System) 드롭다운) |
 | 1 | Auto | 필터 바 (기간 버튼 + 검색 입력) |
 | 2 | * | DataGrid (flex) |
 | 3 | Auto | 상태 바 |
@@ -70,9 +70,9 @@
 
 | 요소 | 타입 | 스타일/크기 | 바인딩 |
 |------|------|------------|--------|
-| 이전 버튼 | Button | `HnVue.OutlineButton`, 32×32px, 아이콘 `&#xE76B;` (Segoe MDL2) | `NavigatePreviousCommand` |
-| 다음 버튼 | Button | `HnVue.OutlineButton`, 32×32px, 아이콘 `&#xE76C;` (Segoe MDL2) | `NavigateNextCommand` |
-| 섹션 타이틀 | TextBlock | `HnVue.SectionHeader`, 텍스트 "Study List" | — |
+| 이전 버튼 | Button | `HOB (HnVue.OutlineButton)`, 32×32px, 아이콘 `&#xE76B;` (SMA-Segoe MDL2 Assets) | `NavigatePreviousCommand` |
+| 다음 버튼 | Button | `HOB (HnVue.OutlineButton)`, 32×32px, 아이콘 `&#xE76C;` (SMA) | `NavigateNextCommand` |
+| 섹션 타이틀 | TextBlock | `HSH (HnVue.SectionHeader)`, 텍스트 "Study List" | — |
 | PACS 레이블 | TextBlock | 13px, `HnVue.Semantic.Text.Secondary` | — |
 | PACS ComboBox | ComboBox | 120px 너비, 30px 높이 | `PacsServers` / `SelectedPacsServer` |
 
@@ -94,7 +94,7 @@
 - 기간 버튼 가로 스크롤 허용 (`ScrollViewer` 래핑)
 - 검색 입력 배경: `HnVue.Semantic.Surface.Card`
 - 검색 입력 테두리: `HnVue.Semantic.Border.Default`
-- 검색 아이콘: `&#xE721;` (Segoe MDL2), 12px, `HnVue.Semantic.Text.Secondary`
+- 검색 아이콘: `&#xE721;` (SMA-Segoe MDL2 Assets), 12px, `HnVue.Semantic.Text.Secondary`
 - 플레이스홀더: "Search studies..."
 
 **활성 기간 버튼 상태:**
@@ -177,16 +177,7 @@ Modality 컬럼은 텍스트 대신 색상 배지로 표시한다.
 | NM | `#d35400` | NM |
 | 기타 | `#546e7a` | 코드 |
 
-**WPF 구현 패턴:**
-```xml
-<DataGridTemplateColumn Header="Modality" Width="80">
-  <DataGridTemplateColumn.CellTemplate>
-    <DataTemplate>
-      <Border CornerRadius="3" Padding="4,2"
-              Background="{Binding Modality, Converter={StaticResource ModalityToBrushConverter}}"
-              HorizontalAlignment="Center">
-        <TextBlock Text="{Binding Modality}" FontSize="10" FontWeight="Bold"
-                   Foreground="White" HorizontalAlignment="Center"/>
+**WPF (Windows Presentation Foundation) 구현 패턴:**
       </Border>
     </DataTemplate>
   </DataGridTemplateColumn.CellTemplate>
@@ -259,7 +250,7 @@ Priority 컬럼은 우선순위별 아이콘과 색상으로 표시한다.
 
 ### 화면별 토큰 사용
 
-| UI 영역 | CSS 변수 (HTML 목업) | WPF 토큰 | 실제 색상 |
+| UI 영역 | CSS 변수 (HTML 목업) | WPF (Windows Presentation Foundation) 토큰 | 실제 색상 |
 |---------|---------------------|----------|----------|
 | 앱 전체 배경 | `--color-bg-app` | `HnVue.Semantic.Surface.Page` | `#0d1527` |
 | 패널 배경 | `--color-bg-surface` | `HnVue.Semantic.Surface.Panel` | `#1a2540` |

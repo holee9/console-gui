@@ -20,7 +20,7 @@
 
 ## 1. 화면 개요
 
-촬영(Acquisition) 화면은 FPD X-ray 촬영 워크플로우의 핵심 화면이다. 선택된 환자/오더에 대해 노출 파라미터를 설정하고, 실제 방사선 촬영을 실행하며, 취득된 영상을 실시간으로 확인하는 모든 기능이 단일 화면에 통합되어 있다.
+촬영(Acquisition) 화면은 FPD (Flat Panel Detector) X-ray 촬영 워크플로우의 핵심 화면이다. 선택된 환자/오더에 대해 노출 파라미터를 설정하고, 실제 방사선 촬영을 실행하며, 취득된 영상을 실시간으로 확인하는 모든 기능이 단일 화면에 통합되어 있다.
 
 **주요 기능:**
 - 환자 정보 및 검사 정보 표시 (좌측 패널)
@@ -70,7 +70,7 @@
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
-**WPF 레이아웃 구조:**
+**WPF (Windows Presentation Foundation) 레이아웃 구조:**
 
 | 요소 | 타입 | 크기 | 배경색 |
 |------|------|------|--------|
@@ -132,7 +132,7 @@
 
 | 필드 | 표시 형식 | 값 색상 |
 |------|----------|---------|
-| AccNo | 텍스트 | `#d0e0f5` |
+| AccNo (Accession Number) | 텍스트 | `#d0e0f5` |
 | 검사종류 | 텍스트 | `#d0e0f5` |
 | BodyPart | 텍스트 | `#d0e0f5` |
 | Priority | "긴급" / "일반" | 긴급: `#e74c3c` / 700, 일반: `#d0e0f5` |
@@ -442,8 +442,8 @@
 
 | UI 영역 | CSS 변수 (HTML 목업) | WPF 토큰 | 실제 색상 |
 |---------|---------------------|----------|----------|
-| 앱 전체 배경 | `--color-bg-app` | `HnVue.Semantic.Surface.Page` | `#0d1527` |
-| 서피스/패널 | `--color-bg-surface` | `HnVue.Semantic.Surface.Panel` | `#1a2540` |
+| 앱 전체 배경 | `--color-bg-app` | `HSP (HnVue.Semantic.Surface.Page)` | `#0d1527` |
+| 서피스/패널 | `--color-bg-surface` | `HSV (HnVue.Semantic.Surface.Panel)` | `#1a2540` |
 | 좌/우 패널 | `--color-bg-panel` | `HnVue.Component.DetailPanel.Bg` | `#101a2e` |
 | 앱 헤더 | `--color-bg-header-app` | `HnVue.Component.AppHeader.Bg` | `#0d1b36` |
 | 섹션 툴바 | `--color-bg-header-wl` | `HnVue.Component.Toolbar.Bg` | `#152035` |

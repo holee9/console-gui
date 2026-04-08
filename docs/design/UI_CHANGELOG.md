@@ -16,7 +16,7 @@ Design system changes, updates, and improvements for HnVue GUI application.
 
 ### Added
 
-#### UISPEC Documentation System
+#### UISPEC (UI Specification) Documentation System
 - Created 9 UISPEC documents bridging PPT design and XAML implementation:
   - **UISPEC-001_Login**: Login screen (Slide 1-3, LoginView.xaml)
   - **UISPEC-002_Worklist**: Patient worklist (Slide 2-4, PatientListView.xaml)

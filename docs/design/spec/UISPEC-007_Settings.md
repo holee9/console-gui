@@ -49,13 +49,7 @@
 └─────────────────────────────────────────────────────────┘
 ```
 
-**XAML Grid RowDefinitions:**
-```
-Height="48"   <!-- Header -->
-Height="Auto" <!-- Tab row -->
-Height="*"    <!-- Content (ScrollViewer) -->
-Height="Auto" <!-- Action bar -->
-```
+**XAML Grid RowDefinitions (WPF - Windows Presentation Foundation):**
 
 ### 2.2 헤더 영역 (Row 0)
 
@@ -67,7 +61,7 @@ Height="Auto" <!-- Action bar -->
 | 패딩 | `16,0` (좌우) |
 | 아이콘 | Segoe MDL2 Assets `&#xE713;` (Settings 기어), 16px, Accent(`#00AEEF`) |
 | 아이콘-타이틀 간격 | 8px (Margin `0,0,8,0`) |
-| 타이틀 | "Settings" — `HnVue.SectionHeader` 스타일 적용 |
+| 타이틀 | "Settings" — `HSH (HnVue.SectionHeader)` 스타일 적용 |
 
 ### 2.3 탭 네비게이션 행 (Row 1)
 
@@ -94,7 +88,7 @@ Height="Auto" <!-- Action bar -->
 | 9 | `DicomSet` | DicomSet | DICOM AE/타이틀 설정 |
 | 10 | `RIS Code` | RIS Code | RIS 코드 매핑 (Matching/Un-Matched 서브탭) |
 
-**SettingsTabButton 스타일 명세:**
+**STB (SettingsTabButton) 스타일 명세:**
 
 | 상태 | 배경 | 전경색 | 하단 테두리 |
 |------|------|--------|------------|
@@ -139,13 +133,13 @@ Visibility="{Binding ActiveTab, Converter={StaticResource ActiveTabToVisibility}
 - `ErrorMessage` 바인딩, NullToVisibility 컨버터
 
 **Cancel 버튼:**
-- Style: `HnVue.OutlineButton`
+- Style: `HOB (HnVue.OutlineButton)`
 - Width: 100px, Height: 36px
 - Command: `CancelCommand`
 - Margin: `0,0,8,0`
 
 **Save 버튼:**
-- Style: `HnVue.PrimaryButton`
+- Style: `HPB (HnVue.PrimaryButton)`
 - Width: 100px, Height: 36px
 - Command: `SaveCommand`
 - 배경: `HnVue.Semantic.Brand.Primary` (`#1B4F8A`)
@@ -214,7 +208,7 @@ VerticalContentAlignment: Center
 |------|--------|--------|------|
 | Account ID | TextBox | `NewAccountId` | UpdateSourceTrigger=PropertyChanged |
 | Role | ComboBox | `NewAccountRole` / `AvailableRoles` | 옵션: Admin / Technician / Radiologist |
-| 추가 버튼 | Button | — | Style: HnVue.OutlineButton, "Add Account" |
+| 추가 버튼 | Button | — | Style: HOB (HnVue.OutlineButton), "Add Account" |
 
 - PPT 변경사항: Operator 필드 제거됨, Role이 드롭다운(ComboBox)으로 변경됨
 - Add Account 버튼: Height=30px, Padding=`12,0`, FontSize=11px, 우측 정렬
@@ -379,7 +373,7 @@ Label | Address | Port | Add | Edit
 
 | 필드 | 컨트롤 | 설명 |
 |------|--------|------|
-| Station AE Title | TextBox | 로컬 스테이션 DICOM AE 타이틀 |
+| Station AE Title | TextBox | 로컬 스테이션 DICOM (Digital Imaging and Communications in Medicine) AE (Application Entity) 타이틀 |
 | Station Name | TextBox | DICOM Station Name (0008,1010) |
 | Institution Name | TextBox | DICOM Institution Name (0008,0080) |
 | Modality | ComboBox | DX / CR / RF |
