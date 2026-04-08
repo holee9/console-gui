@@ -4,286 +4,1227 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
-             d:DesignHeight="600" d:DesignWidth="280">
+             d:DesignHeight="700" d:DesignWidth="1100">
     <!--
-        @MX:NOTE PatientListView — patient/worklist panel (left sidebar, 280px).
-                 Implements HRUS-001: patient identification with status badges.
-                 Issue #44: DataGrid with icon buttons and CoreTokens.
+        @MX:NOTE PatientListView — PPT Slide 5/6 spec 100% 적용.
+                 Layout: Worklist Toolbar / Filter Bar / DataGrid + Detail Panel(230px)
+                 Colors: 모든 색상 PPT Slide 6 토큰 기준 하드코딩
+                 DataGrid: 12컬럼 (checkbox, #, 환자ID, 환자이름, 연령/성별, Modality, StudyDate,
+                            StudyDescription, BodyPart, Priority, Status, 담당자)
+                 Detail Panel: Study 상세 패널 (환자정보, Study정보, 미리보기, 액션버튼)
     -->
 
-    <Grid Background="#0d1527">
+    <Grid Background="#1a2540">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Header row: title + patient count badge -->
-        <Grid Grid.Row="0" Margin="12,12,12,8">
+        <!-- ===== WORKLIST TOOLBAR (PPT Slide 5: worklist-toolbar) ===== -->
+        <!-- PPT spec: background=#152035, padding=5px 8px, gap=6px -->
+        <Grid Grid.Row="0" Background="#152035" MinHeight="32">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <!-- Section badge - PPT spec: 12px Bold #f9e04b on #2a3a5c background, padding 2px 8px, radius 3px -->
+            <!-- Section title badge: PPT spec #f9e04b on #2a3a5c, 12px Bold, pad=2px 8px, radius=3px -->
             <Border Grid.Column="0"
                     Background="#2a3a5c"
                     CornerRadius="3"
                     Padding="8,2"
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Left">
-                <TextBlock Text="WORKLIST"
-                           Foreground="#f9e04b"
+                    Margin="8,5,8,5"
+                    VerticalAlignment="Center">
+                <TextBlock Text="1. Worklist (환자 목록)"
                            FontSize="12"
                            FontWeight="Bold"
-                           FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
+                           Foreground="#f9e04b"
+                           FontFamily="Malgun Gothic"/>
             </Border>
 
-            <!-- Patient count badge -->
-            <Border Grid.Column="1"
-                    Background="#1f6fc7"
-                    CornerRadius="10"
-                    Padding="7,2"
-                    VerticalAlignment="Center">
-                <TextBlock Text="{Binding Patients.Count}"
-                           Foreground="#e0e6f0"
-                           FontSize="11"
-                           FontWeight="SemiBold"
-                           FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
-            </Border>
+            <!-- Toolbar buttons: PPT spec bg=#253555, border=#3a5080, fg=#c0d0e8, pad=2px 8px, radius=3px -->
+            <StackPanel Grid.Column="1"
+                        Orientation="Horizontal"
+                        VerticalAlignment="Center"
+                        Margin="8,5,0,5">
+
+                <!-- 신규환자추가 (primary: #1f6fc7, hover=#2a88e8) -->
+                <Button Command="{Binding RegisterPatientCommand}"
+                        Content="신규환자추가"
+                        Background="#1f6fc7"
+                        Foreground="#ffffff"
+                        BorderBrush="#2a88e8"
+                        BorderThickness="1"
+                        Padding="8,2"
+                        FontSize="11"
+                        FontFamily="Malgun Gothic"
+                        Cursor="Hand">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Name="Root"
+                                                Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                CornerRadius="3"
+                                                Padding="{TemplateBinding Padding}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Root" Property="Background" Value="#2a88e8"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <!-- 환자검색 -->
+                <Button Content="환자검색"
+                        Background="#253555"
+                        Foreground="#c0d0e8"
+                        BorderBrush="#3a5080"
+                        BorderThickness="1"
+                        Padding="8,2"
+                        FontSize="11"
+                        FontFamily="Malgun Gothic"
+                        Cursor="Hand"
+                        Margin="6,0,0,0">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Name="Root"
+                                                Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                CornerRadius="3"
+                                                Padding="{TemplateBinding Padding}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Root" Property="Background" Value="#3a5080"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <!-- 데이터내보내기 -->
+                <Button Content="데이터내보내기"
+                        Background="#253555"
+                        Foreground="#c0d0e8"
+                        BorderBrush="#3a5080"
+                        BorderThickness="1"
+                        Padding="8,2"
+                        FontSize="11"
+                        FontFamily="Malgun Gothic"
+                        Cursor="Hand"
+                        Margin="6,0,0,0"
+                        IsEnabled="False">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Name="Root"
+                                                Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                CornerRadius="3"
+                                                Padding="{TemplateBinding Padding}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Root" Property="Background" Value="#3a5080"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <!-- 설정 -->
+                <Button Content="설정"
+                        Background="#253555"
+                        Foreground="#c0d0e8"
+                        BorderBrush="#3a5080"
+                        BorderThickness="1"
+                        Padding="8,2"
+                        FontSize="11"
+                        FontFamily="Malgun Gothic"
+                        Cursor="Hand"
+                        Margin="6,0,0,0"
+                        IsEnabled="False">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Name="Root"
+                                                Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                CornerRadius="3"
+                                                Padding="{TemplateBinding Padding}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Root" Property="Background" Value="#3a5080"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </StackPanel>
+
+            <!-- Total label: PPT spec 11px SemiBold #7bc8f5 -->
+            <TextBlock Grid.Column="2"
+                       Text="{Binding Patients.Count, StringFormat='Total : {0}'}"
+                       FontSize="11"
+                       FontWeight="SemiBold"
+                       Foreground="#7bc8f5"
+                       FontFamily="Malgun Gothic"
+                       VerticalAlignment="Center"
+                       Margin="0,0,12,0"/>
         </Grid>
 
-        <!-- Search area - PPT spec: 32px toolbar, filter bar 28px -->
+        <!-- ===== FILTER BAR (PPT Slide 5: filter-bar) ===== -->
+        <!-- PPT spec: background=#1a2a44, border-bottom 1px #2e4070, padding=4px 8px, height=28px -->
         <Border Grid.Row="1"
-                Margin="12,0,12,6"
-                Height="32"
-                CornerRadius="4"
-                Background="#1a2540"
-                BorderBrush="#3a5080"
-                BorderThickness="1">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
+                Background="#1a2a44"
+                BorderBrush="#2e4070"
+                BorderThickness="0,0,0,1"
+                Padding="8,4"
+                Height="28">
+            <WrapPanel Orientation="Horizontal" VerticalAlignment="Center">
 
-                <!-- Search icon — Segoe MDL2 Assets -->
-                <TextBlock Grid.Column="0"
-                           Text="&#xE721;"
-                           FontFamily="Segoe MDL2 Assets"
-                           FontSize="14"
-                           Foreground="#b8cce0"
+                <!-- 검사일 -->
+                <TextBlock Text="검사일"
+                           FontSize="10"
+                           Foreground="#7090b0"
+                           FontFamily="Malgun Gothic"
+                           VerticalAlignment="Center"/>
+
+                <!-- DatePicker 1 -->
+                <Border Background="#0d1b36"
+                        BorderBrush="#3a5080"
+                        BorderThickness="1"
+                        CornerRadius="3"
+                        Margin="6,0,0,0"
+                        Height="20">
+                    <DatePicker Width="90"
+                                FontSize="10"
+                                FontFamily="Malgun Gothic"
+                                BorderThickness="0"
+                                Background="Transparent">
+                        <DatePicker.Style>
+                            <Style TargetType="DatePicker">
+                                <Setter Property="Foreground" Value="#c0d0e8"/>
+                            </Style>
+                        </DatePicker.Style>
+                    </DatePicker>
+                </Border>
+
+                <TextBlock Text="~"
+                           FontSize="10"
+                           Foreground="#7090b0"
+                           FontFamily="Malgun Gothic"
                            VerticalAlignment="Center"
-                           Margin="10,0,6,0"/>
+                           Margin="4,0,0,0"/>
 
-                <TextBox Grid.Column="1"
-                         Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}"
-                         Background="Transparent"
-                         Foreground="#e0e6f0"
-                         BorderThickness="0"
-                         FontSize="13"
-                         VerticalAlignment="Center"
-                         Padding="0,0,8,0"
-                         CaretBrush="#7bc8f5"
-                         FontFamily="{DynamicResource HnVue.Core.FontFamily}">
-                    <TextBox.Style>
-                        <Style TargetType="TextBox">
-                            <Style.Resources>
-                                <VisualBrush x:Key="WatermarkBrush" TileMode="None" Stretch="None" AlignmentX="Left">
-                                    <VisualBrush.Visual>
-                                        <TextBlock Text="Search patients..."
-                                                   Foreground="#7090b0"
-                                                   FontSize="13"
-                                                   Margin="0"/>
-                                    </VisualBrush.Visual>
-                                </VisualBrush>
-                            </Style.Resources>
-                            <Setter Property="Background" Value="Transparent"/>
-                            <Setter Property="BorderThickness" Value="0"/>
-                            <Style.Triggers>
-                                <Trigger Property="Text" Value="">
-                                    <Setter Property="Background" Value="{StaticResource WatermarkBrush}"/>
-                                </Trigger>
-                            </Style.Triggers>
+                <!-- DatePicker 2 -->
+                <Border Background="#0d1b36"
+                        BorderBrush="#3a5080"
+                        BorderThickness="1"
+                        CornerRadius="3"
+                        Margin="4,0,0,0"
+                        Height="20">
+                    <DatePicker Width="90"
+                                FontSize="10"
+                                FontFamily="Malgun Gothic"
+                                BorderThickness="0"
+                                Background="Transparent">
+                        <DatePicker.Style>
+                            <Style TargetType="DatePicker">
+                                <Setter Property="Foreground" Value="#c0d0e8"/>
+                            </Style>
+                        </DatePicker.Style>
+                    </DatePicker>
+                </Border>
+
+                <!-- Divider: PPT spec 1px wide, 16px tall, #3a5080 -->
+                <Border Width="1" Height="16" Background="#3a5080" Margin="10,0,0,0"/>
+
+                <!-- Modality -->
+                <TextBlock Text="Modality"
+                           FontSize="10"
+                           Foreground="#7090b0"
+                           FontFamily="Malgun Gothic"
+                           VerticalAlignment="Center"
+                           Margin="10,0,0,0"/>
+
+                <ComboBox Width="80"
+                          Height="20"
+                          FontSize="10"
+                          FontFamily="Malgun Gothic"
+                          Background="#0d1b36"
+                          Foreground="#c0d0e8"
+                          BorderBrush="#3a5080"
+                          Margin="6,0,0,0">
+                    <ComboBoxItem Content="전체" IsSelected="True"/>
+                    <ComboBoxItem Content="CT"/>
+                    <ComboBoxItem Content="MR"/>
+                    <ComboBoxItem Content="XR"/>
+                    <ComboBoxItem Content="US"/>
+                    <ComboBoxItem Content="NM"/>
+                </ComboBox>
+
+                <!-- Divider -->
+                <Border Width="1" Height="16" Background="#3a5080" Margin="10,0,0,0"/>
+
+                <!-- 상태 -->
+                <TextBlock Text="상태"
+                           FontSize="10"
+                           Foreground="#7090b0"
+                           FontFamily="Malgun Gothic"
+                           VerticalAlignment="Center"
+                           Margin="10,0,0,0"/>
+
+                <ComboBox Width="100"
+                          Height="20"
+                          FontSize="10"
+                          FontFamily="Malgun Gothic"
+                          Background="#0d1b36"
+                          Foreground="#c0d0e8"
+                          BorderBrush="#3a5080"
+                          Margin="6,0,0,0">
+                    <ComboBoxItem Content="전체" IsSelected="True"/>
+                    <ComboBoxItem Content="Reported"/>
+                    <ComboBoxItem Content="Pending"/>
+                    <ComboBoxItem Content="In Progress"/>
+                </ComboBox>
+
+                <!-- Divider -->
+                <Border Width="1" Height="16" Background="#3a5080" Margin="10,0,0,0"/>
+
+                <!-- 환자명/ID 검색 -->
+                <TextBlock Text="환자명/ID 검색"
+                           FontSize="10"
+                           Foreground="#7090b0"
+                           FontFamily="Malgun Gothic"
+                           VerticalAlignment="Center"
+                           Margin="10,0,0,0"/>
+
+                <Border Background="#0d1b36"
+                        BorderBrush="#3a5080"
+                        BorderThickness="1"
+                        CornerRadius="3"
+                        Margin="6,0,0,0"
+                        Width="160"
+                        Height="20">
+                    <TextBox Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}"
+                             FontSize="10"
+                             FontFamily="Malgun Gothic"
+                             Foreground="#c0d0e8"
+                             BorderThickness="0"
+                             Background="Transparent"
+                             Padding="5,0"
+                             VerticalAlignment="Center"/>
+                </Border>
+
+                <!-- 검색 button (primary) -->
+                <Button Content="검색"
+                        Background="#1f6fc7"
+                        Foreground="#ffffff"
+                        BorderBrush="#2a88e8"
+                        BorderThickness="1"
+                        Padding="8,2"
+                        FontSize="10"
+                        FontFamily="Malgun Gothic"
+                        Cursor="Hand"
+                        Margin="6,0,0,0">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Name="Root"
+                                                Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                CornerRadius="3"
+                                                Padding="{TemplateBinding Padding}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Root" Property="Background" Value="#2a88e8"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
                         </Style>
-                    </TextBox.Style>
-                </TextBox>
-            </Grid>
+                    </Button.Style>
+                </Button>
+
+            </WrapPanel>
         </Border>
 
-        <!-- Period filter buttons — PPT spec: filter bar height 28px EXPLICIT -->
-        <ScrollViewer Grid.Row="2"
-                      HorizontalScrollBarVisibility="Auto"
-                      VerticalScrollBarVisibility="Disabled"
-                      Margin="12,0,12,6"
-                      Height="28">
-            <StackPanel Orientation="Horizontal">
-                <Button Content="Today"
-                        Command="{Binding FilterByPeriodCommand}"
-                        CommandParameter="Today"
-                        Style="{StaticResource HnVue.OutlineButton}"
-                        Height="26"
-                        Padding="8,0"
-                        Margin="0,0,4,0"
-                        FontSize="11"
-                        FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
-                <Button Content="3Days"
-                        Command="{Binding FilterByPeriodCommand}"
-                        CommandParameter="3Days"
-                        Style="{StaticResource HnVue.OutlineButton}"
-                        Height="26"
-                        Padding="8,0"
-                        Margin="0,0,4,0"
-                        FontSize="11"
-                        FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
-                <Button Content="1Week"
-                        Command="{Binding FilterByPeriodCommand}"
-                        CommandParameter="1Week"
-                        Style="{StaticResource HnVue.OutlineButton}"
-                        Height="26"
-                        Padding="8,0"
-                        Margin="0,0,4,0"
-                        FontSize="11"
-                        FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
-                <Button Content="All"
-                        Command="{Binding FilterByPeriodCommand}"
-                        CommandParameter="All"
-                        Style="{StaticResource HnVue.OutlineButton}"
-                        Height="26"
-                        Padding="8,0"
-                        Margin="0,0,4,0"
-                        FontSize="11"
-                        FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
-                <Button Content="1Month"
-                        Command="{Binding FilterByPeriodCommand}"
-                        CommandParameter="1Month"
-                        Style="{StaticResource HnVue.OutlineButton}"
-                        Height="26"
-                        Padding="8,0"
-                        FontSize="11"
-                        FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
-            </StackPanel>
-        </ScrollViewer>
+        <!-- ===== MAIN CONTENT: DataGrid + Detail Panel ===== -->
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="230"/>
+            </Grid.ColumnDefinitions>
 
-        <!-- Action button row: Register -->
-        <Grid Grid.Row="3" Margin="12,0,12,8">
-            <Button Command="{Binding RegisterPatientCommand}"
-                    Style="{StaticResource HnVue.OutlineButton}"
-                    Height="32"
-                    HorizontalAlignment="Stretch">
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <TextBlock Text="&#xE710;"
-                               FontFamily="Segoe MDL2 Assets"
-                               FontSize="13"
-                               VerticalAlignment="Center"
-                               Margin="0,0,5,0"/>
-                    <TextBlock Text="Register"
-                               FontSize="13"
-                               VerticalAlignment="Center"
-                               FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
-                </StackPanel>
-            </Button>
-        </Grid>
+            <!-- ===== WORKLIST DATAGRID (PPT Slide 5 table spec) ===== -->
+            <!-- PPT spec: table header bg=#152645, fg=#90b0d0, 10px SemiBold, pad=5px 6px -->
+            <DataGrid Grid.Column="0"
+                      ItemsSource="{Binding Patients}"
+                      SelectedItem="{Binding SelectedPatient}"
+                      AutoGenerateColumns="False"
+                      CanUserAddRows="False"
+                      CanUserDeleteRows="False"
+                      CanUserReorderColumns="False"
+                      IsReadOnly="True"
+                      SelectionMode="Single"
+                      SelectionUnit="FullRow"
+                      GridLinesVisibility="Horizontal"
+                      HeadersVisibility="Column"
+                      Background="#1a2540"
+                      BorderThickness="0"
+                      RowBackground="#1a2540"
+                      AlternatingRowBackground="#1e2e40"
+                      HorizontalGridLinesBrush="#1e2e48"
+                      FontFamily="Malgun Gothic"
+                      FontSize="11">
 
-        <!-- Patient list -->
-        <ListBox Grid.Row="4"
-                 ItemsSource="{Binding Patients}"
-                 SelectedItem="{Binding SelectedPatient}"
-                 Background="Transparent"
-                 BorderThickness="0"
-                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                 FontFamily="{DynamicResource HnVue.Core.FontFamily}">
-            <ListBox.InputBindings>
-                <MouseBinding MouseAction="LeftDoubleClick"
-                              Command="{Binding SelectPatientCommand}"
-                              CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType=ListBox}}"/>
-            </ListBox.InputBindings>
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem">
-                    <Setter Property="Background" Value="Transparent"/>
-                    <Setter Property="Foreground" Value="#e0e6f0"/>
-                    <Setter Property="Height" Value="44"/>
-                    <Setter Property="Padding" Value="12,0"/>
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                    <Setter Property="Cursor" Value="Hand"/>
-                    <Setter Property="BorderThickness" Value="0,0,0,1"/>
-                    <Setter Property="BorderBrush" Value="#2a3a58"/>
-                    <Style.Triggers>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Background" Value="#1f6fc7"/>
-                        </Trigger>
-                        <MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="IsMouseOver" Value="True"/>
-                                <Condition Property="IsSelected" Value="False"/>
-                            </MultiTrigger.Conditions>
-                            <Setter Property="Background" Value="#1a2a44"/>
-                        </MultiTrigger>
-                    </Style.Triggers>
-                </Style>
-            </ListBox.ItemContainerStyle>
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Grid VerticalAlignment="Center">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="Background" Value="#152645"/>
+                        <Setter Property="Foreground" Value="#90b0d0"/>
+                        <Setter Property="Height" Value="28"/>
+                        <Setter Property="Padding" Value="6,5"/>
+                        <Setter Property="FontSize" Value="10"/>
+                        <Setter Property="FontWeight" Value="SemiBold"/>
+                        <Setter Property="BorderBrush" Value="#2a3a58"/>
+                        <Setter Property="BorderThickness" Value="0,0,1,1"/>
+                        <Setter Property="FontFamily" Value="Malgun Gothic"/>
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
 
-                        <!-- Emergency badge — PPT spec: EMRG badge -->
-                        <Border Grid.Column="0"
-                                Background="#e74c3c"
-                                CornerRadius="2"
-                                Padding="4,1"
-                                Margin="0,0,7,0"
-                                VerticalAlignment="Center"
-                                Visibility="{Binding IsEmergency, Converter={StaticResource BoolToVisibilityConverter}}">
-                            <TextBlock Text="EMRG"
-                                       Foreground="#e0e6f0"
-                                       FontSize="10"
+                <DataGrid.CellStyle>
+                    <Style TargetType="DataGridCell">
+                        <Setter Property="Foreground" Value="#b8cce0"/>
+                        <Setter Property="BorderThickness" Value="0,0,1,0"/>
+                        <Setter Property="BorderBrush" Value="#1e2e48"/>
+                        <Setter Property="Padding" Value="6,4"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="FontSize" Value="11"/>
+                        <Setter Property="FontFamily" Value="Malgun Gothic"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="#1f4878"/>
+                                <Setter Property="Foreground" Value="#e0e6f0"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.CellStyle>
+
+                <DataGrid.RowStyle>
+                    <Style TargetType="DataGridRow">
+                        <Setter Property="Height" Value="24"/>
+                        <Setter Property="Cursor" Value="Hand"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="#1f4878"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#1e3558"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.RowStyle>
+
+                <DataGrid.InputBindings>
+                    <MouseBinding MouseAction="LeftDoubleClick"
+                                  Command="{Binding SelectPatientCommand}"
+                                  CommandParameter="{Binding SelectedPatient, RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
+                </DataGrid.InputBindings>
+
+                <DataGrid.Columns>
+                    <!-- Checkbox + row status border-left (3px solid color per PPT spec) -->
+                    <DataGridTemplateColumn Width="36" CanUserResize="False" CanUserSort="False">
+                        <DataGridTemplateColumn.HeaderTemplate>
+                            <DataTemplate>
+                                <CheckBox IsEnabled="False"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.HeaderTemplate>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <!-- border-left 3px: stat-urgent=#e74c3c, stat-normal=#2ecc71, stat-waiting=#f39c12 -->
+                                    <Border Width="3" HorizontalAlignment="Left">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Setter Property="Background" Value="Transparent"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsEmergency}" Value="True">
+                                                        <Setter Property="Background" Value="#e74c3c"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Status}" Value="Reported">
+                                                        <Setter Property="Background" Value="#2ecc71"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Status}" Value="Pending">
+                                                        <Setter Property="Background" Value="#f39c12"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                    </Border>
+                                    <CheckBox IsChecked="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=DataGridRow}, Mode=OneWay}"
+                                              IsEnabled="False"
+                                              HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              Margin="18,0,0,0"/>
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <!-- # -->
+                    <DataGridTextColumn Header="#" Binding="{Binding SequenceNumber}" Width="40"/>
+
+                    <!-- 환자ID: PPT spec #7bc8f5, SemiBold -->
+                    <DataGridTemplateColumn Header="환자ID" Width="100" CanUserSort="True">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding PatientId}"
+                                           Foreground="#7bc8f5"
+                                           FontWeight="SemiBold"
+                                           FontSize="11"
+                                           VerticalAlignment="Center"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <!-- 환자이름: PPT spec #e0e8f5 -->
+                    <DataGridTemplateColumn Header="환자이름" Width="120">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}"
+                                           Foreground="#e0e8f5"
+                                           FontSize="11"
+                                           VerticalAlignment="Center"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <!-- 연령/성별: PPT spec e.g. 65M -->
+                    <DataGridTemplateColumn Header="연령/성별" Width="70">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock VerticalAlignment="Center" FontSize="11" FontFamily="Malgun Gothic" Foreground="#b8cce0">
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat="{}{0}{1}">
+                                            <Binding Path="Age"/>
+                                            <Binding Path="Sex"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <!-- Modality badge: CT=#c0392b, MR=#2980b9, XR=#27ae60, US=#8e44ad, NM=#d35400 -->
+                    <DataGridTemplateColumn Header="Modality" Width="70">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Border CornerRadius="2"
+                                        Padding="4,1"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Setter Property="Background" Value="#2980b9"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Modality}" Value="CT">
+                                                    <Setter Property="Background" Value="#c0392b"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Modality}" Value="XR">
+                                                    <Setter Property="Background" Value="#27ae60"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Modality}" Value="US">
+                                                    <Setter Property="Background" Value="#8e44ad"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Modality}" Value="NM">
+                                                    <Setter Property="Background" Value="#d35400"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+                                    <TextBlock Text="{Binding Modality}"
+                                               Foreground="#ffffff"
+                                               FontSize="10"
+                                               FontWeight="Bold"
+                                               FontFamily="Malgun Gothic"/>
+                                </Border>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <!-- StudyDate -->
+                    <DataGridTextColumn Header="StudyDate"
+                                        Binding="{Binding CreatedAt, StringFormat={}{0:yyyy-MM-dd}}"
+                                        Width="100"/>
+
+                    <!-- StudyDescription -->
+                    <DataGridTextColumn Header="StudyDescription"
+                                        Binding="{Binding StudyDescription}"
+                                        Width="150"/>
+
+                    <!-- BodyPart -->
+                    <DataGridTextColumn Header="BodyPart"
+                                        Binding="{Binding BodyPart}"
+                                        Width="80"/>
+
+                    <!-- Priority: 긴급=#e74c3c Bold, 보통=#b8cce0 Normal -->
+                    <DataGridTemplateColumn Header="Priority" Width="70">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock VerticalAlignment="Center" FontSize="11" FontFamily="Malgun Gothic">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Foreground" Value="#b8cce0"/>
+                                            <Setter Property="FontWeight" Value="Normal"/>
+                                            <Setter Property="Text" Value="{Binding Priority}"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsEmergency}" Value="True">
+                                                    <Setter Property="Text" Value="긴급"/>
+                                                    <Setter Property="Foreground" Value="#e74c3c"/>
+                                                    <Setter Property="FontWeight" Value="Bold"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <!-- Status: dot + label -->
+                    <DataGridTemplateColumn Header="상태" Width="90">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <!-- Status dot: PPT spec 8x8px rounded -->
+                                    <Ellipse Width="8" Height="8" VerticalAlignment="Center" Margin="0,0,3,0">
+                                        <Ellipse.Style>
+                                            <Style TargetType="Ellipse">
+                                                <Setter Property="Fill" Value="#2ecc71"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsEmergency}" Value="True">
+                                                        <Setter Property="Fill" Value="#e74c3c"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Status}" Value="Pending">
+                                                        <Setter Property="Fill" Value="#f39c12"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Status}" Value="InProgress">
+                                                        <Setter Property="Fill" Value="#3498db"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Ellipse.Style>
+                                    </Ellipse>
+                                    <TextBlock FontSize="11" FontFamily="Malgun Gothic" VerticalAlignment="Center">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Foreground" Value="#b8cce0"/>
+                                                <Setter Property="Text" Value="{Binding Status}"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsEmergency}" Value="True">
+                                                        <Setter Property="Text" Value="긴급대기"/>
+                                                        <Setter Property="Foreground" Value="#e74c3c"/>
+                                                        <Setter Property="FontWeight" Value="Bold"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Status}" Value="Pending">
+                                                        <Setter Property="Text" Value="대기"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Status}" Value="InProgress">
+                                                        <Setter Property="Text" Value="판독중"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Status}" Value="Reported">
+                                                        <Setter Property="Text" Value="완료"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <!-- 담당자 -->
+                    <DataGridTextColumn Header="담당자"
+                                        Binding="{Binding CreatedBy}"
+                                        Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <!-- ===== DETAIL PANEL (PPT Slide 6 spec) ===== -->
+            <!-- PPT spec: width=230px, bg=#101a2e, border-left 2px #2e4070 -->
+            <Border Grid.Column="1"
+                    Background="#101a2e"
+                    BorderBrush="#2e4070"
+                    BorderThickness="2,0,0,0">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel>
+
+                        <!-- Detail header: PPT spec bg=#0d1527, fg=#7bc8f5, 11px Bold, pad=5px 8px -->
+                        <Border Background="#0d1527" Padding="8,5" BorderBrush="#2e4070" BorderThickness="0,0,0,1">
+                            <TextBlock Text="Study 상세"
+                                       Foreground="#7bc8f5"
+                                       FontSize="11"
                                        FontWeight="Bold"
-                                       FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
+                                       FontFamily="Malgun Gothic"/>
                         </Border>
 
-                        <!-- Patient ID and Name -->
-                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                            <TextBlock FontSize="12"
-                                       FontWeight="SemiBold"
-                                       Foreground="#e0e6f0"
-                                       TextTrimming="CharacterEllipsis"
-                                       FontFamily="{DynamicResource HnVue.Core.FontFamily}">
-                                <Run Text="{Binding PatientId}"/>
-                            </TextBlock>
-                            <TextBlock Text="{Binding Name}"
-                                       FontSize="12"
-                                       Foreground="#b8cce0"
-                                       TextTrimming="CharacterEllipsis"
-                                       FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
-                        </StackPanel>
-                    </Grid>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+                        <!-- Patient search input: PPT spec pad=6px 8px -->
+                        <Border Padding="8,6" BorderBrush="#1e2e48" BorderThickness="0,0,0,1">
+                            <Border Background="#152035"
+                                    BorderBrush="#3a5080"
+                                    BorderThickness="1"
+                                    CornerRadius="3"
+                                    Height="24">
+                                <TextBox FontSize="11"
+                                         FontFamily="Malgun Gothic"
+                                         Foreground="#5580a0"
+                                         BorderThickness="0"
+                                         Background="Transparent"
+                                         Padding="6,0"
+                                         VerticalAlignment="Center">
+                                    <TextBox.Style>
+                                        <Style TargetType="TextBox">
+                                            <Style.Triggers>
+                                                <Trigger Property="Text" Value="">
+                                                    <Setter Property="Foreground" Value="#5580a0"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBox.Style>
+                                </TextBox>
+                            </Border>
+                        </Border>
 
-        <!-- Status area: loading + error -->
-        <StackPanel Grid.Row="5" Margin="0,0,0,0">
-            <!-- IsLoading indicator — SWR-NF-UX-025 / Issue #16 -->
+                        <!-- 환자 기본정보 section: PPT spec section-title 10px SemiBold #5580a0 uppercase -->
+                        <StackPanel Margin="8,6">
+                            <TextBlock Text="환자 기본정보"
+                                       FontSize="10"
+                                       FontWeight="SemiBold"
+                                       Foreground="#5580a0"
+                                       FontFamily="Malgun Gothic"
+                                       Margin="0,0,0,5"/>
+
+                            <!-- info-row: key=#7090b0 val=#d0e0f5, highlight=#f9e04b -->
+                            <Grid Margin="0,0,0,3">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="70"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="환자 ID"
+                                           Foreground="#7090b0" FontSize="10" FontFamily="Malgun Gothic" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" Text="{Binding SelectedPatient.PatientId}"
+                                           Foreground="#f9e04b" FontSize="11" FontWeight="SemiBold" FontFamily="Malgun Gothic"
+                                           VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                            </Grid>
+
+                            <Grid Margin="0,0,0,3">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="70"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="환자명"
+                                           Foreground="#7090b0" FontSize="10" FontFamily="Malgun Gothic" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" Text="{Binding SelectedPatient.Name}"
+                                           Foreground="#d0e0f5" FontSize="11" FontFamily="Malgun Gothic"
+                                           VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                            </Grid>
+
+                            <Grid Margin="0,0,0,3">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="70"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="성별/나이"
+                                           Foreground="#7090b0" FontSize="10" FontFamily="Malgun Gothic" VerticalAlignment="Center"/>
+                                <TextBlock FontSize="11" FontFamily="Malgun Gothic" Foreground="#d0e0f5" Grid.Column="1" VerticalAlignment="Center">
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat="{}{0}{1}">
+                                            <Binding Path="SelectedPatient.Age"/>
+                                            <Binding Path="SelectedPatient.Sex"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                            </Grid>
+
+                            <Grid Margin="0,0,0,3">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="70"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="생년월일"
+                                           Foreground="#7090b0" FontSize="10" FontFamily="Malgun Gothic" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" Text="{Binding SelectedPatient.DateOfBirth, StringFormat={}{0:yyyy-MM-dd}}"
+                                           Foreground="#d0e0f5" FontSize="11" FontFamily="Malgun Gothic" VerticalAlignment="Center"/>
+                            </Grid>
+                        </StackPanel>
+
+                        <!-- Study 정보 section -->
+                        <StackPanel Margin="8,6">
+                            <TextBlock Text="Study 정보"
+                                       FontSize="10"
+                                       FontWeight="SemiBold"
+                                       Foreground="#5580a0"
+                                       FontFamily="Malgun Gothic"
+                                       Margin="0,0,0,5"/>
+
+                            <Grid Margin="0,0,0,3">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="70"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="Modality"
+                                           Foreground="#7090b0" FontSize="10" FontFamily="Malgun Gothic" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" Text="{Binding SelectedPatient.Modality}"
+                                           Foreground="#d0e0f5" FontSize="11" FontFamily="Malgun Gothic" VerticalAlignment="Center"/>
+                            </Grid>
+
+                            <Grid Margin="0,0,0,3">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="70"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="Body Part"
+                                           Foreground="#7090b0" FontSize="10" FontFamily="Malgun Gothic" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" Text="{Binding SelectedPatient.BodyPart}"
+                                           Foreground="#d0e0f5" FontSize="11" FontFamily="Malgun Gothic" VerticalAlignment="Center"/>
+                            </Grid>
+
+                            <Grid Margin="0,0,0,3">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="70"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="Study Date"
+                                           Foreground="#7090b0" FontSize="10" FontFamily="Malgun Gothic" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" Text="{Binding SelectedPatient.CreatedAt, StringFormat={}{0:yyyy-MM-dd}}"
+                                           Foreground="#d0e0f5" FontSize="11" FontFamily="Malgun Gothic" VerticalAlignment="Center"/>
+                            </Grid>
+
+                            <Grid Margin="0,0,0,3">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="70"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="Priority"
+                                           Foreground="#7090b0" FontSize="10" FontFamily="Malgun Gothic" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" FontSize="11" FontFamily="Malgun Gothic" VerticalAlignment="Center">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Foreground" Value="#d0e0f5"/>
+                                            <Setter Property="Text" Value="{Binding SelectedPatient.Priority}"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding SelectedPatient.IsEmergency}" Value="True">
+                                                    <Setter Property="Text" Value="긴급"/>
+                                                    <Setter Property="Foreground" Value="#e74c3c"/>
+                                                    <Setter Property="FontWeight" Value="Bold"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Grid>
+
+                            <Grid Margin="0,0,0,3">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="70"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="Status"
+                                           Foreground="#7090b0" FontSize="10" FontFamily="Malgun Gothic" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" Text="{Binding SelectedPatient.Status}"
+                                           Foreground="#d0e0f5" FontSize="11" FontFamily="Malgun Gothic" VerticalAlignment="Center"/>
+                            </Grid>
+                        </StackPanel>
+
+                        <!-- Toggle row: PPT spec pad=3px 8px, 10px #8090a8 -->
+                        <Border Padding="8,3" BorderBrush="#1e2e48" BorderThickness="0,0,0,1">
+                            <StackPanel Orientation="Horizontal">
+                                <CheckBox Content="Suspend" Foreground="#8090a8" FontSize="10" FontFamily="Malgun Gothic" Margin="0,0,8,0"/>
+                                <CheckBox Content="Hide" Foreground="#8090a8" FontSize="10" FontFamily="Malgun Gothic"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Viewer preview: PPT spec min-height=100px, bg=Black -->
+                        <Border MinHeight="100" Background="Black">
+                            <Grid>
+                                <!-- Overlay info: 9px #7bc8f5 (top-left, top-right, bottom-left) -->
+                                <TextBlock Text="{Binding SelectedPatient.PatientId, StringFormat='{}{0} CHEST CT'}"
+                                           Foreground="#7bc8f5"
+                                           FontSize="9"
+                                           FontFamily="Malgun Gothic"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Top"
+                                           Margin="4,4,0,0"/>
+                                <TextBlock Text="W:350 L:40"
+                                           Foreground="#7bc8f5"
+                                           FontSize="9"
+                                           FontFamily="Malgun Gothic"
+                                           HorizontalAlignment="Right"
+                                           VerticalAlignment="Top"
+                                           Margin="0,4,4,0"/>
+                                <TextBlock Text="미리보기"
+                                           Foreground="#3a4a60"
+                                           FontSize="10"
+                                           FontFamily="Malgun Gothic"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+
+                        <!-- Action buttons: PPT spec pad=6px 8px, 2-col grid, border-top 1px #1e2e48 -->
+                        <Border Padding="8,6" BorderBrush="#1e2e48" BorderThickness="0,1,0,0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="4"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="4"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="4"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="4"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <!-- 영상 뷰어 열기: PPT open-btn full width, bg=#1a6fc7 -->
+                                <Button Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3"
+                                        Content="영상 뷰어 열기"
+                                        Command="{Binding SelectPatientCommand}"
+                                        CommandParameter="{Binding SelectedPatient}"
+                                        Background="#1a6fc7"
+                                        Foreground="#ffffff"
+                                        BorderBrush="#2a88e8"
+                                        BorderThickness="1"
+                                        Padding="8,4"
+                                        FontSize="11"
+                                        FontWeight="SemiBold"
+                                        FontFamily="Malgun Gothic"
+                                        Cursor="Hand"
+                                        Height="28">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border Name="Root"
+                                                                Background="{TemplateBinding Background}"
+                                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                                CornerRadius="3"
+                                                                Padding="{TemplateBinding Padding}">
+                                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </Border>
+                                                        <ControlTemplate.Triggers>
+                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                <Setter TargetName="Root" Property="Background" Value="#2a88e8"/>
+                                                            </Trigger>
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+
+                                <!-- 보고서 (Row=2, Col=0) -->
+                                <Button Grid.Column="0" Grid.Row="2"
+                                        Content="보고서"
+                                        Background="#1a2e4e"
+                                        Foreground="#a0b8d5"
+                                        BorderBrush="#2e4a70"
+                                        BorderThickness="1"
+                                        Padding="4,3"
+                                        FontSize="10"
+                                        FontFamily="Malgun Gothic"
+                                        Cursor="Hand"
+                                        Height="24"
+                                        IsEnabled="False">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border Name="Root"
+                                                                Background="{TemplateBinding Background}"
+                                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                                CornerRadius="3"
+                                                                Padding="{TemplateBinding Padding}">
+                                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </Border>
+                                                        <ControlTemplate.Triggers>
+                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                <Setter TargetName="Root" Property="Background" Value="#2a4070"/>
+                                                            </Trigger>
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+
+                                <!-- DICOM 전송 (Row=2, Col=2) -->
+                                <Button Grid.Column="2" Grid.Row="2"
+                                        Content="DICOM 전송"
+                                        Background="#1a2e4e"
+                                        Foreground="#a0b8d5"
+                                        BorderBrush="#2e4a70"
+                                        BorderThickness="1"
+                                        Padding="4,3"
+                                        FontSize="10"
+                                        FontFamily="Malgun Gothic"
+                                        Cursor="Hand"
+                                        Height="24"
+                                        IsEnabled="False">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border Name="Root"
+                                                                Background="{TemplateBinding Background}"
+                                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                                CornerRadius="3"
+                                                                Padding="{TemplateBinding Padding}">
+                                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </Border>
+                                                        <ControlTemplate.Triggers>
+                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                <Setter TargetName="Root" Property="Background" Value="#2a4070"/>
+                                                            </Trigger>
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+
+                                <!-- 병합 (Row=4, Col=0) -->
+                                <Button Grid.Column="0" Grid.Row="4"
+                                        Content="병합"
+                                        Background="#1a2e4e"
+                                        Foreground="#a0b8d5"
+                                        BorderBrush="#2e4a70"
+                                        BorderThickness="1"
+                                        Padding="4,3"
+                                        FontSize="10"
+                                        FontFamily="Malgun Gothic"
+                                        Cursor="Hand"
+                                        Height="24"
+                                        IsEnabled="False">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border Name="Root"
+                                                                Background="{TemplateBinding Background}"
+                                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                                CornerRadius="3"
+                                                                Padding="{TemplateBinding Padding}">
+                                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </Border>
+                                                        <ControlTemplate.Triggers>
+                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                <Setter TargetName="Root" Property="Background" Value="#2a4070"/>
+                                                            </Trigger>
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+
+                                <!-- 인쇄 (Row=4, Col=2) -->
+                                <Button Grid.Column="2" Grid.Row="4"
+                                        Content="인쇄"
+                                        Background="#1a2e4e"
+                                        Foreground="#a0b8d5"
+                                        BorderBrush="#2e4a70"
+                                        BorderThickness="1"
+                                        Padding="4,3"
+                                        FontSize="10"
+                                        FontFamily="Malgun Gothic"
+                                        Cursor="Hand"
+                                        Height="24"
+                                        IsEnabled="False">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border Name="Root"
+                                                                Background="{TemplateBinding Background}"
+                                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                                CornerRadius="3"
+                                                                Padding="{TemplateBinding Padding}">
+                                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </Border>
+                                                        <ControlTemplate.Triggers>
+                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                <Setter TargetName="Root" Property="Background" Value="#2a4070"/>
+                                                            </Trigger>
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+
+                                <!-- CD 굽기 (Row=6, Col=0) -->
+                                <Button Grid.Column="0" Grid.Row="6"
+                                        Content="CD 굽기"
+                                        Background="#1a2e4e"
+                                        Foreground="#a0b8d5"
+                                        BorderBrush="#2e4a70"
+                                        BorderThickness="1"
+                                        Padding="4,3"
+                                        FontSize="10"
+                                        FontFamily="Malgun Gothic"
+                                        Cursor="Hand"
+                                        Height="24"
+                                        IsEnabled="False">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border Name="Root"
+                                                                Background="{TemplateBinding Background}"
+                                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                                CornerRadius="3"
+                                                                Padding="{TemplateBinding Padding}">
+                                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </Border>
+                                                        <ControlTemplate.Triggers>
+                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                <Setter TargetName="Root" Property="Background" Value="#2a4070"/>
+                                                            </Trigger>
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+
+                                <!-- 삭제 (Row=6, Col=2) -->
+                                <Button Grid.Column="2" Grid.Row="6"
+                                        Content="삭제"
+                                        Background="#1a2e4e"
+                                        Foreground="#a0b8d5"
+                                        BorderBrush="#2e4a70"
+                                        BorderThickness="1"
+                                        Padding="4,3"
+                                        FontSize="10"
+                                        FontFamily="Malgun Gothic"
+                                        Cursor="Hand"
+                                        Height="24"
+                                        IsEnabled="False">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border Name="Root"
+                                                                Background="{TemplateBinding Background}"
+                                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                                CornerRadius="3"
+                                                                Padding="{TemplateBinding Padding}">
+                                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </Border>
+                                                        <ControlTemplate.Triggers>
+                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                <Setter TargetName="Root" Property="Background" Value="#2a4070"/>
+                                                            </Trigger>
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+
+                            </Grid>
+                        </Border>
+
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+
+        </Grid>
+
+        <!-- ===== STATUS AREA ===== -->
+        <StackPanel Grid.Row="3">
             <ProgressBar IsIndeterminate="True"
                          Height="3"
                          Background="Transparent"
-                         Foreground="#7bc8f5"
+                         Foreground="#1f6fc7"
                          Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}"/>
-
-            <!-- ErrorMessage display — SWR-NF-UX-025 / Issue #16 -->
             <TextBlock Text="{Binding ErrorMessage}"
                        Foreground="#e74c3c"
                        FontSize="11"
                        TextWrapping="Wrap"
                        Margin="12,4,12,4"
-                       FontFamily="{DynamicResource HnVue.Core.FontFamily}"
+                       FontFamily="Malgun Gothic"
                        Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}"/>
         </StackPanel>
 

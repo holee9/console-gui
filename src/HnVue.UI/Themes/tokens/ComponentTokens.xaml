@@ -137,4 +137,17 @@
     <SolidColorBrush x:Key="HnVue.Component.StatusBadge.Emergency"
                      Color="{DynamicResource HnVue.Core.Color.StatusEmergency}" />
 
+    <!-- ═══ SectionBadge Component (PPT Slides 3 & 6 spec) ═══ -->
+    <!-- "로그인 창", "Worklist 창" header badges: #f9e04b text on #2a3a5c bg -->
+    <SolidColorBrush x:Key="HnVue.Component.SectionBadge.Bg"
+                     Color="{DynamicResource HnVue.Core.Color.SectionBadgeBg}" />
+    <SolidColorBrush x:Key="HnVue.Component.SectionBadge.Text"
+                     Color="{DynamicResource HnVue.Core.Color.SectionBadgeText}" />
+    <!-- Detail panel header text (Worklist slide 6: "상세" 11px/700/#7bc8f5) -->
+    <SolidColorBrush x:Key="HnVue.Component.SectionBadge.DetailText"
+                     Color="{DynamicResource HnVue.Core.Color.DetailHeaderText}" />
+    <!-- Uppercase label style (PPT slide 3: 10px/600/#7090b0) -->
+    <SolidColorBrush x:Key="HnVue.Component.Label.Muted"
+                     Color="{DynamicResource HnVue.Core.Color.LabelMuted}" />
+
 </ResourceDictionary>

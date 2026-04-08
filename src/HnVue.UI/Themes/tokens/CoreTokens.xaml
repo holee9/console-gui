@@ -23,10 +23,10 @@
     <Color x:Key="HnVue.Core.Color.PrimaryLight">#2E6DB4</Color>
     <Color x:Key="HnVue.Core.Color.Accent">#00AEEF</Color>
 
-    <!-- ═══ Background Colors ═══ -->
-    <Color x:Key="HnVue.Core.Color.BackgroundPage">#242424</Color>
-    <Color x:Key="HnVue.Core.Color.BackgroundPanel">#2A2A2A</Color>
-    <Color x:Key="HnVue.Core.Color.BackgroundCard">#3B3B3B</Color>
+    <!-- ═══ Background Colors (PPT slide 5/6 dark navy spec) ═══ -->
+    <Color x:Key="HnVue.Core.Color.BackgroundPage">#0d1527</Color>
+    <Color x:Key="HnVue.Core.Color.BackgroundPanel">#1a2540</Color>
+    <Color x:Key="HnVue.Core.Color.BackgroundCard">#1e2d4a</Color>
 
     <!-- ═══ Text Colors ═══ -->
     <Color x:Key="HnVue.Core.Color.TextPrimary">#FFFFFF</Color>
@@ -87,5 +87,15 @@
     <sys:Double x:Key="HnVue.Core.Opacity.Disabled">0.38</sys:Double>
     <sys:Double x:Key="HnVue.Core.Opacity.Hover">0.08</sys:Double>
     <sys:Double x:Key="HnVue.Core.Opacity.Overlay">0.54</sys:Double>
+
+    <!-- ═══ Section Badge Colors (PPT Slide 3/6 spec) ═══ -->
+    <!-- Badge background: dark navy per PPT design token table -->
+    <Color x:Key="HnVue.Core.Color.SectionBadgeBg">#2A3A5C</Color>
+    <!-- Badge text: golden yellow per PPT slide 3: 12px/700/#f9e04b -->
+    <Color x:Key="HnVue.Core.Color.SectionBadgeText">#F9E04B</Color>
+    <!-- Detail panel header text: light blue per PPT slide 6: 11px/700/#7bc8f5 -->
+    <Color x:Key="HnVue.Core.Color.DetailHeaderText">#7BC8F5</Color>
+    <!-- Label uppercase style: per PPT slide 3: 10px/600/#7090b0 -->
+    <Color x:Key="HnVue.Core.Color.LabelMuted">#7090B0</Color>
 
 </ResourceDictionary>

@@ -21,31 +21,38 @@ public sealed class DesignSystemTests
     }
 
     /// <summary>
-    /// Verifies color palette matches design plan.
+    /// Verifies color palette matches PPT final design spec (Slide 4: #242424 dark theme).
+    /// Updated 2026-04-07: background colors updated from #1A1A2E scheme to #242424 scheme.
     /// </summary>
     [Fact]
     public void ColorPalette_ShouldMatchDesignPlan()
     {
-        // Expected colors from design plan
+        // Expected colors from PPT 최종안 (★HnVUE UI 변경 최종안_251118.pptx Slide 4)
         var expectedColors = new (string Key, string Hex)[]
         {
             ("Primary", "#1B4F8A"),
             ("PrimaryLight", "#2E6DB4"),
             ("Accent", "#00AEEF"),
-            ("BackgroundPage", "#1A1A2E"),
-            ("BackgroundPanel", "#16213E"),
-            ("BackgroundCard", "#0F3460"),
+            // PPT Slide 4 final spec: dark theme #242424 scheme
+            ("BackgroundPage", "#242424"),
+            ("BackgroundPanel", "#2A2A2A"),
+            ("BackgroundCard", "#3B3B3B"),
             ("TextPrimary", "#FFFFFF"),
             ("TextSecondary", "#B0BEC5"),
             ("StatusSafe", "#00C853"),
             ("StatusWarning", "#FFD600"),
             ("StatusBlocked", "#FF6D00"),
-            ("StatusEmergency", "#D50000")
+            ("StatusEmergency", "#D50000"),
+            // PPT Slide 3 section badge tokens
+            ("SectionBadgeBg", "#2A3A5C"),
+            ("SectionBadgeText", "#F9E04B"),
+            ("DetailHeaderText", "#7BC8F5"),
+            ("LabelMuted", "#7090B0"),
         };
 
         string coreTokensPath = Path.Combine(
             Directory.GetCurrentDirectory(),
-            "..", "..", "..", "..", "src", "HnVue.UI", "Themes", "tokens", "CoreTokens.xaml");
+            "..", "..", "..", "..", "..", "src", "HnVue.UI", "Themes", "tokens", "CoreTokens.xaml");
 
         if (!File.Exists(coreTokensPath))
         {
@@ -59,7 +66,7 @@ public sealed class DesignSystemTests
         foreach (var (key, expectedHex) in expectedColors)
         {
             var colorElement = xaml.Descendants()
-                .FirstOrDefault(e => e.Attribute("Key")?.Value.EndsWith(key) == true);
+                .FirstOrDefault(e => e.Attributes().FirstOrDefault(a => a.Name.LocalName == "Key")?.Value.EndsWith(key) == true);
 
             if (colorElement != null)
             {
@@ -81,11 +88,10 @@ public sealed class DesignSystemTests
         }
 
         double matchPercentage = (double)matchedColors / expectedColors.Length;
-        _output.WriteLine($"Color palette match: {matchPercentage:P0}");
+        _output.WriteLine($"Color palette match: {matchPercentage:P0} ({matchedColors}/{expectedColors.Length})");
 
-        // Allow some deviation for implementation adjustments
-        matchPercentage.Should().BeGreaterOrEqualTo(0.8,
-            "Color palette should match design plan");
+        matchPercentage.Should().BeGreaterOrEqualTo(0.875,
+            "Color palette should match PPT final design spec (Slide 4 + Slides 3/6)");
     }
 
     /// <summary>
@@ -107,7 +113,7 @@ public sealed class DesignSystemTests
 
         string coreTokensPath = Path.Combine(
             Directory.GetCurrentDirectory(),
-            "..", "..", "..", "..", "src", "HnVue.UI", "Themes", "tokens", "CoreTokens.xaml");
+            "..", "..", "..", "..", "..", "src", "HnVue.UI", "Themes", "tokens", "CoreTokens.xaml");
 
         if (!File.Exists(coreTokensPath))
         {
@@ -121,7 +127,7 @@ public sealed class DesignSystemTests
         foreach (var (key, expectedSize) in expectedSizes)
         {
             var sizeElement = xaml.Descendants()
-                .FirstOrDefault(e => e.Attribute("Key")?.Value == key);
+                .FirstOrDefault(e => e.Attributes().FirstOrDefault(a => a.Name.LocalName == "Key")?.Value == key);
 
             if (sizeElement != null && double.TryParse(sizeElement.Value, out double actualSize))
             {
@@ -163,7 +169,7 @@ public sealed class DesignSystemTests
 
         string coreTokensPath = Path.Combine(
             Directory.GetCurrentDirectory(),
-            "..", "..", "..", "..", "src", "HnVue.UI", "Themes", "tokens", "CoreTokens.xaml");
+            "..", "..", "..", "..", "..", "src", "HnVue.UI", "Themes", "tokens", "CoreTokens.xaml");
 
         if (!File.Exists(coreTokensPath))
         {
@@ -177,7 +183,7 @@ public sealed class DesignSystemTests
         foreach (var (key, expectedValue) in expectedSpacing)
         {
             var spacingElement = xaml.Descendants()
-                .FirstOrDefault(e => e.Attribute("Key")?.Value == key);
+                .FirstOrDefault(e => e.Attributes().FirstOrDefault(a => a.Name.LocalName == "Key")?.Value == key);
 
             if (spacingElement != null && double.TryParse(spacingElement.Value, out double actualValue))
             {
@@ -217,7 +223,7 @@ public sealed class DesignSystemTests
 
         string coreTokensPath = Path.Combine(
             Directory.GetCurrentDirectory(),
-            "..", "..", "..", "..", "src", "HnVue.UI", "Themes", "tokens", "CoreTokens.xaml");
+            "..", "..", "..", "..", "..", "src", "HnVue.UI", "Themes", "tokens", "CoreTokens.xaml");
 
         if (!File.Exists(coreTokensPath))
         {
@@ -231,7 +237,7 @@ public sealed class DesignSystemTests
         foreach (var (key, expectedValue) in expectedCorners)
         {
             var cornerElement = xaml.Descendants()
-                .FirstOrDefault(e => e.Attribute("Key")?.Value == key);
+                .FirstOrDefault(e => e.Attributes().FirstOrDefault(a => a.Name.LocalName == "Key")?.Value == key);
 
             if (cornerElement != null)
             {
@@ -263,7 +269,7 @@ public sealed class DesignSystemTests
     {
         string themePath = Path.Combine(
             Directory.GetCurrentDirectory(),
-            "..", "..", "..", "..", "src", "HnVue.UI", "Themes", "HnVueTheme.xaml");
+            "..", "..", "..", "..", "..", "src", "HnVue.UI", "Themes", "HnVueTheme.xaml");
 
         if (!File.Exists(themePath))
         {
@@ -279,7 +285,7 @@ public sealed class DesignSystemTests
         foreach (var styleName in buttonStyles)
         {
             var styleElement = xaml.Descendants()
-                .FirstOrDefault(e => e.Attribute("Key")?.Value == styleName);
+                .FirstOrDefault(e => e.Attributes().FirstOrDefault(a => a.Name.LocalName == "Key")?.Value == styleName);
 
             if (styleElement != null)
             {
@@ -304,7 +310,7 @@ public sealed class DesignSystemTests
     {
         string themesDir = Path.Combine(
             Directory.GetCurrentDirectory(),
-            "..", "..", "..", "..", "src", "HnVue.UI", "Themes");
+            "..", "..", "..", "..", "..", "src", "HnVue.UI", "Themes");
 
         if (!Directory.Exists(themesDir))
         {
@@ -343,7 +349,7 @@ public sealed class DesignSystemTests
     {
         string componentTokensPath = Path.Combine(
             Directory.GetCurrentDirectory(),
-            "..", "..", "..", "..", "src", "HnVue.UI", "Themes", "tokens", "ComponentTokens.xaml");
+            "..", "..", "..", "..", "..", "src", "HnVue.UI", "Themes", "tokens", "ComponentTokens.xaml");
 
         if (!File.Exists(componentTokensPath))
         {
@@ -383,10 +389,12 @@ public sealed class DesignSystemTests
         _output.WriteLine("");
         _output.WriteLine("=== DESIGN SYSTEM VALIDATION ===");
         _output.WriteLine("");
-        _output.WriteLine("Color Palette:");
+        _output.WriteLine("Color Palette (PPT Slide 4 final spec):");
         _output.WriteLine("  - Primary: #1B4F8A (Medical Blue)");
         _output.WriteLine("  - Accent: #00AEEF");
-        _output.WriteLine("  - Background: #1A1A2E (Dark Mode)");
+        _output.WriteLine("  - Background: #242424 (Dark Mode — PPT 최종안)");
+        _output.WriteLine("  - Panel: #2A2A2A | Card: #3B3B3B");
+        _output.WriteLine("  - SectionBadgeBg: #2A3A5C | SectionBadgeText: #F9E04B");
         _output.WriteLine("");
         _output.WriteLine("Typography:");
         _output.WriteLine("  - Font Family: Segoe UI");

@@ -6,147 +6,109 @@
              mc:Ignorable="d"
              d:DesignHeight="500" d:DesignWidth="400">
     <!--
-        @MX:NOTE LoginView — authentication entry point.
-                 Uses HnVue.Semantic.Surface.Panel as card background.
-                 Keep centered form layout matching existing screenshot.
-                 Issue #48: CoreTokens styling applied.
+        @MX:NOTE LoginView — minimal login UI per PPT Slide 2/3 spec.
+                 No titlebar, no card, no section badge. Full-screen dark navy bg #1c2333.
+                 White TextBox/PasswordBox (InputBgLogin=#ffffff, InputFgLogin=#1c2333).
+                 Icon-only buttons: confirm checkmark (M4,10 L8,14 L16,6) + cancel X (M4,4 L16,16 M16,4 L4,16).
+                 Styles: HnVue.Login.TextBoxStyle, HnVue.Login.PasswordBoxStyle, HnVue.Login.IconButtonStyle.
+                 NOTE-6: Previous ComboBox/label/card design replaced with this minimal spec.
     -->
 
-    <Grid Background="{DynamicResource HnVue.Semantic.Surface.Page}">
+    <Grid Background="#1c2333">
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="220">
 
-        <!-- Login card — centered -->
-        <Border HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Width="320"
-                CornerRadius="12"
-                Background="{DynamicResource HnVue.Semantic.Surface.Panel}"
-                BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
-                BorderThickness="1"
-                Padding="32,28">
-            <Border.Effect>
-                <DropShadowEffect BlurRadius="32" ShadowDepth="8" Opacity="0.5" Color="#000000" Direction="270"/>
-            </Border.Effect>
+            <!-- Logo: shows image file when available; falls back to XAML mark when not -->
+            <Grid Width="160" Height="80" HorizontalAlignment="Center" Margin="0,0,0,60">
+                <!-- XAML logo mark (always visible as base layer) -->
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <!-- "Hn" — bold, lighter silver -->
+                    <TextBlock HorizontalAlignment="Center" FontFamily="Consolas"
+                               FontSize="32" FontWeight="Bold" Margin="0,0,0,-4">
+                        <TextBlock.Foreground>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                <GradientStop Color="#FFFFFF" Offset="0"/>
+                                <GradientStop Color="#B0BEC5" Offset="1"/>
+                            </LinearGradientBrush>
+                        </TextBlock.Foreground>
+                        <Run Text="Hn"/><Run Text="VUE">
+                            <Run.Foreground>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                    <GradientStop Color="#7BC8F5" Offset="0"/>
+                                    <GradientStop Color="#4A90D9" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Run.Foreground>
+                        </Run>
+                    </TextBlock>
+                    <TextBlock Text="C O N S O L E" HorizontalAlignment="Center"
+                               FontFamily="Consolas" FontSize="9" FontWeight="Normal"
+                               Foreground="#607080"/>
+                </StackPanel>
+                <!-- Actual logo image overlay (hides XAML mark when file is present) -->
+                <Image Source="/Resources/Images/hnvue_logo.png"
+                       Width="160" Height="80" Stretch="Uniform"
+                       RenderOptions.BitmapScalingMode="HighQuality">
+                    <Image.Style>
+                        <Style TargetType="Image">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=Source}" Value="{x:Null}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                </Image>
+            </Grid>
 
-            <StackPanel>
+            <!-- Username TextBox -->
+            <TextBox x:Name="UsernameBox"
+                     Text="{Binding Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     Style="{StaticResource HnVue.Login.TextBoxStyle}"
+                     Height="36" Margin="0,0,0,4" TabIndex="0"/>
 
-                <!-- Logo area -->
-                <Border Height="56"
-                        CornerRadius="8"
-                        Margin="0,0,0,24"
-                        ClipToBounds="True">
-                    <Border.Background>
-                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                            <GradientStop Color="{StaticResource HnVue.Core.Color.Primary}" Offset="0"/>
-                            <GradientStop Color="{StaticResource HnVue.Core.Color.PrimaryLight}" Offset="1"/>
-                        </LinearGradientBrush>
-                    </Border.Background>
-                    <TextBlock Text="HnVue"
-                               FontSize="18"
-                               FontWeight="Bold"
-                               Foreground="White"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
-                </Border>
+            <!-- Password PasswordBox -->
+            <PasswordBox x:Name="PasswordBox"
+                         Style="{StaticResource HnVue.Login.PasswordBoxStyle}"
+                         Height="36" Margin="0,0,0,16" TabIndex="1"
+                         PasswordChanged="PasswordBox_PasswordChanged"/>
 
-                <!-- Title -->
-                <TextBlock Text="HnVue Login"
-                           FontSize="20"
-                           FontWeight="Bold"
-                           Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
-                           HorizontalAlignment="Center"
-                           Margin="0,0,0,4"
-                           FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
+            <!-- Error message (slim, below password) -->
+            <TextBlock Text="{Binding ErrorMessage}"
+                       Foreground="#e74c3c" FontSize="11" FontFamily="Malgun Gothic"
+                       TextWrapping="Wrap" Margin="0,0,0,8"
+                       Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}"/>
 
-                <!-- Subtitle -->
-                <TextBlock Text="Medical Imaging Console"
-                           FontSize="13"
-                           Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}"
-                           HorizontalAlignment="Center"
-                           Margin="0,0,0,24"
-                           FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
-
-                <!-- Username label -->
-                <TextBlock Text="Username"
-                           FontSize="13"
-                           Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
-                           Margin="0,0,0,4"
-                           FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
-
-                <!-- Username input -->
-                <Border Height="44"
-                        CornerRadius="4"
-                        Background="{DynamicResource HnVue.Semantic.Surface.Card}"
-                        BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
-                        BorderThickness="1"
-                        Margin="0,0,0,12"
-                        Padding="12,0">
-                    <ComboBox SelectedValue="{Binding Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                              ItemsSource="{Binding AvailableUserIds}"
-                              IsEditable="True"
-                              Background="Transparent"
-                              Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
-                              BorderThickness="0"
-                              FontSize="13"
-                              VerticalAlignment="Center"
-                              FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
-                </Border>
-
-                <!-- Password label -->
-                <TextBlock Text="Password"
-                           FontSize="13"
-                           Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
-                           Margin="0,0,0,4"
-                           FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
-
-                <!-- Password input -->
-                <Border Height="44"
-                        CornerRadius="4"
-                        Background="{DynamicResource HnVue.Semantic.Surface.Card}"
-                        BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
-                        BorderThickness="1"
-                        Margin="0,0,0,16"
-                        Padding="12,0">
-                    <PasswordBox x:Name="PasswordBox"
-                                 Background="Transparent"
-                                 Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
-                                 BorderThickness="0"
-                                 FontSize="13"
-                                 VerticalAlignment="Center"
-                                 CaretBrush="{DynamicResource HnVue.Semantic.Brand.Accent}"
-                                 FontFamily="{DynamicResource HnVue.Core.FontFamily}"
-                                 PasswordChanged="PasswordBox_PasswordChanged"/>
-                </Border>
-
-                <!-- Error message -->
-                <TextBlock Text="{Binding ErrorMessage}"
-                           Foreground="{DynamicResource HnVue.Semantic.Status.Emergency}"
-                           FontSize="12"
-                           TextWrapping="Wrap"
-                           Margin="0,0,0,8"
-                           FontFamily="{DynamicResource HnVue.Core.FontFamily}"
-                           Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}"/>
-
-                <!-- LOGIN button -->
-                <Button Content="LOGIN"
+            <!-- Icon button row -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button x:Name="BtnConfirm"
                         Command="{Binding LoginCommand}"
-                        Style="{StaticResource HnVue.PrimaryButton}"
-                        Height="44"
-                        HorizontalAlignment="Stretch"
-                        FontSize="14"
-                        FontWeight="SemiBold"
-                        FontFamily="{DynamicResource HnVue.Core.FontFamily}"
-                        IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBoolConverter}}"/>
-
-                <!-- Loading indicator — Issue #16 -->
-                <ProgressBar IsIndeterminate="True"
-                             Height="3"
-                             Margin="0,8,0,0"
-                             Background="Transparent"
-                             Foreground="{DynamicResource HnVue.Semantic.Brand.Accent}"
-                             Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}"/>
-
+                        Style="{StaticResource HnVue.Login.IconButtonStyle}"
+                        Width="40" Height="40" Margin="0,0,24,0"
+                        TabIndex="2" IsDefault="True">
+                    <Path Data="M4,10 L8,14 L16,6"
+                          Stroke="White" StrokeThickness="2.5"
+                          StrokeLineJoin="Round" StrokeStartLineCap="Round"
+                          StrokeEndLineCap="Round" Width="20" Height="20"
+                          Stretch="Uniform"/>
+                </Button>
+                <Button x:Name="BtnCancel"
+                        Command="{Binding CancelCommand}"
+                        Style="{StaticResource HnVue.Login.IconButtonStyle}"
+                        Width="40" Height="40"
+                        TabIndex="3" IsCancel="True">
+                    <Path Data="M4,4 L16,16 M16,4 L4,16"
+                          Stroke="White" StrokeThickness="2.5"
+                          StrokeLineJoin="Round" StrokeStartLineCap="Round"
+                          StrokeEndLineCap="Round" Width="20" Height="20"
+                          Stretch="Uniform"/>
+                </Button>
             </StackPanel>
-        </Border>
+
+            <!-- Loading indicator -->
+            <ProgressBar IsIndeterminate="True" Height="2"
+                         Margin="0,8,0,0" Background="Transparent" Foreground="#1a6fc7"
+                         Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+        </StackPanel>
     </Grid>
 </UserControl>
