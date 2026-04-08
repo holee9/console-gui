@@ -5,15 +5,30 @@
 | 상태 | 값 |
 |------|-----|
 | **빌드** | `dotnet build HnVue.sln -c Debug --no-restore` 기준 0 errors ✅ |
-| **테스트** | `dotnet test HnVue.sln` 기준 UI QA 15건 보완 필요 (2026-04-08 로컬 검증) |
+| **테스트** | 1,135개 (단위 1,117 + 통합 18), 85%+ 커버리지 |
 | **품질 점수** | 0.91/1.0 ✅ |
-| **코드 커버리지** | 85%+ (안전 임계 모듈 90%+) |
-| **XML (eXtensible Markup Language) Doc 커버리지** | 257+ public members XML Doc ✅ |
 | **인허가 분류** | IEC (International Electrotechnical Commission) 62304 Class B |
-| **문서 체계** | 7개 주요 분류 + `docs/` 루트 기준 문서 |
-| **API (Application Programming Interface) 문서 도구** | DocFX (modern template) |
 | **Gitea 이슈** | **58개** 등록, **58개** 해결 (100%) — 2026-04-07 기준 |
-| **1차 릴리즈 준비도** | 기능 구현 진행, PPT 정합성 기반 UI QA 보완 진행 중 |
+
+### 계획 대비 진도 (2026-04-08 기준)
+
+| 항목 | 계획 (WBS v2.0) | 현재 | 판정 |
+|------|-----------------|------|------|
+| **경과 / 전체** | 12개월 | 1.15개월 (9.6%) | — |
+| **소진 MM / 전체** | 24 ~ 36 MM | 2.3 MM (9.6%) | — |
+| **기능 구현 완성도** | 100% (M6) | ~45% | 정시 |
+| **WBS 작업 완료율** | 100% (M6) | ~30-35% | 정시 |
+
+| 마일스톤 | 목표 시기 | D-Day | 전망 |
+|----------|----------|-------|------|
+| **M1** 설계 완료 | 2026-05-15 | D-37 | ON TRACK |
+| **M2** Tier 1 구현 | 2026-08-31 | D-145 | AT RISK — Generator/Detector HW 어댑터 |
+| **M3** Tier 2 구현 | 2026-10-31 | D-206 | AT RISK — 영상처리 Stub, FPD SDK |
+| **M4** 통합 테스트 | 2026-12-15 | D-251 | WATCH |
+| **M5** 시스템 테스트 | 2027-01-15 | D-282 | WATCH |
+| **M6** 릴리스 | 2027-03-01 | D-327 | WATCH |
+
+> 상세 보고서: [PROGRESS-001](docs/management/PROGRESS-001_Status_Report_v1.0.md) | [영역별 완성도 상세](#영역별-완성도)
 
 ---
 
