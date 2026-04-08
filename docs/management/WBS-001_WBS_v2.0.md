@@ -7,11 +7,12 @@
 | **작성일** | 2026-04-03 |
 | **최종 개정일** | 2026-04-03 |
 | **기준 규격** | IEC 62304:2006+AMD1:2015, IEC 62366-1:2015+AMD1:2020, ISO 14971:2019, ISO 13485:2016, FDA 21 CFR Part 820.30, FDA Section 524B, EU MDR 2017/745, IEC 81001-5-1:2021 |
-| **SW Safety Class** | Class B (IEC 62304) |
+| **Software Safety Class** | Class B (IEC 62304) |
 | **우선순위 체계** | 4-Tier (Tier 1/2/3/4) — MRD v3.0 기준 |
 | **개발 전략** | Phase 1 (Tier 1+2 기능) → Phase 2 (Tier 3 기능) |
-| **개발 인원** | SW 2명 (24 – 36 MM 기준) |
+| **개발 인원** | Software 2명 (24 – 36 MM 기준) |
 | **참조 문서** | MRD v3.0, PRD v2.0, SAD v2.0, SDP v2.0, DMP v2.0 |
+| **약어 규칙** | SW, HW, GUI, API, DB, UI, UX, OS 등은 풀 네임 사용 |
 
 ---
 

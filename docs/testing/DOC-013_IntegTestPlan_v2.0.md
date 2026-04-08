@@ -8,10 +8,13 @@
 |------|------|
 | **문서 ID** | ITP-XRAY-GUI-001 |
 | **버전 (Version)** | v2.0 |
-| **제품명 (Product)** | HnVue Console SW |
+| **제품명 (Product)** | HnVue Console Software |
 | **작성일 (Date)** | 2026-04-03 |
-| **작성자 (Author)** | SW 개발팀 (SW Development Team) |
-| **검토자 (Reviewer)** | SW QA 팀장 |
+| **작성자 (Author)** | Software 개발팀 (Software Development Team) |
+| **검토자 (Reviewer)** | Software QA 팀장 |
+| **승인자 (Approver)** | Software 개발 팀장 / RA Manager |
+| **상태 (Status)** | Draft |
+| **약어 규칙** | SW, HW, GUI, API, DB, UI, UX, OS, IT, ST 등은 풀 네임 사용 (문맥에 따라 예외) |
 | **승인자 (Approver)** | SW 개발 팀장 / RA Manager |
 | **상태 (Status)** | Draft |
 | **기준 규격** | IEC 62304:2006+AMD1:2015 §5.6 |

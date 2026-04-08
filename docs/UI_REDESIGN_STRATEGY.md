@@ -14,7 +14,7 @@
 
 **데이터 흐름 추적**:
 ```
-사용자 입력 → WPF View → ViewModel → Interface → Business Module
+사용자 입력 → WPF (Windows Presentation Foundation) View → ViewModel → Interface → Business Module
 ```
 
 **검증 포인트**:
@@ -22,7 +22,7 @@
 2. `HnVue.UI.csproj` - 다른 비즈니스 모듈에 대한 직접 참조 없음
 3. MahApps.Metro + CommunityToolkit.Mvvm - 이미 최신 WPF 프레임워크 사용
 
-**결론**: UI가 비즈니스 로직과 완전히 분리됨 → **독립적 UI 업데이트 가능**
+**결론**: UI (User Interface)가 비즈니스 로직과 완전히 분리됨 → **독립적 UI 업데이트 가능**
 
 ### 2. 기존 디자인 시스템 확인
 

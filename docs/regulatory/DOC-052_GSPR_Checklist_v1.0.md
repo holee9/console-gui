@@ -14,12 +14,12 @@
 | **작성자** | RA 팀 (Regulatory Affairs) |
 | **검토자** | SW 아키텍트, 사이버보안 팀, QA 팀장 |
 | **승인자** | 의료기기 RA/QA 책임자 |
-| **상태** | 초안 (Draft) |
+| **상태** | 초안(Draft) |
 | **제품명** | HnVue Console SW (HnVue) |
-| **제품 분류** | EU MDR 2017/745 Class IIa (Rule 11 — 진단 목적 SW) |
+| **제품 분류** | EU MDR 2017/745 Class IIa(Rule 11 — 진단 목적 SW) |
 | **회사명** | HnVue (가칭) |
-| **기준 규격** | EU MDR 2017/745 Annex I (GSPR), MDCG 2019-16, MDCG 2019-11 |
-| **적용 시장** | EU MDR (전용) |
+| **기준 규격** | EU MDR 2017/745 Annex I(GSPR), MDCG 2019-16, MDCG 2019-11 |
+| **적용 시장** | EU MDR(전용) |
 
 ---
 

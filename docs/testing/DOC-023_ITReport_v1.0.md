@@ -1,5 +1,5 @@
 # 통합 테스트 결과 보고서 (Integration Test Report)
-## HnVue Console SW
+## HnVue Console Software
 
 ---
 
@@ -8,14 +8,18 @@
 | 항목 | 내용 |
 |------|------|
 | **문서 ID** | ITR-XRAY-GUI-001 |
-| **문서명** | HnVue Console SW 통합 테스트 결과 보고서 |
+| **문서명** | HnVue Console Software 통합 테스트 결과 보고서 |
 | **버전** | v1.0 |
 | **작성일** | 2026-03-18 |
-| **작성자** | SW V&V Team |
-| **검토자** | QA 팀장, SW 아키텍트 |
+| **작성자** | Software V&V Team |
+| **검토자** | QA 팀장, Software 아키텍트 |
+| **승인자** | 의료기기 RA/QA 책임자 |
+| **약어 규칙** | IT = Integration Test, SW = Software, V&V = Verification & Validation |
+| **검토자** | QA 팀장, Software 아키텍트 |
 | **승인자** | 의료기기 RA/QA 책임자 |
 | **상태** | 승인됨 (Approved) |
 | **기준 규격** | IEC 62304 §5.6, FDA 21 CFR 820.30(f) |
+| **약어 규칙** | IT = Integration Test, SW = Software |
 | **참조 문서** | ITP-XRAY-GUI-001 (통합 테스트 계획서) |
 
 ---

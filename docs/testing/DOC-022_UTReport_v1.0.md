@@ -1,5 +1,5 @@
 # 단위 테스트 결과 보고서 (Unit Test Report)
-## HnVue Console SW
+## HnVue Console Software
 
 ---
 
@@ -8,15 +8,18 @@
 | 항목 | 내용 |
 |------|------|
 | **문서 ID** | UTR-XRAY-GUI-001 |
-| **문서명** | HnVue Console SW 단위 테스트 결과 보고서 |
+| **문서명** | HnVue Console Software 단위 테스트 결과 보고서 |
 | **버전** | v2.0 |
 | **작성일** | 2026-04-07 |
-| **작성자** | SW 개발팀 (Dev Team) |
-| **검토자** | QA 팀장, SW 아키텍트 |
+| **작성자** | Software 개발팀 (Dev Team) |
+| **검토자** | QA 팀장, Software 아키텍트 |
+| **승인자** | 의료기기 RA/QA 책임자 |
+| **검토자** | QA 팀장, Software 아키텍트 |
 | **승인자** | 의료기기 RA/QA 책임자 |
 | **상태** | 승인됨 (Approved) |
 | **기준 규격** | IEC 62304 §5.5.5, FDA 21 CFR 820.30(f) |
-| **참조 문서** | UTP-XRAY-GUI-001 (단위 테스트 계획서) |
+| **약어 규칙** | UT = Unit Test, SW = Software, HW = Hardware |
+| **참조 문서** | UTP-XRAY-GUI-001 (Unit Test Plan) |
 
 ---
 

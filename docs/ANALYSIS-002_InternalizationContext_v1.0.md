@@ -49,9 +49,9 @@ HnVue Console SW (제품명)
 
 - **제조사**: H&abyz (에이치앤아비즈)
 - **목표**: 기존 3rd-party Console SW를 자사 기술로 내재화 (Internalization)
-- **대체 대상**: IMFOU feel-DRCS (FDA K110033) — 현재 출하 중인 제품에 탑재된 3rd-party SW
+- **대체 대상**: IMFOU feel-DRCS (FDA (Food and Drug Administration) K110033) — 현재 출하 중인 제품에 탑재된 3rd-party SW
 - **개발 인력**: 2명 (Software Engineers)
-- **인허가 목표**: MFDS 2등급, FDA 510(k), CE MDR Class IIa
+- **인허가 목표**: MFDS (Ministry of Food and Drug Safety) 2등급, FDA (Food and Drug Administration) 510(k), CE MDR Class IIa
 
 ### 내재화 개발의 의미
 
@@ -97,7 +97,7 @@ HnVue Console SW (제품명)
 | 파일 | 내용 | 활용 방식 |
 |------|------|---------|
 | `Instructions for Use(EN) HnVUE 250714(공식메뉴얼).docx` | 기존 제품 영문 IFU (사용설명서) | MRD/PRD/FRS 기능 목록 기준 — 신규 코드가 이 기능들을 커버하는지 매핑 |
-| `★HnVUE UI 변경 최종안_251118.pptx` | 기존 UI 설계 최종안 (2025-11-18) | `HnVue.UI` WPF 화면 구현의 기준 — PatientListView, ImageViewerView 등 화면 설계 참조 |
+| `★HnVUE UI 변경 최종안_251118.pptx` | 기존 UI (User Interface) 설계 최종안 (2025-11-18) | `HnVue.UI` WPF (Windows Presentation Foundation) 화면 구현의 기준 — PatientListView, ImageViewerView 등 화면 설계 참조 |
 | `3. [HnVUE] Performance Test Report (A-PTR-HNV).docx` | 기존 성능 시험 보고서 | DOC-027 (Performance Report) 작성 기준 — 신규 제품이 넘어야 할 성능 벤치마크 |
 | `hnvue_abyz_plan.pptx` | 전략·계획 자료 | 제품 전략, 인허가 로드맵, 사업 계획 맥락 파악 |
 
@@ -107,9 +107,9 @@ HnVue Console SW (제품명)
 
 | 파일 | 내용 | 활용 방식 |
 |------|------|---------|
-| `API_MANUAL_241206.pdf` | FPD(Flat Panel Detector) SDK API 매뉴얼 (2024-12-06) | `HnVue.Imaging` Phase 1c 구현의 핵심 — 검출기로부터 영상 데이터를 받아오는 SDK 연동 |
+| `API_MANUAL_241206.pdf` | FPD (Flat Panel Detector) SDK API (Application Programming Interface) 매뉴얼 (2024-12-06) | `HnVue.Imaging` Phase 1c 구현의 핵심 — 검출기로부터 영상 데이터를 받아오는 SDK 연동 |
 | `GENERATOR-001_Communication_Protocol_Guide_v1.0.md` | Sedecal/CPI X-ray Generator 통신 프로토콜 | `GeneratorSimulator` 실 구현 시 RS-232/RS-422 프로토콜 참조 |
-| `DICOM-001_Implementation_Guide_v1.0.md` | fo-dicom C-STORE/C-FIND/MWL 구현 가이드 | `HnVue.Dicom` + `HnVue.Imaging` DICOM Header 파싱 구현 참조 |
+| `DICOM-001_Implementation_Guide_v1.0.md` | fo-dicom C-STORE (DICOM C-STORE)/C-FIND (DICOM C-FIND)/MWL (Modality Worklist) 구현 가이드 | `HnVue.Dicom` + `HnVue.Imaging` DICOM Header 파싱 구현 참조 |
 
 ### 참고 자료 활용 시점
 
@@ -151,7 +151,7 @@ ANALYSIS-001에서 지적한 바와 같이, 기존 HnVUE 제품과 신규 Consol
 ### 6-2. 분석 방법
 
 ```
-Step 1: 기존 IFU 기능 목록 추출
+Step 1: 기존 IFU (Instructions for Use) 기능 목록 추출
     → Instructions for Use 각 챕터에서 기능 목록 추출
     → 표준화된 Feature ID 부여 (예: F-IMG-001, F-PAT-001 등)
 
@@ -188,7 +188,7 @@ Step 4: 시험 보고서 현실화
 ### 구현 단계 (HnVue.Imaging 고유 설계)
 
 ```
-Phase 1c-A: fo-dicom 기반 DICOM Header 파싱 (2-3주)
+Phase 1c-A: fo-dicom 기반 DICOM (Digital Imaging and Communications in Medicine) Header 파싱 (2-3주)
     → DICOM Tag 읽기 (0028 그룹: 이미지 크기, Pixel Depth, 광자 해석)
     → Pixel Data 추출 (7FE0,0010)
     → 16-bit Grayscale → 8-bit 렌더링 파이프라인

@@ -91,7 +91,7 @@
 - AAMI HE75: Human Factors Design Guidelines
 
 ### 접근성 표준
-- WCAG 2.2 AA
+- WCAG (Web Content Accessibility Guidelines) 2.2 AA
 - Touch targets: 44x44px minimum
 - Color contrast: 4.5:1 minimum
 

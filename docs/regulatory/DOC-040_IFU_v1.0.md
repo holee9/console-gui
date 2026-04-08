@@ -13,7 +13,7 @@
 | **작성일** | 2026-03-18 |
 | **작성자** | 기술 문서 팀 (Technical Documentation) |
 | **승인자** | RA/QA 책임자 |
-| **상태** | 승인됨 (Approved) |
+| **상태** | 승인됨(Approved) |
 | **기준 규격** | EU MDR 2017/745 Annex I §23, FDA 21 CFR 801, IEC 62366-1 |
 
 ---

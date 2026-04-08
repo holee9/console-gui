@@ -8,10 +8,10 @@
 |------|------|
 | **문서 ID** | STP-XRAY-GUI-001 |
 | **버전 (Version)** | v2.0 |
-| **제품명 (Product)** | HnVue Console SW |
+| **제품명 (Product)** | HnVue Console Software |
 | **작성일 (Date)** | 2026-04-03 |
-| **작성자 (Author)** | SW QA팀 (SW QA Team) |
-| **검토자 (Reviewer)** | SW 개발 팀장 / RA Manager |
+| **작성자 (Author)** | Software QA팀 (Software QA Team) |
+| **검토자 (Reviewer)** | Software 개발 팀장 / RA Manager |
 | **승인자 (Approver)** | 제품 책임자 (Product Owner) |
 | **상태 (Status)** | Draft |
 | **기준 규격** | IEC 62304:2006+AMD1:2015 §5.7 |
@@ -23,7 +23,7 @@
 |------|------|--------|-----------|
 | v0.1 | 2026-02-20 | QA팀 | 초안 작성 |
 | v1.0 | 2026-03-18 | QA팀 | 공식 발행 |
-| v2.0 | 2026-04-03 | QA팀 | PRD v2.0 기준 65개 PR 커버 확대; 5클릭 워크플로우 end-to-end 검증 추가 (MR-003); PACS 30초 이내 전송 성능 검증 추가 (MR-002); CD Burning 시스템 테스트 추가 (MR-072); 인시던트 대응 시뮬레이션 테스트 추가 (MR-037); 업데이트 메커니즘 검증 추가 (MR-039); 3개+ PACS 벤더 상호운용성 검증 추가 (MR-021); 한/영 UI 전환 테스트 추가 (MR-045); 각 TC에 MR/PR/SWR 추적성 명시 |
+| v2.0 | 2026-04-03 | QA팀 | PRD v2.0 기준 65개 PR 커버 확대; 5클릭 워크플로우 end-to-end 검증 추가 (MR-003); PACS 30초 이내 전송 성능 검증 추가 (MR-002); CD Burning 시스템 테스트 추가 (MR-072); 인시던트 대응 시뮬레이션 테스트 추가 (MR-037); 업데이트 메커니즘 검증 추가 (MR-039); 3개+ PACS 벤더 상호운용성 검증 추가 (MR-021); 한/영 UI 전환 테스트 추가 (MR-045); 각 TC에 MR/PR/SWR 추적성 명시; SW → Software 확장 |
 
 ---
 

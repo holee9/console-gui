@@ -7,7 +7,7 @@
 | 문서 ID | UX-CMP-001 |
 | 버전 | 1.0 |
 | 작성일 | 2026-04-06 |
-| 규격 기준 | IEC 62366-1:2015, FDA HFE Guidance, SPEC-UI-001 |
+| 규격 기준 | IEC (International Electrotechnical Commission) 62366-1:2015, FDA (Food and Drug Administration) HFE Guidance, SPEC-UI-001 |
 | 상태 | 승인됨 |
 
 ---
