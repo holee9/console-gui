@@ -24,7 +24,7 @@ sdk/third-party/
 sdk/third-party/{vendor-name}/net8.0-windows/{VendorName}Sdk.dll
 ```
 
-### Step 2: HnVue.Detector.csproj에 SDK Reference 추가
+### Step 2: `src/HnVue.Detector/HnVue.Detector.csproj`에 SDK Reference 추가
 
 ```xml
 <ItemGroup Condition="Exists('$(SolutionDir)sdk\third-party\{vendor-name}\net8.0-windows\{VendorName}Sdk.dll')">
@@ -37,7 +37,7 @@ sdk/third-party/{vendor-name}/net8.0-windows/{VendorName}Sdk.dll
 
 ### Step 3: 어댑터 구현
 
-`ThirdParty/VendorAdapterTemplate.cs`를 복사합니다:
+`src/HnVue.Detector/ThirdParty/VendorAdapterTemplate.cs`를 복사합니다:
 
 ```
 src/HnVue.Detector/ThirdParty/{VendorName}/{VendorName}DetectorAdapter.cs
@@ -46,7 +46,7 @@ src/HnVue.Detector/ThirdParty/{VendorName}/{VendorName}DetectorConfig.cs
 
 `VendorAdapterTemplate.cs`의 TODO 항목을 해당 vendor SDK 호출로 교체합니다.
 
-### Step 4: DI 등록 (App.xaml.cs)
+### Step 4: DI 등록 (`src/HnVue.App/App.xaml.cs`)
 
 ```csharp
 services.AddSingleton<IDetectorInterface>(

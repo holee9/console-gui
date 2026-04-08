@@ -18,17 +18,17 @@ sdk/own-detector/
 ### Case A: .NET Managed SDK (`OwnDetectorSdk.dll`)
 
 1. `net8.0-windows/OwnDetectorSdk.dll` 파일을 배치합니다.
-2. `HnVue.Detector.csproj`의 Reference 블록이 자동으로 SDK를 참조합니다.
-3. `OwnDetector/OwnDetectorAdapter.cs`의 TODO 항목을 managed API 호출로 교체합니다.
-4. `OwnDetector/OwnDetectorNativeMethods.cs`는 필요 없으므로 삭제합니다.
+2. `src/HnVue.Detector/HnVue.Detector.csproj`의 Reference 블록이 자동으로 SDK를 참조합니다.
+3. `src/HnVue.Detector/OwnDetector/OwnDetectorAdapter.cs`의 TODO 항목을 managed API 호출로 교체합니다.
+4. `src/HnVue.Detector/OwnDetector/OwnDetectorNativeMethods.cs`는 managed SDK를 사용하지 않을 때만 유지합니다.
 
 ### Case B: Native C/C++ SDK (`OwnDetectorNative.dll`)
 
 1. `x64/OwnDetectorNative.dll` 파일을 배치합니다.
-2. `HnVue.App/App.xaml.cs`에서 native DLL이 출력 폴더에 복사되도록 설정합니다.
-3. `OwnDetector/OwnDetectorNativeMethods.cs`의 P/Invoke 선언에서
+2. `src/HnVue.App/App.xaml.cs`에서 native DLL이 출력 폴더에 복사되도록 설정합니다.
+3. `src/HnVue.Detector/OwnDetector/OwnDetectorNativeMethods.cs`의 P/Invoke 선언에서
    `#if OWN_DETECTOR_NATIVE_SDK` 조건을 제거하고 실제 함수 시그니처를 입력합니다.
-4. `OwnDetector/OwnDetectorAdapter.cs`의 TODO 항목을 P/Invoke 호출로 교체합니다.
+4. `src/HnVue.Detector/OwnDetector/OwnDetectorAdapter.cs`의 TODO 항목을 P/Invoke 호출로 교체합니다.
 
 ## DI 등록 변경
 

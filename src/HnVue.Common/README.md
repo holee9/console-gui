@@ -110,7 +110,7 @@ Flip(ProcessedImage image, bool horizontal) → Result<ProcessedImage>  // SWR-I
 |---|---|---|
 | `SafeState` | `Idle`, `Warning`, `Degraded`, `Blocked`, `Emergency` | 시스템 안전 상태 (5종). `Warning`은 WARN 인터락 수준에 매핑 (SWR-WF-023, Issue #21) |
 | `DoseValidationLevel` | `Allow`, `Warn`, `Block`, `Emergency` | 선량 검증 후 권장 조치 (4종) |
-| `WorkflowState` | `Idle`, `PatientSelected`, `ProtocolSelected`, `ReadyToExpose`, `Exposing`, `ImageReview`, `Complete`, `Error` | 촬영 워크플로우 상태 |
+| `WorkflowState` | `Idle`, `PatientSelected`, `ProtocolLoaded`, `ReadyToExpose`, `Exposing`, `ImageAcquiring`, `ImageProcessing`, `ImageReview`, `Completed`, `Error` | 촬영 워크플로우 상태 |
 | `GeneratorState` | `Disconnected`, `Idle`, `Preparing`, `Ready`, `Exposing`, `Error` | 제너레이터 하드웨어 상태 |
 | `UserRole` | `Radiographer`, `Radiologist`, `Admin`, `Service` | 사용자 역할 (RBAC) |
 | `IncidentSeverity` | `Critical`, `High`, `Medium`, `Low` | 인시던트 심각도 (IEC 62304) |
@@ -153,7 +153,7 @@ Flip(ProcessedImage image, bool horizontal) → Result<ProcessedImage>  // SWR-I
 
 | 패키지 | 용도 |
 |---|---|
-| `Microsoft.Extensions.DependencyInjection.Abstractions` | DI 인터페이스 |
+| `Microsoft.Extensions.DependencyInjection` | DI 등록 확장 메서드 |
 | `Polly` | `IRetryPolicyFactory` 구현용 재시도 정책 |
 | `FluentValidation` | 입력 유효성 검증 |
 
@@ -161,7 +161,7 @@ Flip(ProcessedImage image, bool horizontal) → Result<ProcessedImage>  // SWR-I
 
 ## DI 등록
 
-`AddHnVueCommon()` — Options, Validation, Retry 정책 등록
+`AddHnVueCommon()` — `ISecurityContext`를 `ThreadLocalSecurityContext` singleton으로 등록
 
 ---
 
@@ -169,5 +169,5 @@ Flip(ProcessedImage image, bool horizontal) → Result<ProcessedImage>  // SWR-I
 
 - 외부 프로젝트 참조 없음 (순수 도메인 계층)
 - IEC 62304 §5.3.6 traceability: 모든 에러 코드와 안전 상태가 SWR 번호로 추적됨
-- 18개 서비스/리포지터리 인터페이스 정의
-- 6개 열거형 (`SafeState` 포함, Warning 상태 추가로 5종)
+- 19개 서비스/리포지터리 인터페이스 정의
+- 8개 열거형 정의 (`SafeState`, `WorkflowState`, `DetectorState`, `DetectorTriggerMode` 포함)
