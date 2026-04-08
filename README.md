@@ -708,23 +708,57 @@ services.AddTransient<DoseDisplayViewModel>();
 
 ## 개발 진행 현황
 
-### 전체 릴리즈 준비도 요약
+> **기준일: 2026-04-08** | 상세 보고서: [PROGRESS-001](docs/management/PROGRESS-001_Status_Report_v1.0.md)
 
-| 영역 | 완성도 | 상태 |
-|------|:------:|------|
-| Architecture / Clean Architecture | 90% | ✅ 우수 |
-| Security (JWT/RBAC/bcrypt/HMAC) | 90% | ✅ 우수 — AuditOptions 외부화, RBAC null 가드 완성 |
-| Data Layer (EF Core + SQLCipher) | 80% | ✅ 양호 |
-| Workflow Engine (9-상태 머신) | 85% | ✅ 양호 — RBAC 노출 강제 (SWR-IP-RBAC-001) |
-| DICOM Communication (C-STORE/C-FIND) | 75% | 보통 (실 PACS 미검증) |
-| Unit Test Infrastructure | 95% | ✅ 812개, 90%+ 커버리지 |
-| Regulatory Framework | 85% | 보통 (문서-코드 정합성 검토 필요) |
-| **HnVue.Imaging (핵심)** | **15%** | ❌ Stub 수준 |
-| **WPF UI 화면 (핵심)** | **55%** | ⚠️ Wave B 완료 — 3컬럼 레이아웃, 로그인 오버레이, 자식 ViewModel 연결 |
-| **Hardware Integration** | **10%** | ❌ Simulator만 |
-| **1차 릴리즈 준비도** | **~45%** | ❌ 추가 개발 필요 |
+### 계획 대비 현황 요약
 
-> 상세 분석: [ANALYSIS-001](docs/ANALYSIS-001_Phase1_Review_v1.0.md) | [ANALYSIS-002](docs/ANALYSIS-002_InternalizationContext_v1.0.md) | [개발 전략 STRATEGY-002](docs/STRATEGY-002_ParallelDevelopment_v1.0.md)
+| 항목 | 계획 (WBS v2.0) | 현재 (2026-04-08) |
+|------|-----------------|-------------------|
+| **경과 기간** | 12개월 (2026-03 ~ 2027-03) | 1.15개월 (9.6%) |
+| **소진 MM** | 24 ~ 36 MM | 2.3 MM (9.6%) |
+| **잔여 MM** | — | 21.7 ~ 33.7 MM |
+| **다음 마일스톤** | M1 설계 완료 (2026-05-15) | D-37, ON TRACK |
+| **테스트** | IEC 62304 Class B 기준 | 1,135개 (단위 1,117 + 통합 18), 85%+ 커버리지 |
+| **프로덕션 모듈** | 17개 | 17개 (구조 완성) |
+| **규제 문서** | IEC 62304/FDA/CE/KFDA | 216개 |
+
+### 마일스톤 전망
+
+| MS | 목표 시기 | 전망 | 핵심 리스크 |
+|----|----------|------|-----------|
+| **M1** 설계 완료 | 2026-05-15 | ON TRACK | STRIDE 위협 모델 상세화 |
+| **M2** Tier 1 구현 | 2026-08-31 | AT RISK | Generator/Detector HW 어댑터 미구현 |
+| **M3** Tier 2 구현 | 2026-10-31 | AT RISK | 영상처리 파이프라인 Stub, FPD SDK |
+| **M4** 통합 테스트 | 2026-12-15 | WATCH | M2/M3 완료에 종속 |
+| **M5** 시스템 테스트 | 2027-01-15 | WATCH | 외부 침투 테스트 일정 확보 |
+| **M6** 릴리스 | 2027-03-01 | WATCH | 전체 파이프라인 정상 진행 시 달성 가능 |
+
+### 영역별 완성도
+
+| 영역 | 완성도 | 계획 대비 | 상태 |
+|------|:------:|----------|------|
+| Architecture / Clean Architecture | 90% | 선행 | ✅ 우수 — 순환 의존성 없음, 6계층 완벽 준수 |
+| Security (JWT/RBAC/bcrypt/HMAC) | 70% | 정시 | ⚠️ PHI AES-256-GCM, IHE ATNA 미완 (GAP-CS-001/002) |
+| Data Layer (EF Core + SQLCipher) | 55% | 정시 | ⚠️ WAL 설정, 마이그레이션 정책 보완 필요 |
+| Workflow Engine (9-상태 머신) | 30% | 정시 | ❌ HW 어댑터 스텁만 존재 (GAP-WF-001) |
+| DICOM Communication (C-STORE/C-FIND) | 50% | 정시 | ⚠️ 멀티벤더 미검증, TLS 미구현 |
+| Test Infrastructure | 95% | 선행 | ✅ 1,135개 테스트, 85%+ 커버리지 조기 달성 |
+| Regulatory Framework | 85% | 선행 | ✅ 216개 문서, RTM TC 매핑 진행중 |
+| **HnVue.Imaging (핵심)** | **35%** | 지연 주의 | ❌ Gain/Offset 보정, GSDF LUT 미구현 |
+| **WPF UI 화면 (핵심)** | **50%** | 정시 | ⚠️ UISPEC 9개 정의, PPT 기반 리디자인 진행중 |
+| **Hardware Integration** | **10%** | 정시 (7월 착수 계획) | ❌ Simulator만 — Generator/Detector/FPD 스텁 |
+| **기능 구현 완성도** | **~45%** | — | ❌ ANALYSIS-003 기준 |
+
+### CRITICAL 리스크 (4건)
+
+| 리스크 | 영향 | 완화 방안 |
+|--------|------|----------|
+| Generator RS-232/TCP 어댑터 미구현 | M2 차단, 실제 촬영 불가 | 5월 중 프로토콜 분석 + 시뮬레이터 우선 |
+| FPD Detector SDK 미구현 | M2/M3 차단, 이미지 수집 불가 | 벤더 SDK 확보 + 어댑터 패턴 병행 |
+| 영상처리 파이프라인 Stub | M3 차단, 핵심 사용자 기능 부재 | fo-dicom DICOM 파싱 우선 구현 |
+| PHI AES-256-GCM 미구현 | 인허가 차단 (HIPAA/GDPR) | M2 전 구현 필수 |
+
+> 상세 진도 보고: [PROGRESS-001](docs/management/PROGRESS-001_Status_Report_v1.0.md) | 모듈 교차검증: [ANALYSIS-003](docs/ANALYSIS-003_ModuleCrossVerification_v1.0.md) | Phase 1 분석: [ANALYSIS-001](docs/ANALYSIS-001_Phase1_Review_v1.0.md)
 
 ### 개발 단계별 요약
 
@@ -793,6 +827,38 @@ UI 통합 + 통합 테스트
   - 테스트: 812개 (단위 794 + 통합 18) ✅
   - 품질 점수: 0.91/1.0 ✅
   - 안전 임계 모듈 커버리지: 90%+ 유지 ✅
+
+#### Phase 2 품질 강화 (완료 ✅, 2026-04-06)
+Gitea 이슈 23개 해결 + 전체 모듈 README 업데이트
+- 테스트: 743개 (812개 기준 리팩토링 포함)
+
+#### Phase 3 품질 강화 (완료 ✅, 2026-04-06)
+이슈 #27~#40 해결, 영상 파이프라인 완성
+- 테스트: 812개
+
+#### Phase 4 완료 (완료 ✅, 2026-04-07)
+JWT Denylist, RDSR, 테스트 대폭 확대
+- JWT Denylist 구현 (세션 자동 만료)
+- DICOM RDSR 기본 모델 구현
+- FPD 검출기 추상화 및 SDK 연동 체계 구축 (v0.6.0)
+- GUI 교체 가능 아키텍처 (UI.Contracts + UI.ViewModels 분리, Design Token 3계층)
+- **최종 결과:**
+  - 테스트: 1,135개 (단위 1,117 + 통합 18) ✅
+  - 전 모듈 커버리지: 85%+ ✅
+  - 안전 임계 모듈 커버리지: 90%+ 유지 ✅
+
+#### 6팀 운영 인프라 구축 (완료 ✅, 2026-04-08)
+Worktree 기반 팀 분리 개발 운영 체계
+- 6개 팀 구성: Team A (인프라), Team B (의료 영상), Team Design (순수 UI), Coordinator, QA, RA
+- QA 자동화 인프라 (SonarCloud, OWASP, Stryker.NET)
+- RA 문서 자동화 스크립트 (SBOM, RTM)
+- UISPEC 9개 문서 체계 구축 + PPT 기반 UI 리디자인 착수
+- DOC-042 CMP v1.0 발행
+
+#### 현재 진행중 (2026-04-08 ~)
+- UISPEC 기반 WPF UI 리디자인 (LoginView, PatientListView 착수)
+- M1 설계 완료 준비 (STRIDE 상세화, RTM TC 매핑)
+- ANALYSIS-003 교정 계획 Phase A 착수 대기
 
 ---
 
