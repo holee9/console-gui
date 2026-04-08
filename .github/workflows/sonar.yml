@@ -1,0 +1,71 @@
+name: SonarCloud Analysis
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - 'tests.integration/**'
+
+env:
+  LANG: ko_KR.UTF-8
+  DOTNET_NOLOGO: true
+
+jobs:
+  sonarcloud:
+    runs-on: windows-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+
+      - name: Setup Java (for SonarScanner)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Cache SonarCloud
+        uses: actions/cache@v4
+        with:
+          path: ~/.sonar/cache
+          key: sonar-${{ runner.os }}
+
+      - name: Install SonarScanner
+        shell: pwsh
+        run: dotnet tool install --global dotnet-sonarscanner
+
+      - name: Begin SonarCloud Analysis
+        shell: pwsh
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          dotnet sonarscanner begin `
+            /k:"${{ secrets.SONAR_PROJECT_KEY }}" `
+            /o:"${{ secrets.SONAR_ORG }}" `
+            /d:sonar.token="${{ secrets.SONAR_TOKEN }}" `
+            /d:sonar.host.url="https://sonarcloud.io" `
+            /d:sonar.cs.opencover.reportsPaths="coverage-results/**/coverage.opencover.xml"
+
+      - name: Build & Test with Coverage
+        shell: pwsh
+        run: |
+          dotnet build HnVue.sln --configuration Release --no-restore
+          dotnet test HnVue.sln --configuration Release --no-build `
+            --settings coverage.runsettings `
+            --collect:"XPlat Code Coverage" `
+            --results-directory coverage-results
+
+      - name: End SonarCloud Analysis
+        shell: pwsh
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"

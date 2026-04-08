@@ -1,0 +1,55 @@
+name: OWASP Security Scan
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'Directory.Packages.props'
+      - '**/*.csproj'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'Directory.Packages.props'
+      - '**/*.csproj'
+
+env:
+  LANG: ko_KR.UTF-8
+
+jobs:
+  dependency-check:
+    runs-on: windows-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+
+      - name: Restore packages
+        run: dotnet restore HnVue.sln
+
+      - name: Run OWASP Dependency-Check
+        uses: dependency-check/Dependency-Check_Action@main
+        with:
+          project: 'HnVue'
+          path: '.'
+          format: 'HTML,JSON'
+          args: '--failOnCVSS 7 --enableExperimental'
+
+      - name: Upload Security Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: security-scan-report
+          path: reports/
+          retention-days: 30
+
+      - name: Check for Critical Vulnerabilities
+        if: failure()
+        shell: pwsh
+        run: |
+          Write-Host "::error::OWASP Dependency-Check found vulnerabilities with CVSS >= 7.0"
+          Write-Host "Review the security-scan-report artifact for details."

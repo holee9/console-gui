@@ -1,0 +1,55 @@
+# HnVue Team Ownership
+# QA team is required reviewer for ALL PRs
+*                                       @qa-team
+
+# Team A — Infrastructure
+src/HnVue.Common/                       @team-a @qa-team
+src/HnVue.Data/                         @team-a @qa-team
+src/HnVue.Security/                     @team-a @qa-team
+src/HnVue.SystemAdmin/                  @team-a @qa-team
+src/HnVue.Update/                       @team-a @qa-team
+tests/HnVue.Common.Tests/              @team-a
+tests/HnVue.Data.Tests/                @team-a
+tests/HnVue.Security.Tests/            @team-a
+tests/HnVue.SystemAdmin.Tests/         @team-a
+tests/HnVue.Update.Tests/              @team-a
+tests/HnVue.Architecture.Tests/        @team-a
+Directory.Packages.props                @team-a @qa-team
+
+# Team B — Medical Domain
+src/HnVue.Dicom/                        @team-b @qa-team
+src/HnVue.Detector/                     @team-b @qa-team
+src/HnVue.Imaging/                      @team-b @qa-team
+src/HnVue.Dose/                         @team-b @qa-team
+src/HnVue.Incident/                     @team-b @qa-team
+src/HnVue.Workflow/                     @team-b @qa-team
+src/HnVue.PatientManagement/           @team-b @qa-team
+src/HnVue.CDBurning/                   @team-b @qa-team
+
+# Design Team — UI
+src/HnVue.UI/                           @team-design @qa-team
+tests/HnVue.UI.Tests/                  @team-design
+tests/UI/                               @team-design @qa-team
+
+# Coordinator — Integration
+src/HnVue.UI.Contracts/                @coordinator @qa-team
+src/HnVue.UI.ViewModels/               @coordinator @qa-team
+src/HnVue.App/                          @coordinator @qa-team
+tests.integration/                      @coordinator @qa-team
+
+# QA Team — CI/CD and Quality
+.github/workflows/                      @qa-team
+scripts/ci/                             @qa-team
+scripts/qa/                             @qa-team
+TestReports/                            @qa-team
+docs/testing/                           @qa-team @ra-team
+
+# RA Team — Regulatory
+docs/regulatory/                        @ra-team
+docs/planning/                          @ra-team
+docs/risk/                              @ra-team
+docs/verification/                      @ra-team
+docs/management/                        @ra-team
+scripts/ra/                             @ra-team
+docfx.json                              @ra-team
+CHANGELOG.md                            @ra-team

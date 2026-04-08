@@ -1,0 +1,25 @@
+{
+  "$schema": "https://raw.githubusercontent.com/stryker-mutator/stryker-net/master/src/Stryker.Core/Stryker.Core/stryker-config.schema.json",
+  "stryker-config": {
+    "project": "HnVue.sln",
+    "mutation-level": "Standard",
+    "reporters": ["html", "json", "progress"],
+    "thresholds": {
+      "high": 80,
+      "low": 70,
+      "break": 60
+    },
+    "mutate": [
+      "src/HnVue.Dose/**/*.cs",
+      "src/HnVue.Incident/**/*.cs",
+      "src/HnVue.Security/**/*.cs",
+      "src/HnVue.Update/**/*.cs",
+      "!**/DesignTime/**",
+      "!**/Migrations/**",
+      "!**/obj/**"
+    ],
+    "language-version": "preview",
+    "concurrency": 4,
+    "disable-bail": false
+  }
+}

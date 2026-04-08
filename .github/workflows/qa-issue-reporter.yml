@@ -1,0 +1,51 @@
+name: QA Issue Reporter
+
+on:
+  workflow_run:
+    workflows: ["Desktop CI"]
+    types: [completed]
+
+env:
+  LANG: ko_KR.UTF-8
+  PYTHONIOENCODING: utf-8
+
+jobs:
+  report-failure:
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Create QA Failure Issue on Gitea
+        shell: bash
+        env:
+          GITEA_TOKEN: ${{ secrets.GITEA_TOKEN }}
+          GITEA_URL: ${{ secrets.GITEA_URL }}
+        run: |
+          TITLE="CI 실패: Desktop CI - $(date +%Y-%m-%d)"
+          BODY=$(cat <<'BODY_EOF'
+          ## CI 파이프라인 실패
+
+          ### 워크플로우
+          - 이름: ${{ github.event.workflow_run.name }}
+          - 브랜치: ${{ github.event.workflow_run.head_branch }}
+          - 커밋: ${{ github.event.workflow_run.head_sha }}
+          - 실행 URL: ${{ github.event.workflow_run.html_url }}
+
+          ### 조치 필요
+          - [ ] 실패 원인 분석
+          - [ ] 수정 PR 생성
+          - [ ] 테스트 재실행 확인
+          BODY_EOF
+          )
+
+          if [ -n "$GITEA_TOKEN" ] && [ -n "$GITEA_URL" ]; then
+            curl -s -X POST \
+              "${GITEA_URL}/api/v1/repos/drake.lee/Console-GUI/issues" \
+              -H "Authorization: token ${GITEA_TOKEN}" \
+              -H "Content-Type: application/json; charset=utf-8" \
+              -d "$(jq -n --arg title "$TITLE" --arg body "$BODY" '{title: $title, body: $body}')"
+            echo "Gitea issue created"
+          else
+            echo "::warning::GITEA_TOKEN or GITEA_URL not configured"
+          fi
