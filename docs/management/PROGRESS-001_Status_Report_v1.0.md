@@ -367,7 +367,92 @@ Tier 2 구현:            ███████░░░░░░░░░░░
 
 ---
 
-## 8. 다음 보고 시점
+## 8. 계획 대비 진도 Gantt Chart (2026-04-08 기준)
+
+### 8.1 Phase 1 전체 Gantt — 계획 vs 현황
+
+```mermaid
+gantt
+    title HnVue Phase 1 계획 대비 진도 현황 2026-04-08 기준
+    dateFormat  YYYY-MM-DD
+    axisFormat  %Y-%m
+    todayMarker stroke-width:3px,stroke:#f00
+
+    section 기반 문서
+    MRD v3.0 PRD v2.0             :done, base1, 2026-03-04, 2026-04-01
+    SAD v2.0 SDS v2.0             :done, base2, 2026-04-01, 2026-04-30
+    SDP v2.0 WBS v2.0 DMP v2.0   :done, base3, 2026-04-01, 2026-04-30
+
+    section Tier 1 구현 SW1
+    RBAC bcrypt 5회잠금            :done, t1a, 2026-04-01, 2026-04-30
+    PHI 암호화 SQLCipher           :active, t1b, 2026-04-01, 2026-04-30
+    감사 로그 Serilog 해시체인      :active, t1c, 2026-05-01, 2026-05-31
+    DICOM fo-dicom C-STORE MWL     :t1d, 2026-05-01, 2026-06-30
+    IHE SWF 워크플로우             :crit, t1e, 2026-06-01, 2026-07-31
+    SW 업데이트 UPD-1200           :active, t1f, 2026-06-01, 2026-07-31
+    인시던트 대응 INC-1100         :active, t1g, 2026-07-01, 2026-07-31
+    STRIDE 구현                    :t1h, 2026-07-01, 2026-07-31
+    SBOM CycloneDX                 :t1i, 2026-07-01, 2026-07-31
+    Generator RS-232 TCP           :crit, t1k, 2026-07-01, 2026-07-31
+    선량 인터락 안전로직            :crit, t1l, 2026-07-01, 2026-07-31
+
+    section Tier 2 구현 SW2
+    환자 관리 MWL 자동조회          :active, t2a, 2026-04-15, 2026-05-31
+    영상처리 W-L Zoom Pan          :crit, t2b, 2026-04-15, 2026-06-15
+    선량 관리 DAP DRL              :t2c, 2026-05-15, 2026-07-15
+    CD DVD 버닝 MR-072             :active, t2d, 2026-06-01, 2026-07-31
+    시스템 설정 UI                  :t2e, 2026-07-01, 2026-07-31
+    FPD SDK 통합                   :crit, t2f, 2026-06-15, 2026-07-31
+    촬영 프로토콜 관리              :t2g, 2026-08-01, 2026-08-31
+    WPF UI MVVM 완성               :active, t2h, 2026-08-01, 2026-09-30
+
+    section 검증
+    단위 테스트 xUnit              :active, v1, 2026-05-01, 2026-09-30
+    통합 테스트 Tier 1             :v2, 2026-08-01, 2026-09-30
+    통합 테스트 Tier 2             :v3, 2026-09-01, 2026-10-31
+    보안 테스트 STRIDE             :v4, 2026-10-01, 2026-10-31
+    시스템 테스트 전체              :v6, 2026-11-01, 2026-12-31
+    침투 테스트                    :v7, 2026-11-01, 2026-11-30
+    사용성 테스트 Summative         :v8, 2026-12-01, 2026-12-31
+    VnV Summary Report             :v9, 2027-01-01, 2027-01-31
+
+    section 인허가 준비
+    RTM 최종본                     :r1, 2027-01-01, 2027-01-31
+    DHF 편찬                       :r2, 2027-02-01, 2027-02-28
+    eSTAR 510k 패키지              :r3, 2027-02-01, 2027-02-28
+
+    section 마일스톤
+    M1 설계 완료                   :milestone, m1, 2026-05-15, 0d
+    M2 Tier1 구현                  :milestone, m2, 2026-08-31, 0d
+    M3 Tier2 구현                  :milestone, m3, 2026-10-31, 0d
+    M4 통합 테스트                 :milestone, m4, 2026-12-15, 0d
+    M5 시스템 테스트               :milestone, m5, 2027-01-15, 0d
+    M6 릴리스                      :milestone, m6, 2027-03-01, 0d
+```
+
+### 8.2 Gantt 범례
+
+| 표시 | 의미 |
+|------|------|
+| **done** (진한 색) | 완료된 작업 |
+| **active** (밝은 색) | 진행중인 작업 (착수 완료, 부분 구현) |
+| **crit** (빨간 색) | AT RISK — 지연 또는 차단 위험 항목 |
+| (기본 색) | 미착수 (계획상 정시) |
+| **todayMarker** (빨간 세로선) | 오늘 (2026-04-08) |
+
+### 8.3 핵심 읽기 포인트
+
+1. **빨간 세로선(today) 왼쪽에 done/active가 없는 항목** = 아직 착수 안 해도 되는 항목 (정상)
+2. **빨간 세로선과 겹치는 active 항목** = 현재 진행중 (PHI 암호화, 감사 로그, MWL 등)
+3. **crit 표시 항목 4건** = 프로젝트 최대 리스크
+   - IHE SWF 워크플로우 (Generator HW 어댑터 의존)
+   - Generator RS-232/TCP (하드웨어 미확보)
+   - 영상처리 W-L Zoom Pan (Stub 수준)
+   - FPD SDK 통합 (벤더 SDK 미확보)
+
+---
+
+## 9. 다음 보고 시점
 
 | 보고 시점 | 기준일 | 확인 항목 |
 |----------|--------|----------|
