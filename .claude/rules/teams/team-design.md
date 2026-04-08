@@ -41,6 +41,26 @@
 - Use commands (ICommand) for all user actions
 - Animations and visual state changes are OK in code-behind
 
+## PPT Spec Scope Compliance [HARD — Issue #59]
+
+When implementing from PPT/design spec pages:
+
+- [HARD] Before starting, explicitly list the EXACT XAML files to be modified and confirm they match the specified pages ONLY
+- [HARD] Never implement UI elements not shown on the specified PPT pages — even if they seem "complementary"
+- [HARD] Thumbnail strips, image viewer panels, and acquisition-related components belong EXCLUSIVELY to Image Viewer / Acquisition specs (PPT slides 9-11) — never include in Worklist/Studylist views
+- [HARD] After implementation, perform 1:1 comparison of each implemented element against the source PPT pages
+- [HARD] If a PPT page says "이 사양서는 X만 해당합니다", treat ALL other screen types as forbidden for this task
+
+Scope boundary map (from ★HnVUE UI 변경 최종안_251118.pptx):
+- Slides 1: LoginView.xaml ONLY
+- Slides 2-4: PatientListView.xaml (Worklist) ONLY
+- Slides 5-7: StudylistView.xaml (Studylist) ONLY
+- Slides 8: AddPatientProcedureView.xaml ONLY
+- Slides 9-11: WorkflowView.xaml (Acquisition) — includes thumbnail strip
+- Slides 12-13: MergeView.xaml ONLY
+- Slides 14-22: SettingsView.xaml ONLY
+
 ## Issue Protocol
 - Theme/design token changes: notify Coordinator
 - Emergency Stop position changes: create issue with QA/RA review required
+- PPT spec scope violation: create issue with `team-design` + `bug` labels, document in CHANGELOG

@@ -3,25 +3,127 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:converters="clr-namespace:HnVue.UI.Converters"
              mc:Ignorable="d"
-             d:DesignHeight="600" d:DesignWidth="800">
+             d:DesignHeight="600" d:DesignWidth="1000">
     <!--
-        @MX:NOTE StudylistView — Study list with PACS server selection and period filters.
-                 PPT 슬라이드 7 (Studylist 2안): prev/next navigation, PACS dropdown, period filters.
-                 Columns: PatientId, AccessionNumber, StudyDate, BodyPart, Description.
+        @MX:NOTE StudylistView — Studylist screen, PPT 슬라이드 7 (2안/최종안) 재구현.
+                 Scope: PPT 슬라이드 5-7 ONLY. Image Viewer/Acquisition 요소 포함 금지 (Issue #59).
+                 Layout: header (prev/next + title + PACS) | filter bar | DataGrid | status bar.
+                 Date filters: 1 Day, 3 Days, 1 Week, 15 Days, 1 Month (All 제거, Today→1 Day, 15 Days 추가).
+                 Columns: PatientId, AccessionNumber, StudyDate, StudyDescription (BodyPart 제거).
+                 Colors: hardcoded PPT values matching PatientListView dark theme.
     -->
-    <Grid Background="{DynamicResource HnVue.Semantic.Surface.Page}">
+    <UserControl.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+
+        <!-- Period filter button — active=accent blue bg on press, inactive=dark bg -->
+        <Style x:Key="HnVue.PeriodFilterButton" TargetType="Button">
+            <Setter Property="Background" Value="#1a2540"/>
+            <Setter Property="Foreground" Value="#b0bec5"/>
+            <Setter Property="BorderBrush" Value="#2a3a58"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontFamily" Value="{DynamicResource HnVue.Core.FontFamily}"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bg"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="3"
+                                Padding="{TemplateBinding Padding}"
+                                Height="{TemplateBinding Height}">
+                            <TextBlock Text="{TemplateBinding Content}"
+                                       Foreground="{TemplateBinding Foreground}"
+                                       FontSize="{TemplateBinding FontSize}"
+                                       FontFamily="{TemplateBinding FontFamily}"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bg" Property="Background" Value="#243050"/>
+                                <Setter TargetName="Bg" Property="BorderBrush" Value="#4a6090"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Bg" Property="Background" Value="#1f6fc7"/>
+                                <Setter Property="Foreground" Value="#FFFFFF"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Nav button (prev/next) — outline style -->
+        <Style x:Key="HnVue.NavButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#8899b0"/>
+            <Setter Property="BorderBrush" Value="#2a3a58"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Width" Value="32"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bg"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="3"
+                                Width="{TemplateBinding Width}"
+                                Height="{TemplateBinding Height}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"
+                                              TextElement.Foreground="{TemplateBinding Foreground}"
+                                              TextElement.FontFamily="{TemplateBinding FontFamily}"
+                                              TextElement.FontSize="{TemplateBinding FontSize}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bg" Property="Background" Value="#1a2a44"/>
+                                <Setter TargetName="Bg" Property="BorderBrush" Value="#4a6090"/>
+                                <Setter Property="Foreground" Value="#e0e6f0"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- DataGrid column header -->
+        <Style x:Key="HnVue.StudyGridHeader" TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="#080e1a"/>
+            <Setter Property="Foreground" Value="#7090b0"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontFamily" Value="{DynamicResource HnVue.Core.FontFamily}"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Padding" Value="8,0"/>
+            <Setter Property="BorderBrush" Value="#1e2d4a"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Background="#0d1527">
         <Grid.RowDefinitions>
-            <RowDefinition Height="48"/>   <!-- Header: nav + title + PACS server -->
-            <RowDefinition Height="Auto"/> <!-- Filter buttons + search -->
+            <RowDefinition Height="44"/>   <!-- Header: nav + title + PACS -->
+            <RowDefinition Height="40"/>   <!-- Filter bar -->
             <RowDefinition Height="*"/>    <!-- DataGrid -->
-            <RowDefinition Height="Auto"/> <!-- Status bar -->
+            <RowDefinition Height="28"/>   <!-- Status bar -->
         </Grid.RowDefinitions>
 
-        <!-- Row 0: Header — prev/next + title + PACS server dropdown -->
+        <!-- ═══ Row 0: Header — prev/next + "Study List" title + PACS dropdown ═══ -->
         <Border Grid.Row="0"
-                Background="{DynamicResource HnVue.Semantic.Surface.Panel}"
-                BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
+                Background="#080e1a"
+                BorderBrush="#1e2d4a"
                 BorderThickness="0,0,0,1"
                 Padding="12,0">
             <Grid>
@@ -33,40 +135,39 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <!-- Previous button — Segoe MDL2 ChevronLeft -->
+                <!-- Prev button — Segoe MDL2 ChevronLeft &#xE76B; -->
                 <Button Grid.Column="0"
                         Content="&#xE76B;"
-                        FontFamily="Segoe MDL2 Assets"
                         Command="{Binding NavigatePreviousCommand}"
-                        Style="{StaticResource HnVue.OutlineButton}"
-                        Width="32" Height="32"
+                        Style="{StaticResource HnVue.NavButton}"
                         Margin="0,0,4,0"
                         ToolTip="Previous"/>
 
-                <!-- Next button — Segoe MDL2 ChevronRight -->
+                <!-- Next button — Segoe MDL2 ChevronRight &#xE76C; -->
                 <Button Grid.Column="1"
                         Content="&#xE76C;"
-                        FontFamily="Segoe MDL2 Assets"
                         Command="{Binding NavigateNextCommand}"
-                        Style="{StaticResource HnVue.OutlineButton}"
-                        Width="32" Height="32"
+                        Style="{StaticResource HnVue.NavButton}"
                         Margin="0,0,12,0"
                         ToolTip="Next"/>
 
                 <!-- Section title -->
                 <TextBlock Grid.Column="2"
                            Text="Study List"
-                           Style="{StaticResource HnVue.SectionHeader}"
+                           Foreground="#e0e6f0"
+                           FontSize="14"
+                           FontWeight="SemiBold"
+                           FontFamily="{DynamicResource HnVue.Core.FontFamily}"
                            VerticalAlignment="Center"/>
 
                 <!-- PACS label -->
                 <TextBlock Grid.Column="3"
                            Text="PACS:"
-                           Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}"
+                           Foreground="#7090b0"
+                           FontSize="12"
+                           FontFamily="{DynamicResource HnVue.Core.FontFamily}"
                            VerticalAlignment="Center"
-                           FontSize="13"
-                           Margin="0,0,6,0"
-                           FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
+                           Margin="0,0,6,0"/>
 
                 <!-- PACS server ComboBox -->
                 <ComboBox Grid.Column="4"
@@ -75,94 +176,82 @@
                           Width="120"
                           Height="30"
                           VerticalAlignment="Center"
-                          FontSize="13"
+                          Background="#1a2540"
+                          BorderBrush="#2a3a58"
+                          BorderThickness="1"
+                          Foreground="#e0e6f0"
+                          FontSize="12"
                           FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
             </Grid>
         </Border>
 
-        <!-- Row 1: Period filter buttons + search -->
+        <!-- ═══ Row 1: Period filter buttons + search ═══ -->
         <Grid Grid.Row="1"
-              Background="{DynamicResource HnVue.Semantic.Surface.Panel}"
-              Margin="0,0,0,1">
+              Background="#0a111e">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="190"/>
             </Grid.ColumnDefinitions>
 
-            <!-- Period filter buttons (matches PatientListView pattern) -->
-            <ScrollViewer Grid.Column="0"
-                          HorizontalScrollBarVisibility="Auto"
-                          VerticalScrollBarVisibility="Disabled"
-                          Margin="12,6,8,6">
-                <StackPanel Orientation="Horizontal">
-                    <Button Content="Today"
-                            Command="{Binding FilterByPeriodCommand}"
-                            CommandParameter="Today"
-                            Style="{StaticResource HnVue.OutlineButton}"
-                            Height="28" Padding="10,0" Margin="0,0,4,0"
-                            FontSize="12"
-                            FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
-                    <Button Content="3Days"
-                            Command="{Binding FilterByPeriodCommand}"
-                            CommandParameter="3Days"
-                            Style="{StaticResource HnVue.OutlineButton}"
-                            Height="28" Padding="10,0" Margin="0,0,4,0"
-                            FontSize="12"
-                            FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
-                    <Button Content="1Week"
-                            Command="{Binding FilterByPeriodCommand}"
-                            CommandParameter="1Week"
-                            Style="{StaticResource HnVue.OutlineButton}"
-                            Height="28" Padding="10,0" Margin="0,0,4,0"
-                            FontSize="12"
-                            FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
-                    <Button Content="All"
-                            Command="{Binding FilterByPeriodCommand}"
-                            CommandParameter="All"
-                            Style="{StaticResource HnVue.OutlineButton}"
-                            Height="28" Padding="10,0" Margin="0,0,4,0"
-                            FontSize="12"
-                            FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
-                    <Button Content="1Month"
-                            Command="{Binding FilterByPeriodCommand}"
-                            CommandParameter="1Month"
-                            Style="{StaticResource HnVue.OutlineButton}"
-                            Height="28" Padding="10,0"
-                            FontSize="12"
-                            FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
-                </StackPanel>
-            </ScrollViewer>
+            <!-- Period buttons: 1 Day | 3 Days | 1 Week | 15 Days | 1 Month -->
+            <StackPanel Grid.Column="0"
+                        Orientation="Horizontal"
+                        VerticalAlignment="Center"
+                        Margin="12,0,8,0">
+                <Button Content="1 Day"
+                        Command="{Binding FilterByPeriodCommand}"
+                        CommandParameter="1Day"
+                        Style="{StaticResource HnVue.PeriodFilterButton}"
+                        Margin="0,0,4,0"/>
+                <Button Content="3 Days"
+                        Command="{Binding FilterByPeriodCommand}"
+                        CommandParameter="3Days"
+                        Style="{StaticResource HnVue.PeriodFilterButton}"
+                        Margin="0,0,4,0"/>
+                <Button Content="1 Week"
+                        Command="{Binding FilterByPeriodCommand}"
+                        CommandParameter="1Week"
+                        Style="{StaticResource HnVue.PeriodFilterButton}"
+                        Margin="0,0,4,0"/>
+                <Button Content="15 Days"
+                        Command="{Binding FilterByPeriodCommand}"
+                        CommandParameter="15Days"
+                        Style="{StaticResource HnVue.PeriodFilterButton}"
+                        Margin="0,0,4,0"/>
+                <Button Content="1 Month"
+                        Command="{Binding FilterByPeriodCommand}"
+                        CommandParameter="1Month"
+                        Style="{StaticResource HnVue.PeriodFilterButton}"/>
+            </StackPanel>
 
             <!-- Search box -->
             <Border Grid.Column="1"
                     Margin="0,6,12,6"
                     Height="28"
-                    CornerRadius="4"
-                    Background="{DynamicResource HnVue.Semantic.Surface.Card}"
-                    BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
-                    BorderThickness="1"
-                    Padding="8,0">
+                    CornerRadius="3"
+                    Background="#1a2540"
+                    BorderBrush="#2a3a58"
+                    BorderThickness="1">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <!-- Search icon — Segoe MDL2 -->
                     <TextBlock Grid.Column="0"
                                Text="&#xE721;"
                                FontFamily="Segoe MDL2 Assets"
                                FontSize="12"
-                               Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}"
+                               Foreground="#7090b0"
                                VerticalAlignment="Center"
-                               Margin="0,0,4,0"/>
+                               Margin="8,0,4,0"/>
                     <TextBox Grid.Column="1"
                              Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}"
                              Background="Transparent"
-                             Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
+                             Foreground="#e0e6f0"
                              BorderThickness="0"
-                             FontSize="12"
+                             FontSize="11"
                              VerticalAlignment="Center"
-                             CaretBrush="{DynamicResource HnVue.Semantic.Brand.Accent}"
+                             CaretBrush="#7bc8f5"
                              FontFamily="{DynamicResource HnVue.Core.FontFamily}">
                         <TextBox.Style>
                             <Style TargetType="TextBox">
@@ -170,8 +259,8 @@
                                     <VisualBrush x:Key="WatermarkBrush" TileMode="None" Stretch="None" AlignmentX="Left">
                                         <VisualBrush.Visual>
                                             <TextBlock Text="Search studies..."
-                                                       Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}"
-                                                       FontSize="12"
+                                                       Foreground="#4a6080"
+                                                       FontSize="11"
                                                        Margin="0"/>
                                         </VisualBrush.Visual>
                                     </VisualBrush>
@@ -190,7 +279,8 @@
             </Border>
         </Grid>
 
-        <!-- Row 2: Study DataGrid — columns match StudyRecord properties -->
+        <!-- ═══ Row 2: Study DataGrid ═══ -->
+        <!-- Columns per PPT 7: PatientId, AccessionNumber, StudyDate, StudyDescription -->
         <DataGrid Grid.Row="2"
                   ItemsSource="{Binding Studies}"
                   SelectedItem="{Binding SelectedStudy}"
@@ -198,73 +288,142 @@
                   IsReadOnly="True"
                   CanUserAddRows="False"
                   CanUserDeleteRows="False"
+                  CanUserReorderColumns="False"
                   RowHeight="40"
                   Background="Transparent"
                   BorderThickness="0"
                   GridLinesVisibility="Horizontal"
-                  HorizontalGridLinesBrush="{DynamicResource HnVue.Semantic.Border.Default}"
-                  ColumnHeaderHeight="36"
-                  Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
+                  HorizontalGridLinesBrush="#1e2d4a"
+                  ColumnHeaderHeight="32"
+                  Foreground="#e0e6f0"
                   FontFamily="{DynamicResource HnVue.Core.FontFamily}"
-                  FontSize="13">
+                  FontSize="12"
+                  AlternationCount="2"
+                  ColumnHeaderStyle="{StaticResource HnVue.StudyGridHeader}"
+                  SelectionMode="Single">
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Foreground" Value="#e0e6f0"/>
+                    <Setter Property="Height" Value="40"/>
+                    <Setter Property="Cursor" Value="Hand"/>
+                    <Style.Triggers>
+                        <Trigger Property="AlternationIndex" Value="1">
+                            <Setter Property="Background" Value="#0a111e"/>
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="#1a3a5c"/>
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver" Value="True"/>
+                                <Condition Property="IsSelected" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" Value="#131f35"/>
+                        </MultiTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.RowStyle>
+            <DataGrid.CellStyle>
+                <Style TargetType="DataGridCell">
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="Padding" Value="8,0"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                </Style>
+            </DataGrid.CellStyle>
             <DataGrid.Columns>
-                <!-- PatientId — StudyRecord.PatientId -->
+                <!-- Patient ID -->
                 <DataGridTextColumn Header="Patient ID"
                                     Binding="{Binding PatientId}"
-                                    Width="130"/>
-                <!-- AccessionNumber — StudyRecord.AccessionNumber (nullable) -->
-                <DataGridTextColumn Header="Acc No"
+                                    Width="130">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="Padding" Value="8,0"/>
+                            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <!-- Accession No — PPT 7 명시 컬럼 -->
+                <DataGridTextColumn Header="Accession No"
                                     Binding="{Binding AccessionNumber}"
-                                    Width="130"/>
-                <!-- StudyDate — StudyRecord.StudyDate (DateTimeOffset) -->
-                <DataGridTextColumn Header="Exam Date"
-                                    Binding="{Binding StudyDate, StringFormat=\{0:yyyy-MM-dd\}}"
-                                    Width="110"/>
-                <!-- BodyPart — StudyRecord.BodyPart (nullable, used as Modality substitute) -->
-                <DataGridTextColumn Header="Body Part"
-                                    Binding="{Binding BodyPart}"
-                                    Width="100"/>
-                <!-- Description — StudyRecord.Description (nullable) -->
-                <DataGridTextColumn Header="Description"
+                                    Width="150">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="Padding" Value="8,0"/>
+                            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <!-- StudyDate — PPT 7: header "StudyDate" -->
+                <DataGridTextColumn Header="StudyDate"
+                                    Binding="{Binding StudyDate, StringFormat={}{0:yyyy-MM-dd HH:mm}}"
+                                    Width="140">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="Padding" Value="8,0"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <!-- StudyDescription — PPT 7: header "StudyDescription" (BodyPart 제거) -->
+                <DataGridTextColumn Header="StudyDescription"
                                     Binding="{Binding Description}"
-                                    Width="*"/>
+                                    Width="*">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="Padding" Value="8,0"/>
+                            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
 
-        <!-- Row 3: Status bar -->
+        <!-- ═══ Row 3: Status bar ═══ -->
         <Border Grid.Row="3"
-                Background="{DynamicResource HnVue.Semantic.Surface.Panel}"
-                BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
+                Background="#080e1a"
+                BorderBrush="#1e2d4a"
                 BorderThickness="0,1,0,0"
-                Padding="12,4">
+                Padding="12,0">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <!-- Error message (hidden when null/empty) -->
+                <!-- Error message -->
                 <TextBlock Grid.Column="0"
                            Text="{Binding ErrorMessage}"
-                           Foreground="{DynamicResource HnVue.Semantic.Status.Emergency}"
-                           FontSize="12"
+                           Foreground="#e74c3c"
+                           FontSize="11"
+                           FontFamily="{DynamicResource HnVue.Core.FontFamily}"
                            VerticalAlignment="Center"
-                           FontFamily="{DynamicResource HnVue.Core.FontFamily}">
-                    <TextBlock.Visibility>
-                        <Binding Path="ErrorMessage" Converter="{StaticResource NullToVisibilityConverter}"/>
-                    </TextBlock.Visibility>
-                </TextBlock>
+                           Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}"/>
 
                 <!-- Study count -->
                 <TextBlock Grid.Column="1"
-                           FontSize="12"
-                           Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}"
-                           VerticalAlignment="Center"
-                           FontFamily="{DynamicResource HnVue.Core.FontFamily}">
+                           FontSize="11"
+                           Foreground="#7090b0"
+                           FontFamily="{DynamicResource HnVue.Core.FontFamily}"
+                           VerticalAlignment="Center">
                     <Run Text="{Binding Studies.Count, Mode=OneWay}"/>
                     <Run Text=" studies"/>
                 </TextBlock>
             </Grid>
+        </Border>
+
+        <!-- Loading overlay -->
+        <Border Grid.Row="2"
+                Background="#80050b15"
+                Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}">
+            <ProgressBar IsIndeterminate="True"
+                         Height="3"
+                         VerticalAlignment="Top"
+                         Background="Transparent"
+                         Foreground="#7bc8f5"/>
         </Border>
     </Grid>
 </UserControl>
