@@ -1,0 +1,12 @@
+﻿{
+    "Mode":  "Security",
+    "Configuration":  "Release",
+    "TimestampUtc":  "2026-04-08T09:32:57.2374331Z",
+    "Build":  "NotRun",
+    "Test":  "NotRun",
+    "Coverage":  "NotRun",
+    "Security":  "Pass",
+    "Failures":  [
+
+                 ]
+}

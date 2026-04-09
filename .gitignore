@@ -7,26 +7,6 @@
 # ============================================
 
 # ===========================================
-# .NET Build Artifacts
-# ===========================================
-[Dd]ebug/
-[Rr]elease/
-[Bb]in/
-[Oo]bj/
-**/bin/
-**/obj/
-*.user
-*.suo
-.vs/
-*.nupkg
-TestResults/
-coverage/
-coverage-latest/
-coverage-results/
-*.coverage
-*.coveragexml
-
-# ===========================================
 # Go Build Artifacts
 # ===========================================
 bin/
@@ -141,11 +121,6 @@ logs/
 # ===========================================
 # Secrets and Credentials (CRITICAL)
 # ===========================================
-# .NET secrets files (contain credentials, must not be committed)
-appsettings.Development.json
-appsettings.*.json
-!appsettings.json
-
 # Environment files
 .env
 .env.*
@@ -230,13 +205,27 @@ dist-ssr/
 .netlify/
 .firebase/
 
-# ===========================================
-# DocFX Build Output
-# ===========================================
+# User Custom Patterns (preserved by moai update)
+[Dd]ebug/
+[Rr]elease/
+[Bb]in/
+[Oo]bj/
+**/bin/
+**/obj/
+*.user
+.vs/
+*.nupkg
+TestResults/
+coverage/
+coverage-latest/
+coverage-results/
+*.coverage
+*.coveragexml
+appsettings.Development.json
+appsettings.*.json
+!appsettings.json
 _site/
 api/
-
-# User Custom Patterns (preserved by moai update)
 docs/planning/archive/
 .claude/
 .moai/config/sections/context.yaml
