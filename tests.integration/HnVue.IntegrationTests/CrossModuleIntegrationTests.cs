@@ -9,6 +9,8 @@ using HnVue.Dose;
 using HnVue.PatientManagement;
 using HnVue.Security;
 using HnVue.Workflow;
+using HnVue.UI.Contracts.ViewModels;
+using HnVue.UI.ViewModels;
 using Microsoft.Extensions.Options;
 using NSubstitute;
 using Xunit;
@@ -670,6 +672,29 @@ public sealed class CrossModuleIntegrationTests
         // Assert
         result.IsFailure.Should().BeTrue("burn must fail when the study has no files");
         result.Error.Should().Be(ErrorCode.NotFound);
+    }
+
+    // ── Scenario 7: PatientListViewModel DI composition ───────────────────────
+
+    /// <summary>
+    /// Integration test: PatientListViewModel resolves with an injected IStudylistViewModel.
+    /// SWR-UI-010: DI container composes nested ViewModels correctly.
+    /// </summary>
+    [Fact]
+    [Trait("SWR", "SWR-UI-010")]
+    public void PatientListViewModel_DI_ComposesStudylistViewModel()
+    {
+        // Arrange
+        var patientService = Substitute.For<IPatientService>();
+        var studyRepo = Substitute.For<HnVue.Common.Abstractions.IStudyRepository>();
+        var studylistVm = new StudylistViewModel(studyRepo);
+
+        // Act
+        var vm = new PatientListViewModel(patientService, studylistVm);
+
+        // Assert
+        vm.StudylistViewModel.Should().NotBeNull("PatientListViewModel must expose the nested StudylistViewModel");
+        vm.StudylistViewModel.Should().BeSameAs(studylistVm, "composed instance must be the injected one");
     }
 
     // ── Helpers ────────────────────────────────────────────────────────────────

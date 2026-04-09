@@ -3,6 +3,7 @@ using HnVue.Common.Abstractions;
 using Xunit;
 using HnVue.Common.Models;
 using HnVue.Common.Results;
+using HnVue.UI.Contracts.ViewModels;
 using HnVue.UI.ViewModels;
 using NSubstitute;
 
@@ -15,7 +16,9 @@ public sealed class PatientListViewModelTests
 {
     private readonly IPatientService _patientService = Substitute.For<IPatientService>();
 
-    private PatientListViewModel CreateSut() => new(_patientService);
+    private readonly IStudylistViewModel _studylistViewModel = Substitute.For<IStudylistViewModel>();
+
+    private PatientListViewModel CreateSut() => new(_patientService, _studylistViewModel);
 
     private static PatientRecord MakePatient(string id = "P001") => new(
         PatientId: id,

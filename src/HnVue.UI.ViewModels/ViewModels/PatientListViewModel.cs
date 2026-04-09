@@ -18,10 +18,15 @@ public sealed partial class PatientListViewModel : ObservableObject, IPatientLis
 
     /// <summary>Initialises a new instance of <see cref="PatientListViewModel"/>.</summary>
     /// <param name="patientService">Service used to search and manage patient records.</param>
-    public PatientListViewModel(IPatientService patientService)
+    /// <param name="studylistViewModel">Nested study list ViewModel composed within the patient panel.</param>
+    public PatientListViewModel(IPatientService patientService, IStudylistViewModel studylistViewModel)
     {
         _patientService = patientService;
+        StudylistViewModel = studylistViewModel;
     }
+
+    /// <inheritdoc/>
+    public IStudylistViewModel StudylistViewModel { get; }
 
     /// <summary>Gets or sets the free-text query used to filter patients.</summary>
     [ObservableProperty]

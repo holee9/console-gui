@@ -1,8 +1,10 @@
+using System.Collections.Generic;
 using System.Timers;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HnVue.Common.Abstractions;
 using HnVue.Common.Enums;
+using HnVue.UI.Contracts.Navigation;
 using HnVue.UI.Contracts.ViewModels;
 
 namespace HnVue.UI.ViewModels;
@@ -22,6 +24,10 @@ public sealed partial class MainViewModel : ObservableObject, IMainViewModel, ID
     private readonly System.Timers.Timer _sessionTimer;
     private int _secondsUntilTimeout;
 
+    // Navigation state — DESIGN_PLAN_v2.md
+    private readonly Stack<NavigationToken> _navigationStack = new();
+    private NavigationToken _currentToken;
+
     /// <summary>Gets the ViewModel for the patient list panel.</summary>
     public IPatientListViewModel PatientListViewModel { get; }
 
@@ -40,6 +46,15 @@ public sealed partial class MainViewModel : ObservableObject, IMainViewModel, ID
     /// <summary>Gets the ViewModel for the system administration panel.</summary>
     public ISystemAdminViewModel SystemAdminViewModel { get; }
 
+    /// <summary>Gets the ViewModel for the study list full-screen panel.</summary>
+    public IStudylistViewModel StudylistViewModel { get; }
+
+    /// <summary>Gets the ViewModel for the Sync Study (merge) full-screen panel.</summary>
+    public IMergeViewModel MergeViewModel { get; }
+
+    /// <summary>Gets the ViewModel for the settings full-screen panel.</summary>
+    public ISettingsViewModel SettingsViewModel { get; }
+
     /// <summary>
     /// Gets a value indicating whether an operation is in progress.
     /// The shell itself has no loading state; this always returns <see langword="false"/>.
@@ -55,6 +70,7 @@ public sealed partial class MainViewModel : ObservableObject, IMainViewModel, ID
     /// <summary>Initialises a new instance of <see cref="MainViewModel"/>.</summary>
     /// <remarks>Issue #17 — CDBurnViewModel and SystemAdminViewModel added to navigation graph.</remarks>
     /// <remarks>Issue #29 — ISecurityService injected for logout audit logging.</remarks>
+    /// <remarks>DESIGN_PLAN_v2.md — Studylist, Merge, Settings ViewModels added; NavigateTo/NavigateBack shell API.</remarks>
     public MainViewModel(
         ISecurityContext securityContext,
         ISecurityService securityService,
@@ -63,7 +79,10 @@ public sealed partial class MainViewModel : ObservableObject, IMainViewModel, ID
         IWorkflowViewModel workflowViewModel,
         IDoseDisplayViewModel doseDisplayViewModel,
         ICDBurnViewModel cdburnViewModel,
-        ISystemAdminViewModel systemAdminViewModel)
+        ISystemAdminViewModel systemAdminViewModel,
+        IStudylistViewModel studylistViewModel,
+        IMergeViewModel mergeViewModel,
+        ISettingsViewModel settingsViewModel)
     {
         ArgumentNullException.ThrowIfNull(securityContext, nameof(securityContext));
         ArgumentNullException.ThrowIfNull(securityService, nameof(securityService));
@@ -73,6 +92,9 @@ public sealed partial class MainViewModel : ObservableObject, IMainViewModel, ID
         ArgumentNullException.ThrowIfNull(doseDisplayViewModel, nameof(doseDisplayViewModel));
         ArgumentNullException.ThrowIfNull(cdburnViewModel, nameof(cdburnViewModel));
         ArgumentNullException.ThrowIfNull(systemAdminViewModel, nameof(systemAdminViewModel));
+        ArgumentNullException.ThrowIfNull(studylistViewModel, nameof(studylistViewModel));
+        ArgumentNullException.ThrowIfNull(mergeViewModel, nameof(mergeViewModel));
+        ArgumentNullException.ThrowIfNull(settingsViewModel, nameof(settingsViewModel));
         _securityContext = securityContext;
         _securityService = securityService;
         PatientListViewModel = patientListViewModel;
@@ -81,6 +103,9 @@ public sealed partial class MainViewModel : ObservableObject, IMainViewModel, ID
         DoseDisplayViewModel = doseDisplayViewModel;
         CDBurnViewModel = cdburnViewModel;
         SystemAdminViewModel = systemAdminViewModel;
+        StudylistViewModel = studylistViewModel;
+        MergeViewModel = mergeViewModel;
+        SettingsViewModel = settingsViewModel;
 
         // Session timeout timer — SWR-CS-075 / Issue #14
         _secondsUntilTimeout = SessionTimeoutMinutes * 60;
@@ -88,6 +113,10 @@ public sealed partial class MainViewModel : ObservableObject, IMainViewModel, ID
         _sessionTimer.Elapsed += OnSessionTimerTick;
         _sessionTimer.AutoReset = true;
     }
+
+    /// <summary>Gets or sets the ViewModel currently displayed in the main content region.</summary>
+    [ObservableProperty]
+    private object? _currentView;
 
     /// <summary>Gets or sets a value indicating whether the login view is visible.</summary>
     [ObservableProperty]
@@ -155,11 +184,64 @@ public sealed partial class MainViewModel : ObservableObject, IMainViewModel, ID
         CurrentUsername = user.Username;
         IsLoginVisible = false;
         IsMainContentVisible = true;
-        ActiveNavItem = "PatientList";
         RefreshFromContext();
         ResetSessionTimer();
         _sessionTimer.Start();
+        NavigateTo(NavigationToken.PatientList);
     }
+
+    // @MX:ANCHOR NavigateTo - @MX:REASON: Shell navigation entry point; all view switches go through here
+    /// <inheritdoc/>
+    public void NavigateTo(NavigationToken token, object? parameter = null)
+    {
+        if (_currentToken != token || CurrentView is null)
+        {
+            _navigationStack.Push(_currentToken);
+            _currentToken = token;
+        }
+
+        CurrentView = token switch
+        {
+            NavigationToken.PatientList  => PatientListViewModel,
+            NavigationToken.Workflow     => WorkflowViewModel,
+            NavigationToken.ImageViewer  => ImageViewerViewModel,
+            NavigationToken.DoseDisplay  => DoseDisplayViewModel,
+            NavigationToken.CDBurn       => CDBurnViewModel,
+            NavigationToken.SystemAdmin  => SystemAdminViewModel,
+            NavigationToken.Studylist    => StudylistViewModel,
+            NavigationToken.Merge        => MergeViewModel,
+            NavigationToken.Settings     => SettingsViewModel,
+            _                            => CurrentView
+        };
+
+        ActiveNavItem = token.ToString();
+    }
+
+    /// <inheritdoc/>
+    public void NavigateBack()
+    {
+        if (_navigationStack.Count == 0) return;
+        var previous = _navigationStack.Pop();
+        _currentToken = previous;
+        CurrentView = previous switch
+        {
+            NavigationToken.PatientList  => PatientListViewModel,
+            NavigationToken.Workflow     => WorkflowViewModel,
+            NavigationToken.ImageViewer  => ImageViewerViewModel,
+            NavigationToken.DoseDisplay  => DoseDisplayViewModel,
+            NavigationToken.CDBurn       => CDBurnViewModel,
+            NavigationToken.SystemAdmin  => SystemAdminViewModel,
+            NavigationToken.Studylist    => StudylistViewModel,
+            NavigationToken.Merge        => MergeViewModel,
+            NavigationToken.Settings     => SettingsViewModel,
+            _                            => CurrentView
+        };
+        ActiveNavItem = _currentToken.ToString();
+    }
+
+    /// <inheritdoc/>
+    public IReadOnlyList<NavigationToken> NavigationHistory =>
+        _navigationStack.ToArray();
 
     /// <summary>Resets the session inactivity timer to the full timeout duration.</summary>
     public void ResetSessionTimer()

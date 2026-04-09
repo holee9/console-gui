@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using HnVue.Common.Models;
+using HnVue.UI.Contracts.Navigation;
 
 namespace HnVue.UI.Contracts.ViewModels;
 
@@ -59,4 +61,20 @@ public interface IMainViewModel : IViewModelBase
 
     /// <summary>Resets the inactivity timer, deferring the session-timeout countdown.</summary>
     void ResetSessionTimer();
+
+    // ── Navigation shell API (DESIGN_PLAN_v2.md / team-design request) ────────
+
+    /// <summary>Gets the ViewModel currently displayed in the main content region.</summary>
+    object? CurrentView { get; }
+
+    /// <summary>Gets the navigation token history stack (most recent = last item).</summary>
+    IReadOnlyList<NavigationToken> NavigationHistory { get; }
+
+    /// <summary>Navigates the shell to the specified view.</summary>
+    /// <param name="token">The navigation target.</param>
+    /// <param name="parameter">Optional parameter passed to the target ViewModel.</param>
+    void NavigateTo(NavigationToken token, object? parameter = null);
+
+    /// <summary>Navigates back to the previous view in the navigation stack.</summary>
+    void NavigateBack();
 }

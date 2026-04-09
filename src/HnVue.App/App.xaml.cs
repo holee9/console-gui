@@ -14,8 +14,10 @@ using HnVue.PatientManagement;
 using HnVue.Security;
 using HnVue.Security.Extensions;
 using HnVue.SystemAdmin;
+using HnVue.UI.Contracts.Navigation;
 using HnVue.UI.Contracts.ViewModels;
 using HnVue.UI.ViewModels;
+using HnVue.App.Services;
 using HnVue.Update;
 using HnVue.Detector;
 using HnVue.Workflow;
@@ -231,6 +233,7 @@ public partial class App : Application
                 // Concrete registrations are also provided for types resolved directly
                 // (e.g. MainWindow constructor, MainViewModel sub-ViewModel parameters).
                 services.AddTransient<ILoginViewModel, LoginViewModel>();
+                services.AddTransient<IStudylistViewModel, StudylistViewModel>();
                 services.AddTransient<IPatientListViewModel, PatientListViewModel>();
                 services.AddTransient<IImageViewerViewModel, ImageViewerViewModel>();
                 services.AddTransient<IWorkflowViewModel, WorkflowViewModel>();
@@ -239,12 +242,21 @@ public partial class App : Application
                 services.AddTransient<ICDBurnViewModel, CDBurnViewModel>();
                 services.AddTransient<ISystemAdminViewModel, SystemAdminViewModel>();
                 services.AddTransient<IQuickPinLockViewModel, QuickPinLockViewModel>();
-                services.AddTransient<IMainViewModel, MainViewModel>();
+                services.AddTransient<IMergeViewModel, MergeViewModel>();
+                services.AddTransient<ISettingsViewModel, SettingsViewModel>();
+                // MainViewModel registered as Singleton: NavigationService depends on IMainViewModel,
+                // and MainWindow is Singleton — both require the same shell instance for the app lifetime.
+                // Single registration via interface; concrete type forwarded to avoid two separate instances.
+                services.AddSingleton<MainViewModel>();
+                services.AddSingleton<IMainViewModel>(sp => sp.GetRequiredService<MainViewModel>());
                 // Concrete-type registrations required where the DI container must resolve
                 // the concrete class (MainViewModel constructor args, MainWindow).
                 services.AddTransient<CDBurnViewModel>();
                 services.AddTransient<SystemAdminViewModel>();
-                services.AddTransient<MainViewModel>();
+
+                // ── HnVue.App Navigation ─────────────────────────────────────
+                // NavigationService is Singleton: delegates to IMainViewModel (also Singleton).
+                services.AddSingleton<INavigationService, NavigationService>();
 
                 // ── WPF main window ──────────────────────────────────────────
                 services.AddSingleton<MainWindow>();

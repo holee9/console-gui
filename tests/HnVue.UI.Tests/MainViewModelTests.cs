@@ -1,6 +1,7 @@
 using FluentAssertions;
 using HnVue.Common.Abstractions;
 using HnVue.Common.Enums;
+using HnVue.UI.Contracts.ViewModels;
 using HnVue.UI.ViewModels;
 using NSubstitute;
 using Xunit;
@@ -18,12 +19,15 @@ public sealed class MainViewModelTests
     private static MainViewModel CreateSut(ISecurityContext context) => new(
         context,
         Substitute.For<ISecurityService>(),
-        new PatientListViewModel(Substitute.For<IPatientService>()),
+        new PatientListViewModel(Substitute.For<IPatientService>(), Substitute.For<IStudylistViewModel>()),
         new ImageViewerViewModel(Substitute.For<IImageProcessor>()),
         new WorkflowViewModel(Substitute.For<IWorkflowEngine>(), Substitute.For<ISecurityContext>()),
         new DoseDisplayViewModel(Substitute.For<IDoseService>()),
         new CDBurnViewModel(Substitute.For<ICDDVDBurnService>()),
-        new SystemAdminViewModel(Substitute.For<ISystemAdminService>(), Substitute.For<ISecurityContext>()));
+        new SystemAdminViewModel(Substitute.For<ISystemAdminService>(), Substitute.For<ISecurityContext>()),
+        Substitute.For<IStudylistViewModel>(),
+        Substitute.For<IMergeViewModel>(),
+        Substitute.For<ISettingsViewModel>());
 
     // ── Constructor guard test ───────────────────────────────────────────────
 
@@ -33,12 +37,15 @@ public sealed class MainViewModelTests
         var act = () => new MainViewModel(
             null!,
             Substitute.For<ISecurityService>(),
-            new PatientListViewModel(Substitute.For<IPatientService>()),
+            new PatientListViewModel(Substitute.For<IPatientService>(), Substitute.For<IStudylistViewModel>()),
             new ImageViewerViewModel(Substitute.For<IImageProcessor>()),
             new WorkflowViewModel(Substitute.For<IWorkflowEngine>(), Substitute.For<ISecurityContext>()),
             new DoseDisplayViewModel(Substitute.For<IDoseService>()),
             new CDBurnViewModel(Substitute.For<ICDDVDBurnService>()),
-            new SystemAdminViewModel(Substitute.For<ISystemAdminService>(), Substitute.For<ISecurityContext>()));
+            new SystemAdminViewModel(Substitute.For<ISystemAdminService>(), Substitute.For<ISecurityContext>()),
+            Substitute.For<IStudylistViewModel>(),
+            Substitute.For<IMergeViewModel>(),
+            Substitute.For<ISettingsViewModel>());
         act.Should().Throw<ArgumentNullException>().WithParameterName("securityContext");
     }
 
