@@ -15,6 +15,13 @@ namespace HnVue.PatientManagement.Tests;
 public sealed class PatientServiceEmergencyTests
 {
     private readonly IPatientRepository _mockRepository = Substitute.For<IPatientRepository>();
+    private readonly ISecurityContext _mockSecurityContext = Substitute.For<ISecurityContext>();
+
+    public PatientServiceEmergencyTests()
+    {
+        _mockSecurityContext.CurrentUserId.Returns("test-user");
+        _mockSecurityContext.CurrentUsername.Returns("TestUser");
+    }
 
     [Fact]
     public async Task QuickRegisterEmergencyAsync_WithValidEmergencyId_ReturnsSuccess()
@@ -26,7 +33,7 @@ public sealed class PatientServiceEmergencyTests
         _mockRepository.AddAsync(Arg.Any<PatientRecord>(), default)
             .Returns(ci => Result.Success(ci.Arg<PatientRecord>()));
 
-        var service = new PatientService(_mockRepository);
+        var service = new PatientService(_mockRepository, _mockSecurityContext);
 
         // Act
         var result = await service.QuickRegisterEmergencyAsync(
@@ -62,7 +69,7 @@ public sealed class PatientServiceEmergencyTests
         _mockRepository.AddAsync(Arg.Any<PatientRecord>(), default)
             .Returns(ci => Result.Success(ci.Arg<PatientRecord>()));
 
-        var service = new PatientService(_mockRepository);
+        var service = new PatientService(_mockRepository, _mockSecurityContext);
 
         // Act
         var result = await service.QuickRegisterEmergencyAsync(
@@ -84,7 +91,7 @@ public sealed class PatientServiceEmergencyTests
         _mockRepository.AddAsync(Arg.Any<PatientRecord>(), default)
             .Returns(ci => Result.Success(ci.Arg<PatientRecord>()));
 
-        var service = new PatientService(_mockRepository);
+        var service = new PatientService(_mockRepository, _mockSecurityContext);
 
         // Act
         var result = await service.QuickRegisterEmergencyAsync(
@@ -106,7 +113,7 @@ public sealed class PatientServiceEmergencyTests
         _mockRepository.AddAsync(Arg.Any<PatientRecord>(), default)
             .Returns(ci => Result.Success(ci.Arg<PatientRecord>()));
 
-        var service = new PatientService(_mockRepository);
+        var service = new PatientService(_mockRepository, _mockSecurityContext);
 
         // Act
         var result = await service.QuickRegisterEmergencyAsync(
@@ -128,7 +135,7 @@ public sealed class PatientServiceEmergencyTests
         _mockRepository.AddAsync(Arg.Any<PatientRecord>(), default)
             .Returns(ci => Result.Success(ci.Arg<PatientRecord>()));
 
-        var service = new PatientService(_mockRepository);
+        var service = new PatientService(_mockRepository, _mockSecurityContext);
 
         // Act
         var result = await service.QuickRegisterEmergencyAsync(
@@ -151,7 +158,7 @@ public sealed class PatientServiceEmergencyTests
         _mockRepository.AddAsync(Arg.Any<PatientRecord>(), default)
             .Returns(ci => Result.Success(ci.Arg<PatientRecord>()));
 
-        var service = new PatientService(_mockRepository);
+        var service = new PatientService(_mockRepository, _mockSecurityContext);
 
         // Act & Assert
         await Assert.ThrowsAsync<ArgumentNullException>(() =>
@@ -169,7 +176,7 @@ public sealed class PatientServiceEmergencyTests
                 ErrorCode.DatabaseError,
                 "Database connection failed"));
 
-        var service = new PatientService(_mockRepository);
+        var service = new PatientService(_mockRepository, _mockSecurityContext);
 
         // Act
         var result = await service.QuickRegisterEmergencyAsync(
@@ -192,7 +199,7 @@ public sealed class PatientServiceEmergencyTests
         _mockRepository.AddAsync(Arg.Any<PatientRecord>(), default)
             .Returns(ci => Result.Success(ci.Arg<PatientRecord>()));
 
-        var service = new PatientService(_mockRepository);
+        var service = new PatientService(_mockRepository, _mockSecurityContext);
 
         // Act
         var result = await service.QuickRegisterEmergencyAsync(
@@ -207,7 +214,7 @@ public sealed class PatientServiceEmergencyTests
     }
 
     [Fact]
-    public async Task QuickRegisterEmergencyAsync_SetsCreatedByToSystem()
+    public async Task QuickRegisterEmergencyAsync_SetsCreatedByToCurrentUser()
     {
         // Arrange
         var emergencyPatientId = "EMERG-20260106153045";
@@ -215,7 +222,7 @@ public sealed class PatientServiceEmergencyTests
         _mockRepository.AddAsync(Arg.Any<PatientRecord>(), default)
             .Returns(ci => Result.Success(ci.Arg<PatientRecord>()));
 
-        var service = new PatientService(_mockRepository);
+        var service = new PatientService(_mockRepository, _mockSecurityContext);
 
         // Act
         var result = await service.QuickRegisterEmergencyAsync(
@@ -224,10 +231,7 @@ public sealed class PatientServiceEmergencyTests
 
         // Assert
         Assert.True(result.IsSuccess);
-        Assert.Equal("SYSTEM", result.Value.CreatedBy);
-
-        // TODO: Update this test when actual user context is implemented
-        // The comment in the code indicates "SYSTEM" is a placeholder
+        Assert.Equal("test-user", result.Value.CreatedBy);
     }
 
     [Fact]
@@ -250,7 +254,7 @@ public sealed class PatientServiceEmergencyTests
         _mockRepository.AddAsync(Arg.Any<PatientRecord>(), default)
             .Returns(ci => Result.Success(ci.Arg<PatientRecord>()));
 
-        var service = new PatientService(_mockRepository);
+        var service = new PatientService(_mockRepository, _mockSecurityContext);
 
         // Act
         var result = await service.QuickRegisterEmergencyAsync(
@@ -278,7 +282,7 @@ public sealed class PatientServiceEmergencyTests
         _mockRepository.AddAsync(Arg.Any<PatientRecord>(), default)
             .Returns(ci => Result.Success(ci.Arg<PatientRecord>()));
 
-        var service = new PatientService(_mockRepository);
+        var service = new PatientService(_mockRepository, _mockSecurityContext);
 
         // Act
         var result1 = await service.QuickRegisterEmergencyAsync(emergencyPatientId, "Patient 1");
@@ -305,7 +309,7 @@ public sealed class PatientServiceEmergencyTests
         _mockRepository.AddAsync(Arg.Any<PatientRecord>(), default)
             .Returns(ci => Result.Success(ci.Arg<PatientRecord>()));
 
-        var service = new PatientService(_mockRepository);
+        var service = new PatientService(_mockRepository, _mockSecurityContext);
 
         // Act
         var result = await service.QuickRegisterEmergencyAsync(emergencyId, "Test Patient");
@@ -325,7 +329,7 @@ public sealed class PatientServiceEmergencyTests
         _mockRepository.AddAsync(Arg.Any<PatientRecord>(), default)
             .Returns(ci => Result.Success(ci.Arg<PatientRecord>()));
 
-        var service = new PatientService(_mockRepository);
+        var service = new PatientService(_mockRepository, _mockSecurityContext);
 
         // Act
         var result = await service.QuickRegisterEmergencyAsync(

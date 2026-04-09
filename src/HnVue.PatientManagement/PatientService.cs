@@ -15,15 +15,19 @@ namespace HnVue.PatientManagement;
 public sealed class PatientService : IPatientService
 {
     private readonly IPatientRepository _patientRepository;
+    private readonly ISecurityContext _securityContext;
 
     /// <summary>
     /// Initialises a new <see cref="PatientService"/>.
     /// </summary>
     /// <param name="patientRepository">Persistence layer for patient records.</param>
-    public PatientService(IPatientRepository patientRepository)
+    /// <param name="securityContext">Security context for capturing current user.</param>
+    public PatientService(IPatientRepository patientRepository, ISecurityContext securityContext)
     {
         _patientRepository = patientRepository
             ?? throw new ArgumentNullException(nameof(patientRepository));
+        _securityContext = securityContext
+            ?? throw new ArgumentNullException(nameof(securityContext));
     }
 
     // @MX:ANCHOR RegisterAsync - @MX:REASON: High fan_in - called by patient registration UI and import workflows
@@ -140,11 +144,14 @@ public sealed class PatientService : IPatientService
             Sex: null,          // Deferred to full registration
             IsEmergency: true,  // Mark as emergency for identification
             CreatedAt: DateTimeOffset.UtcNow,
-            CreatedBy: "SYSTEM" // TODO: Replace with actual user from security context
+            CreatedBy: GetCurrentUserIdentifier()  // @MX:FIX Uses SecurityContext to capture actual user for audit trail (IEC 62304)
         );
 
         // Skip duplicate detection for emergency workflow
         // SWR-PM-032: Emergency override allows immediate trauma care
         return await _patientRepository.AddAsync(emergencyPatient, cancellationToken).ConfigureAwait(false);
     }
+
+    private string GetCurrentUserIdentifier()
+        => _securityContext.CurrentUserId ?? _securityContext.CurrentUsername ?? "SYSTEM";
 }

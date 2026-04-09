@@ -21,7 +21,10 @@ public sealed class PatientServiceTests
     public PatientServiceTests()
     {
         _repository = Substitute.For<IPatientRepository>();
-        _sut = new PatientService(_repository);
+        var securityContext = Substitute.For<ISecurityContext>();
+        securityContext.CurrentUserId.Returns("test-user");
+        securityContext.CurrentUsername.Returns("TestUser");
+        _sut = new PatientService(_repository, securityContext);
     }
 
     // ── Constructor ───────────────────────────────────────────────────────────
@@ -29,7 +32,8 @@ public sealed class PatientServiceTests
     [Fact]
     public void Constructor_NullRepository_ThrowsArgumentNullException()
     {
-        var act = () => new PatientService(null!);
+        var securityContext = Substitute.For<ISecurityContext>();
+        var act = () => new PatientService(null!, securityContext);
 
         act.Should().Throw<ArgumentNullException>();
     }

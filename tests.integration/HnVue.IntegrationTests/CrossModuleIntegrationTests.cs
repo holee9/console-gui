@@ -179,7 +179,11 @@ public sealed class CrossModuleIntegrationTests
         patientRepo.AddAsync(Arg.Any<PatientRecord>(), Arg.Any<CancellationToken>())
             .Returns(Result.Success(expectedRecord));
 
-        var patientService = new PatientService(patientRepo);
+        var securityContext = Substitute.For<ISecurityContext>();
+        securityContext.CurrentUserId.Returns("test-user");
+        securityContext.CurrentUsername.Returns("TestUser");
+
+        var patientService = new PatientService(patientRepo, securityContext);
         var worklistService = new WorklistService(worklistRepo, patientService);
 
         // Act
@@ -231,7 +235,11 @@ public sealed class CrossModuleIntegrationTests
             .Returns(ci => Task.FromResult(Result.SuccessNullable<PatientRecord>(existingRecord)));
 #pragma warning restore CS8620
 
-        var patientService = new PatientService(patientRepo);
+        var securityContext = Substitute.For<ISecurityContext>();
+        securityContext.CurrentUserId.Returns("test-user");
+        securityContext.CurrentUsername.Returns("TestUser");
+
+        var patientService = new PatientService(patientRepo, securityContext);
         var worklistService = new WorklistService(worklistRepo, patientService);
 
         // Act
