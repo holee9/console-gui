@@ -9,8 +9,8 @@
 |------|------|
 | **문서 ID** | SOUP-XRAY-GUI-001 |
 | **문서명** | HnVue Console SW SOUP/OTS 구성요소 평가 보고서 |
-| **버전** | v1.0 |
-| **작성일** | 2026-03-18 |
+| **버전** | v1.1 |
+| **작성일** | 2026-04-08 |
 | **작성자** | SW 품질 팀 (SW Quality Team) |
 | **검토자** | SW 아키텍트, 사이버보안 팀장 |
 | **승인자** | 의료기기 RA/QA 책임자 |
@@ -22,6 +22,7 @@
 | 버전 | 날짜 | 변경 내용 | 작성자 |
 |------|------|----------|--------|
 | v1.0 | 2026-03-18 | 최초 작성 — Phase 1 전체 SOUP 구성요소 평가 | SW 품질 팀 |
+| v1.1 | 2026-04-08 | 개발/QA 전용 구성요소 6종 추가 (SOUP-039~044): dotnet 로컬 도구 3종 (reportgenerator, stryker, dotnet-outdated) + Roslyn 분석기 3종 (StyleCop.Analyzers, Roslynator.Analyzers, SecurityCodeScan.VS2019) | SW 품질 팀 |
 
 ---
 
@@ -56,8 +57,8 @@ IEC 62304:2006+AMD1:2015의 §8 (소프트웨어 구성 관리) 및 §5.3.3 (SOU
 | 구분 | 내용 |
 |------|------|
 | **대상** | HnVue Console SW v1.0 Phase 1 에 포함된 모든 제3자 구성요소 |
-| **SBOM 참조** | SBOM-XRAY-GUI-001 (42개 구성요소 중 배포 포함 38개) |
-| **평가 대상** | 배포 포함 38개 구성요소 중 SOUP 분류 대상 전수 평가 |
+| **SBOM 참조** | SBOM-XRAY-GUI-001 v1.1 (45개 구성요소 중 배포 포함 38개; 개발 전용 7건 제외) |
+| **평가 대상** | 배포 포함 38개 구성요소 + 개발/QA 전용 도구 6종 포함 전수 평가 |
 
 > **참고**: NSubstitute 5.1.0 (SBOM-040, Moq 대체)은 테스트 전용 라이브러리로 배포 패키지에 포함되지 않으므로 SOUP 위험 분석 대상에서 제외한다. IEC 62304 §5.3.3 SOUP 식별 요건은 배포 소프트웨어에 포함되는 구성요소에 적용된다.
 
@@ -236,6 +237,106 @@ flowchart TD
 
 ---
 
+### 4.3 개발/QA 전용 도구 — dotnet 로컬 도구 (배포 미포함, Class A)
+
+QA팀이 SonarCloud에서 로컬 Roslyn 분석기 인프라로 전환함에 따라 아래 도구들이 `.config/dotnet-tools.json`에 추가되었다. 이 도구들은 빌드 및 QA 파이프라인에서만 사용되며 제품 배포 패키지에 포함되지 않는다. 환자 안전에 직접적 영향이 없으므로 IEC 62304 기준 Class A로 분류한다.
+
+#### SOUP-039: dotnet-reportgenerator-globaltool
+
+| 항목 | 내용 |
+|------|------|
+| **구성요소명** | dotnet-reportgenerator-globaltool |
+| **버전** | 최신 안정 버전 (dotnet-tools.json 고정) |
+| **공급자** | Daniel Palme (오픈소스) |
+| **SOUP Class** | Class A |
+| **라이선스** | Apache 2.0 |
+| **시스템 내 기능** | Coverlet 코드 커버리지 결과를 HTML/XML 보고서로 변환; `desktop-ci.yml` 아티팩트 업로드 통합 |
+| **환자 안전 영향** | 없음 — QA 리포팅 전용, 제품 배포 미포함 |
+| **IEC 62304 분류** | Class A — 환자 안전 기능과 무관한 개발 도구 |
+| **배포 포함 여부** | 미포함 (개발/CI 전용) |
+| **수용 판정** | ✅ 수용 |
+
+#### SOUP-040: dotnet-stryker
+
+| 항목 | 내용 |
+|------|------|
+| **구성요소명** | dotnet-stryker (Stryker.NET) |
+| **버전** | 최신 안정 버전 (dotnet-tools.json 고정) |
+| **공급자** | Stryker Mutator 오픈소스 커뮤니티 |
+| **SOUP Class** | Class A |
+| **라이선스** | Apache 2.0 |
+| **시스템 내 기능** | .NET 변이 테스트(Mutation Testing) 실행; 안전 임계 모듈(Dose, Incident, Security, Update) 변이 점수 70%+ 게이트 |
+| **환자 안전 영향** | 없음 — 테스트 품질 측정 도구, 제품 배포 미포함 |
+| **IEC 62304 분류** | Class A — 환자 안전 기능과 무관한 QA 도구 |
+| **배포 포함 여부** | 미포함 (개발/CI 전용) |
+| **수용 판정** | ✅ 수용 |
+
+#### SOUP-041: dotnet-outdated-tool
+
+| 항목 | 내용 |
+|------|------|
+| **구성요소명** | dotnet-outdated-tool |
+| **버전** | 최신 안정 버전 (dotnet-tools.json 고정) |
+| **공급자** | jerriclynsjohn (오픈소스) |
+| **SOUP Class** | Class A |
+| **라이선스** | MIT |
+| **시스템 내 기능** | NuGet 의존성 최신 버전 점검; 분기별 의존성 신선도 확인 |
+| **환자 안전 영향** | 없음 — 의존성 관리 보조 도구, 제품 배포 미포함 |
+| **IEC 62304 분류** | Class A — 환자 안전 기능과 무관한 개발 도구 |
+| **배포 포함 여부** | 미포함 (개발 전용) |
+| **수용 판정** | ✅ 수용 |
+
+### 4.4 개발/QA 전용 도구 — Roslyn 정적 분석기 (배포 미포함, Class A, PrivateAssets=all)
+
+아래 NuGet 패키지는 `PrivateAssets=all` 설정으로 빌드 시에만 참조되며 제품 배포 패키지에 포함되지 않는다. `scripts/qa/Invoke-LocalAnalysis.ps1` 및 `desktop-ci.yml`을 통해 CI 파이프라인과 통합된다.
+
+#### SOUP-042: StyleCop.Analyzers
+
+| 항목 | 내용 |
+|------|------|
+| **구성요소명** | StyleCop.Analyzers |
+| **버전** | 1.2.0-beta.556 |
+| **공급자** | StyleCop 기여자 (오픈소스) |
+| **SOUP Class** | Class A |
+| **라이선스** | Apache 2.0 |
+| **시스템 내 기능** | C# 코드 스타일 정적 분석; `.stylecop.json` 규칙 집행 |
+| **환자 안전 영향** | 없음 — 코드 스타일 분석기, 제품 배포 미포함 (PrivateAssets=all) |
+| **IEC 62304 분류** | Class A — 환자 안전 기능과 무관한 빌드 도구 |
+| **배포 포함 여부** | 미포함 (PrivateAssets=all) |
+| **수용 판정** | ✅ 수용 |
+
+#### SOUP-043: Roslynator.Analyzers
+
+| 항목 | 내용 |
+|------|------|
+| **구성요소명** | Roslynator.Analyzers |
+| **버전** | 4.12.9 |
+| **공급자** | Josef Pihrt (오픈소스) |
+| **SOUP Class** | Class A |
+| **라이선스** | Apache 2.0 |
+| **시스템 내 기능** | C# 코드 품질 정적 분석 (500+ 진단 규칙) |
+| **환자 안전 영향** | 없음 — 코드 품질 분석기, 제품 배포 미포함 (PrivateAssets=all) |
+| **IEC 62304 분류** | Class A — 환자 안전 기능과 무관한 빌드 도구 |
+| **배포 포함 여부** | 미포함 (PrivateAssets=all) |
+| **수용 판정** | ✅ 수용 |
+
+#### SOUP-044: SecurityCodeScan.VS2019
+
+| 항목 | 내용 |
+|------|------|
+| **구성요소명** | SecurityCodeScan.VS2019 |
+| **버전** | 5.6.7 |
+| **공급자** | SecurityCodeScan 기여자 (오픈소스) |
+| **SOUP Class** | Class A |
+| **라이선스** | LGPL-3.0 |
+| **시스템 내 기능** | C# 보안 취약점 정적 분석 (SQL Injection, XSS, 암호화 오용 등); `Invoke-LocalAnalysis.ps1` 통합 |
+| **환자 안전 영향** | 없음 — 보안 코드 분석기 (제품 코드에 직접 기여하지 않음), 제품 배포 미포함 (PrivateAssets=all) |
+| **IEC 62304 분류** | Class A — 환자 안전 기능과 무관한 빌드 도구 |
+| **배포 포함 여부** | 미포함 (PrivateAssets=all) |
+| **수용 판정** | ✅ 수용 |
+
+---
+
 ## 5. SOUP 위험 평가 (SOUP Risk Assessment)
 
 ### 5.1 SOUP 위험 평가 매트릭스
@@ -347,10 +448,11 @@ SOUP 구성요소 업데이트 시 수행하는 영향 분석 절차:
 ### 9.1 결론
 
 1. HnVue Console SW에 포함된 **38개 배포 구성요소** 전수 평가 완료
-2. **19개 Class B SOUP** 및 **19개 Class A SOUP** 분류 완료
-3. 모든 구성요소에 대해 **수용 판정 완료** — 수용 불가 구성요소 없음
-4. 안전 관련 알려진 이상은 **모두 현재 버전에서 수정** 확인
-5. **GPL/AGPL 라이선스 없음** — 상용 의료기기 배포 호환
+2. **6개 개발/QA 전용 도구** 추가 평가 완료 (SOUP-039~044, Class A, 배포 미포함)
+3. **19개 Class B SOUP** 및 **19개 Class A SOUP** 분류 완료 (배포 포함 38개)
+4. 모든 구성요소에 대해 **수용 판정 완료** — 수용 불가 구성요소 없음
+5. 안전 관련 알려진 이상은 **모두 현재 버전에서 수정** 확인
+6. **GPL/AGPL 라이선스 없음** — 상용 의료기기 배포 호환 (LGPL-3.0 SecurityCodeScan은 개발 전용으로 배포 미포함)
 
 ### 9.2 권고사항
 
