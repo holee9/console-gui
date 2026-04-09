@@ -5,731 +5,230 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:converters="clr-namespace:HnVue.UI.Converters"
              mc:Ignorable="d"
-             d:DesignHeight="800" d:DesignWidth="1200">
-    <!--
-        @MX:NOTE PatientListView — Worklist/Studylist tabbed view.
-                 PPT 슬라이드 5-6 (Worklist 현재→1안): Worklist/Studylist pill-tab navigation,
-                 3-column layout (patient grid | study grid | control sidebar).
-                 Date filters: 1Day, 3Days, 1Week, 15Days, 1Month.
-                 StudyDate column in study panel.
-                 Thumbnail strip REMOVED — belongs to Acquisition/ImageViewer spec (PPT 9-11).
-                 COORDINATOR NOTE: Studies binding requires IPatientListViewModel.StudylistViewModel
-                 or equivalent property — coordinate with Coordinator team for VM extension.
-    -->
+             d:DesignHeight="800"
+             d:DesignWidth="1400">
     <UserControl.Resources>
         <converters:AgeFromBirthDateConverter x:Key="AgeConverter"/>
-        <converters:DateOnlyToStringConverter x:Key="DateOnlyConverter"/>
-        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
-
-        <!-- Tab RadioButton style — pill shape, active=white bg dark text, inactive=transparent dark border -->
-        <Style x:Key="HnVue.TabPill" TargetType="RadioButton">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="RadioButton">
-                        <Border x:Name="TabBorder"
-                                Background="Transparent"
-                                BorderBrush="#4a5568"
-                                BorderThickness="1"
-                                CornerRadius="4"
-                                Padding="16,6"
-                                Cursor="Hand"
-                                SnapsToDevicePixels="True">
-                            <TextBlock x:Name="TabText"
-                                       Text="{TemplateBinding Content}"
-                                       Foreground="#8899b0"
-                                       FontSize="13"
-                                       FontWeight="SemiBold"
-                                       FontFamily="{DynamicResource HnVue.Core.FontFamily}"
-                                       VerticalAlignment="Center"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsChecked" Value="True">
-                                <Setter TargetName="TabBorder" Property="Background" Value="#FFFFFF"/>
-                                <Setter TargetName="TabBorder" Property="BorderBrush" Value="#FFFFFF"/>
-                                <Setter TargetName="TabText" Property="Foreground" Value="#0d1527"/>
-                            </Trigger>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="TabBorder" Property="BorderBrush" Value="#7090b0"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="Focusable" Value="False"/>
-        </Style>
-
-        <!-- Date filter button style — active=accent blue bg, inactive=dark bg with border -->
-        <Style x:Key="HnVue.DateFilterButton" TargetType="Button">
-            <Setter Property="Background" Value="#1a2540"/>
-            <Setter Property="Foreground" Value="#b0bec5"/>
-            <Setter Property="BorderBrush" Value="#2a3a58"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Height" Value="28"/>
-            <Setter Property="Padding" Value="8,0"/>
-            <Setter Property="FontSize" Value="11"/>
-            <Setter Property="FontFamily" Value="{DynamicResource HnVue.Core.FontFamily}"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="3"
-                                Padding="{TemplateBinding Padding}"
-                                Height="{TemplateBinding Height}">
-                            <TextBlock Text="{TemplateBinding Content}"
-                                       Foreground="{TemplateBinding Foreground}"
-                                       FontSize="{TemplateBinding FontSize}"
-                                       FontFamily="{TemplateBinding FontFamily}"
-                                       VerticalAlignment="Center"
-                                       HorizontalAlignment="Center"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#243050"/>
-                                <Setter Property="BorderBrush" Value="#4a6090"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="#1f6fc7"/>
-                                <Setter Property="Foreground" Value="#FFFFFF"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <!-- Quick Start button style — red background, full width -->
-        <Style x:Key="HnVue.QuickStartButton" TargetType="Button">
-            <Setter Property="Background" Value="#c0392b"/>
-            <Setter Property="Foreground" Value="#FFFFFF"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Height" Value="36"/>
-            <Setter Property="FontSize" Value="13"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="FontFamily" Value="{DynamicResource HnVue.Core.FontFamily}"/>
-            <Setter Property="HorizontalAlignment" Value="Stretch"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                                CornerRadius="3"
-                                Height="{TemplateBinding Height}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"
-                                              TextElement.Foreground="{TemplateBinding Foreground}"
-                                              TextElement.FontSize="{TemplateBinding FontSize}"
-                                              TextElement.FontWeight="{TemplateBinding FontWeight}"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#e74c3c"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="#a93226"/>
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter Property="Opacity" Value="0.5"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <!-- Icon action button (sidebar) -->
-        <Style x:Key="HnVue.SidebarIconButton" TargetType="Button">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="#8899b0"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Width" Value="36"/>
-            <Setter Property="Height" Value="36"/>
-            <Setter Property="Padding" Value="0"/>
-            <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border x:Name="Bg"
-                                Background="{TemplateBinding Background}"
-                                CornerRadius="3"
-                                Width="{TemplateBinding Width}"
-                                Height="{TemplateBinding Height}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"
-                                              TextElement.Foreground="{TemplateBinding Foreground}"
-                                              TextElement.FontFamily="{TemplateBinding FontFamily}"
-                                              TextElement.FontSize="{TemplateBinding FontSize}"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Bg" Property="Background" Value="#1a2a44"/>
-                                <Setter Property="Foreground" Value="#e0e6f0"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <!-- DataGrid shared column header style -->
-        <Style x:Key="HnVue.GridColumnHeader" TargetType="DataGridColumnHeader">
-            <Setter Property="Background" Value="#0d1527"/>
-            <Setter Property="Foreground" Value="#7090b0"/>
-            <Setter Property="FontSize" Value="11"/>
-            <Setter Property="FontFamily" Value="{DynamicResource HnVue.Core.FontFamily}"/>
+        <Style x:Key="DarkHeaderStyle" TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="#2f2f2f"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#585858"/>
+            <Setter Property="BorderThickness" Value="0,0,1,1"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Height" Value="32"/>
-            <Setter Property="Padding" Value="8,0"/>
-            <Setter Property="BorderBrush" Value="#1e2d4a"/>
-            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="Height" Value="34"/>
+        </Style>
+        <Style x:Key="DarkRowStyle" TargetType="DataGridRow">
+            <Setter Property="Background" Value="#090909"/>
+            <Setter Property="Foreground" Value="#dde6f4"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#162132"/>
+                </Trigger>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#4f79b8"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="SideIconButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="38"/>
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="Margin" Value="0,0,6,6"/>
+            <Setter Property="Background" Value="#1d2433"/>
+            <Setter Property="BorderBrush" Value="#59657b"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="#f0f4fd"/>
+            <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+            <Setter Property="FontSize" Value="17"/>
         </Style>
     </UserControl.Resources>
 
-    <Grid Background="#0d1527">
+    <Grid Background="#242424" Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="260"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="44"/>   <!-- Tab header -->
-            <RowDefinition Height="*"/>    <!-- Main content -->
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- ═══ Row 0: Tab header — Worklist | Studylist ═══ -->
-        <Border Grid.Row="0"
-                Background="#080e1a"
-                BorderBrush="#1e2d4a"
-                BorderThickness="0,0,0,1">
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="12,0">
-                <RadioButton x:Name="WorklistTab"
-                             Content="Worklist"
-                             IsChecked="True"
-                             GroupName="MainListTabs"
-                             Style="{StaticResource HnVue.TabPill}"/>
-                <RadioButton x:Name="StudylistTab"
-                             Content="Studylist"
-                             IsChecked="False"
-                             GroupName="MainListTabs"
-                             Style="{StaticResource HnVue.TabPill}"
-                             Margin="4,0,0,0"/>
-            </StackPanel>
-        </Border>
-
-        <!-- ═══ Row 1: Main content (patient | study | sidebar) ═══ -->
-        <Grid Grid.Row="1">
+        <Grid Grid.Column="0" Grid.Row="0" Margin="0,0,10,10">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>   <!-- Patient list -->
-                <ColumnDefinition Width="3*"/>   <!-- Study list -->
-                <ColumnDefinition Width="200"/>  <!-- Control sidebar -->
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="Worklist" Foreground="White" FontSize="30" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,10,0"/>
+            <TextBlock Grid.Column="1" Text="&#xE76C;" FontFamily="Segoe MDL2 Assets" Foreground="#dce3f1" FontSize="26" VerticalAlignment="Center"/>
+            <StackPanel Grid.Column="3" Orientation="Horizontal">
+                <Button Content="Today" Command="{Binding FilterByPeriodCommand}" CommandParameter="Today" Width="82" Height="32" Margin="0,0,6,0"/>
+                <Button Content="3Days" Command="{Binding FilterByPeriodCommand}" CommandParameter="3Days" Width="82" Height="32" Margin="0,0,6,0"/>
+                <Button Content="1Week" Command="{Binding FilterByPeriodCommand}" CommandParameter="1Week" Width="82" Height="32" Margin="0,0,6,0"/>
+                <Button Content="All" Command="{Binding FilterByPeriodCommand}" CommandParameter="All" Width="70" Height="32" Margin="0,0,6,0"/>
+                <Button Content="1Month" Command="{Binding FilterByPeriodCommand}" CommandParameter="1Month" Width="90" Height="32"/>
+            </StackPanel>
+            <DatePicker Grid.Column="4" Width="130" Height="32" Margin="12,0,6,0"/>
+            <DatePicker Grid.Column="5" Width="130" Height="32"/>
+        </Grid>
+
+        <Grid Grid.Column="0" Grid.Row="1" Margin="0,0,10,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="12"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <!-- ── Col 0: Patient DataGrid ── -->
-            <Border Grid.Column="0"
-                    BorderBrush="#1e2d4a"
-                    BorderThickness="0,0,1,0">
+            <Border Grid.Column="0" Background="#090909" BorderBrush="#505661" BorderThickness="1">
                 <DataGrid ItemsSource="{Binding Patients}"
                           SelectedItem="{Binding SelectedPatient}"
                           AutoGenerateColumns="False"
-                          IsReadOnly="True"
                           CanUserAddRows="False"
                           CanUserDeleteRows="False"
-                          CanUserReorderColumns="False"
-                          RowHeight="40"
-                          Background="Transparent"
-                          BorderThickness="0"
+                          CanUserResizeRows="False"
+                          HeadersVisibility="Column"
                           GridLinesVisibility="Horizontal"
-                          HorizontalGridLinesBrush="#1e2d4a"
-                          ColumnHeaderHeight="32"
-                          Foreground="#e0e6f0"
-                          FontFamily="{DynamicResource HnVue.Core.FontFamily}"
-                          FontSize="12"
-                          AlternationCount="2"
-                          ColumnHeaderStyle="{StaticResource HnVue.GridColumnHeader}"
-                          SelectionMode="Single">
+                          HorizontalGridLinesBrush="#2a2a2a"
+                          BorderThickness="0"
+                          RowHeaderWidth="0"
+                          Background="#090909"
+                          Foreground="#dde6f4"
+                          ColumnHeaderHeight="34"
+                          RowHeight="40">
+                    <DataGrid.ColumnHeaderStyle>
+                        <StaticResource ResourceKey="DarkHeaderStyle"/>
+                    </DataGrid.ColumnHeaderStyle>
                     <DataGrid.RowStyle>
-                        <Style TargetType="DataGridRow">
-                            <Setter Property="Background" Value="Transparent"/>
-                            <Setter Property="Foreground" Value="#e0e6f0"/>
-                            <Setter Property="Height" Value="40"/>
-                            <Setter Property="Cursor" Value="Hand"/>
-                            <Style.Triggers>
-                                <Trigger Property="AlternationIndex" Value="1">
-                                    <Setter Property="Background" Value="#0a111e"/>
-                                </Trigger>
-                                <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="#1f6fc7"/>
-                                </Trigger>
-                                <MultiTrigger>
-                                    <MultiTrigger.Conditions>
-                                        <Condition Property="IsMouseOver" Value="True"/>
-                                        <Condition Property="IsSelected" Value="False"/>
-                                    </MultiTrigger.Conditions>
-                                    <Setter Property="Background" Value="#131f35"/>
-                                </MultiTrigger>
-                            </Style.Triggers>
-                        </Style>
+                        <StaticResource ResourceKey="DarkRowStyle"/>
                     </DataGrid.RowStyle>
-                    <DataGrid.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="BorderThickness" Value="0"/>
-                            <Setter Property="Padding" Value="8,0"/>
-                            <Setter Property="VerticalAlignment" Value="Center"/>
-                        </Style>
-                    </DataGrid.CellStyle>
                     <DataGrid.Columns>
-                        <!-- No (row number via AlternationIndex+1) -->
-                        <DataGridTemplateColumn Header="No" Width="40" CanUserResize="False">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow},
-                                                              Path=(ItemsControl.AlternationIndex),
-                                                              Converter={x:Null}}"
-                                               Foreground="#7090b0"
-                                               FontSize="11"
-                                               Padding="8,0"
-                                               VerticalAlignment="Center"/>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                        <!-- Patient ID -->
-                        <DataGridTemplateColumn Header="Patient ID" Width="130">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="8,0">
-                                        <!-- EMRG badge -->
-                                        <Border Background="#e74c3c"
-                                                CornerRadius="2"
-                                                Padding="3,1"
-                                                Margin="0,0,5,0"
-                                                VerticalAlignment="Center"
-                                                Visibility="{Binding IsEmergency, Converter={StaticResource BoolToVisibilityConverter}}">
-                                            <TextBlock Text="EMRG"
-                                                       Foreground="White"
-                                                       FontSize="9"
-                                                       FontWeight="Bold"
-                                                       FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
-                                        </Border>
-                                        <TextBlock Text="{Binding PatientId}"
-                                                   FontSize="12"
-                                                   TextTrimming="CharacterEllipsis"
-                                                   VerticalAlignment="Center"
-                                                   FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                        <!-- Patient Name -->
-                        <DataGridTextColumn Header="Patient Name"
-                                            Binding="{Binding Name}"
-                                            Width="*">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
-                                    <Setter Property="VerticalAlignment" Value="Center"/>
-                                    <Setter Property="Padding" Value="8,0"/>
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
-                        <!-- Sex -->
-                        <DataGridTextColumn Header="Sex"
-                                            Binding="{Binding Sex}"
-                                            Width="44">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="VerticalAlignment" Value="Center"/>
-                                    <Setter Property="HorizontalAlignment" Value="Center"/>
-                                    <Setter Property="Padding" Value="0"/>
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
-                        <!-- BirthDate -->
-                        <DataGridTemplateColumn Header="BirthDate" Width="100">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding DateOfBirth,
-                                                              Converter={StaticResource DateOnlyConverter}}"
-                                               FontSize="12"
-                                               Padding="8,0"
-                                               VerticalAlignment="Center"
-                                               FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                        <!-- Age -->
-                        <DataGridTemplateColumn Header="Age" Width="50">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding DateOfBirth,
-                                                              Converter={StaticResource AgeConverter}}"
-                                               FontSize="12"
-                                               Padding="8,0"
-                                               VerticalAlignment="Center"
-                                               HorizontalAlignment="Right"
-                                               FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="No" Binding="{Binding PatientId}" Width="70"/>
+                        <DataGridTextColumn Header="Patient ID" Binding="{Binding PatientId}" Width="210"/>
+                        <DataGridTextColumn Header="Patient Name" Binding="{Binding Name}" Width="*"/>
+                        <DataGridTextColumn Header="Sex" Binding="{Binding Sex}" Width="60"/>
+                        <DataGridTextColumn Header="Age" Binding="{Binding DateOfBirth, Converter={StaticResource AgeConverter}}" Width="80"/>
+                        <DataGridTextColumn Header="BirthDate" Binding="{Binding DateOfBirth, StringFormat={}{0:yyyyMMdd}}" Width="120"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </Border>
 
-            <!-- ── Col 1: Study DataGrid ── -->
-            <!--
-                COORDINATOR NOTE: Studies and SelectedStudy bindings require extending
-                IPatientListViewModel to expose StudylistViewModel or equivalent.
-                Currently shown empty until VM is extended.
-            -->
-            <Border Grid.Column="1"
-                    BorderBrush="#1e2d4a"
-                    BorderThickness="0,0,1,0">
-                <DataGrid ItemsSource="{Binding StudylistViewModel.Studies}"
-                          SelectedItem="{Binding StudylistViewModel.SelectedStudy}"
+            <Border Grid.Column="2" Background="#090909" BorderBrush="#505661" BorderThickness="1">
+                <DataGrid ItemsSource="{Binding Patients}"
+                          SelectedItem="{Binding SelectedPatient}"
                           AutoGenerateColumns="False"
-                          IsReadOnly="True"
                           CanUserAddRows="False"
                           CanUserDeleteRows="False"
-                          CanUserReorderColumns="False"
-                          RowHeight="40"
-                          Background="Transparent"
-                          BorderThickness="0"
+                          CanUserResizeRows="False"
+                          HeadersVisibility="Column"
                           GridLinesVisibility="Horizontal"
-                          HorizontalGridLinesBrush="#1e2d4a"
-                          ColumnHeaderHeight="32"
-                          Foreground="#e0e6f0"
-                          FontFamily="{DynamicResource HnVue.Core.FontFamily}"
-                          FontSize="12"
-                          AlternationCount="2"
-                          ColumnHeaderStyle="{StaticResource HnVue.GridColumnHeader}"
-                          SelectionMode="Single">
+                          HorizontalGridLinesBrush="#2a2a2a"
+                          BorderThickness="0"
+                          RowHeaderWidth="0"
+                          Background="#090909"
+                          Foreground="#dde6f4"
+                          ColumnHeaderHeight="34"
+                          RowHeight="40">
+                    <DataGrid.ColumnHeaderStyle>
+                        <StaticResource ResourceKey="DarkHeaderStyle"/>
+                    </DataGrid.ColumnHeaderStyle>
                     <DataGrid.RowStyle>
-                        <Style TargetType="DataGridRow">
-                            <Setter Property="Background" Value="Transparent"/>
-                            <Setter Property="Foreground" Value="#e0e6f0"/>
-                            <Setter Property="Height" Value="40"/>
-                            <Setter Property="Cursor" Value="Hand"/>
-                            <Style.Triggers>
-                                <Trigger Property="AlternationIndex" Value="1">
-                                    <Setter Property="Background" Value="#0a111e"/>
-                                </Trigger>
-                                <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="#1a3a5c"/>
-                                </Trigger>
-                                <MultiTrigger>
-                                    <MultiTrigger.Conditions>
-                                        <Condition Property="IsMouseOver" Value="True"/>
-                                        <Condition Property="IsSelected" Value="False"/>
-                                    </MultiTrigger.Conditions>
-                                    <Setter Property="Background" Value="#131f35"/>
-                                </MultiTrigger>
-                            </Style.Triggers>
-                        </Style>
+                        <StaticResource ResourceKey="DarkRowStyle"/>
                     </DataGrid.RowStyle>
-                    <DataGrid.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="BorderThickness" Value="0"/>
-                            <Setter Property="Padding" Value="8,0"/>
-                            <Setter Property="VerticalAlignment" Value="Center"/>
-                        </Style>
-                    </DataGrid.CellStyle>
                     <DataGrid.Columns>
-                        <!-- Accession No -->
-                        <DataGridTextColumn Header="Accession No"
-                                            Binding="{Binding AccessionNumber}"
-                                            Width="150">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="VerticalAlignment" Value="Center"/>
-                                    <Setter Property="Padding" Value="8,0"/>
-                                    <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
-                        <!-- StudyDate -->
-                        <DataGridTextColumn Header="StudyDate"
-                                            Binding="{Binding StudyDate, StringFormat={}{0:yyyy-MM-dd HH:mm}}"
-                                            Width="140">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="VerticalAlignment" Value="Center"/>
-                                    <Setter Property="Padding" Value="8,0"/>
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
-                        <!-- StudyDescription -->
-                        <DataGridTextColumn Header="StudyDescription"
-                                            Binding="{Binding Description}"
-                                            Width="*">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="VerticalAlignment" Value="Center"/>
-                                    <Setter Property="Padding" Value="8,0"/>
-                                    <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Accession No" Binding="{Binding PatientId}" Width="210"/>
+                        <DataGridTextColumn Header="StudyDate" Binding="{Binding CreatedAt, StringFormat={}{0:yyyyMMdd}}" Width="140"/>
+                        <DataGridTextColumn Header="StudyDescription" Binding="{Binding Name}" Width="*"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </Border>
+        </Grid>
 
-            <!-- ── Col 2: Control sidebar ── -->
-            <Grid Grid.Column="2" Background="#080e1a">
+        <TextBlock Grid.Column="0" Grid.Row="2" Text="{Binding Patients.Count, StringFormat=Total: {0}}" Foreground="#d5dceb" Margin="8,8,0,0"/>
+
+        <Border Grid.Column="1" Grid.RowSpan="3" Background="#1a2130" BorderBrush="#505661" BorderThickness="1" Padding="10">
+            <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>  <!-- Search row -->
-                    <RowDefinition Height="Auto"/>  <!-- Suspend/Hide -->
-                    <RowDefinition Height="Auto"/>  <!-- Date filter buttons -->
-                    <RowDefinition Height="Auto"/>  <!-- Date range pickers -->
-                    <RowDefinition Height="Auto"/>  <!-- View toggle -->
-                    <RowDefinition Height="Auto"/>  <!-- Quick Start -->
-                    <RowDefinition Height="*"/>     <!-- Spacer -->
-                    <RowDefinition Height="Auto"/>  <!-- Action buttons -->
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <!-- Search: ALL dropdown + search box + magnifier -->
-                <Grid Grid.Row="0" Margin="8,10,8,4">
+                <Grid Grid.Row="0" Margin="0,0,0,10">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="60"/>
+                        <ColumnDefinition Width="80"/>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition Width="32"/>
                     </Grid.ColumnDefinitions>
-
-                    <!-- ALL / modality filter dropdown -->
-                    <ComboBox Grid.Column="0"
-                              Height="30"
-                              Background="#1a2540"
-                              BorderBrush="#2a3a58"
-                              BorderThickness="1"
-                              Foreground="#e0e6f0"
-                              FontSize="11"
-                              FontFamily="{DynamicResource HnVue.Core.FontFamily}"
-                              Margin="0,0,4,0">
+                    <ComboBox Grid.Column="0" Height="32">
                         <ComboBoxItem Content="ALL" IsSelected="True"/>
                     </ComboBox>
-
-                    <!-- Search input -->
-                    <Border Grid.Column="1"
-                            Background="#1a2540"
-                            BorderBrush="#2a3a58"
-                            BorderThickness="1"
-                            CornerRadius="3"
-                            Height="30">
-                        <TextBox Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}"
-                                 Background="Transparent"
-                                 Foreground="#e0e6f0"
-                                 BorderThickness="0"
-                                 FontSize="11"
-                                 VerticalAlignment="Center"
-                                 Padding="6,0"
-                                 CaretBrush="#7bc8f5"
-                                 FontFamily="{DynamicResource HnVue.Core.FontFamily}">
-                            <TextBox.Style>
-                                <Style TargetType="TextBox">
-                                    <Style.Resources>
-                                        <VisualBrush x:Key="WatermarkBrush" TileMode="None" Stretch="None" AlignmentX="Left">
-                                            <VisualBrush.Visual>
-                                                <TextBlock Text="Input Patient Name"
-                                                           Foreground="#4a6080"
-                                                           FontSize="11"
-                                                           Margin="6,0"/>
-                                            </VisualBrush.Visual>
-                                        </VisualBrush>
-                                    </Style.Resources>
-                                    <Setter Property="Background" Value="Transparent"/>
-                                    <Setter Property="BorderThickness" Value="0"/>
-                                    <Style.Triggers>
-                                        <Trigger Property="Text" Value="">
-                                            <Setter Property="Background" Value="{StaticResource WatermarkBrush}"/>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBox.Style>
-                        </TextBox>
-                    </Border>
-
-                    <!-- Search icon button -->
-                    <Button Grid.Column="2"
-                            Content="&#xE721;"
-                            Command="{Binding SearchCommand}"
-                            Style="{StaticResource HnVue.SidebarIconButton}"
-                            Width="28"
-                            Margin="4,0,0,0"/>
+                    <TextBox Grid.Column="1" Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}" Margin="6,0,6,0" VerticalContentAlignment="Center"/>
+                    <Button Grid.Column="2" Content="&#xE721;" Style="{StaticResource SideIconButtonStyle}" Width="32" Height="32" Margin="0"/>
                 </Grid>
 
-                <!-- Suspend / Hide checkboxes -->
-                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="12,4,8,4">
-                    <CheckBox Content="Suspend"
-                              Foreground="#8899b0"
-                              FontSize="11"
-                              FontFamily="{DynamicResource HnVue.Core.FontFamily}"
-                              Margin="0,0,10,0"/>
-                    <CheckBox Content="Hide"
-                              Foreground="#8899b0"
-                              FontSize="11"
-                              FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
+                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,10">
+                    <CheckBox Content="Suspend" Foreground="#dce3f1" Margin="0,0,10,0"/>
+                    <CheckBox Content="Hide" Foreground="#dce3f1"/>
                 </StackPanel>
 
-                <!-- Date filter buttons: 1 Day | 3 Days | 1 Week | 15 Days | 1 Month -->
-                <UniformGrid Grid.Row="2" Columns="5" Margin="8,4">
-                    <Button Content="1 Day"
-                            Command="{Binding FilterByPeriodCommand}"
-                            CommandParameter="1Day"
-                            Style="{StaticResource HnVue.DateFilterButton}"
-                            Margin="0,0,2,0"/>
-                    <Button Content="3 Days"
-                            Command="{Binding FilterByPeriodCommand}"
-                            CommandParameter="3Days"
-                            Style="{StaticResource HnVue.DateFilterButton}"
-                            Margin="0,0,2,0"/>
-                    <Button Content="1 Week"
-                            Command="{Binding FilterByPeriodCommand}"
-                            CommandParameter="1Week"
-                            Style="{StaticResource HnVue.DateFilterButton}"
-                            Margin="0,0,2,0"/>
-                    <Button Content="15 Days"
-                            Command="{Binding FilterByPeriodCommand}"
-                            CommandParameter="15Days"
-                            Style="{StaticResource HnVue.DateFilterButton}"
-                            Margin="0,0,2,0"/>
-                    <Button Content="1 Month"
-                            Command="{Binding FilterByPeriodCommand}"
-                            CommandParameter="1Month"
-                            Style="{StaticResource HnVue.DateFilterButton}"/>
+                <UniformGrid Grid.Row="2" Columns="5" Margin="0,0,0,10">
+                    <Button Content="Today" Command="{Binding FilterByPeriodCommand}" CommandParameter="Today" Margin="0,0,4,0"/>
+                    <Button Content="3Days" Command="{Binding FilterByPeriodCommand}" CommandParameter="3Days" Margin="0,0,4,0"/>
+                    <Button Content="1Week" Command="{Binding FilterByPeriodCommand}" CommandParameter="1Week" Margin="0,0,4,0"/>
+                    <Button Content="All" Command="{Binding FilterByPeriodCommand}" CommandParameter="All" Margin="0,0,4,0"/>
+                    <Button Content="1Month" Command="{Binding FilterByPeriodCommand}" CommandParameter="1Month"/>
                 </UniformGrid>
 
-                <!-- Date range pickers -->
-                <Grid Grid.Row="3" Margin="8,4">
+                <Grid Grid.Row="3" Margin="0,0,0,10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="8"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <DatePicker Grid.Column="0"
-                                Height="28"
-                                FontSize="11"
-                                FontFamily="{DynamicResource HnVue.Core.FontFamily}"
-                                SelectedDateFormat="Short"/>
-                    <TextBlock Grid.Column="1"
-                               Text="-"
-                               Foreground="#7090b0"
-                               VerticalAlignment="Center"
-                               Margin="4,0"/>
-                    <DatePicker Grid.Column="2"
-                                Height="28"
-                                FontSize="11"
-                                FontFamily="{DynamicResource HnVue.Core.FontFamily}"
-                                SelectedDateFormat="Short"/>
+                    <DatePicker Grid.Column="0" Height="30"/>
+                    <DatePicker Grid.Column="2" Height="30"/>
                 </Grid>
 
-                <!-- Grid / List view toggle -->
-                <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="8,4">
-                    <!-- Grid view icon -->
-                    <Button Content="&#xE179;"
-                            Style="{StaticResource HnVue.SidebarIconButton}"
-                            ToolTip="Grid View"
-                            Margin="0,0,4,0"/>
-                    <!-- List view icon -->
-                    <Button Content="&#xE292;"
-                            Style="{StaticResource HnVue.SidebarIconButton}"
-                            ToolTip="List View"/>
+                <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="0,0,0,10">
+                    <Button Content="&#xECA5;" Style="{StaticResource SideIconButtonStyle}"/>
+                    <Button Content="&#xE14C;" Style="{StaticResource SideIconButtonStyle}"/>
                 </StackPanel>
 
-                <!-- Quick Start button -->
                 <Button Grid.Row="5"
                         Content="Quick Start"
                         Command="{Binding SelectPatientCommand}"
                         CommandParameter="{Binding SelectedPatient}"
-                        Style="{StaticResource HnVue.QuickStartButton}"
-                        Margin="8,6"/>
+                        Background="#df4938"
+                        BorderBrush="#df4938"
+                        Foreground="White"
+                        FontWeight="Bold"
+                        Height="46"
+                        VerticalAlignment="Top"/>
 
-                <!-- Spacer -->
-                <Border Grid.Row="6"/>
+                <WrapPanel Grid.Row="6" Margin="0,12,0,0">
+                    <Button Content="&#xE710;" Style="{StaticResource SideIconButtonStyle}"/>
+                    <Button Content="&#xE70F;" Style="{StaticResource SideIconButtonStyle}"/>
+                    <Button Content="&#xE74D;" Style="{StaticResource SideIconButtonStyle}"/>
+                    <Button Content="&#xE72F;" Style="{StaticResource SideIconButtonStyle}"/>
+                    <Button Content="&#xE721;" Style="{StaticResource SideIconButtonStyle}"/>
+                </WrapPanel>
 
-                <!-- Action buttons: 2 rows -->
-                <Grid Grid.Row="7" Margin="8,4,8,8">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-
-                    <!-- Row 1: Register, Edit, Delete, Merge, Unmerge -->
-                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,4">
-                        <!-- Register patient — &#xE710; Add -->
-                        <Button Content="&#xE710;"
-                                Command="{Binding RegisterPatientCommand}"
-                                Style="{StaticResource HnVue.SidebarIconButton}"
-                                ToolTip="Register Patient"
-                                Margin="0,0,2,0"/>
-                        <!-- Edit -->
-                        <Button Content="&#xE70F;"
-                                Style="{StaticResource HnVue.SidebarIconButton}"
-                                ToolTip="Edit Patient"
-                                Margin="0,0,2,0"/>
-                        <!-- Delete -->
-                        <Button Content="&#xE74D;"
-                                Style="{StaticResource HnVue.SidebarIconButton}"
-                                ToolTip="Delete"
-                                Margin="0,0,2,0"/>
-                        <!-- Merge -->
-                        <Button Content="&#xE72F;"
-                                Style="{StaticResource HnVue.SidebarIconButton}"
-                                ToolTip="Merge"
-                                Margin="0,0,2,0"/>
-                        <!-- Search -->
-                        <Button Content="&#xE721;"
-                                Command="{Binding SearchCommand}"
-                                Style="{StaticResource HnVue.SidebarIconButton}"
-                                ToolTip="Search"/>
-                    </StackPanel>
-
-                    <!-- Row 2: View, Export, Print, CD Burn, Split -->
-                    <StackPanel Grid.Row="1" Orientation="Horizontal">
-                        <!-- Image viewer -->
-                        <Button Content="&#xE7B5;"
-                                Style="{StaticResource HnVue.SidebarIconButton}"
-                                ToolTip="View Images"
-                                Margin="0,0,2,0"/>
-                        <!-- Export -->
-                        <Button Content="&#xE898;"
-                                Style="{StaticResource HnVue.SidebarIconButton}"
-                                ToolTip="Export"
-                                Margin="0,0,2,0"/>
-                        <!-- Print -->
-                        <Button Content="&#xE749;"
-                                Style="{StaticResource HnVue.SidebarIconButton}"
-                                ToolTip="Print"
-                                Margin="0,0,2,0"/>
-                        <!-- CD Burn -->
-                        <Button Content="&#xE958;"
-                                Style="{StaticResource HnVue.SidebarIconButton}"
-                                ToolTip="CD Burn"
-                                Margin="0,0,2,0"/>
-                        <!-- Expand/Fullscreen -->
-                        <Button Content="&#xE1D8;"
-                                Style="{StaticResource HnVue.SidebarIconButton}"
-                                ToolTip="Full Screen"/>
-                    </StackPanel>
-                </Grid>
+                <WrapPanel Grid.Row="7" Margin="0,8,0,0">
+                    <Button Content="&#xE7B5;" Style="{StaticResource SideIconButtonStyle}"/>
+                    <Button Content="&#xE898;" Style="{StaticResource SideIconButtonStyle}"/>
+                    <Button Content="&#xE749;" Style="{StaticResource SideIconButtonStyle}"/>
+                    <Button Content="&#xE958;" Style="{StaticResource SideIconButtonStyle}"/>
+                    <Button Content="&#xE1D8;" Style="{StaticResource SideIconButtonStyle}"/>
+                </WrapPanel>
             </Grid>
-        </Grid>
-
-        <!-- Loading indicator overlay -->
-        <Border Grid.Row="1"
-                Background="#80050b15"
-                Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}">
-            <ProgressBar IsIndeterminate="True"
-                         Height="3"
-                         VerticalAlignment="Top"
-                         Background="Transparent"
-                         Foreground="#7bc8f5"/>
-        </Border>
-
-        <!-- Error message -->
-        <Border Grid.Row="1"
-                VerticalAlignment="Bottom"
-                Background="#cc000000"
-                Padding="12,6"
-                Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}">
-            <TextBlock Text="{Binding ErrorMessage}"
-                       Foreground="#e74c3c"
-                       FontSize="12"
-                       FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
         </Border>
     </Grid>
 </UserControl>
