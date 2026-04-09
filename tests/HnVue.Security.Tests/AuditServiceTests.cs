@@ -131,7 +131,7 @@ public sealed class AuditServiceTests
     }
 
     [Fact]
-    public async Task VerifyChainIntegrity_TamperedEntry_ReturnsFalse()
+    public async Task VerifyChainIntegrity_TamperedEntry_ReturnsFailure()
     {
         var timestamp = DateTimeOffset.UtcNow;
 
@@ -146,12 +146,13 @@ public sealed class AuditServiceTests
 
         var result = await _sut.VerifyChainIntegrityAsync();
 
-        result.IsSuccess.Should().BeTrue();
-        result.Value.Should().BeFalse();
+        // After fix: tampering returns Failure, not Success(false)
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.IncidentLogFailed);
     }
 
     [Fact]
-    public async Task VerifyChainIntegrity_BrokenPreviousHashLink_ReturnsFalse()
+    public async Task VerifyChainIntegrity_BrokenPreviousHashLink_ReturnsFailure()
     {
         var timestamp = DateTimeOffset.UtcNow;
 
@@ -172,8 +173,9 @@ public sealed class AuditServiceTests
 
         var result = await _sut.VerifyChainIntegrityAsync();
 
-        result.IsSuccess.Should().BeTrue();
-        result.Value.Should().BeFalse();
+        // After fix: tampering returns Failure, not Success(false)
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.IncidentLogFailed);
     }
 
     [Fact]

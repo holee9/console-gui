@@ -8,6 +8,20 @@ using Microsoft.Extensions.Options;
 
 namespace HnVue.Update;
 
+/// <summary>
+/// Exception thrown when an update operation fails due to verification or staging errors.
+/// Used to trigger atomic rollback in ApplyUpdateAsync.
+/// </summary>
+internal sealed class UpdateFailedException : Exception
+{
+    public ErrorCode ErrorCode { get; }
+
+    public UpdateFailedException(ErrorCode errorCode, string message) : base(message)
+    {
+        ErrorCode = errorCode;
+    }
+}
+
 // @MX:WARN SWUpdateService - @MX:REASON: Safety-critical update orchestration, IEC 62304 §6.2.5 compliance
 // @MX:NOTE Update staging prevents live binary replacement - safe for medical devices
 /// <summary>
@@ -27,6 +41,14 @@ public sealed class SWUpdateService : ISWUpdateService
 
     // System user identifier used in audit entries for automated operations
     private const string SystemUserId = "SYSTEM";
+
+    // Tracks the current state of the update operation
+    private UpdateState _currentState = UpdateState.Completed;
+
+    /// <summary>
+    /// Gets the current state of the update operation.
+    /// </summary>
+    public UpdateState CurrentState => _currentState;
 
     /// <summary>
     /// Initialises a new instance of <see cref="SWUpdateService"/>.
@@ -74,60 +96,92 @@ public sealed class SWUpdateService : ISWUpdateService
     {
         _logger?.LogInformation("Applying update from package: {PackagePath}", packagePath);
 
-        // @MX:NOTE SHA-256 verification prevents tampered updates - IEC 62304 integrity requirement
-        // Step 1: Verify SHA-256 hash integrity.
-        // The expected hash must be obtained from the manifest or passed by the caller;
-        // here we derive it from the accompanying .sha256 sidecar file if available.
-        string? expectedHash = await TryReadSidecarHashAsync(packagePath, cancellationToken)
-            .ConfigureAwait(false);
+        // Set state to InProgress at start
+        _currentState = UpdateState.InProgress;
+        string? backupPath = null;
 
-        if (expectedHash is not null)
+        try
         {
-            if (!SignatureVerifier.VerifyHash(packagePath, expectedHash))
+            // @MX:NOTE SHA-256 verification prevents tampered updates - IEC 62304 integrity requirement
+            // Step 1: Verify SHA-256 hash integrity.
+            // The expected hash must be obtained from the manifest or passed by the caller;
+            // here we derive it from the accompanying .sha256 sidecar file if available.
+            string? expectedHash = await TryReadSidecarHashAsync(packagePath, cancellationToken)
+                .ConfigureAwait(false);
+
+            if (expectedHash is not null)
             {
-                _logger?.LogError("SHA-256 hash mismatch for package {PackagePath}", packagePath);
-                return Result.Failure(ErrorCode.UpdatePackageCorrupt,
-                    $"Update package integrity check failed: SHA-256 hash mismatch for '{packagePath}'.");
+                if (!SignatureVerifier.VerifyHash(packagePath, expectedHash))
+                {
+                    _logger?.LogError("SHA-256 hash mismatch for package {PackagePath}", packagePath);
+                    throw new UpdateFailedException(ErrorCode.UpdatePackageCorrupt,
+                        $"Update package integrity check failed: SHA-256 hash mismatch for '{packagePath}'.");
+                }
+                _logger?.LogInformation("SHA-256 hash verified successfully");
             }
-            _logger?.LogInformation("SHA-256 hash verified successfully");
-        }
 
-        // @MX:NOTE Authenticode verification ensures trusted publisher - prevents supply chain attacks
-        // Step 2: Verify Authenticode digital signature (when required by policy).
-        if (_options.RequireAuthenticodeSignature)
-        {
-            if (!SignatureVerifier.VerifyAuthenticode(packagePath))
+            // @MX:NOTE Authenticode verification ensures trusted publisher - prevents supply chain attacks
+            // Step 2: Verify Authenticode digital signature (when required by policy).
+            if (_options.RequireAuthenticodeSignature)
             {
-                _logger?.LogError("Authenticode signature verification failed for {PackagePath}", packagePath);
-                return Result.Failure(ErrorCode.SignatureVerificationFailed,
-                    $"Update package signature verification failed: the file '{packagePath}' is not trusted.");
+                if (!SignatureVerifier.VerifyAuthenticode(packagePath))
+                {
+                    _logger?.LogError("Authenticode signature verification failed for {PackagePath}", packagePath);
+                    throw new UpdateFailedException(ErrorCode.SignatureVerificationFailed,
+                        $"Update package signature verification failed: the file '{packagePath}' is not trusted.");
+                }
+                _logger?.LogInformation("Authenticode signature verified successfully");
             }
-            _logger?.LogInformation("Authenticode signature verified successfully");
+
+            // Step 3: Create a backup of the current application directory.
+            Result<string> backupResult = await _backupManager.CreateBackupAsync(cancellationToken)
+                .ConfigureAwait(false);
+
+            if (backupResult.IsFailure)
+            {
+                _logger?.LogError("Backup creation failed: {Error}", backupResult.ErrorMessage);
+                throw new UpdateFailedException(backupResult.Error!.Value, backupResult.ErrorMessage!);
+            }
+
+            backupPath = backupResult.Value;
+            _currentState = UpdateState.Staged;
+            _logger?.LogInformation("Backup created at {BackupPath}", backupPath);
+
+            // Step 4 (Wave 2): Stage the update. Actual binary replacement happens on restart.
+            // Mark the staged package path so the startup sequence can complete installation.
+            await WriteStagedUpdateMarkerAsync(packagePath, cancellationToken).ConfigureAwait(false);
+
+            // Step 5: Write audit entry for IEC 62304 traceability.
+            await WriteAuditAsync("UPDATE_STAGED",
+                $"Package staged for installation on restart: {packagePath}. Backup: {backupPath}",
+                cancellationToken).ConfigureAwait(false);
+
+            _currentState = UpdateState.Completed;
+            _logger?.LogInformation("Update staged successfully. Installation will complete on next restart.");
+            return Result.Success();
         }
-
-        // Step 3: Create a backup of the current application directory.
-        Result<string> backupResult = await _backupManager.CreateBackupAsync(cancellationToken)
-            .ConfigureAwait(false);
-
-        if (backupResult.IsFailure)
+        catch (OperationCanceledException)
         {
-            _logger?.LogError("Backup creation failed: {Error}", backupResult.ErrorMessage);
-            return Result.Failure(backupResult.Error!.Value, backupResult.ErrorMessage!);
+            _currentState = UpdateState.Failed;
+            await RollbackAndCleanupAsync(backupPath, "Update operation was cancelled", cancellationToken)
+                .ConfigureAwait(false);
+            return Result.Failure(ErrorCode.OperationCancelled, "Update operation was cancelled.");
         }
-
-        _logger?.LogInformation("Backup created at {BackupPath}", backupResult.Value);
-
-        // Step 4 (Wave 2): Stage the update. Actual binary replacement happens on restart.
-        // Mark the staged package path so the startup sequence can complete installation.
-        await WriteStagedUpdateMarkerAsync(packagePath, cancellationToken).ConfigureAwait(false);
-
-        // Step 5: Write audit entry for IEC 62304 traceability.
-        await WriteAuditAsync("UPDATE_STAGED",
-            $"Package staged for installation on restart: {packagePath}. Backup: {backupResult.Value}",
-            cancellationToken).ConfigureAwait(false);
-
-        _logger?.LogInformation("Update staged successfully. Installation will complete on next restart.");
-        return Result.Success();
+        catch (UpdateFailedException ex)
+        {
+            _currentState = UpdateState.Failed;
+            await RollbackAndCleanupAsync(backupPath, ex.Message, cancellationToken)
+                .ConfigureAwait(false);
+            return Result.Failure(ex.ErrorCode, ex.Message);
+        }
+        catch (Exception ex) when (ex is not OutOfMemoryException)
+        {
+            _currentState = UpdateState.Failed;
+            _logger?.LogError(ex, "Unexpected error during update");
+            await RollbackAndCleanupAsync(backupPath, $"Unexpected error: {ex.Message}", cancellationToken)
+                .ConfigureAwait(false);
+            return Result.Failure(ErrorCode.UpdatePackageCorrupt, $"Update failed: {ex.Message}");
+        }
     }
 
     // @MX:ANCHOR RollbackAsync - @MX:REASON: Critical recovery operation for failed updates
@@ -218,6 +272,84 @@ public sealed class SWUpdateService : ISWUpdateService
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or InvalidOperationException)
         {
             _logger?.LogWarning(ex, "Audit write failed for action {Action} (non-fatal)", action);
+        }
+    }
+
+    /// <summary>
+    /// Rolls back the update operation and cleans up partial files.
+    /// Called when any step of the update process fails.
+    /// </summary>
+    private async Task RollbackAndCleanupAsync(
+        string? backupPath,
+        string failureReason,
+        CancellationToken cancellationToken)
+    {
+        _logger?.LogWarning("Rolling back update due to failure: {Reason}", failureReason);
+
+        // Clean up partial update files
+        CleanupPartialUpdate();
+
+        // Restore from backup if it was created
+        if (backupPath is not null)
+        {
+            try
+            {
+                Result restoreResult = await _backupManager.RestoreFromBackupAsync(cancellationToken)
+                    .ConfigureAwait(false);
+
+                if (restoreResult.IsSuccess)
+                {
+                    _currentState = UpdateState.RolledBack;
+                    _logger?.LogInformation("Rollback completed successfully");
+                }
+                else
+                {
+                    _logger?.LogError("Failed to restore from backup: {Error}", restoreResult.ErrorMessage);
+                }
+            }
+            catch (Exception ex) when (ex is not OutOfMemoryException)
+            {
+                _logger?.LogError(ex, "Exception during rollback");
+            }
+        }
+        else
+        {
+            _currentState = UpdateState.RolledBack;
+        }
+
+        // Write audit entry for rollback
+        await WriteAuditAsync("UPDATE_ROLLED_BACK",
+            $"Update rolled back: {failureReason}",
+            cancellationToken).ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Cleans up partial update files (staging markers, temporary files).
+    /// </summary>
+    private void CleanupPartialUpdate()
+    {
+        try
+        {
+            string markerDir = _options.ResolvedBackupDirectory;
+            string markerPath = Path.Combine(markerDir, "pending_update.txt");
+
+            if (File.Exists(markerPath))
+            {
+                File.Delete(markerPath);
+                _logger?.LogInformation("Cleaned up pending update marker");
+            }
+
+            // Clean up any staging directories
+            string stagingDir = Path.Combine(markerDir, "staging");
+            if (Directory.Exists(stagingDir))
+            {
+                Directory.Delete(stagingDir, recursive: true);
+                _logger?.LogInformation("Cleaned up staging directory");
+            }
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+        {
+            _logger?.LogWarning(ex, "Failed to clean up partial update files (non-fatal)");
         }
     }
 }

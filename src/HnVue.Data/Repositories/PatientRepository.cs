@@ -14,7 +14,8 @@ namespace HnVue.Data.Repositories;
 internal sealed class PatientRepository(
     HnVueDbContext context,
     IAuditRepository auditRepository,
-    IPhiEncryptionService? phiEncryptionService) : IPatientRepository
+    IPhiEncryptionService? phiEncryptionService,
+    ISecurityContext? securityContext = null) : IPatientRepository
 {
     /// <inheritdoc/>
     public async Task<Result<PatientRecord>> AddAsync(PatientRecord patient, CancellationToken ct = default)
@@ -28,9 +29,10 @@ internal sealed class PatientRepository(
             // SWR-PM-012: Audit trail for patient creation
             var lastHashResult = await auditRepository.GetLastHashAsync(ct).ConfigureAwait(false);
             var previousHash = lastHashResult.IsSuccess ? lastHashResult.Value : null;
+            var userName = securityContext?.CurrentUserId ?? "anonymous";
             await auditRepository.AppendAsync(new AuditEntry(
                 DateTimeOffset.UtcNow,
-                "system", // TODO: inject ISecurityContext for actual user
+                userName,
                 "PatientCreated",
                 "pending",
                 $"Patient {patient.Name} ({entity.PatientId})",
@@ -125,7 +127,7 @@ internal sealed class PatientRepository(
             var previousHash = lastHashResult.IsSuccess ? lastHashResult.Value : null;
             await auditRepository.AppendAsync(new AuditEntry(
                 DateTimeOffset.UtcNow,
-                "system", // TODO: inject ISecurityContext for actual user
+                (securityContext?.CurrentUserId ?? "anonymous")!, // REQ-DATA-002: Use actual user from ISecurityContext
                 "PatientUpdated",
                 "pending",
                 $"Patient {patient.Name} ({entity.PatientId})",
@@ -164,7 +166,7 @@ internal sealed class PatientRepository(
             var previousHash = lastHashResult.IsSuccess ? lastHashResult.Value : null;
             await auditRepository.AppendAsync(new AuditEntry(
                 DateTimeOffset.UtcNow,
-                "system", // TODO: inject ISecurityContext for actual user
+                (securityContext?.CurrentUserId ?? "anonymous")!, // REQ-DATA-002: Use actual user from ISecurityContext
                 "PatientDeleted",
                 "pending",
                 $"Patient {entity.Name} ({entity.PatientId}) - soft delete",

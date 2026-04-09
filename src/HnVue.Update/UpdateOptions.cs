@@ -40,6 +40,64 @@ public sealed class UpdateOptions
     public bool RequireAuthenticodeSignature { get; set; } = true;
 
     /// <summary>
+    /// Validates the update options configuration.
+    /// Throws <see cref="InvalidOperationException"/> for invalid configuration.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">
+    /// Thrown when UpdateServerUrl is null, empty, or uses HTTP instead of HTTPS.
+    /// Also thrown when RequireAuthenticodeSignature is disabled in production environment.
+    /// </exception>
+    public void Validate()
+    {
+        // Check for null or empty URL
+        if (string.IsNullOrWhiteSpace(UpdateServerUrl))
+        {
+            throw new InvalidOperationException(
+                "UpdateServerUrl cannot be null, empty, or whitespace.");
+        }
+
+        // Enforce HTTPS
+        if (!UpdateServerUrl.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
+        {
+            // Check if it's HTTP (not HTTPS)
+            if (UpdateServerUrl.StartsWith("http://", StringComparison.OrdinalIgnoreCase))
+            {
+                throw new InvalidOperationException(
+                    "UpdateServerUrl must use HTTPS for secure communication. " +
+                    $"HTTP is not allowed. Current value: '{UpdateServerUrl}'");
+            }
+
+            // URL doesn't start with either http:// or https://
+            throw new InvalidOperationException(
+                "UpdateServerUrl must be a valid HTTPS URL. " +
+                $"Current value: '{UpdateServerUrl}'");
+        }
+
+        // Enforce Authenticode signature requirement in production
+        if (!RequireAuthenticodeSignature && IsProductionEnvironment())
+        {
+            throw new InvalidOperationException(
+                "RequireAuthenticodeSignature cannot be disabled in production environment. " +
+                "This is a safety-critical medical device software (IEC 62304 compliance).");
+        }
+    }
+
+    /// <summary>
+    /// Determines whether the current environment is production.
+    /// </summary>
+    /// <returns>
+    /// <see langword="true"/> if the ASPNETCORE_ENVIRONMENT or DOTNET_ENVIRONMENT
+    /// environment variable is set to "Production"; otherwise, <see langword="false"/>.
+    /// </returns>
+    private static bool IsProductionEnvironment()
+    {
+        string? env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ??
+                     Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT");
+
+        return string.Equals(env, "Production", StringComparison.OrdinalIgnoreCase);
+    }
+
+    /// <summary>
     /// Resolves the effective backup directory, substituting a sensible default when the property is empty.
     /// </summary>
     internal string ResolvedBackupDirectory =>

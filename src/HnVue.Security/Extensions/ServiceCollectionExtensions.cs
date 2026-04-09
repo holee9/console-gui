@@ -2,6 +2,7 @@ using HnVue.Common.Abstractions;
 using HnVue.Common.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Logging;
 
 namespace HnVue.Security.Extensions;
 
@@ -42,8 +43,12 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<JwtTokenService>();
 
         // SWR-CS-077: Register persistent token denylist for IEC 62304 compliance (survives restarts)
-        var tokenDenylist = new PersistentTokenDenylist(TimeSpan.FromMinutes(opts.ExpiryMinutes));
-        services.AddSingleton<ITokenDenylist>(tokenDenylist);
+        // REQ-SEC-003: Register with logger support for file corruption warnings
+        services.AddSingleton<ITokenDenylist>(sp =>
+        {
+            var logger = sp.GetService<ILogger<PersistentTokenDenylist>>();
+            return new PersistentTokenDenylist(TimeSpan.FromMinutes(opts.ExpiryMinutes), logger: logger);
+        });
 
         services.AddScoped<ISecurityService, SecurityService>();
 

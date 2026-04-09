@@ -1,6 +1,7 @@
 using System.Collections.Concurrent;
 using System.Text.Json;
 using System.IO;
+using Microsoft.Extensions.Logging;
 
 namespace HnVue.Security;
 
@@ -16,6 +17,7 @@ internal sealed class PersistentTokenDenylist : ITokenDenylist, IDisposable
     private readonly TimeSpan _defaultTtl;
     private readonly string _persistPath;
     private readonly object _fileLock = new();
+    private readonly ILogger<PersistentTokenDenylist>? _logger;
     private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web) { WriteIndented = true };
 
     /// <summary>
@@ -25,12 +27,14 @@ internal sealed class PersistentTokenDenylist : ITokenDenylist, IDisposable
     /// <param name="persistPath">
     /// Optional file path for persistence. Defaults to %APPDATA%\HnVue\token_denylist.json.
     /// </param>
-    public PersistentTokenDenylist(TimeSpan defaultTtl, string? persistPath = null)
+    /// <param name="logger">Optional logger for diagnostics (REQ-SEC-003).</param>
+    public PersistentTokenDenylist(TimeSpan defaultTtl, string? persistPath = null, ILogger<PersistentTokenDenylist>? logger = null)
     {
         _defaultTtl = defaultTtl;
         _persistPath = persistPath ?? Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
             "HnVue", "token_denylist.json");
+        _logger = logger;
         LoadFromFile();
     }
 
@@ -80,6 +84,7 @@ internal sealed class PersistentTokenDenylist : ITokenDenylist, IDisposable
     /// <summary>
     /// Loads revoked JTIs from the persistence file on startup.
     /// Ignores file errors gracefully - denylist operates in-memory if file is unavailable.
+    /// REQ-SEC-003: Logs warning when file corruption is detected.
     /// </summary>
     private void LoadFromFile()
     {
@@ -99,13 +104,15 @@ internal sealed class PersistentTokenDenylist : ITokenDenylist, IDisposable
                     _denylist[kvp.Key] = kvp.Value;
             }
         }
-        catch (IOException)
+        catch (IOException ex)
         {
-            // Ignore file errors on load - graceful degradation
+            // REQ-SEC-003: Log warning for file I/O errors
+            _logger?.LogWarning(ex, "Token denylist file I/O error: {Message}. Starting with empty denylist.", ex.Message);
         }
-        catch (JsonException)
+        catch (JsonException ex)
         {
-            // Ignore corrupt file - graceful degradation
+            // REQ-SEC-003: Log warning for JSON corruption
+            _logger?.LogWarning(ex, "Token denylist file corrupted: {Message}. Starting with empty denylist.", ex.Message);
         }
     }
 

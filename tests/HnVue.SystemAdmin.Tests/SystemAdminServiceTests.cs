@@ -14,6 +14,7 @@ public sealed class SystemAdminServiceTests
 {
     private readonly ISystemSettingsRepository _settingsRepo;
     private readonly IAuditRepository _auditRepo;
+    private readonly ISecurityContext _securityContext;
     private readonly SystemAdminService _sut;
 
     private static SystemSettings ValidSettings() => new()
@@ -37,7 +38,8 @@ public sealed class SystemAdminServiceTests
     {
         _settingsRepo = Substitute.For<ISystemSettingsRepository>();
         _auditRepo = Substitute.For<IAuditRepository>();
-        _sut = new SystemAdminService(_settingsRepo, _auditRepo);
+        _securityContext = Substitute.For<ISecurityContext>();
+        _sut = new SystemAdminService(_settingsRepo, _auditRepo, _securityContext);
     }
 
     // ── Constructor ───────────────────────────────────────────────────────────
@@ -45,7 +47,7 @@ public sealed class SystemAdminServiceTests
     [Fact]
     public void Constructor_NullSettingsRepo_ThrowsArgumentNullException()
     {
-        var act = () => new SystemAdminService(null!, _auditRepo);
+        var act = () => new SystemAdminService(null!, _auditRepo, _securityContext);
 
         act.Should().Throw<ArgumentNullException>();
     }
@@ -53,7 +55,15 @@ public sealed class SystemAdminServiceTests
     [Fact]
     public void Constructor_NullAuditRepo_ThrowsArgumentNullException()
     {
-        var act = () => new SystemAdminService(_settingsRepo, null!);
+        var act = () => new SystemAdminService(_settingsRepo, null!, _securityContext);
+
+        act.Should().Throw<ArgumentNullException>();
+    }
+
+    [Fact]
+    public void Constructor_NullSecurityContext_ThrowsArgumentNullException()
+    {
+        var act = () => new SystemAdminService(_settingsRepo, _auditRepo, null!);
 
         act.Should().Throw<ArgumentNullException>();
     }
@@ -78,7 +88,14 @@ public sealed class SystemAdminServiceTests
     [Fact]
     public async Task UpdateSettings_ValidSettings_SavesAndReturnsSuccess()
     {
+        var oldSettings = ValidSettings();
+        _settingsRepo.GetAsync(Arg.Any<CancellationToken>())
+            .Returns(Result.Success(oldSettings));
         _settingsRepo.SaveAsync(Arg.Any<SystemSettings>(), Arg.Any<CancellationToken>())
+            .Returns(Result.Success());
+        _auditRepo.GetLastHashAsync(Arg.Any<CancellationToken>())
+            .Returns(Result.SuccessNullable<string?>(null));
+        _auditRepo.AppendAsync(Arg.Any<AuditEntry>(), Arg.Any<CancellationToken>())
             .Returns(Result.Success());
 
         var result = await _sut.UpdateSettingsAsync(ValidSettings());
@@ -105,6 +122,7 @@ public sealed class SystemAdminServiceTests
 
         result.IsFailure.Should().BeTrue();
         result.Error.Should().Be(ErrorCode.ValidationFailed);
+        await _auditRepo.DidNotReceive().AppendAsync(Arg.Any<AuditEntry>(), Arg.Any<CancellationToken>());
     }
 
     [Fact]
@@ -117,6 +135,7 @@ public sealed class SystemAdminServiceTests
 
         result.IsFailure.Should().BeTrue();
         result.Error.Should().Be(ErrorCode.ValidationFailed);
+        await _auditRepo.DidNotReceive().AppendAsync(Arg.Any<AuditEntry>(), Arg.Any<CancellationToken>());
     }
 
     [Fact]
@@ -129,6 +148,7 @@ public sealed class SystemAdminServiceTests
 
         result.IsFailure.Should().BeTrue();
         result.Error.Should().Be(ErrorCode.ValidationFailed);
+        await _auditRepo.DidNotReceive().AppendAsync(Arg.Any<AuditEntry>(), Arg.Any<CancellationToken>());
     }
 
     [Fact]
@@ -141,6 +161,7 @@ public sealed class SystemAdminServiceTests
 
         result.IsFailure.Should().BeTrue();
         result.Error.Should().Be(ErrorCode.ValidationFailed);
+        await _auditRepo.DidNotReceive().AppendAsync(Arg.Any<AuditEntry>(), Arg.Any<CancellationToken>());
     }
 
     // ── ExportAuditLogAsync ───────────────────────────────────────────────────
@@ -312,6 +333,7 @@ public sealed class SystemAdminServiceTests
         result.IsFailure.Should().BeTrue();
         result.Error.Should().Be(ErrorCode.ValidationFailed);
         result.ErrorMessage.Should().Contain("PACS port must be between 1 and 65535");
+        await _auditRepo.DidNotReceive().AppendAsync(Arg.Any<AuditEntry>(), Arg.Any<CancellationToken>());
     }
 
     [Theory]
@@ -328,6 +350,7 @@ public sealed class SystemAdminServiceTests
         result.IsFailure.Should().BeTrue();
         result.Error.Should().Be(ErrorCode.ValidationFailed);
         result.ErrorMessage.Should().Contain("Local AE Title is required");
+        await _auditRepo.DidNotReceive().AppendAsync(Arg.Any<AuditEntry>(), Arg.Any<CancellationToken>());
     }
 
     [Fact]
@@ -335,8 +358,15 @@ public sealed class SystemAdminServiceTests
     {
         var settings = ValidSettings();
         settings.Dicom.LocalAeTitle = "HNVUE  AET";
+        var oldSettings = ValidSettings();
 
+        _settingsRepo.GetAsync(Arg.Any<CancellationToken>())
+            .Returns(Result.Success(oldSettings));
         _settingsRepo.SaveAsync(Arg.Any<SystemSettings>(), Arg.Any<CancellationToken>())
+            .Returns(Result.Success());
+        _auditRepo.GetLastHashAsync(Arg.Any<CancellationToken>())
+            .Returns(Result.SuccessNullable<string?>(null));
+        _auditRepo.AppendAsync(Arg.Any<AuditEntry>(), Arg.Any<CancellationToken>())
             .Returns(Result.Success());
 
         var result = await _sut.UpdateSettingsAsync(settings);
@@ -357,6 +387,7 @@ public sealed class SystemAdminServiceTests
         result.IsFailure.Should().BeTrue();
         result.Error.Should().Be(ErrorCode.ValidationFailed);
         result.ErrorMessage.Should().Contain("Session timeout must be at least 1 minute");
+        await _auditRepo.DidNotReceive().AppendAsync(Arg.Any<AuditEntry>(), Arg.Any<CancellationToken>());
     }
 
     [Fact]
@@ -383,10 +414,17 @@ public sealed class SystemAdminServiceTests
                 MaxFailedLogins = 3,
             },
         };
+        var oldSettings = ValidSettings();
         SystemSettings? capturedSettings = null;
+        _settingsRepo.GetAsync(Arg.Any<CancellationToken>())
+            .Returns(Result.Success(oldSettings));
         _settingsRepo.SaveAsync(Arg.Any<SystemSettings>(), Arg.Any<CancellationToken>())
             .Returns(Result.Success())
             .AndDoes(x => capturedSettings = x.Arg<SystemSettings>());
+        _auditRepo.GetLastHashAsync(Arg.Any<CancellationToken>())
+            .Returns(Result.SuccessNullable<string?>(null));
+        _auditRepo.AppendAsync(Arg.Any<AuditEntry>(), Arg.Any<CancellationToken>())
+            .Returns(Result.Success());
 
         var result = await _sut.UpdateSettingsAsync(settings);
 
@@ -404,6 +442,9 @@ public sealed class SystemAdminServiceTests
     public async Task UpdateSettings_RepositorySaveFailure_PropagatesFailure()
     {
         var settings = ValidSettings();
+        var oldSettings = ValidSettings();
+        _settingsRepo.GetAsync(Arg.Any<CancellationToken>())
+            .Returns(Result.Success(oldSettings));
         _settingsRepo.SaveAsync(Arg.Any<SystemSettings>(), Arg.Any<CancellationToken>())
             .Returns(Result.Failure(ErrorCode.DatabaseError, "Save failed"));
 
@@ -412,6 +453,7 @@ public sealed class SystemAdminServiceTests
         result.IsFailure.Should().BeTrue();
         result.Error.Should().Be(ErrorCode.DatabaseError);
         result.ErrorMessage.Should().Contain("Save failed");
+        await _auditRepo.DidNotReceive().AppendAsync(Arg.Any<AuditEntry>(), Arg.Any<CancellationToken>());
     }
 
     [Fact]
@@ -449,5 +491,172 @@ public sealed class SystemAdminServiceTests
         {
             if (Directory.Exists(tempDir)) Directory.Delete(tempDir, true);
         }
+    }
+
+    // ── Audit Logging Tests (T-012) ───────────────────────────────────────────────
+
+    [Fact]
+    public async Task UpdateSettings_Success_CallsAuditRepositoryAppendAsync()
+    {
+        // Arrange
+        var oldSettings = ValidSettings();
+        var newSettings = ValidSettings();
+        newSettings.Dicom.PacsPort = 111; // Changed value
+
+        _settingsRepo.GetAsync(Arg.Any<CancellationToken>())
+            .Returns(Result.Success(oldSettings));
+        _settingsRepo.SaveAsync(Arg.Any<SystemSettings>(), Arg.Any<CancellationToken>())
+            .Returns(Result.Success());
+        _auditRepo.GetLastHashAsync(Arg.Any<CancellationToken>())
+            .Returns(Result.SuccessNullable<string?>(null));
+        _auditRepo.AppendAsync(Arg.Any<AuditEntry>(), Arg.Any<CancellationToken>())
+            .Returns(Result.Success());
+
+        // Act
+        var result = await _sut.UpdateSettingsAsync(newSettings);
+
+        // Assert
+        result.IsSuccess.Should().BeTrue();
+        await _auditRepo.Received(1).AppendAsync(
+            Arg.Is<AuditEntry>(e =>
+                e.Action == "SettingsChanged" &&
+                e.UserId == "system"),
+            Arg.Any<CancellationToken>());
+    }
+
+    [Fact]
+    public async Task UpdateSettings_WithAuthenticatedUser_UsesUserIdFromSecurityContext()
+    {
+        // Arrange
+        var oldSettings = ValidSettings();
+        var newSettings = ValidSettings();
+        newSettings.Security.SessionTimeoutMinutes = 30; // Changed value
+
+        _settingsRepo.GetAsync(Arg.Any<CancellationToken>())
+            .Returns(Result.Success(oldSettings));
+        _settingsRepo.SaveAsync(Arg.Any<SystemSettings>(), Arg.Any<CancellationToken>())
+            .Returns(Result.Success());
+        _auditRepo.GetLastHashAsync(Arg.Any<CancellationToken>())
+            .Returns(Result.SuccessNullable<string?>(null));
+        _auditRepo.AppendAsync(Arg.Any<AuditEntry>(), Arg.Any<CancellationToken>())
+            .Returns(Result.Success());
+        _securityContext.CurrentUserId.Returns("user-123");
+        _securityContext.IsAuthenticated.Returns(true);
+
+        // Act
+        var result = await _sut.UpdateSettingsAsync(newSettings);
+
+        // Assert
+        result.IsSuccess.Should().BeTrue();
+        await _auditRepo.Received(1).AppendAsync(
+            Arg.Is<AuditEntry>(e => e.UserId == "user-123"),
+            Arg.Any<CancellationToken>());
+    }
+
+    [Fact]
+    public async Task UpdateSettings_WithNoAuthenticatedUser_UsesSystemAsUserId()
+    {
+        // Arrange
+        var oldSettings = ValidSettings();
+        var newSettings = ValidSettings();
+        newSettings.Dicom.LocalAeTitle = "NEW_AE"; // Changed value
+
+        _settingsRepo.GetAsync(Arg.Any<CancellationToken>())
+            .Returns(Result.Success(oldSettings));
+        _settingsRepo.SaveAsync(Arg.Any<SystemSettings>(), Arg.Any<CancellationToken>())
+            .Returns(Result.Success());
+        _auditRepo.GetLastHashAsync(Arg.Any<CancellationToken>())
+            .Returns(Result.SuccessNullable<string?>(null));
+        _auditRepo.AppendAsync(Arg.Any<AuditEntry>(), Arg.Any<CancellationToken>())
+            .Returns(Result.Success());
+        _securityContext.CurrentUserId.Returns((string?)null);
+        _securityContext.IsAuthenticated.Returns(false);
+
+        // Act
+        var result = await _sut.UpdateSettingsAsync(newSettings);
+
+        // Assert
+        result.IsSuccess.Should().BeTrue();
+        await _auditRepo.Received(1).AppendAsync(
+            Arg.Is<AuditEntry>(e => e.UserId == "system"),
+            Arg.Any<CancellationToken>());
+    }
+
+    [Fact]
+    public async Task UpdateSettings_Success_IncludesChangedFieldsInAuditDetails()
+    {
+        // Arrange
+        var oldSettings = ValidSettings();
+        var newSettings = ValidSettings();
+        newSettings.Dicom.PacsPort = 111;
+        newSettings.Security.SessionTimeoutMinutes = 30;
+
+        _settingsRepo.GetAsync(Arg.Any<CancellationToken>())
+            .Returns(Result.Success(oldSettings));
+        _settingsRepo.SaveAsync(Arg.Any<SystemSettings>(), Arg.Any<CancellationToken>())
+            .Returns(Result.Success());
+        _auditRepo.GetLastHashAsync(Arg.Any<CancellationToken>())
+            .Returns(Result.SuccessNullable<string?>(null));
+        _securityContext.CurrentUserId.Returns("admin-user");
+
+        AuditEntry? capturedEntry = null;
+        _auditRepo.AppendAsync(Arg.Any<AuditEntry>(), Arg.Any<CancellationToken>())
+            .Returns(Result.Success())
+            .AndDoes(x => capturedEntry = x.Arg<AuditEntry>());
+
+        // Act
+        var result = await _sut.UpdateSettingsAsync(newSettings);
+
+        // Assert
+        result.IsSuccess.Should().BeTrue();
+        capturedEntry.Should().NotBeNull();
+        capturedEntry!.Action.Should().Be("SettingsChanged");
+        capturedEntry.Details.Should().NotBeNullOrEmpty();
+        capturedEntry.Details.Should().Contain("Dicom.PacsPort");
+        capturedEntry.Details.Should().Contain("104"); // Old value
+        capturedEntry.Details.Should().Contain("111"); // New value
+        capturedEntry.Details.Should().Contain("Security.SessionTimeoutMinutes");
+        capturedEntry.Details.Should().Contain("15"); // Old value
+        capturedEntry.Details.Should().Contain("30"); // New value
+    }
+
+    [Fact]
+    public async Task UpdateSettings_ValidationFailure_DoesNotCreateAuditEntry()
+    {
+        // Arrange
+        var invalidSettings = ValidSettings();
+        invalidSettings.Dicom.PacsPort = 99999; // Invalid
+
+        // Act
+        var result = await _sut.UpdateSettingsAsync(invalidSettings);
+
+        // Assert
+        result.IsFailure.Should().BeTrue();
+        await _auditRepo.DidNotReceive().AppendAsync(
+            Arg.Any<AuditEntry>(),
+            Arg.Any<CancellationToken>());
+    }
+
+    [Fact]
+    public async Task UpdateSettings_RepositoryFailure_DoesNotCreateAuditEntry()
+    {
+        // Arrange
+        var oldSettings = ValidSettings();
+        var newSettings = ValidSettings();
+        newSettings.Dicom.PacsPort = 111;
+
+        _settingsRepo.GetAsync(Arg.Any<CancellationToken>())
+            .Returns(Result.Success(oldSettings));
+        _settingsRepo.SaveAsync(Arg.Any<SystemSettings>(), Arg.Any<CancellationToken>())
+            .Returns(Result.Failure(ErrorCode.DatabaseError, "Save failed"));
+
+        // Act
+        var result = await _sut.UpdateSettingsAsync(newSettings);
+
+        // Assert
+        result.IsFailure.Should().BeTrue();
+        await _auditRepo.DidNotReceive().AppendAsync(
+            Arg.Any<AuditEntry>(),
+            Arg.Any<CancellationToken>());
     }
 }

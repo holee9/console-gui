@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using HnVue.Common.Abstractions;
 using HnVue.Data.Repositories;
 using HnVue.Data.Security;
@@ -22,19 +23,31 @@ public static class ServiceCollectionExtensions
     /// SQLite connection string. For encrypted databases use SQLCipher format:
     /// <c>Data Source=hnvue.db;Password=&lt;encryption-key&gt;</c>.
     /// </param>
+    /// <param name="phiEncryptionKey">
+    /// 32-byte AES-256-GCM key for column-level PHI encryption (REQ-DATA-001).
+    /// Generate using: <c>RandomNumberGenerator.GetBytes(32);</c>
+    /// </param>
     /// <returns>The same <paramref name="services"/> for call chaining.</returns>
+    /// <exception cref="ArgumentException">Thrown when <paramref name="phiEncryptionKey"/> is provided but not 32 bytes.</exception>
     public static IServiceCollection AddHnVueData(
         this IServiceCollection services,
-        string connectionString)
+        string connectionString,
+        byte[]? phiEncryptionKey = null)
     {
         services.AddDbContext<HnVueDbContext>(opts =>
             opts.UseSqlite(connectionString));
 
-        // Register null PHI encryption service by default (SWR-CS-080 optional)
-        // Will be replaced by AddPhiEncryption() if column-level encryption is configured
-        if (services.All(s => s.ServiceType != typeof(IPhiEncryptionService)))
+        // Register PHI encryption service (REQ-DATA-001)
+        if (phiEncryptionKey is not null)
         {
-            services.AddSingleton<IPhiEncryptionService, NullPhiEncryptionService>();
+            if (phiEncryptionKey.Length != 32)
+                throw new ArgumentException("PHI encryption key must be 32 bytes for AES-256-GCM (REQ-DATA-001).", nameof(phiEncryptionKey));
+            services.AddSingleton<IPhiEncryptionService>(new PhiEncryptionService(phiEncryptionKey));
+        }
+        else
+        {
+            // Fallback: no encryption (for development/testing without configured key)
+            services.AddSingleton<IPhiEncryptionService>(new PhiEncryptionService(RandomNumberGenerator.GetBytes(32)));
         }
 
         services.AddScoped<IPatientRepository, PatientRepository>();

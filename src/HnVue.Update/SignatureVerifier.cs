@@ -57,7 +57,7 @@ internal static class SignatureVerifier
                 pPolicyCallbackData = IntPtr.Zero,
                 pSIPClientData = IntPtr.Zero,
                 dwUIChoice = WinTrustDataUiChoice.None,
-                fdwRevocationChecks = WinTrustDataRevocationChecks.None,
+                fdwRevocationChecks = WinTrustDataRevocationChecks.WholeChain, // Enable revocation checking
                 dwUnionChoice = WinTrustDataChoice.File,
                 pFile = fileInfoPtr,
                 dwStateAction = WinTrustDataStateAction.Ignore,

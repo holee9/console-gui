@@ -42,6 +42,8 @@ public sealed class HnVueDbContext(DbContextOptions<HnVueDbContext> options) : D
         {
             e.HasKey(p => p.PatientId);
             e.HasIndex(p => p.Name);
+            // REQ-DATA-003: Composite index on (Name, IsDeleted) for search performance
+            e.HasIndex(p => new { p.Name, p.IsDeleted });
 
             // IEC 62304 / IEC 62133 data integrity: Restrict prevents accidental
             // deletion of audit-critical dose records when a patient record is removed.
@@ -57,6 +59,8 @@ public sealed class HnVueDbContext(DbContextOptions<HnVueDbContext> options) : D
         {
             e.HasKey(s => s.StudyInstanceUid);
             e.HasIndex(s => s.PatientId);
+            // REQ-DATA-003: Index on StudyDateTicks for date-based queries
+            e.HasIndex(s => s.StudyDateTicks);
 
             // Images are non-regulatory data; cascade is acceptable here.
             e.HasMany(s => s.Images)
@@ -85,6 +89,8 @@ public sealed class HnVueDbContext(DbContextOptions<HnVueDbContext> options) : D
         {
             e.HasKey(d => d.DoseId);
             e.HasIndex(d => d.StudyInstanceUid);
+            // REQ-DATA-003: Composite index on (StudyInstanceUid, RecordedAtTicks) for dose queries
+            e.HasIndex(d => new { d.StudyInstanceUid, d.RecordedAtTicks });
         });
 
         // ── UserEntity ─────────────────────────────────────────────────────────

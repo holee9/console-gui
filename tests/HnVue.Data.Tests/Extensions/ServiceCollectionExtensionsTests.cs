@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using HnVue.Common.Abstractions;
 using HnVue.Data.Extensions;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,8 +14,10 @@ public sealed class ServiceCollectionExtensionsTests
     public void AddHnVueData_RegistersAllRepositories()
     {
         var services = new ServiceCollection();
+        var key = new byte[32];
+        RandomNumberGenerator.Fill(key);
 
-        services.AddHnVueData("Data Source=:memory:");
+        services.AddHnVueData("Data Source=:memory:", key);
 
         var provider = services.BuildServiceProvider();
 
@@ -28,8 +31,10 @@ public sealed class ServiceCollectionExtensionsTests
     public void AddHnVueData_RegistersDbContext()
     {
         var services = new ServiceCollection();
+        var key = new byte[32];
+        RandomNumberGenerator.Fill(key);
 
-        services.AddHnVueData("Data Source=:memory:");
+        services.AddHnVueData("Data Source=:memory:", key);
 
         var provider = services.BuildServiceProvider();
 
@@ -38,3 +43,4 @@ public sealed class ServiceCollectionExtensionsTests
         ctx.Should().NotBeNull();
     }
 }
+
