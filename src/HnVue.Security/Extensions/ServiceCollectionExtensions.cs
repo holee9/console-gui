@@ -35,11 +35,14 @@ public static class ServiceCollectionExtensions
             throw new InvalidOperationException(
                 "JWT SecretKey must be at least 32 characters. " +
                 "Set the 'Jwt:SecretKey' configuration key or 'HNVUE_JWT_SECRET' environment variable.");
+        if (opts.PreviousSecretKey is not null && opts.PreviousSecretKey.Length < 32)
+            throw new InvalidOperationException(
+                "JWT PreviousSecretKey, when set, must be at least 32 characters.");
         services.AddSingleton(opts);
         services.AddSingleton<JwtTokenService>();
 
-        // SWR-CS-077: Register in-memory token denylist for session revocation
-        var tokenDenylist = new InMemoryTokenDenylist(TimeSpan.FromMinutes(opts.ExpiryMinutes));
+        // SWR-CS-077: Register persistent token denylist for IEC 62304 compliance (survives restarts)
+        var tokenDenylist = new PersistentTokenDenylist(TimeSpan.FromMinutes(opts.ExpiryMinutes));
         services.AddSingleton<ITokenDenylist>(tokenDenylist);
 
         services.AddScoped<ISecurityService, SecurityService>();

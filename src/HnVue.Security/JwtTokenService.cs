@@ -58,7 +58,26 @@ internal sealed class JwtTokenService(JwtOptions options)
     {
         ArgumentNullException.ThrowIfNull(token);
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecretKey));
+        // Try current key first
+        var result = ValidateWithKey(token, _options.SecretKey, tokenDenylist);
+        if (result.IsSuccess)
+            return result;
+
+        // Fallback to previous key if configured (key rotation support)
+        if (!string.IsNullOrEmpty(_options.PreviousSecretKey) &&
+            result.Error == ErrorCode.TokenInvalid)
+        {
+            var fallbackResult = ValidateWithKey(token, _options.PreviousSecretKey, tokenDenylist);
+            if (fallbackResult.IsSuccess)
+                return fallbackResult;
+        }
+
+        return result;
+    }
+
+    private Result<ClaimsPrincipal> ValidateWithKey(string token, string secretKey, ITokenDenylist? tokenDenylist)
+    {
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
         var validationParameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,

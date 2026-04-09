@@ -24,6 +24,9 @@ public enum ErrorCode
     /// <summary>Operation was cancelled by the caller.</summary>
     OperationCancelled = 1003,
 
+    /// <summary>File or directory I/O operation failed.</summary>
+    FileOperationFailed = 1004,
+
     // ── Security (2xxx) ────────────────────────────────────────────────────────
 
     /// <summary>Credentials were invalid or not provided.</summary>

@@ -11,13 +11,18 @@ namespace HnVue.SystemAdmin;
 /// </summary>
 /// <remarks>
 /// Settings are validated before persistence. Audit log export produces a tamper-evident
-/// signed CSV for regulatory review.
+/// signed CSV for regulatory review. Settings are cached for 5 minutes to reduce database load.
 /// IEC 62304 Class B.
 /// </remarks>
 public sealed class SystemAdminService : ISystemAdminService
 {
     private readonly ISystemSettingsRepository _settingsRepository;
     private readonly IAuditRepository _auditRepository;
+
+    // @MX:NOTE Cache duration balances freshness with database load reduction
+    private SystemSettings? _cachedSettings;
+    private DateTimeOffset _cacheExpiry = DateTimeOffset.MinValue;
+    private static readonly TimeSpan CacheDuration = TimeSpan.FromMinutes(5);
 
     /// <summary>
     /// Initialises a new <see cref="SystemAdminService"/>.
@@ -36,7 +41,16 @@ public sealed class SystemAdminService : ISystemAdminService
     public async Task<Result<SystemSettings>> GetSettingsAsync(
         CancellationToken cancellationToken = default)
     {
-        return await _settingsRepository.GetAsync(cancellationToken).ConfigureAwait(false);
+        if (_cachedSettings is not null && DateTimeOffset.UtcNow < _cacheExpiry)
+            return Result.Success(_cachedSettings);
+
+        var result = await _settingsRepository.GetAsync(cancellationToken).ConfigureAwait(false);
+        if (result.IsSuccess)
+        {
+            _cachedSettings = result.Value;
+            _cacheExpiry = DateTimeOffset.UtcNow.Add(CacheDuration);
+        }
+        return result;
     }
 
     /// <inheritdoc/>
@@ -50,7 +64,16 @@ public sealed class SystemAdminService : ISystemAdminService
         if (validationError is not null)
             return Result.Failure(ErrorCode.ValidationFailed, validationError);
 
-        return await _settingsRepository.SaveAsync(settings, cancellationToken).ConfigureAwait(false);
+        var result = await _settingsRepository.SaveAsync(settings, cancellationToken).ConfigureAwait(false);
+
+        // Invalidate cache on successful save
+        if (result.IsSuccess)
+        {
+            _cachedSettings = null;
+            _cacheExpiry = DateTimeOffset.MinValue;
+        }
+
+        return result;
     }
 
     // @MX:ANCHOR ExportAuditLogAsync - @MX:REASON: Regulatory compliance feature for audit review

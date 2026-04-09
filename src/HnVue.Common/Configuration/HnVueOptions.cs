@@ -53,4 +53,26 @@ public sealed class HnVueOptions
         /// <summary>Gets or sets the TCP port on which the local DICOM SCP listens. Default is 104.</summary>
         public int ListenPort { get; set; } = 104;
     }
+
+    /// <summary>
+    /// Validates that all required configuration values are present and within acceptable ranges.
+    /// Call at application startup to fail fast on missing or invalid configuration.
+    /// </summary>
+    /// <returns>An error message if validation fails; null if valid.</returns>
+    public string? Validate()
+    {
+        if (Security.SessionTimeoutMinutes < 1)
+            return "Security.SessionTimeoutMinutes must be at least 1.";
+        if (Security.MaxFailedLoginAttempts < 1)
+            return "Security.MaxFailedLoginAttempts must be at least 1.";
+        if (Security.LockoutDurationMinutes < 1)
+            return "Security.LockoutDurationMinutes must be at least 1.";
+        if (string.IsNullOrWhiteSpace(Dicom.LocalAeTitle))
+            return "Dicom.LocalAeTitle is required.";
+        if (Dicom.LocalAeTitle.Length > 16)
+            return "Dicom.LocalAeTitle must be 16 characters or fewer.";
+        if (Dicom.ListenPort is < 1 or > 65535)
+            return "Dicom.ListenPort must be between 1 and 65535.";
+        return null;
+    }
 }

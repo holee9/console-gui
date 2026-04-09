@@ -189,7 +189,7 @@ public sealed class SWUpdateService : ISWUpdateService
             string markerPath = Path.Combine(markerDir, "pending_update.txt");
             await File.WriteAllTextAsync(markerPath, packagePath, ct).ConfigureAwait(false);
         }
-        catch (Exception ex) when (ex is not OutOfMemoryException)
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
         {
             // Non-fatal: log and continue. The backup still provides rollback capability.
             _logger?.LogWarning(ex, "Could not write staged update marker file");
@@ -215,7 +215,7 @@ public sealed class SWUpdateService : ISWUpdateService
 
             await _auditService.WriteAuditAsync(entry, ct).ConfigureAwait(false);
         }
-        catch (Exception ex) when (ex is not OutOfMemoryException)
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or InvalidOperationException)
         {
             _logger?.LogWarning(ex, "Audit write failed for action {Action} (non-fatal)", action);
         }

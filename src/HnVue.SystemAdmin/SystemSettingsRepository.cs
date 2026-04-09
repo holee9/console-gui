@@ -10,37 +10,22 @@ namespace HnVue.SystemAdmin;
 /// Settings are stored at <c>%AppData%\HnVue\settings.json</c>.
 /// A missing file is treated as first-run and returns default settings.
 /// </summary>
-public sealed class SystemSettingsRepository : ISystemSettingsRepository
+public class SystemSettingsRepository : ISystemSettingsRepository
 {
-    private static readonly string DefaultStorePath = Path.Combine(
-        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-        "HnVue",
-        "settings.json");
-
-    private readonly string _storePath;
+    /// <summary>
+    /// Gets the file path where settings are stored.
+    /// Can be overridden in test subclasses to use temp directories.
+    /// </summary>
+    protected virtual string GetStorePath()
+        => Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+            "HnVue",
+            "settings.json");
 
     private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web)
     {
         WriteIndented = true,
     };
-
-    /// <summary>
-    /// Initialises a new instance using the default AppData storage path.
-    /// </summary>
-    public SystemSettingsRepository()
-        : this(DefaultStorePath)
-    {
-    }
-
-    /// <summary>
-    /// Initialises a new instance with an explicit storage path. Used for testing.
-    /// </summary>
-    /// <param name="storePath">Full path to the settings JSON file.</param>
-    internal SystemSettingsRepository(string storePath)
-    {
-        ArgumentNullException.ThrowIfNull(storePath);
-        _storePath = storePath;
-    }
 
     /// <inheritdoc/>
     /// <remarks>SWR-DA-030: System settings must be loaded at application startup.</remarks>
@@ -48,10 +33,12 @@ public sealed class SystemSettingsRepository : ISystemSettingsRepository
     {
         try
         {
-            if (!File.Exists(_storePath))
+            var storePath = GetStorePath();
+
+            if (!File.Exists(storePath))
                 return Result.Success(new SystemSettings());
 
-            await using var stream = File.OpenRead(_storePath);
+            await using var stream = File.OpenRead(storePath);
             var settings = await JsonSerializer
                 .DeserializeAsync<SystemSettings>(stream, JsonOptions, cancellationToken)
                 .ConfigureAwait(false);
@@ -64,7 +51,7 @@ public sealed class SystemSettingsRepository : ISystemSettingsRepository
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or JsonException)
         {
-            return Result.Failure<SystemSettings>(ErrorCode.DatabaseError,
+            return Result.Failure<SystemSettings>(ErrorCode.FileOperationFailed,
                 $"Failed to load system settings: {ex.Message}");
         }
     }
@@ -77,11 +64,12 @@ public sealed class SystemSettingsRepository : ISystemSettingsRepository
 
         try
         {
-            var dir = Path.GetDirectoryName(_storePath)!;
+            var storePath = GetStorePath();
+            var dir = Path.GetDirectoryName(storePath)!;
             Directory.CreateDirectory(dir);
 
             // Write to temp file first, then replace to avoid partial writes.
-            var tempPath = _storePath + ".tmp";
+            var tempPath = storePath + ".tmp";
             await using (var stream = File.Create(tempPath))
             {
                 await JsonSerializer
@@ -89,7 +77,7 @@ public sealed class SystemSettingsRepository : ISystemSettingsRepository
                     .ConfigureAwait(false);
             }
 
-            File.Move(tempPath, _storePath, overwrite: true);
+            File.Move(tempPath, storePath, overwrite: true);
             return Result.Success();
         }
         catch (OperationCanceledException)
@@ -98,7 +86,7 @@ public sealed class SystemSettingsRepository : ISystemSettingsRepository
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
         {
-            return Result.Failure(ErrorCode.DatabaseError,
+            return Result.Failure(ErrorCode.FileOperationFailed,
                 $"Failed to save system settings: {ex.Message}");
         }
     }
