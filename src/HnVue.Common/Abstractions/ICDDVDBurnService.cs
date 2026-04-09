@@ -2,6 +2,7 @@ using HnVue.Common.Results;
 
 namespace HnVue.Common.Abstractions;
 
+// @MX:ANCHOR ICDDVDBurnService - @MX:REASON: ISO 9660 disc burning with verification, medical record export
 /// <summary>
 /// Defines optical disc (CD/DVD) burn and verification operations.
 /// Implemented by the HnVue.CDBurning module.

@@ -1,5 +1,6 @@
 namespace HnVue.Common.Models;
 
+// @MX:NOTE AuditQueryFilter record - Audit log query parameters with UserId/date range/MaxResults
 /// <summary>
 /// Defines filter criteria for querying the audit log via <c>IAuditRepository</c>.
 /// </summary>

@@ -3,6 +3,7 @@ using HnVue.Common.Results;
 
 namespace HnVue.Common.Abstractions;
 
+// @MX:ANCHOR IStudyRepository - @MX:REASON: DICOM study persistence with patient association, 4 CRUD operations
 /// <summary>
 /// Defines persistence operations for DICOM study records.
 /// Implemented by the HnVue.Data module.

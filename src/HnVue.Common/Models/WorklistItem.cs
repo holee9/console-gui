@@ -1,5 +1,6 @@
 namespace HnVue.Common.Models;
 
+// @MX:NOTE WorklistItem record - IHE Radiology MWL C-FIND result, RIS accession number bridge
 /// <summary>
 /// Represents a single entry returned by a DICOM Modality Worklist (MWL) query.
 /// </summary>

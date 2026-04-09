@@ -16,6 +16,12 @@ public sealed class HnVueOptions
     /// <summary>Gets or sets DICOM networking options.</summary>
     public DicomOptions Dicom { get; set; } = new();
 
+    /// <summary>
+    /// Gets or sets the base64-encoded 32-byte key for PHI column-level encryption (SWR-CS-080).
+    /// Required when using column-level encryption for patient data.
+    /// </summary>
+    public string? PhiEncryptionKey { get; set; }
+
     /// <summary>Security policy configuration nested within <see cref="HnVueOptions"/>.</summary>
     public sealed class SecurityOptions
     {

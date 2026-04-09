@@ -200,4 +200,254 @@ public sealed class SystemAdminServiceTests
         result.IsFailure.Should().BeTrue();
         result.Error.Should().Be(ErrorCode.DatabaseError);
     }
+
+    // ── Additional Coverage Tests ───────────────────────────────────────────────
+
+    [Fact]
+    public async Task ExportAuditLog_EmptyLog_WritesHeaderOnly()
+    {
+        var tempPath = Path.Combine(Path.GetTempPath(), $"audit_empty_{Guid.NewGuid()}.csv");
+        var entries = (IReadOnlyList<AuditEntry>)Array.Empty<AuditEntry>();
+        _auditRepo.QueryAsync(Arg.Any<AuditQueryFilter>(), Arg.Any<CancellationToken>())
+            .Returns(Result.Success(entries));
+
+        try
+        {
+            var result = await _sut.ExportAuditLogAsync(tempPath);
+
+            result.IsSuccess.Should().BeTrue();
+            var lines = await File.ReadAllLinesAsync(tempPath);
+            lines.Should().HaveCount(1); // Only header
+            lines[0].Should().Be("EntryId,Timestamp,UserId,Action,Details,PreviousHash,CurrentHash");
+        }
+        finally
+        {
+            if (File.Exists(tempPath)) File.Delete(tempPath);
+        }
+    }
+
+    [Fact]
+    public async Task ExportAuditLog_SpecialCharactersInDetails_EscapesCorrectly()
+    {
+        var tempPath = Path.Combine(Path.GetTempPath(), $"audit_special_{Guid.NewGuid()}.csv");
+        var entries = new[]
+        {
+            new AuditEntry(
+                DateTimeOffset.UtcNow,
+                "U1",
+                "ACTION",
+                "hash1",
+                "Text with, comma, \"quotes\", and\nnewlines",
+                null),
+        };
+        _auditRepo.QueryAsync(Arg.Any<AuditQueryFilter>(), Arg.Any<CancellationToken>())
+            .Returns(Result.Success((IReadOnlyList<AuditEntry>)entries));
+
+        try
+        {
+            var result = await _sut.ExportAuditLogAsync(tempPath);
+
+            result.IsSuccess.Should().BeTrue();
+            var content = await File.ReadAllTextAsync(tempPath);
+            content.Should().Contain("\"Text with, comma, \"\"quotes\"\", and\nnewlines\"");
+        }
+        finally
+        {
+            if (File.Exists(tempPath)) File.Delete(tempPath);
+        }
+    }
+
+    [Fact]
+    public async Task ExportAuditLog_HashChainIntegrity_IncludesHashes()
+    {
+        var tempPath = Path.Combine(Path.GetTempPath(), $"audit_hash_{Guid.NewGuid()}.csv");
+        var entries = new[]
+        {
+            new AuditEntry(
+                "1",
+                DateTimeOffset.UtcNow,
+                "U1",
+                "LOGIN",
+                "details1",
+                null,
+                "hash1"),
+            new AuditEntry(
+                "2",
+                DateTimeOffset.UtcNow.AddMinutes(1),
+                "U1",
+                "LOGOUT",
+                "details2",
+                "hash1",
+                "hash2"),
+        };
+        _auditRepo.QueryAsync(Arg.Any<AuditQueryFilter>(), Arg.Any<CancellationToken>())
+            .Returns(Result.Success((IReadOnlyList<AuditEntry>)entries));
+
+        try
+        {
+            var result = await _sut.ExportAuditLogAsync(tempPath);
+
+            result.IsSuccess.Should().BeTrue();
+            var content = await File.ReadAllTextAsync(tempPath);
+            content.Should().Contain("hash1,hash2");
+        }
+        finally
+        {
+            if (File.Exists(tempPath)) File.Delete(tempPath);
+        }
+    }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(-1)]
+    [InlineData(65536)]
+    [InlineData(100000)]
+    public async Task UpdateSettings_InvalidPacsPort_ReturnsValidationFailure_Theory(int invalidPort)
+    {
+        var settings = ValidSettings();
+        settings.Dicom.PacsPort = invalidPort;
+
+        var result = await _sut.UpdateSettingsAsync(settings);
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.ValidationFailed);
+        result.ErrorMessage.Should().Contain("PACS port must be between 1 and 65535");
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData("   ")]
+    [InlineData(null)]
+    public async Task UpdateSettings_EmptyOrWhitespaceLocalAeTitle_ReturnsValidationFailure(string? aeTitle)
+    {
+        var settings = ValidSettings();
+        settings.Dicom.LocalAeTitle = aeTitle!;
+
+        var result = await _sut.UpdateSettingsAsync(settings);
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.ValidationFailed);
+        result.ErrorMessage.Should().Contain("Local AE Title is required");
+    }
+
+    [Fact]
+    public async Task UpdateSettings_AeTitleWithSpaces_Accepted()
+    {
+        var settings = ValidSettings();
+        settings.Dicom.LocalAeTitle = "HNVUE  AET";
+
+        _settingsRepo.SaveAsync(Arg.Any<SystemSettings>(), Arg.Any<CancellationToken>())
+            .Returns(Result.Success());
+
+        var result = await _sut.UpdateSettingsAsync(settings);
+
+        result.IsSuccess.Should().BeTrue();
+    }
+
+    [Theory]
+    [InlineData(-1)]
+    [InlineData(-100)]
+    public async Task UpdateSettings_NegativeSessionTimeout_ReturnsValidationFailure(int negativeTimeout)
+    {
+        var settings = ValidSettings();
+        settings.Security.SessionTimeoutMinutes = negativeTimeout;
+
+        var result = await _sut.UpdateSettingsAsync(settings);
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.ValidationFailed);
+        result.ErrorMessage.Should().Contain("Session timeout must be at least 1 minute");
+    }
+
+    [Fact]
+    public async Task UpdateSettings_AllValidSettings_SavesAndReturnsSuccess()
+    {
+        var settings = new SystemSettings
+        {
+            Dicom = new DicomSettings
+            {
+                PacsAeTitle = "PACS_SERVER",
+                PacsHost = "192.168.1.200",
+                PacsPort = 104,
+                LocalAeTitle = "HNVUE_STATION",
+            },
+            Generator = new GeneratorSettings
+            {
+                ComPort = "COM3",
+                BaudRate = 9600,
+                TimeoutMs = 5000,
+            },
+            Security = new SecuritySettings
+            {
+                SessionTimeoutMinutes = 30,
+                MaxFailedLogins = 3,
+            },
+        };
+        SystemSettings? capturedSettings = null;
+        _settingsRepo.SaveAsync(Arg.Any<SystemSettings>(), Arg.Any<CancellationToken>())
+            .Returns(Result.Success())
+            .AndDoes(x => capturedSettings = x.Arg<SystemSettings>());
+
+        var result = await _sut.UpdateSettingsAsync(settings);
+
+        result.IsSuccess.Should().BeTrue();
+        capturedSettings.Should().NotBeNull();
+        capturedSettings?.Dicom.PacsAeTitle.Should().Be("PACS_SERVER");
+        capturedSettings?.Dicom.PacsHost.Should().Be("192.168.1.200");
+        capturedSettings?.Dicom.PacsPort.Should().Be(104);
+        capturedSettings?.Dicom.LocalAeTitle.Should().Be("HNVUE_STATION");
+        capturedSettings?.Generator.ComPort.Should().Be("COM3");
+        capturedSettings?.Security.SessionTimeoutMinutes.Should().Be(30);
+    }
+
+    [Fact]
+    public async Task UpdateSettings_RepositorySaveFailure_PropagatesFailure()
+    {
+        var settings = ValidSettings();
+        _settingsRepo.SaveAsync(Arg.Any<SystemSettings>(), Arg.Any<CancellationToken>())
+            .Returns(Result.Failure(ErrorCode.DatabaseError, "Save failed"));
+
+        var result = await _sut.UpdateSettingsAsync(settings);
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.DatabaseError);
+        result.ErrorMessage.Should().Contain("Save failed");
+    }
+
+    [Fact]
+    public async Task GetSettings_RepositoryFailure_PropagatesFailure()
+    {
+        _settingsRepo.GetAsync(Arg.Any<CancellationToken>())
+            .Returns(Result.Failure<SystemSettings>(
+                ErrorCode.DatabaseError, "Load failed"));
+
+        var result = await _sut.GetSettingsAsync();
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.DatabaseError);
+        result.ErrorMessage.Should().Contain("Load failed");
+    }
+
+    [Fact]
+    public async Task ExportAuditLog_CreatesDirectoryWhenNotExists()
+    {
+        var tempDir = Path.Combine(Path.GetTempPath(), $"audit_dir_{Guid.NewGuid()}");
+        var tempPath = Path.Combine(tempDir, "audit.csv");
+        var entries = (IReadOnlyList<AuditEntry>)Array.Empty<AuditEntry>();
+        _auditRepo.QueryAsync(Arg.Any<AuditQueryFilter>(), Arg.Any<CancellationToken>())
+            .Returns(Result.Success(entries));
+
+        try
+        {
+            var result = await _sut.ExportAuditLogAsync(tempPath);
+
+            result.IsSuccess.Should().BeTrue();
+            Directory.Exists(tempDir).Should().BeTrue();
+            File.Exists(tempPath).Should().BeTrue();
+        }
+        finally
+        {
+            if (Directory.Exists(tempDir)) Directory.Delete(tempDir, true);
+        }
+    }
 }

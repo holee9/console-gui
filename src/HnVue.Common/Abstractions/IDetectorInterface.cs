@@ -4,6 +4,7 @@ using HnVue.Common.Results;
 
 namespace HnVue.Common.Abstractions;
 
+// @MX:ANCHOR IDetectorInterface - @MX:REASON: FPD hardware abstraction for image acquisition, safety-critical HAZ-RAD interlock
 /// <summary>
 /// Abstracts flat-panel detector (FPD) hardware communication.
 /// Implemented by <c>OwnDetectorAdapter</c> (production, 자사 SDK) and

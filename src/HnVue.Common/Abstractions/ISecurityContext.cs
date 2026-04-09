@@ -3,6 +3,7 @@ using HnVue.Common.Models;
 
 namespace HnVue.Common.Abstractions;
 
+// @MX:ANCHOR ISecurityContext - @MX:REASON: Singleton auth session state, 6 properties, thread-safe concurrent access pattern
 /// <summary>
 /// Provides access to the currently authenticated user within the application session.
 /// Registered as a singleton and updated by <c>ISecurityService</c> upon login and logout.

@@ -1,10 +1,14 @@
 using HnVue.Common.Abstractions;
 using HnVue.Data.Repositories;
+using HnVue.Data.Security;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace HnVue.Data.Extensions;
 
+// @MX:ANCHOR: [AUTO] ServiceCollectionExtensions - DI composition root for Data layer, registers 4 repositories + DbContext
+// @MX:REASON: All Data module dependencies resolved here
+// @MX:WARN: [AUTO] SQLCipher Password parameter must come from secure config (never hardcoded) - SWR-CS-080
 /// <summary>
 /// Extension methods for registering HnVue.Data services into an <see cref="IServiceCollection"/>.
 /// </summary>
@@ -25,6 +29,13 @@ public static class ServiceCollectionExtensions
     {
         services.AddDbContext<HnVueDbContext>(opts =>
             opts.UseSqlite(connectionString));
+
+        // Register null PHI encryption service by default (SWR-CS-080 optional)
+        // Will be replaced by AddPhiEncryption() if column-level encryption is configured
+        if (services.All(s => s.ServiceType != typeof(IPhiEncryptionService)))
+        {
+            services.AddSingleton<IPhiEncryptionService, NullPhiEncryptionService>();
+        }
 
         services.AddScoped<IPatientRepository, PatientRepository>();
         services.AddScoped<IStudyRepository, StudyRepository>();

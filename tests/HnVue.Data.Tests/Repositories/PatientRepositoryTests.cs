@@ -1,8 +1,11 @@
+using HnVue.Common.Abstractions;
 using HnVue.Common.Models;
+using HnVue.Common.Results;
 using HnVue.Data.Entities;
 using HnVue.Data.Repositories;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using NSubstitute;
 
 namespace HnVue.Data.Tests.Repositories;
 
@@ -39,7 +42,9 @@ public sealed class PatientRepositoryTests
     public async Task AddAsync_NewPatient_ReturnsSuccess()
     {
         await using var ctx = TestDbContextFactory.Create();
-        var repo = new PatientRepository(ctx);
+        var auditRepo = Substitute.For<IAuditRepository>();
+        auditRepo.GetLastHashAsync(default).ReturnsForAnyArgs(Result.SuccessNullable<string?>(null));
+        var repo = new PatientRepository(ctx, auditRepo, null);
         var patient = CreateSamplePatient();
 
         var result = await repo.AddAsync(patient);
@@ -52,7 +57,9 @@ public sealed class PatientRepositoryTests
     public async Task AddAsync_PreservesAllFields()
     {
         await using var ctx = TestDbContextFactory.Create();
-        var repo = new PatientRepository(ctx);
+        var auditRepo = Substitute.For<IAuditRepository>();
+        auditRepo.GetLastHashAsync(default).ReturnsForAnyArgs(Result.SuccessNullable<string?>(null));
+        var repo = new PatientRepository(ctx, auditRepo, null);
         var patient = CreateSamplePatient();
 
         var result = await repo.AddAsync(patient);
@@ -69,7 +76,9 @@ public sealed class PatientRepositoryTests
     public async Task AddAsync_NullDateOfBirth_IsPreserved()
     {
         await using var ctx = TestDbContextFactory.Create();
-        var repo = new PatientRepository(ctx);
+        var auditRepo = Substitute.For<IAuditRepository>();
+        auditRepo.GetLastHashAsync(default).ReturnsForAnyArgs(Result.SuccessNullable<string?>(null));
+        var repo = new PatientRepository(ctx, auditRepo, null);
         var patient = new PatientRecord("P002", "Smith^Jane", null, null, true,
             DateTimeOffset.UtcNow, "user-02");
 
@@ -87,7 +96,9 @@ public sealed class PatientRepositoryTests
     public async Task FindByIdAsync_ExistingPatient_ReturnsRecord()
     {
         await using var ctx = TestDbContextFactory.Create();
-        var repo = new PatientRepository(ctx);
+        var auditRepo = Substitute.For<IAuditRepository>();
+        auditRepo.GetLastHashAsync(default).ReturnsForAnyArgs(Result.SuccessNullable<string?>(null));
+        var repo = new PatientRepository(ctx, auditRepo, null);
         await repo.AddAsync(CreateSamplePatient());
 
         var result = await repo.FindByIdAsync("P001");
@@ -101,7 +112,9 @@ public sealed class PatientRepositoryTests
     public async Task FindByIdAsync_NonExistentPatient_ReturnsSuccessWithNull()
     {
         await using var ctx = TestDbContextFactory.Create();
-        var repo = new PatientRepository(ctx);
+        var auditRepo = Substitute.For<IAuditRepository>();
+        auditRepo.GetLastHashAsync(default).ReturnsForAnyArgs(Result.SuccessNullable<string?>(null));
+        var repo = new PatientRepository(ctx, auditRepo, null);
 
         var result = await repo.FindByIdAsync("NONE");
 
@@ -115,7 +128,9 @@ public sealed class PatientRepositoryTests
     public async Task SearchAsync_ByName_ReturnsMatchingPatients()
     {
         await using var ctx = TestDbContextFactory.Create();
-        var repo = new PatientRepository(ctx);
+        var auditRepo = Substitute.For<IAuditRepository>();
+        auditRepo.GetLastHashAsync(default).ReturnsForAnyArgs(Result.SuccessNullable<string?>(null));
+        var repo = new PatientRepository(ctx, auditRepo, null);
         await repo.AddAsync(CreateSamplePatient("P001"));
         await repo.AddAsync(new PatientRecord("P002", "Smith^Jane", null, "F", false, DateTimeOffset.UtcNow, "user-01"));
 
@@ -130,7 +145,9 @@ public sealed class PatientRepositoryTests
     public async Task SearchAsync_ById_ReturnsMatchingPatient()
     {
         await using var ctx = TestDbContextFactory.Create();
-        var repo = new PatientRepository(ctx);
+        var auditRepo = Substitute.For<IAuditRepository>();
+        auditRepo.GetLastHashAsync(default).ReturnsForAnyArgs(Result.SuccessNullable<string?>(null));
+        var repo = new PatientRepository(ctx, auditRepo, null);
         await repo.AddAsync(CreateSamplePatient("P001"));
 
         var result = await repo.SearchAsync("P001");
@@ -143,7 +160,9 @@ public sealed class PatientRepositoryTests
     public async Task SearchAsync_NoMatch_ReturnsEmptyList()
     {
         await using var ctx = TestDbContextFactory.Create();
-        var repo = new PatientRepository(ctx);
+        var auditRepo = Substitute.For<IAuditRepository>();
+        auditRepo.GetLastHashAsync(default).ReturnsForAnyArgs(Result.SuccessNullable<string?>(null));
+        var repo = new PatientRepository(ctx, auditRepo, null);
         await repo.AddAsync(CreateSamplePatient());
 
         var result = await repo.SearchAsync("ZZZ");
@@ -158,7 +177,9 @@ public sealed class PatientRepositoryTests
     public async Task UpdateAsync_ExistingPatient_PersistsChanges()
     {
         await using var ctx = TestDbContextFactory.Create();
-        var repo = new PatientRepository(ctx);
+        var auditRepo = Substitute.For<IAuditRepository>();
+        auditRepo.GetLastHashAsync(default).ReturnsForAnyArgs(Result.SuccessNullable<string?>(null));
+        var repo = new PatientRepository(ctx, auditRepo, null);
         await repo.AddAsync(CreateSamplePatient());
 
         var updated = new PatientRecord("P001", "Updated^Name", null, "F", true,
@@ -176,7 +197,9 @@ public sealed class PatientRepositoryTests
     public async Task UpdateAsync_NonExistentPatient_ReturnsNotFound()
     {
         await using var ctx = TestDbContextFactory.Create();
-        var repo = new PatientRepository(ctx);
+        var auditRepo = Substitute.For<IAuditRepository>();
+        auditRepo.GetLastHashAsync(default).ReturnsForAnyArgs(Result.SuccessNullable<string?>(null));
+        var repo = new PatientRepository(ctx, auditRepo, null);
 
         var result = await repo.UpdateAsync(CreateSamplePatient("NONE"));
 
@@ -187,29 +210,34 @@ public sealed class PatientRepositoryTests
     // ── DeleteAsync ────────────────────────────────────────────────────────────
 
     [Fact]
-    public async Task DeleteAsync_ExistingPatient_RemovesRecord()
+    public async Task DeleteAsync_ExistingPatient_SoftDeletesRecord()
     {
         await using var ctx = TestDbContextFactory.Create();
-        var repo = new PatientRepository(ctx);
+        var auditRepo = Substitute.For<IAuditRepository>();
+        auditRepo.GetLastHashAsync(default).ReturnsForAnyArgs(Result.SuccessNullable<string?>(null));
+        var repo = new PatientRepository(ctx, auditRepo, null);
         await repo.AddAsync(CreateSamplePatient());
 
         var result = await repo.DeleteAsync("P001");
 
         result.IsSuccess.Should().BeTrue();
+        // Soft delete: record should not be findable (filtered by !IsDeleted)
         var found = await repo.FindByIdAsync("P001");
-        found.Value.Should().BeNull();
+        found.Value.Should().BeNull("soft-deleted records should not be found");
     }
 
     [Fact]
     public async Task DeleteAsync_NonExistentPatient_ReturnsNotFound()
     {
         await using var ctx = TestDbContextFactory.Create();
-        var repo = new PatientRepository(ctx);
+        var auditRepo = Substitute.For<IAuditRepository>();
+        auditRepo.GetLastHashAsync(default).ReturnsForAnyArgs(Result.SuccessNullable<string?>(null));
+        var repo = new PatientRepository(ctx, auditRepo, null);
 
         var result = await repo.DeleteAsync("NONE");
 
         result.IsFailure.Should().BeTrue();
-        result.Error.Should().Be(ErrorCode.NotFound);
+        result.Error.Should().Be(ErrorCode.NotFound, "non-existent patient should return NotFound");
     }
 
     // ── CancellationToken propagation ─────────────────────────────────────────
@@ -218,7 +246,9 @@ public sealed class PatientRepositoryTests
     public async Task FindByIdAsync_CancelledToken_ThrowsOperationCanceledException()
     {
         await using var ctx = TestDbContextFactory.Create();
-        var repo = new PatientRepository(ctx);
+        var auditRepo = Substitute.For<IAuditRepository>();
+        auditRepo.GetLastHashAsync(default).ReturnsForAnyArgs(Result.SuccessNullable<string?>(null));
+        var repo = new PatientRepository(ctx, auditRepo, null);
         await repo.AddAsync(CreateSamplePatient());
         using var cts = new CancellationTokenSource();
         cts.Cancel();
@@ -232,7 +262,9 @@ public sealed class PatientRepositoryTests
     public async Task SearchAsync_CancelledToken_ThrowsOperationCanceledException()
     {
         await using var ctx = TestDbContextFactory.Create();
-        var repo = new PatientRepository(ctx);
+        var auditRepo = Substitute.For<IAuditRepository>();
+        auditRepo.GetLastHashAsync(default).ReturnsForAnyArgs(Result.SuccessNullable<string?>(null));
+        var repo = new PatientRepository(ctx, auditRepo, null);
         await repo.AddAsync(CreateSamplePatient());
         using var cts = new CancellationTokenSource();
         cts.Cancel();
@@ -258,13 +290,17 @@ public sealed class PatientRepositoryTests
         await using (var ctxA = new HnVueDbContext(opts))
         {
             ctxA.Database.EnsureCreated();
-            var repoA = new PatientRepository(ctxA);
+            var auditRepoA = Substitute.For<IAuditRepository>();
+            auditRepoA.GetLastHashAsync(default).ReturnsForAnyArgs(Result.SuccessNullable<string?>(null));
+            var repoA = new PatientRepository(ctxA, auditRepoA, null);
             await repoA.AddAsync(patient);
         }
 
         await using (var ctxB = new HnVueDbContext(opts))
         {
-            var repoB = new PatientRepository(ctxB);
+            var auditRepoB = Substitute.For<IAuditRepository>();
+            auditRepoB.GetLastHashAsync(default).ReturnsForAnyArgs(Result.SuccessNullable<string?>(null));
+            var repoB = new PatientRepository(ctxB, auditRepoB, null);
             var result = await repoB.AddAsync(patient); // duplicate PK
 
             result.IsFailure.Should().BeTrue();
@@ -273,9 +309,10 @@ public sealed class PatientRepositoryTests
     }
 
     [Fact]
-    public async Task DeleteAsync_PatientWithStudy_ReturnsDbError()
+    public async Task DeleteAsync_PatientWithStudy_SoftDeletesSuccessfully()
     {
-        // SQLite + FK enforcement: deleting a patient with linked studies triggers DbUpdateException
+        // Soft delete: deleting a patient with linked studies should succeed
+        // (foreign key restrictions don't apply to soft deletes)
         using var conn = new SqliteConnection("Data Source=:memory:");
         conn.Open();
         using var pragmaCmd = conn.CreateCommand();
@@ -290,7 +327,9 @@ public sealed class PatientRepositoryTests
         ctx.Database.EnsureCreated();
 
         // Add patient and linked study
-        var repoP = new PatientRepository(ctx);
+        var auditRepo = Substitute.For<IAuditRepository>();
+        auditRepo.GetLastHashAsync(default).ReturnsForAnyArgs(Result.SuccessNullable<string?>(null));
+        var repoP = new PatientRepository(ctx, auditRepo, null);
         await repoP.AddAsync(CreateSamplePatient("P-RESTRICT"));
         ctx.Studies.Add(new Entities.StudyEntity
         {
@@ -305,9 +344,13 @@ public sealed class PatientRepositoryTests
         foreach (var entry in ctx.ChangeTracker.Entries().ToList())
             entry.State = EntityState.Detached;
 
+        // Soft delete should succeed even with linked studies
         var result = await repoP.DeleteAsync("P-RESTRICT");
 
-        result.IsFailure.Should().BeTrue();
-        result.Error.Should().Be(ErrorCode.DatabaseError);
+        result.IsSuccess.Should().BeTrue("soft delete should succeed even with foreign key constraints");
+
+        // Verify patient is soft-deleted
+        var found = await repoP.FindByIdAsync("P-RESTRICT");
+        found.Value.Should().BeNull("soft-deleted patient should not be found");
     }
 }

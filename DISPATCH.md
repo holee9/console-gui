@@ -1,74 +1,93 @@
-# DISPATCH: Design — 오염 정리 + 빌드 오류 + UI 커버리지
+# DISPATCH: Team A — Infrastructure & Foundation
 
-Issued: 2026-04-10
-Issued By: Main (MoAI Commander Center)
-Priority: **P0-Blocker** (오염/빌드) + P2-High (커버리지)
-Supersedes: 이전 DISPATCH (IN_PROGRESS, 체크 0/7)
-
-## Design 역할 재확인 (rules/teams/team-design.md)
-
-- **소유 모듈**: HnVue.UI (Views, Styles, Themes, Components, Converters, Assets, DesignTime)
-- **금지 참조**: Data, Security, Workflow, Imaging, Dicom, Dose 등
-- **코드 비하인드**: 순수 UI 이벤트만, 비즈니스 로직 금지
-- **접근성**: WCAG 2.1 AA, 44x44px 터치 타겟, 키보드 네비게이션
-- **PPT Scope**: Issue #59 — 지정 페이지 외 UI 구현 금지
+Issued: 2026-04-08
+Issued By: Main (MoAI Orchestrator)
+Priority: P2-High
 
 ## How to Execute
 
-1. **Task 1 (P0)부터** — temp_ppt_extract/ 제거
-2. **Task 2 (P0)** — ConverterTests 빌드 오류 수정
-3. Task 3-5 순서대로
-4. 체크박스 + Status 업데이트
+When user says "지시서대로 작업해":
+1. Read this entire document
+2. Set Status to IN_PROGRESS
+3. Execute each task in order
+4. After each task, update its checkbox and add result notes
+5. Run final build verification
+6. Set Status to COMPLETE with summary
 
-## Task 1: temp_ppt_extract/ 오염 제거 (P0-Blocker)
+## Context
 
-**문제**: PPT 추출 임시파일 2,329개(14MB) 커밋됨
-**수행**: `git rm -r temp_ppt_extract/` + `.gitignore` 추가
+QA team completed local analyzer infrastructure migration. Three Roslyn analyzers now active: StyleCop.Analyzers, Roslynator.Analyzers, SecurityCodeScan.VS2019.
 
-**검증 기준**:
-- [ ] temp_ppt_extract/ 삭제됨
-- [ ] .gitignore에 패턴 추가됨
+Security scan found HIGH vulnerabilities in transitive dependencies:
+- `Microsoft.Extensions.Caching.Memory 8.0.0`
+- `System.Text.Json 8.0.0`
 
-## Task 2: ConverterTests 빌드 오류 수정 (P0-Blocker)
+These are existing vulnerabilities newly visible via local scanning. Team A owns NuGet package management.
 
-**오류**: `TestStatus` 접근성 불일치 (CS0051)
-**파일**: `tests/HnVue.UI.Tests/ConverterTests.cs`
+Additionally, SA* (StyleCop) warnings need reduction in Team A owned modules. Total project-wide SA* count is 8,194 — Team A should address warnings in their owned modules only.
 
-**검증 기준**:
-- [ ] HnVue.UI.Tests 빌드 오류 0건
-- [ ] 기존 UI 테스트 통과
+## Tasks
 
-## Task 3: Converter 0% 클래스 테스트 (P1-Critical)
+### Task 1: Upgrade Vulnerable Transitive Dependencies
+- **Target files**: `Directory.Packages.props`
+- **Action**: Bump versions of vulnerable packages to latest stable:
+  - `Microsoft.Extensions.Caching.Memory` → latest 9.x
+  - `System.Text.Json` → latest 9.x
+  - Check all `Microsoft.Extensions.*` packages for consistent version alignment
+  - Run `dotnet list package --vulnerable` after upgrade to verify resolution
+- **Acceptance criteria**: `dotnet list package --vulnerable` returns no HIGH or CRITICAL vulnerabilities in direct or transitive dependencies.
+- **Constraints**: Do NOT remove packages. Do NOT downgrade any package. Ensure all Microsoft.Extensions.* stay on same major version.
 
-**12개 Converter**: 순수 변환 로직, Convert/ConvertBack + 경계값(null, empty, DependencyProperty.UnsetValue)
+### Task 2: Fix StyleCop Warnings in HnVue.Common
+- **Target files**: `src/HnVue.Common/**/*.cs`
+- **Action**: Fix SA* warnings. Focus on high-frequency categories first (SA1600 missing docs, SA1101 prefix local calls with this). Use bulk approaches where safe:
+  - SA1101: If project convention is no `this.` prefix, suppress via `.editorconfig` or `GlobalSuppressions.cs`
+  - SA1600/SA1633: Add XML doc comments to public members, or suppress file headers globally if not required
+  - Other SA*: Fix individually
+- **Acceptance criteria**: Reduced SA* warning count for HnVue.Common module. Document before/after count.
+- **Constraints**: Do NOT change method signatures or behavior. Do NOT add empty XML doc comments (`/// <summary></summary>`) — either write meaningful docs or suppress.
 
-**검증 기준**:
-- [ ] 12개 Converter 모두 70%+
-- [ ] 빌드 + 테스트 통과
+### Task 3: Fix StyleCop Warnings in HnVue.Data
+- **Target files**: `src/HnVue.Data/**/*.cs`
+- **Action**: Same approach as Task 2 for HnVue.Data module.
+- **Acceptance criteria**: Reduced SA* warning count for HnVue.Data. Document before/after count.
+- **Constraints**: Same as Task 2.
 
-## Task 4: ThemeRollbackService 테스트 (P2-High)
+### Task 4: Fix StyleCop Warnings in HnVue.Security
+- **Target files**: `src/HnVue.Security/**/*.cs`
+- **Action**: Same approach as Task 2 for HnVue.Security module. Extra care with security code — review each change for correctness.
+- **Acceptance criteria**: Reduced SA* warning count for HnVue.Security. Document before/after count.
+- **Constraints**: Same as Task 2. EXTRA: Do NOT modify any cryptographic logic, password hashing, or JWT token handling code.
 
-**규칙**: MahApps.Metro 3테마(Light/Dark/HighContrast) 런타임 전환
+### Task 5: Fix StyleCop Warnings in HnVue.SystemAdmin and HnVue.Update
+- **Target files**: `src/HnVue.SystemAdmin/**/*.cs`, `src/HnVue.Update/**/*.cs`
+- **Action**: Same approach as Task 2 for remaining Team A modules.
+- **Acceptance criteria**: Reduced SA* warning count. Document before/after count.
+- **Constraints**: Same as Task 2.
 
-**검증 기준**:
-- [ ] ThemeRollbackService 70%+
-- [ ] 빌드 + 테스트 통과
-
-## Task 5: 저커버리지 Component (P3-Medium)
-
-**대상**: RelayCommand(50%→80%), RelayCommand<T>(0%→70%), StatusBarItem(55%→75%)
-
-**검증 기준**:
-- [ ] HnVue.UI 전체 75%+
-- [ ] 빌드 + 테스트 통과
+### Final: Build Verification
+- **Action**: `dotnet build HnVue.sln --configuration Release`
+- **Acceptance criteria**: 0 errors. Document total warning count (before vs after).
+- **Action**: `dotnet test tests/HnVue.Common.Tests/ tests/HnVue.Data.Tests/ tests/HnVue.Security.Tests/ tests/HnVue.SystemAdmin.Tests/ tests/HnVue.Update.Tests/`
+- **Acceptance criteria**: All Team A tests pass.
 
 ## Constraints
 
-- HnVue.UI 외 파일 수정 금지
-- 금지 모듈 참조 추가 금지
-- PPT Scope 준수 (Issue #59)
+- DO NOT modify files outside Team A ownership (Common, Data, Security, SystemAdmin, Update)
+- DO NOT modify test files (warning fixes are for src/ only)
+- DO NOT change public API signatures
+- NuGet version changes ONLY in Directory.Packages.props
 
 ## Status
 
-- **State**: NOT_STARTED
-- **Results**: Task 1→PENDING, Task 2→PENDING, Task 3→PENDING, Task 4→PENDING, Task 5→PENDING
+- **State**: COMPLETE
+- **Started**: 2026-04-09
+- **Completed**: 2026-04-09
+- **Results**:
+  - Task 1 (Vulnerable deps): DONE - All Microsoft.Extensions.* 8.0.0→9.0.0, System.Text.Json→9.0.0. 0 HIGH/CRITICAL vulnerabilities.
+  - Task 2 (Common SA*): N/A - StyleCop analyzer not yet integrated in this branch (0 SA warnings baseline)
+  - Task 3 (Data SA*): N/A - Same as Task 2
+  - Task 4 (Security SA*): N/A - Same as Task 2
+  - Task 5 (SystemAdmin+Update SA*): N/A - Same as Task 2
+  - Build: errors=0, warnings=1124 (pre-existing, no SA* in Team A modules)
+  - Tests: 440/440 passed (Common 82 + Data 102 + Security 148 + SystemAdmin 30 + Update 78)

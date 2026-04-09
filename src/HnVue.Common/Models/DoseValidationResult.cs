@@ -2,6 +2,7 @@ using HnVue.Common.Enums;
 
 namespace HnVue.Common.Models;
 
+// @MX:NOTE DoseValidationResult record - IEC 60601-2-54 dose check outcome with IsAllowed/Level/EstimatedDap/Ei
 /// <summary>
 /// Represents the outcome of a dose validation check performed by <c>IDoseService</c>.
 /// </summary>

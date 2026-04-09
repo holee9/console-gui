@@ -29,6 +29,9 @@ public sealed class HnVueDbContext(DbContextOptions<HnVueDbContext> options) : D
     /// <summary>Gets the tamper-evident audit log entries.</summary>
     public DbSet<AuditLogEntity> AuditLogs => Set<AuditLogEntity>();
 
+    /// <summary>Gets the software update installation history records.</summary>
+    public DbSet<UpdateHistoryEntity> UpdateHistories => Set<UpdateHistoryEntity>();
+
     /// <inheritdoc/>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -97,6 +100,15 @@ public sealed class HnVueDbContext(DbContextOptions<HnVueDbContext> options) : D
             e.HasKey(a => a.EntryId);
             e.HasIndex(a => a.TimestampTicks);
             e.HasIndex(a => a.UserId);
+        });
+
+        // ── UpdateHistoryEntity ─────────────────────────────────────────────────
+        modelBuilder.Entity<UpdateHistoryEntity>(e =>
+        {
+            e.HasKey(u => u.UpdateId);
+            e.HasIndex(u => u.Timestamp);
+            e.HasIndex(u => u.FromVersion);
+            e.HasIndex(u => u.ToVersion);
         });
     }
 }

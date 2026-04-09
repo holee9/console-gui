@@ -1,4 +1,5 @@
 using HnVue.Common.Abstractions;
+using HnVue.Common.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
@@ -46,6 +47,28 @@ public static class ServiceCollectionExtensions
         var audit = auditOptions ?? new AuditOptions();
         services.AddSingleton(Options.Create(audit));
         services.AddScoped<IAuditService, AuditService>();
+        return services;
+    }
+
+    /// <summary>
+    /// Registers <see cref="IPhiEncryptionService"/> for column-level PHI encryption (SWR-CS-080).
+    /// Requires <see cref="HnVueOptions.PhiEncryptionKey"/> to be configured.
+    /// </summary>
+    /// <param name="services">The service collection to add registrations to.</param>
+    /// <returns>The same <see cref="IServiceCollection"/> to allow chaining.</returns>
+    public static IServiceCollection AddPhiEncryption(this IServiceCollection services)
+    {
+        services.AddSingleton<IPhiEncryptionService>(sp =>
+        {
+            var hnvueOptions = sp.GetRequiredService<IOptions<HnVueOptions>>();
+            var keyBase64 = hnvueOptions.Value.PhiEncryptionKey;
+            if (string.IsNullOrEmpty(keyBase64))
+                throw new InvalidOperationException(
+                    "HnVue:PhiEncryptionKey must be configured for column-level PHI encryption (SWR-CS-080). " +
+                    "Set the 'HnVue:PhiEncryptionKey' configuration key or 'HNVUE_PHI_ENCRYPTION_KEY' environment variable.");
+            var key = Convert.FromBase64String(keyBase64);
+            return new PhiEncryptionService(key);
+        });
         return services;
     }
 }

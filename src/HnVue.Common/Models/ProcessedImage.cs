@@ -1,5 +1,6 @@
 namespace HnVue.Common.Models;
 
+// @MX:NOTE ProcessedImage class - In-memory image container with Window/Level, PanOffset, RawPixelData16 for clinical display
 /// <summary>
 /// Represents a processed radiographic image held in memory.
 /// Used by <c>IImageProcessor</c> for rendering and manipulation operations.

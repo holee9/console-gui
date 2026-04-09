@@ -1,5 +1,6 @@
 namespace HnVue.Common.Models;
 
+// @MX:NOTE UpdateInfo record - IEC 62304 §6.2.5 update package with SHA-256 hash, version metadata
 /// <summary>
 /// Describes an available software update package discovered by <c>ISWUpdateService</c>.
 /// </summary>

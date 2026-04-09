@@ -1,5 +1,6 @@
 namespace HnVue.Common.Enums;
 
+// @MX:ANCHOR DetectorState enum - @MX:REASON: 6-state FPD hardware FSM, acquisition gating, safety interlock input
 /// <summary>
 /// Represents the operational state of the flat-panel detector (FPD) hardware.
 /// Reported by the detector driver and consumed by the workflow engine.

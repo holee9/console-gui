@@ -2,6 +2,7 @@ using HnVue.Common.Enums;
 
 namespace HnVue.Common.Models;
 
+// @MX:NOTE GeneratorStatus record - X-ray generator health with heat unit percentage, ready state
 /// <summary>Represents the current status reported by the X-ray generator.</summary>
 public sealed record GeneratorStatus
 {

@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HnVue.Data.Repositories;
 
+// @MX:ANCHOR: [AUTO] StudyRepository - DICOM study persistence with image/dose record navigation, MWL integration point
+// @MX:REASON: Central repository for study lifecycle, consumed by Workflow/Imaging/CDBurning modules
 /// <summary>
 /// EF Core implementation of <see cref="IStudyRepository"/> backed by the encrypted SQLite database.
 /// </summary>

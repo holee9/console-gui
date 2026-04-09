@@ -1,5 +1,6 @@
 namespace HnVue.Common.Enums;
 
+// @MX:NOTE DetectorTriggerMode enum - Sync (clinical DR) vs FreeRun (dev/test), dose minimization
 /// <summary>
 /// Specifies how the detector acquisition is triggered.
 /// </summary>

@@ -2,6 +2,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HnVue.Data.Entities;
 
+// @MX:ANCHOR: [AUTO] DoseRecordEntity - IEC 60601-2-54 dose records, regulatory audit data (non-deletable via cascade rules)
+// @MX:REASON: Safety-critical radiation dose tracking, DeleteBehavior.Restrict in DbContext
+// @MX:NOTE: [AUTO] DoseRecordEntity - Store DAP in mGy·cm², EI per IEC 62494, EffectiveDose in mSv for regulatory reporting
 /// <summary>
 /// EF Core entity that maps to the <c>DoseRecords</c> table.
 /// Records radiation dose data for regulatory compliance.

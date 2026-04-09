@@ -3,6 +3,7 @@ using HnVue.Common.Results;
 
 namespace HnVue.Common.Abstractions;
 
+// @MX:ANCHOR ISWUpdateService - @MX:REASON: IEC 62304 §6.2.5 signature verification, rollback lifecycle, safety-critical update
 /// <summary>
 /// Defines software update lifecycle operations: check, apply, and rollback.
 /// Implemented by the HnVue.Update module.

@@ -1,5 +1,6 @@
 namespace HnVue.Common.Models;
 
+// @MX:NOTE ExposureParameters record - Technique factors (kVp/mAs) for dose validation, IEC 60601-2-54 DAP calculation
 /// <summary>
 /// Describes the radiographic technique factors for a planned X-ray exposure.
 /// Used by <c>IDoseService</c> to validate dose before execution.
