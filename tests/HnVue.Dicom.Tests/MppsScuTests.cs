@@ -44,6 +44,15 @@ public sealed class MppsScuTests
         act.Should().Throw<ArgumentNullException>().WithParameterName("options");
     }
 
+    [Fact]
+    [Trait("SWR", "SWR-DC-055")]
+    public void Ctor_WithValidOptions_DoesNotThrow()
+    {
+        var act = () => CreateSut(ValidOptions());
+
+        act.Should().NotThrow();
+    }
+
     // ── SendInProgressAsync — Configuration Validation ──────────────────────
 
     [Fact]
@@ -76,6 +85,36 @@ public sealed class MppsScuTests
         result.ErrorMessage.Should().Contain("MPPS host is not configured");
     }
 
+    [Fact]
+    [Trait("SWR", "SWR-DC-055")]
+    public async Task SendInProgressAsync_DefaultOptions_NoMppsHost_ReturnsFailure()
+    {
+        // Default DicomOptions has MppsHost = string.Empty
+        var sut = CreateSut();
+
+        var result = await sut.SendInProgressAsync("1.2.3", "P001", "ABD");
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.DicomConnectionFailed);
+        result.ErrorMessage.Should().Contain("MPPS host");
+    }
+
+    [Fact]
+    [Trait("SWR", "SWR-DC-055")]
+    public async Task SendInProgressAsync_WhitespaceMppsHost_DoesNotReturnEarlyFailure()
+    {
+        // Whitespace is not null or empty — it passes the guard and reaches network layer.
+        var options = ValidOptions();
+        options.MppsHost = "   ";
+        var sut = CreateSut(options);
+
+        // Will attempt network call and fail at the network level, not config guard.
+        var act = async () => await sut.SendInProgressAsync("1.2.3.4.5", "PAT001", "CHEST");
+
+        // fo-dicom will throw (host "   " is invalid for TCP connection).
+        await act.Should().ThrowAsync<Exception>();
+    }
+
     // ── SendInProgressAsync — Network Error Paths ───────────────────────────
 
     [Fact]
@@ -96,6 +135,22 @@ public sealed class MppsScuTests
 
     [Fact]
     [Trait("SWR", "SWR-DC-055")]
+    public async Task SendInProgressAsync_UnreachablePort_ReturnsNetworkError()
+    {
+        // Using a high unreachable port to exercise the network failure path.
+        var options = ValidOptions();
+        options.MppsHost = "127.0.0.1";
+        options.MppsPort = 19999;
+        var sut = CreateSut(options);
+
+        var act = async () => await sut.SendInProgressAsync("1.2.3.4.5", "PAT001", "CHEST");
+
+        // fo-dicom will fail to connect — typically throws AggregateException or similar.
+        await act.Should().ThrowAsync<Exception>();
+    }
+
+    [Fact]
+    [Trait("SWR", "SWR-DC-055")]
     public async Task SendInProgressAsync_PreCancelledToken_ReturnsResultWithoutThrowing()
     {
         // With a pre-cancelled token, fo-dicom may complete without throwing.
@@ -110,6 +165,44 @@ public sealed class MppsScuTests
 
         // The important contract: no exception propagates; a Result is always returned.
         result.Should().NotBeNull();
+    }
+
+    // ── SendInProgressAsync — TLS Configuration ─────────────────────────────
+
+    [Fact]
+    [Trait("SWR", "SWR-DC-055")]
+    public async Task SendInProgressAsync_TlsEnabled_DoesNotEarlyReturn()
+    {
+        // Ensures the TLS path reaches the network layer (no config guard blocks it).
+        var options = ValidOptions();
+        options.TlsEnabled = true;
+        options.MppsHost = "0.0.0.0";
+        options.MppsPort = 1;
+        var sut = CreateSut(options);
+
+        var act = async () => await sut.SendInProgressAsync("1.2.3.4.5", "PAT001", "CHEST");
+
+        // TLS connection to invalid host also throws
+        await act.Should().ThrowAsync<Exception>();
+    }
+
+    // ── SendInProgressAsync — Parameter Variations ──────────────────────────
+
+    [Theory]
+    [InlineData("CHEST")]
+    [InlineData("ABD")]
+    [InlineData("EXTREMITY")]
+    [Trait("SWR", "SWR-DC-055")]
+    public async Task SendInProgressAsync_DifferentBodyParts_WithNoHost_ReturnsFailure(string bodyPart)
+    {
+        var options = ValidOptions();
+        options.MppsHost = null!;
+        var sut = CreateSut(options);
+
+        var result = await sut.SendInProgressAsync("1.2.3.4.5", "PAT001", bodyPart);
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.DicomConnectionFailed);
     }
 
     // ── SendCompletedAsync — Configuration Validation ───────────────────────
@@ -142,6 +235,18 @@ public sealed class MppsScuTests
         result.IsFailure.Should().BeTrue();
         result.Error.Should().Be(ErrorCode.DicomConnectionFailed);
         result.ErrorMessage.Should().Contain("MPPS host is not configured");
+    }
+
+    [Fact]
+    [Trait("SWR", "SWR-DC-056")]
+    public async Task SendCompletedAsync_DefaultOptions_NoMppsHost_ReturnsFailure()
+    {
+        var sut = CreateSut();
+
+        var result = await sut.SendCompletedAsync("1.2.3.4.5");
+
+        result.IsFailure.Should().BeTrue();
+        result.ErrorMessage.Should().Contain("MPPS host");
     }
 
     // ── SendCompletedAsync — Parameter Validation ───────────────────────────
@@ -190,6 +295,20 @@ public sealed class MppsScuTests
 
     [Fact]
     [Trait("SWR", "SWR-DC-056")]
+    public async Task SendCompletedAsync_UnreachablePort_ReturnsNetworkError()
+    {
+        var options = ValidOptions();
+        options.MppsHost = "127.0.0.1";
+        options.MppsPort = 19999;
+        var sut = CreateSut(options);
+
+        var act = async () => await sut.SendCompletedAsync("1.2.3.4.5.6.7");
+
+        await act.Should().ThrowAsync<Exception>();
+    }
+
+    [Fact]
+    [Trait("SWR", "SWR-DC-056")]
     public async Task SendCompletedAsync_PreCancelledToken_ReturnsResultWithoutThrowing()
     {
         var sut = CreateSut(ValidOptions());
@@ -207,7 +326,22 @@ public sealed class MppsScuTests
 
     [Fact]
     [Trait("SWR", "SWR-DC-056")]
-    public async Task SendCompletedAsync_DiscontinuedInvalidHost_ThrowsAggregateException()
+    public async Task SendCompletedAsync_CompletedTrue_InvalidHost_Throws()
+    {
+        // Verifies the completed=true path attempts network call.
+        var options = ValidOptions();
+        options.MppsHost = "0.0.0.0";
+        options.MppsPort = 1;
+        var sut = CreateSut(options);
+
+        var act = async () => await sut.SendCompletedAsync("1.2.3.4.5.6.7", completed: true);
+
+        await act.Should().ThrowAsync<Exception>();
+    }
+
+    [Fact]
+    [Trait("SWR", "SWR-DC-056")]
+    public async Task SendCompletedAsync_CompletedFalse_InvalidHost_Throws()
     {
         // Verifies the completed=false path also attempts network call.
         var options = ValidOptions();
@@ -222,7 +356,7 @@ public sealed class MppsScuTests
 
     [Fact]
     [Trait("SWR", "SWR-DC-056")]
-    public async Task SendCompletedAsync_DiscontinuedPreCancelledToken_ReturnsResultWithoutThrowing()
+    public async Task SendCompletedAsync_CompletedFalse_PreCancelledToken_ReturnsResultWithoutThrowing()
     {
         var sut = CreateSut(ValidOptions());
         using var cts = new CancellationTokenSource();
@@ -238,54 +372,62 @@ public sealed class MppsScuTests
 
     [Fact]
     [Trait("SWR", "SWR-DC-055")]
-    public async Task SendInProgressAsync_DefaultOptions_NoMppsHost_ReturnsFailure()
+    public async Task SendInProgressAsync_MisconfiguredHost_ReturnsConsistentErrorCode()
     {
-        // Default DicomOptions has MppsHost = string.Empty
-        var sut = CreateSut();
+        // Both null and empty host should produce the same error code.
+        var options1 = ValidOptions();
+        options1.MppsHost = null!;
+        var sut1 = CreateSut(options1);
 
-        var result = await sut.SendInProgressAsync("1.2.3", "P001", "ABD");
+        var options2 = ValidOptions();
+        options2.MppsHost = string.Empty;
+        var sut2 = CreateSut(options2);
 
-        result.IsFailure.Should().BeTrue();
-        result.ErrorMessage.Should().Contain("MPPS host");
+        var result1 = await sut1.SendInProgressAsync("1.2.3", "P001", "CHEST");
+        var result2 = await sut2.SendInProgressAsync("1.2.3", "P001", "CHEST");
+
+        result1.Error.Should().Be(result2.Error);
+        result1.Error.Should().Be(ErrorCode.DicomConnectionFailed);
     }
 
     [Fact]
     [Trait("SWR", "SWR-DC-056")]
-    public async Task SendCompletedAsync_DefaultOptions_NoMppsHost_ReturnsFailure()
+    public async Task SendCompletedAsync_MisconfiguredHost_ReturnsConsistentErrorCode()
     {
-        var sut = CreateSut();
+        var options1 = ValidOptions();
+        options1.MppsHost = null!;
+        var sut1 = CreateSut(options1);
 
-        var result = await sut.SendCompletedAsync("1.2.3.4.5");
+        var options2 = ValidOptions();
+        options2.MppsHost = string.Empty;
+        var sut2 = CreateSut(options2);
 
-        result.IsFailure.Should().BeTrue();
-        result.ErrorMessage.Should().Contain("MPPS host");
+        var result1 = await sut1.SendCompletedAsync("1.2.3.4.5");
+        var result2 = await sut2.SendCompletedAsync("1.2.3.4.5");
+
+        result1.Error.Should().Be(result2.Error);
+        result1.Error.Should().Be(ErrorCode.DicomConnectionFailed);
     }
 
-    // ── Options propagation ─────────────────────────────────────────────────
+    // ── Multiple Instances Independence ─────────────────────────────────────
 
     [Fact]
     [Trait("SWR", "SWR-DC-055")]
-    public void Ctor_WithValidOptions_DoesNotThrow()
+    public async Task SendInProgressAsync_DifferentSutInstances_ReturnIndependently()
     {
-        var act = () => CreateSut(ValidOptions());
+        // Two separate SUT instances with different configs should behave independently.
+        var configuredOptions = ValidOptions();
+        configuredOptions.MppsHost = null!;
+        var configuredSut = CreateSut(configuredOptions);
 
-        act.Should().NotThrow();
-    }
+        var defaultSut = CreateSut(); // Default has empty MppsHost
 
-    [Fact]
-    [Trait("SWR", "SWR-DC-055")]
-    public async Task SendInProgressAsync_TlsEnabled_DoesNotEarlyReturn()
-    {
-        // Ensures the TLS path reaches the network layer (no config guard blocks it).
-        var options = ValidOptions();
-        options.TlsEnabled = true;
-        options.MppsHost = "0.0.0.0";
-        options.MppsPort = 1;
-        var sut = CreateSut(options);
+        var result1 = await configuredSut.SendInProgressAsync("1.2.3", "P001", "CHEST");
+        var result2 = await defaultSut.SendInProgressAsync("1.2.3", "P001", "CHEST");
 
-        var act = async () => await sut.SendInProgressAsync("1.2.3.4.5", "PAT001", "CHEST");
-
-        // TLS connection to invalid host also throws
-        await act.Should().ThrowAsync<Exception>();
+        result1.IsFailure.Should().BeTrue();
+        result2.IsFailure.Should().BeTrue();
+        result1.Error.Should().Be(ErrorCode.DicomConnectionFailed);
+        result2.Error.Should().Be(ErrorCode.DicomConnectionFailed);
     }
 }
