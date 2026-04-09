@@ -48,9 +48,9 @@
     <Color x:Key="HnVue.Primary.Color">#1B4F8A</Color>
     <Color x:Key="HnVue.Primary.Light.Color">#2E6DB4</Color>
     <Color x:Key="HnVue.Accent.Color">#00AEEF</Color>
-    <Color x:Key="HnVue.Background.Dark.Color">#1A1A2E</Color>
-    <Color x:Key="HnVue.Background.Panel.Color">#16213E</Color>
-    <Color x:Key="HnVue.Background.Card.Color">#0F3460</Color>
+    <Color x:Key="HnVue.Background.Dark.Color">#0d1527</Color>
+    <Color x:Key="HnVue.Background.Panel.Color">#1a2540</Color>
+    <Color x:Key="HnVue.Background.Card.Color">#1e2d4a</Color>
     <Color x:Key="HnVue.Text.Primary.Color">#FFFFFF</Color>
     <Color x:Key="HnVue.Text.Secondary.Color">#B0BEC5</Color>
     <!-- IEC 62366 safety-critical status colors — must match CoreTokens exactly -->
@@ -111,6 +111,33 @@
         <Setter Property="FontFamily" Value="{DynamicResource HnVue.Core.FontFamily}" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="4"
+                            Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Background"
+                                    Value="{DynamicResource HnVue.Semantic.Button.PrimaryHover}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="border" Property="Background"
+                                    Value="{DynamicResource HnVue.Semantic.Brand.Primary}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="border" Property="Opacity" Value="0.4"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <!-- Emergency Stop button style — IEC 62366 safety-critical, always 56px, #D50000 -->
@@ -224,6 +251,117 @@
         <Setter Property="FontSize" Value="{DynamicResource HnVue.Core.FontSize.Small}" />
         <Setter Property="Foreground" Value="{DynamicResource HnVue.Semantic.Text.Secondary}" />
         <Setter Property="FontFamily" Value="{DynamicResource HnVue.Core.FontFamily}" />
+    </Style>
+
+    <!--
+        Section badge text style — PPT Slide 3 & 6 spec.
+        Usage: TextBlock inside a Border with HnVue.SectionBadge.Bg background.
+        Spec: 12px/700/#f9e04b, bg:#2a3a5c, pad:2px 8px, radius:3px
+    -->
+    <Style x:Key="HnVue.SectionBadgeText" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Foreground" Value="{DynamicResource HnVue.Component.SectionBadge.Text}" />
+        <Setter Property="FontFamily" Value="{DynamicResource HnVue.Core.FontFamily}" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <!--
+        Detail panel header text style — PPT Slide 6 spec.
+        Usage: "상세" panel title. Spec: 11px/700/#7bc8f5
+    -->
+    <Style x:Key="HnVue.DetailHeaderText" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="11" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Foreground" Value="{DynamicResource HnVue.Component.SectionBadge.DetailText}" />
+        <Setter Property="FontFamily" Value="{DynamicResource HnVue.Core.FontFamily}" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <!--
+        Uppercase label style — PPT Slide 3 spec.
+        Usage: field labels in login form. Spec: 10px/600/#7090b0, uppercase
+    -->
+    <Style x:Key="HnVue.UppercaseLabel" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="10" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{DynamicResource HnVue.Component.Label.Muted}" />
+        <Setter Property="FontFamily" Value="{DynamicResource HnVue.Core.FontFamily}" />
+        <Setter Property="TextOptions.TextFormattingMode" Value="Display" />
+    </Style>
+
+    <!-- Cancel button style — secondary action, transparent bg with border -->
+    <Style x:Key="HnVue.CancelButton" TargetType="Button" BasedOn="{StaticResource HnVue.OutlineButton}">
+        <Setter Property="BorderBrush" Value="{DynamicResource HnVue.Semantic.Border.Default}" />
+        <Setter Property="Foreground" Value="{DynamicResource HnVue.Semantic.Text.Secondary}" />
+        <Setter Property="Height" Value="44" />
+    </Style>
+
+    <!-- ═══ Login Styles (PPT Slide 2/3 spec) ═══
+         InputBgLogin=#ffffff, InputFgLogin=#1c2333, InputBorderDefault=#cccccc, InputBorderFocus=#1a6fc7
+         BtnIconColor=#ffffff, BtnHoverBg=#33ffffff (20% white), BtnPressedBg=#55ffffff (33% white)
+    -->
+    <Style x:Key="HnVue.Login.TextBoxStyle" TargetType="TextBox">
+        <Setter Property="Background"                   Value="White"/>
+        <Setter Property="Foreground"                   Value="#1c2333"/>
+        <Setter Property="BorderBrush"                  Value="#cccccc"/>
+        <Setter Property="BorderThickness"              Value="1"/>
+        <Setter Property="Padding"                      Value="8,0"/>
+        <Setter Property="FontFamily"                   Value="Malgun Gothic"/>
+        <Setter Property="FontSize"                     Value="13"/>
+        <Setter Property="VerticalContentAlignment"     Value="Center"/>
+        <Setter Property="CaretBrush"                   Value="#1c2333"/>
+        <Style.Triggers>
+            <Trigger Property="IsFocused" Value="True">
+                <Setter Property="BorderBrush"          Value="#1a6fc7"/>
+                <Setter Property="BorderThickness"      Value="2"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="HnVue.Login.PasswordBoxStyle" TargetType="PasswordBox">
+        <Setter Property="Background"                   Value="White"/>
+        <Setter Property="Foreground"                   Value="#1c2333"/>
+        <Setter Property="BorderBrush"                  Value="#cccccc"/>
+        <Setter Property="BorderThickness"              Value="1"/>
+        <Setter Property="Padding"                      Value="8,0"/>
+        <Setter Property="FontFamily"                   Value="Malgun Gothic"/>
+        <Setter Property="FontSize"                     Value="13"/>
+        <Setter Property="VerticalContentAlignment"     Value="Center"/>
+        <Setter Property="CaretBrush"                   Value="#1c2333"/>
+        <Style.Triggers>
+            <Trigger Property="IsFocused" Value="True">
+                <Setter Property="BorderBrush"          Value="#1a6fc7"/>
+                <Setter Property="BorderThickness"      Value="2"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="HnVue.Login.IconButtonStyle" TargetType="Button">
+        <Setter Property="Background"                   Value="Transparent"/>
+        <Setter Property="BorderThickness"              Value="0"/>
+        <Setter Property="Cursor"                       Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}" Padding="8"
+                            CornerRadius="4">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#33ffffff"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" Value="#55ffffff"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.4"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
 </ResourceDictionary>

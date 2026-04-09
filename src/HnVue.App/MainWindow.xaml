@@ -7,44 +7,100 @@
                  Background="{DynamicResource HnVue.Background.Dark.Brush}">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="48"/>
+            <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="28"/>
         </Grid.RowDefinitions>
 
         <!-- Header -->
-        <Border Grid.Row="0" Background="{DynamicResource HnVue.Primary.Brush}">
+        <Border Grid.Row="0" Background="#0d1b36" BorderBrush="#2e4070" BorderThickness="0,0,0,1">
             <Grid>
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <!-- Logo + title -->
-                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="12,0">
-                    <!-- Logo badge -->
-                    <Border Background="{DynamicResource HnVue.Semantic.Brand.Accent}"
-                            CornerRadius="4"
-                            Width="28"
-                            Height="28"
-                            Margin="0,0,8,0">
-                        <TextBlock Text="H"
-                                   FontWeight="Bold"
-                                   FontSize="14"
-                                   Foreground="White"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
-                    </Border>
-                    <TextBlock Text="HnVue Console"
-                               Foreground="{DynamicResource HnVue.Text.Primary.Brush}"
-                               VerticalAlignment="Center"
-                               FontSize="{DynamicResource HnVue.Core.FontSize.Large}"
-                               FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
+                <!-- Logo text -->
+                <TextBlock Grid.Column="0"
+                           Text="HnVUE"
+                           FontSize="15"
+                           FontWeight="Bold"
+                           Foreground="#7bc8f5"
+                           FontFamily="Malgun Gothic"
+                           VerticalAlignment="Center"
+                           Margin="10,0,12,0"/>
+
+                <!-- Navigation tabs — PPT Slide 4 spec (visible when authenticated) -->
+                <StackPanel Grid.Column="1"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Stretch"
+                            Visibility="{Binding IsAuthenticated, Converter={StaticResource BooleanToVisibilityConverter}}">
+
+                    <!-- Nav button style -->
+                    <StackPanel.Resources>
+                        <Style x:Key="NavButton" TargetType="Button">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="BorderThickness" Value="0"/>
+                            <Setter Property="Foreground" Value="#a0b4cc"/>
+                            <Setter Property="FontSize" Value="12"/>
+                            <Setter Property="FontFamily" Value="Malgun Gothic"/>
+                            <Setter Property="Padding" Value="12,0"/>
+                            <Setter Property="Height" Value="30"/>
+                            <Setter Property="Cursor" Value="Hand"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}"
+                                                Padding="{TemplateBinding Padding}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="#2e4070"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                        <Style x:Key="NavButtonActive" TargetType="Button" BasedOn="{StaticResource NavButton}">
+                            <Setter Property="Background" Value="#2e4070"/>
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="FontWeight" Value="SemiBold"/>
+                        </Style>
+                    </StackPanel.Resources>
+
+                    <Button Content="Worklist" Style="{StaticResource NavButtonActive}"/>
+                    <Button Content="Study" Style="{StaticResource NavButton}"/>
+                    <Button Content="Report" Style="{StaticResource NavButton}"/>
+                    <Button Content="Teaching File" Style="{StaticResource NavButton}"/>
+                    <Button Content="Admin" Style="{StaticResource NavButton}"/>
+                    <Button Content="Statistics" Style="{StaticResource NavButton}"/>
                 </StackPanel>
 
+                <!-- App title fallback — visible only when NOT authenticated -->
+                <TextBlock Grid.Column="1"
+                           Text="HnVue Console"
+                           Foreground="{DynamicResource HnVue.Text.Primary.Brush}"
+                           VerticalAlignment="Center"
+                           Margin="4,0,0,0"
+                           FontSize="{DynamicResource HnVue.Core.FontSize.Large}"
+                           FontFamily="{DynamicResource HnVue.Core.FontFamily}">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsAuthenticated}" Value="True">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+
                 <!-- Right side of header: Emergency Stop always visible + auth-gated user info -->
-                <StackPanel Grid.Column="1" Orientation="Horizontal"
+                <StackPanel Grid.Column="2" Orientation="Horizontal"
                             Margin="0,0,12,0"
                             VerticalAlignment="Center">
 
@@ -62,39 +118,33 @@
                                 VerticalAlignment="Center"
                                 Visibility="{Binding IsAuthenticated, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <TextBlock Text="{Binding CurrentUsername}"
-                                   Foreground="{DynamicResource HnVue.Text.Primary.Brush}"
+                                   Foreground="#7bc8f5"
+                                   FontSize="12"
+                                   FontWeight="SemiBold"
                                    VerticalAlignment="Center"
-                                   Margin="0,0,8,0"
-                                   FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
+                                   Margin="0,0,6,0"
+                                   FontFamily="Malgun Gothic"/>
                         <TextBlock Text="{Binding CurrentRoleDisplay}"
-                                   Foreground="{DynamicResource HnVue.Text.Secondary.Brush}"
+                                   Foreground="#a0b4cc"
+                                   FontSize="11"
                                    VerticalAlignment="Center"
-                                   Margin="0,0,12,0"
-                                   FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
+                                   Margin="0,0,10,0"
+                                   FontFamily="Malgun Gothic"/>
 
-                        <!-- Logout button with border styling -->
+                        <!-- Logout button -->
                         <Button Style="{x:Null}"
                                 Background="Transparent"
-                                BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
+                                BorderBrush="#2e4070"
                                 BorderThickness="1"
-                                Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
-                                Height="32"
-                                Padding="12,0"
+                                Foreground="#a0b4cc"
+                                Height="22"
+                                Padding="8,0"
                                 Command="{Binding LogoutCommand}"
                                 VerticalAlignment="Center"
-                                Cursor="Hand">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="&#xF3B1;"
-                                           FontFamily="Segoe MDL2 Assets"
-                                           FontSize="13"
-                                           VerticalAlignment="Center"
-                                           Margin="0,0,6,0"/>
-                                <TextBlock Text="로그아웃"
-                                           FontSize="12"
-                                           FontFamily="{DynamicResource HnVue.Core.FontFamily}"
-                                           VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Button>
+                                FontSize="11"
+                                FontFamily="Malgun Gothic"
+                                Cursor="Hand"
+                                Content="로그아웃"/>
                     </StackPanel>
                 </StackPanel>
             </Grid>
@@ -106,23 +156,23 @@
             <!-- 3-column main layout (visible when authenticated) -->
             <Grid Visibility="{Binding IsMainContentVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="280"/>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="260"/>
+                    <ColumnDefinition Width="0"/>
+                    <ColumnDefinition Width="0"/>
                 </Grid.ColumnDefinitions>
 
-                <!-- Left Panel: Patient List (Shell Region — resolved via DataTemplate) -->
+                <!-- Left Panel: Patient/Worklist (full width — PPT Slide 4 spec) -->
                 <Border Grid.Column="0" Background="{DynamicResource HnVue.Background.Panel.Brush}">
                     <ContentControl Content="{Binding PatientListViewModel}"/>
                 </Border>
 
-                <!-- Center Panel: Image Viewer (Shell Region — resolved via DataTemplate) -->
-                <Border Grid.Column="1" Background="{DynamicResource HnVue.Background.Dark.Brush}" Margin="2,0">
+                <!-- Center Panel: Image Viewer — hidden in worklist mode -->
+                <Border Grid.Column="1" Width="0" Visibility="Collapsed" Background="{DynamicResource HnVue.Background.Dark.Brush}">
                     <ContentControl Content="{Binding ImageViewerViewModel}"/>
                 </Border>
 
-                <!-- Right Panel: Workflow + Dose (Shell Regions — resolved via DataTemplate) -->
-                <Border Grid.Column="2" Background="{DynamicResource HnVue.Background.Panel.Brush}">
+                <!-- Right Panel: hidden — detail panel is embedded in PatientListView -->
+                <Border Grid.Column="2" Visibility="Collapsed" Background="{DynamicResource HnVue.Background.Panel.Brush}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
@@ -136,8 +186,10 @@
 
             <!-- Login overlay (visible when not authenticated) -->
             <Border Visibility="{Binding IsLoginVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
-                    Background="{DynamicResource HnVue.Background.Dark.Brush}">
-                <views:LoginView x:Name="LoginViewControl" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    Background="{DynamicResource HnVue.Background.Dark.Brush}"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch">
+                <views:LoginView x:Name="LoginViewControl" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
             </Border>
         </Grid>
 

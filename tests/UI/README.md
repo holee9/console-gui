@@ -4,7 +4,14 @@ Comprehensive UI testing framework for HnVue medical device Console UI.
 
 ## Overview
 
-This testing framework ensures visual consistency, accessibility compliance, performance targets, and cross-platform DPI scaling for the HnVue UI application.
+This testing framework verifies visual consistency, accessibility compliance, performance targets, and Windows DPI scaling for the HnVue UI application.
+
+## Current Status (2026-04-08)
+
+- Reproduced command: `dotnet test tests/UI/HnVue.UI.QA.Tests.csproj --configuration Debug --nologo --no-restore -v minimal`
+- Result: **65 total / 50 passed / 15 failed**
+- Current failures are concentrated in `DesignSystemTests`, `PptPage1LoginDesignTests`, and `PptPage2WorklistDesignTests`
+- Representative mismatches: dark theme background tokens, Login 화면 section badge/button style, Worklist period filter/button row height
 
 ## Test Categories
 
@@ -30,7 +37,7 @@ Verifies 95%+ visual consistency across components and screens.
 dotnet test tests/UI/HnVue.UI.QA.Tests.csproj --filter "FullyQualifiedName~VisualRegressionTests"
 
 # Update baselines (use with caution)
-cp -r Screenshots/Actual/* Screenshots/Baseline/
+Copy-Item -Path .\\Screenshots\\Actual\\* -Destination .\\Screenshots\\Baseline\\ -Recurse -Force
 ```
 
 ### 2. Accessibility Tests (`AccessibilityTests.cs`)
@@ -94,6 +101,17 @@ Design system specification validation.
 dotnet test tests/UI/HnVue.UI.QA.Tests.csproj --filter "FullyQualifiedName~DesignSystemTests"
 ```
 
+### 5. PPT Design Alignment Tests
+
+`PptPage1LoginDesignTests.cs`와 `PptPage2WorklistDesignTests.cs`는 최종 PPT 시안 기준으로
+Login/Worklist 화면의 구조, 토큰, 버튼 스타일, 배지, 리스트 행 높이를 검증합니다.
+
+**Run:**
+```bash
+dotnet test tests/UI/HnVue.UI.QA.Tests.csproj --filter "FullyQualifiedName~PptPage1LoginDesignTests"
+dotnet test tests/UI/HnVue.UI.QA.Tests.csproj --filter "FullyQualifiedName~PptPage2WorklistDesignTests"
+```
+
 ## Tools
 
 ### ScreenshotCapture (`ScreenshotCapture.cs`)
@@ -123,7 +141,7 @@ Generates HTML and JSON test reports.
 
 ### All Tests
 ```bash
-dotnet test tests/UI/HnVue.UI.QA.Tests.csproj
+dotnet test tests/UI/HnVue.UI.QA.Tests.csproj --configuration Debug --nologo --no-restore -v minimal
 ```
 
 ### Specific Category
@@ -132,6 +150,8 @@ dotnet test tests/UI/HnVue.UI.QA.Tests.csproj --filter "FullyQualifiedName~Visua
 dotnet test tests/UI/HnVue.UI.QA.Tests.csproj --filter "FullyQualifiedName~AccessibilityTests"
 dotnet test tests/UI/HnVue.UI.QA.Tests.csproj --filter "FullyQualifiedName~PerformanceTests"
 dotnet test tests/UI/HnVue.UI.QA.Tests.csproj --filter "FullyQualifiedName~DesignSystemTests"
+dotnet test tests/UI/HnVue.UI.QA.Tests.csproj --filter "FullyQualifiedName~PptPage1LoginDesignTests"
+dotnet test tests/UI/HnVue.UI.QA.Tests.csproj --filter "FullyQualifiedName~PptPage2WorklistDesignTests"
 ```
 
 ### With Coverage
@@ -184,12 +204,16 @@ jobs:
 
 ## Dependencies
 
-| Package | Version | Purpose |
-|---------|---------|---------|
-| xunit | 2.4+ | Test framework |
-| FluentAssertions | 6.0+ | Readable assertions |
-| FlaUI.UIA3 | 4.0+ | UI automation |
-| System.Drawing.Common | 7.0+ | Image processing |
+| Package | Purpose |
+|---------|---------|
+| `Microsoft.NET.Test.Sdk` | test host |
+| `xunit`, `xunit.runner.visualstudio` | test framework |
+| `FlaUI.UIA3`, `FlaUI.Core` | UI automation |
+| `FluentAssertions` | readable assertions |
+| `coverlet.collector` | coverage collection |
+| `System.Drawing.Common` | image processing |
+
+패키지 버전은 `Directory.Packages.props`에서 중앙 관리됩니다.
 
 ## Extending the Framework
 
@@ -279,6 +303,7 @@ const int tolerance = 20; // Increase from default 10
 - [IEC 62366-1](https://webstore.iec.ch/publication/6805)
 - [FDA Human Factors](https://www.fda.gov/medical-devices/human-factors-engineering-usability)
 - [HnVue Design Plan](../../docs/ui_design_plan_2026.md)
+- [HnVue UI Design Master Reference](../../docs/design/UI_DESIGN_MASTER_REFERENCE.md)
 
 ## Version History
 

@@ -226,6 +226,20 @@ appsettings.*.json
 !appsettings.json
 _site/
 api/
+
+# ===========================================
+# Project Temporary & Generated Files
+# ===========================================
+~$*
+.tmp_wiki_full/
+.worktrees/
+TestReports/
+.moai/docs/
+.moai/specs/
+*.failed
+docs/slide*.xml
+
+# User Custom Patterns (preserved by moai update)
 docs/planning/archive/
 .claude/
 .moai/config/sections/context.yaml

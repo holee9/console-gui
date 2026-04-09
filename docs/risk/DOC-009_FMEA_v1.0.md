@@ -867,15 +867,15 @@ graph LR
 | **ACK** | Acknowledgement | 확인 응답 |
 | **AEC** | Automatic Exposure Control | 자동 노출 제어 |
 | **ALARP** | As Low As Reasonably Practicable | 합리적으로 가능한 수준까지 낮춤 |
-| **AND** | AND Gate (FTA) | AND 게이트 (논리곱) |
-| **CAPA** | Corrective and Preventive Action | 시정 및 예방 조치 |
+| **AND** | AND Gate (FTA) | AND 게이트(논리곱) |
+| **CAPA** | Corrective and Preventive Action | 시정 및 예방 조치(CAPA) |
 | **CRC** | Cyclic Redundancy Check | 순환 중복 검사 |
 | **DAP** | Dose Area Product | 선량 면적 적산값 |
 | **DICOM** | Digital Imaging and Communications in Medicine | 의료 영상 통신 표준 |
 | **DRL** | Diagnostic Reference Level | 진단 참조 수준 |
 | **FMEA** | Failure Mode and Effects Analysis | 고장 모드 및 영향 분석 |
 | **FTA** | Fault Tree Analysis | 결함 수목 분석 |
-| **HAZ** | Hazard | 위험 요인 |
+| **HAZ** | Hazard | 위험 요인(Hazard) |
 | **HIS** | Hospital Information System | 병원 정보 시스템 |
 | **kVp** | kilovoltage peak | 킬로볼트 피크 |
 | **LUT** | Look-Up Table | 조회 테이블 (영상 처리) |

@@ -48,8 +48,8 @@
 | **2. Device Description** | 제품 설명, 의도된 용도 | MRD, PRD, IFU | ✅ |
 | **3. Substantial Equivalence** | 동등성 비교 | DOC-050 Predicate Comparison (EConsole1 K231225) | ✅ |
 | **4. Proposed Labeling** | 라벨링 (IFU 포함) | IFU-XRAY-GUI-001 | ✅ |
-| **5. Software Documentation** | SW 문서 (IEC 62304) | SRS, SAD, SDS, V&V 보고서 | ✅ |
-| **6. Cybersecurity** | 사이버보안 문서 (Section 524B) | CMP, TM, SBOM, CSTP, CSTR | ✅ |
+| **5. Software Documentation** | SW 문서(IEC 62304) | SRS, SAD, SDS, V&V 보고서 | ✅ |
+| **6. Cybersecurity** | 사이버보안 문서(Section 524B) | CMP, TM, SBOM, CSTP, CSTR | ✅ |
 | **7. Performance Testing** | 성능 테스트 데이터 | PTR, STR | ✅ |
 | **8. Biocompatibility** | 생체적합성 | N/A (순수 소프트웨어) | N/A |
 | **9. Electrical Safety** | 전기 안전 | N/A (SW-only) | N/A |

@@ -3,9 +3,9 @@
 ## 📊 Executive Summary
 
 **Project**: HnVue - 의료영상 장비 Console Application  
-**Type**: WPF Desktop Application (.NET 8)  
+**Type**: WPF (Windows Presentation Foundation) Desktop Application (.NET 8)  
 **Architecture**: Modular loosely-coupled design  
-**UI Framework**: MahApps.Metro + Custom DesignSystem2026  
+**UI (User Interface) Framework**: MahApps.Metro + Custom DesignSystem2026  
 
 ---
 
@@ -127,8 +127,8 @@ Semantic: Error(#FF4757), Warning(#FFA502), Success(#2ED573), Info(#1E90FF)
 
 1. **Project Type Misidentification**
    - **Assumed**: Web browser application
-   - **Actual**: WPF desktop application (WinExe)
-   - **Result**: Created HTML mockups instead of XAML prototypes
+   - **Actual**: WPF (Windows Presentation Foundation) desktop application (WinExe)
+   - **Result**: Created HTML (Hypertext Markup Language) mockups instead of XAML prototypes
 
 2. **Missed Pencil/Figma Requirement**
    - **Instruction**: "Pencil or Figma free medical UI design"
@@ -197,7 +197,7 @@ Semantic: Error(#FF4757), Warning(#FFA502), Success(#2ED573), Info(#1E90FF)
 - Medium: Navigation errors
 - Low: Preference changes
 
-**SUS Satisfaction Survey**:
+**SUS (System Usability Scale) Satisfaction Survey**:
 - 10 questions, 0-4 scale
 - Target: >70 (good)
 

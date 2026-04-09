@@ -1,4 +1,4 @@
-# HnVue Console SW 인허가 문서 작성 마스터 플랜
+# HnVue Console Software 인허가 문서 작성 마스터 플랜
 # Document Master Plan (DMP) v2.0
 
 | 항목 | 내용 |
@@ -7,10 +7,10 @@
 | **버전** | v2.0 |
 | **작성일** | 2026-04-03 |
 | **최종 개정일** | 2026-04-03 |
-| **적용 제품** | HnVue Console SW |
+| **적용 제품** | HnVue Console Software |
 | **적용 규격** | IEC 62304, IEC 62366, ISO 14971, ISO 13485, FDA 21 CFR 820.30, FDA Section 524B, EU MDR 2017/745, IEC 81001-5-1 |
 | **인허가 대상** | FDA 510(k) / CE MDR / KFDA (식약처) |
-| **SW Safety Class** | IEC 62304 Class B |
+| **Software Safety Class** | IEC 62304 Class B |
 
 ---
 
@@ -19,7 +19,7 @@
 | 버전 | 일자 | 개정 내용 | 작성자 |
 |------|------|-----------|--------|
 | v1.0 | 2026-03-27 | 최초 작성 | — |
-| v2.0 | 2026-04-03 | 전체 문서 목록 현행 버전으로 업데이트 (MRD v3.0, PRD v2.0, FRS v2.0, SRS v2.0, SAD v2.0, SDS v2.0); 4-Tier 우선순위 체계 설명 추가 (P1–P4 제거); Phase별 개정 로드맵 포함; 동기화 스크립트 (scripts/sync_docs.py) 사용법 포함; 문서 정합성 현황 테이블 추가; IEC 81001-5-1 인시던트 대응 규격 추가; 보완 3건 반영 문서 명시 | — |
+| v2.0 | 2026-04-03 | 전체 문서 목록 현행 버전으로 업데이트 (MRD v3.0, PRD v2.0, FRS v2.0, SRS v2.0, SAD v2.0, SDS v2.0); 4-Tier 우선순위 체계 설명 추가 (P1–P4 제거); Phase별 개정 로드맵 포함; 동기화 스크립트 (scripts/sync_docs.py) 사용법 포함; 문서 정합성 현황 테이블 추가; IEC 81001-5-1 인시던트 대응 규격 추가; 보완 3건 반영 문서 명시; SW → Software 확장 | — |
 
 ---
 
@@ -59,8 +59,8 @@ v2.0에서는 다음 사항이 개정되었다:
 
 | 항목 | 내용 |
 |------|------|
-| **제품명** | HnVue Console SW |
-| **SW Safety Class** | IEC 62304 Class B |
+| **제품명** | HnVue Console Software |
+| **Software Safety Class** | IEC 62304 Class B |
 | **인허가 대상 시장** | 미국 (FDA 510(k)), 유럽 (CE MDR), 한국 (KFDA 식약처) |
 | **개발 Phase** | Phase 1 (Tier 1+2 기능, 인허가 대상) / Phase 2 (Tier 3 기능) |
 | **문서 총 수** | 42개 (Phase A–H) |
@@ -72,9 +72,9 @@ v2.0에서는 다음 사항이 개정되었다:
 
 | 규격 | 내용 | 적용 문서 |
 |------|------|----------|
-| **IEC 62304:2006+AMD1:2015** | Medical Device Software Lifecycle Processes | SDP, SRS, SAD, SDS, V&V |
+| **IEC 62304:2006+AMD1:2015** | Medical Device Software Lifecycle Processes | SDP, SRS, SAD, SDS, Verification & Validation |
 | **IEC 62366-1:2015+AMD1:2020** | Usability Engineering for Medical Devices | UEF, Usability Test Reports |
-| **IEC 81001-5-1:2021** | Health SW Security — Incident Response | Cybersecurity Plan, Incident Response |
+| **IEC 81001-5-1:2021** | Health Software Security — Incident Response | Cybersecurity Plan, Incident Response |
 | **ISO 14971:2019** | Risk Management for Medical Devices | Risk Management File |
 | **ISO 13485:2016** | Quality Management Systems | SDP, QA 문서 전반 |
 | **FDA 21 CFR Part 820.30** | Design Controls | DHF, Design Reviews |
@@ -199,7 +199,7 @@ flowchart TD
 | A | **DOC-002** | PRD | **v2.0** | 완료 ✅ | 4-Tier 반영 |
 | A | **WBS-001** | WBS | **v2.0** | 완료 ✅ | Tier 1/2 기준 재분해 |
 | A | **DMP-001** | DMP (본 문서) | **v2.0** | 작성 중 | 4-Tier 반영 |
-| A | **DOC-003a** | SDP | **v2.0** | 완료 ✅ | CI/CD, STRIDE, 인시던트 대응 포함 |
+| A | **DOC-003a** | SDP | **v2.0** | 완료 ✅ | CI/CD, STRIDE, 인시던트 대응 포함; SDP = Software Development Plan |
 | B | **DOC-004** | FRS | **v2.0** | 완료 ✅ | 4-Tier, MR-072, 보완 3건 |
 | B | **DOC-005** | SRS | **v2.0** | 완료 ✅ | 4-Tier, MR-072, 보완 3건 |
 | B | **DOC-006** | SAD | **v2.0** | 완료 ✅ | 4-Tier, CD/INC/UPD 모듈 추가 |
@@ -600,6 +600,14 @@ python scripts/sync_docs.py --list-outdated
 
 | 약어 | 풀 네임 |
 |------|---------|
+| Software | 소프트웨어 |
+| Hardware | 하드웨어 |
+| GUI | Graphical User Interface |
+| API | Application Programming Interface |
+| DB | Database |
+| UI | User Interface |
+| UX | User Experience |
+| OS | Operating System |
 | DMP | Document Master Plan (문서 마스터 플랜) |
 | DHF | Design History File (설계 이력 파일) |
 | Tier 1 | 없으면 인허가 불가 (MRD v3.0 기준) |

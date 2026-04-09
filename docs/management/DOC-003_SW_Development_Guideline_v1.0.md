@@ -1,5 +1,5 @@
 # SW 제품개발 지침서 (Software Development Guideline)
-## HnVue Console SW
+## HnVue Console Software
 
 ---
 
@@ -13,7 +13,7 @@
 | **승인자** | 품질보증팀장 / R&D 센터장 |
 | **상태** | 초안 (Draft) |
 | **기준 규격** | IEC 62304:2006+AMD1:2015, ISO 14971:2019, IEC 62366-1:2015, FDA 21 CFR 820.30, ISO 13485:2016 |
-| **적용 제품** | HnVue Console SW |
+| **적용 제품** | HnVue Console Software |
 | **SW Safety Class** | IEC 62304 Class B |
 
 ---

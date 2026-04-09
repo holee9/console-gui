@@ -1,5 +1,5 @@
 # 사이버보안 테스트 계획서 (Cybersecurity Test Plan)
-## HnVue Console SW
+## HnVue Console Software
 
 ---
 
@@ -8,7 +8,7 @@
 | 항목 | 내용 |
 |------|------|
 | **문서 ID** | CSTP-XRAY-GUI-001 |
-| **문서명** | HnVue Console SW 사이버보안 테스트 계획서 |
+| **문서명** | HnVue Console Software 사이버보안 테스트 계획서 |
 | **버전** | v2.0 |
 | **작성일** | 2026-04-03 |
 | **작성자** | 사이버보안 팀 (Cybersecurity Team) |
@@ -22,7 +22,7 @@
 | 버전 | 날짜 | 변경 내용 | 작성자 |
 |------|------|----------|--------|
 | v1.0 | 2026-03-18 | 최초 작성 — TM-XRAY-GUI-001 위협 모델 기반 | 사이버보안 팀 |
-| v2.0 | 2026-04-03 | 4 Phase 테스트 체계 재정의 (SAST→DAST→SCA→침투); STRIDE 기반 위협 매핑 강화 (MR-050); RBAC 우회 테스트 추가; PHI 암호화 검증 확대 (AES-256, TLS 1.3); 감사 로그 변조 방지 테스트 추가; SBOM 취약점 매칭 검증 추가; CVD 프로세스 검증 추가 (MR-037); 인시던트 대응 프로세스 테스트 추가 (MR-037); 업데이트 서명/무결성/롤백 테스트 추가 (MR-039); 각 TC에 MR/PR/SWR 추적성 명시 | 사이버보안 팀 |
+| v2.0 | 2026-04-03 | 4 Phase 테스트 체계 재정의 (SAST→DAST→SCA→침투); STRIDE 기반 위협 매핑 강화 (MR-050); RBAC 우회 테스트 추가; PHI 암호화 검증 확대 (AES-256, TLS 1.3); 감사 로그 변조 방지 테스트 추가; SBOM 취약점 매칭 검증 추가; CVD 프로세스 검증 추가 (MR-037); 인시던트 대응 프로세스 테스트 추가 (MR-037); 업데이트 서명/무결성/롤백 테스트 추가 (MR-039); 각 TC에 MR/PR/SWR 추적성 명시; SW → Software 확장 | 사이버보안 팀 |
 
 ---
 
@@ -45,7 +45,7 @@
 
 ### 1.1 목적 (Purpose)
 
-본 문서는 HnVue Console SW에 대한 사이버보안 테스트 계획 v2.0을 수립한다. MRD v3.0 4-Tier Tier 1 요구사항인 MR-033 (RBAC), MR-034 (PHI 암호화), MR-035 (감사 로그), MR-036 (SBOM), MR-037 (CVD+인시던트 대응), MR-039 (SW 무결성+업데이트 메커니즘), MR-050 (STRIDE 위협 모델링)의 유효성을 검증하고, FDA Section 524B 요구사항 충족을 실증한다.
+본 문서는 HnVue Console Software에 대한 사이버보안 테스트 계획 v2.0을 수립한다. MRD v3.0 4-Tier Tier 1 요구사항인 MR-033 (RBAC), MR-034 (PHI 암호화), MR-035 (감사 로그), MR-036 (SBOM), MR-037 (CVD+인시던트 대응), MR-039 (SW 무결성+업데이트 메커니즘), MR-050 (STRIDE 위협 모델링)의 유효성을 검증하고, FDA Section 524B 요구사항 충족을 실증한다.
 
 v2.0에서는 4 Phase 테스트 체계를 정립하고, 보완 3건(인시던트 대응, 업데이트 메커니즘, STRIDE)에 대한 테스트 케이스를 추가하였다.
 
@@ -53,7 +53,7 @@ v2.0에서는 4 Phase 테스트 체계를 정립하고, 보완 3건(인시던트
 
 | 구분 | 내용 |
 |------|------|
-| **대상** | HnVue Console SW v1.x Release Candidate |
+| **대상** | HnVue Console Software v1.x Release Candidate |
 | **Phase 1** | SAST — Semgrep 기반 정적 분석 |
 | **Phase 2** | DAST — OWASP ZAP 기반 동적 분석 |
 | **Phase 3** | SCA — OWASP Dependency-Check 기반 컴포넌트 분석 |

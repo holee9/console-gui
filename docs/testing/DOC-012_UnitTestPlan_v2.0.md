@@ -8,10 +8,9 @@
 |------|------|
 | **문서 ID** | UTP-XRAY-GUI-001 |
 | **버전 (Version)** | v2.0 |
-| **제품명 (Product)** | HnVue Console SW |
+| **제품명 (Product)** | HnVue Console Software |
 | **작성일 (Date)** | 2026-04-03 |
-| **작성자 (Author)** | SW 개발팀 (SW Development Team) |
-| **검토자 (Reviewer)** | SW QA 팀장 |
+| **작성자 (Author)** | Software 개발팀 (Software Development Team) |
 | **승인자 (Approver)** | SW 개발 팀장 / RA Manager |
 | **상태 (Status)** | Draft |
 | **기준 규격** | IEC 62304:2006+AMD1:2015 §5.5 |
@@ -23,7 +22,7 @@
 |------|------|--------|-----------|
 | v0.1 | 2026-02-01 | 개발팀 | 초안 작성 |
 | v1.0 | 2026-03-18 | 개발팀 | 공식 발행 |
-| v2.0 | 2026-04-03 | 개발팀 | MRD v3.0 4-Tier 체계 반영; 테스트 프레임워크를 xUnit+NSubstitute로 확정; CD Burning 모듈 단위 테스트 추가 (MR-072); RBAC/암호화/감사로그 단위 테스트 보강; 각 TC에 SWR 추적성 강화; 커버리지 목표 Safety-Critical 100% Branch / 일반 80%+ Statement 명시 |
+| v2.0 | 2026-04-03 | 개발팀 | MRD v3.0 4-Tier 체계 반영; 테스트 프레임워크를 xUnit+NSubstitute로 확정; CD Burning 모듈 단위 테스트 추가 (MR-072); RBAC/암호화/감사로그 단위 테스트 보강; 각 TC에 SWR 추적성 강화; 커버리지 목표 Safety-Critical 100% Branch / 일반 80%+ Statement 명시; SW → Software 확장 |
 
 ---
 
@@ -53,15 +52,15 @@ v2.0에서는 MRD v3.0의 4-Tier 우선순위 체계를 반영하고, MR-072 (CD
 
 ### 1.2 범위
 
-- **대상 SW Safety Class**: IEC 62304 Class B
-- **대상 모듈**: PM, WF, IP, DM, DC, SA, CS, DB, **CB** (9개 주요 모듈)
+- **대상 Software Safety Class**: IEC 62304 Class B
+- **대상 모듈**: PM, WF, IP, DM, DC, SA, CS, DB, **CB** (9개 주요 모듈) |
   - **CB (CD Burning)**: MR-072 신규 추가 모듈
 - **단위 테스트 범위**: 개별 클래스/함수 레벨의 화이트박스(White-box) 테스트
 - **제외 범위**: 하드웨어 인터페이스 통합 테스트 (DOC-013 참조), 시스템 수준 테스트 (DOC-014 참조)
 
 ### 1.3 커버리지 요구사항 요약
 
-| SW Safety Class | Statement Coverage | Branch Coverage (Safety-Critical) |
+| Software Safety Class | Statement Coverage | Branch Coverage (Safety-Critical) |
 |---|---|---|
 | **Class B** | **≥ 80%** | **100% (Safety-Critical 코드)** |
 
@@ -600,6 +599,10 @@ flowchart TD
 
 
 ## 12. Generator 에러 처리 단위 테스트
+
+> **약어**: TC = Test Case, MR = Market Requirement, SWR = Software Requirement
+
+## 13. 안전 상태 전환 단위 테스트
 
 | TC ID | 테스트명 | 입력 | 예상 결과 | MR 추적 |
 |-------|---------|------|----------|--------|

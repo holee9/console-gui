@@ -9,7 +9,7 @@
 | 작성일 | 2026-04-07 |
 | PPT 참조 | 별도 슬라이드 없음 (관리자 전용 화면) |
 | 구현 파일 | `src/HnVue.UI/Views/SystemAdminView.xaml` |
-| ViewModel | `src/HnVue.UI/ViewModels/SystemAdminViewModel.cs` |
+| ViewModel | `src/HnVue.UI/ViewModels/SystemAdminViewModel.cs` (Model-View-ViewModel) |
 | 관련 SPEC | SPEC-UI-001 |
 | 준수율 | 40% (기본 구조만, 탭/필드 대부분 미구현) |
 
@@ -20,7 +20,7 @@
 시스템 관리 화면은 관리자(Admin) 전용 기능을 제공한다. 사용자 계정 관리, 역할 권한 설정, 감사 로그 조회, 라이선스 관리, 시스템 진단 등을 포함한다.
 
 **핵심 특징:**
-- `UserControl` 기반 — MainWindow 내에서 TabItem 또는 별도 Navigation으로 접근
+- `UserControl` 기반 — MainWindow 내에서 TabItem 또는 별도 Navigation(User Interface)으로 접근
 - 관리자 권한 확인 — `IsAdminUser` 바인딩, 비관리자 시 접근 차단
 - 탭 기반 네비게이션 — 5개 주요 섹션
 - 보안 강조 — 감사 로그, 권한 매트릭스, 위험 구역 명확히 구분
@@ -201,7 +201,7 @@
 | Protocol Management (프로토콜 관리) | ✅ | ❌ | ❌ | ❌ |
 | **이미지 (Imaging)** |
 | View Images (이미지 보기) | ✅ | ✅ | ✅ | ✅ |
-| Window/Level (W/L 조절) | ✅ | ✅ | ✅ | ✅ |
+| Window/Level (W/L 조절) | Window/Level (W/L) 조절 | ✅ | ✅ | ✅ | ✅ |
 | Annotations (주석/측정) | ✅ | ✅ | ✅ | ❌ |
 | Invert/Rotate (이미지 변환) | ✅ | ✅ | ✅ | ✅ |
 | Export (내보내기) | ✅ | ✅ | ✅ | ❌ |

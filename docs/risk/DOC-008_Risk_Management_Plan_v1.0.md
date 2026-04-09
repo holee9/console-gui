@@ -72,7 +72,7 @@
 - **제품명**: HnVue Console SW
 - **버전 범위**: v1.0 이상 (Phase 1 기능 전체 포함)
 - **SW 구성요소**: 환자 관리 (PM), 촬영 워크플로우 (WF), 영상 표시/처리 (IP), 선량 관리 (DM), DICOM/통신 (DC), 시스템 관리 (SA), 사이버보안 (CS), UI 프레임워크 (UI), 데이터 영속성 (DB), CD/DVD Burning (CD) — MR-072, 인시던트 대응 (INC) — MR-037, IEC 81001-5-1, SW 업데이트 (UPD) — MR-039, FDA 524B
-- **HW 인터페이스**: X-Ray Generator 제어 인터페이스, AEC (Automatic Exposure Control) 인터페이스, 디텍터 (Detector) 인터페이스
+- **HW 인터페이스**: X-Ray Generator 제어 인터페이스, AEC(Auto Exposure Control) 인터페이스, 디텍터(Detector) 인터페이스
 
 **적용 제외**:
 - HnVue SW가 동작하는 하드웨어 플랫폼 자체의 위험 (별도 HW RMP에서 관리)
@@ -124,7 +124,7 @@
 | **잔여 위험 (Residual Risk)** | 위험 통제 조치 적용 후 남아 있는 위험 |
 | **위험 통제 (Risk Control)** | 위험을 저감하거나 제거하는 수단 또는 행동 |
 | **ALARP** | As Low As Reasonably Practicable — 합리적으로 가능한 수준까지 낮춤 |
-| **AEC** | Automatic Exposure Control — 자동 노출 제어 |
+| **AEC** | Auto Exposure Control — 자동 노출 제어 |
 | **DAP** | Dose Area Product — 선량 면적 적산값 |
 | **kVp** | 킬로볼트 피크 (peak kilovoltage) — X선관 전압 |
 | **mAs** | 밀리암페어초 — X선 노출량 단위 |
@@ -400,7 +400,7 @@ HnVue Console SW는 의료 방사선사 또는 방사선과 의사가 의료용 
 | HAZ ID | 위험 범주 | 위험 요인 | 위험 상황 | 잠재적 위해 | 초기 심각도 (S) | 초기 확률 (P) | 초기 위험 수준 |
 |--------|----------|----------|----------|------------|--------------|-------------|-------------|
 | **HAZ-RAD-001** | 방사선 과피폭 (Radiation Overexposure) | SW가 잘못된 kVp/mAs 값을 Generator에 전송 | 입력 파라미터 범위 초과 값이 검증 없이 Generator에 전달됨 | 환자 과다 방사선 피폭 (방사선 피부염, 백내장 위험) | S4 | P3 | 🔴 수용 불가 |
-| **HAZ-RAD-002** | 방사선 과피폭 | AEC (Automatic Exposure Control) 제어 실패 | SW 오류로 AEC 신호 무시 → 연속 노출 | 환자/방사선사 과다 방사선 피폭 (방사선 증후군) | S5 | P2 | 🔴 수용 불가 |
+| **HAZ-RAD-002** | 방사선 과피폭 | AEC(Auto Exposure Control) 제어 실패 | SW 오류로 AEC 신호 무시 → 연속 노출 | 환자/방사선사 과다 방사선 피폭(방사선 증후군) | S5 | P2 | 🔴 수용 불가 |
 | **HAZ-RAD-003** | 방사선 과피폭 | 촬영 프로토콜 데이터베이스 손상 | 손상된 프로토콜로 비정상 고선량 설정 적용 | 환자 과다 방사선 피폭 | S4 | P2 | 🟡 ALARP |
 | **HAZ-RAD-004** | 방사선 불필요 피폭 | AEC가 없는 수동 촬영 시 선량 경고 미표시 | 과도한 선량 설정 시 사용자에게 경고 미제공 | 불필요한 방사선 피폭 | S3 | P3 | 🟡 ALARP |
 | **HAZ-SW-001** | SW 오류 (SW Error) | 환자 데이터 혼동 (Wrong Patient) | HIS/RIS 연동 오류로 잘못된 환자 정보 로드 | 오진단, 치료 지연, 잘못된 환자에 방사선 피폭 | S4 | P3 | 🔴 수용 불가 |
@@ -965,9 +965,9 @@ graph TD
 | 약어 | 원어 | 한국어 |
 |------|------|--------|
 | **ACK** | Acknowledgement | 확인 응답 |
-| **AEC** | Automatic Exposure Control | 자동 노출 제어 |
+| **AEC** | Auto Exposure Control | 자동 노출 제어 |
 | **ALARP** | As Low As Reasonably Practicable | 합리적으로 가능한 수준까지 낮춤 |
-| **CAPA** | Corrective and Preventive Action | 시정 및 예방 조치 |
+| **CAPA** | Corrective and Preventive Action | 시정 및 예방 조치(CAPA) |
 | **CRC** | Cyclic Redundancy Check | 순환 중복 검사 |
 | **DAP** | Dose Area Product | 선량 면적 적산값 |
 | **DHF** | Design History File | 설계 이력 파일 |

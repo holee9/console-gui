@@ -12,8 +12,8 @@
 | **버전** | v1.0 |
 | **작성일** | 2026-03-18 |
 | **작성자** | DICOM 엔지니어링 팀 |
-| **기준 규격** | DICOM PS3.2 (Conformance), NEMA PS3.1-PS3.20, IHE RAD TF |
-| **상태** | 승인됨 (Approved) |
+| **기준 규격** | DICOM PS3.2(Conformance), NEMA PS3.1-PS3.20, IHE RAD TF |
+| **상태** | 승인됨(Approved) |
 
 ### 개정 이력
 
