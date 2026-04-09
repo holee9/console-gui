@@ -4,136 +4,151 @@ using Xunit;
 
 namespace HnVue.Detector.Tests;
 
-/// <summary>
-/// Tests for OwnDetectorConfig record — validates construction, defaults, and immutability.
-/// SWR-WF-032: OwnDetectorConfig must provide sane defaults for the 자사 FPD detector.
-/// </summary>
-[Trait("SWR", "SWR-WF-032")]
+[Trait("SWR", "SWR-DET-010")]
 public sealed class OwnDetectorConfigTests
 {
-    // ── Construction with defaults ─────────────────────────────────────────────
+    // ── Constructor validation ───────────────────────────────────────────────────
 
     [Fact]
-    public void Constructor_WithHostOnly_UsesDefaultPort8888()
+    public void Constructor_NullHost_CreatesConfigWithNullHost()
+    {
+        // Records do not validate constructor parameters — null Host is accepted
+        var config = new OwnDetectorConfig(null!);
+
+        config.Host.Should().BeNull();
+    }
+
+    [Fact]
+    public void Constructor_EmptyHost_CreatesConfigWithEmptyHost()
+    {
+        var config = new OwnDetectorConfig(string.Empty);
+
+        config.Host.Should().BeEmpty();
+    }
+
+    // ── Property values ──────────────────────────────────────────────────────────
+
+    [Fact]
+    public void Constructor_WithHostOnly_SetsDefaultValues()
     {
         var config = new OwnDetectorConfig("192.168.1.100");
 
+        config.Host.Should().Be("192.168.1.100");
         config.Port.Should().Be(8888);
-    }
-
-    [Fact]
-    public void Constructor_WithHostOnly_UsesDefaultReadoutTimeout5000()
-    {
-        var config = new OwnDetectorConfig("192.168.1.100");
-
         config.ReadoutTimeoutMs.Should().Be(5000);
-    }
-
-    [Fact]
-    public void Constructor_WithHostOnly_UsesDefaultArmTimeout2000()
-    {
-        var config = new OwnDetectorConfig("192.168.1.100");
-
         config.ArmTimeoutMs.Should().Be(2000);
-    }
-
-    [Fact]
-    public void Constructor_WithHostOnly_CalibrationPathIsNull()
-    {
-        var config = new OwnDetectorConfig("192.168.1.100");
-
         config.CalibrationPath.Should().BeNull();
+        config.BitsPerPixel.Should().Be(14);
     }
 
     [Fact]
-    public void Constructor_WithHostOnly_UsesDefaultBitsPerPixel14()
+    public void Constructor_WithAllParameters_SetsCorrectValues()
+    {
+        var config = new OwnDetectorConfig(
+            Host: "10.0.0.1",
+            Port: 9000,
+            ReadoutTimeoutMs: 3000,
+            ArmTimeoutMs: 1500,
+            CalibrationPath: @"C:\HnVue\Calibration\SN001",
+            BitsPerPixel: 16);
+
+        config.Host.Should().Be("10.0.0.1");
+        config.Port.Should().Be(9000);
+        config.ReadoutTimeoutMs.Should().Be(3000);
+        config.ArmTimeoutMs.Should().Be(1500);
+        config.CalibrationPath.Should().Be(@"C:\HnVue\Calibration\SN001");
+        config.BitsPerPixel.Should().Be(16);
+    }
+
+    [Fact]
+    public void Constructor_CustomPort_SetsCorrectPort()
+    {
+        var config = new OwnDetectorConfig("192.168.1.100", Port: 7777);
+
+        config.Port.Should().Be(7777);
+    }
+
+    [Fact]
+    public void Constructor_WithCalibrationPath_SetsPath()
+    {
+        var config = new OwnDetectorConfig("192.168.1.100", CalibrationPath: "/data/cal");
+
+        config.CalibrationPath.Should().Be("/data/cal");
+    }
+
+    // ── Record equality ──────────────────────────────────────────────────────────
+
+    [Fact]
+    public void Equality_SameValues_AreEqual()
+    {
+        var a = new OwnDetectorConfig("192.168.1.100");
+        var b = new OwnDetectorConfig("192.168.1.100");
+
+        a.Should().Be(b);
+        a.GetHashCode().Should().Be(b.GetHashCode());
+    }
+
+    [Fact]
+    public void Equality_DifferentHost_AreNotEqual()
+    {
+        var a = new OwnDetectorConfig("192.168.1.100");
+        var b = new OwnDetectorConfig("192.168.1.101");
+
+        a.Should().NotBe(b);
+    }
+
+    [Fact]
+    public void Equality_DifferentPort_AreNotEqual()
+    {
+        var a = new OwnDetectorConfig("192.168.1.100", Port: 8888);
+        var b = new OwnDetectorConfig("192.168.1.100", Port: 9999);
+
+        a.Should().NotBe(b);
+    }
+
+    [Fact]
+    public void Equality_DifferentCalibrationPath_AreNotEqual()
+    {
+        var a = new OwnDetectorConfig("192.168.1.100", CalibrationPath: "/a");
+        var b = new OwnDetectorConfig("192.168.1.100", CalibrationPath: "/b");
+
+        a.Should().NotBe(b);
+    }
+
+    [Fact]
+    public void Equality_DifferentBitsPerPixel_AreNotEqual()
+    {
+        var a = new OwnDetectorConfig("192.168.1.100", BitsPerPixel: 14);
+        var b = new OwnDetectorConfig("192.168.1.100", BitsPerPixel: 16);
+
+        a.Should().NotBe(b);
+    }
+
+    // ── Inheritance from DetectorConfig ──────────────────────────────────────────
+
+    [Fact]
+    public void OwnDetectorConfig_IsSubclassOf_DetectorConfig()
+    {
+        typeof(OwnDetectorConfig).IsSubclassOf(typeof(DetectorConfig))
+            .Should().BeTrue();
+    }
+
+    [Fact]
+    public void OwnDetectorConfig_CanBeAssignedTo_DetectorConfig()
+    {
+        DetectorConfig baseConfig = new OwnDetectorConfig("192.168.1.100");
+
+        baseConfig.Host.Should().Be("192.168.1.100");
+        baseConfig.Port.Should().Be(8888);
+    }
+
+    // ── Default BitsPerPixel for CsI panel ───────────────────────────────────────
+
+    [Fact]
+    public void DefaultBitsPerPixel_Is14_ForCsiPanel()
     {
         var config = new OwnDetectorConfig("192.168.1.100");
 
         config.BitsPerPixel.Should().Be(14);
-    }
-
-    // ── Construction with explicit values ─────────────────────────────────────
-
-    [Fact]
-    public void Constructor_WithAllParameters_StoresAllValues()
-    {
-        var config = new OwnDetectorConfig(
-            Host: "10.0.0.50",
-            Port: 9999,
-            ReadoutTimeoutMs: 3000,
-            ArmTimeoutMs: 1000,
-            CalibrationPath: @"C:\HnVue\Calibration\SN12345\",
-            BitsPerPixel: 12);
-
-        config.Host.Should().Be("10.0.0.50");
-        config.Port.Should().Be(9999);
-        config.ReadoutTimeoutMs.Should().Be(3000);
-        config.ArmTimeoutMs.Should().Be(1000);
-        config.CalibrationPath.Should().Be(@"C:\HnVue\Calibration\SN12345\");
-        config.BitsPerPixel.Should().Be(12);
-    }
-
-    // ── Record equality ────────────────────────────────────────────────────────
-
-    [Fact]
-    public void TwoConfigsWithSameValues_AreEqual()
-    {
-        var config1 = new OwnDetectorConfig("192.168.1.100", BitsPerPixel: 14);
-        var config2 = new OwnDetectorConfig("192.168.1.100", BitsPerPixel: 14);
-
-        config1.Should().Be(config2);
-    }
-
-    [Fact]
-    public void TwoConfigsWithDifferentHosts_AreNotEqual()
-    {
-        var config1 = new OwnDetectorConfig("192.168.1.100");
-        var config2 = new OwnDetectorConfig("192.168.1.200");
-
-        config1.Should().NotBe(config2);
-    }
-
-    // ── Immutability (with expression) ─────────────────────────────────────────
-
-    [Fact]
-    public void WithExpression_ProducesNewRecordWithChangedField()
-    {
-        var original = new OwnDetectorConfig("192.168.1.100");
-        var modified = original with { Port = 12345 };
-
-        modified.Port.Should().Be(12345);
-        original.Port.Should().Be(8888);
-    }
-
-    [Fact]
-    public void WithExpression_CalibrationPath_UpdatesOnly()
-    {
-        var original = new OwnDetectorConfig("192.168.1.100");
-        var modified = original with { CalibrationPath = @"C:\Cal\" };
-
-        modified.CalibrationPath.Should().Be(@"C:\Cal\");
-        original.CalibrationPath.Should().BeNull();
-    }
-
-    // ── Inheritance from DetectorConfig ───────────────────────────────────────
-
-    [Fact]
-    public void OwnDetectorConfig_IsDetectorConfig()
-    {
-        var config = new OwnDetectorConfig("192.168.1.100");
-
-        config.Should().BeAssignableTo<DetectorConfig>();
-    }
-
-    [Theory]
-    [InlineData("localhost")]
-    [InlineData("192.168.0.1")]
-    [InlineData("detector.local")]
-    public void Constructor_VariousHosts_StoresHostCorrectly(string host)
-    {
-        var config = new OwnDetectorConfig(host);
-
-        config.Host.Should().Be(host);
     }
 }

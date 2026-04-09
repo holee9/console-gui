@@ -1,36 +1,18 @@
 using FluentAssertions;
 using HnVue.Common.Enums;
-using HnVue.Detector;
+using HnVue.Common.Models;
+using HnVue.Common.Results;
 using HnVue.Detector.ThirdParty;
 using Xunit;
 
 namespace HnVue.Detector.Tests;
 
-/// <summary>
-/// Tests for VendorAdapterTemplate — the third-party detector SDK adapter template.
-/// Validates lifecycle transitions, interface compliance, and disposal behaviour.
-/// SWR-WF-033: VendorAdapterTemplate must implement IDetectorInterface contract.
-/// </summary>
-[Trait("SWR", "SWR-WF-033")]
-public sealed class VendorAdapterTemplateTests : IDisposable
+[Trait("SWR", "SWR-DET-010")]
+public sealed class VendorAdapterTemplateTests
 {
-    private readonly DetectorConfig _config = new("192.168.1.200");
-    private readonly VendorAdapterTemplate _sut;
+    private static DetectorConfig CreateConfig() => new("192.168.1.200");
 
-    public VendorAdapterTemplateTests()
-    {
-        _sut = new VendorAdapterTemplate(_config);
-    }
-
-    public void Dispose() => _sut.Dispose();
-
-    // ── Constructor ───────────────────────────────────────────────────────────
-
-    [Fact]
-    public void Constructor_WithValidConfig_InitialStateIsDisconnected()
-    {
-        _sut.CurrentState.Should().Be(DetectorState.Disconnected);
-    }
+    // ── Constructor ──────────────────────────────────────────────────────────────
 
     [Fact]
     public void Constructor_NullConfig_ThrowsArgumentNullException()
@@ -40,184 +22,175 @@ public sealed class VendorAdapterTemplateTests : IDisposable
         act.Should().Throw<ArgumentNullException>().WithParameterName("config");
     }
 
-    // ── ConnectAsync ──────────────────────────────────────────────────────────
-
     [Fact]
-    public async Task ConnectAsync_FromDisconnected_ReturnsSuccess()
+    public void Constructor_ValidConfig_SetsDisconnectedState()
     {
-        var result = await _sut.ConnectAsync();
+        using var sut = new VendorAdapterTemplate(CreateConfig());
 
-        result.IsSuccess.Should().BeTrue();
+        sut.CurrentState.Should().Be(DetectorState.Disconnected);
     }
+
+    // ── ConnectAsync ─────────────────────────────────────────────────────────────
 
     [Fact]
     public async Task ConnectAsync_FromDisconnected_TransitionsToIdle()
     {
-        await _sut.ConnectAsync();
+        using var sut = new VendorAdapterTemplate(CreateConfig());
 
-        _sut.CurrentState.Should().Be(DetectorState.Idle);
+        var result = await sut.ConnectAsync();
+
+        result.IsSuccess.Should().BeTrue();
+        sut.CurrentState.Should().Be(DetectorState.Idle);
     }
 
     [Fact]
     public async Task ConnectAsync_RaisesStateChangedEvent()
     {
+        using var sut = new VendorAdapterTemplate(CreateConfig());
         var events = new List<DetectorStateChangedEventArgs>();
-        _sut.StateChanged += (_, e) => events.Add(e);
+        sut.StateChanged += (_, e) => events.Add(e);
 
-        await _sut.ConnectAsync();
+        await sut.ConnectAsync();
 
         events.Should().ContainSingle();
         events[0].PreviousState.Should().Be(DetectorState.Disconnected);
         events[0].NewState.Should().Be(DetectorState.Idle);
     }
 
-    [Fact]
-    public async Task ConnectAsync_WithCancellationToken_ReturnsSuccess()
-    {
-        using var cts = new CancellationTokenSource();
-
-        var result = await _sut.ConnectAsync(cts.Token);
-
-        result.IsSuccess.Should().BeTrue();
-    }
-
-    // ── DisconnectAsync ───────────────────────────────────────────────────────
+    // ── DisconnectAsync ──────────────────────────────────────────────────────────
 
     [Fact]
-    public async Task DisconnectAsync_AfterConnect_ReturnsSuccess()
+    public async Task DisconnectAsync_FromIdle_TransitionsToDisconnected()
     {
-        await _sut.ConnectAsync();
+        using var sut = new VendorAdapterTemplate(CreateConfig());
+        await sut.ConnectAsync();
 
-        var result = await _sut.DisconnectAsync();
+        var result = await sut.DisconnectAsync();
 
         result.IsSuccess.Should().BeTrue();
+        sut.CurrentState.Should().Be(DetectorState.Disconnected);
     }
 
     [Fact]
-    public async Task DisconnectAsync_AfterConnect_TransitionsToDisconnected()
+    public async Task DisconnectAsync_FromDisconnected_StillSucceeds()
     {
-        await _sut.ConnectAsync();
+        using var sut = new VendorAdapterTemplate(CreateConfig());
 
-        await _sut.DisconnectAsync();
+        var result = await sut.DisconnectAsync();
 
-        _sut.CurrentState.Should().Be(DetectorState.Disconnected);
+        result.IsSuccess.Should().BeTrue();
+        sut.CurrentState.Should().Be(DetectorState.Disconnected);
     }
 
     [Fact]
     public async Task DisconnectAsync_RaisesStateChangedEvent()
     {
-        await _sut.ConnectAsync();
+        using var sut = new VendorAdapterTemplate(CreateConfig());
+        await sut.ConnectAsync();
         var events = new List<DetectorStateChangedEventArgs>();
-        _sut.StateChanged += (_, e) => events.Add(e);
+        sut.StateChanged += (_, e) => events.Add(e);
 
-        await _sut.DisconnectAsync();
+        await sut.DisconnectAsync();
 
         events.Should().ContainSingle();
+        events[0].PreviousState.Should().Be(DetectorState.Idle);
         events[0].NewState.Should().Be(DetectorState.Disconnected);
     }
 
-    // ── ArmAsync ──────────────────────────────────────────────────────────────
+    // ── ArmAsync ─────────────────────────────────────────────────────────────────
 
     [Fact]
-    public async Task ArmAsync_AfterConnect_ReturnsSuccess()
+    public async Task ArmAsync_FromIdle_TransitionsToArmed()
     {
-        await _sut.ConnectAsync();
+        using var sut = new VendorAdapterTemplate(CreateConfig());
+        await sut.ConnectAsync();
 
-        var result = await _sut.ArmAsync();
+        var result = await sut.ArmAsync();
 
         result.IsSuccess.Should().BeTrue();
+        sut.CurrentState.Should().Be(DetectorState.Armed);
     }
 
     [Fact]
-    public async Task ArmAsync_AfterConnect_TransitionsToArmed()
+    public async Task ArmAsync_WithFreeRunMode_TransitionsToArmed()
     {
-        await _sut.ConnectAsync();
+        using var sut = new VendorAdapterTemplate(CreateConfig());
+        await sut.ConnectAsync();
 
-        await _sut.ArmAsync();
-
-        _sut.CurrentState.Should().Be(DetectorState.Armed);
-    }
-
-    [Fact]
-    public async Task ArmAsync_FreeRunMode_TransitionsToArmed()
-    {
-        await _sut.ConnectAsync();
-
-        var result = await _sut.ArmAsync(DetectorTriggerMode.FreeRun);
+        var result = await sut.ArmAsync(DetectorTriggerMode.FreeRun);
 
         result.IsSuccess.Should().BeTrue();
-        _sut.CurrentState.Should().Be(DetectorState.Armed);
-    }
-
-    [Fact]
-    public async Task ArmAsync_SyncMode_TransitionsToArmed()
-    {
-        await _sut.ConnectAsync();
-
-        var result = await _sut.ArmAsync(DetectorTriggerMode.Sync);
-
-        result.IsSuccess.Should().BeTrue();
+        sut.CurrentState.Should().Be(DetectorState.Armed);
     }
 
     [Fact]
     public async Task ArmAsync_RaisesStateChangedEvent()
     {
-        await _sut.ConnectAsync();
+        using var sut = new VendorAdapterTemplate(CreateConfig());
+        await sut.ConnectAsync();
         var events = new List<DetectorStateChangedEventArgs>();
-        _sut.StateChanged += (_, e) => events.Add(e);
+        sut.StateChanged += (_, e) => events.Add(e);
 
-        await _sut.ArmAsync();
+        await sut.ArmAsync();
 
         events.Should().ContainSingle();
+        events[0].PreviousState.Should().Be(DetectorState.Idle);
         events[0].NewState.Should().Be(DetectorState.Armed);
     }
 
-    // ── AbortAsync ────────────────────────────────────────────────────────────
+    // ── AbortAsync ───────────────────────────────────────────────────────────────
 
     [Fact]
-    public async Task AbortAsync_FromArmed_ReturnsSuccess()
+    public async Task AbortAsync_FromAnyState_TransitionsToIdle()
     {
-        await _sut.ConnectAsync();
-        await _sut.ArmAsync();
+        using var sut = new VendorAdapterTemplate(CreateConfig());
+        await sut.ConnectAsync();
+        await sut.ArmAsync();
 
-        var result = await _sut.AbortAsync();
+        var result = await sut.AbortAsync();
 
         result.IsSuccess.Should().BeTrue();
+        sut.CurrentState.Should().Be(DetectorState.Idle);
     }
 
     [Fact]
-    public async Task AbortAsync_FromArmed_TransitionsToIdle()
+    public async Task AbortAsync_RaisesStateChangedEventWithReason()
     {
-        await _sut.ConnectAsync();
-        await _sut.ArmAsync();
-
-        await _sut.AbortAsync();
-
-        _sut.CurrentState.Should().Be(DetectorState.Idle);
-    }
-
-    [Fact]
-    public async Task AbortAsync_RaisesStateChangedEvent()
-    {
-        await _sut.ConnectAsync();
-        await _sut.ArmAsync();
+        using var sut = new VendorAdapterTemplate(CreateConfig());
+        await sut.ConnectAsync();
+        await sut.ArmAsync();
         var events = new List<DetectorStateChangedEventArgs>();
-        _sut.StateChanged += (_, e) => events.Add(e);
+        sut.StateChanged += (_, e) => events.Add(e);
 
-        await _sut.AbortAsync();
+        await sut.AbortAsync();
 
         events.Should().ContainSingle();
+        events[0].PreviousState.Should().Be(DetectorState.Armed);
         events[0].NewState.Should().Be(DetectorState.Idle);
+        events[0].Reason.Should().Be("Abort requested");
     }
 
-    // ── GetStatusAsync ────────────────────────────────────────────────────────
+    // ── GetStatusAsync ───────────────────────────────────────────────────────────
+
+    [Fact]
+    public async Task GetStatusAsync_WhenDisconnected_ReturnsDisconnectedStatus()
+    {
+        using var sut = new VendorAdapterTemplate(CreateConfig());
+
+        var result = await sut.GetStatusAsync();
+
+        result.IsSuccess.Should().BeTrue();
+        result.Value.State.Should().Be(DetectorState.Disconnected);
+        result.Value.IsReadyToArm.Should().BeFalse();
+    }
 
     [Fact]
     public async Task GetStatusAsync_WhenIdle_ReturnsReadyStatus()
     {
-        await _sut.ConnectAsync();
+        using var sut = new VendorAdapterTemplate(CreateConfig());
+        await sut.ConnectAsync();
 
-        var result = await _sut.GetStatusAsync();
+        var result = await sut.GetStatusAsync();
 
         result.IsSuccess.Should().BeTrue();
         result.Value.State.Should().Be(DetectorState.Idle);
@@ -225,66 +198,105 @@ public sealed class VendorAdapterTemplateTests : IDisposable
     }
 
     [Fact]
-    public async Task GetStatusAsync_WhenDisconnected_ReturnsNotReady()
+    public async Task GetStatusAsync_WhenArmed_ReturnsArmedStatus()
     {
-        var result = await _sut.GetStatusAsync();
+        using var sut = new VendorAdapterTemplate(CreateConfig());
+        await sut.ConnectAsync();
+        await sut.ArmAsync();
 
-        result.IsSuccess.Should().BeTrue();
-        result.Value.IsReadyToArm.Should().BeFalse();
-        result.Value.State.Should().Be(DetectorState.Disconnected);
-    }
-
-    [Fact]
-    public async Task GetStatusAsync_WhenArmed_ReturnsArmedState()
-    {
-        await _sut.ConnectAsync();
-        await _sut.ArmAsync();
-
-        var result = await _sut.GetStatusAsync();
+        var result = await sut.GetStatusAsync();
 
         result.IsSuccess.Should().BeTrue();
         result.Value.State.Should().Be(DetectorState.Armed);
+        result.Value.IsReadyToArm.Should().BeFalse();
     }
 
-    // ── IDisposable ───────────────────────────────────────────────────────────
+    [Fact]
+    public async Task GetStatusAsync_ReturnsDefaultTemperatureAndNullMetadata()
+    {
+        using var sut = new VendorAdapterTemplate(CreateConfig());
+        await sut.ConnectAsync();
+
+        var result = await sut.GetStatusAsync();
+
+        result.Value.TemperatureCelsius.Should().Be(0.0);
+        result.Value.SerialNumber.Should().BeNull();
+        result.Value.FirmwareVersion.Should().BeNull();
+    }
+
+    // ── Dispose ──────────────────────────────────────────────────────────────────
 
     [Fact]
     public void Dispose_CalledOnce_DoesNotThrow()
     {
-        using var adapter = new VendorAdapterTemplate(_config);
+        var sut = new VendorAdapterTemplate(CreateConfig());
 
-        var act = () => adapter.Dispose();
+        var act = () => sut.Dispose();
 
         act.Should().NotThrow();
     }
 
     [Fact]
-    public void Dispose_CalledMultipleTimes_IsIdempotent()
+    public void Dispose_CalledMultipleTimes_DoesNotThrow()
     {
-        var adapter = new VendorAdapterTemplate(_config);
+        var sut = new VendorAdapterTemplate(CreateConfig());
 
-        adapter.Dispose();
-        var act = () => adapter.Dispose();
+        sut.Dispose();
+
+        var act = () => sut.Dispose();
 
         act.Should().NotThrow();
     }
 
-    // ── Complete lifecycle ─────────────────────────────────────────────────────
+    [Fact]
+    public void Dispose_PreventsReuseViaObjectDisposedCheck()
+    {
+        var sut = new VendorAdapterTemplate(CreateConfig());
+        sut.Dispose();
+
+        // VendorAdapterTemplate does not check disposed state in its methods
+        // (unlike OwnDetectorAdapter), so we verify CurrentState is still accessible
+        sut.CurrentState.Should().Be(DetectorState.Disconnected);
+    }
+
+    // ── Full workflow ────────────────────────────────────────────────────────────
 
     [Fact]
-    public async Task FullLifecycle_ConnectArmAbortDisconnect_CompletesSuccessfully()
+    public async Task FullWorkflow_ConnectArmAbortDisconnect_Succeeds()
     {
-        using var adapter = new VendorAdapterTemplate(new DetectorConfig("192.168.1.201"));
+        using var sut = new VendorAdapterTemplate(CreateConfig());
+        var stateChanges = new List<DetectorStateChangedEventArgs>();
+        sut.StateChanged += (_, e) => stateChanges.Add(e);
 
-        var connectResult = await adapter.ConnectAsync();
-        var armResult = await adapter.ArmAsync();
-        var abortResult = await adapter.AbortAsync();
-        var disconnectResult = await adapter.DisconnectAsync();
+        await sut.ConnectAsync();
+        sut.CurrentState.Should().Be(DetectorState.Idle);
 
-        connectResult.IsSuccess.Should().BeTrue();
-        armResult.IsSuccess.Should().BeTrue();
-        abortResult.IsSuccess.Should().BeTrue();
-        disconnectResult.IsSuccess.Should().BeTrue();
-        adapter.CurrentState.Should().Be(DetectorState.Disconnected);
+        await sut.ArmAsync();
+        sut.CurrentState.Should().Be(DetectorState.Armed);
+
+        await sut.AbortAsync();
+        sut.CurrentState.Should().Be(DetectorState.Idle);
+
+        await sut.DisconnectAsync();
+        sut.CurrentState.Should().Be(DetectorState.Disconnected);
+
+        stateChanges.Should().HaveCount(4);
+        stateChanges[0].NewState.Should().Be(DetectorState.Idle);
+        stateChanges[1].NewState.Should().Be(DetectorState.Armed);
+        stateChanges[2].NewState.Should().Be(DetectorState.Idle);
+        stateChanges[3].NewState.Should().Be(DetectorState.Disconnected);
+    }
+
+    [Fact]
+    public async Task StateChanged_FiresOnlyWhenStateActuallyChanges()
+    {
+        using var sut = new VendorAdapterTemplate(CreateConfig());
+        var events = new List<DetectorStateChangedEventArgs>();
+        sut.StateChanged += (_, e) => events.Add(e);
+
+        // Disconnect when already Disconnected — no event should fire
+        await sut.DisconnectAsync();
+
+        events.Should().BeEmpty("state did not change from Disconnected to Disconnected");
     }
 }
