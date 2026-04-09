@@ -12,15 +12,35 @@ namespace HnVue.SystemAdmin;
 /// </summary>
 public sealed class SystemSettingsRepository : ISystemSettingsRepository
 {
-    private static readonly string StorePath = Path.Combine(
+    private static readonly string DefaultStorePath = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
         "HnVue",
         "settings.json");
+
+    private readonly string _storePath;
 
     private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web)
     {
         WriteIndented = true,
     };
+
+    /// <summary>
+    /// Initialises a new instance using the default AppData storage path.
+    /// </summary>
+    public SystemSettingsRepository()
+        : this(DefaultStorePath)
+    {
+    }
+
+    /// <summary>
+    /// Initialises a new instance with an explicit storage path. Used for testing.
+    /// </summary>
+    /// <param name="storePath">Full path to the settings JSON file.</param>
+    internal SystemSettingsRepository(string storePath)
+    {
+        ArgumentNullException.ThrowIfNull(storePath);
+        _storePath = storePath;
+    }
 
     /// <inheritdoc/>
     /// <remarks>SWR-DA-030: System settings must be loaded at application startup.</remarks>
@@ -28,10 +48,10 @@ public sealed class SystemSettingsRepository : ISystemSettingsRepository
     {
         try
         {
-            if (!File.Exists(StorePath))
+            if (!File.Exists(_storePath))
                 return Result.Success(new SystemSettings());
 
-            await using var stream = File.OpenRead(StorePath);
+            await using var stream = File.OpenRead(_storePath);
             var settings = await JsonSerializer
                 .DeserializeAsync<SystemSettings>(stream, JsonOptions, cancellationToken)
                 .ConfigureAwait(false);
@@ -57,11 +77,11 @@ public sealed class SystemSettingsRepository : ISystemSettingsRepository
 
         try
         {
-            var dir = Path.GetDirectoryName(StorePath)!;
+            var dir = Path.GetDirectoryName(_storePath)!;
             Directory.CreateDirectory(dir);
 
             // Write to temp file first, then replace to avoid partial writes.
-            var tempPath = StorePath + ".tmp";
+            var tempPath = _storePath + ".tmp";
             await using (var stream = File.Create(tempPath))
             {
                 await JsonSerializer
@@ -69,7 +89,7 @@ public sealed class SystemSettingsRepository : ISystemSettingsRepository
                     .ConfigureAwait(false);
             }
 
-            File.Move(tempPath, StorePath, overwrite: true);
+            File.Move(tempPath, _storePath, overwrite: true);
             return Result.Success();
         }
         catch (OperationCanceledException)
