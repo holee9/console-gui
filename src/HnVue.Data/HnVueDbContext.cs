@@ -29,6 +29,9 @@ public sealed class HnVueDbContext(DbContextOptions<HnVueDbContext> options) : D
     /// <summary>Gets the tamper-evident audit log entries.</summary>
     public DbSet<AuditLogEntity> AuditLogs => Set<AuditLogEntity>();
 
+    /// <summary>Gets the software update installation history records.</summary>
+    public DbSet<UpdateHistoryEntity> UpdateHistories => Set<UpdateHistoryEntity>();
+
     /// <inheritdoc/>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -39,6 +42,8 @@ public sealed class HnVueDbContext(DbContextOptions<HnVueDbContext> options) : D
         {
             e.HasKey(p => p.PatientId);
             e.HasIndex(p => p.Name);
+            // REQ-DATA-003: Composite index on (Name, IsDeleted) for search performance
+            e.HasIndex(p => new { p.Name, p.IsDeleted });
 
             // IEC 62304 / IEC 62133 data integrity: Restrict prevents accidental
             // deletion of audit-critical dose records when a patient record is removed.
@@ -54,6 +59,8 @@ public sealed class HnVueDbContext(DbContextOptions<HnVueDbContext> options) : D
         {
             e.HasKey(s => s.StudyInstanceUid);
             e.HasIndex(s => s.PatientId);
+            // REQ-DATA-003: Index on StudyDateTicks for date-based queries
+            e.HasIndex(s => s.StudyDateTicks);
 
             // Images are non-regulatory data; cascade is acceptable here.
             e.HasMany(s => s.Images)
@@ -82,6 +89,8 @@ public sealed class HnVueDbContext(DbContextOptions<HnVueDbContext> options) : D
         {
             e.HasKey(d => d.DoseId);
             e.HasIndex(d => d.StudyInstanceUid);
+            // REQ-DATA-003: Composite index on (StudyInstanceUid, RecordedAtTicks) for dose queries
+            e.HasIndex(d => new { d.StudyInstanceUid, d.RecordedAtTicks });
         });
 
         // ── UserEntity ─────────────────────────────────────────────────────────
@@ -97,6 +106,15 @@ public sealed class HnVueDbContext(DbContextOptions<HnVueDbContext> options) : D
             e.HasKey(a => a.EntryId);
             e.HasIndex(a => a.TimestampTicks);
             e.HasIndex(a => a.UserId);
+        });
+
+        // ── UpdateHistoryEntity ─────────────────────────────────────────────────
+        modelBuilder.Entity<UpdateHistoryEntity>(e =>
+        {
+            e.HasKey(u => u.UpdateId);
+            e.HasIndex(u => u.Timestamp);
+            e.HasIndex(u => u.FromVersion);
+            e.HasIndex(u => u.ToVersion);
         });
     }
 }

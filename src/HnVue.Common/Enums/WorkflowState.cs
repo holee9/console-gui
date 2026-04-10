@@ -1,5 +1,6 @@
 namespace HnVue.Common.Enums;
 
+// @MX:ANCHOR WorkflowState enum - @MX:REASON: 9-state acquisition FSM, IEC 62304 safety interlock foundation, 25+ consumers
 /// <summary>
 /// Represents the state of a single acquisition workflow session.
 /// Transitions are enforced by <c>IWorkflowEngine</c>.

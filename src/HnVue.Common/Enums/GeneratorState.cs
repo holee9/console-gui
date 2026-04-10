@@ -1,5 +1,6 @@
 namespace HnVue.Common.Enums;
 
+// @MX:ANCHOR GeneratorState enum - @MX:REASON: 7-state generator hardware FSM, exposure sequencing, heat unit tracking
 /// <summary>
 /// Represents the operational state of the X-ray generator hardware.
 /// Reported by the generator driver and consumed by the workflow engine.

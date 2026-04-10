@@ -2,6 +2,7 @@ using HnVue.Common.Enums;
 
 namespace HnVue.Common.Models;
 
+// @MX:NOTE DetectorStatus record - FPD health report with temperature, serial number, firmware version
 /// <summary>Represents the current status reported by the flat-panel detector.</summary>
 public sealed record DetectorStatus
 {

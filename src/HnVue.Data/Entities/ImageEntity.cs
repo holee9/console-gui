@@ -2,6 +2,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HnVue.Data.Entities;
 
+// @MX:ANCHOR: [AUTO] ImageEntity - File path persistence for acquired X-ray images, regulatory traceability
+// @MX:REASON: Links raw detector data to DICOM study, IEC 62304 audit trail requirement
 /// <summary>
 /// EF Core entity that maps to the <c>Images</c> table.
 /// Stores the file path reference for acquired X-ray images.

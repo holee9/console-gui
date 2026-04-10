@@ -23,11 +23,17 @@ internal sealed class UpdateChecker
     /// <param name="options">Update configuration options.</param>
     /// <param name="httpClient">HTTP client used to contact the update server.</param>
     /// <param name="logger">Optional logger for diagnostic output.</param>
+    /// <exception cref="InvalidOperationException">
+    /// Thrown when UpdateServerUrl in options is null, empty, or uses HTTP instead of HTTPS.
+    /// </exception>
     public UpdateChecker(UpdateOptions options, HttpClient httpClient, ILogger<UpdateChecker>? logger = null)
     {
         _options = options;
         _httpClient = httpClient;
         _logger = logger;
+
+        // Validate URL scheme in constructor
+        options.Validate();
     }
 
     /// <summary>

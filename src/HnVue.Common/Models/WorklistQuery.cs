@@ -1,5 +1,6 @@
 namespace HnVue.Common.Models;
 
+// @MX:NOTE WorklistQuery record - IHE MWL C-FIND query parameters (PatientId/Date range/AeTitle)
 /// <summary>
 /// Defines the parameters for a DICOM Modality Worklist C-FIND query.
 /// </summary>

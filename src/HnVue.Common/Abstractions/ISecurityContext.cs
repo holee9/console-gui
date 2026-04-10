@@ -3,10 +3,18 @@ using HnVue.Common.Models;
 
 namespace HnVue.Common.Abstractions;
 
+// @MX:ANCHOR ISecurityContext - @MX:REASON: Singleton auth session state, 6 properties, thread-safe concurrent access pattern
 /// <summary>
 /// Provides access to the currently authenticated user within the application session.
 /// Registered as a singleton and updated by <c>ISecurityService</c> upon login and logout.
 /// </summary>
+/// <remarks>
+/// <para>Thread Safety: Implementations MUST be thread-safe for concurrent access.
+/// Multiple threads may read authentication state simultaneously while other threads
+/// call <see cref="SetCurrentUser"/> or <see cref="ClearCurrentUser"/>.</para>
+/// <para>The default implementation uses <see cref="System.Threading.ReaderWriterLockSlim"/>
+/// to allow concurrent reads while exclusive write access is granted for state changes.</para>
+/// </remarks>
 public interface ISecurityContext
 {
     /// <summary>Gets the unique identifier of the currently authenticated user, or <see langword="null"/>.</summary>

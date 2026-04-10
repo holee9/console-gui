@@ -1,5 +1,6 @@
 namespace HnVue.Common.Enums;
 
+// @MX:ANCHOR SafeState enum - @MX:REASON: 5-level system safety state, IEC 62304 interlock mapping (Idle/Warning/Degraded/Blocked/Emergency)
 /// <summary>
 /// Represents the system-wide safety state of the console application.
 /// Used by the workflow engine to enforce safety interlocks per IEC 62304.

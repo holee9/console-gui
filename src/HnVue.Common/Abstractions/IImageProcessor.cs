@@ -3,6 +3,7 @@ using HnVue.Common.Results;
 
 namespace HnVue.Common.Abstractions;
 
+// @MX:ANCHOR IImageProcessor - @MX:REASON: 17 image manipulation operations, clinical display pipeline, safety-critical calibration correction
 /// <summary>
 /// Defines image processing and interactive display manipulation operations.
 /// Implemented by the HnVue.Imaging module.

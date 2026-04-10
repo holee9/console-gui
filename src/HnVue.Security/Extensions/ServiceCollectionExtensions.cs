@@ -1,6 +1,8 @@
 using HnVue.Common.Abstractions;
+using HnVue.Common.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Logging;
 
 namespace HnVue.Security.Extensions;
 
@@ -34,18 +36,47 @@ public static class ServiceCollectionExtensions
             throw new InvalidOperationException(
                 "JWT SecretKey must be at least 32 characters. " +
                 "Set the 'Jwt:SecretKey' configuration key or 'HNVUE_JWT_SECRET' environment variable.");
+        if (opts.PreviousSecretKey is not null && opts.PreviousSecretKey.Length < 32)
+            throw new InvalidOperationException(
+                "JWT PreviousSecretKey, when set, must be at least 32 characters.");
         services.AddSingleton(opts);
         services.AddSingleton<JwtTokenService>();
 
-        // SWR-CS-077: Register in-memory token denylist for session revocation
-        var tokenDenylist = new InMemoryTokenDenylist(TimeSpan.FromMinutes(opts.ExpiryMinutes));
-        services.AddSingleton<ITokenDenylist>(tokenDenylist);
+        // SWR-CS-077: Register persistent token denylist for IEC 62304 compliance (survives restarts)
+        // REQ-SEC-003: Register with logger support for file corruption warnings
+        services.AddSingleton<ITokenDenylist>(sp =>
+        {
+            var logger = sp.GetService<ILogger<PersistentTokenDenylist>>();
+            return new PersistentTokenDenylist(TimeSpan.FromMinutes(opts.ExpiryMinutes), logger: logger);
+        });
 
         services.AddScoped<ISecurityService, SecurityService>();
 
         var audit = auditOptions ?? new AuditOptions();
         services.AddSingleton(Options.Create(audit));
         services.AddScoped<IAuditService, AuditService>();
+        return services;
+    }
+
+    /// <summary>
+    /// Registers <see cref="IPhiEncryptionService"/> for column-level PHI encryption (SWR-CS-080).
+    /// Requires <see cref="HnVueOptions.PhiEncryptionKey"/> to be configured.
+    /// </summary>
+    /// <param name="services">The service collection to add registrations to.</param>
+    /// <returns>The same <see cref="IServiceCollection"/> to allow chaining.</returns>
+    public static IServiceCollection AddPhiEncryption(this IServiceCollection services)
+    {
+        services.AddSingleton<IPhiEncryptionService>(sp =>
+        {
+            var hnvueOptions = sp.GetRequiredService<IOptions<HnVueOptions>>();
+            var keyBase64 = hnvueOptions.Value.PhiEncryptionKey;
+            if (string.IsNullOrEmpty(keyBase64))
+                throw new InvalidOperationException(
+                    "HnVue:PhiEncryptionKey must be configured for column-level PHI encryption (SWR-CS-080). " +
+                    "Set the 'HnVue:PhiEncryptionKey' configuration key or 'HNVUE_PHI_ENCRYPTION_KEY' environment variable.");
+            var key = Convert.FromBase64String(keyBase64);
+            return new PhiEncryptionService(key);
+        });
         return services;
     }
 }

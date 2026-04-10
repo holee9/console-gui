@@ -25,4 +25,11 @@ public sealed class JwtOptions
 
     /// <summary>Gets or sets the JWT audience claim value.</summary>
     public string Audience { get; set; } = "HnVue";
+
+    /// <summary>
+    /// Gets or sets the previous HMAC-SHA256 signing secret for key rotation.
+    /// When set, tokens signed with this key are also accepted during the transition period.
+    /// Set this to the old key when rotating <see cref="SecretKey"/> to a new value.
+    /// </summary>
+    public string? PreviousSecretKey { get; set; }
 }

@@ -1,5 +1,6 @@
 namespace HnVue.Common.Models;
 
+// @MX:NOTE SystemSettings - Root configuration aggregate with Dicom/Generator/Security nested classes
 /// <summary>
 /// Root settings object managed by <c>ISystemAdminService</c>.
 /// Aggregates all subsystem configuration into a single serialisable document.

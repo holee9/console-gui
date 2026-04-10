@@ -4,6 +4,7 @@ using HnVue.Common.Results;
 
 namespace HnVue.Common.Abstractions;
 
+// @MX:ANCHOR IGeneratorInterface - @MX:REASON: X-ray generator hardware abstraction, safety-critical exposure control, HAZ-RAD interlock
 /// <summary>
 /// Abstracts X-ray generator hardware communication.
 /// Implemented by GeneratorSerialPort (production RS-232) and GeneratorSimulator (development/test).

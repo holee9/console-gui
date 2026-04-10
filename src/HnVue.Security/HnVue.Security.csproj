@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
+    <!-- CA1848: Use LoggerMessage instead of LogWarning for hot paths. Not applicable here (load only). -->
+    <NoWarn>$(NoWarn);CA1848</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,6 +14,16 @@
     <PackageReference Include="Serilog" />
     <PackageReference Include="Serilog.Sinks.File" />
     <PackageReference Include="Microsoft.Extensions.Options" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>HnVue.Security.Tests</_Parameter1>
+    </AssemblyAttribute>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>HnVue.IntegrationTests</_Parameter1>
+    </AssemblyAttribute>
   </ItemGroup>
 
 </Project>

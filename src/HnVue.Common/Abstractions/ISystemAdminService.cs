@@ -3,6 +3,7 @@ using HnVue.Common.Results;
 
 namespace HnVue.Common.Abstractions;
 
+// @MX:ANCHOR ISystemAdminService - @MX:REASON: System settings persistence + audit export, admin-only operations
 /// <summary>
 /// Defines system administration operations: settings management and audit export.
 /// Implemented by the HnVue.SystemAdmin module.

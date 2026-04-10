@@ -3,6 +3,7 @@ using HnVue.Common.Results;
 
 namespace HnVue.Common.Abstractions;
 
+// @MX:ANCHOR IWorklistService - @MX:REASON: MWL polling + patient import bridge, IHE Radiology integration point
 /// <summary>
 /// Defines DICOM Modality Worklist (MWL) polling and patient-import operations.
 /// Implemented by the HnVue.PatientManagement module using <c>IDicomService</c> for transport.

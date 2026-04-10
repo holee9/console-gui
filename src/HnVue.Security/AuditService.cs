@@ -87,13 +87,13 @@ public sealed class AuditService : IAuditService
         {
             // Verify the PreviousHash links correctly to the prior entry.
             if (entry.PreviousHash != expectedPreviousHash)
-                return Result.Success(false);
+                return Result.Failure<bool>(ErrorCode.IncidentLogFailed, $"Audit chain integrity violation: previous hash mismatch at entry {entry.EntryId}");
 
             // Recompute the HMAC for this entry and compare to stored hash.
             var payload = BuildPayload(entry.EntryId, entry.Timestamp, entry.UserId, entry.Action, entry.Details, entry.PreviousHash);
             var recomputedHash = ComputeHmacInternal(payload, _hmacKey);
             if (!string.Equals(recomputedHash, entry.CurrentHash, StringComparison.Ordinal))
-                return Result.Success(false);
+                return Result.Failure<bool>(ErrorCode.IncidentLogFailed, $"Audit chain integrity violation: hash mismatch at entry {entry.EntryId}");
 
             expectedPreviousHash = entry.CurrentHash;
         }

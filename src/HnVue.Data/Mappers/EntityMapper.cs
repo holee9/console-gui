@@ -1,10 +1,13 @@
 using System.Globalization;
+using HnVue.Common.Abstractions;
 using HnVue.Common.Enums;
 using HnVue.Common.Models;
 using HnVue.Data.Entities;
 
 namespace HnVue.Data.Mappers;
 
+// @MX:ANCHOR: [AUTO] EntityMapper - Pure bidirectional mapping between entities and domain records, no side effects
+// @MX:REASON: Central mapping layer for all entity-to-domain conversions
 /// <summary>
 /// Provides static conversion methods between EF Core entities and HnVue.Common domain records.
 /// All methods are pure functions with no side effects.
@@ -26,6 +29,38 @@ internal static class EntityMapper
             CreatedAt: new DateTimeOffset(entity.CreatedAtTicks, TimeSpan.FromMinutes(entity.CreatedAtOffsetMinutes)),
             CreatedBy: entity.CreatedBy);
 
+    /// <summary>Converts a <see cref="PatientEntity"/> to a <see cref="PatientRecord"/> with PHI decryption.</summary>
+    /// <param name="entity">The entity to convert.</param>
+    /// <param name="encryptionService">Optional encryption service for PHI decryption (SWR-CS-080).</param>
+    internal static PatientRecord ToRecord(PatientEntity entity, IPhiEncryptionService? encryptionService)
+    {
+        var name = encryptionService is not null && !string.IsNullOrEmpty(entity.Name)
+            ? encryptionService.Decrypt(entity.Name)
+            : entity.Name;
+
+        DateOnly? dateOfBirth = null;
+        if (entity.DateOfBirth is not null)
+        {
+            var decryptedDob = encryptionService is not null
+                ? encryptionService.Decrypt(entity.DateOfBirth)
+                : entity.DateOfBirth;
+            dateOfBirth = DateOnly.ParseExact(decryptedDob, "yyyy-MM-dd");
+        }
+
+        var createdBy = encryptionService is not null && !string.IsNullOrEmpty(entity.CreatedBy)
+            ? encryptionService.Decrypt(entity.CreatedBy)
+            : entity.CreatedBy;
+
+        return new PatientRecord(
+            PatientId: entity.PatientId,
+            Name: name,
+            DateOfBirth: dateOfBirth,
+            Sex: entity.Sex,
+            IsEmergency: entity.IsEmergency,
+            CreatedAt: new DateTimeOffset(entity.CreatedAtTicks, TimeSpan.FromMinutes(entity.CreatedAtOffsetMinutes)),
+            CreatedBy: createdBy);
+    }
+
     /// <summary>Converts a <see cref="PatientRecord"/> to a <see cref="PatientEntity"/>.</summary>
     internal static PatientEntity ToEntity(PatientRecord record) =>
         new()
@@ -40,11 +75,68 @@ internal static class EntityMapper
             CreatedBy = record.CreatedBy,
         };
 
+    /// <summary>Converts a <see cref="PatientRecord"/> to a <see cref="PatientEntity"/> with PHI encryption.</summary>
+    /// <param name="record">The record to convert.</param>
+    /// <param name="encryptionService">Optional encryption service for PHI encryption (SWR-CS-080).</param>
+    internal static PatientEntity ToEntity(PatientRecord record, IPhiEncryptionService? encryptionService)
+    {
+        var name = encryptionService is not null && !string.IsNullOrEmpty(record.Name)
+            ? encryptionService.Encrypt(record.Name)
+            : record.Name;
+
+        string? dateOfBirth = null;
+        if (record.DateOfBirth.HasValue)
+        {
+            var dobString = record.DateOfBirth.Value.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+            dateOfBirth = encryptionService is not null ? encryptionService.Encrypt(dobString) : dobString;
+        }
+
+        var createdBy = encryptionService is not null && !string.IsNullOrEmpty(record.CreatedBy)
+            ? encryptionService.Encrypt(record.CreatedBy)
+            : record.CreatedBy;
+
+        return new PatientEntity
+        {
+            PatientId = record.PatientId,
+            Name = name,
+            DateOfBirth = dateOfBirth,
+            Sex = record.Sex,
+            IsEmergency = record.IsEmergency,
+            CreatedAtTicks = record.CreatedAt.UtcTicks,
+            CreatedAtOffsetMinutes = (int)record.CreatedAt.Offset.TotalMinutes,
+            CreatedBy = createdBy,
+        };
+    }
+
     /// <summary>Updates an existing <see cref="PatientEntity"/> from a <see cref="PatientRecord"/>.</summary>
     internal static void ApplyUpdate(PatientEntity entity, PatientRecord record)
     {
         entity.Name = record.Name;
         entity.DateOfBirth = record.DateOfBirth?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+        entity.Sex = record.Sex;
+        entity.IsEmergency = record.IsEmergency;
+    }
+
+    /// <summary>Updates an existing <see cref="PatientEntity"/> from a <see cref="PatientRecord"/> with PHI encryption.</summary>
+    /// <param name="entity">The entity to update.</param>
+    /// <param name="record">The record with new values.</param>
+    /// <param name="encryptionService">Optional encryption service for PHI encryption (SWR-CS-080).</param>
+    internal static void ApplyUpdate(PatientEntity entity, PatientRecord record, IPhiEncryptionService? encryptionService)
+    {
+        entity.Name = encryptionService is not null && !string.IsNullOrEmpty(record.Name)
+            ? encryptionService.Encrypt(record.Name)
+            : record.Name;
+
+        if (record.DateOfBirth.HasValue)
+        {
+            var dobString = record.DateOfBirth.Value.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+            entity.DateOfBirth = encryptionService is not null ? encryptionService.Encrypt(dobString) : dobString;
+        }
+        else
+        {
+            entity.DateOfBirth = null;
+        }
+
         entity.Sex = record.Sex;
         entity.IsEmergency = record.IsEmergency;
     }

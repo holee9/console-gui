@@ -1,5 +1,6 @@
 namespace HnVue.Common.Models;
 
+// @MX:NOTE RawDetectorImage record - FPD readout container, 16-bit little-endian pixel buffer, temperature metadata
 /// <summary>
 /// Carries raw pixel data delivered by the flat-panel detector after readout.
 /// Pixel data is 16-bit unsigned little-endian (2 bytes per pixel) for DR detectors.

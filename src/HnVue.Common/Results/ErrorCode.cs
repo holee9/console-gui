@@ -24,6 +24,24 @@ public enum ErrorCode
     /// <summary>Operation was cancelled by the caller.</summary>
     OperationCancelled = 1003,
 
+    /// <summary>File or directory I/O operation failed.</summary>
+    FileOperationFailed = 1004,
+
+    /// <summary>Network operation timed out. REQ-COMMON-002.</summary>
+    NetworkTimeout = 1005,
+
+    /// <summary>Hardware communication failed. REQ-COMMON-002.</summary>
+    CommunicationFailure = 1006,
+
+    /// <summary>Device not responding. REQ-COMMON-002.</summary>
+    HardwareNoResponse = 1007,
+
+    /// <summary>Remote endpoint refused connection. REQ-COMMON-002.</summary>
+    ConnectionRefused = 1008,
+
+    /// <summary>TLS/SSL negotiation failed. REQ-COMMON-002.</summary>
+    SslHandshakeFailed = 1009,
+
     // ── Security (2xxx) ────────────────────────────────────────────────────────
 
     /// <summary>Credentials were invalid or not provided.</summary>
