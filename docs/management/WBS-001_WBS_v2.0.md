@@ -22,6 +22,7 @@
 |------|------|-----------|--------|
 | v1.0 | 2026-03-27 | 최초 작성 | — |
 | v2.0 | 2026-04-03 | 4-Tier 우선순위 체계 반영 (P1–P4 제거); Phase 1 작업을 Tier 1/Tier 2 기준으로 재분해; Gantt 차트 Phase 1 상세화 (24 – 36 MM, SW 2명); 마일스톤 6개 추가 (M1 설계완료, M2 Tier1구현, M3 Tier2구현, M4 통합테스트, M5 시스템테스트, M6 릴리스); CD/DVD Burning (MR-072), 인시던트 대응 (MR-037), SW 업데이트 (MR-039) 작업 항목 추가; Gantt 문법 준수 (이모지 금지, 괄호 금지, em dash 금지) | — |
+| v2.1 | 2026-04-10 | Gantt 진행 상태 반영 (done/active/crit 마커 추가); PROGRESS-002 기반 실제 구현 현황 업데이트; 계획 MM/마일스톤은 변경 없음 | MoAI |
 
 ---
 
@@ -256,27 +257,27 @@ gantt
     SDP v2.0 WBS v2.0 DMP v2.0 :done, base3, 2026-04, 1M
 
     section Tier 1 구현 SW1
-    RBAC bcrypt 5회잠금       :t1a, 2026-04, 1M
-    PHI 암호화 SQLCipher      :t1b, 2026-04, 1M
-    감사 로그 Serilog 해시체인 :t1c, 2026-05, 1M
-    DICOM fo-dicom C-STORE MWL Print :t1d, 2026-05, 2M
-    IHE SWF 워크플로우        :t1e, 2026-06, 2M
-    SW 업데이트 UPD-1200      :t1f, 2026-06, 2M
-    인시던트 대응 INC-1100    :t1g, 2026-07, 1M
+    RBAC bcrypt 5회잠금       :done, t1a, 2026-04, 1M
+    PHI 암호화 SQLCipher      :active, t1b, 2026-04, 1M
+    감사 로그 Serilog 해시체인 :done, t1c, 2026-05, 1M
+    DICOM fo-dicom C-STORE MWL Print :active, t1d, 2026-05, 2M
+    IHE SWF 워크플로우        :done, t1e, 2026-06, 2M
+    SW 업데이트 UPD-1200      :active, t1f, 2026-06, 2M
+    인시던트 대응 INC-1100    :active, t1g, 2026-07, 1M
     STRIDE 구현               :t1h, 2026-07, 1M
-    SBOM CycloneDX            :t1i, 2026-07, 1M
+    SBOM CycloneDX            :active, t1i, 2026-07, 1M
 
     section Tier 2 구현 SW2
-    환자 관리 MWL 자동조회    :t2a, 2026-04, 2M
-    영상처리 W-L Zoom Pan     :t2b, 2026-04, 2M
-    선량 관리 DAP DRL         :t2c, 2026-05, 2M
-    CD DVD 버닝 MR-072        :t2d, 2026-06, 2M
-    시스템 설정 UI            :t2e, 2026-07, 1M
+    환자 관리 MWL 자동조회    :active, t2a, 2026-04, 2M
+    영상처리 W-L Zoom Pan     :done, t2b, 2026-04, 2M
+    선량 관리 DAP DRL         :active, t2c, 2026-05, 2M
+    CD DVD 버닝 MR-072        :active, t2d, 2026-06, 2M
+    시스템 설정 UI            :active, t2e, 2026-07, 1M
     촬영 프로토콜 관리        :t2f, 2026-08, 1M
-    WPF UI MVVM 완성          :t2g, 2026-08, 2M
+    WPF UI MVVM 완성          :active, t2g, 2026-08, 2M
 
     section 검증
-    단위 테스트 xUnit         :v1, 2026-07, 3M
+    단위 테스트 xUnit         :active, v1, 2026-07, 3M
     통합 테스트 Tier 1        :v2, 2026-08, 2M
     통합 테스트 Tier 2        :v3, 2026-09, 2M
     보안 테스트 STRIDE        :v4, 2026-10, 1M
@@ -309,32 +310,32 @@ gantt
     axisFormat  %m/%d
 
     section Tier 1 주요 작업 SW1
-    RBAC bcrypt 계정 잠금     :t1a, 2026-04-15, 3w
-    PHI 암호화 SQLCipher 통합 :t1b, 2026-04-15, 3w
-    감사 로그 해시체인        :t1c, 2026-05-01, 2w
-    fo-dicom C-STORE SCU      :t1d, 2026-05-01, 3w
-    fo-dicom MWL C-FIND SCU   :t1e, 2026-05-15, 2w
+    RBAC bcrypt 계정 잠금     :done, t1a, 2026-04-15, 3w
+    PHI 암호화 SQLCipher 통합 :active, t1b, 2026-04-15, 3w
+    감사 로그 해시체인        :done, t1c, 2026-05-01, 2w
+    fo-dicom C-STORE SCU      :done, t1d, 2026-05-01, 3w
+    fo-dicom MWL C-FIND SCU   :done, t1e, 2026-05-15, 2w
     fo-dicom Print SCU        :t1f, 2026-05-15, 2w
-    IHE SWF 상태머신          :t1g, 2026-06-01, 4w
-    SW 업데이트 코드서명 롤백 :t1h, 2026-06-01, 3w
-    인시던트 대응 INC-1100    :t1i, 2026-06-15, 3w
-    SBOM CycloneDX CI         :t1j, 2026-07-01, 2w
-    Generator 통신 RS-232     :t1k, 2026-07-01, 3w
+    IHE SWF 상태머신          :done, t1g, 2026-06-01, 4w
+    SW 업데이트 코드서명 롤백 :active, t1h, 2026-06-01, 3w
+    인시던트 대응 INC-1100    :active, t1i, 2026-06-15, 3w
+    SBOM CycloneDX CI         :active, t1j, 2026-07-01, 2w
+    Generator 통신 RS-232     :crit, t1k, 2026-07-01, 3w
 
     section Tier 2 주요 작업 SW2
-    환자 관리 MWL 자동조회    :t2a, 2026-04-15, 4w
-    영상처리 파이프라인       :t2b, 2026-04-15, 4w
-    Window Level Zoom Pan     :t2c, 2026-05-01, 3w
-    선량 관리 DAP DRL         :t2d, 2026-05-15, 3w
-    CD DVD 버닝 IMAPI2        :t2e, 2026-06-01, 4w
-    FPD SDK 통합              :t2f, 2026-06-15, 4w
-    시스템 설정 UI            :t2g, 2026-07-01, 3w
-    WPF MVVM 프레임워크       :t2h, 2026-07-15, 4w
+    환자 관리 MWL 자동조회    :active, t2a, 2026-04-15, 4w
+    영상처리 파이프라인       :done, t2b, 2026-04-15, 4w
+    Window Level Zoom Pan     :done, t2c, 2026-05-01, 3w
+    선량 관리 DAP DRL         :active, t2d, 2026-05-15, 3w
+    CD DVD 버닝 IMAPI2        :active, t2e, 2026-06-01, 4w
+    FPD SDK 통합              :crit, t2f, 2026-06-15, 4w
+    시스템 설정 UI            :active, t2g, 2026-07-01, 3w
+    WPF MVVM 프레임워크       :active, t2h, 2026-07-15, 4w
 
     section 단위 테스트
-    xUnit Tier 1 보안 모듈    :ut1, 2026-05-01, 8w
-    xUnit Tier 2 모듈         :ut2, 2026-06-01, 8w
-    CI 자동화 통합            :ut3, 2026-07-01, 4w
+    xUnit Tier 1 보안 모듈    :active, ut1, 2026-05-01, 8w
+    xUnit Tier 2 모듈         :active, ut2, 2026-06-01, 8w
+    CI 자동화 통합            :active, ut3, 2026-07-01, 4w
 
     section 마일스톤
     M1 설계 완료              :milestone, m1, 2026-05-15, 0d
