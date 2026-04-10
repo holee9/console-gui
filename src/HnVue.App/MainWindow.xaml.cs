@@ -1,3 +1,4 @@
+using System.Windows;
 using HnVue.UI.Contracts.Events;
 using HnVue.UI.Contracts.ViewModels;
 using MahApps.Metro.Controls;
@@ -11,6 +12,7 @@ namespace HnVue.App;
 public partial class MainWindow : MetroWindow
 {
     private readonly IMainViewModel _mainViewModel;
+    private bool _isPositioned;
 
     /// <summary>Initialises the main window, sets its DataContext, and subscribes to login events.</summary>
     /// <param name="mainViewModel">The shell ViewModel injected by the DI container.</param>
@@ -22,6 +24,7 @@ public partial class MainWindow : MetroWindow
         _mainViewModel = mainViewModel;
         DataContext = mainViewModel;
         InitializeComponent();
+        Loaded += OnLoaded;
 
         // Set LoginView's DataContext from DI and wire the success event
         if (LoginViewControl != null)
@@ -35,5 +38,16 @@ public partial class MainWindow : MetroWindow
     {
         var user = new HnVue.Common.Models.AuthenticatedUser(e.Token.UserId, e.Token.Username, e.Token.Role);
         _mainViewModel.OnLoginSuccess(user);
+    }
+
+    private void OnLoaded(object sender, System.Windows.RoutedEventArgs e)
+    {
+        if (_isPositioned)
+            return;
+
+        var workArea = SystemParameters.WorkArea;
+        Left = workArea.Left + Math.Max(24, (workArea.Width - Width) / 2);
+        Top = workArea.Top + Math.Max(24, (workArea.Height - Height) / 2);
+        _isPositioned = true;
     }
 }

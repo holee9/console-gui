@@ -8,7 +8,7 @@
                  Width="1400"
                  MinHeight="820"
                  MinWidth="1280"
-                 WindowState="Maximized"
+                 WindowStartupLocation="Manual"
                  Background="#242424">
     <mah:MetroWindow.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
@@ -55,49 +55,24 @@
 
     <Grid Background="#242424">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" Visibility="{Binding IsMainContentVisible, Converter={StaticResource BoolToVis}}">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="54"/>
-                <RowDefinition Height="40"/>
-            </Grid.RowDefinitions>
-
-            <Border Grid.Row="0" Background="#7b8088">
-                <Grid Margin="14,0,16,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBlock Text="HnVUE" Foreground="White" FontSize="24" FontWeight="Bold" Margin="0,0,18,0"/>
-                        <TextBlock Text="&#xE7C3;" FontFamily="Segoe MDL2 Assets" Foreground="#e9eef9" VerticalAlignment="Center" Margin="0,0,14,0"/>
-                        <TextBlock Text="&#xE8B7;" FontFamily="Segoe MDL2 Assets" Foreground="#e9eef9" VerticalAlignment="Center" Margin="0,0,14,0"/>
-                        <TextBlock Text="0%" Foreground="#f4f7fb" VerticalAlignment="Center" Margin="0,0,14,0"/>
-                        <TextBlock Text="&#xE823;" FontFamily="Segoe MDL2 Assets" Foreground="#e9eef9" VerticalAlignment="Center" Margin="0,0,14,0"/>
-                        <TextBlock Text="0%" Foreground="#f4f7fb" VerticalAlignment="Center"/>
-                    </StackPanel>
-                    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
-                        <Button Command="{Binding EmergencyCommand}" Background="#df2626" BorderBrush="#df2626" Foreground="White" Padding="16,8" Margin="0,0,12,0" FontWeight="Bold" Cursor="Hand" Content="STOP"/>
-                        <TextBlock Text="{Binding CurrentUsername}" Foreground="White" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                        <TextBlock Text="{Binding CurrentRoleDisplay}" Foreground="#eef2f7" VerticalAlignment="Center" Margin="0,0,16,0"/>
-                        <Button Command="{Binding LogoutCommand}" Background="#284b77" BorderBrush="#d8e1ef" BorderThickness="1" Foreground="White" Padding="12,6" Cursor="Hand" Content="Logout"/>
-                    </StackPanel>
-                </Grid>
-            </Border>
-
-            <Border Grid.Row="1" Background="#242424" BorderBrush="#494949" BorderThickness="0,0,0,1">
-                <StackPanel Orientation="Horizontal" Margin="8,6,8,0">
+        <Border Grid.Row="0" Background="#6f757c" BorderBrush="#4b4f55" BorderThickness="0,0,0,1" Visibility="{Binding IsMainContentVisible, Converter={StaticResource BoolToVis}}">
+            <DockPanel LastChildFill="False" Margin="8,4,8,0">
+                <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
                     <RadioButton x:Name="WorklistSurfaceTab" Content="Worklist" GroupName="MainSurface" IsChecked="True" Style="{StaticResource TopTabStyle}"/>
                     <RadioButton x:Name="StudylistSurfaceTab" Content="Studylist" GroupName="MainSurface" Style="{StaticResource TopTabStyle}"/>
                     <RadioButton x:Name="ImageSurfaceTab" Content="Image" GroupName="MainSurface" Style="{StaticResource TopTabStyle}"/>
                     <RadioButton x:Name="AcquisitionSurfaceTab" Content="Acquisition" GroupName="MainSurface" Style="{StaticResource TopTabStyle}"/>
                 </StackPanel>
-            </Border>
-        </Grid>
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding CurrentUsername}" Foreground="#edf2fa" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <Button Command="{Binding LogoutCommand}" Background="#304864" BorderBrush="#d5deec" BorderThickness="1" Foreground="White" Padding="10,4" Cursor="Hand" Content="Logout"/>
+                </StackPanel>
+            </DockPanel>
+        </Border>
 
         <Grid Grid.Row="1" Background="#242424" Visibility="{Binding IsMainContentVisible, Converter={StaticResource BoolToVis}}">
             <Border Background="#242424">
@@ -143,7 +118,7 @@
                             </Grid.ColumnDefinitions>
                             <Button Grid.Column="0" Style="{StaticResource ToolButtonStyle}" Content="&#xE76B;" Width="34" Height="34" FontSize="12"/>
                             <Button Grid.Column="1" Style="{StaticResource ToolButtonStyle}" Content="&#xE76C;" Width="34" Height="34" FontSize="12"/>
-                            <TextBlock Grid.Column="2" Text="Studylist" Foreground="White" FontSize="28" FontWeight="Bold" VerticalAlignment="Center" Margin="14,0,0,0"/>
+                            <TextBlock Grid.Column="2" Text="Studylist &gt;" Foreground="White" FontSize="28" FontWeight="Bold" VerticalAlignment="Center" Margin="14,0,0,0"/>
                             <TextBlock Grid.Column="3" Text="PACS" Foreground="#ced8ea" VerticalAlignment="Center" Margin="0,0,8,0" FontWeight="SemiBold"/>
                             <Border Grid.Column="4" Background="#111111" BorderBrush="#818a9c" BorderThickness="1" Height="34">
                                 <Grid>
@@ -181,37 +156,85 @@
                         </Border>
                     </Grid>
                     <Border Grid.Row="2" Background="#090909" BorderBrush="#4f5663" BorderThickness="1">
-                        <DataGrid ItemsSource="{Binding PatientListViewModel.Patients}" SelectedItem="{Binding PatientListViewModel.SelectedPatient}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" HeadersVisibility="Column" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#2a2a2a" BorderThickness="0" RowHeaderWidth="0" Background="#090909" Foreground="#dfe6f4" ColumnHeaderHeight="34" RowHeight="40" FontSize="13">
-                            <DataGrid.ColumnHeaderStyle>
-                                <Style TargetType="DataGridColumnHeader">
-                                    <Setter Property="Background" Value="#2f2f2f"/>
-                                    <Setter Property="Foreground" Value="White"/>
-                                    <Setter Property="BorderBrush" Value="#595959"/>
-                                    <Setter Property="BorderThickness" Value="0,0,1,1"/>
-                                    <Setter Property="FontWeight" Value="SemiBold"/>
-                                </Style>
-                            </DataGrid.ColumnHeaderStyle>
-                            <DataGrid.RowStyle>
-                                <Style TargetType="DataGridRow">
-                                    <Setter Property="Background" Value="#090909"/>
-                                    <Setter Property="Foreground" Value="#dde6f4"/>
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="#162132"/>
-                                        </Trigger>
-                                        <Trigger Property="IsSelected" Value="True">
-                                            <Setter Property="Background" Value="#4f79b8"/>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </DataGrid.RowStyle>
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="Patient ID" Binding="{Binding PatientId}" Width="220"/>
-                                <DataGridTextColumn Header="Accession No" Binding="{Binding PatientId}" Width="220"/>
-                                <DataGridTextColumn Header="StudyDate" Binding="{Binding CreatedAt, StringFormat={}{0:yyyyMMdd}}" Width="140"/>
-                                <DataGridTextColumn Header="StudyDescription" Binding="{Binding Name}" Width="*"/>
-                            </DataGrid.Columns>
-                        </DataGrid>
+                        <Grid>
+                            <DataGrid ItemsSource="{Binding PatientListViewModel.Patients}" SelectedItem="{Binding PatientListViewModel.SelectedPatient}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" HeadersVisibility="Column" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#2a2a2a" BorderThickness="0" RowHeaderWidth="0" Background="#090909" Foreground="#dfe6f4" ColumnHeaderHeight="34" RowHeight="40" FontSize="13">
+                                <DataGrid.ColumnHeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="Background" Value="#2f2f2f"/>
+                                        <Setter Property="Foreground" Value="White"/>
+                                        <Setter Property="BorderBrush" Value="#595959"/>
+                                        <Setter Property="BorderThickness" Value="0,0,1,1"/>
+                                        <Setter Property="FontWeight" Value="SemiBold"/>
+                                    </Style>
+                                </DataGrid.ColumnHeaderStyle>
+                                <DataGrid.RowStyle>
+                                    <Style TargetType="DataGridRow">
+                                        <Setter Property="Background" Value="#090909"/>
+                                        <Setter Property="Foreground" Value="#dde6f4"/>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="#162132"/>
+                                            </Trigger>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter Property="Background" Value="#4f79b8"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </DataGrid.RowStyle>
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Patient ID" Binding="{Binding PatientId}" Width="220"/>
+                                    <DataGridTextColumn Header="Accession No" Binding="{Binding PatientId}" Width="220"/>
+                                    <DataGridTextColumn Header="StudyDate" Binding="{Binding CreatedAt, StringFormat={}{0:yyyyMMdd}}" Width="140"/>
+                                    <DataGridTextColumn Header="StudyDescription" Binding="{Binding Name}" Width="*"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                            <Border Margin="0,34,0,0" Background="#0b0b0b">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding PatientListViewModel.Patients.Count}" Value="0">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <Grid Margin="0,6,0,0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="40"/>
+                                        <RowDefinition Height="40"/>
+                                        <RowDefinition Height="40"/>
+                                        <RowDefinition Height="40"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="220"/>
+                                        <ColumnDefinition Width="220"/>
+                                        <ColumnDefinition Width="140"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Grid.Row="0" Grid.ColumnSpan="4" Background="#101824"/>
+                                    <TextBlock Grid.Row="0" Margin="12,11,0,0" Foreground="#dfe6f4" Text="PT-20251013-001"/>
+                                    <TextBlock Grid.Row="0" Grid.Column="1" Margin="12,11,0,0" Foreground="#dfe6f4" Text="ACC-24101301"/>
+                                    <TextBlock Grid.Row="0" Grid.Column="2" Margin="12,11,0,0" Foreground="#dfe6f4" Text="20251013"/>
+                                    <TextBlock Grid.Row="0" Grid.Column="3" Margin="12,11,0,0" Foreground="#dfe6f4" Text="CHEST PA"/>
+                                    <Border Grid.Row="1" Grid.ColumnSpan="4" Background="#0b0b0b"/>
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Margin="12,11,0,0" Foreground="#b7c5da" Text="PT-20251012-018"/>
+                                    <TextBlock Grid.Row="1" Grid.Column="1" Margin="12,11,0,0" Foreground="#b7c5da" Text="ACC-24101218"/>
+                                    <TextBlock Grid.Row="1" Grid.Column="2" Margin="12,11,0,0" Foreground="#b7c5da" Text="20251012"/>
+                                    <TextBlock Grid.Row="1" Grid.Column="3" Margin="12,11,0,0" Foreground="#b7c5da" Text="L-SPINE AP/LAT"/>
+                                    <Border Grid.Row="2" Grid.ColumnSpan="4" Background="#101824"/>
+                                    <TextBlock Grid.Row="2" Grid.Column="0" Margin="12,11,0,0" Foreground="#dfe6f4" Text="PT-20251012-009"/>
+                                    <TextBlock Grid.Row="2" Grid.Column="1" Margin="12,11,0,0" Foreground="#dfe6f4" Text="ACC-24101209"/>
+                                    <TextBlock Grid.Row="2" Grid.Column="2" Margin="12,11,0,0" Foreground="#dfe6f4" Text="20251012"/>
+                                    <TextBlock Grid.Row="2" Grid.Column="3" Margin="12,11,0,0" Foreground="#dfe6f4" Text="KNEE BOTH AP/LAT"/>
+                                    <Border Grid.Row="3" Grid.ColumnSpan="4" Background="#0b0b0b"/>
+                                    <TextBlock Grid.Row="3" Grid.Column="0" Margin="12,11,0,0" Foreground="#b7c5da" Text="PT-20251011-004"/>
+                                    <TextBlock Grid.Row="3" Grid.Column="1" Margin="12,11,0,0" Foreground="#b7c5da" Text="ACC-24101104"/>
+                                    <TextBlock Grid.Row="3" Grid.Column="2" Margin="12,11,0,0" Foreground="#b7c5da" Text="20251011"/>
+                                    <TextBlock Grid.Row="3" Grid.Column="3" Margin="12,11,0,0" Foreground="#b7c5da" Text="ABDOMEN SUPINE"/>
+                                </Grid>
+                            </Border>
+                        </Grid>
                     </Border>
                     <TextBlock Grid.Row="3" Text="{Binding PatientListViewModel.Patients.Count, StringFormat=Total: {0}}" Foreground="#c9d3e6" FontSize="12" Margin="6,8,0,0"/>
                 </Grid>
@@ -301,10 +324,13 @@
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="{Binding PatientListViewModel.SelectedPatient.Name, FallbackValue=Unknown Patient}" Foreground="White" FontSize="24" FontWeight="Bold" Margin="0,0,18,0"/>
-                            <TextBlock Grid.Column="1" Text="{Binding PatientListViewModel.SelectedPatient.PatientId, FallbackValue=PID0000}" Foreground="#d8dff0" FontSize="16" VerticalAlignment="Center" Margin="0,0,16,0"/>
-                            <TextBlock Grid.Column="2" Text="{Binding PatientListViewModel.SelectedPatient.DateOfBirth, StringFormat={}{0:yyyy-MM-dd}, FallbackValue=1988-01-01}" Foreground="#d8dff0" FontSize="16" VerticalAlignment="Center" Margin="0,0,16,0"/>
-                            <TextBlock Grid.Column="3" Text="{Binding PatientListViewModel.SelectedPatient.Sex, FallbackValue=M}" Foreground="#d8dff0" FontSize="16" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Column="0" Text="{Binding PatientListViewModel.SelectedPatient.Name, TargetNullValue=Sample Patient, FallbackValue=Sample Patient}" Foreground="White" FontSize="24" FontWeight="Bold" Margin="0,0,18,0"/>
+                            <TextBlock Grid.Column="1" Foreground="#d8dff0" FontSize="16" VerticalAlignment="Center" Margin="0,0,16,0">
+                                <Run Text="ID : "/>
+                                <Run Text="{Binding PatientListViewModel.SelectedPatient.PatientId, TargetNullValue=20251013002, FallbackValue=20251013002}"/>
+                            </TextBlock>
+                            <TextBlock Grid.Column="2" Text="{Binding PatientListViewModel.SelectedPatient.DateOfBirth, StringFormat={}{0:yyyy-MM-dd}, TargetNullValue=1988-01-01, FallbackValue=1988-01-01}" Foreground="#d8dff0" FontSize="16" VerticalAlignment="Center" Margin="0,0,16,0"/>
+                            <TextBlock Grid.Column="3" Text="{Binding PatientListViewModel.SelectedPatient.Sex, TargetNullValue=M, FallbackValue=M}" Foreground="#d8dff0" FontSize="16" VerticalAlignment="Center"/>
                         </Grid>
                     </Border>
                     <Grid Grid.Row="1">
@@ -317,18 +343,11 @@
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="72"/>
-                                    <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
                                 <TextBlock Text="Position" Foreground="#e9eef9" FontSize="15" FontWeight="Bold" Margin="0,0,0,10"/>
-                                <UniformGrid Grid.Row="1" Columns="3" Margin="0,0,0,12">
-                                    <ToggleButton IsChecked="True" Content="Stand"/>
-                                    <ToggleButton Content="Table"/>
-                                    <ToggleButton Content="Portable"/>
-                                </UniformGrid>
-                                <TreeView Grid.Row="3" Background="#171d28" BorderThickness="1" BorderBrush="#4f596c" Foreground="#ebf0fb">
+                                <TreeView Grid.Row="1" Margin="0,4,0,0" Background="#171d28" BorderThickness="1" BorderBrush="#4f596c" Foreground="#ebf0fb">
                                     <TreeViewItem Header="CHEST" IsExpanded="True">
                                         <TreeViewItem Header="CHEST" IsExpanded="True">
                                             <TreeViewItem Header="PA" IsSelected="True"/>
@@ -336,7 +355,7 @@
                                         </TreeViewItem>
                                     </TreeViewItem>
                                 </TreeView>
-                                <Border Grid.Row="4" Margin="0,12,0,0" Background="#111111" BorderBrush="#5a6274" BorderThickness="1" Padding="8">
+                                <Border Grid.Row="2" Margin="0,12,0,0" Background="#111111" BorderBrush="#5a6274" BorderThickness="1" Padding="8">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
