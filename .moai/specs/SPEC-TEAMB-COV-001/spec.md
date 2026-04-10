@@ -1,9 +1,9 @@
 ---
 id: SPEC-TEAMB-COV-001
-version: "1.0"
+version: "1.1"
 status: draft
 created: "2026-04-09"
-updated: "2026-04-09"
+updated: "2026-04-10"
 author: MoAI (Team B)
 priority: P1-Critical
 issue_number: 0
@@ -16,6 +16,7 @@ issue_number: 0
 | Date | Version | Author | Changes |
 |------|---------|--------|---------|
 | 2026-04-09 | 1.0 | MoAI | 최초 작성 |
+| 2026-04-10 | 1.1 | MoAI | 교차검증: Round 2 허위 보고 반영, 빌드오류 P0 선행조건 추가, QA 검증 Dicom 1.8% 불일치 주석 |
 
 ## Overview
 

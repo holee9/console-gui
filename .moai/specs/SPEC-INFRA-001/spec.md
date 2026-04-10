@@ -1,9 +1,9 @@
 ---
 id: SPEC-INFRA-001
-version: 1.0.0
+version: 1.1.0
 status: draft
 created: "2026-04-09"
-updated: "2026-04-09"
+updated: "2026-04-10"
 author: moai
 priority: P1-Critical
 issue_number: 0
@@ -15,6 +15,7 @@ issue_number: 0
 | 버전 | 날짜 | 변경 내용 | 작성자 |
 |------|------|-----------|--------|
 | 1.0.0 | 2026-04-09 | 최초 작성 | MoAI |
+| 1.1.0 | 2026-04-10 | 교차검증 보강: Security 82.5%->90% 커버리지 목표 추가, SystemSettingsRepository 빌드오류 반영, 취약 패키지 업그레이드 상태 갱신 | MoAI |
 
 ## 개요
 

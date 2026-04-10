@@ -1,136 +1,47 @@
-# DISPATCH: Team B — Safety-Critical Coverage Push (평균 갭 7.1pp)
+# DISPATCH: S03 Round 3 통합 현황 (교차검증 완료)
 
-Issued: 2026-04-09
-Issued By: Main (MoAI Orchestrator)
-Priority: P1-Critical
-Source: PHASE1_QA_COVERAGE_TARGETS_2026-04-09.md
+Issued: 2026-04-10
+Issued By: Main (MoAI Commander Center)
+Type: 통합 현황 보고 (6팀 DISPATCH 발행 완료)
 
-## How to Execute
+## 빌드 상태 (2026-04-10 검증)
 
-When user says "지시서대로 작업해":
-1. Read this entire document
-2. Execute tasks in priority order (Task 1-2 최우선: safety-critical)
-3. Update Status section after each task
-4. Run build verification as final step
+**솔루션 빌드: 8 에러, 9,158 경고**
 
-## Context
+| 에러 | 담당팀 | DISPATCH Task |
+|------|--------|-------------|
+| CS0051 ConverterTests TestStatus | Design | Task 1 (P0) |
+| CS1061 IUserRepository.AddAsync (x6) | Coordinator | Task 0 (P0, 신규) |
+| CS7036 AuditEntry 생성자 (x1) | Coordinator | Task 0 (P0, 신규) |
 
-QA Phase 1 확정 기준:
-- Team B 평균 목표: **85%+** (현재 77.9%, 갭 7.1pp)
-- Safety-critical hard gate: Dose/Incident **branch coverage 90%+**
-- 모듈별 floor 미달 4개:
-  - Detector: 42.6% → 85% (갭 **42.4pp** — 전체 최대 갭)
-  - Dose: 67.6% → 90% (갭 **22.4pp**, safety-critical)
-  - Dicom: 66.9% → 80% (갭 **13.1pp**)
-  - PatientManagement: 72.7% → 80% (갭 **7.3pp**)
-- 이미 목표 달성: Imaging 87.5%, Incident 94.2%, Workflow 91.4%, CDBurning 100%
+## 6팀 Round 3 DISPATCH 상태
 
-## File Ownership
+| Team | Worktree | DISPATCH 상태 | P0 | P1 | P2+ |
+|------|----------|-------------|-----|-----|------|
+| Team A | team/team-a | NOT_STARTED | 빌드 1건 | 패키지 | StyleCop |
+| Team B | team/team-b | NOT_STARTED | 빌드 1건 | 커버리지 3모듈 | -- |
+| Design | team/team-design | NOT_STARTED | 빌드 1건 | Converter 12개 | Theme |
+| Coordinator | team/coordinator | NOT_STARTED | **빌드 7건** | VM+Contracts | Integration |
+| QA | team/qa | NOT_STARTED | -- | CI Gate | E2E+Perf |
+| RA | team/ra | NOT_STARTED | -- | SBOM(blocked) | RTM+CMP |
 
-- HnVue.Dicom/**
-- HnVue.Detector/**
-- HnVue.Imaging/**
-- HnVue.Dose/**
-- HnVue.Incident/**
-- HnVue.Workflow/**
-- HnVue.PatientManagement/**
-- HnVue.CDBurning/**
+## S03 완료 기준
 
-## Tasks
+| 게이트 | 기준 | 현재 |
+|--------|------|------|
+| 빌드 에러 | 0 | 8 |
+| 테스트 실패 | 0 | 13 |
+| 전체 커버리지 | 80%+ | 75.6% |
+| Safety-Critical | 90%+ | Dose 67.6% |
 
-### Task 1: Detector 42.6% → 85.0% (갭 42.4pp, P1-Critical)
+## 관련 문서
 
-**0% 클래스 (3개)**:
-- OwnDetectorAdapter (0%)
-- OwnDetectorConfig (0%)
-- VendorAdapterTemplate (0%)
-
-**100% 클래스**: DetectorSimulator (100%)
-
-**테스트 작성 대상**:
-- OwnDetectorAdapter: Initialize/Connect/Configure/Acquire/Disconnect 라이프사이클
-- OwnDetectorConfig: 설정 유효성 검증, 기본값, 범위 초과
-- VendorAdapterTemplate: 추상 메서드 호출 검증
-- 시뮬레이터 vs 실제 어댑터 인터페이스 일관성
-
-**주의**: 하드웨어 의존 코드는 Mock/시뮬레이터로 테스트. IDetectorService 추상화 활용.
-
-**기준**:
-- xUnit + FluentAssertions
-- [Trait("SWR", "SWR-xxx")] 어노테이션
-
-**검증 기준**:
-- [ ] Detector line coverage 85%+
-- [ ] 0% 클래스 3개 모두 70%+ 달성
-- [ ] 빌드 + 테스트 통과
-
-### Task 2: Dose 67.6% → 90.0% (갭 22.4pp, P1-Critical, Safety-Critical)
-
-**0% 클래스**:
-- DoseRepository (0%) ← 핵심 갭
-
-**100% 클래스**: DoseService (100%)
-
-**테스트 작성 대상**:
-- DoseRepository CRUD (In-Memory SQLite)
-- Dose 인터록 4-level 모든 분기 경로 (branch coverage 목표)
-- Dose 계산 경계값 (0, max, 음수, overflow)
-- 인터록 해제/오버라이드 조건
-
-**HARD GATE**: branch coverage **90%+** (DOC-012 안전성 기준)
-
-**검증 기준**:
-- [ ] Dose line coverage 90%+
-- [ ] Dose branch coverage 90%+
-- [ ] DoseRepository 0% → 80%+
-- [ ] 인터록 4-level 전 경로 커버
-- [ ] 빌드 + 테스트 통과
-
-### Task 3: Dicom 66.9% → 80.0% (갭 13.1pp, P2-High)
-
-**0% 클래스**:
-- MppsScu (0%)
-
-**저커버리지 클래스**:
-- DicomOutbox (62.5%)
-- DicomService (69.3%)
-
-**테스트 작성 대상**:
-- MppsScu: MPPS N-CREATE/N-SET 메시지 생성 테스트
-- DicomOutbox: 큐 관리, 재시도 로직, 만료 처리
-- DicomService: C-STORE/C-FIND 핸들러 경로
-
-**검증 기준**:
-- [ ] Dicom line coverage 80%+
-- [ ] MppsScu 0% → 60%+
-- [ ] 빌드 + 테스트 통과
-
-### Task 4: PatientManagement 72.7% → 80.0% (갭 7.3pp, P2-High)
-
-**0% 클래스**:
-- WorklistRepository (0%)
-
-**100% 클래스**: PatientService 100%, WorklistService 100%
-
-**테스트 작성 대상**:
-- WorklistRepository: MWL 쿼리 결과 매핑, 필터링, 페이징
-- 환자 검색 시 빈 결과/특수문자 처리
-
-**검증 기준**:
-- [ ] PatientManagement line coverage 80%+
-- [ ] WorklistRepository 0% → 70%+
-- [ ] 빌드 + 테스트 통과
-
-## Build Verification
-
-```bash
-dotnet build HnVue.sln --configuration Release
-dotnet test HnVue.sln --configuration Release --no-build
-```
+- SPRINT-001 v2.0: docs/management/SPRINT-001_Implementation_Plan_v2.0.md
+- WBS-001 v3.1: docs/management/WBS-001_WBS_v3.0.md
+- SPEC-INFRA-001 v1.1: .moai/specs/SPEC-INFRA-001/spec.md
+- SPEC-TEAMB-COV-001 v1.1: .moai/specs/SPEC-TEAMB-COV-001/spec.md
 
 ## Status
 
-- **State**: COMPLETED
-- **Started**: 2026-04-09
-- **Completed**: 2026-04-09
-- **Results**: 123개 신규 테스트 추가, 전체 1,258 테스트 통과 (0 실패)
+- **State**: DISPATCHED (6팀 Round 3 발행 완료)
+- **Next Action**: 각 팀 워크트리에서 "지시서대로 작업해" 실행
