@@ -25,8 +25,8 @@ Priority: **P0-Blocker** (빌드 오류) + P2-High (커버리지)
 **파일**: `tests/HnVue.UI.Tests/ConverterTests.cs`
 
 **검증 기준**:
-- [ ] HnVue.UI.Tests 빌드 오류 0건
-- [ ] 기존 UI 테스트 통과
+- [x] HnVue.UI.Tests 빌드 오류 0건
+- [x] 기존 UI 테스트 통과 (430P/1F - RelayCommandTests 기존 실패)
 
 ## Task 2: Converter 0% 클래스 테스트 (P1-Critical)
 
@@ -76,7 +76,7 @@ Priority: **P0-Blocker** (빌드 오류) + P2-High (커버리지)
 
 ## Status
 
-- **State**: NOT_STARTED
-- **Build Evidence**: (미완료)
-- **PR**: (미생성)
-- **Results**: Task 1→PENDING, Task 2→PENDING, Task 3→PENDING, Task 4→PENDING
+- **State**: IN_PROGRESS
+- **Build Evidence**: HnVue.UI.Tests build 0 errors, 430 passed / 1 failed (pre-existing RelayCommandTests)
+- **PR**: http://10.11.1.40:7001/DR_RnD/Console-GUI/pulls/75
+- **Results**: Task 1→COMPLETED, Task 2→PENDING, Task 3→PENDING, Task 4→PENDING
