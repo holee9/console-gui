@@ -4,111 +4,88 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
-             d:DesignHeight="500" d:DesignWidth="400">
-    <!--
-        @MX:NOTE LoginView — minimal login UI per PPT Slide 2/3 spec.
-                 No titlebar, no card, no section badge. Full-screen dark navy bg #1c2333.
-                 White TextBox/PasswordBox (InputBgLogin=#ffffff, InputFgLogin=#1c2333).
-                 Icon-only buttons: confirm checkmark (M4,10 L8,14 L16,6) + cancel X (M4,4 L16,16 M16,4 L4,16).
-                 Styles: HnVue.Login.TextBoxStyle, HnVue.Login.PasswordBoxStyle, HnVue.Login.IconButtonStyle.
-                 NOTE-6: Previous ComboBox/label/card design replaced with this minimal spec.
-    -->
+             d:DesignHeight="900"
+             d:DesignWidth="1400">
+    <Grid Background="#1a2232">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-    <Grid Background="#1c2333">
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="220">
+        <Viewbox Grid.Row="1"
+                 Stretch="Uniform"
+                 Height="120"
+                 Margin="0,0,0,34">
+            <TextBlock Text="HnVUE"
+                       Foreground="#f2f4f8"
+                       FontSize="54"
+                       FontWeight="Bold"/>
+        </Viewbox>
 
-            <!-- Logo: shows image file when available; falls back to XAML mark when not -->
-            <Grid Width="160" Height="80" HorizontalAlignment="Center" Margin="0,0,0,60">
-                <!-- XAML logo mark (always visible as base layer) -->
-                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <!-- "Hn" — bold, lighter silver -->
-                    <TextBlock HorizontalAlignment="Center" FontFamily="Consolas"
-                               FontSize="32" FontWeight="Bold" Margin="0,0,0,-4">
-                        <TextBlock.Foreground>
-                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                <GradientStop Color="#FFFFFF" Offset="0"/>
-                                <GradientStop Color="#B0BEC5" Offset="1"/>
-                            </LinearGradientBrush>
-                        </TextBlock.Foreground>
-                        <Run Text="Hn"/><Run Text="VUE">
-                            <Run.Foreground>
-                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                    <GradientStop Color="#7BC8F5" Offset="0"/>
-                                    <GradientStop Color="#4A90D9" Offset="1"/>
-                                </LinearGradientBrush>
-                            </Run.Foreground>
-                        </Run>
-                    </TextBlock>
-                    <TextBlock Text="C O N S O L E" HorizontalAlignment="Center"
-                               FontFamily="Consolas" FontSize="9" FontWeight="Normal"
-                               Foreground="#607080"/>
-                </StackPanel>
-                <!-- Actual logo image overlay (hides XAML mark when file is present) -->
-                <Image Source="/Resources/Images/hnvue_logo.png"
-                       Width="160" Height="80" Stretch="Uniform"
-                       RenderOptions.BitmapScalingMode="HighQuality">
-                    <Image.Style>
-                        <Style TargetType="Image">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=Source}" Value="{x:Null}">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Image.Style>
-                </Image>
-            </Grid>
+        <Border Grid.Row="2"
+                Width="280"
+                Height="34"
+                Background="White"
+                BorderBrush="#d9e1ee"
+                BorderThickness="1"
+                HorizontalAlignment="Center"
+                Margin="0,0,0,12">
+            <ComboBox SelectedValue="{Binding Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      ItemsSource="{Binding AvailableUserIds}"
+                      IsEditable="True"
+                      Background="Transparent"
+                      BorderThickness="0"
+                      Padding="6,0"
+                      VerticalContentAlignment="Center"/>
+        </Border>
 
-            <!-- Username TextBox -->
-            <TextBox x:Name="UsernameBox"
-                     Text="{Binding Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     Style="{StaticResource HnVue.Login.TextBoxStyle}"
-                     Height="36" Margin="0,0,0,4" TabIndex="0"/>
-
-            <!-- Password PasswordBox -->
+        <Border Grid.Row="3"
+                Width="280"
+                Height="34"
+                Background="White"
+                BorderBrush="#d9e1ee"
+                BorderThickness="1"
+                HorizontalAlignment="Center">
             <PasswordBox x:Name="PasswordBox"
-                         Style="{StaticResource HnVue.Login.PasswordBoxStyle}"
-                         Height="36" Margin="0,0,0,16" TabIndex="1"
+                         Background="Transparent"
+                         BorderThickness="0"
+                         Padding="6,0"
+                         VerticalContentAlignment="Center"
                          PasswordChanged="PasswordBox_PasswordChanged"/>
+        </Border>
 
-            <!-- Error message (slim, below password) -->
-            <TextBlock Text="{Binding ErrorMessage}"
-                       Foreground="#e74c3c" FontSize="11" FontFamily="Malgun Gothic"
-                       TextWrapping="Wrap" Margin="0,0,0,8"
-                       Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}"/>
-
-            <!-- Icon button row -->
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button x:Name="BtnConfirm"
-                        Command="{Binding LoginCommand}"
-                        Style="{StaticResource HnVue.Login.IconButtonStyle}"
-                        Width="40" Height="40" Margin="0,0,24,0"
-                        TabIndex="2" IsDefault="True">
-                    <Path Data="M4,10 L8,14 L16,6"
-                          Stroke="White" StrokeThickness="2.5"
-                          StrokeLineJoin="Round" StrokeStartLineCap="Round"
-                          StrokeEndLineCap="Round" Width="20" Height="20"
-                          Stretch="Uniform"/>
-                </Button>
-                <Button x:Name="BtnCancel"
-                        Command="{Binding CancelCommand}"
-                        Style="{StaticResource HnVue.Login.IconButtonStyle}"
-                        Width="40" Height="40"
-                        TabIndex="3" IsCancel="True">
-                    <Path Data="M4,4 L16,16 M16,4 L4,16"
-                          Stroke="White" StrokeThickness="2.5"
-                          StrokeLineJoin="Round" StrokeStartLineCap="Round"
-                          StrokeEndLineCap="Round" Width="20" Height="20"
-                          Stretch="Uniform"/>
-                </Button>
-            </StackPanel>
-
-            <!-- Loading indicator -->
-            <ProgressBar IsIndeterminate="True" Height="2"
-                         Margin="0,8,0,0" Background="Transparent" Foreground="#1a6fc7"
-                         Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}"/>
-
+        <StackPanel Grid.Row="4"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    Margin="0,18,0,0">
+            <Button Command="{Binding LoginCommand}"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Foreground="#f2f4f8"
+                    FontFamily="Segoe MDL2 Assets"
+                    FontSize="22"
+                    Padding="8"
+                    Content="&#xE73E;"/>
+            <Button Background="Transparent"
+                    BorderThickness="0"
+                    Foreground="#f2f4f8"
+                    FontFamily="Segoe MDL2 Assets"
+                    FontSize="22"
+                    Padding="8"
+                    Margin="20,0,0,0"
+                    Content="&#xE711;"/>
         </StackPanel>
+
+        <TextBlock Grid.Row="5"
+                   Text="{Binding ErrorMessage}"
+                   Foreground="#ff8d8d"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Top"
+                   Margin="0,20,0,0"
+                   Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}"/>
     </Grid>
 </UserControl>

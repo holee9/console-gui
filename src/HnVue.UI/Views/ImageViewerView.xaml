@@ -4,175 +4,58 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
-             d:DesignHeight="600" d:DesignWidth="800">
-    <!--
-        @MX:NOTE ImageViewerView — center panel X-ray image viewer.
-                 Image area uses near-black (#090909) for maximum contrast.
-                 Issue #45: icon buttons + CoreTokens styling.
-    -->
-    <Grid Margin="8">
+             d:DesignHeight="720"
+             d:DesignWidth="900">
+    <Grid Background="#242424" Margin="0">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="76"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Header row -->
-        <TextBlock Grid.Row="0"
-                   Text="Image Viewer"
-                   FontSize="16"
-                   FontWeight="Bold"
-                   Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
-                   FontFamily="{DynamicResource HnVue.Core.FontFamily}"
-                   Margin="0,0,0,8"/>
-
-        <!-- Toolbar row — white outline buttons with Segoe MDL2 icons + ALL CAPS text -->
-        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,8">
-
-            <!-- ZOOM IN -->
-            <Button Command="{Binding ZoomInCommand}"
-                    Style="{x:Null}"
-                    Background="Transparent"
-                    BorderBrush="{DynamicResource HnVue.Semantic.Text.Primary}"
-                    BorderThickness="1"
-                    Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
-                    Padding="12,6"
-                    Height="32"
-                    Margin="0,0,4,0"
-                    Cursor="Hand">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="&#xE8A3;"
-                               FontFamily="Segoe MDL2 Assets"
-                               FontSize="13"
-                               VerticalAlignment="Center"
-                               Margin="0,0,5,0"/>
-                    <TextBlock Text="ZOOM IN"
-                               FontSize="12"
-                               FontWeight="SemiBold"
-                               VerticalAlignment="Center"
-                               FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
-                </StackPanel>
-            </Button>
-
-            <!-- ZOOM OUT -->
-            <Button Command="{Binding ZoomOutCommand}"
-                    Style="{x:Null}"
-                    Background="Transparent"
-                    BorderBrush="{DynamicResource HnVue.Semantic.Text.Primary}"
-                    BorderThickness="1"
-                    Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
-                    Padding="12,6"
-                    Height="32"
-                    Margin="0,0,4,0"
-                    Cursor="Hand">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="&#xE71F;"
-                               FontFamily="Segoe MDL2 Assets"
-                               FontSize="13"
-                               VerticalAlignment="Center"
-                               Margin="0,0,5,0"/>
-                    <TextBlock Text="ZOOM OUT"
-                               FontSize="12"
-                               FontWeight="SemiBold"
-                               VerticalAlignment="Center"
-                               FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
-                </StackPanel>
-            </Button>
-
-            <!-- RESET W/L -->
-            <Button Command="{Binding ResetWindowCommand}"
-                    Style="{x:Null}"
-                    Background="Transparent"
-                    BorderBrush="{DynamicResource HnVue.Semantic.Text.Primary}"
-                    BorderThickness="1"
-                    Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
-                    Padding="12,6"
-                    Height="32"
-                    Margin="0,0,0,0"
-                    Cursor="Hand">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="&#xE777;"
-                               FontFamily="Segoe MDL2 Assets"
-                               FontSize="13"
-                               VerticalAlignment="Center"
-                               Margin="0,0,5,0"/>
-                    <TextBlock Text="RESET W/L"
-                               FontSize="12"
-                               FontWeight="SemiBold"
-                               VerticalAlignment="Center"
-                               FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
-                </StackPanel>
-            </Button>
-
-            <!-- Zoom factor display -->
-            <TextBlock Text="Zoom: "
-                       Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}"
-                       FontFamily="{DynamicResource HnVue.Core.FontFamily}"
-                       FontSize="{DynamicResource HnVue.Core.FontSize.Normal}"
-                       Margin="16,0,4,0"
-                       VerticalAlignment="Center"/>
-            <TextBlock Text="{Binding ZoomFactor, StringFormat=P0}"
-                       Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
-                       FontFamily="{DynamicResource HnVue.Core.FontFamily}"
-                       FontSize="{DynamicResource HnVue.Core.FontSize.Normal}"
-                       FontWeight="SemiBold"
-                       VerticalAlignment="Center"/>
-        </StackPanel>
-
-        <!-- Loading indicator — SWR-IP-020 / Issue #16 -->
-        <ProgressBar Grid.Row="2"
-                     IsIndeterminate="True"
-                     Height="3"
-                     VerticalAlignment="Top"
-                     Foreground="{DynamicResource HnVue.Semantic.Brand.Accent}"
-                     Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibilityConverter}}"
-                     Panel.ZIndex="10"/>
-
-        <!-- Error message — SWR-NF-UX-025 / Issue #16 -->
-        <TextBlock Grid.Row="2"
-                   Text="{Binding ErrorMessage}"
-                   Foreground="{DynamicResource HnVue.Semantic.Status.Emergency}"
-                   FontFamily="{DynamicResource HnVue.Core.FontFamily}"
-                   FontSize="{DynamicResource HnVue.Core.FontSize.Small}"
-                   VerticalAlignment="Top"
-                   Margin="0,8,0,0"
-                   Panel.ZIndex="10"
-                   Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}"/>
-
-        <!-- Image display area — SWR-IP-020 / Issue #10
-             Background is pure near-black (#090909) — NOT a CoreToken — for maximum X-ray contrast. -->
-        <Border Grid.Row="2"
-                Background="#090909"
-                CornerRadius="4"
-                ClipToBounds="True">
-
-            <!-- Placeholder shown when no image is loaded -->
-            <StackPanel VerticalAlignment="Center"
-                        HorizontalAlignment="Center"
-                        Margin="32"
-                        Visibility="{Binding IsImageLoaded, Converter={StaticResource BoolToVisibilityConverter},
-                                     ConverterParameter=Invert}">
-                <TextBlock Text="&#xEB9F;"
-                           FontFamily="Segoe MDL2 Assets"
-                           FontSize="48"
-                           Foreground="{DynamicResource HnVue.Semantic.Text.Disabled}"
-                           HorizontalAlignment="Center"
-                           Margin="0,0,0,12"/>
-                <TextBlock Text="No image loaded. Select a patient and complete acquisition workflow."
-                           Foreground="{DynamicResource HnVue.Semantic.Text.Disabled}"
-                           FontSize="13"
-                           FontFamily="{DynamicResource HnVue.Core.FontFamily}"
-                           TextWrapping="Wrap"
-                           TextAlignment="Center"
-                           HorizontalAlignment="Center"/>
-            </StackPanel>
+        <Border Grid.Row="0"
+                Background="#1a2130"
+                BorderBrush="#495364"
+                BorderThickness="1"
+                CornerRadius="6"
+                Margin="0,0,0,10"
+                Padding="10">
+            <UniformGrid Columns="8">
+                <Border Margin="4,0" Background="#5e91df"><TextBlock Text="CHEST PA" Foreground="White" FontSize="10" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,6"/></Border>
+                <Border Margin="4,0" Background="#5e91df"><TextBlock Text="CHEST PA" Foreground="White" FontSize="10" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,6"/></Border>
+                <Border Margin="4,0" Background="#5e91df"><TextBlock Text="CHEST PA" Foreground="White" FontSize="10" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,6"/></Border>
+                <Border Margin="4,0" Background="#5e91df"><TextBlock Text="CHEST PA" Foreground="White" FontSize="10" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,6"/></Border>
+                <Border Margin="4,0" Background="#5e91df"><TextBlock Text="CHEST PA" Foreground="White" FontSize="10" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,6"/></Border>
+                <Border Margin="4,0" Background="#5e91df"><TextBlock Text="CHEST PA" Foreground="White" FontSize="10" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,6"/></Border>
+                <Border Margin="4,0" Background="#5e91df"><TextBlock Text="CHEST PA" Foreground="White" FontSize="10" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,6"/></Border>
+                <Border Margin="4,0" Background="#5e91df"><TextBlock Text="CHEST PA" Foreground="White" FontSize="10" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,6"/></Border>
+            </UniformGrid>
         </Border>
 
-        <!-- Actual image rendered over the border when loaded — SWR-IP-020 / Issue #10 -->
-        <Image Grid.Row="2"
-               Source="{Binding ImageSource}"
-               Stretch="Uniform"
-               RenderOptions.BitmapScalingMode="HighQuality"
-               Visibility="{Binding IsImageLoaded, Converter={StaticResource BoolToVisibilityConverter}}"/>
+        <Border Grid.Row="1"
+                Background="#000000"
+                BorderBrush="#4f5663"
+                BorderThickness="1"
+                CornerRadius="6">
+            <Grid>
+                <Image Source="{Binding ImageSource}"
+                       Stretch="Uniform"
+                       RenderOptions.BitmapScalingMode="HighQuality"
+                       Visibility="{Binding IsImageLoaded, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                <StackPanel VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Visibility="{Binding IsImageLoaded, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}">
+                    <TextBlock Text="&#xEB9F;"
+                               FontFamily="Segoe MDL2 Assets"
+                               Foreground="#6d87aa"
+                               FontSize="64"
+                               HorizontalAlignment="Center"
+                               Margin="0,0,0,14"/>
+                    <TextBlock Text="No image loaded"
+                               Foreground="#8ea2bf"
+                               FontSize="18"
+                               HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>

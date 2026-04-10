@@ -3,261 +3,383 @@
                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                  xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
                  xmlns:views="clr-namespace:HnVue.UI.Views;assembly=HnVue.UI"
-                 Title="HnVue Console" Height="900" Width="1400"
-                 Background="{DynamicResource HnVue.Background.Dark.Brush}">
-    <Grid>
+                 Title="HnVue Console"
+                 Height="900"
+                 Width="1400"
+                 MinHeight="820"
+                 MinWidth="1280"
+                 WindowStartupLocation="Manual"
+                 Background="#242424">
+    <mah:MetroWindow.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+        <Style x:Key="TopTabStyle" TargetType="RadioButton">
+            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="Margin" Value="0,0,8,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border x:Name="TabBorder" Background="#1f2738" BorderBrush="#aeb7c5" BorderThickness="1" CornerRadius="4,4,0,0" Padding="18,8" Cursor="Hand">
+                            <TextBlock x:Name="TabText" Text="{TemplateBinding Content}" Foreground="#dfe6f4" FontSize="13" FontWeight="SemiBold"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="TabBorder" Property="Background" Value="#4f79b8"/>
+                                <Setter TargetName="TabBorder" Property="BorderBrush" Value="#d8e1ef"/>
+                                <Setter TargetName="TabText" Property="Foreground" Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ToolButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="44"/>
+            <Setter Property="Height" Value="44"/>
+            <Setter Property="Margin" Value="0,0,6,6"/>
+            <Setter Property="Background" Value="#1d2433"/>
+            <Setter Property="BorderBrush" Value="#5d6880"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="#ecf1ff"/>
+            <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+        <Style x:Key="PanelBorderStyle" TargetType="Border">
+            <Setter Property="Background" Value="#1b2230"/>
+            <Setter Property="BorderBrush" Value="#495364"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="Padding" Value="12"/>
+        </Style>
+    </mah:MetroWindow.Resources>
+
+    <Grid Background="#242424">
         <Grid.RowDefinitions>
-            <RowDefinition Height="60"/><!-- 60px: IEC 62366 Emergency Stop minimum touch target -->
+            <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="28"/>
         </Grid.RowDefinitions>
 
-        <!-- Header -->
-        <Border Grid.Row="0" Background="#0d1b36" BorderBrush="#2e4070" BorderThickness="0,0,0,1">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-
-                <!-- Logo text -->
-                <TextBlock Grid.Column="0"
-                           Text="HnVUE"
-                           FontSize="15"
-                           FontWeight="Bold"
-                           Foreground="#7bc8f5"
-                           FontFamily="Malgun Gothic"
-                           VerticalAlignment="Center"
-                           Margin="10,0,12,0"/>
-
-                <!-- Navigation tabs — PPT Slide 4 spec (visible when authenticated) -->
-                <StackPanel Grid.Column="1"
-                            Orientation="Horizontal"
-                            VerticalAlignment="Stretch"
-                            Visibility="{Binding IsAuthenticated, Converter={StaticResource BooleanToVisibilityConverter}}">
-
-                    <!-- Nav button style -->
-                    <StackPanel.Resources>
-                        <Style x:Key="NavButton" TargetType="Button">
-                            <Setter Property="Background" Value="Transparent"/>
-                            <Setter Property="BorderThickness" Value="0"/>
-                            <Setter Property="Foreground" Value="#a0b4cc"/>
-                            <Setter Property="FontSize" Value="12"/>
-                            <Setter Property="FontFamily" Value="Malgun Gothic"/>
-                            <Setter Property="Padding" Value="12,0"/>
-                            <Setter Property="Height" Value="30"/>
-                            <Setter Property="Cursor" Value="Hand"/>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border Background="{TemplateBinding Background}"
-                                                Padding="{TemplateBinding Padding}">
-                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        </Border>
-                                        <ControlTemplate.Triggers>
-                                            <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter Property="Background" Value="#2e4070"/>
-                                            </Trigger>
-                                        </ControlTemplate.Triggers>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                        <Style x:Key="NavButtonActive" TargetType="Button" BasedOn="{StaticResource NavButton}">
-                            <Setter Property="Background" Value="#2e4070"/>
-                            <Setter Property="Foreground" Value="White"/>
-                            <Setter Property="FontWeight" Value="SemiBold"/>
-                        </Style>
-                    </StackPanel.Resources>
-
-                    <Button Content="Worklist" Style="{StaticResource NavButtonActive}"/>
-                    <Button Content="Study" Style="{StaticResource NavButton}"/>
-                    <Button Content="Report" Style="{StaticResource NavButton}"/>
-                    <Button Content="Teaching File" Style="{StaticResource NavButton}"/>
-                    <Button Content="Admin" Style="{StaticResource NavButton}"/>
-                    <Button Content="Statistics" Style="{StaticResource NavButton}"/>
+        <Border Grid.Row="0" Background="#6f757c" BorderBrush="#4b4f55" BorderThickness="0,0,0,1" Visibility="{Binding IsMainContentVisible, Converter={StaticResource BoolToVis}}">
+            <DockPanel LastChildFill="False" Margin="8,4,8,0">
+                <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
+                    <RadioButton x:Name="WorklistSurfaceTab" Content="Worklist" GroupName="MainSurface" IsChecked="True" Style="{StaticResource TopTabStyle}"/>
+                    <RadioButton x:Name="StudylistSurfaceTab" Content="Studylist" GroupName="MainSurface" Style="{StaticResource TopTabStyle}"/>
+                    <RadioButton x:Name="ImageSurfaceTab" Content="Image" GroupName="MainSurface" Style="{StaticResource TopTabStyle}"/>
+                    <RadioButton x:Name="AcquisitionSurfaceTab" Content="Acquisition" GroupName="MainSurface" Style="{StaticResource TopTabStyle}"/>
                 </StackPanel>
-
-                <!-- App title fallback — visible only when NOT authenticated -->
-                <TextBlock Grid.Column="1"
-                           Text="HnVue Console"
-                           Foreground="{DynamicResource HnVue.Text.Primary.Brush}"
-                           VerticalAlignment="Center"
-                           Margin="4,0,0,0"
-                           FontSize="{DynamicResource HnVue.Core.FontSize.Large}"
-                           FontFamily="{DynamicResource HnVue.Core.FontFamily}">
-                    <TextBlock.Style>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="Visibility" Value="Visible"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsAuthenticated}" Value="True">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBlock.Style>
-                </TextBlock>
-
-                <!-- Right side of header: Emergency Stop always visible + auth-gated user info -->
-                <StackPanel Grid.Column="2" Orientation="Horizontal"
-                            Margin="0,0,12,0"
-                            VerticalAlignment="Center">
-
-                    <!-- Emergency button — SWR-NF-UX-026 (Safety-Critical, HAZ-RAD) / Issue #11
-                         MUST be outside auth Visibility binding — visible even on login screen.
-                         IEC 62366: Emergency Stop is always accessible regardless of auth state. -->
-                    <Button Content="&#x26D4;  STOP"
-                            Style="{StaticResource HnVue.EmergencyStopButton}"
-                            Command="{Binding EmergencyCommand}"
-                            Margin="0,0,8,0"
-                            VerticalAlignment="Center"/>
-
-                    <!-- User info + Logout (visible only when authenticated) -->
-                    <StackPanel Orientation="Horizontal"
-                                VerticalAlignment="Center"
-                                Visibility="{Binding IsAuthenticated, Converter={StaticResource BooleanToVisibilityConverter}}">
-                        <TextBlock Text="{Binding CurrentUsername}"
-                                   Foreground="#7bc8f5"
-                                   FontSize="12"
-                                   FontWeight="SemiBold"
-                                   VerticalAlignment="Center"
-                                   Margin="0,0,6,0"
-                                   FontFamily="Malgun Gothic"/>
-                        <TextBlock Text="{Binding CurrentRoleDisplay}"
-                                   Foreground="#a0b4cc"
-                                   FontSize="11"
-                                   VerticalAlignment="Center"
-                                   Margin="0,0,10,0"
-                                   FontFamily="Malgun Gothic"/>
-
-                        <!-- Logout button -->
-                        <Button Style="{x:Null}"
-                                Background="Transparent"
-                                BorderBrush="#2e4070"
-                                BorderThickness="1"
-                                Foreground="#a0b4cc"
-                                Height="22"
-                                Padding="8,0"
-                                Command="{Binding LogoutCommand}"
-                                VerticalAlignment="Center"
-                                FontSize="11"
-                                FontFamily="Malgun Gothic"
-                                Cursor="Hand"
-                                Content="로그아웃"/>
-                    </StackPanel>
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding CurrentUsername}" Foreground="#edf2fa" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <Button Command="{Binding LogoutCommand}" Background="#304864" BorderBrush="#d5deec" BorderThickness="1" Foreground="White" Padding="10,4" Cursor="Hand" Content="Logout"/>
                 </StackPanel>
-            </Grid>
+            </DockPanel>
         </Border>
 
-        <!-- Main Content Area -->
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" Background="#242424" Visibility="{Binding IsMainContentVisible, Converter={StaticResource BoolToVis}}">
+            <Border Background="#242424">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsChecked, ElementName=WorklistSurfaceTab}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+                <ContentControl Content="{Binding PatientListViewModel}"/>
+            </Border>
 
-            <!-- Single view content region — NavigationService sets CurrentView to the active ViewModel.
-                 Each ViewModel is resolved to its View via implicit DataTemplates in HnVue.UI ResourceDictionary.
-                 Replaces the fixed 3-column grid per DESIGN_PLAN_v2.md (team-design request). -->
-            <ContentControl x:Name="MainContentControl"
-                            Content="{Binding CurrentView}"
-                            Visibility="{Binding IsMainContentVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            <Border Background="#242424">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsChecked, ElementName=StudylistSurfaceTab}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Border Grid.Row="0" Style="{StaticResource PanelBorderStyle}" Margin="0,0,0,10">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="220"/>
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="0" Style="{StaticResource ToolButtonStyle}" Content="&#xE76B;" Width="34" Height="34" FontSize="12"/>
+                            <Button Grid.Column="1" Style="{StaticResource ToolButtonStyle}" Content="&#xE76C;" Width="34" Height="34" FontSize="12"/>
+                            <TextBlock Grid.Column="2" Text="Studylist &gt;" Foreground="White" FontSize="28" FontWeight="Bold" VerticalAlignment="Center" Margin="14,0,0,0"/>
+                            <TextBlock Grid.Column="3" Text="PACS" Foreground="#ced8ea" VerticalAlignment="Center" Margin="0,0,8,0" FontWeight="SemiBold"/>
+                            <Border Grid.Column="4" Background="#111111" BorderBrush="#818a9c" BorderThickness="1" Height="34">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="34"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Primary PACS" Foreground="#dde6f4" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                    <TextBlock Grid.Column="1" Text="&#xE70D;" FontFamily="Segoe MDL2 Assets" Foreground="#dde6f4" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                    </Border>
+                    <Grid Grid.Row="1" Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="260"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Button Content="Today" Command="{Binding PatientListViewModel.FilterByPeriodCommand}" CommandParameter="Today" Width="84" Height="34" Margin="0,0,6,0"/>
+                            <Button Content="3Days" Command="{Binding PatientListViewModel.FilterByPeriodCommand}" CommandParameter="3Days" Width="84" Height="34" Margin="0,0,6,0"/>
+                            <Button Content="1Week" Command="{Binding PatientListViewModel.FilterByPeriodCommand}" CommandParameter="1Week" Width="84" Height="34" Margin="0,0,6,0"/>
+                            <Button Content="All" Command="{Binding PatientListViewModel.FilterByPeriodCommand}" CommandParameter="All" Width="74" Height="34" Margin="0,0,6,0"/>
+                            <Button Content="1Month" Command="{Binding PatientListViewModel.FilterByPeriodCommand}" CommandParameter="1Month" Width="92" Height="34"/>
+                        </StackPanel>
+                        <Border Grid.Column="1" Background="#111111" BorderBrush="#818a9c" BorderThickness="1" Height="34">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="36"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="&#xE721;" FontFamily="Segoe MDL2 Assets" Foreground="#dce4f4" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBox Grid.Column="1" Text="{Binding PatientListViewModel.SearchQuery, UpdateSourceTrigger=PropertyChanged}" Background="Transparent" Foreground="#dde6f4" BorderThickness="0" VerticalContentAlignment="Center" Padding="0,0,10,0"/>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                    <Border Grid.Row="2" Background="#090909" BorderBrush="#4f5663" BorderThickness="1">
+                        <Grid>
+                            <DataGrid ItemsSource="{Binding PatientListViewModel.Patients}" SelectedItem="{Binding PatientListViewModel.SelectedPatient}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" HeadersVisibility="Column" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#2a2a2a" BorderThickness="0" RowHeaderWidth="0" Background="#090909" Foreground="#dfe6f4" ColumnHeaderHeight="34" RowHeight="40" FontSize="13">
+                                <DataGrid.ColumnHeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="Background" Value="#2f2f2f"/>
+                                        <Setter Property="Foreground" Value="White"/>
+                                        <Setter Property="BorderBrush" Value="#595959"/>
+                                        <Setter Property="BorderThickness" Value="0,0,1,1"/>
+                                        <Setter Property="FontWeight" Value="SemiBold"/>
+                                    </Style>
+                                </DataGrid.ColumnHeaderStyle>
+                                <DataGrid.RowStyle>
+                                    <Style TargetType="DataGridRow">
+                                        <Setter Property="Background" Value="#090909"/>
+                                        <Setter Property="Foreground" Value="#dde6f4"/>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="#162132"/>
+                                            </Trigger>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter Property="Background" Value="#4f79b8"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </DataGrid.RowStyle>
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Patient ID" Binding="{Binding PatientId}" Width="220"/>
+                                    <DataGridTextColumn Header="Accession No" Binding="{Binding PatientId}" Width="220"/>
+                                    <DataGridTextColumn Header="StudyDate" Binding="{Binding CreatedAt, StringFormat={}{0:yyyyMMdd}}" Width="140"/>
+                                    <DataGridTextColumn Header="StudyDescription" Binding="{Binding Name}" Width="*"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                            <Border Margin="0,34,0,0" Background="#0b0b0b">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding PatientListViewModel.Patients.Count}" Value="0">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <Grid Margin="0,6,0,0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="40"/>
+                                        <RowDefinition Height="40"/>
+                                        <RowDefinition Height="40"/>
+                                        <RowDefinition Height="40"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="220"/>
+                                        <ColumnDefinition Width="220"/>
+                                        <ColumnDefinition Width="140"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Grid.Row="0" Grid.ColumnSpan="4" Background="#101824"/>
+                                    <TextBlock Grid.Row="0" Margin="12,11,0,0" Foreground="#dfe6f4" Text="PT-20251013-001"/>
+                                    <TextBlock Grid.Row="0" Grid.Column="1" Margin="12,11,0,0" Foreground="#dfe6f4" Text="ACC-24101301"/>
+                                    <TextBlock Grid.Row="0" Grid.Column="2" Margin="12,11,0,0" Foreground="#dfe6f4" Text="20251013"/>
+                                    <TextBlock Grid.Row="0" Grid.Column="3" Margin="12,11,0,0" Foreground="#dfe6f4" Text="CHEST PA"/>
+                                    <Border Grid.Row="1" Grid.ColumnSpan="4" Background="#0b0b0b"/>
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Margin="12,11,0,0" Foreground="#b7c5da" Text="PT-20251012-018"/>
+                                    <TextBlock Grid.Row="1" Grid.Column="1" Margin="12,11,0,0" Foreground="#b7c5da" Text="ACC-24101218"/>
+                                    <TextBlock Grid.Row="1" Grid.Column="2" Margin="12,11,0,0" Foreground="#b7c5da" Text="20251012"/>
+                                    <TextBlock Grid.Row="1" Grid.Column="3" Margin="12,11,0,0" Foreground="#b7c5da" Text="L-SPINE AP/LAT"/>
+                                    <Border Grid.Row="2" Grid.ColumnSpan="4" Background="#101824"/>
+                                    <TextBlock Grid.Row="2" Grid.Column="0" Margin="12,11,0,0" Foreground="#dfe6f4" Text="PT-20251012-009"/>
+                                    <TextBlock Grid.Row="2" Grid.Column="1" Margin="12,11,0,0" Foreground="#dfe6f4" Text="ACC-24101209"/>
+                                    <TextBlock Grid.Row="2" Grid.Column="2" Margin="12,11,0,0" Foreground="#dfe6f4" Text="20251012"/>
+                                    <TextBlock Grid.Row="2" Grid.Column="3" Margin="12,11,0,0" Foreground="#dfe6f4" Text="KNEE BOTH AP/LAT"/>
+                                    <Border Grid.Row="3" Grid.ColumnSpan="4" Background="#0b0b0b"/>
+                                    <TextBlock Grid.Row="3" Grid.Column="0" Margin="12,11,0,0" Foreground="#b7c5da" Text="PT-20251011-004"/>
+                                    <TextBlock Grid.Row="3" Grid.Column="1" Margin="12,11,0,0" Foreground="#b7c5da" Text="ACC-24101104"/>
+                                    <TextBlock Grid.Row="3" Grid.Column="2" Margin="12,11,0,0" Foreground="#b7c5da" Text="20251011"/>
+                                    <TextBlock Grid.Row="3" Grid.Column="3" Margin="12,11,0,0" Foreground="#b7c5da" Text="ABDOMEN SUPINE"/>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                    </Border>
+                    <TextBlock Grid.Row="3" Text="{Binding PatientListViewModel.Patients.Count, StringFormat=Total: {0}}" Foreground="#c9d3e6" FontSize="12" Margin="6,8,0,0"/>
+                </Grid>
+            </Border>
 
-            <!-- Login overlay (visible when not authenticated) -->
-            <Border Visibility="{Binding IsLoginVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
-                    Background="{DynamicResource HnVue.Background.Dark.Brush}"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch">
-                <views:LoginView x:Name="LoginViewControl" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            <Border Background="#242424">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsChecked, ElementName=ImageSurfaceTab}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+                <Grid Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="320"/>
+                    </Grid.ColumnDefinitions>
+                    <ContentControl Grid.Column="0" Margin="0,0,10,0" Content="{Binding ImageViewerViewModel}"/>
+                    <StackPanel Grid.Column="1">
+                        <Border Style="{StaticResource PanelBorderStyle}" Margin="0,0,0,10">
+                            <StackPanel>
+                                <TextBlock Text="Tool" Foreground="#e9eef9" FontSize="15" FontWeight="Bold" Margin="0,0,0,10"/>
+                                <WrapPanel>
+                                    <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE7AD;"/>
+                                    <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE16E;"/>
+                                    <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE1A3;"/>
+                                    <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE11B;"/>
+                                    <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE11A;"/>
+                                    <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE15A;"/>
+                                </WrapPanel>
+                            </StackPanel>
+                        </Border>
+                        <Border Style="{StaticResource PanelBorderStyle}" Margin="0,0,0,10">
+                            <StackPanel>
+                                <TextBlock Text="Annotation" Foreground="#e9eef9" FontSize="15" FontWeight="Bold" Margin="0,0,0,10"/>
+                                <WrapPanel>
+                                    <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE70E;"/>
+                                    <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE739;"/>
+                                    <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE123;"/>
+                                    <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE160;"/>
+                                    <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE8A3;"/>
+                                </WrapPanel>
+                            </StackPanel>
+                        </Border>
+                        <Border Style="{StaticResource PanelBorderStyle}">
+                            <StackPanel>
+                                <TextBlock Text="Output" Foreground="#e9eef9" FontSize="15" FontWeight="Bold" Margin="0,0,0,10"/>
+                                <WrapPanel>
+                                    <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE74E;"/>
+                                    <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE749;"/>
+                                    <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE7F4;"/>
+                                    <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE8C8;"/>
+                                    <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE898;"/>
+                                </WrapPanel>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <Border Background="#242424">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsChecked, ElementName=AcquisitionSurfaceTab}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Border Grid.Row="0" Style="{StaticResource PanelBorderStyle}" Margin="0,0,0,10" Padding="16,12">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="{Binding PatientListViewModel.SelectedPatient.Name, TargetNullValue=Sample Patient, FallbackValue=Sample Patient}" Foreground="White" FontSize="24" FontWeight="Bold" Margin="0,0,18,0"/>
+                            <TextBlock Grid.Column="1" Foreground="#d8dff0" FontSize="16" VerticalAlignment="Center" Margin="0,0,16,0">
+                                <Run Text="ID : "/>
+                                <Run Text="{Binding PatientListViewModel.SelectedPatient.PatientId, TargetNullValue=20251013002, FallbackValue=20251013002}"/>
+                            </TextBlock>
+                            <TextBlock Grid.Column="2" Text="{Binding PatientListViewModel.SelectedPatient.DateOfBirth, StringFormat={}{0:yyyy-MM-dd}, TargetNullValue=1988-01-01, FallbackValue=1988-01-01}" Foreground="#d8dff0" FontSize="16" VerticalAlignment="Center" Margin="0,0,16,0"/>
+                            <TextBlock Grid.Column="3" Text="{Binding PatientListViewModel.SelectedPatient.Sex, TargetNullValue=M, FallbackValue=M}" Foreground="#d8dff0" FontSize="16" VerticalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="280"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="340"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Column="0" Style="{StaticResource PanelBorderStyle}" Margin="0,0,10,0">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="Position" Foreground="#e9eef9" FontSize="15" FontWeight="Bold" Margin="0,0,0,10"/>
+                                <TreeView Grid.Row="1" Margin="0,4,0,0" Background="#171d28" BorderThickness="1" BorderBrush="#4f596c" Foreground="#ebf0fb">
+                                    <TreeViewItem Header="CHEST" IsExpanded="True">
+                                        <TreeViewItem Header="CHEST" IsExpanded="True">
+                                            <TreeViewItem Header="PA" IsSelected="True"/>
+                                            <TreeViewItem Header="LAT"/>
+                                        </TreeViewItem>
+                                    </TreeViewItem>
+                                </TreeView>
+                                <Border Grid.Row="2" Margin="0,12,0,0" Background="#111111" BorderBrush="#5a6274" BorderThickness="1" Padding="8">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0"><TextBlock Text="kV" Foreground="#8e99ac" FontSize="10"/><TextBlock Text="95" Foreground="White" FontSize="18" FontWeight="Bold"/></StackPanel>
+                                        <StackPanel Grid.Column="1"><TextBlock Text="mA" Foreground="#8e99ac" FontSize="10"/><TextBlock Text="200" Foreground="White" FontSize="18" FontWeight="Bold"/></StackPanel>
+                                        <StackPanel Grid.Column="2"><TextBlock Text="ms" Foreground="#8e99ac" FontSize="10"/><TextBlock Text="71" Foreground="White" FontSize="18" FontWeight="Bold"/></StackPanel>
+                                        <StackPanel Grid.Column="3"><TextBlock Text="mAs" Foreground="#8e99ac" FontSize="10"/><TextBlock Text="14.2" Foreground="White" FontSize="18" FontWeight="Bold"/></StackPanel>
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </Border>
+                        <ContentControl Grid.Column="1" Margin="0,0,10,0" Content="{Binding ImageViewerViewModel}"/>
+                        <ContentControl Grid.Column="2" Content="{Binding WorkflowViewModel}"/>
+                    </Grid>
+                </Grid>
             </Border>
         </Grid>
 
-        <!-- TLS Inactive Warning Banner — SWR-CS-079 (Security-related, HAZ-SEC) / Issue #13
-             Permanent yellow banner shown when DICOM TLS is disabled. -->
-        <Border Grid.Row="1" VerticalAlignment="Top"
-                Background="{DynamicResource HnVue.Semantic.Status.Warning}"
-                Padding="8,3"
-                Visibility="{Binding IsTlsInactive, Converter={StaticResource BoolToVisibilityConverter}}"
-                Panel.ZIndex="100">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="&#xE7BA;"
-                           FontFamily="Segoe MDL2 Assets"
-                           FontSize="13"
-                           Foreground="Black"
-                           VerticalAlignment="Center"
-                           Margin="0,0,6,0"/>
-                <TextBlock Text="TLS 비활성 — 네트워크 데이터가 암호화되지 않습니다. 설정에서 TLS를 활성화하십시오."
-                           Foreground="Black"
-                           FontWeight="SemiBold"
-                           FontSize="12"
-                           FontFamily="{DynamicResource HnVue.Core.FontFamily}"
-                           VerticalAlignment="Center"/>
-            </StackPanel>
+        <Border Grid.RowSpan="2" Panel.ZIndex="20" Background="#1a2232" Visibility="{Binding IsLoginVisible, Converter={StaticResource BoolToVis}}">
+            <views:LoginView x:Name="LoginViewControl" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
         </Border>
-
-        <!-- Session Timeout Countdown Banner — SWR-CS-075 (Security-related) / Issue #14
-             Shown in footer area 3 minutes before session expires. -->
-        <Border Grid.Row="2"
-                Background="{DynamicResource HnVue.Semantic.Status.Blocked}"
-                Padding="8,2"
-                Visibility="{Binding IsTimeoutWarningVisible, Converter={StaticResource BoolToVisibilityConverter}}"
-                Panel.ZIndex="100"
-                VerticalAlignment="Bottom">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="&#xE823;"
-                           FontFamily="Segoe MDL2 Assets"
-                           FontSize="11"
-                           Foreground="White"
-                           VerticalAlignment="Center"
-                           Margin="0,0,6,0"/>
-                <TextBlock Text="{Binding SessionTimeoutCountdown, StringFormat='세션 만료까지 {0}초 — 활동하거나 다시 로그인하십시오'}"
-                           Foreground="White"
-                           FontSize="11"
-                           FontFamily="{DynamicResource HnVue.Core.FontFamily}"
-                           VerticalAlignment="Center"/>
-            </StackPanel>
-        </Border>
-
-        <!-- Footer: Status Bar -->
-        <StatusBar Grid.Row="2" Background="{DynamicResource HnVue.Component.StatusBar.Bg}">
-            <StatusBarItem>
-                <TextBlock Text="{Binding ActiveNavItem, StringFormat='섹션: {0}', FallbackValue='준비'}"
-                           Foreground="{DynamicResource HnVue.Component.StatusBar.Text}"
-                           FontSize="{DynamicResource HnVue.Core.FontSize.Small}"
-                           FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
-            </StatusBarItem>
-            <Separator/>
-            <StatusBarItem HorizontalAlignment="Right">
-                <StackPanel Orientation="Horizontal">
-                    <!-- DICOM connection status indicator -->
-                    <Ellipse Width="8" Height="8"
-                             VerticalAlignment="Center"
-                             Margin="0,0,5,0">
-                        <Ellipse.Style>
-                            <Style TargetType="Ellipse">
-                                <Setter Property="Fill" Value="{DynamicResource HnVue.Component.StatusBar.Safe}"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsDicomConnected, FallbackValue=False}" Value="False">
-                                        <Setter Property="Fill" Value="{DynamicResource HnVue.Component.StatusBar.Emergency}"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Ellipse.Style>
-                    </Ellipse>
-                    <TextBlock FontSize="{DynamicResource HnVue.Core.FontSize.Small}"
-                               FontFamily="{DynamicResource HnVue.Core.FontFamily}">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="Text" Value="Connected"/>
-                                <Setter Property="Foreground" Value="{DynamicResource HnVue.Component.StatusBar.Safe}"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsDicomConnected, FallbackValue=False}" Value="False">
-                                        <Setter Property="Text" Value="Disconnected"/>
-                                        <Setter Property="Foreground" Value="{DynamicResource HnVue.Component.StatusBar.Emergency}"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-                </StackPanel>
-            </StatusBarItem>
-        </StatusBar>
     </Grid>
 </mah:MetroWindow>

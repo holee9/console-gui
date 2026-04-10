@@ -247,3 +247,5 @@ docs/planning/archive/
 .moai/state/.gitkeep
 .mcp.json
 CLAUDE.md
+temp_ppt_extract/
+.dotnet-home/

@@ -1,104 +1,74 @@
-# DISPATCH: Coordinator
+# DISPATCH: Design — 오염 정리 + 빌드 오류 + UI 커버리지
 
-Issued: 2026-04-08
-Issued By: Main (MoAI Orchestrator)
-Priority: P1-Critical
+Issued: 2026-04-10
+Issued By: Main (MoAI Commander Center)
+Priority: **P0-Blocker** (오염/빌드) + P2-High (커버리지)
+Supersedes: 이전 DISPATCH (IN_PROGRESS, 체크 0/7)
+
+## Design 역할 재확인 (rules/teams/team-design.md)
+
+- **소유 모듈**: HnVue.UI (Views, Styles, Themes, Components, Converters, Assets, DesignTime)
+- **금지 참조**: Data, Security, Workflow, Imaging, Dicom, Dose 등
+- **코드 비하인드**: 순수 UI 이벤트만, 비즈니스 로직 금지
+- **접근성**: WCAG 2.1 AA, 44x44px 터치 타겟, 키보드 네비게이션
+- **PPT Scope**: Issue #59 — 지정 페이지 외 UI 구현 금지
 
 ## How to Execute
 
-When user says "지시서대로 작업해":
-1. Read this entire document
-2. Set Status to IN_PROGRESS
-3. Execute each task in order
-4. After each task, update its checkbox and add result notes
-5. Run final build verification
-6. Set Status to COMPLETE with summary
+1. **Task 1 (P0)부터** — temp_ppt_extract/ 제거
+2. **Task 2 (P0)** — ConverterTests 빌드 오류 수정
+3. Task 3-5 순서대로
+4. 체크박스 + Status 업데이트
 
-## Context
+## Task 1: temp_ppt_extract/ 오염 제거 (P0-Blocker)
 
-QA team completed local analyzer infrastructure migration (SonarCloud -> local Roslyn analyzers). Build passes with 0 errors but 9,378 warnings. Three issues need Coordinator attention:
+**문제**: PPT 추출 임시파일 2,329개(14MB) 커밋됨
+**수행**: `git rm -r temp_ppt_extract/` + `.gitignore` 추가
 
-1. PerformanceTests.cs has a flaky HoverEffect test (53ms > 50ms threshold) blocking CI green
-2. AccessibilityTests.cs has duplicate test case ID warnings
-3. AddPatientProcedureViewModel.cs has SCS0005 (Weak RNG) security warning
+**검증 기준**:
+- [ ] temp_ppt_extract/ 삭제됨
+- [ ] .gitignore에 패턴 추가됨
 
-These are blocking Phase 2 team dispatches.
+## Task 2: ConverterTests 빌드 오류 수정 (P0-Blocker)
 
-## Tasks
+**오류**: `TestStatus` 접근성 불일치 (CS0051)
+**파일**: `tests/HnVue.UI.Tests/ConverterTests.cs`
 
-### Task 1: Fix HoverEffect Performance Test Threshold
-- **Target files**: `tests/HnVue.UI.Tests/UI/PerformanceTests.cs`
-- **Action**: Line 51 has `[InlineData(50, "HoverEffect")]`. Change threshold from 50 to 100 (hover effects are non-critical UI, 100ms is still imperceptible). This is a flaky boundary — 50ms is too tight for CI environment variance.
-- **Acceptance criteria**: Test passes consistently. No other InlineData values changed.
-- **Constraints**: Do NOT change SearchResults (500ms) or ButtonResponse (100ms) thresholds — those are UX-critical.
+**검증 기준**:
+- [ ] HnVue.UI.Tests 빌드 오류 0건
+- [ ] 기존 UI 테스트 통과
 
-### Task 2: Fix AccessibilityTests Duplicate Test Case IDs
-- **Target files**: `tests/HnVue.UI.Tests/UI/AccessibilityTests.cs`
-- **Action**: Find duplicate test case IDs (xUnit warnings about duplicate test cases). Each test method or InlineData combination must produce a unique test case. Fix by making test names or parameters unique.
-- **Acceptance criteria**: No duplicate test case warnings in test output.
-- **Constraints**: Do NOT change test logic or remove test cases. Only fix naming/ID uniqueness.
+## Task 3: Converter 0% 클래스 테스트 (P1-Critical)
 
-### Task 3: Fix SCS0005 Weak RNG in AddPatientProcedureViewModel
-- **Target files**: `src/HnVue.UI.ViewModels/ViewModels/AddPatientProcedureViewModel.cs`
-- **Action**: Line 307 uses `System.Random` which triggers SCS0005. Evaluate the usage context:
-  - If used for security/crypto: Replace with `System.Security.Cryptography.RandomNumberGenerator`
-  - If used for non-security (UI IDs, display order): Add `#pragma warning disable SCS0005` with comment explaining non-crypto usage
-- **Acceptance criteria**: SCS0005 warning eliminated for this file.
-- **Constraints**: Do NOT change the behavior of the random value generation, only the source or suppression.
+**12개 Converter**: 순수 변환 로직, Convert/ConvertBack + 경계값(null, empty, DependencyProperty.UnsetValue)
 
-### Final: Build Verification
-- **Action**: `dotnet build HnVue.sln --configuration Release`
-- **Acceptance criteria**: 0 errors
-- **Action**: `dotnet test tests/HnVue.UI.Tests/HnVue.UI.Tests.csproj`
-- **Acceptance criteria**: All tests pass including the fixed PerformanceTests and AccessibilityTests
+**검증 기준**:
+- [ ] 12개 Converter 모두 70%+
+- [ ] 빌드 + 테스트 통과
+
+## Task 4: ThemeRollbackService 테스트 (P2-High)
+
+**규칙**: MahApps.Metro 3테마(Light/Dark/HighContrast) 런타임 전환
+
+**검증 기준**:
+- [ ] ThemeRollbackService 70%+
+- [ ] 빌드 + 테스트 통과
+
+## Task 5: 저커버리지 Component (P3-Medium)
+
+**대상**: RelayCommand(50%→80%), RelayCommand<T>(0%→70%), StatusBarItem(55%→75%)
+
+**검증 기준**:
+- [ ] HnVue.UI 전체 75%+
+- [ ] 빌드 + 테스트 통과
 
 ## Constraints
 
-- DO NOT modify files outside Coordinator ownership (UI.Contracts, UI.ViewModels, App, IntegrationTests, shared test files)
-- DO NOT modify any src/ production code except AddPatientProcedureViewModel.cs
-- DO NOT upgrade packages
+- HnVue.UI 외 파일 수정 금지
+- 금지 모듈 참조 추가 금지
+- PPT Scope 준수 (Issue #59)
 
 ## Status
 
-- **State**: COMPLETE
-- **Started**: 2026-04-08
-- **Completed**: 2026-04-08
-- **Results**:
-  - Task 1 (HoverEffect): DONE — `[InlineData(50, "HoverEffect")]` → `[InlineData(100, "HoverEffect")]`
-  - Task 2 (AccessibilityTests): DONE — TouchTarget InlineData에 `string scenario` 파라미터 추가로 중복 ID 해소
-  - Task 3 (SCS0005): DONE — `#pragma warning disable SCS0005` with non-security usage comment
-  - Build: PASS — 0 errors (Release)
-  - Tests: PASS — 229/229 통과, 0 실패, 0 건너뜀
-
-## Schema Change Notification (2026-04-09)
-
-**From**: Team A (Infrastructure & Foundation)
-**Type**: EF Core Initial Migration — new schema
-**Migration**: `20260409005850_InitialCreate`
-
-### Tables Created (7)
-| Table | Key Columns | Notes |
-|-------|------------|-------|
-| Patients | PatientId (PK), Name, IsDeleted, IsEmergency | Soft-delete via IsDeleted |
-| Studies | StudyInstanceUid (PK), PatientId (FK→Patients) | FK Restrict to Patients |
-| Images | ImageId (PK), StudyInstanceUid (FK→Studies) | FK Cascade from Studies |
-| DoseRecords | DoseId (PK), StudyInstanceUid (FK→Studies) | FK Restrict — regulatory data |
-| Users | UserId (PK), Username (Unique) | Role, QuickPin, lockout |
-| AuditLogs | EntryId (PK), TimestampTicks, UserId | HMAC chain integrity |
-| UpdateHistories | UpdateId (PK, auto-inc), FromVersion, ToVersion | IEC 62304 §6.2.5 |
-
-### Impact Assessment
-- **UI.Contracts**: No interface changes required
-- **UI.ViewModels**: No impact (ViewModels reference services, not entities)
-- **Integration Tests**: May need database fixture update for new schema
-- **Team B**: No impact (Patient data model unchanged)
-
-### Action Required by Coordinator
-- [x] Acknowledge schema change notification — 2026-04-09
-- [x] Verify integration test fixtures are compatible with new schema — VERIFIED 2026-04-09
-
-### Verification Result
-- All 19 integration tests pass (0 failures, 0 skipped)
-- Integration tests use NSubstitute mock repositories — no real DB fixture dependency
-- New `20260409005850_InitialCreate` schema has NO impact on integration test layer
-- UI.Contracts, UI.ViewModels: no interface changes required (confirmed)
+- **State**: NOT_STARTED
+- **Results**: Task 1→PENDING, Task 2→PENDING, Task 3→PENDING, Task 4→PENDING, Task 5→PENDING
