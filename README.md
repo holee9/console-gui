@@ -14,7 +14,7 @@
 
 ## 개발 진도 현황 (2026-04-10 기준)
 
-> 상세: [개발 현황 상세](docs/management/development-status.md) | [정밀 분석 보고서](docs/management/PROGRESS-002_DetailedAnalysis_v1.0.md) | [WBS v2.0](docs/management/WBS-001_WBS_v2.0.md)
+> 상세: [개발 현황 상세](docs/management/development-status.md) | [정밀 분석 보고서](docs/management/PROGRESS-002_DetailedAnalysis_v1.0.md) | [WBS v3.0](docs/management/WBS-001_WBS_v3.0.md) | [WBS v2.0 (아카이브)](docs/archive/WBS-001_WBS_v2.0.md)
 
 ```
 경과:  ██░░░░░░░░░░░░░░░░░░ 1.5M / 12M (12.5%)     소진: 3.0 / 24~36 MM
@@ -174,6 +174,7 @@ dotnet build HnVue.sln -c Release
 | 문서 | 설명 |
 |------|------|
 | [개발 진행 현황](docs/management/development-status.md) | WBS, 마일스톤, 로드맵 |
+| [WBS v3.0](docs/management/WBS-001_WBS_v3.0.md) | Sprint/MM 기반 작업 분해 구조 |
 | [문서 체계 인덱스](docs/management/documentation-index.md) | 50+ 규제/기획/검증 문서 전체 목록 |
 | [MRD/PRD 교차검증](docs/management/mrd-prd-validation.md) | 36사 딥리서치, 92개 MR |
 | [운영 전략 가이드](docs/OPERATIONS.md) | 6팀 Worktree 분리 개발 |

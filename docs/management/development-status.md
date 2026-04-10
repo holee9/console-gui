@@ -5,7 +5,7 @@
 
 ## 현재 진도 요약
 
-> **현재 1.5M차 / 12M, 소진 3.0 MM / 24~36 MM** | 상세: [PROGRESS-002](PROGRESS-002_DetailedAnalysis_v1.0.md)
+> **현재 1.5M차 / 12M, 소진 3.0 MM / 24~36 MM** | 상세: [PROGRESS-002](PROGRESS-002_DetailedAnalysis_v1.0.md) | [WBS v3.0](WBS-001_WBS_v3.0.md)
 
 ### 계획 대비 진도
 
