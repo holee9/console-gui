@@ -4,6 +4,7 @@ using HnVue.Common.Enums;
 using HnVue.Common.Models;
 using HnVue.Common.Results;
 using HnVue.Data;
+using HnVue.Data.Entities;
 using HnVue.Data.Repositories;
 using HnVue.Security;
 using Microsoft.EntityFrameworkCore;
@@ -77,18 +78,20 @@ public sealed class TeamAIntegrationTests : IDisposable
         // Arrange
         const string username = "testuser";
         const string password = "TestPass1!";
-        var createUserResult = await _userRepository.AddAsync(
-            new UserRecord(
-                UserId: Guid.NewGuid().ToString(),
-                Username: username,
-                DisplayName: "Test User",
-                PasswordHash: PasswordHasher.HashPassword(password),
-                Role: UserRole.Radiographer,
-                FailedLoginCount: 0,
-                IsLocked: false,
-                LastLoginAt: null));
-
-        createUserResult.IsSuccess.Should().BeTrue("user should be created successfully");
+        var userEntity = new UserEntity
+        {
+            UserId = Guid.NewGuid().ToString(),
+            Username = username,
+            DisplayName = "Test User",
+            PasswordHash = PasswordHasher.HashPassword(password),
+            RoleValue = (int)UserRole.Radiographer,
+            FailedLoginCount = 0,
+            IsLocked = false,
+            LastLoginAtTicks = null,
+            LastLoginAtOffsetMinutes = null
+        };
+        await _dbContext.Users.AddAsync(userEntity);
+        await _dbContext.SaveChangesAsync();
 
         // Act - Authenticate through SecurityService
         var authResult = await _securityService.AuthenticateAsync(username, password);
@@ -115,18 +118,20 @@ public sealed class TeamAIntegrationTests : IDisposable
         const string password = "AuditPass1!";
         var userId = Guid.NewGuid().ToString();
 
-        var createUserResult = await _userRepository.AddAsync(
-            new UserRecord(
-                UserId: userId,
-                Username: username,
-                DisplayName: "Audit User",
-                PasswordHash: PasswordHasher.HashPassword(password),
-                Role: UserRole.Admin,
-                FailedLoginCount: 0,
-                IsLocked: false,
-                LastLoginAt: null));
-
-        createUserResult.IsSuccess.Should().BeTrue();
+        var userEntity = new UserEntity
+        {
+            UserId = userId,
+            Username = username,
+            DisplayName = "Audit User",
+            PasswordHash = PasswordHasher.HashPassword(password),
+            RoleValue = (int)UserRole.Admin,
+            FailedLoginCount = 0,
+            IsLocked = false,
+            LastLoginAtTicks = null,
+            LastLoginAtOffsetMinutes = null
+        };
+        await _dbContext.Users.AddAsync(userEntity);
+        await _dbContext.SaveChangesAsync();
 
         // Act - Authenticate
         var authResult = await _securityService.AuthenticateAsync(username, password);
@@ -160,9 +165,21 @@ public sealed class TeamAIntegrationTests : IDisposable
             IsLocked: false,
             LastLoginAt: null);
 
-        // Act - Create user
-        var createResult = await _userRepository.AddAsync(user);
-        createResult.IsSuccess.Should().BeTrue();
+        // Act - Create user via DbContext (IUserRepository has no AddAsync)
+        var userEntity = new UserEntity
+        {
+            UserId = user.UserId,
+            Username = user.Username,
+            DisplayName = user.DisplayName,
+            PasswordHash = user.PasswordHash,
+            RoleValue = (int)user.Role,
+            FailedLoginCount = user.FailedLoginCount,
+            IsLocked = user.IsLocked,
+            LastLoginAtTicks = null,
+            LastLoginAtOffsetMinutes = null
+        };
+        await _dbContext.Users.AddAsync(userEntity);
+        await _dbContext.SaveChangesAsync();
 
         // Act - Query by username
         var queryResult = await _userRepository.GetByUsernameAsync(user.Username);
@@ -183,9 +200,10 @@ public sealed class TeamAIntegrationTests : IDisposable
         var userId = Guid.NewGuid().ToString();
         var entry = new AuditEntry(
             EntryId: Guid.NewGuid().ToString(),
+            Timestamp: DateTimeOffset.UtcNow,
             UserId: userId,
             Action: "TEST_ACTION",
-            Timestamp: DateTimeOffset.UtcNow,
+            Details: "Integration test audit entry",
             PreviousHash: null,
             CurrentHash: "test-hash");
 
@@ -210,18 +228,20 @@ public sealed class TeamAIntegrationTests : IDisposable
     {
         // Arrange
         const string username = "failedloginuser";
-        var createUserResult = await _userRepository.AddAsync(
-            new UserRecord(
-                UserId: Guid.NewGuid().ToString(),
-                Username: username,
-                DisplayName: "Failed Login User",
-                PasswordHash: PasswordHasher.HashPassword("CorrectPass1!"),
-                Role: UserRole.Radiographer,
-                FailedLoginCount: 0,
-                IsLocked: false,
-                LastLoginAt: null));
-
-        createUserResult.IsSuccess.Should().BeTrue();
+        var userEntity = new UserEntity
+        {
+            UserId = Guid.NewGuid().ToString(),
+            Username = username,
+            DisplayName = "Failed Login User",
+            PasswordHash = PasswordHasher.HashPassword("CorrectPass1!"),
+            RoleValue = (int)UserRole.Radiographer,
+            FailedLoginCount = 0,
+            IsLocked = false,
+            LastLoginAtTicks = null,
+            LastLoginAtOffsetMinutes = null
+        };
+        await _dbContext.Users.AddAsync(userEntity);
+        await _dbContext.SaveChangesAsync();
 
         // Act - Attempt authentication with wrong password
         var authResult = await _securityService.AuthenticateAsync(username, "WrongPass1!");
@@ -242,18 +262,20 @@ public sealed class TeamAIntegrationTests : IDisposable
     {
         // Arrange
         const string username = "lockuser";
-        var createUserResult = await _userRepository.AddAsync(
-            new UserRecord(
-                UserId: Guid.NewGuid().ToString(),
-                Username: username,
-                DisplayName: "Lock User",
-                PasswordHash: PasswordHasher.HashPassword("CorrectPass1!"),
-                Role: UserRole.Radiographer,
-                FailedLoginCount: 0,
-                IsLocked: false,
-                LastLoginAt: null));
-
-        createUserResult.IsSuccess.Should().BeTrue();
+        var userEntity = new UserEntity
+        {
+            UserId = Guid.NewGuid().ToString(),
+            Username = username,
+            DisplayName = "Lock User",
+            PasswordHash = PasswordHasher.HashPassword("CorrectPass1!"),
+            RoleValue = (int)UserRole.Radiographer,
+            FailedLoginCount = 0,
+            IsLocked = false,
+            LastLoginAtTicks = null,
+            LastLoginAtOffsetMinutes = null
+        };
+        await _dbContext.Users.AddAsync(userEntity);
+        await _dbContext.SaveChangesAsync();
 
         // Act - Attempt 5 failed logins
         for (int i = 0; i < 5; i++)
@@ -279,18 +301,20 @@ public sealed class TeamAIntegrationTests : IDisposable
         // Arrange
         const string username = "revokeuser";
         var userId = Guid.NewGuid().ToString();
-        var createUserResult = await _userRepository.AddAsync(
-            new UserRecord(
-                UserId: userId,
-                Username: username,
-                DisplayName: "Revoke User",
-                PasswordHash: PasswordHasher.HashPassword("RevokePass1!"),
-                Role: UserRole.Admin,
-                FailedLoginCount: 0,
-                IsLocked: false,
-                LastLoginAt: null));
-
-        createUserResult.IsSuccess.Should().BeTrue();
+        var userEntity = new UserEntity
+        {
+            UserId = userId,
+            Username = username,
+            DisplayName = "Revoke User",
+            PasswordHash = PasswordHasher.HashPassword("RevokePass1!"),
+            RoleValue = (int)UserRole.Admin,
+            FailedLoginCount = 0,
+            IsLocked = false,
+            LastLoginAtTicks = null,
+            LastLoginAtOffsetMinutes = null
+        };
+        await _dbContext.Users.AddAsync(userEntity);
+        await _dbContext.SaveChangesAsync();
 
         // Act - Authenticate to get token
         var authResult = await _securityService.AuthenticateAsync(username, "RevokePass1!");
