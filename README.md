@@ -12,6 +12,16 @@
 
 ---
 
+## 개발운영 가이드
+
+| 문서 | 설명 |
+|------|------|
+| [개발운영 지침서](docs/development/DEV-OPS-GUIDELINES.md) | 6팀 워크트리 운영, DISPATCH 라이프사이클, Git 절차, 통합 검증 |
+| [DISPATCH 스키마](.claude/rules/moai/workflow/dispatch-schema.md) | DISPATCH.md 필수 섹션 및 검증 규칙 |
+| [팀 규칙](.claude/rules/teams/) | 팀별 역할, 소유권, 교차 의존성 프로토콜 |
+
+---
+
 ## 프로젝트 개요
 
 | 항목 | 내용 |

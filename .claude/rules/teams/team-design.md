@@ -64,3 +64,22 @@ Scope boundary map (from ★HnVUE UI 변경 최종안_251118.pptx):
 - Theme/design token changes: notify Coordinator
 - Emergency Stop position changes: create issue with QA/RA review required
 - PPT spec scope violation: create issue with `team-design` + `bug` labels, document in CHANGELOG
+
+## Git Completion Protocol [HARD]
+
+After completing DISPATCH tasks:
+1. `git add` changed files (exclude secrets, temp files)
+2. `git commit` with conventional commit format matching team prefix
+3. `git push origin team/team-design`
+4. Create PR to main via Gitea API (check for existing open PR first to avoid duplicates)
+5. Record PR URL in DISPATCH.md Status section
+
+Push failure: report "PUSH_FAILED" status, do not block on git errors.
+
+## Wiki/문서 스크린샷 규칙 [HARD]
+
+UI 스크린샷 캡처 시:
+- WindowHandle 또는 ActiveWindow 캡처 사용 (Region 캡처 금지)
+- 캡처 후 검증: 검은 여백, 브라우저/IDE 창, 태스크바/데스크톱 누출, 앱 크롬 잘림 확인
+- 세트 내 다른 이미지와 프레이밍/크기 일치 확인
+- 불합격 캡처 즉시 재촬영 (오염 이미지 커밋 금지)

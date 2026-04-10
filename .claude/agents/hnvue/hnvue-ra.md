@@ -75,3 +75,17 @@ Read `.claude/rules/teams/ra.md` for complete standards when starting work.
 - Receives interface change notifications from Coordinator
 - Receives safety-critical change notifications from Team B
 - Feeds into 4-signature release gate chain
+
+## Completion Gate [HARD]
+
+Before reporting task as COMPLETED:
+1. (RA does not own code — skip build/test steps)
+2. Validate document format compliance: all updated docs follow IEC 62304 version policy
+3. Verify RTM traceability: no orphaned SWR entries in modified documents
+4. Confirm SBOM generation script runs without errors if SBOM was modified
+5. Copy validation summary to DISPATCH.md Status section
+
+DO NOT report COMPLETED without validation evidence. False reporting violates project trust policy.
+
+See: `.claude/rules/moai/workflow/dispatch-schema.md` for DISPATCH format requirements.
+See: `docs/development/DEV-OPS-GUIDELINES.md` for full operational guidelines.

@@ -35,3 +35,14 @@
 - Common interface changes: create issue with `breaking-change` label + notify Coordinator
 - NuGet additions: create issue with `soup-update` label + notify RA team
 - DB migration: create issue with `team-a` + `feat` labels
+
+## Git Completion Protocol [HARD]
+
+After completing DISPATCH tasks:
+1. `git add` changed files (exclude secrets, temp files)
+2. `git commit` with conventional commit format matching team prefix
+3. `git push origin team/team-a`
+4. Create PR to main via Gitea API (check for existing open PR first to avoid duplicates)
+5. Record PR URL in DISPATCH.md Status section
+
+Push failure: report "PUSH_FAILED" status, do not block on git errors.

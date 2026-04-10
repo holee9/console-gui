@@ -74,7 +74,6 @@ htmlcov/
 *.sublime-project
 *.sublime-workspace
 *.njsproj
-*.sln
 *.suo
 .#*
 
@@ -205,6 +204,15 @@ dist-ssr/
 .netlify/
 .firebase/
 
+# ===========================================
+# Development Environment Artifacts
+# ===========================================
+temp_ppt_extract/
+.dotnet-home/
+tmp/
+_workspace*/
+*.user
+
 # User Custom Patterns (preserved by moai update)
 [Dd]ebug/
 [Rr]elease/
@@ -212,7 +220,6 @@ dist-ssr/
 [Oo]bj/
 **/bin/
 **/obj/
-*.user
 .vs/
 *.nupkg
 TestResults/
@@ -247,5 +254,3 @@ docs/planning/archive/
 .moai/state/.gitkeep
 .mcp.json
 CLAUDE.md
-temp_ppt_extract/
-.dotnet-home/

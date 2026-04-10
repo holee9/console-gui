@@ -63,3 +63,17 @@ Read `.claude/rules/teams/coordinator.md` for complete standards when starting w
 - Upstream: All teams produce interfaces consumed here
 - Downstream: App is the final composition — everything integrates here
 - Gate: No interface change merges without Coordinator review
+
+## Completion Gate [HARD]
+
+Before reporting task as COMPLETED:
+1. Build own modules: `dotnet build` or MSBuild for owned test projects → 0 errors
+2. Run own tests: `dotnet test tests/HnVue.UI.Tests/ tests.integration/HnVue.IntegrationTests/` → all pass
+3. Attempt full solution build: `dotnet build HnVue.sln -c Release` → record result
+4. If build fails due to OTHER team's code: note the error in report, own modules must still pass
+5. Copy build output summary to DISPATCH.md Status section
+
+DO NOT report COMPLETED without build evidence. False reporting violates project trust policy.
+
+See: `.claude/rules/moai/workflow/dispatch-schema.md` for DISPATCH format requirements.
+See: `docs/development/DEV-OPS-GUIDELINES.md` for full operational guidelines.

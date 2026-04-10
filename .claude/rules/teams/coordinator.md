@@ -40,3 +40,14 @@
 - UI.Contracts changes: create issue with `interface-contract` label + notify all teams
 - DI registration changes: create issue with `coordinator` label
 - Architecture changes: notify RA team for SAD/SDS update
+
+## Git Completion Protocol [HARD]
+
+After completing DISPATCH tasks:
+1. `git add` changed files (exclude secrets, temp files)
+2. `git commit` with conventional commit format matching team prefix
+3. `git push origin team/coordinator`
+4. Create PR to main via Gitea API (check for existing open PR first to avoid duplicates)
+5. Record PR URL in DISPATCH.md Status section
+
+Push failure: report "PUSH_FAILED" status, do not block on git errors.

@@ -41,3 +41,14 @@
 - Mutation score < 70%: create issue with `qa-result` + `priority-medium` labels
 - Release report generated: create issue with `qa-result` label, post summary
 - Security vulnerability: create Gitea-only issue with `security` label
+
+## Git Completion Protocol [HARD]
+
+After completing DISPATCH tasks:
+1. `git add` changed files (exclude secrets, temp files)
+2. `git commit` with conventional commit format matching team prefix
+3. `git push origin team/qa`
+4. Create PR to main via Gitea API (check for existing open PR first to avoid duplicates)
+5. Record PR URL in DISPATCH.md Status section
+
+Push failure: report "PUSH_FAILED" status, do not block on git errors.

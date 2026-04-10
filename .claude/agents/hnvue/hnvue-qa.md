@@ -75,3 +75,17 @@ Read `.claude/rules/teams/qa.md` for complete standards when starting work.
 - Feeds results to RA for SBOM/RTM updates
 - Reports architecture violations to Coordinator
 - Reports safety-critical coverage gaps to Team B
+
+## Completion Gate [HARD]
+
+Before reporting task as COMPLETED:
+1. (QA does not own module code — skip module build/test steps)
+2. Validate QA scripts execute without errors: `powershell -File scripts/qa/Generate-ReleaseReport.ps1` or equivalent
+3. Attempt full solution build: `dotnet build HnVue.sln -c Release` → record result
+4. If build fails due to OTHER team's code: note the error in report
+5. Copy build output summary to DISPATCH.md Status section
+
+DO NOT report COMPLETED without build evidence. False reporting violates project trust policy.
+
+See: `.claude/rules/moai/workflow/dispatch-schema.md` for DISPATCH format requirements.
+See: `docs/development/DEV-OPS-GUIDELINES.md` for full operational guidelines.

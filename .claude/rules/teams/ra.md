@@ -46,3 +46,14 @@
 - Document update needed: create issue with `ra-update` label
 - RTM traceability gap: create issue with `ra-update` + `priority-high` labels
 - SBOM update: triggered by QA OWASP results via `soup-update` label
+
+## Git Completion Protocol [HARD]
+
+After completing DISPATCH tasks:
+1. `git add` changed files (exclude secrets, temp files)
+2. `git commit` with conventional commit format matching team prefix
+3. `git push origin team/ra`
+4. Create PR to main via Gitea API (check for existing open PR first to avoid duplicates)
+5. Record PR URL in DISPATCH.md Status section
+
+Push failure: report "PUSH_FAILED" status, do not block on git errors.

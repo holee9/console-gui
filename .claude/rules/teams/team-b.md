@@ -35,3 +35,14 @@
 ## Issue Protocol
 - Safety-critical changes: create issue with `team-b` + `priority-high` labels
 - Workflow state changes: create issue + notify RA team for RTM update
+
+## Git Completion Protocol [HARD]
+
+After completing DISPATCH tasks:
+1. `git add` changed files (exclude secrets, temp files)
+2. `git commit` with conventional commit format matching team prefix
+3. `git push origin team/team-b`
+4. Create PR to main via Gitea API (check for existing open PR first to avoid duplicates)
+5. Record PR URL in DISPATCH.md Status section
+
+Push failure: report "PUSH_FAILED" status, do not block on git errors.

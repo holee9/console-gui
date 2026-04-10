@@ -60,3 +60,17 @@ Read `.claude/rules/teams/team-b.md` for complete standards when starting work.
 - Upstream: Depends on HnVue.Data (repositories), HnVue.Common (interfaces)
 - Downstream: UI.ViewModels consumes workflow state and detector status
 - Lateral: QA validates safety-critical coverage, RA updates RTM
+
+## Completion Gate [HARD]
+
+Before reporting task as COMPLETED:
+1. Build own modules: `dotnet build` or MSBuild for owned test projects → 0 errors
+2. Run own tests: `dotnet test tests/HnVue.Detector.Tests/ tests/HnVue.Dose.Tests/ tests/HnVue.Dicom.Tests/ tests/HnVue.Incident.Tests/ tests/HnVue.Workflow.Tests/ tests/HnVue.PatientManagement.Tests/ tests/HnVue.CDBurning.Tests/` → all pass
+3. Attempt full solution build: `dotnet build HnVue.sln -c Release` → record result
+4. If build fails due to OTHER team's code: note the error in report, own modules must still pass
+5. Copy build output summary to DISPATCH.md Status section
+
+DO NOT report COMPLETED without build evidence. False reporting violates project trust policy.
+
+See: `.claude/rules/moai/workflow/dispatch-schema.md` for DISPATCH format requirements.
+See: `docs/development/DEV-OPS-GUIDELINES.md` for full operational guidelines.
