@@ -23,6 +23,7 @@
 | v1.0 | 2026-03-27 | 최초 작성 | — |
 | v2.0 | 2026-04-03 | 4-Tier 우선순위 체계 반영 (P1–P4 제거); Phase 1 작업을 Tier 1/Tier 2 기준으로 재분해; Gantt 차트 Phase 1 상세화 (24 – 36 MM, SW 2명); 마일스톤 6개 추가 (M1 설계완료, M2 Tier1구현, M3 Tier2구현, M4 통합테스트, M5 시스템테스트, M6 릴리스); CD/DVD Burning (MR-072), 인시던트 대응 (MR-037), SW 업데이트 (MR-039) 작업 항목 추가; Gantt 문법 준수 (이모지 금지, 괄호 금지, em dash 금지) | — |
 | v2.1 | 2026-04-10 | Gantt 진행 상태 반영 (done/active/crit 마커 추가); PROGRESS-002 기반 실제 구현 현황 업데이트; 계획 MM/마일스톤은 변경 없음 | MoAI |
+| v2.2 | 2026-04-10 | 마인드맵 가시성 개선 (명시적 색상 테마 적용, 텍스트 공백 추가); Gantt 차트 MM 기반으로 변경 (YYYY-MM-DD 제거); 마일스톤 날짜를 월 기준으로 정정 | MoAI |
 
 ---
 
@@ -86,12 +87,12 @@ flowchart TD
 
 | MS ID | Milestone | 목표 시기 | Tier 1 완료 기준 | Tier 2 완료 기준 | Phase Gate |
 |-------|-----------|----------|-----------------|-----------------|-----------|
-| **M1** | 설계 완료 | 2026-05-15 | Tier 1 SWR 전체 SAD/SDS 반영 확인 | Tier 2 SWR 전체 SAD/SDS 반영 확인 | DR#2 설계 입력 검토 |
-| **M2** | Tier 1 구현 | 2026-08-31 | RBAC/PHI암호화/감사로그/DICOM/IHE SWF/인시던트/SW업데이트/STRIDE 구현 완료 | — | DR#3 설계 출력 검토 |
-| **M3** | Tier 2 구현 | 2026-10-31 | — | MWL/PACS전송/W-L/Zoom/DAP/CD버닝/시스템설정 구현 완료 | — |
-| **M4** | 통합 테스트 | 2026-12-15 | Tier 1 통합 테스트 전체 통과 | Tier 2 통합 테스트 전체 통과 | DR#4 검증 완료 검토 |
-| **M5** | 시스템 테스트 | 2027-01-15 | Tier 1 시스템 테스트 전체 통과 | Tier 2 시스템 테스트 전체 통과 | DR#4 검증/밸리데이션 |
-| **M6** | 릴리스 | 2027-03-01 | DHF 완성, eSTAR 제출 준비 완료 | — | DR#5 인허가 게이트 |
+| **M1** | 설계 완료 | 2026-05 | Tier 1 SWR 전체 SAD/SDS 반영 확인 | Tier 2 SWR 전체 SAD/SDS 반영 확인 | DR#2 설계 입력 검토 |
+| **M2** | Tier 1 구현 | 2026-08 | RBAC/PHI암호화/감사로그/DICOM/IHE SWF/인시던트/SW업데이트/STRIDE 구현 완료 | — | DR#3 설계 출력 검토 |
+| **M3** | Tier 2 구현 | 2026-10 | — | MWL/PACS전송/W-L/Zoom/DAP/CD버닝/시스템설정 구현 완료 | — |
+| **M4** | 통합 테스트 | 2026-12 | Tier 1 통합 테스트 전체 통과 | Tier 2 통합 테스트 전체 통과 | DR#4 검증 완료 검토 |
+| **M5** | 시스템 테스트 | 2027-01 | Tier 1 시스템 테스트 전체 통과 | Tier 2 시스템 테스트 전체 통과 | DR#4 검증/밸리데이션 |
+| **M6** | 릴리스 | 2027-03 | DHF 완성, eSTAR 제출 준비 완료 | — | DR#5 인허가 게이트 |
 
 ---
 
@@ -170,73 +171,74 @@ flowchart LR
 ## 5. WBS 구조 Mindmap
 
 ```mermaid
+%%{init: {'theme': 'base', 'themeVariables': {'cScale0': '#1e40af', 'cScale1': '#166534', 'cScale2': '#991b1b', 'cScale3': '#7e22ce', 'cScale4': '#c2410c', 'cScale5': '#0e7490', 'cScale6': '#4338ca', 'cScale7': '#4d7c0f', 'cScale8': '#a21caf', 'cScale9': '#047857', 'cScale10': '#b45309', 'cScale11': '#6d28d9'}}}%%
 mindmap
   root((HnVue Console SW v2.0))
-    0.표준규정관리
-      Tier체계적용
-      규격Gap분석
-      규격교육
-      준수체크리스트
-    1.프로젝트관리
-      계획SDP
-      품질보증
-      형상관리
-      위험관리
-      일정자원관리
-    2.요구사항분석
-      Tier1MR분석
-      Tier2MR분석
-      STRIDE위협모델링
-      RTM작성
-    3.아키텍처설계
-      SAD_v2.0
-      CDDVDBurning설계
-      IncidentResponse설계
-      SWUpdate설계
-    4.상세설계
-      SDS_v2.0
-      모듈별클래스설계
-      시퀀스다이어그램
-    5.구현Tier1
-      RBAC인증
-      PHI암호화SQLCipher
-      감사로그Serilog
-      DICOM_fo-dicom
-      SW업데이트모듈
-      인시던트대응모듈
-      SBOM_CycloneDX
-    6.구현Tier2
-      MWL자동조회
-      PACS전송30초
-      영상처리WL
-      선량관리DAP
-      CD_DVD버닝
-      시스템설정UI
-    7.검증
-      UnitTest_xUnit
-      통합테스트Tier1
-      통합테스트Tier2
-      보안테스트STRIDE
-    8.시스템테스트및밸리데이션
-      시스템테스트전체
-      침투테스트
-      사용성테스트Summative
-      VnVSummaryReport
-    9.위험관리
-      FMEA_FTA
-      잔여위험평가
-      SOUP분석
-    10.규제및인허가
-      IEC62304준수
-      DHF편찬
-      RTM최종본
-      eSTAR_510k
-      KFDA기술문서
-    11.릴리스
-      릴리스빌드
-      코드서명Authenticode
-      SBOM최종본
-      설치배포패키지
+    표준 규정 관리
+      Tier 체계 적용
+      규격 Gap 분석
+      규격 교육
+      준수 체크리스트
+    프로젝트 관리
+      계획 SDP
+      품질 보증
+      형상 관리
+      위험 관리
+      일정 자원 관리
+    요구사항 분석
+      Tier 1 MR 분석
+      Tier 2 MR 분석
+      STRIDE 위협 모델링
+      RTM 작성
+    아키텍처 설계
+      SAD v2.0
+      CD DVD Burning 설계
+      Incident Response 설계
+      SW Update 설계
+    상세 설계
+      SDS v2.0
+      모듈별 클래스 설계
+      시퀀스 다이어그램
+    구현 Tier 1
+      RBAC 인증
+      PHI 암호화 SQLCipher
+      감사 로그 Serilog
+      DICOM fo-dicom
+      SW 업데이트 모듈
+      인시던트 대응 모듈
+      SBOM CycloneDX
+    구현 Tier 2
+      MWL 자동 조회
+      PACS 전송 30초
+      영상 처리 W/L
+      선량 관리 DAP
+      CD DVD 버닝
+      시스템 설정 UI
+    검증
+      Unit Test xUnit
+      통합 테스트 Tier 1
+      통합 테스트 Tier 2
+      보안 테스트 STRIDE
+    시스템 테스트 및 밸리데이션
+      시스템 테스트 전체
+      침투 테스트
+      사용성 테스트 Summative
+      VnV Summary Report
+    위험 관리
+      FMEA FTA
+      잔여 위험 평가
+      SOUP 분석
+    규제 및 인허가
+      IEC 62304 준수
+      DHF 편찬
+      RTM 최종본
+      eSTAR 510k
+      KFDA 기술 문서
+    릴리스
+      릴리스 빌드
+      코드 서명 Authenticode
+      SBOM 최종본
+      설치 배포 패키지
 ```
 
 ---
@@ -293,54 +295,54 @@ gantt
     eSTAR 510k 패키지         :r3, 2027-02, 1M
 
     section 마일스톤
-    M1 설계 완료              :milestone, m1, 2026-05-15, 0d
-    M2 Tier1 구현             :milestone, m2, 2026-08-31, 0d
-    M3 Tier2 구현             :milestone, m3, 2026-10-31, 0d
-    M4 통합 테스트            :milestone, m4, 2026-12-15, 0d
-    M5 시스템 테스트          :milestone, m5, 2027-01-15, 0d
-    M6 릴리스                 :milestone, m6, 2027-03-01, 0d
+    M1 설계 완료              :milestone, m1, 2026-05, 0d
+    M2 Tier1 구현             :milestone, m2, 2026-08, 0d
+    M3 Tier2 구현             :milestone, m3, 2026-10, 0d
+    M4 통합 테스트            :milestone, m4, 2026-12, 0d
+    M5 시스템 테스트          :milestone, m5, 2027-01, 0d
+    M6 릴리스                 :milestone, m6, 2027-03, 0d
 ```
 
-### 6.2 Phase 1 초반 상세 Gantt (2026년 4월 – 2026년 10월)
+### 6.2 Phase 1 초반 상세 Gantt (M4 ~ M10, SW 2명)
 
 ```mermaid
 gantt
     title Phase 1 초반 상세 일정 Tier 1 Tier 2 SW 2명
-    dateFormat  YYYY-MM-DD
-    axisFormat  %m/%d
+    dateFormat  YYYY-MM
+    axisFormat  %Y-%m
 
     section Tier 1 주요 작업 SW1
-    RBAC bcrypt 계정 잠금     :done, t1a, 2026-04-15, 3w
-    PHI 암호화 SQLCipher 통합 :active, t1b, 2026-04-15, 3w
-    감사 로그 해시체인        :done, t1c, 2026-05-01, 2w
-    fo-dicom C-STORE SCU      :done, t1d, 2026-05-01, 3w
-    fo-dicom MWL C-FIND SCU   :done, t1e, 2026-05-15, 2w
-    fo-dicom Print SCU        :t1f, 2026-05-15, 2w
-    IHE SWF 상태머신          :done, t1g, 2026-06-01, 4w
-    SW 업데이트 코드서명 롤백 :active, t1h, 2026-06-01, 3w
-    인시던트 대응 INC-1100    :active, t1i, 2026-06-15, 3w
-    SBOM CycloneDX CI         :active, t1j, 2026-07-01, 2w
-    Generator 통신 RS-232     :crit, t1k, 2026-07-01, 3w
+    RBAC bcrypt 계정 잠금     :done, t1a, 2026-04, 1M
+    PHI 암호화 SQLCipher 통합 :active, t1b, 2026-04, 1M
+    감사 로그 해시체인        :done, t1c, 2026-05, 1M
+    fo-dicom C-STORE SCU      :done, t1d, 2026-05, 1M
+    fo-dicom MWL C-FIND SCU   :done, t1e, 2026-05, 1M
+    fo-dicom Print SCU        :t1f, 2026-06, 1M
+    IHE SWF 상태머신          :done, t1g, 2026-06, 1M
+    SW 업데이트 코드서명 롤백 :active, t1h, 2026-06, 1M
+    인시던트 대응 INC-1100    :active, t1i, 2026-07, 1M
+    SBOM CycloneDX CI         :active, t1j, 2026-07, 1M
+    Generator 통신 RS-232     :crit, t1k, 2026-07, 1M
 
     section Tier 2 주요 작업 SW2
-    환자 관리 MWL 자동조회    :active, t2a, 2026-04-15, 4w
-    영상처리 파이프라인       :done, t2b, 2026-04-15, 4w
-    Window Level Zoom Pan     :done, t2c, 2026-05-01, 3w
-    선량 관리 DAP DRL         :active, t2d, 2026-05-15, 3w
-    CD DVD 버닝 IMAPI2        :active, t2e, 2026-06-01, 4w
-    FPD SDK 통합              :crit, t2f, 2026-06-15, 4w
-    시스템 설정 UI            :active, t2g, 2026-07-01, 3w
-    WPF MVVM 프레임워크       :active, t2h, 2026-07-15, 4w
+    환자 관리 MWL 자동조회    :active, t2a, 2026-04, 1M
+    영상처리 파이프라인       :done, t2b, 2026-04, 1M
+    Window Level Zoom Pan     :done, t2c, 2026-05, 1M
+    선량 관리 DAP DRL         :active, t2d, 2026-05, 1M
+    CD DVD 버닝 IMAPI2        :active, t2e, 2026-06, 1M
+    FPD SDK 통합              :crit, t2f, 2026-06, 1M
+    시스템 설정 UI            :active, t2g, 2026-07, 1M
+    WPF MVVM 프레임워크       :active, t2h, 2026-07, 1M
 
     section 단위 테스트
-    xUnit Tier 1 보안 모듈    :active, ut1, 2026-05-01, 8w
-    xUnit Tier 2 모듈         :active, ut2, 2026-06-01, 8w
-    CI 자동화 통합            :active, ut3, 2026-07-01, 4w
+    xUnit Tier 1 보안 모듈    :active, ut1, 2026-05, 2M
+    xUnit Tier 2 모듈         :active, ut2, 2026-06, 2M
+    CI 자동화 통합            :active, ut3, 2026-07, 1M
 
     section 마일스톤
-    M1 설계 완료              :milestone, m1, 2026-05-15, 0d
-    M2 Tier1 구현             :milestone, m2, 2026-08-31, 0d
-    M3 Tier2 구현             :milestone, m3, 2026-10-31, 0d
+    M1 설계 완료              :milestone, m1, 2026-05, 0d
+    M2 Tier1 구현             :milestone, m2, 2026-08, 0d
+    M3 Tier2 구현             :milestone, m3, 2026-10, 0d
 ```
 
 ---
