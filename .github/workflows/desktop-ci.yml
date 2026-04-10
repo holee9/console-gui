@@ -12,6 +12,8 @@ on:
     paths:
       - .github/workflows/desktop-ci.yml
       - scripts/ci/**
+      - scripts/qa/**
+      - .config/dotnet-tools.json
       - Directory.Build.props
       - Directory.Packages.props
       - global.json
@@ -25,6 +27,8 @@ on:
     paths:
       - .github/workflows/desktop-ci.yml
       - scripts/ci/**
+      - scripts/qa/**
+      - .config/dotnet-tools.json
       - Directory.Build.props
       - Directory.Packages.props
       - global.json
@@ -61,13 +65,18 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ env.NUGET_PACKAGES }}
-          key: nuget-${{ runner.os }}-${{ hashFiles('global.json', 'nuget.config', 'Directory.Build.props', 'Directory.Packages.props', 'src/**/*.csproj', 'tests/**/*.csproj', 'tests.integration/**/*.csproj') }}
+          key: nuget-${{ runner.os }}-${{ hashFiles('global.json', 'nuget.config', '.config/dotnet-tools.json', 'Directory.Build.props', 'Directory.Packages.props', 'src/**/*.csproj', 'tests/**/*.csproj', 'tests.integration/**/*.csproj') }}
           restore-keys: |
             nuget-${{ runner.os }}-
 
       - name: Restore, build, and test desktop projects
         shell: pwsh
         run: ./scripts/ci/Invoke-DesktopCi.ps1 -Mode All -Configuration Release -ResultsDirectory "$env:GITHUB_WORKSPACE\artifacts\test-results"
+
+      - name: Run local coverage analysis
+        if: ${{ success() }}
+        shell: pwsh
+        run: ./scripts/qa/Invoke-LocalAnalysis.ps1 -Mode Coverage -Configuration Release -OutputDirectory "$env:GITHUB_WORKSPACE\TestReports"
 
       - name: Upload desktop build output
         if: ${{ always() }}
@@ -83,4 +92,12 @@ jobs:
         with:
           name: desktop-test-results
           path: artifacts/test-results/**/*.trx
+          if-no-files-found: warn
+
+      - name: Upload coverage report
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: local-coverage-report
+          path: TestReports/coverage/**
           if-no-files-found: warn

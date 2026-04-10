@@ -1,0 +1,12 @@
+﻿{
+    "Mode":  "Coverage",
+    "Configuration":  "Release",
+    "TimestampUtc":  "2026-04-08T09:48:55.6424648Z",
+    "Build":  "NotRun",
+    "Test":  "NotRun",
+    "Coverage":  "Fail",
+    "Security":  "NotRun",
+    "Failures":  [
+                     "Coverage: dotnet test with coverage failed with exit code 1"
+                 ]
+}
