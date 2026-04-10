@@ -226,14 +226,6 @@ appsettings.*.json
 !appsettings.json
 _site/
 api/
-~$*
-.tmp_wiki_full/
-.worktrees/
-TestReports/
-.moai/docs/
-.moai/specs/
-*.failed
-docs/slide*.xml
 docs/planning/archive/
 .claude/
 .moai/config/sections/context.yaml

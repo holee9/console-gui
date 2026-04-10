@@ -31,5 +31,16 @@ public enum NavigationToken
     QuickPinLock,
 
     /// <summary>Emergency acquisition bypass screen.</summary>
-    Emergency
+    Emergency,
+
+    // ── team-design 요청 신규 추가 (DESIGN_PLAN_v2.md) ──────────────────────
+
+    /// <summary>Study list full-screen view. PPT slides 5-7.</summary>
+    Studylist,
+
+    /// <summary>Sync Study (merge) full-screen view. PPT slides 12-13.</summary>
+    Merge,
+
+    /// <summary>Settings full-screen view. PPT slides 14-22.</summary>
+    Settings
 }

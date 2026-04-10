@@ -7,7 +7,7 @@
                  Background="{DynamicResource HnVue.Background.Dark.Brush}">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="60"/><!-- 60px: IEC 62366 Emergency Stop minimum touch target -->
             <RowDefinition Height="*"/>
             <RowDefinition Height="28"/>
         </Grid.RowDefinitions>
@@ -153,36 +153,12 @@
         <!-- Main Content Area -->
         <Grid Grid.Row="1">
 
-            <!-- 3-column main layout (visible when authenticated) -->
-            <Grid Visibility="{Binding IsMainContentVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="0"/>
-                    <ColumnDefinition Width="0"/>
-                </Grid.ColumnDefinitions>
-
-                <!-- Left Panel: Patient/Worklist (full width — PPT Slide 4 spec) -->
-                <Border Grid.Column="0" Background="{DynamicResource HnVue.Background.Panel.Brush}">
-                    <ContentControl Content="{Binding PatientListViewModel}"/>
-                </Border>
-
-                <!-- Center Panel: Image Viewer — hidden in worklist mode -->
-                <Border Grid.Column="1" Width="0" Visibility="Collapsed" Background="{DynamicResource HnVue.Background.Dark.Brush}">
-                    <ContentControl Content="{Binding ImageViewerViewModel}"/>
-                </Border>
-
-                <!-- Right Panel: hidden — detail panel is embedded in PatientListView -->
-                <Border Grid.Column="2" Visibility="Collapsed" Background="{DynamicResource HnVue.Background.Panel.Brush}">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <ContentControl Grid.Row="0" Content="{Binding WorkflowViewModel}"/>
-                        <ContentControl Grid.Row="1" Content="{Binding DoseDisplayViewModel}"/>
-                    </Grid>
-                </Border>
-            </Grid>
+            <!-- Single view content region — NavigationService sets CurrentView to the active ViewModel.
+                 Each ViewModel is resolved to its View via implicit DataTemplates in HnVue.UI ResourceDictionary.
+                 Replaces the fixed 3-column grid per DESIGN_PLAN_v2.md (team-design request). -->
+            <ContentControl x:Name="MainContentControl"
+                            Content="{Binding CurrentView}"
+                            Visibility="{Binding IsMainContentVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
             <!-- Login overlay (visible when not authenticated) -->
             <Border Visibility="{Binding IsLoginVisible, Converter={StaticResource BooleanToVisibilityConverter}}"

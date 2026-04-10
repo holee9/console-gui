@@ -86,12 +86,12 @@ public class AccessibilityTests
     }
 
     [Theory]
-    [InlineData(36, 36)]   // Medium button
-    [InlineData(44, 44)]   // Large button
-    [InlineData(44, 44)]   // Touch target minimum
+    [InlineData(36, 36, "MediumButton")]        // Medium button
+    [InlineData(44, 44, "LargeButton")]         // Large button
+    [InlineData(44, 44, "TouchTargetMinimum")]  // WCAG 2.5.5 minimum (44px)
     [Trait("Category", "Accessibility")]
     [Trait("Priority", "High")]
-    public void TouchTarget_ShouldMeetMinimumSize(int width, int height)
+    public void TouchTarget_ShouldMeetMinimumSize(int width, int height, string scenario)
     {
         // Arrange - Minimum touch target for WPF desktop application
         // WCAG 2.5.5 (44px) is for touch-first apps; 36px is acceptable for desktop
@@ -99,9 +99,9 @@ public class AccessibilityTests
 
         // Act & Assert
         width.Should().BeGreaterOrEqualTo(minTargetSize,
-            $"Touch target width {width}px should be at least {minTargetSize}px");
+            $"[{scenario}] Touch target width {width}px should be at least {minTargetSize}px");
         height.Should().BeGreaterOrEqualTo(minTargetSize,
-            $"Touch target height {height}px should be at least {minTargetSize}px");
+            $"[{scenario}] Touch target height {height}px should be at least {minTargetSize}px");
     }
 
     [Fact]

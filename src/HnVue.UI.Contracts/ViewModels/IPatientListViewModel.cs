@@ -30,4 +30,7 @@ public interface IPatientListViewModel : IViewModelBase
 
     /// <summary>Gets or sets the active period filter ("Today","3Days","1Week","All","1Month").</summary>
     string ActivePeriodFilter { get; set; }
+
+    /// <summary>Gets the study list ViewModel nested within the patient list panel.</summary>
+    IStudylistViewModel StudylistViewModel { get; }
 }

@@ -303,6 +303,10 @@ public sealed partial class AddPatientProcedureViewModel : ObservableObject, IAd
     private static string GenerateAccNo()
         => $"ACC{DateTime.Now:yyyyMMddHHmmss}";
 
+    // Non-security use: generates a display-only patient ID suffix for UI purposes.
+    // SCS0005 suppressed — Random is not used for cryptographic or security-sensitive operations.
+#pragma warning disable SCS0005
     private static string GeneratePatientId()
         => $"PT{DateTime.Now:yyyyMMdd}{Random.Shared.Next(1000, 9999)}";
+#pragma warning restore SCS0005
 }
