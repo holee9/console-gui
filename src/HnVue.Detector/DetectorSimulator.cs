@@ -170,6 +170,7 @@ public sealed class DetectorSimulator : IDetectorInterface
         int pixelCount = w * h;
         var pixels = new byte[pixelCount * 2]; // 16-bit LE per pixel
 
+#pragma warning disable SCS0005 // Non-crypto RNG acceptable for detector simulation data
         var rng = new Random();
         for (int i = 0; i < pixelCount; i++)
         {

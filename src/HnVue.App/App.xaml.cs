@@ -220,7 +220,6 @@ public partial class App : Application
                     MwlHost: "localhost",
                     MwlPort: 11113));
                 services.AddSingleton<DicomStoreScu>();
-                // DicomFindScu removed — Issue #24: WorklistRepository now uses IDicomService as single entry point.
                 services.AddSingleton<DicomFileIO>();
 
                 // ── HnVue.Imaging ────────────────────────────────────────────

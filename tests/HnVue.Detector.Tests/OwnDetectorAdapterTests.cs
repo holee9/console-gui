@@ -1,36 +1,18 @@
 using FluentAssertions;
 using HnVue.Common.Enums;
+using HnVue.Common.Models;
+using HnVue.Common.Results;
 using HnVue.Detector.OwnDetector;
 using Xunit;
 
 namespace HnVue.Detector.Tests;
 
-/// <summary>
-/// Tests for OwnDetectorAdapter — SDK skeleton that throws NotImplementedException.
-/// These tests validate the adapter contract (constructor, disposal, null guards)
-/// and document expected behaviour once the SDK is integrated.
-/// SWR-WF-031: OwnDetectorAdapter must implement IDetectorInterface.
-/// </summary>
-[Trait("SWR", "SWR-WF-031")]
-public sealed class OwnDetectorAdapterTests : IDisposable
+[Trait("SWR", "SWR-DET-010")]
+public sealed class OwnDetectorAdapterTests
 {
-    private readonly OwnDetectorConfig _config = new("192.168.1.100");
-    private readonly OwnDetectorAdapter _sut;
+    private static OwnDetectorConfig CreateConfig() => new("192.168.1.100");
 
-    public OwnDetectorAdapterTests()
-    {
-        _sut = new OwnDetectorAdapter(_config);
-    }
-
-    public void Dispose() => _sut.Dispose();
-
-    // ── Constructor ───────────────────────────────────────────────────────────
-
-    [Fact]
-    public void Constructor_WithValidConfig_SetsInitialStateToDisconnected()
-    {
-        _sut.CurrentState.Should().Be(DetectorState.Disconnected);
-    }
+    // ── Constructor ──────────────────────────────────────────────────────────────
 
     [Fact]
     public void Constructor_NullConfig_ThrowsArgumentNullException()
@@ -40,149 +22,206 @@ public sealed class OwnDetectorAdapterTests : IDisposable
         act.Should().Throw<ArgumentNullException>().WithParameterName("config");
     }
 
-    // ── ConnectAsync ──────────────────────────────────────────────────────────
+    [Fact]
+    public void Constructor_ValidConfig_SetsDisconnectedState()
+    {
+        using var sut = new OwnDetectorAdapter(CreateConfig());
+
+        sut.CurrentState.Should().Be(DetectorState.Disconnected);
+    }
+
+    // ── ConnectAsync ─────────────────────────────────────────────────────────────
 
     [Fact]
-    public async Task ConnectAsync_BeforeSdkImplemented_ThrowsNotImplementedException()
+    public async Task ConnectAsync_ThrowsNotImplementedException()
     {
-        // The adapter is a placeholder; all SDK calls throw until integrated.
-        var act = async () => await _sut.ConnectAsync();
+        using var sut = new OwnDetectorAdapter(CreateConfig());
+
+        var act = async () => await sut.ConnectAsync();
+
+        await act.Should().ThrowAsync<NotImplementedException>()
+            .WithMessage("*OwnDetectorAdapter.ConnectAsync*");
+    }
+
+    [Fact]
+    public async Task ConnectAsync_WhenDisposed_ThrowsObjectDisposedException()
+    {
+        var sut = new OwnDetectorAdapter(CreateConfig());
+        sut.Dispose();
+
+        var act = async () => await sut.ConnectAsync();
+
+        await act.Should().ThrowAsync<ObjectDisposedException>();
+    }
+
+    // ── DisconnectAsync ──────────────────────────────────────────────────────────
+
+    [Fact]
+    public async Task DisconnectAsync_ThrowsNotImplementedException()
+    {
+        using var sut = new OwnDetectorAdapter(CreateConfig());
+
+        var act = async () => await sut.DisconnectAsync();
+
+        await act.Should().ThrowAsync<NotImplementedException>()
+            .WithMessage("*OwnDetectorAdapter.DisconnectAsync*");
+    }
+
+    // ── ArmAsync ─────────────────────────────────────────────────────────────────
+
+    [Fact]
+    public async Task ArmAsync_WhenDisposed_ThrowsObjectDisposedException()
+    {
+        var sut = new OwnDetectorAdapter(CreateConfig());
+        sut.Dispose();
+
+        var act = async () => await sut.ArmAsync();
+
+        await act.Should().ThrowAsync<ObjectDisposedException>();
+    }
+
+    [Fact]
+    public async Task ArmAsync_ThrowsNotImplementedException()
+    {
+        using var sut = new OwnDetectorAdapter(CreateConfig());
+
+        var act = async () => await sut.ArmAsync();
+
+        await act.Should().ThrowAsync<NotImplementedException>()
+            .WithMessage("*OwnDetectorAdapter.ArmAsync*");
+    }
+
+    [Fact]
+    public async Task ArmAsync_WithFreeRunTrigger_ThrowsNotImplementedException()
+    {
+        using var sut = new OwnDetectorAdapter(CreateConfig());
+
+        var act = async () => await sut.ArmAsync(DetectorTriggerMode.FreeRun);
 
         await act.Should().ThrowAsync<NotImplementedException>();
     }
 
-    [Fact]
-    public async Task ConnectAsync_WithCancellationToken_ThrowsNotImplementedException()
-    {
-        using var cts = new CancellationTokenSource();
-
-        var act = async () => await _sut.ConnectAsync(cts.Token);
-
-        await act.Should().ThrowAsync<NotImplementedException>();
-    }
-
-    // ── DisconnectAsync ───────────────────────────────────────────────────────
+    // ── AbortAsync ───────────────────────────────────────────────────────────────
 
     [Fact]
-    public async Task DisconnectAsync_BeforeSdkImplemented_ThrowsNotImplementedException()
+    public async Task AbortAsync_ThrowsNotImplementedException()
     {
-        var act = async () => await _sut.DisconnectAsync();
+        using var sut = new OwnDetectorAdapter(CreateConfig());
 
-        await act.Should().ThrowAsync<NotImplementedException>();
+        var act = async () => await sut.AbortAsync();
+
+        await act.Should().ThrowAsync<NotImplementedException>()
+            .WithMessage("*OwnDetectorAdapter.AbortAsync*");
     }
 
-    // ── ArmAsync ──────────────────────────────────────────────────────────────
+    // ── GetStatusAsync ───────────────────────────────────────────────────────────
 
     [Fact]
-    public async Task ArmAsync_DefaultTriggerMode_ThrowsNotImplementedException()
+    public async Task GetStatusAsync_ThrowsNotImplementedException()
     {
-        var act = async () => await _sut.ArmAsync();
+        using var sut = new OwnDetectorAdapter(CreateConfig());
 
-        await act.Should().ThrowAsync<NotImplementedException>();
+        var act = async () => await sut.GetStatusAsync();
+
+        await act.Should().ThrowAsync<NotImplementedException>()
+            .WithMessage("*OwnDetectorAdapter.GetStatusAsync*");
     }
 
-    [Fact]
-    public async Task ArmAsync_FreeRunTriggerMode_ThrowsNotImplementedException()
-    {
-        var act = async () => await _sut.ArmAsync(DetectorTriggerMode.FreeRun);
-
-        await act.Should().ThrowAsync<NotImplementedException>();
-    }
-
-    [Fact]
-    public async Task ArmAsync_SyncTriggerMode_ThrowsNotImplementedException()
-    {
-        var act = async () => await _sut.ArmAsync(DetectorTriggerMode.Sync);
-
-        await act.Should().ThrowAsync<NotImplementedException>();
-    }
-
-    // ── AbortAsync ────────────────────────────────────────────────────────────
-
-    [Fact]
-    public async Task AbortAsync_BeforeSdkImplemented_ThrowsNotImplementedException()
-    {
-        var act = async () => await _sut.AbortAsync();
-
-        await act.Should().ThrowAsync<NotImplementedException>();
-    }
-
-    // ── GetStatusAsync ────────────────────────────────────────────────────────
-
-    [Fact]
-    public async Task GetStatusAsync_BeforeSdkImplemented_ThrowsNotImplementedException()
-    {
-        var act = async () => await _sut.GetStatusAsync();
-
-        await act.Should().ThrowAsync<NotImplementedException>();
-    }
-
-    // ── IDisposable ───────────────────────────────────────────────────────────
+    // ── Dispose ──────────────────────────────────────────────────────────────────
 
     [Fact]
     public void Dispose_CalledOnce_DoesNotThrow()
     {
-        using var adapter = new OwnDetectorAdapter(_config);
+        var sut = new OwnDetectorAdapter(CreateConfig());
 
-        var act = () => adapter.Dispose();
-
-        act.Should().NotThrow();
-    }
-
-    [Fact]
-    public void Dispose_CalledMultipleTimes_IsIdempotent()
-    {
-        var adapter = new OwnDetectorAdapter(_config);
-
-        adapter.Dispose();
-        var act = () => adapter.Dispose();
+        var act = () => sut.Dispose();
 
         act.Should().NotThrow();
     }
 
     [Fact]
-    public async Task ConnectAsync_AfterDispose_ThrowsObjectDisposedException()
+    public void Dispose_CalledMultipleTimes_DoesNotThrow()
     {
-        var adapter = new OwnDetectorAdapter(_config);
-        adapter.Dispose();
+        var sut = new OwnDetectorAdapter(CreateConfig());
 
-        var act = async () => await adapter.ConnectAsync();
+        sut.Dispose();
+        var act = () => sut.Dispose();
+
+        act.Should().NotThrow();
+    }
+
+    [Fact]
+    public async Task Dispose_ThenConnectAsync_ThrowsObjectDisposedException()
+    {
+        var sut = new OwnDetectorAdapter(CreateConfig());
+        sut.Dispose();
+
+        var act = async () => await sut.ConnectAsync();
 
         await act.Should().ThrowAsync<ObjectDisposedException>();
     }
 
     [Fact]
-    public async Task ArmAsync_AfterDispose_ThrowsObjectDisposedException()
+    public async Task Dispose_ThenArmAsync_ThrowsObjectDisposedException()
     {
-        var adapter = new OwnDetectorAdapter(_config);
-        adapter.Dispose();
+        var sut = new OwnDetectorAdapter(CreateConfig());
+        sut.Dispose();
 
-        var act = async () => await adapter.ArmAsync();
+        var act = async () => await sut.ArmAsync();
 
         await act.Should().ThrowAsync<ObjectDisposedException>();
     }
 
-    // ── Events ────────────────────────────────────────────────────────────────
+    // ── Events ───────────────────────────────────────────────────────────────────
 
     [Fact]
-    public void StateChanged_EventCanBeSubscribed_WithoutThrowing()
+    public void StateChanged_CanBeSubscribedAndUnsubscribed()
     {
-        var act = () =>
-        {
-            _sut.StateChanged += (_, _) => { };
-        };
+        using var sut = new OwnDetectorAdapter(CreateConfig());
+        var events = new List<DetectorStateChangedEventArgs>();
 
-        act.Should().NotThrow();
+        EventHandler<DetectorStateChangedEventArgs> handler = (_, e) => events.Add(e);
+        sut.StateChanged += handler;
+        sut.StateChanged -= handler;
+
+        // No events fired because all methods throw NotImplementedException
+        events.Should().BeEmpty();
     }
 
     [Fact]
-    public void ImageAcquired_EventCanBeSubscribed_WithoutThrowing()
+    public void ImageAcquired_CanBeSubscribedAndUnsubscribed()
     {
-        var act = () =>
-        {
-            _sut.ImageAcquired += (_, _) => { };
-        };
+        using var sut = new OwnDetectorAdapter(CreateConfig());
+        var images = new List<ImageAcquiredEventArgs>();
 
-        act.Should().NotThrow();
+        EventHandler<ImageAcquiredEventArgs> handler = (_, e) => images.Add(e);
+        sut.ImageAcquired += handler;
+        sut.ImageAcquired -= handler;
+
+        images.Should().BeEmpty();
+    }
+
+    // ── CurrentState after disposal ──────────────────────────────────────────────
+
+    [Fact]
+    public void CurrentState_AfterDisposal_StillReturnsDisconnected()
+    {
+        var sut = new OwnDetectorAdapter(CreateConfig());
+        sut.Dispose();
+
+        // State is still accessible (read-only property with lock)
+        sut.CurrentState.Should().Be(DetectorState.Disconnected);
+    }
+
+    // ── Config is stored correctly ───────────────────────────────────────────────
+
+    [Fact]
+    public void Constructor_StoresConfigCorrectly()
+    {
+        var config = new OwnDetectorConfig("10.0.0.1", Port: 9999, CalibrationPath: @"C:\Cal");
+        using var sut = new OwnDetectorAdapter(config);
+
+        // Adapter created without error — config accepted
+        sut.CurrentState.Should().Be(DetectorState.Disconnected);
     }
 }

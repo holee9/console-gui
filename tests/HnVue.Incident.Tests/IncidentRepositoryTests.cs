@@ -193,4 +193,26 @@ public sealed class IncidentRepositoryTests
 
         await act.Should().ThrowAsync<OperationCanceledException>();
     }
+
+    // ── Null Guard ────────────────────────────────────────────────────────────
+
+    [Fact]
+    public async Task AddAsync_NullRecord_ThrowsArgumentNullException()
+    {
+        var repo = new IncidentRepository();
+
+        var act = async () => await repo.AddAsync(null!, default);
+
+        await act.Should().ThrowAsync<ArgumentNullException>();
+    }
+
+    [Fact]
+    public async Task UpdateAsync_NullRecord_ThrowsArgumentNullException()
+    {
+        var repo = new IncidentRepository();
+
+        var act = async () => await repo.UpdateAsync(null!, default);
+
+        await act.Should().ThrowAsync<ArgumentNullException>();
+    }
 }

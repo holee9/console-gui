@@ -715,6 +715,7 @@ public sealed class ImageProcessorTests
     {
         // SWR-IP-041: strength=1 should produce a blurred output (lower variance).
         var sut = CreateSut();
+#pragma warning disable SCS0005 // Non-crypto RNG acceptable for test data generation
         var rng = new Random(42);
         var pixels = new byte[16 * 16];
         for (int i = 0; i < pixels.Length; i++)
@@ -1132,6 +1133,7 @@ public sealed class ImageProcessorTests
     {
         // Verify that strength near 1.0 smoothes a noisy image toward a uniform mean.
         var sut = CreateSut();
+#pragma warning disable SCS0005 // Non-crypto RNG acceptable for test data generation
         var rng = new Random(42);
         var pixels = new byte[16 * 16];
         for (int i = 0; i < pixels.Length; i++)

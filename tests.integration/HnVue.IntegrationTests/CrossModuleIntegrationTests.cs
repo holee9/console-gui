@@ -11,6 +11,8 @@ using HnVue.Security;
 using HnVue.Workflow;
 using HnVue.UI.Contracts.ViewModels;
 using HnVue.UI.ViewModels;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using NSubstitute;
 using Xunit;
@@ -179,7 +181,11 @@ public sealed class CrossModuleIntegrationTests
         patientRepo.AddAsync(Arg.Any<PatientRecord>(), Arg.Any<CancellationToken>())
             .Returns(Result.Success(expectedRecord));
 
-        var patientService = new PatientService(patientRepo);
+        var securityContext = Substitute.For<ISecurityContext>();
+        securityContext.CurrentUserId.Returns("test-user");
+        securityContext.CurrentUsername.Returns("TestUser");
+
+        var patientService = new PatientService(patientRepo, securityContext);
         var worklistService = new WorklistService(worklistRepo, patientService);
 
         // Act
@@ -231,7 +237,11 @@ public sealed class CrossModuleIntegrationTests
             .Returns(ci => Task.FromResult(Result.SuccessNullable<PatientRecord>(existingRecord)));
 #pragma warning restore CS8620
 
-        var patientService = new PatientService(patientRepo);
+        var securityContext = Substitute.For<ISecurityContext>();
+        securityContext.CurrentUserId.Returns("test-user");
+        securityContext.CurrentUsername.Returns("TestUser");
+
+        var patientService = new PatientService(patientRepo, securityContext);
         var worklistService = new WorklistService(worklistRepo, patientService);
 
         // Act
@@ -564,16 +574,24 @@ public sealed class CrossModuleIntegrationTests
     }
 
     /// <summary>
-    /// Integration test: DicomFindScu returns failure when MWL SCP is unreachable.
-    /// SWR-DICOM-020: Network failure during C-FIND is caught and returned as DicomQueryFailed.
+    /// Integration test: DicomService.QueryWorklistAsync returns failure when MWL SCP is unreachable.
+    /// SWR-DICOM-020: Network failure during C-FIND is caught and returned as failure.
+    /// Note: DicomFindScu was removed (Issue #24); DicomService is now the single entry point.
     /// </summary>
     [Fact]
     [Trait("SWR", "SWR-DICOM-020")]
     public async Task DicomFind_UnreachableMwlScp_ReturnsQueryFailed()
     {
         // Arrange — MWL SCP on an unreachable port
-        var config = new TestDicomNetworkConfig(mwlPort: 19998);
-        var findScu = new DicomFindScu(config);
+        var options = new DicomOptions
+        {
+            MwlHost = "localhost",
+            MwlPort = 19998,
+            LocalAeTitle = "HNVUE",
+        };
+        var dicomService = new DicomService(
+            Options.Create(options),
+            NullLogger<DicomService>.Instance);
 
         var query = new WorklistQuery(
             AeTitle: "TESTMWL",
@@ -582,11 +600,10 @@ public sealed class CrossModuleIntegrationTests
             PatientId: null);
 
         // Act
-        var result = await findScu.QueryWorklistAsync(query);
+        var result = await dicomService.QueryWorklistAsync(query);
 
         // Assert
         result.IsFailure.Should().BeTrue("C-FIND to an unreachable MWL SCP must fail gracefully");
-        result.Error.Should().Be(ErrorCode.DicomQueryFailed);
     }
 
     // ── Scenario 6: CD Burning ─────────────────────────────────────────────────

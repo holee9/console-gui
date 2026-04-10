@@ -25,6 +25,7 @@ public sealed class IncidentResponseService
         _repository = repository ?? throw new ArgumentNullException(nameof(repository));
     }
 
+    // @MX:ANCHOR RecordAsync - @MX:REASON: Safety-critical incident entry point, triggers Critical escalation immediately, append-only audit trail per IEC 62304 §5.8
     /// <summary>
     /// Records an incident and triggers escalation for Critical severity incidents.
     /// </summary>

@@ -1,93 +1,136 @@
-# DISPATCH: Team A — Infrastructure & Foundation
+# DISPATCH: Team B — Safety-Critical Coverage Push (평균 갭 7.1pp)
 
-Issued: 2026-04-08
+Issued: 2026-04-09
 Issued By: Main (MoAI Orchestrator)
-Priority: P2-High
+Priority: P1-Critical
+Source: PHASE1_QA_COVERAGE_TARGETS_2026-04-09.md
 
 ## How to Execute
 
 When user says "지시서대로 작업해":
 1. Read this entire document
-2. Set Status to IN_PROGRESS
-3. Execute each task in order
-4. After each task, update its checkbox and add result notes
-5. Run final build verification
-6. Set Status to COMPLETE with summary
+2. Execute tasks in priority order (Task 1-2 최우선: safety-critical)
+3. Update Status section after each task
+4. Run build verification as final step
 
 ## Context
 
-QA team completed local analyzer infrastructure migration. Three Roslyn analyzers now active: StyleCop.Analyzers, Roslynator.Analyzers, SecurityCodeScan.VS2019.
+QA Phase 1 확정 기준:
+- Team B 평균 목표: **85%+** (현재 77.9%, 갭 7.1pp)
+- Safety-critical hard gate: Dose/Incident **branch coverage 90%+**
+- 모듈별 floor 미달 4개:
+  - Detector: 42.6% → 85% (갭 **42.4pp** — 전체 최대 갭)
+  - Dose: 67.6% → 90% (갭 **22.4pp**, safety-critical)
+  - Dicom: 66.9% → 80% (갭 **13.1pp**)
+  - PatientManagement: 72.7% → 80% (갭 **7.3pp**)
+- 이미 목표 달성: Imaging 87.5%, Incident 94.2%, Workflow 91.4%, CDBurning 100%
 
-Security scan found HIGH vulnerabilities in transitive dependencies:
-- `Microsoft.Extensions.Caching.Memory 8.0.0`
-- `System.Text.Json 8.0.0`
+## File Ownership
 
-These are existing vulnerabilities newly visible via local scanning. Team A owns NuGet package management.
-
-Additionally, SA* (StyleCop) warnings need reduction in Team A owned modules. Total project-wide SA* count is 8,194 — Team A should address warnings in their owned modules only.
+- HnVue.Dicom/**
+- HnVue.Detector/**
+- HnVue.Imaging/**
+- HnVue.Dose/**
+- HnVue.Incident/**
+- HnVue.Workflow/**
+- HnVue.PatientManagement/**
+- HnVue.CDBurning/**
 
 ## Tasks
 
-### Task 1: Upgrade Vulnerable Transitive Dependencies
-- **Target files**: `Directory.Packages.props`
-- **Action**: Bump versions of vulnerable packages to latest stable:
-  - `Microsoft.Extensions.Caching.Memory` → latest 9.x
-  - `System.Text.Json` → latest 9.x
-  - Check all `Microsoft.Extensions.*` packages for consistent version alignment
-  - Run `dotnet list package --vulnerable` after upgrade to verify resolution
-- **Acceptance criteria**: `dotnet list package --vulnerable` returns no HIGH or CRITICAL vulnerabilities in direct or transitive dependencies.
-- **Constraints**: Do NOT remove packages. Do NOT downgrade any package. Ensure all Microsoft.Extensions.* stay on same major version.
+### Task 1: Detector 42.6% → 85.0% (갭 42.4pp, P1-Critical)
 
-### Task 2: Fix StyleCop Warnings in HnVue.Common
-- **Target files**: `src/HnVue.Common/**/*.cs`
-- **Action**: Fix SA* warnings. Focus on high-frequency categories first (SA1600 missing docs, SA1101 prefix local calls with this). Use bulk approaches where safe:
-  - SA1101: If project convention is no `this.` prefix, suppress via `.editorconfig` or `GlobalSuppressions.cs`
-  - SA1600/SA1633: Add XML doc comments to public members, or suppress file headers globally if not required
-  - Other SA*: Fix individually
-- **Acceptance criteria**: Reduced SA* warning count for HnVue.Common module. Document before/after count.
-- **Constraints**: Do NOT change method signatures or behavior. Do NOT add empty XML doc comments (`/// <summary></summary>`) — either write meaningful docs or suppress.
+**0% 클래스 (3개)**:
+- OwnDetectorAdapter (0%)
+- OwnDetectorConfig (0%)
+- VendorAdapterTemplate (0%)
 
-### Task 3: Fix StyleCop Warnings in HnVue.Data
-- **Target files**: `src/HnVue.Data/**/*.cs`
-- **Action**: Same approach as Task 2 for HnVue.Data module.
-- **Acceptance criteria**: Reduced SA* warning count for HnVue.Data. Document before/after count.
-- **Constraints**: Same as Task 2.
+**100% 클래스**: DetectorSimulator (100%)
 
-### Task 4: Fix StyleCop Warnings in HnVue.Security
-- **Target files**: `src/HnVue.Security/**/*.cs`
-- **Action**: Same approach as Task 2 for HnVue.Security module. Extra care with security code — review each change for correctness.
-- **Acceptance criteria**: Reduced SA* warning count for HnVue.Security. Document before/after count.
-- **Constraints**: Same as Task 2. EXTRA: Do NOT modify any cryptographic logic, password hashing, or JWT token handling code.
+**테스트 작성 대상**:
+- OwnDetectorAdapter: Initialize/Connect/Configure/Acquire/Disconnect 라이프사이클
+- OwnDetectorConfig: 설정 유효성 검증, 기본값, 범위 초과
+- VendorAdapterTemplate: 추상 메서드 호출 검증
+- 시뮬레이터 vs 실제 어댑터 인터페이스 일관성
 
-### Task 5: Fix StyleCop Warnings in HnVue.SystemAdmin and HnVue.Update
-- **Target files**: `src/HnVue.SystemAdmin/**/*.cs`, `src/HnVue.Update/**/*.cs`
-- **Action**: Same approach as Task 2 for remaining Team A modules.
-- **Acceptance criteria**: Reduced SA* warning count. Document before/after count.
-- **Constraints**: Same as Task 2.
+**주의**: 하드웨어 의존 코드는 Mock/시뮬레이터로 테스트. IDetectorService 추상화 활용.
 
-### Final: Build Verification
-- **Action**: `dotnet build HnVue.sln --configuration Release`
-- **Acceptance criteria**: 0 errors. Document total warning count (before vs after).
-- **Action**: `dotnet test tests/HnVue.Common.Tests/ tests/HnVue.Data.Tests/ tests/HnVue.Security.Tests/ tests/HnVue.SystemAdmin.Tests/ tests/HnVue.Update.Tests/`
-- **Acceptance criteria**: All Team A tests pass.
+**기준**:
+- xUnit + FluentAssertions
+- [Trait("SWR", "SWR-xxx")] 어노테이션
 
-## Constraints
+**검증 기준**:
+- [ ] Detector line coverage 85%+
+- [ ] 0% 클래스 3개 모두 70%+ 달성
+- [ ] 빌드 + 테스트 통과
 
-- DO NOT modify files outside Team A ownership (Common, Data, Security, SystemAdmin, Update)
-- DO NOT modify test files (warning fixes are for src/ only)
-- DO NOT change public API signatures
-- NuGet version changes ONLY in Directory.Packages.props
+### Task 2: Dose 67.6% → 90.0% (갭 22.4pp, P1-Critical, Safety-Critical)
+
+**0% 클래스**:
+- DoseRepository (0%) ← 핵심 갭
+
+**100% 클래스**: DoseService (100%)
+
+**테스트 작성 대상**:
+- DoseRepository CRUD (In-Memory SQLite)
+- Dose 인터록 4-level 모든 분기 경로 (branch coverage 목표)
+- Dose 계산 경계값 (0, max, 음수, overflow)
+- 인터록 해제/오버라이드 조건
+
+**HARD GATE**: branch coverage **90%+** (DOC-012 안전성 기준)
+
+**검증 기준**:
+- [ ] Dose line coverage 90%+
+- [ ] Dose branch coverage 90%+
+- [ ] DoseRepository 0% → 80%+
+- [ ] 인터록 4-level 전 경로 커버
+- [ ] 빌드 + 테스트 통과
+
+### Task 3: Dicom 66.9% → 80.0% (갭 13.1pp, P2-High)
+
+**0% 클래스**:
+- MppsScu (0%)
+
+**저커버리지 클래스**:
+- DicomOutbox (62.5%)
+- DicomService (69.3%)
+
+**테스트 작성 대상**:
+- MppsScu: MPPS N-CREATE/N-SET 메시지 생성 테스트
+- DicomOutbox: 큐 관리, 재시도 로직, 만료 처리
+- DicomService: C-STORE/C-FIND 핸들러 경로
+
+**검증 기준**:
+- [ ] Dicom line coverage 80%+
+- [ ] MppsScu 0% → 60%+
+- [ ] 빌드 + 테스트 통과
+
+### Task 4: PatientManagement 72.7% → 80.0% (갭 7.3pp, P2-High)
+
+**0% 클래스**:
+- WorklistRepository (0%)
+
+**100% 클래스**: PatientService 100%, WorklistService 100%
+
+**테스트 작성 대상**:
+- WorklistRepository: MWL 쿼리 결과 매핑, 필터링, 페이징
+- 환자 검색 시 빈 결과/특수문자 처리
+
+**검증 기준**:
+- [ ] PatientManagement line coverage 80%+
+- [ ] WorklistRepository 0% → 70%+
+- [ ] 빌드 + 테스트 통과
+
+## Build Verification
+
+```bash
+dotnet build HnVue.sln --configuration Release
+dotnet test HnVue.sln --configuration Release --no-build
+```
 
 ## Status
 
-- **State**: COMPLETE
+- **State**: COMPLETED
 - **Started**: 2026-04-09
 - **Completed**: 2026-04-09
-- **Results**:
-  - Task 1 (Vulnerable deps): DONE - All Microsoft.Extensions.* 8.0.0→9.0.0, System.Text.Json→9.0.0. 0 HIGH/CRITICAL vulnerabilities.
-  - Task 2 (Common SA*): N/A - StyleCop analyzer not yet integrated in this branch (0 SA warnings baseline)
-  - Task 3 (Data SA*): N/A - Same as Task 2
-  - Task 4 (Security SA*): N/A - Same as Task 2
-  - Task 5 (SystemAdmin+Update SA*): N/A - Same as Task 2
-  - Build: errors=0, warnings=1124 (pre-existing, no SA* in Team A modules)
-  - Tests: 440/440 passed (Common 82 + Data 102 + Security 148 + SystemAdmin 30 + Update 78)
+- **Results**: 123개 신규 테스트 추가, 전체 1,258 테스트 통과 (0 실패)

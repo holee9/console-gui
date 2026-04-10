@@ -23,6 +23,7 @@ internal sealed class IncidentRepository
     public Task<Result<IncidentRecord>> AddAsync(IncidentRecord record, CancellationToken ct)
     {
         ct.ThrowIfCancellationRequested();
+        ArgumentNullException.ThrowIfNull(record);
 
         if (_store.TryAdd(record.IncidentId, record))
             return Task.FromResult(Result.Success(record));
@@ -91,6 +92,7 @@ internal sealed class IncidentRepository
     public Task<Result<IncidentRecord>> UpdateAsync(IncidentRecord record, CancellationToken ct)
     {
         ct.ThrowIfCancellationRequested();
+        ArgumentNullException.ThrowIfNull(record);
 
         if (!_store.ContainsKey(record.IncidentId))
         {

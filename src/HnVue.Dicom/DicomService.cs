@@ -134,6 +134,20 @@ public sealed partial class DicomService : HnVue.Common.Abstractions.IDicomServi
             return Result.Failure<IReadOnlyList<WorklistItem>>(
                 ErrorCode.DicomConnectionFailed, $"Network error: {ex.Message}");
         }
+        catch (System.Net.Sockets.SocketException ex)
+        {
+            LogConnectionError(_logger, ex, query.AeTitle);
+            return Result.Failure<IReadOnlyList<WorklistItem>>(
+                ErrorCode.DicomConnectionFailed, $"Connection failed: {ex.Message}");
+        }
+        catch (Exception ex) when (ex is not OperationCanceledException
+                                    and not DicomNetworkException
+                                    and not System.Net.Sockets.SocketException)
+        {
+            LogUnexpectedQueryError(_logger, ex, query.AeTitle);
+            return Result.Failure<IReadOnlyList<WorklistItem>>(
+                ErrorCode.DicomConnectionFailed, $"Query failed: {ex.Message}");
+        }
     }
 
     /// <inheritdoc/>
@@ -393,6 +407,12 @@ public sealed partial class DicomService : HnVue.Common.Abstractions.IDicomServi
 
     [LoggerMessage(Level = LogLevel.Error, Message = "DICOM network error during {Operation} to {AeTitle}.")]
     private static partial void LogNetworkError(ILogger logger, DicomNetworkException ex, string operation, string aeTitle);
+
+    [LoggerMessage(Level = LogLevel.Error, Message = "DICOM socket connection failed for AE {AeTitle}.")]
+    private static partial void LogConnectionError(ILogger logger, System.Net.Sockets.SocketException ex, string aeTitle);
+
+    [LoggerMessage(Level = LogLevel.Error, Message = "DICOM worklist query failed unexpectedly for AE {AeTitle}.")]
+    private static partial void LogUnexpectedQueryError(ILogger logger, Exception ex, string aeTitle);
 
     [LoggerMessage(Level = LogLevel.Information, Message = "Worklist C-FIND to {AeTitle} returned {Count} items.")]
     private static partial void LogQuerySuccess(ILogger logger, string aeTitle, int count);
