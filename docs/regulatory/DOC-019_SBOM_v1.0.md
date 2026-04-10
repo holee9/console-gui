@@ -9,8 +9,8 @@
 |------|------|
 | **문서 ID** | SBOM-XRAY-GUI-001 |
 | **문서명** | HnVue Console SW 소프트웨어 자재 명세서 |
-| **버전** | v1.0 |
-| **작성일** | 2026-03-18 |
+| **버전** | v1.1 |
+| **작성일** | 2026-04-08 |
 | **작성자** | SW 개발팀, 사이버보안 팀 |
 | **검토자** | SW 아키텍트, QA 팀장 |
 | **승인자** | 의료기기 RA/QA 책임자 |
@@ -22,6 +22,7 @@
 | 버전 | 날짜 | 변경 내용 | 작성자 |
 |------|------|----------|--------|
 | v1.0 | 2026-03-18 | 최초 작성 — Phase 1 전체 구성요소 목록 | SW 개발팀 |
+| v1.1 | 2026-04-08 | 개발 전용 Roslyn 분석기 3종 추가 (SBOM-043~045): StyleCop.Analyzers, Roslynator.Analyzers, SecurityCodeScan.VS2019; 구성요소 수 42 → 45 | QA팀 |
 
 ---
 
@@ -203,7 +204,17 @@ flowchart LR
 | SBOM-041 | FluentAssertions | 6.12.0 | Dennis Doomen | Apache 2.0 | 어설션 |
 | SBOM-042 | Coverlet | 6.0.0 | tonerdo | MIT | 코드 커버리지 |
 
-### 4.12 구성요소 요약 통계
+### 4.12 개발 전용 분석 도구 (Analyzer — 빌드 전용, 배포 미포함, PrivateAssets=all)
+
+| SBOM-ID | 구성요소명 | 버전 | 공급자 | 라이선스 | 비고 |
+|---------|-----------|------|--------|---------|------|
+| SBOM-043 | StyleCop.Analyzers | 1.2.0-beta.556 | StyleCop 기여자 | Apache 2.0 | 코드 스타일 정적 분석 (PrivateAssets=all) |
+| SBOM-044 | Roslynator.Analyzers | 4.12.9 | Josef Pihrt | Apache 2.0 | 코드 품질 정적 분석 (PrivateAssets=all) |
+| SBOM-045 | SecurityCodeScan.VS2019 | 5.6.7 | SecurityCodeScan 기여자 | LGPL-3.0 | 보안 취약점 정적 분석 (PrivateAssets=all) |
+
+> **참고**: SBOM-043~045는 `PrivateAssets=all` 설정으로 빌드 시에만 사용되며 배포 패키지에 포함되지 않는다. CycloneDX scope: `devOnly`.
+
+### 4.13 구성요소 요약 통계
 
 | 분류 | 항목 수 | Class A | Class B | 비고 |
 |------|---------|---------|---------|------|
@@ -218,7 +229,8 @@ flowchart LR
 | 로깅 | 3 | 3 | 0 | 로그 기록 |
 | 압축/코덱 | 4 | 2 | 2 | 영상 코덱 |
 | 테스트 (비배포) | 4 | — | — | 개발 전용 |
-| **합계** | **42** | **19** | **19** | 테스트 4건 제외 38 |
+| 분석기 (비배포, PrivateAssets=all) | 3 | — | — | 개발 전용 |
+| **합계** | **45** | **19** | **19** | 테스트 4건 + 분석기 3건 제외 배포 38 |
 
 ---
 
