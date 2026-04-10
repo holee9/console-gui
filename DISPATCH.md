@@ -5,7 +5,7 @@ Issued By: Main (MoAI Commander Center)
 Priority: P2-High
 Supersedes: 이전 DISPATCH (Round 1 COMPLETE)
 
-## RA 역할 재확인 (rules/teams/ra.md)
+## RA 역할 재확인 (.claude/rules/teams/ra.md)
 
 - **소유**: docs/regulatory/, docs/planning/, docs/risk/, docs/verification/, docs/management/, scripts/ra/
 - **IEC 62304 버전**: 메이저=규제 재검토, 마이너=수정/보완
@@ -50,7 +50,25 @@ Supersedes: 이전 DISPATCH (Round 1 COMPLETE)
 - 소스 코드 수정 금지
 - IEC 62304 문서 버전 정책 준수
 
+
+## Final Verification [HARD — 이 섹션 미완료 시 COMPLETED 보고 금지]
+
+1. 자기 모듈 빌드: `dotnet build` → 오류 0건
+2. 자기 테스트: `dotnet test {소유 테스트}` → 전원 통과
+3. 전체 솔루션 빌드: `dotnet build HnVue.sln -c Release` → 결과 기록
+4. 빌드 출력 요약을 Status에 복사
+
+## Git Completion Protocol [HARD]
+
+1. git add (DISPATCH.md + 변경 파일)
+2. git commit (conventional commit 형식)
+3. git push origin team/ra
+4. PR 생성 (기존 open PR 확인 후 중복 방지)
+5. PR URL을 Status에 기록
+
 ## Status
 
 - **State**: NOT_STARTED
+- **Build Evidence**: (미완료)
+- **PR**: (미생성)
 - **Results**: Task 1→BLOCKED(Team A 대기), Task 2→PENDING, Task 3→PENDING
