@@ -874,6 +874,116 @@ flowchart TD
 
 ---
 
+### 6.14 SAD-COMMON-000: Common Module (공통 기반 모듈)
+
+| 항목 | 내용 |
+|---|---|
+| **모듈 ID** | SAD-COMMON-000 |
+| **모듈명** | Common Module |
+| **IEC 62304 Safety Class** | Class B |
+| **Safety-Critical** | 아니오 (인프라 계층) |
+| **담당 팀** | Team A |
+| **Phase** | Phase 1 |
+
+**책임 (Responsibilities):**
+- 전체 모듈에서 공유하는 모델 클래스 (Entity, DTO, Enum)
+- 공통 인터페이스 정의 (IRepository, IUnitOfWork, IService)
+- 유틸리티 함수 (DateTimeProvider, HashHelper 등)
+- 상수 정의 (ErrorCodes, ConfigurationKeys)
+
+**의존관계:** 없음 (최하위 계층, 모든 모듈이 참조)
+**변경 통제:** Common 인터페이스 변경 시 Coordinator 승인 필수 (`breaking-change` 이슈)
+
+---
+
+### 6.15 SAD-DET-1300: Detector Module (검출기 추상화 모듈)
+
+| 항목 | 내용 |
+|---|---|
+| **모듈 ID** | SAD-DET-1300 |
+| **모듈명** | Detector Module |
+| **IEC 62304 Safety Class** | Class B |
+| **Safety-Critical** | **예 (Yes)** -- FPD 하드웨어 제어 |
+| **MR 연계** | MR-010 (Tier 2 -- FPD SDK 통합) |
+| **담당 팀** | Team B |
+| **Phase** | Phase 1 |
+
+**책임 (Responsibilities):**
+- FPD 검출기 하드웨어 추상화 (IDetectorService 인터페이스)
+- 어댑터 패턴: 시뮬레이터(테스트용) + 벤더 SDK(실제용) 구현체
+- 연결 생명주기: Initialize -> Connect -> Configure -> Acquire -> Disconnect
+- 프레임 획득 이벤트 발행 (ImageProcessing 모듈로 전달)
+
+**의존관계:** SAD-COMMON-000, SAD-IP-300 (영상 수신 후 처리 위임)
+
+---
+
+### 6.16 SAD-UI-CONTRACTS-1400: UI Contracts Module (UI 인터페이스 계약 모듈)
+
+| 항목 | 내용 |
+|---|---|
+| **모듈 ID** | SAD-UI-CONTRACTS-1400 |
+| **모듈명** | UI Contracts Module |
+| **IEC 62304 Safety Class** | Class B |
+| **Safety-Critical** | 아니오 (인터페이스 정의 계층) |
+| **담당 팀** | Coordinator |
+| **Phase** | Phase 1 |
+
+**책임 (Responsibilities):**
+- ViewModel-to-Service 계약 인터페이스 정의
+- UI 상태 관리 계약 (INavigationService, IDialogService 등)
+- 도메인 서비스 바인딩을 위한 추상화 계층
+- GUI 교체 가능 아키텍처의 핵심 경계 (UI 기술 비종속)
+
+**의존관계:** SAD-COMMON-000
+**변경 통제:** Coordinator가 유일한 수정 권한자. 인터페이스 변경 시 전체 팀 알림 (`interface-contract` 이슈)
+
+---
+
+### 6.17 SAD-UI-VIEWMODELS-1500: UI ViewModels Module (UI 뷰모델 모듈)
+
+| 항목 | 내용 |
+|---|---|
+| **모듈 ID** | SAD-UI-VIEWMODELS-1500 |
+| **모듈명** | UI ViewModels Module |
+| **IEC 62304 Safety Class** | Class B |
+| **Safety-Critical** | 아니오 (프레젠테이션 로직) |
+| **담당 팀** | Coordinator |
+| **Phase** | Phase 1 |
+
+**책임 (Responsibilities):**
+- 도메인 서비스를 UI.Contracts 인터페이스를 통해 소비
+- MVVM 패턴의 ViewModel 구현 (CommunityToolkit.Mvvm 기반)
+- 사용자 입력 검증 및 명령(ICommand) 바인딩
+- 도메인 모델 -> UI 표현 변환 (복합 ViewModel 구성)
+
+**의존관계:** SAD-COMMON-000, SAD-UI-CONTRACTS-1400, 각 도메인 서비스 인터페이스
+**DI 주입:** 생성자 주입을 통해 도메인 서비스 수신 (서비스 로케이터 금지)
+
+---
+
+### 6.18 SAD-APP-1600: Application Module (DI 컴포지션 루트)
+
+| 항목 | 내용 |
+|---|---|
+| **모듈 ID** | SAD-APP-1600 |
+| **모듈명** | Application Composition Root |
+| **IEC 62304 Safety Class** | Class B |
+| **Safety-Critical** | 아니오 (DI 구성 계층) |
+| **담당 팀** | Coordinator |
+| **Phase** | Phase 1 |
+
+**책임 (Responsibilities):**
+- Microsoft.Extensions.DependencyInjection 기반 DI 컴포지션 루트 (App.xaml.cs)
+- 모든 모듈의 서비스/리포지토리 등록 (Singleton/Scoped/Transient)
+- WPF Application 생명주기 관리 (Startup -> MainWindow -> Shutdown)
+- 구성 설정 로딩 (appsettings.json -> IConfiguration)
+
+**의존관계:** 전체 모듈 (최상위 계층, 모든 모듈을 참조하여 DI 등록)
+**변경 통제:** 신규 모듈 통합 시 DI 등록 + 통합 테스트 필수 (Coordinator 검증)
+
+---
+
 ## 7. 인터페이스 정의 (Interface Definition — IEC 62304 §5.3.2)
 
 ### 7.1 모듈 간 내부 인터페이스

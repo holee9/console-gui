@@ -90,7 +90,8 @@ flowchart TD
 
 - **1 Sprint = 0.5 MM** (AI 에이전트 1 작업 세션 단위)
 - **1개월 = 2 Sprint** (SW 2명 기준 월 2.0 MM 투입)
-- **Phase 1 총량**: 24 Sprint = 12개월 = 24--36 MM
+- **Phase 1 총량**: 24 Sprint = 12개월 = 24--36 MM (계획 범위)
+- **팀별 배분 합계**: 31.5 MM (6팀 병렬 투입 기준, AI 에이전트 병행 효과 포함)
 
 ### 3.2 Sprint-마일스톤 매핑
 
@@ -338,7 +339,7 @@ gantt
 
     section Team Design UI 4.5MM
     Login PatientListView 0.5MM      :done, d1, 1, 1
-    StudylistView 리디자인 0.5MM     :active, d2, 3, 1
+    StudylistView 리디자인 0.5MM     :done, d2, 3, 1
     WPF MVVM 프레임워크 1.5MM        :active, d3, 4, 3
     시스템 설정 UI 0.5MM             :d4, 7, 1
     촬영 프로토콜 관리 0.5MM         :d5, 9, 1
@@ -415,7 +416,7 @@ gantt
 
     section Team Design UI
     Login PatientListView 0.5MM      :done, d1, 1, 1
-    StudylistView 리디자인 0.5MM     :active, d2, 3, 1
+    StudylistView 리디자인 0.5MM     :done, d2, 3, 1
     WPF MVVM 프레임워크 1.5MM        :active, d3, 4, 3
 
     section Coordinator 통합
