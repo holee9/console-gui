@@ -1,136 +1,68 @@
-# DISPATCH: Team B — Safety-Critical Coverage Push (평균 갭 7.1pp)
+# DISPATCH: Team A — 빌드 오류 수정 + 취약 패키지 + StyleCop
 
-Issued: 2026-04-09
-Issued By: Main (MoAI Orchestrator)
-Priority: P1-Critical
-Source: PHASE1_QA_COVERAGE_TARGETS_2026-04-09.md
+Issued: 2026-04-10
+Issued By: Main (MoAI Commander Center)
+Priority: **P0-Blocker** (빌드 오류) + P1-Critical (보안) + P2-High (품질)
+Supersedes: 이전 DISPATCH (Round 1 COMPLETE)
+
+## Team A 역할 재확인 (rules/teams/team-a.md)
+
+- **소유 모듈**: Common, Data, Security, SystemAdmin, Update
+- **NuGet 관리**: Directory.Packages.props 중앙 관리, 추가 시 보안 리뷰 + RA SOUP 알림
+- **Security 코드**: bcrypt 12+, JWT HS256, HMAC-SHA256 감사로그 — 암호화 코드 변경 금지
+- **Common 인터페이스 변경 시**: `breaking-change` 라벨 이슈 + Coordinator 알림
 
 ## How to Execute
 
-When user says "지시서대로 작업해":
-1. Read this entire document
-2. Execute tasks in priority order (Task 1-2 최우선: safety-critical)
-3. Update Status section after each task
-4. Run build verification as final step
+1. **Task 1 (P0-Blocker)부터** 수행
+2. 각 Task 완료 후 체크박스 업데이트
+3. Final Build Verification 수행
+4. Status 업데이트
 
-## Context
+## Task 1: SystemSettingsRepository 빌드 오류 수정 (P0-Blocker)
 
-QA Phase 1 확정 기준:
-- Team B 평균 목표: **85%+** (현재 77.9%, 갭 7.1pp)
-- Safety-critical hard gate: Dose/Incident **branch coverage 90%+**
-- 모듈별 floor 미달 4개:
-  - Detector: 42.6% → 85% (갭 **42.4pp** — 전체 최대 갭)
-  - Dose: 67.6% → 90% (갭 **22.4pp**, safety-critical)
-  - Dicom: 66.9% → 80% (갭 **13.1pp**)
-  - PatientManagement: 72.7% → 80% (갭 **7.3pp**)
-- 이미 목표 달성: Imaging 87.5%, Incident 94.2%, Workflow 91.4%, CDBurning 100%
-
-## File Ownership
-
-- HnVue.Dicom/**
-- HnVue.Detector/**
-- HnVue.Imaging/**
-- HnVue.Dose/**
-- HnVue.Incident/**
-- HnVue.Workflow/**
-- HnVue.PatientManagement/**
-- HnVue.CDBurning/**
-
-## Tasks
-
-### Task 1: Detector 42.6% → 85.0% (갭 42.4pp, P1-Critical)
-
-**0% 클래스 (3개)**:
-- OwnDetectorAdapter (0%)
-- OwnDetectorConfig (0%)
-- VendorAdapterTemplate (0%)
-
-**100% 클래스**: DetectorSimulator (100%)
-
-**테스트 작성 대상**:
-- OwnDetectorAdapter: Initialize/Connect/Configure/Acquire/Disconnect 라이프사이클
-- OwnDetectorConfig: 설정 유효성 검증, 기본값, 범위 초과
-- VendorAdapterTemplate: 추상 메서드 호출 검증
-- 시뮬레이터 vs 실제 어댑터 인터페이스 일관성
-
-**주의**: 하드웨어 의존 코드는 Mock/시뮬레이터로 테스트. IDetectorService 추상화 활용.
-
-**기준**:
-- xUnit + FluentAssertions
-- [Trait("SWR", "SWR-xxx")] 어노테이션
+**오류**: `SystemSettingsRepository` 생성자 시그니처 불일치 (CS1729)
+**파일**: `tests/HnVue.SystemAdmin.Tests/SystemSettingsRepositoryTests.cs`
+**수행**: 현재 생성자 시그니처 확인 → 테스트의 생성자 호출 수정
 
 **검증 기준**:
-- [ ] Detector line coverage 85%+
-- [ ] 0% 클래스 3개 모두 70%+ 달성
-- [ ] 빌드 + 테스트 통과
+- [ ] HnVue.SystemAdmin.Tests 빌드 오류 0건
+- [ ] 기존 테스트 전부 통과
 
-### Task 2: Dose 67.6% → 90.0% (갭 22.4pp, P1-Critical, Safety-Critical)
+## Task 2: 취약 패키지 업그레이드 (P1-Critical)
 
-**0% 클래스**:
-- DoseRepository (0%) ← 핵심 갭
-
-**100% 클래스**: DoseService (100%)
-
-**테스트 작성 대상**:
-- DoseRepository CRUD (In-Memory SQLite)
-- Dose 인터록 4-level 모든 분기 경로 (branch coverage 목표)
-- Dose 계산 경계값 (0, max, 음수, overflow)
-- 인터록 해제/오버라이드 조건
-
-**HARD GATE**: branch coverage **90%+** (DOC-012 안전성 기준)
+**규칙**: 모든 버전 Directory.Packages.props 중앙 관리, RA SOUP 알림 필요
+**대상**: Microsoft.Extensions.Caching.Memory 8.0.0, System.Text.Json 8.0.0 → 9.x
+**RA 알림**: 패키지 변경 후 DISPATCH 보고에 `soup-update` 필요 명시
 
 **검증 기준**:
-- [ ] Dose line coverage 90%+
-- [ ] Dose branch coverage 90%+
-- [ ] DoseRepository 0% → 80%+
-- [ ] 인터록 4-level 전 경로 커버
+- [ ] `dotnet list package --vulnerable` HIGH/CRITICAL 0건
+- [ ] Microsoft.Extensions.* 메이저 버전 통일
+- [ ] 빌드 성공
+
+## Task 3: StyleCop — Common, Data (P2-High)
+
+**제약**: 메서드 시그니처/동작 변경 금지, 빈 XML doc 금지
+**검증 기준**:
+- [ ] Common SA* 경고 수 감소 (before/after 기록)
+- [ ] Data SA* 경고 수 감소
 - [ ] 빌드 + 테스트 통과
 
-### Task 3: Dicom 66.9% → 80.0% (갭 13.1pp, P2-High)
+## Task 4: StyleCop — Security, SystemAdmin, Update (P2-High)
 
-**0% 클래스**:
-- MppsScu (0%)
-
-**저커버리지 클래스**:
-- DicomOutbox (62.5%)
-- DicomService (69.3%)
-
-**테스트 작성 대상**:
-- MppsScu: MPPS N-CREATE/N-SET 메시지 생성 테스트
-- DicomOutbox: 큐 관리, 재시도 로직, 만료 처리
-- DicomService: C-STORE/C-FIND 핸들러 경로
+**추가 제약**: Security 모듈 암호화/해싱/JWT 코드 변경 금지
 
 **검증 기준**:
-- [ ] Dicom line coverage 80%+
-- [ ] MppsScu 0% → 60%+
+- [ ] Security/SystemAdmin/Update SA* 경고 수 감소
 - [ ] 빌드 + 테스트 통과
 
-### Task 4: PatientManagement 72.7% → 80.0% (갭 7.3pp, P2-High)
+## Constraints
 
-**0% 클래스**:
-- WorklistRepository (0%)
-
-**100% 클래스**: PatientService 100%, WorklistService 100%
-
-**테스트 작성 대상**:
-- WorklistRepository: MWL 쿼리 결과 매핑, 필터링, 페이징
-- 환자 검색 시 빈 결과/특수문자 처리
-
-**검증 기준**:
-- [ ] PatientManagement line coverage 80%+
-- [ ] WorklistRepository 0% → 70%+
-- [ ] 빌드 + 테스트 통과
-
-## Build Verification
-
-```bash
-dotnet build HnVue.sln --configuration Release
-dotnet test HnVue.sln --configuration Release --no-build
-```
+- Team A 소유 파일만 수정, NuGet은 Directory.Packages.props만
+- Common 인터페이스 변경 시 breaking-change 이슈 + Coordinator 알림
+- Security 암호화/해싱/JWT 코드 변경 금지
 
 ## Status
 
-- **State**: COMPLETED
-- **Started**: 2026-04-09
-- **Completed**: 2026-04-09
-- **Results**: 123개 신규 테스트 추가, 전체 1,258 테스트 통과 (0 실패)
+- **State**: NOT_STARTED
+- **Results**: Task 1→PENDING, Task 2→PENDING, Task 3→PENDING, Task 4→PENDING
