@@ -1,4 +1,0 @@
-{
-    "title":  "[Dose] SWR-DM-040-052: DAP/ESD/RDSR 계산 및 기록 구현 기능 미구현",
-    "body":  "## 문제\nDoseService.cs에 인터페이스는 정의되어 있으나 DAP, ESD, RDSR 계산 기능 미구현.\n\n## SWR 참조\n- SWR-DM-040/041: DAP 표시 및 계산\n- SWR-DM-042/043: ESD 계산\n- SWR-DM-044/046: RDSR 생성\n- SWR-DM-051/052: 선량 이력\n\n## 완료 기준\n- 각 계산 메서드 단위 테스트 최소 10개"
-}
