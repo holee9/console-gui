@@ -1,136 +1,82 @@
-# DISPATCH: Team B — Safety-Critical Coverage Push (평균 갭 7.1pp)
+# DISPATCH: Design — 빌드 오류 수정 + UI 커버리지
 
-Issued: 2026-04-09
-Issued By: Main (MoAI Orchestrator)
-Priority: P1-Critical
-Source: PHASE1_QA_COVERAGE_TARGETS_2026-04-09.md
+Issued: 2026-04-10
+Issued By: Main (MoAI Commander Center)
+Priority: **P0-Blocker** (빌드 오류) + P2-High (커버리지)
+
+## Design 역할 재확인 (.claude/rules/teams/team-design.md)
+
+- **소유 모듈**: HnVue.UI (Views, Styles, Themes, Components, Converters, Assets, DesignTime)
+- **금지 참조**: Data, Security, Workflow, Imaging, Dicom, Dose 등
+- **코드 비하인드**: 순수 UI 이벤트만, 비즈니스 로직 금지
+- **접근성**: WCAG 2.1 AA, 44x44px 터치 타겟, 키보드 네비게이션
+- **PPT Scope**: Issue #59 — 지정 페이지 외 UI 구현 금지
+- **스크린샷**: WindowHandle 캡처만 허용, Region 캡처 금지
 
 ## How to Execute
 
-When user says "지시서대로 작업해":
-1. Read this entire document
-2. Execute tasks in priority order (Task 1-2 최우선: safety-critical)
-3. Update Status section after each task
-4. Run build verification as final step
+1. **Task 1 (P0)** — ConverterTests 빌드 오류 수정
+2. Task 2-4 순서대로
+3. 체크박스 + Status 업데이트
 
-## Context
+## Task 1: ConverterTests 빌드 오류 수정 (P0-Blocker)
 
-QA Phase 1 확정 기준:
-- Team B 평균 목표: **85%+** (현재 77.9%, 갭 7.1pp)
-- Safety-critical hard gate: Dose/Incident **branch coverage 90%+**
-- 모듈별 floor 미달 4개:
-  - Detector: 42.6% → 85% (갭 **42.4pp** — 전체 최대 갭)
-  - Dose: 67.6% → 90% (갭 **22.4pp**, safety-critical)
-  - Dicom: 66.9% → 80% (갭 **13.1pp**)
-  - PatientManagement: 72.7% → 80% (갭 **7.3pp**)
-- 이미 목표 달성: Imaging 87.5%, Incident 94.2%, Workflow 91.4%, CDBurning 100%
-
-## File Ownership
-
-- HnVue.Dicom/**
-- HnVue.Detector/**
-- HnVue.Imaging/**
-- HnVue.Dose/**
-- HnVue.Incident/**
-- HnVue.Workflow/**
-- HnVue.PatientManagement/**
-- HnVue.CDBurning/**
-
-## Tasks
-
-### Task 1: Detector 42.6% → 85.0% (갭 42.4pp, P1-Critical)
-
-**0% 클래스 (3개)**:
-- OwnDetectorAdapter (0%)
-- OwnDetectorConfig (0%)
-- VendorAdapterTemplate (0%)
-
-**100% 클래스**: DetectorSimulator (100%)
-
-**테스트 작성 대상**:
-- OwnDetectorAdapter: Initialize/Connect/Configure/Acquire/Disconnect 라이프사이클
-- OwnDetectorConfig: 설정 유효성 검증, 기본값, 범위 초과
-- VendorAdapterTemplate: 추상 메서드 호출 검증
-- 시뮬레이터 vs 실제 어댑터 인터페이스 일관성
-
-**주의**: 하드웨어 의존 코드는 Mock/시뮬레이터로 테스트. IDetectorService 추상화 활용.
-
-**기준**:
-- xUnit + FluentAssertions
-- [Trait("SWR", "SWR-xxx")] 어노테이션
+**오류**: `TestStatus` 접근성 불일치 (CS0051)
+**파일**: `tests/HnVue.UI.Tests/ConverterTests.cs`
 
 **검증 기준**:
-- [ ] Detector line coverage 85%+
-- [ ] 0% 클래스 3개 모두 70%+ 달성
-- [ ] 빌드 + 테스트 통과
+- [ ] HnVue.UI.Tests 빌드 오류 0건
+- [ ] 기존 UI 테스트 통과
 
-### Task 2: Dose 67.6% → 90.0% (갭 22.4pp, P1-Critical, Safety-Critical)
+## Task 2: Converter 0% 클래스 테스트 (P1-Critical)
 
-**0% 클래스**:
-- DoseRepository (0%) ← 핵심 갭
-
-**100% 클래스**: DoseService (100%)
-
-**테스트 작성 대상**:
-- DoseRepository CRUD (In-Memory SQLite)
-- Dose 인터록 4-level 모든 분기 경로 (branch coverage 목표)
-- Dose 계산 경계값 (0, max, 음수, overflow)
-- 인터록 해제/오버라이드 조건
-
-**HARD GATE**: branch coverage **90%+** (DOC-012 안전성 기준)
+**12개 Converter**: 순수 변환 로직, Convert/ConvertBack + 경계값(null, empty, DependencyProperty.UnsetValue)
 
 **검증 기준**:
-- [ ] Dose line coverage 90%+
-- [ ] Dose branch coverage 90%+
-- [ ] DoseRepository 0% → 80%+
-- [ ] 인터록 4-level 전 경로 커버
+- [ ] 12개 Converter 모두 70%+
 - [ ] 빌드 + 테스트 통과
 
-### Task 3: Dicom 66.9% → 80.0% (갭 13.1pp, P2-High)
+## Task 3: ThemeRollbackService 테스트 (P2-High)
 
-**0% 클래스**:
-- MppsScu (0%)
-
-**저커버리지 클래스**:
-- DicomOutbox (62.5%)
-- DicomService (69.3%)
-
-**테스트 작성 대상**:
-- MppsScu: MPPS N-CREATE/N-SET 메시지 생성 테스트
-- DicomOutbox: 큐 관리, 재시도 로직, 만료 처리
-- DicomService: C-STORE/C-FIND 핸들러 경로
+**규칙**: MahApps.Metro 3테마(Light/Dark/HighContrast) 런타임 전환
 
 **검증 기준**:
-- [ ] Dicom line coverage 80%+
-- [ ] MppsScu 0% → 60%+
+- [ ] ThemeRollbackService 70%+
 - [ ] 빌드 + 테스트 통과
 
-### Task 4: PatientManagement 72.7% → 80.0% (갭 7.3pp, P2-High)
+## Task 4: 저커버리지 Component (P3-Medium)
 
-**0% 클래스**:
-- WorklistRepository (0%)
-
-**100% 클래스**: PatientService 100%, WorklistService 100%
-
-**테스트 작성 대상**:
-- WorklistRepository: MWL 쿼리 결과 매핑, 필터링, 페이징
-- 환자 검색 시 빈 결과/특수문자 처리
+**대상**: RelayCommand(50%→80%), RelayCommand<T>(0%→70%), StatusBarItem(55%→75%)
 
 **검증 기준**:
-- [ ] PatientManagement line coverage 80%+
-- [ ] WorklistRepository 0% → 70%+
+- [ ] HnVue.UI 전체 75%+
 - [ ] 빌드 + 테스트 통과
 
-## Build Verification
+## Final Verification [HARD — 이 섹션 미완료 시 COMPLETED 보고 금지]
 
-```bash
-dotnet build HnVue.sln --configuration Release
-dotnet test HnVue.sln --configuration Release --no-build
-```
+1. 자기 모듈 빌드: `dotnet build` → 오류 0건
+2. 자기 테스트: `dotnet test tests/HnVue.UI.Tests/` → 전원 통과
+3. 전체 솔루션 빌드: `dotnet build HnVue.sln -c Release` → 결과 기록
+4. 빌드 출력 요약을 Status에 복사
+
+## Constraints
+
+- HnVue.UI 외 파일 수정 금지
+- 금지 모듈 참조 추가 금지
+- PPT Scope 준수 (Issue #59)
+- 스크린샷: WindowHandle 캡처만, Region 캡처 금지
+
+## Git Completion Protocol [HARD]
+
+1. git add (DISPATCH.md + 변경 파일)
+2. git commit (conventional commit 형식)
+3. git push origin team/team-design
+4. PR 생성 (기존 open PR 확인 후 중복 방지)
+5. PR URL을 Status에 기록
 
 ## Status
 
-- **State**: COMPLETED
-- **Started**: 2026-04-09
-- **Completed**: 2026-04-09
-- **Results**: 123개 신규 테스트 추가, 전체 1,258 테스트 통과 (0 실패)
+- **State**: NOT_STARTED
+- **Build Evidence**: (미완료)
+- **PR**: (미생성)
+- **Results**: Task 1→PENDING, Task 2→PENDING, Task 3→PENDING, Task 4→PENDING
