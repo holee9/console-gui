@@ -5,7 +5,7 @@ Issued By: Main (MoAI Commander Center)
 Priority: **P0-Blocker** (빌드 오류) + P1-Critical (보안) + P2-High (품질)
 Supersedes: 이전 DISPATCH (Round 1 COMPLETE)
 
-## Team A 역할 재확인 (rules/teams/team-a.md)
+## Team A 역할 재확인 (.claude/rules/teams/team-a.md)
 
 - **소유 모듈**: Common, Data, Security, SystemAdmin, Update
 - **NuGet 관리**: Directory.Packages.props 중앙 관리, 추가 시 보안 리뷰 + RA SOUP 알림
@@ -62,7 +62,25 @@ Supersedes: 이전 DISPATCH (Round 1 COMPLETE)
 - Common 인터페이스 변경 시 breaking-change 이슈 + Coordinator 알림
 - Security 암호화/해싱/JWT 코드 변경 금지
 
+
+## Final Verification [HARD — 이 섹션 미완료 시 COMPLETED 보고 금지]
+
+1. 자기 모듈 빌드: `dotnet build` → 오류 0건
+2. 자기 테스트: `dotnet test {소유 테스트}` → 전원 통과
+3. 전체 솔루션 빌드: `dotnet build HnVue.sln -c Release` → 결과 기록
+4. 빌드 출력 요약을 Status에 복사
+
+## Git Completion Protocol [HARD]
+
+1. git add (DISPATCH.md + 변경 파일)
+2. git commit (conventional commit 형식)
+3. git push origin team/team-a
+4. PR 생성 (기존 open PR 확인 후 중복 방지)
+5. PR URL을 Status에 기록
+
 ## Status
 
 - **State**: NOT_STARTED
+- **Build Evidence**: (미완료)
+- **PR**: (미생성)
 - **Results**: Task 1→PENDING, Task 2→PENDING, Task 3→PENDING, Task 4→PENDING
