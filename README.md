@@ -175,6 +175,7 @@ dotnet build HnVue.sln -c Release
 |------|------|
 | [개발 진행 현황](docs/management/development-status.md) | WBS, 마일스톤, 로드맵 |
 | [WBS v3.0](docs/management/WBS-001_WBS_v3.0.md) | Sprint/MM 기반 작업 분해 구조 |
+| [Sprint 구현계획](docs/management/SPRINT-001_Implementation_Plan_v1.0.md) | 6팀 Sprint별 구현계획 + 마일스톤 게이트 |
 | [문서 체계 인덱스](docs/management/documentation-index.md) | 50+ 규제/기획/검증 문서 전체 목록 |
 | [MRD/PRD 교차검증](docs/management/mrd-prd-validation.md) | 36사 딥리서치, 92개 MR |
 | [운영 전략 가이드](docs/OPERATIONS.md) | 6팀 Worktree 분리 개발 |
