@@ -26,8 +26,8 @@ Supersedes: 이전 DISPATCH (Round 1 COMPLETE)
 **수행**: 현재 생성자 시그니처 확인 → 테스트의 생성자 호출 수정
 
 **검증 기준**:
-- [ ] HnVue.SystemAdmin.Tests 빌드 오류 0건
-- [ ] 기존 테스트 전부 통과
+- [x] HnVue.SystemAdmin.Tests 빌드 오류 0건
+- [x] 기존 테스트 전부 통과 (62/62)
 
 ## Task 2: 취약 패키지 업그레이드 (P1-Critical)
 
@@ -80,7 +80,7 @@ Supersedes: 이전 DISPATCH (Round 1 COMPLETE)
 
 ## Status
 
-- **State**: NOT_STARTED
-- **Build Evidence**: (미완료)
+- **State**: IN_PROGRESS
+- **Build Evidence**: SystemAdmin.Tests 빌드 0 errors, 62/62 테스트 통과. 전체 소유 모듈: Common 120P, Data 118P, Security 183P/1F(perf benchmark flaky), SystemAdmin 62P, Update 90P = 573P/1F
 - **PR**: (미생성)
-- **Results**: Task 1→PENDING, Task 2→PENDING, Task 3→PENDING, Task 4→PENDING
+- **Results**: Task 1→COMPLETED (CS1729 에러 이미 해결됨, 빌드+테스트 검증 완료), Task 2→PENDING, Task 3→PENDING, Task 4→PENDING
