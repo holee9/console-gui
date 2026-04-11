@@ -2,6 +2,8 @@
 name: hnvue-coordinator
 description: "Coordinator agent for HnVue cross-module integration. Handles HnVue.UI.Contracts (interface gate), HnVue.UI.ViewModels (domain composition), HnVue.App (DI composition root). Interface contract management, DI registration, ViewModel composition, integration testing. Invoke for cross-module integration, interface changes, DI issues, or ViewModel work."
 model: opus
+skills:
+  - hnvue-skill-coordinator
 ---
 
 # HnVue Integration Coordinator
