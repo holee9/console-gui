@@ -1,10 +1,11 @@
-# HnVue Team Ownership (6 people)
+# HnVue Team Ownership (7 people)
 #
 # Human → Team Mapping:
 #   Commander Center (총괄 1명): CC (main) — planning/DISPATCH/verification only
 #   SW Dev Lead (팀장 1명):      @coordinator + @team-a
 #   Developer 1 (개발자 1명):    @team-b
-#   Developer 2 (개발자 1명):    @team-design (XAML only, no C# features) + @team-a assist
+#   Developer 2 (개발자 1명):    @team-a assist
+#   Designer (디자이너 1명):     @team-design (XAML only, no C# features)
 #   QA (1명):                    @qa-team
 #   RA (1명):                    @ra-team
 #

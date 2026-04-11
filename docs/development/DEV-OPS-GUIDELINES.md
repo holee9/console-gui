@@ -189,26 +189,27 @@ Git log monitoring missed it. Always check `git diff` and `git status` alongside
 - Cross-team file modification: create issue + notify target team
 - UI.Contracts interfaces: Coordinator is SOLE modifier
 
-### Human Team Mapping (6 people)
+### Human Team Mapping (7 people)
 
 | Role | Person | Worktree Team(s) |
 |------|--------|-----------------|
 | Commander Center | 1 (총괄) | CC (main) — planning/DISPATCH/verification only, NO coding |
 | SW Dev Lead | 1 (팀장) | Coordinator + Team A |
 | Developer 1 | 1 | Team B |
-| Developer 2 | 1 | Design (XAML codification only, no C# feature coding) + Team A assist |
+| Developer 2 | 1 | Team A assist |
+| Designer | 1 (디자이너) | Design (XAML codification only, no C# feature coding) |
 | QA | 1 | QA |
 | RA | 1 | RA |
 
-Design Team has no coder. C# feature implementation is split between SW Dev Lead (Coordinator) and Developer 1 (Team B). See `.claude/rules/teams/team-design.md` for details.
+Design Team has no coder — the designer handles XAML codification only. C# feature implementation is split between SW Dev Lead (Coordinator) and Developers. See `.claude/rules/teams/team-design.md` for details.
 
 Module ownership:
 
 | Team | Owned Modules | Human |
 |------|--------------|-------|
-| Team A | Common, Data, Security, SystemAdmin, Update | SW Dev Lead + Dev 2 보조 |
+| Team A | Common, Data, Security, SystemAdmin, Update | SW Dev Lead + Dev 2 |
 | Team B | Dicom, Detector, Imaging, Dose, Incident, Workflow, PatientManagement, CDBurning | Dev 1 |
-| Design | UI/Views, Styles, Themes, Components(XAML), DesignTime | Dev 2 (XAML only) |
+| Design | UI/Views, Styles, Themes, Components(XAML), DesignTime | Designer (XAML only) |
 | Coordinator | UI.Contracts, UI.ViewModels, App, UI/Services, Medical Components(C#) | SW Dev Lead |
 | QA | .github/workflows, scripts/ci, scripts/qa, TestReports | QA |
 | RA | docs/regulatory, docs/planning, docs/risk, docs/verification, scripts/ra | RA |
