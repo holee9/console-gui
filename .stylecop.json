@@ -5,24 +5,29 @@
       "usingDirectivesPlacement": "outsideNamespace",
       "systemUsingDirectivesFirst": true
     },
-    "namingRules": {
-      "allowCommonHungarianPrefixes": false,
-      "allowedHungarianPrefixes": []
-    },
     "documentationRules": {
       "companyName": "H&abyz",
       "copyrightText": "Copyright (c) {companyName}. All rights reserved.",
       "xmlHeader": false,
       "documentInterfaces": true,
       "documentExposedElements": true,
-      "documentInternalElements": false,
+      "documentInternalElements": true,
       "documentPrivateElements": false,
       "documentPrivateFields": false,
-      "fileNamingConvention": "metadata"
+      "fileNamingConvention": "metadata",
+      "documentationCulture": "en-US"
+    },
+    "namingRules": {
+      "allowCommonHungarianPrefixes": false,
+      "allowedHungarianPrefixes": [],
+      "includedImplicitlyUsedFieldPrefixes": ["_"]
     },
     "layoutRules": {
       "newlineAtEndOfFile": "require"
     },
-    "maintainabilityRules": {}
+    "maintainabilityRules": {},
+    "readabilityRules": {
+      "allowBuiltInTypeAliases": false
+    }
   }
 }
