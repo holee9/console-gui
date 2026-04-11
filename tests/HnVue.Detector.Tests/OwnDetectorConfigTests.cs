@@ -151,4 +151,56 @@ public sealed class OwnDetectorConfigTests
 
         config.BitsPerPixel.Should().Be(14);
     }
+
+    // ── ToString ─────────────────────────────────────────────────────────────
+
+    [Fact]
+    public void ToString_ContainsHost()
+    {
+        var config = new OwnDetectorConfig("10.0.0.5");
+
+        config.ToString().Should().Contain("10.0.0.5");
+    }
+
+    [Fact]
+    public void ToString_ContainsBitsPerPixel()
+    {
+        var config = new OwnDetectorConfig("192.168.1.100", BitsPerPixel: 16);
+
+        config.ToString().Should().Contain("16");
+    }
+
+    // ── With expression ──────────────────────────────────────────────────────
+
+    [Fact]
+    public void With_ChangingCalibrationPath_PreservesOtherValues()
+    {
+        var original = new OwnDetectorConfig("192.168.1.100");
+        var modified = original with { CalibrationPath = @"C:\Cal" };
+
+        modified.CalibrationPath.Should().Be(@"C:\Cal");
+        modified.Host.Should().Be("192.168.1.100");
+        modified.Port.Should().Be(8888);
+        modified.BitsPerPixel.Should().Be(14);
+    }
+
+    // ── Equality with different ReadoutTimeout/ArmTimeout ────────────────────
+
+    [Fact]
+    public void Equality_DifferentReadoutTimeout_AreNotEqual()
+    {
+        var a = new OwnDetectorConfig("192.168.1.100", ReadoutTimeoutMs: 5000);
+        var b = new OwnDetectorConfig("192.168.1.100", ReadoutTimeoutMs: 3000);
+
+        a.Should().NotBe(b);
+    }
+
+    [Fact]
+    public void Equality_DifferentArmTimeout_AreNotEqual()
+    {
+        var a = new OwnDetectorConfig("192.168.1.100", ArmTimeoutMs: 2000);
+        var b = new OwnDetectorConfig("192.168.1.100", ArmTimeoutMs: 1500);
+
+        a.Should().NotBe(b);
+    }
 }
