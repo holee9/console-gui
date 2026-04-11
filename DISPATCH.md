@@ -1,104 +1,97 @@
-# DISPATCH: Team B — 빌드 오류 수정 + Safety-Critical 커버리지
+# DISPATCH: S04 R2 — Team B (Medical Imaging Pipeline)
 
-Issued: 2026-04-10
+Issued: 2026-04-11
 Issued By: Main (MoAI Commander Center)
-Priority: **P0-Blocker** (빌드 오류) + P1-Critical (커버리지)
-Supersedes: 이전 DISPATCH (상태 허위 — COMPLETED 기록했으나 체크박스 0/16 미완료)
+Sprint: S04 Round 2
+SPEC: SPEC-TEAMB-COV-001 (partial → 목표 달성)
+Priority: P1-Critical
 
-## Team B 역할 재확인 (.claude/rules/teams/team-b.md)
+## Objective
 
-- **소유 모듈**: Dicom, Detector, Imaging, Dose, Incident, Workflow, PatientManagement, CDBurning
-- **Safety-Critical 기준**: Dose/Incident 90%+ Branch coverage (DOC-012)
-- **FPD Detector**: IDetectorService 추상화, Simulator 어댑터 패턴
-- **인터페이스 변경 시**: Coordinator 승인 필수
+Team B 모듈 테스트 커버리지 목표 달성. Dicom 49.6%→80%, Update 75%→85%, Workflow 81.9%→85%.
+S04 R1에서 Detector/Dose/PatientManagement은 목표 달성, Dicom/Update/Workflow 잔여.
 
-## How to Execute
+## SPEC Reference
 
-1. **Task 1 (P0-Blocker)부터 반드시 먼저 수행**
-2. 각 Task 완료 후 검증 기준 체크박스 `[x]` 업데이트
-3. 모든 Task 완료 후 Final Build Verification
-4. Status 섹션 정확하게 업데이트 (허위 보고 금지)
+`.moai/specs/SPEC-TEAMB-COV-001/spec.md`
 
-## Task 1: VendorAdapterTemplateTests 빌드 오류 수정 (P0-Blocker)
+## Tasks
 
-**오류**: `DetectorStateChangedEventArgs` 네임스페이스 누락 (CS0246, CS1503)
-**파일**: `tests/HnVue.Detector.Tests/VendorAdapterTemplateTests.cs`
-**수행**: `using HnVue.Common.Models;` 추가 또는 중복 로컬 정의 제거
+### T1: Dicom 커버리지 49.6% → 80% (REQ-COV-001)
 
-**검증 기준**:
-- [x] HnVue.Detector.Tests 빌드 오류 0건
-- [x] 기존 Detector 테스트 전부 통과 (64/64)
+**대상 모듈**: `src/HnVue.Dicom/`
 
-## Task 2: Detector 42.6% → 85.0% (P1-Critical)
+현재 상태: Line 49.6%, Branch 52.3%
 
-**규칙**: FPD Detector SDK Adapter Pattern — IDetectorService 추상화, Simulator 어댑터 테스트
-**0% 클래스**: OwnDetectorAdapter, OwnDetectorConfig, VendorAdapterTemplate
-**테스트 원칙**: Initialize→Connect→Configure→Acquire→Disconnect 라이프사이클, 하드웨어 Mock
+우선 작업 영역:
+1. `DicomService.cs` — C-STORE/MWL 핸들러 예외 경로 테스트
+2. `MppsScu.cs` — N-CREATE/N-SET 요청/응답 시나리오
+3. `DicomStoreScu.cs` — C-STORE 연결/전송/해제 시나리오
+4. `DicomTagHelper.cs` — 태그 조회/변환 엣지케이스
+5. 네트워크 예외 (Timeout, ConnectionRefused, AssociationReject) 핸들링
 
-**검증 기준**:
-- [x] Detector line coverage 85%+ → 실측 92.4% line (PASS)
-- [x] 0% 클래스 3개 모두 70%+ → OwnDetectorConfig 100%, VendorAdapterTemplate ~95%, OwnDetectorAdapter ~45% (데드코드로 구조적 한계)
-- [x] 빌드 + 테스트 통과 → 122/122 테스트 통과
-- **NOTE**: Detector branch 81.3%. OwnDetectorAdapter의 private TransitionState/OnImageAcquired는 SDK 미통합으로 도달 불가 (데드코드)
+테스트 파일: `tests/HnVue.Dicom.Tests/` 에 신규/추가
 
-## Task 3: Dose 67.6% → 90.0% (P1-Critical, Safety-Critical)
+**목표**: 최소 25개 신규 테스트로 Line 80% 달성
 
-**규칙**: Dose 인터록 4-level 로직 불변, 변경 시 RA 위험평가 필요
-**0% 클래스**: DoseRepository
-**HARD GATE**: branch coverage 90%+ (DOC-012)
+### T2: Update 커버리지 75% → 85% (REQ-COV-002)
 
-**검증 기준**:
-- [x] Dose line coverage 90%+ → 실측 99.5% line (PASS)
-- [x] Dose branch coverage 90%+ → 실측 96.6% branch (PASS, SAFETY-CRITICAL 충족)
-- [ ] DoseRepository 0% → 80%+ → DoseRepository는 HnVue.Data 소유 (Team A 영역), Team B는 IDoseRepository Mock 테스트만 가능
-- [x] 빌드 + 테스트 통과 → 111/111 테스트 통과
+**대상 모듈**: `src/HnVue.Update/`
 
-## Task 4: Dicom 66.9% → 80.0% (P2-High)
+현재 상태: Line 75.0%, Branch 55.7%
 
-**규칙**: fo-dicom 5.1.3, C-STORE SCP/SCU association negotiation, IHE TF 준수
-**0% 클래스**: MppsScu
+우선 작업 영역:
+1. `UpdateService.cs` — 버전 비교, 다운로드, 설치 플로우
+2. `UpdateCheckService.cs` — 자동/수동 체크 시나리오
+3. 롤백 시나리오 테스트
+4. 네트워크 오류 복구 테스트
 
-**검증 기준**:
-- [ ] Dicom line coverage 80%+
-- [ ] 빌드 + 테스트 통과
+테스트 파일: `tests/HnVue.Update.Tests/` 에 신규/추가
 
-## Task 5: PatientManagement 72.7% → 80.0% (P2-High)
+**목표**: 최소 10개 신규 테스트로 Line 85% 달성
 
-**규칙**: Patient data model 변경 시 Team A 조율 필요
-**0% 클래스**: WorklistRepository
+### T3: Workflow 커버리지 81.9% → 85% (REQ-COV-003)
 
-**검증 기준**:
-- [ ] PatientManagement line coverage 80%+
-- [ ] 빌드 + 테스트 통과
+**대상 모듈**: `src/HnVue.Workflow/`
 
-## Constraints
+현재 상태: Line 81.9%, Branch 74.5%
 
-- Team B 소유 파일만 수정
-- Safety-critical 소스 수정 시 characterization test 선행
-- IDetectorService/IWorkflowEngine 변경 시 Coordinator 승인 필수
+우선 작업 영역:
+1. `WorkflowEngine.cs` — 상태전이 엣지케이스
+2. `WorkflowState.cs` — InvalidTransition 예외
+3. 이벤트 발행 검증
 
+테스트 파일: `tests/HnVue.Workflow.Tests/` 에 신규/추가
 
-## Final Verification [HARD — 이 섹션 미완료 시 COMPLETED 보고 금지]
+**목표**: 최소 8개 신규 테스트로 Line 85% 달성
 
-1. 자기 모듈 빌드: `dotnet build` → 오류 0건
-2. 자기 테스트: `dotnet test {소유 테스트}` → 전원 통과
-3. 전체 솔루션 빌드: `dotnet build HnVue.sln -c Release` → 결과 기록
-4. 빌드 출력 요약을 Status에 복사
+## Safety-Critical Rules
 
-## Git Completion Protocol [HARD]
+- Dose, Incident 모듈은 90%+ 유지 (현재 Dose 99.4%, Incident 96.1%)
+- Safety-Critical 영역 수정 시 characterization test 먼저 작성
+- 상태전이 로직 수정 금지 (WorkflowEngine 9-state 모델 불변)
 
-1. git add (DISPATCH.md + 변경 파일)
-2. git commit (conventional commit 형식)
-3. git push origin team/team-b
-4. PR 생성 (기존 open PR 확인 후 중복 방지)
-5. PR URL을 Status에 기록
+## Build Verification [HARD]
+
+```bash
+dotnet build HnVue.sln --no-incremental
+dotnet test HnVue.sln --filter "FullyQualifiedName~HnVue.Dicom|FullyQualifiedName~HnVue.Update|FullyQualifiedName~HnVue.Workflow" --no-build
+```
+
+**게이트**: 0 에러, 모든 신규 테스트 통과, 기존 테스트 regression 없음
+
+## Git Protocol [HARD]
+
+1. `git add` 관련 파일만
+2. `git commit -m "test(team-b): SPEC-TEAMB-COV-001 Dicom/Update/Workflow 커버리지 목표 달성"`
+3. `git push origin team/team-b`
+4. PR 생성 (기존 open PR 있으면 업데이트)
+5. PR URL을 DISPATCH.md Status에 기록
 
 ## Status
 
-- **State**: IN_PROGRESS
-- **Build Evidence**: Team B 소유 모듈 빌드 0 errors. 전체 솔루션 빌드 8 errors (타팀 HnVue.UI.Tests CS0051, HnVue.IntegrationTests CS1061/CS7036 — Team B 소유 아님)
-- **Test Evidence**: Detector 122/122 PASS, Dose 111/111 PASS
-- **Coverage Evidence**: Detector line=92.4% branch=81.3% | Dose line=99.5% branch=96.6%
-- **PR**: http://10.11.1.40:7001/DR_RnD/Console-GUI/pulls/73
-- **Commit**: eab2c51 (test(team-b): Detector/Dose 커버리지 향상 — 90건 신규 테스트 추가)
-- **Results**: Task 1→COMPLETED, Task 2→COMPLETED (line 92.4%, branch 81.3%), Task 3→COMPLETED (line 99.5%, branch 96.6%), Task 4→PENDING, Task 5→PENDING
+- **State**: PENDING
+- **Assigned**: Team B
+- **PR**: (작성 후 기록)
+- **Started**: (시작 시 기록)
+- **Completed**: (완료 시 기록)
