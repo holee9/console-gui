@@ -5,10 +5,6 @@
       "usingDirectivesPlacement": "outsideNamespace",
       "systemUsingDirectivesFirst": true
     },
-    "namingRules": {
-      "allowCommonHungarianPrefixes": false,
-      "allowedHungarianPrefixes": []
-    },
     "documentationRules": {
       "companyName": "H&abyz",
       "copyrightText": "Copyright (c) {companyName}. All rights reserved.",
@@ -20,6 +16,11 @@
       "documentPrivateFields": false,
       "fileNamingConvention": "metadata",
       "documentationCulture": "en-US"
+    },
+    "namingRules": {
+      "allowCommonHungarianPrefixes": false,
+      "allowedHungarianPrefixes": [],
+      "includedImplicitlyUsedFieldPrefixes": ["_"]
     },
     "layoutRules": {
       "newlineAtEndOfFile": "require"
