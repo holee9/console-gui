@@ -6,86 +6,91 @@
              mc:Ignorable="d"
              d:DesignHeight="900"
              d:DesignWidth="1400">
-    <Grid Background="#1a2232">
+    <Grid Background="{DynamicResource HnVue.Semantic.Surface.Page}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Viewbox Grid.Row="1"
-                 Stretch="Uniform"
-                 Height="120"
-                 Margin="0,0,0,34">
-            <TextBlock Text="HnVUE"
-                       Foreground="#f2f4f8"
-                       FontSize="54"
-                       FontWeight="Bold"/>
-        </Viewbox>
-
-        <Border Grid.Row="2"
-                Width="280"
-                Height="34"
-                Background="White"
-                BorderBrush="#d9e1ee"
-                BorderThickness="1"
-                HorizontalAlignment="Center"
-                Margin="0,0,0,12">
-            <ComboBox SelectedValue="{Binding Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                      ItemsSource="{Binding AvailableUserIds}"
-                      IsEditable="True"
-                      Background="Transparent"
-                      BorderThickness="0"
-                      Padding="6,0"
-                      VerticalContentAlignment="Center"/>
-        </Border>
-
-        <Border Grid.Row="3"
-                Width="280"
-                Height="34"
-                Background="White"
-                BorderBrush="#d9e1ee"
-                BorderThickness="1"
-                HorizontalAlignment="Center">
-            <PasswordBox x:Name="PasswordBox"
-                         Background="Transparent"
-                         BorderThickness="0"
-                         Padding="6,0"
-                         VerticalContentAlignment="Center"
-                         PasswordChanged="PasswordBox_PasswordChanged"/>
-        </Border>
-
-        <StackPanel Grid.Row="4"
-                    Orientation="Horizontal"
+        <!-- Header area -->
+        <StackPanel Grid.Row="1"
                     HorizontalAlignment="Center"
-                    Margin="0,18,0,0">
-            <Button Command="{Binding LoginCommand}"
-                    Background="Transparent"
-                    BorderThickness="0"
-                    Foreground="#f2f4f8"
-                    FontFamily="Segoe MDL2 Assets"
-                    FontSize="22"
-                    Padding="8"
-                    Content="&#xE73E;"/>
-            <Button Background="Transparent"
-                    BorderThickness="0"
-                    Foreground="#f2f4f8"
-                    FontFamily="Segoe MDL2 Assets"
-                    FontSize="22"
-                    Padding="8"
-                    Margin="20,0,0,0"
-                    Content="&#xE711;"/>
+                    Margin="0,0,0,32">
+            <Viewbox Stretch="Uniform"
+                     Height="90"
+                     Margin="0,0,0,24">
+                <TextBlock Text="HnVUE"
+                           Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
+                           FontSize="54"
+                           FontWeight="Bold"/>
+            </Viewbox>
+
+            <!-- PPT Slide 3: Section badge "로그인 창" -->
+            <Border Background="{DynamicResource HnVue.Component.SectionBadge.Bg}"
+                    CornerRadius="3"
+                    Padding="8,2"
+                    HorizontalAlignment="Center">
+                <TextBlock Text="로그인 창"
+                           Style="{StaticResource HnVue.SectionBadgeText}"/>
+            </Border>
         </StackPanel>
 
-        <TextBlock Grid.Row="5"
-                   Text="{Binding ErrorMessage}"
-                   Foreground="#ff8d8d"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Top"
-                   Margin="0,20,0,0"
-                   Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}"/>
+        <!-- Login form panel -->
+        <Border Grid.Row="2"
+                Width="320"
+                HorizontalAlignment="Center"
+                Background="{DynamicResource HnVue.Semantic.Surface.Card}"
+                CornerRadius="8"
+                Padding="28,24">
+            <StackPanel>
+                <!-- PPT Slide 3: 사용자 label (UppercaseLabel style: 10px/600/#7090b0) -->
+                <TextBlock Text="사용자"
+                           Style="{StaticResource HnVue.UppercaseLabel}"
+                           Margin="0,0,0,4"/>
+                <!-- PPT Slide 2/3: UserSelectDropdown (ComboBox) -->
+                <ComboBox x:Name="UserComboBox"
+                          SelectedValue="{Binding Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          ItemsSource="{Binding AvailableUserIds}"
+                          IsEditable="True"
+                          Height="36"
+                          Margin="0,0,0,16"/>
+
+                <!-- PPT Slide 3: 비밀번호 label -->
+                <TextBlock Text="비밀번호"
+                           Style="{StaticResource HnVue.UppercaseLabel}"
+                           Margin="0,0,0,4"/>
+                <!-- PPT Slide 3: PasswordInput (PasswordBox) -->
+                <PasswordBox x:Name="PasswordBox"
+                             Height="36"
+                             Padding="8,0"
+                             VerticalContentAlignment="Center"
+                             Margin="0,0,0,24"
+                             PasswordChanged="PasswordBox_PasswordChanged"/>
+
+                <!-- PPT Slide 2/3: 확인/취소 button row -->
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Right">
+                    <Button Content="취소"
+                            Style="{StaticResource HnVue.CancelButton}"
+                            Width="90"
+                            Height="36"
+                            Margin="0,0,8,0"/>
+                    <Button Content="확인"
+                            Command="{Binding LoginCommand}"
+                            Style="{StaticResource HnVue.PrimaryButton}"
+                            Width="90"
+                            Height="36"/>
+                </StackPanel>
+
+                <!-- Error message -->
+                <TextBlock Text="{Binding ErrorMessage}"
+                           Foreground="#ff8d8d"
+                           HorizontalAlignment="Center"
+                           Margin="0,12,0,0"
+                           Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}"/>
+            </StackPanel>
+        </Border>
     </Grid>
 </UserControl>

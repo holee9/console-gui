@@ -20,9 +20,9 @@ namespace HnVue.UI.Services;
 /// </summary>
 public class ThemeRollbackService
 {
-    private const string CurrentThemeKey = "HnVueTheme";
-    private const string CurrentThemePath = "Themes/HnVueTheme.xaml";
-    private const string PreviousThemePath = "Themes/HnVueTheme.previous.xaml";
+    private const string CurrentThemeFileName = "HnVueTheme.xaml";
+    private const string PreviousThemeFileName = "HnVueTheme.previous.xaml";
+    private const string PreviousThemePath = "/HnVue.UI;component/Themes/HnVueTheme.previous.xaml";
 
     /// <summary>
     /// Checks whether a previous theme snapshot is available for rollback.
@@ -31,11 +31,10 @@ public class ThemeRollbackService
     {
         get
         {
-            var uri = new Uri(PreviousThemePath, UriKind.Relative);
             try
             {
-                var dict = new ResourceDictionary { Source = uri };
-                return dict.Count > 0;
+                var dict = new ResourceDictionary { Source = new Uri(PreviousThemePath, UriKind.Relative) };
+                return dict.Count > 0 || dict.MergedDictionaries.Count > 0;
             }
             catch
             {
@@ -51,20 +50,28 @@ public class ThemeRollbackService
     /// <returns>True if rollback succeeded; false if no previous theme is available.</returns>
     public static bool RollbackToPrevious()
     {
-        if (!CanRollback)
+        var application = Application.Current;
+
+        if (!CanRollback || application is null)
             return false;
 
-        Application.Current.Dispatcher.Invoke(() =>
+        application.Dispatcher.Invoke(() =>
         {
-            var mergedDicts = Application.Current.Resources.MergedDictionaries;
+            var mergedDicts = application.Resources.MergedDictionaries;
 
             // Find and remove the current active theme
-            var currentTheme = mergedDicts.FirstOrDefault(d =>
-                d.Source != null &&
-                d.Source.OriginalString.Contains(CurrentThemeKey, StringComparison.OrdinalIgnoreCase));
+            var currentTheme = mergedDicts.FirstOrDefault(d => HasThemeSource(d, CurrentThemeFileName));
 
             if (currentTheme != null)
+            {
                 mergedDicts.Remove(currentTheme);
+            }
+
+            var previousTheme = mergedDicts.FirstOrDefault(d => HasThemeSource(d, PreviousThemeFileName));
+            if (previousTheme != null)
+            {
+                mergedDicts.Remove(previousTheme);
+            }
 
             // Load and apply the previous approved theme
             mergedDicts.Add(new ResourceDictionary
@@ -89,5 +96,19 @@ public class ThemeRollbackService
         //   cp src/HnVue.UI/Themes/HnVueTheme.xaml
         //      src/HnVue.UI/Themes/HnVueTheme.previous.xaml
         //   (before replacing HnVueTheme.xaml with new version)
+    }
+
+    private static bool HasThemeSource(ResourceDictionary dictionary, string fileName)
+    {
+        var source = dictionary.Source?.OriginalString;
+        if (string.IsNullOrWhiteSpace(source))
+        {
+            return false;
+        }
+
+        return source.EndsWith($"/Themes/{fileName}", StringComparison.OrdinalIgnoreCase) ||
+               source.EndsWith($@"\Themes\{fileName}", StringComparison.OrdinalIgnoreCase) ||
+               source.EndsWith($"Themes/{fileName}", StringComparison.OrdinalIgnoreCase) ||
+               source.EndsWith(fileName, StringComparison.OrdinalIgnoreCase);
     }
 }

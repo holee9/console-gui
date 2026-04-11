@@ -1,6 +1,7 @@
 using System;
 using System.Globalization;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Media;
 using FluentAssertions;
 using HnVue.Common.Enums;
@@ -17,6 +18,140 @@ public class ConverterTests
 {
     private static readonly CultureInfo Culture = CultureInfo.InvariantCulture;
     private static readonly Type TargetType = typeof(object);
+
+    // ====================================================================
+    // AgeFromBirthDateConverter / DateOnlyToStringConverter
+    // ====================================================================
+
+    [Fact]
+    [Trait("Category", "Converters")]
+    [Trait("Converter", "AgeFromBirthDateConverter")]
+    public void AgeFromBirthDateConverter_Convert_ValidBirthDate_Returns_AgeWithSuffix()
+    {
+        var converter = new AgeFromBirthDateConverter();
+        var dob = new DateOnly(2000, 4, 12);
+        var today = DateOnly.FromDateTime(DateTime.Today);
+        var expectedYears = today.Year - dob.Year;
+        if (dob.AddYears(expectedYears) > today)
+        {
+            expectedYears--;
+        }
+
+        converter.Convert(dob, TargetType, null, Culture).Should().Be($"{expectedYears}Y");
+    }
+
+    [Fact]
+    [Trait("Category", "Converters")]
+    [Trait("Converter", "AgeFromBirthDateConverter")]
+    public void AgeFromBirthDateConverter_Convert_TodayBirthDate_Returns_ZeroY()
+    {
+        var converter = new AgeFromBirthDateConverter();
+        var dob = DateOnly.FromDateTime(DateTime.Today);
+
+        converter.Convert(dob, TargetType, null, Culture).Should().Be("0Y");
+    }
+
+    [Fact]
+    [Trait("Category", "Converters")]
+    [Trait("Converter", "AgeFromBirthDateConverter")]
+    public void AgeFromBirthDateConverter_Convert_InvalidValue_Returns_Dash()
+    {
+        var converter = new AgeFromBirthDateConverter();
+
+        converter.Convert(null!, TargetType, null, Culture).Should().Be("-");
+        converter.Convert("2000-01-01", TargetType, null, Culture).Should().Be("-");
+    }
+
+    [Fact]
+    [Trait("Category", "Converters")]
+    [Trait("Converter", "AgeFromBirthDateConverter")]
+    public void AgeFromBirthDateConverter_ConvertBack_Returns_DoNothing()
+    {
+        var converter = new AgeFromBirthDateConverter();
+
+        converter.ConvertBack("25Y", TargetType, null, Culture).Should().Be(Binding.DoNothing);
+    }
+
+    [Fact]
+    [Trait("Category", "Converters")]
+    [Trait("Converter", "DateOnlyToStringConverter")]
+    public void DateOnlyToStringConverter_Convert_ValidDate_Returns_FormattedString()
+    {
+        var converter = new DateOnlyToStringConverter();
+        var date = new DateOnly(2026, 4, 11);
+
+        converter.Convert(date, TargetType, null, Culture).Should().Be("2026-04-11");
+    }
+
+    [Fact]
+    [Trait("Category", "Converters")]
+    [Trait("Converter", "DateOnlyToStringConverter")]
+    public void DateOnlyToStringConverter_Convert_InvalidValue_Returns_Dash()
+    {
+        var converter = new DateOnlyToStringConverter();
+
+        converter.Convert(null!, TargetType, null, Culture).Should().Be("-");
+        converter.Convert("2026-04-11", TargetType, null, Culture).Should().Be("-");
+    }
+
+    [Fact]
+    [Trait("Category", "Converters")]
+    [Trait("Converter", "DateOnlyToStringConverter")]
+    public void DateOnlyToStringConverter_ConvertBack_Returns_DoNothing()
+    {
+        var converter = new DateOnlyToStringConverter();
+
+        converter.ConvertBack("2026-04-11", TargetType, null, Culture).Should().Be(Binding.DoNothing);
+    }
+
+    // ====================================================================
+    // BoolToVisibilityConverter
+    // ====================================================================
+
+    [Fact]
+    [Trait("Category", "Converters")]
+    [Trait("Converter", "BoolToVisibilityConverter")]
+    public void BoolToVisibilityConverter_Convert_DefaultMapping_Returns_VisibleOrCollapsed()
+    {
+        var converter = new BoolToVisibilityConverter();
+
+        converter.Convert(true, TargetType, null, Culture).Should().Be(Visibility.Visible);
+        converter.Convert(false, TargetType, null, Culture).Should().Be(Visibility.Collapsed);
+        converter.Convert(null!, TargetType, null, Culture).Should().Be(Visibility.Collapsed);
+    }
+
+    [Fact]
+    [Trait("Category", "Converters")]
+    [Trait("Converter", "BoolToVisibilityConverter")]
+    public void BoolToVisibilityConverter_Convert_IsInverted_ReversesMapping()
+    {
+        var converter = new BoolToVisibilityConverter { IsInverted = true };
+
+        converter.Convert(true, TargetType, null, Culture).Should().Be(Visibility.Collapsed);
+        converter.Convert(false, TargetType, null, Culture).Should().Be(Visibility.Visible);
+    }
+
+    [Fact]
+    [Trait("Category", "Converters")]
+    [Trait("Converter", "BoolToVisibilityConverter")]
+    public void BoolToVisibilityConverter_Convert_InvertParameter_ReversesMapping()
+    {
+        var converter = new BoolToVisibilityConverter();
+
+        converter.Convert(true, TargetType, "Invert", Culture).Should().Be(Visibility.Collapsed);
+        converter.Convert(false, TargetType, "invert", Culture).Should().Be(Visibility.Visible);
+    }
+
+    [Fact]
+    [Trait("Category", "Converters")]
+    [Trait("Converter", "BoolToVisibilityConverter")]
+    public void BoolToVisibilityConverter_ConvertBack_Throws_NotSupportedException()
+    {
+        var converter = new BoolToVisibilityConverter();
+        Action act = () => converter.ConvertBack(Visibility.Visible, TargetType, null, Culture);
+
+        act.Should().Throw<NotSupportedException>();
+    }
 
     // ====================================================================
     // InverseBoolConverter

@@ -269,8 +269,8 @@ public sealed class StudylistViewModelTests
     private static StudyRecord MakeStudy(string studyInstanceUid) => new(
         StudyInstanceUid: studyInstanceUid,
         PatientId: "P-001",
-        StudyDate: DateTimeOffset.UtcNow,
-        Description: null,
-        AccessionNumber: null,
+        StudyDate: DateTimeOffset.Now,
+        Description: "DR CHEST",
+        AccessionNumber: "ACC-001",
         BodyPart: "CHEST");
 }
