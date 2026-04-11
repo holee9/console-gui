@@ -74,5 +74,11 @@ git push origin team/ra
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: DOC-042 CMP 완료 | NOT_STARTED | -- | Draft→Approved |
-| Git 완료 프로토콜 | NOT_STARTED | -- | PR URL: -- |
+| Task 1: DOC-042 CMP 완료 | COMPLETED | 2026-04-12 | DOC-042_CMP_v2.0 — v1.1 Draft→v2.0 Approved. IEC 62304 §8.1 충족. 17개 모듈 CI, PR 기반 변경통제, Sprint 베이스라인 전략 포함. 이미 main 병합 완료 (commit cd9aff7) |
+| Git 완료 프로토콜 | COMPLETED | 2026-04-12 | 이미 main에 병합됨. team/ra == origin/main (0 commits ahead) |
+
+### 검증 증빙
+
+- DOC-042_CMP_v2.0.md: 상태=Approved, 승인일=2026-04-11, 승인란 작성 완료
+- IEC 62304 §8.1 준수: §4.1(CI 17모듈+산출물), §4.5(PR 변경통제), §4.6(Sprint 베이스라인)
+- commit cd9aff7: main 브랜치 포함 확인
