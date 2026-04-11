@@ -1,104 +1,103 @@
-# DISPATCH: Coordinator — 빌드오류 수정 + ViewModel/Contracts 커버리지 + Integration 보강
+# DISPATCH: S04 R2 — Coordinator (Integration & DI)
 
-Issued: 2026-04-10 (v2 교차검증 보강)
+Issued: 2026-04-11
 Issued By: Main (MoAI Commander Center)
-Priority: **P0-Blocker** (빌드 오류 7건) + P1-Critical (커버리지 갭 30.1pp)
-Supersedes: 이전 DISPATCH (IN_PROGRESS, 체크 0/10)
+Sprint: S04 Round 2
+SPEC: SPEC-COORDINATOR-001 (P0-Blocker)
+Priority: P0-Blocker
 
-## Coordinator 역할 재확인 (.claude/rules/teams/coordinator.md)
+## Objective
 
-- **소유 모듈**: UI.Contracts (인터페이스 게이트), UI.ViewModels (도메인 합성), App (DI 루트), IntegrationTests
-- **SOLE modifier**: UI.Contracts 인터페이스 유일한 수정 권한자
-- **DI 기준**: Singleton(무상태)/Scoped(요청별)/Transient(경량), 미등록=앱 크래시
-- **ViewModel**: 생성자 주입, 인프라 직접 참조 금지
-- **통합 테스트**: 실서비스 + in-memory SQLite, Mock 금지
+App.xaml.cs에 등록된 6개 NullRepository stub을 EF Core 기반 실제 구현체로 교체.
+현재 DI 컨테이너에 Null 구현체가 등록되어 모든 Repository 호출이 no-op 처리됨.
+전체 파이프라인 E2E 정상화의 핵심 의존성.
 
-## How to Execute
+## SPEC Reference
 
-1. **Task 0 (P0-Blocker) 최우선** 수행
-2. Task 1-3 순서대로 수행
-3. 체크박스 + Status 업데이트
+`.moai/specs/SPEC-COORDINATOR-001/spec.md` — 반드시 전문 읽고 구현할 것.
 
-## Task 0: IntegrationTests 빌드 오류 수정 (P0-Blocker)
+## Tasks
 
-**오류 7건** (2026-04-10 빌드 검증 결과):
-- CS1061 `IUserRepository.AddAsync` 미정의 (x6건): TeamAIntegrationTests.cs:80,118,164,213,245,282
-- CS7036 `AuditEntry` 생성자 매개변수 누락 (x1건): TeamAIntegrationTests.cs:184
+### T1: EfDoseRepository 구현 (REQ-COORD-001)
 
-**원인**: Team A의 SPEC-INFRA-001 구현에서 IUserRepository 인터페이스와 AuditEntry 생성자가 변경되었으나, IntegrationTests가 미갱신
+**파일**: `src/HnVue.Data/Repositories/EfDoseRepository.cs` (신규)
 
-**수행**:
-1. `IUserRepository` 현재 인터페이스 확인 (AddAsync → 올바른 메서드명 확인)
-2. `AuditEntry` 생성자 시그니처 확인
-3. `TeamAIntegrationTests.cs` 호출부 수정
+- `HnVueDbContext` 생성자 주입
+- `IDoseRepository` 전 메서드 구현 (CRUD + 집계)
+- `App.xaml.cs:179` `NullDoseRepository` → `EfDoseRepository` 교체
 
-**검증 기준**:
-- [x] HnVue.IntegrationTests 빌드 오류 0건
-- [x] 기존 IntegrationTests 전부 통과 (26/26)
-- [x] 빌드 + 테스트 통과
+### T2: EfWorklistRepository 구현 (REQ-COORD-002)
 
-## Task 1: UI.ViewModels 42.0% → 75.0% (P1-Critical)
+**파일**: `src/HnVue.Data/Repositories/EfWorklistRepository.cs` (신규)
 
-**0% 클래스**: AddPatientProcedureViewModel, MergeViewModel, SettingsViewModel, StudylistViewModel
-**50% 미만**: MainViewModel(42.6%), CDBurnViewModel(42.8%)
-**테스트 대상**: Command(CanExecute+Execute), INotifyPropertyChanged, 생성자 DI, 예외
+- `IWorklistRepository` 전 메서드 구현
+- `App.xaml.cs:184` `NullWorklistRepository` → `EfWorklistRepository` 교체
 
-**검증 기준**:
-- [x] UI.ViewModels line coverage 75%+ (달성: 85.1%)
-- [x] 0% 클래스 4개 모두 50%+ (MainViewModel 32%→65%+, 전체 개선)
-- [x] 빌드 + 테스트 통과
+### T3: EfIncidentRepository 구현 (REQ-COORD-003)
 
-## Task 2: UI.Contracts 42.8% → 70.0% (P1-Critical)
+**파일**: `src/HnVue.Data/Repositories/EfIncidentRepository.cs` (신규)
 
-**0% 클래스**: NavigationRequestedMessage, PatientSelectedMessage, SessionTimeoutMessage
-**테스트**: 메시지 생성/직렬화, Contracts 모델 유효성
+- `IIncidentRepository` 전 메서드 구현
+- `App.xaml.cs` 해당 라인 교체
 
-**검증 기준**:
-- [x] UI.Contracts line coverage 70%+ (달성: 100%)
-- [x] 0% 클래스 모두 커버 (ThemeInfo, PatientSelectedMessage, NavigationRequestedMessage, SessionTimeoutMessage 100%)
-- [x] 빌드 + 테스트 통과
+### T4: EfUpdateRepository 구현 (REQ-COORD-004)
 
-## Task 3: Integration Scenario 보강 (P2-High)
+**파일**: `src/HnVue.Data/Repositories/EfUpdateRepository.cs` (신규)
 
-**규칙**: 실서비스 + in-memory SQLite, Mock 금지, {Module}_{Scenario}_{ExpectedResult}
+- `IUpdateRepository` 전 메서드 구현
+- DI 등록 교체
 
-**검증 기준**:
-- [x] 신규 integration scenario 13개 (7 시나리오)
-- [x] IntegrationTests 전체 green (39/39)
-- [x] 빌드 + 테스트 통과
+### T5: EfSystemSettingsRepository 구현 (REQ-COORD-005)
 
-## Constraints
+**파일**: `src/HnVue.Data/Repositories/EfSystemSettingsRepository.cs` (신규)
 
-- Coordinator 소유 파일만 수정
-- UI.Contracts 인터페이스 변경 시 영향 분석 + `interface-contract` 이슈
-- ViewModel 인프라 직접 참조 금지
+- `ISystemSettingsRepository` 전 메서드 구현
+- DI 등록 교체
 
+### T6: EfCdStudyRepository 구현 (REQ-COORD-006)
 
-## Final Verification [HARD — 이 섹션 미완료 시 COMPLETED 보고 금지]
+**파일**: `src/HnVue.Data/Repositories/EfCdStudyRepository.cs` (신규)
 
-1. 자기 모듈 빌드: `dotnet build` → 오류 0건
-2. 자기 테스트: `dotnet test {소유 테스트}` → 전원 통과
-3. 전체 솔루션 빌드: `dotnet build HnVue.sln -c Release` → 결과 기록
-4. 빌드 출력 요약을 Status에 복사
+- `HnVue.CDBurning.IStudyRepository` 전 메서드 구현
+- DI 등록 교체
 
-## Git Completion Protocol [HARD]
+### T7: 통합 테스트 작성 (REQ-COORD-007)
 
-1. git add (DISPATCH.md + 변경 파일)
-2. git commit (conventional commit 형식)
-3. git push origin team/coordinator
-4. PR 생성 (기존 open PR 확인 후 중복 방지)
-5. PR URL을 Status에 기록
+**파일**: `tests.integration/HnVue.IntegrationTests/RepositoryIntegrationTests.cs` (신규)
+
+최소 6개 테스트 (각 Repository별 1개 이상):
+- in-memory SQLite DbContext 활용
+- CRUD 동작 검증
+- DI 컨테이너 통합 검증
+
+## Implementation Notes
+
+- 기존 스키마 활용 (새 Migration 불필요)
+- Repository 인터페이스는 수정하지 않음
+- `HnVueDbContext`의 `DbSet<T>` 확인 후 매핑
+- async/await 패턴 필수, CancellationToken 파라미터 포함
+
+## Build Verification [HARD]
+
+```bash
+dotnet build HnVue.sln --no-incremental
+dotnet test HnVue.sln --filter "FullyQualifiedName~HnVue.IntegrationTests" --no-build
+```
+
+**게이트**: 0 에러, 통합 테스트 6개+ 모두 통과
+
+## Git Protocol [HARD]
+
+1. `git add` 관련 파일만
+2. `git commit -m "feat(coordinator): SPEC-COORDINATOR-001 Null Repository 6개 EF Core 교체"`
+3. `git push origin team/coordinator`
+4. PR 생성
+5. PR URL을 DISPATCH.md Status에 기록
 
 ## Status
 
-- **State**: COMPLETED
-- **Build Evidence**: 
-  - Own modules build: 0 errors
-  - UI.Tests: 497 passed, 1 failed (pre-existing RelayCommand test)
-  - Full solution build (Release): 0 errors
-  - UI.Contracts coverage: 42.8% → 100% (target 70%)
-  - UI.ViewModels coverage: 75.4% → 85.1% (target 75%)
-  - IntegrationTests: 39/39 passed (13 new Coordinator scenarios)
-- **PR**: http://10.11.1.40:7001/DR_RnD/Console-GUI/pulls/77
-- **Commit**: 63f0b9a
-- **Results**: Task 0→COMPLETED, Task 1→COMPLETED (85.1%), Task 2→COMPLETED (100%), Task 3→COMPLETED (13 scenarios)
+- **State**: PENDING
+- **Assigned**: Coordinator
+- **PR**: (작성 후 기록)
+- **Started**: (시작 시 기록)
+- **Completed**: (완료 시 기록)
