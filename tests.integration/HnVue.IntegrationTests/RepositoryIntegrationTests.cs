@@ -174,6 +174,43 @@ public sealed class RepositoryIntegrationTests : IDisposable
         result.Value.Should().ContainSingle(x => x.AccessionNumber == "ACC-001");
     }
 
+    [Fact]
+    public async Task EfWorklistRepository_QueryToday_NoStudies_ReturnsEmptyList()
+    {
+        // Arrange — add a study with yesterday's date (should not appear in today's worklist)
+        var yesterday = DateTimeOffset.UtcNow.AddDays(-1);
+        var patientId = "WL-P002";
+
+        _context.Patients.Add(new PatientEntity
+        {
+            PatientId = patientId,
+            Name = "Yesterday Patient",
+            CreatedAtTicks = yesterday.UtcTicks,
+            CreatedAtOffsetMinutes = 0,
+            CreatedBy = "admin",
+        });
+        _context.Studies.Add(new StudyEntity
+        {
+            StudyInstanceUid = "WL-STUDY-YESTERDAY",
+            PatientId = patientId,
+            StudyDateTicks = yesterday.UtcTicks,
+            StudyDateOffsetMinutes = (int)yesterday.Offset.TotalMinutes,
+            AccessionNumber = "ACC-YEST",
+            BodyPart = "KNEE",
+            Description = "Knee AP",
+        });
+        await _context.SaveChangesAsync();
+
+        var repo = new EfWorklistRepository(_context);
+
+        // Act
+        var result = await repo.QueryTodayAsync();
+
+        // Assert
+        result.IsSuccess.Should().BeTrue();
+        result.Value.Should().BeEmpty();
+    }
+
     // ── T3: EfIncidentRepository ──────────────────────────────────────────────
 
     [Fact]

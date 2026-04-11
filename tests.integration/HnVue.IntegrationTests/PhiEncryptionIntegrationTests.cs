@@ -34,6 +34,9 @@ public sealed class PhiEncryptionIntegrationTests : IDisposable
 
         var options = new DbContextOptionsBuilder<HnVueDbContext>()
             .UseSqlite(_connectionString)
+            .UseInternalServiceProvider(new ServiceCollection()
+                .AddEntityFrameworkSqlite()
+                .BuildServiceProvider())
             .Options;
 
         _dbContext = new HnVueDbContext(options, _phiService);
@@ -68,7 +71,9 @@ public sealed class PhiEncryptionIntegrationTests : IDisposable
         _dbContext.ChangeTracker.Clear();
 
         // Act - reload from database (PHI fields should be decrypted transparently)
-        var retrieved = await _dbContext.Patients.FindAsync("PAT-001");
+        // Note: FindAsync cannot be used with non-deterministic encrypted PKs (AES-GCM random nonce).
+        // Using FirstOrDefaultAsync to read all rows and let value converters decrypt transparently.
+        var retrieved = await _dbContext.Patients.FirstOrDefaultAsync();
 
         // Assert - PHI data is correctly decrypted on read
         retrieved.Should().NotBeNull("patient should exist in database");
@@ -77,15 +82,16 @@ public sealed class PhiEncryptionIntegrationTests : IDisposable
         retrieved.PatientId.Should().Be("PAT-001", "PatientId must round-trip through encryption");
 
         // Assert - Verify raw DB values are encrypted (not plaintext)
-        // Query raw value via a separate context without PHI encryption
-        var rawOptions = new DbContextOptionsBuilder<HnVueDbContext>()
-            .UseSqlite(_connectionString)
-            .Options;
-        await using var rawCtx = new HnVueDbContext(rawOptions);
-        var rawPatient = await rawCtx.Patients.FindAsync("PAT-001");
-        rawPatient.Should().NotBeNull();
-        rawPatient!.Name.Should().NotBe("홍길동", "raw DB Name should be encrypted, not plaintext");
-        rawPatient.DateOfBirth.Should().NotBe("1990-01-15", "raw DB DateOfBirth should be encrypted, not plaintext");
+        // Use ADO.NET to bypass EF Core model cache which shares the converter-including model.
+        var connection = _dbContext.Database.GetDbConnection();
+        using var cmd = connection.CreateCommand();
+        cmd.CommandText = "SELECT Name, DateOfBirth FROM Patients LIMIT 1";
+        using var reader = await cmd.ExecuteReaderAsync();
+        await reader.ReadAsync();
+        var rawName = reader.GetString(0);
+        var rawDob = reader.IsDBNull(1) ? null : reader.GetString(1);
+        rawName.Should().NotBe("홍길동", "raw DB Name should be encrypted, not plaintext");
+        rawDob.Should().NotBe("1990-01-15", "raw DB DateOfBirth should be encrypted, not plaintext");
     }
 
     /// <summary>
