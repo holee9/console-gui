@@ -80,8 +80,15 @@ git push origin team/team-b
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: Dicom 테스트 추가 | **COMMITTED** | 2026-04-12 | 715줄, 3파일 — main 머지 완료 (ed63927) |
-| Git 완료 프로토콜 | **MERGED** | 2026-04-12 | CC 직접 머지 (PR 없음) — 커버리지 측정은 QA 게이트에서 확인 |
+| Task 1: Dicom 테스트 추가 | **COMPLETED** | 2026-04-12 | 신규 46 테스트 통과 (DicomService, MppsScu, DicomFileIO) |
+| Git 완료 프로토콜 | **MERGED** | 2026-04-12 | CC 머지 완료 |
 
-> **CC 노트 (2026-04-12)**: Team B Dicom 테스트 코드가 main에 직접 머지됨.
-> 실제 커버리지 달성 여부(60% 목표)는 QA S05 게이트(S05-R1-qa.md Task 1) 실행 후 확인.
+### 빌드 증거
+- HnVue.Dicom.Tests: 204 total, 204 passed (0 실패)
+- 신규 Dicom 테스트: 46/46 통과
+- HnVue.Update.Tests: 142 total, 142 passed
+- HnVue.Workflow.Tests: 179 total, 179 passed
+- Dose/Incident Safety-Critical 모듈 수정 없음 (99.4%/96.1% 유지)
+
+### PR
+- PR #82: http://10.11.1.40:7001/DR_RnD/Console-GUI/pulls/82

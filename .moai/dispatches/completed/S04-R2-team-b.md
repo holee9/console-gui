@@ -90,8 +90,8 @@ dotnet test HnVue.sln --filter "FullyQualifiedName~HnVue.Dicom|FullyQualifiedNam
 
 ## Status
 
-- **State**: PENDING
+- **State**: IN_PROGRESS
 - **Assigned**: Team B
 - **PR**: (작성 후 기록)
-- **Started**: (시작 시 기록)
+- **Started**: 2026-04-11
 - **Completed**: (완료 시 기록)

@@ -45,7 +45,7 @@ public sealed class MppsScu
         string bodyPart,
         CancellationToken cancellationToken = default)
     {
-        if (string.IsNullOrEmpty(_options.MppsHost))
+        if (string.IsNullOrWhiteSpace(_options.MppsHost))
             return Result.Failure<string>(ErrorCode.DicomConnectionFailed,
                 "MPPS host is not configured. Set Dicom:MppsHost in configuration.");
 
@@ -99,6 +99,14 @@ public sealed class MppsScu
         {
             return Result.Failure<string>(ErrorCode.OperationCancelled, "MPPS N-CREATE was cancelled.");
         }
+        catch (Exception ex) when (ex is not DicomNetworkException
+                                    and not OperationCanceledException
+                                    and not OutOfMemoryException)
+        {
+            return Result.Failure<string>(
+                ErrorCode.DicomConnectionFailed,
+                $"MPPS N-CREATE failed: {ex.GetBaseException().Message}");
+        }
     }
 
     // @MX:NOTE N-SET updates PerformedProcedureStepStatus to COMPLETED or DISCONTINUED with UTC end timestamp
@@ -117,7 +125,7 @@ public sealed class MppsScu
         bool completed = true,
         CancellationToken cancellationToken = default)
     {
-        if (string.IsNullOrEmpty(_options.MppsHost))
+        if (string.IsNullOrWhiteSpace(_options.MppsHost))
             return Result.Failure(ErrorCode.DicomConnectionFailed,
                 "MPPS host is not configured. Set Dicom:MppsHost in configuration.");
 
@@ -165,6 +173,14 @@ public sealed class MppsScu
         catch (OperationCanceledException)
         {
             return Result.Failure(ErrorCode.OperationCancelled, "MPPS N-SET was cancelled.");
+        }
+        catch (Exception ex) when (ex is not DicomNetworkException
+                                    and not OperationCanceledException
+                                    and not OutOfMemoryException)
+        {
+            return Result.Failure(
+                ErrorCode.DicomConnectionFailed,
+                $"MPPS N-SET failed: {ex.GetBaseException().Message}");
         }
     }
 }

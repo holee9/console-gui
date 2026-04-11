@@ -12,10 +12,8 @@ namespace HnVue.Dicom.Tests;
 /// </summary>
 /// <remarks>
 /// MppsScu uses <c>DicomClientFactory.Create</c> internally, which is a static
-/// factory. Network-level tests exercise real fo-dicom connection attempts;
-/// unhandled exception types (e.g. <see cref="AggregateException"/> from fo-dicom
-/// internals) propagate through since MppsScu only catches
-/// <c>DicomNetworkException</c> and <c>OperationCanceledException</c>.
+/// factory. These tests cover configuration and failure translation paths
+/// without requiring a reachable MPPS SCP.
 /// </remarks>
 public sealed class MppsScuTests
 {
@@ -101,7 +99,7 @@ public sealed class MppsScuTests
 
     [Fact]
     [Trait("SWR", "SWR-DC-055")]
-    public async Task SendInProgressAsync_WhitespaceMppsHost_DoesNotReturnEarlyFailure()
+    public async Task SendInProgressAsync_WhitespaceMppsHost_ReturnsDicomConnectionFailed()
     {
         // Whitespace is not null or empty — it passes the guard and reaches network layer.
         var options = ValidOptions();
@@ -109,28 +107,27 @@ public sealed class MppsScuTests
         var sut = CreateSut(options);
 
         // Will attempt network call and fail at the network level, not config guard.
-        var act = async () => await sut.SendInProgressAsync("1.2.3.4.5", "PAT001", "CHEST");
+        var result = await sut.SendInProgressAsync("1.2.3.4.5", "PAT001", "CHEST");
 
-        // fo-dicom will throw (host "   " is invalid for TCP connection).
-        await act.Should().ThrowAsync<Exception>();
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.DicomConnectionFailed);
     }
 
     // ── SendInProgressAsync — Network Error Paths ───────────────────────────
 
     [Fact]
     [Trait("SWR", "SWR-DC-055")]
-    public async Task SendInProgressAsync_InvalidHost_ThrowsAggregateException()
+    public async Task SendInProgressAsync_InvalidHost_ReturnsFailure()
     {
-        // fo-dicom wraps connection failures in AggregateException (not DicomNetworkException),
-        // which is NOT caught by MppsScu's catch blocks. This test documents the actual behavior.
         var options = ValidOptions();
         options.MppsHost = "0.0.0.0";
         options.MppsPort = 1;
         var sut = CreateSut(options);
 
-        var act = async () => await sut.SendInProgressAsync("1.2.3.4.5", "PAT001", "CHEST");
+        var result = await sut.SendInProgressAsync("1.2.3.4.5", "PAT001", "CHEST");
 
-        await act.Should().ThrowAsync<Exception>();
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.DicomConnectionFailed);
     }
 
     [Fact]
@@ -143,10 +140,11 @@ public sealed class MppsScuTests
         options.MppsPort = 19999;
         var sut = CreateSut(options);
 
-        var act = async () => await sut.SendInProgressAsync("1.2.3.4.5", "PAT001", "CHEST");
+        var result = await sut.SendInProgressAsync("1.2.3.4.5", "PAT001", "CHEST");
 
         // fo-dicom will fail to connect — typically throws AggregateException or similar.
-        await act.Should().ThrowAsync<Exception>();
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.DicomConnectionFailed);
     }
 
     [Fact]
@@ -171,7 +169,7 @@ public sealed class MppsScuTests
 
     [Fact]
     [Trait("SWR", "SWR-DC-055")]
-    public async Task SendInProgressAsync_TlsEnabled_DoesNotEarlyReturn()
+    public async Task SendInProgressAsync_TlsEnabled_ReturnsFailure()
     {
         // Ensures the TLS path reaches the network layer (no config guard blocks it).
         var options = ValidOptions();
@@ -180,10 +178,10 @@ public sealed class MppsScuTests
         options.MppsPort = 1;
         var sut = CreateSut(options);
 
-        var act = async () => await sut.SendInProgressAsync("1.2.3.4.5", "PAT001", "CHEST");
+        var result = await sut.SendInProgressAsync("1.2.3.4.5", "PAT001", "CHEST");
 
-        // TLS connection to invalid host also throws
-        await act.Should().ThrowAsync<Exception>();
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.DicomConnectionFailed);
     }
 
     // ── SendInProgressAsync — Parameter Variations ──────────────────────────
@@ -281,16 +279,17 @@ public sealed class MppsScuTests
 
     [Fact]
     [Trait("SWR", "SWR-DC-056")]
-    public async Task SendCompletedAsync_InvalidHost_ThrowsAggregateException()
+    public async Task SendCompletedAsync_InvalidHost_ReturnsFailure()
     {
         var options = ValidOptions();
         options.MppsHost = "0.0.0.0";
         options.MppsPort = 1;
         var sut = CreateSut(options);
 
-        var act = async () => await sut.SendCompletedAsync("1.2.3.4.5.6.7");
+        var result = await sut.SendCompletedAsync("1.2.3.4.5.6.7");
 
-        await act.Should().ThrowAsync<Exception>();
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.DicomConnectionFailed);
     }
 
     [Fact]
@@ -302,9 +301,10 @@ public sealed class MppsScuTests
         options.MppsPort = 19999;
         var sut = CreateSut(options);
 
-        var act = async () => await sut.SendCompletedAsync("1.2.3.4.5.6.7");
+        var result = await sut.SendCompletedAsync("1.2.3.4.5.6.7");
 
-        await act.Should().ThrowAsync<Exception>();
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.DicomConnectionFailed);
     }
 
     [Fact]
@@ -326,7 +326,7 @@ public sealed class MppsScuTests
 
     [Fact]
     [Trait("SWR", "SWR-DC-056")]
-    public async Task SendCompletedAsync_CompletedTrue_InvalidHost_Throws()
+    public async Task SendCompletedAsync_CompletedTrue_InvalidHost_ReturnsFailure()
     {
         // Verifies the completed=true path attempts network call.
         var options = ValidOptions();
@@ -334,14 +334,15 @@ public sealed class MppsScuTests
         options.MppsPort = 1;
         var sut = CreateSut(options);
 
-        var act = async () => await sut.SendCompletedAsync("1.2.3.4.5.6.7", completed: true);
+        var result = await sut.SendCompletedAsync("1.2.3.4.5.6.7", completed: true);
 
-        await act.Should().ThrowAsync<Exception>();
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.DicomConnectionFailed);
     }
 
     [Fact]
     [Trait("SWR", "SWR-DC-056")]
-    public async Task SendCompletedAsync_CompletedFalse_InvalidHost_Throws()
+    public async Task SendCompletedAsync_CompletedFalse_InvalidHost_ReturnsFailure()
     {
         // Verifies the completed=false path also attempts network call.
         var options = ValidOptions();
@@ -349,9 +350,10 @@ public sealed class MppsScuTests
         options.MppsPort = 1;
         var sut = CreateSut(options);
 
-        var act = async () => await sut.SendCompletedAsync("1.2.3.4.5.6.7", completed: false);
+        var result = await sut.SendCompletedAsync("1.2.3.4.5.6.7", completed: false);
 
-        await act.Should().ThrowAsync<Exception>();
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.DicomConnectionFailed);
     }
 
     [Fact]

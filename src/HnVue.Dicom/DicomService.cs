@@ -88,6 +88,21 @@ public sealed partial class DicomService : HnVue.Common.Abstractions.IDicomServi
             LogNetworkError(_logger, ex, "C-STORE", pacsAeTitle);
             return Result.Failure(ErrorCode.DicomConnectionFailed, $"Network error: {ex.Message}");
         }
+        catch (Exception ex) when (ex is not OperationCanceledException
+                                    and not IOException
+                                    and not DicomNetworkException
+                                    and not OutOfMemoryException)
+        {
+            var baseException = ex.GetBaseException();
+            if (baseException is System.Net.Sockets.SocketException socketException)
+            {
+                LogConnectionError(_logger, socketException, pacsAeTitle);
+                return Result.Failure(ErrorCode.DicomConnectionFailed, $"Connection failed: {socketException.Message}");
+            }
+
+            _logger.LogError(ex, "Unexpected C-STORE failure for AE {AeTitle}.", pacsAeTitle);
+            return Result.Failure(ErrorCode.DicomStoreFailed, $"Store failed: {baseException.Message}");
+        }
     }
 
     /// <inheritdoc/>
@@ -248,6 +263,21 @@ public sealed partial class DicomService : HnVue.Common.Abstractions.IDicomServi
             LogNetworkError(_logger, ex, "Print", printerAeTitle);
             return Result.Failure(ErrorCode.DicomConnectionFailed, $"Network error: {ex.Message}");
         }
+        catch (Exception ex) when (ex is not OperationCanceledException
+                                    and not IOException
+                                    and not DicomNetworkException
+                                    and not OutOfMemoryException)
+        {
+            var baseException = ex.GetBaseException();
+            if (baseException is System.Net.Sockets.SocketException socketException)
+            {
+                LogConnectionError(_logger, socketException, printerAeTitle);
+                return Result.Failure(ErrorCode.DicomConnectionFailed, $"Connection failed: {socketException.Message}");
+            }
+
+            _logger.LogError(ex, "Unexpected DICOM print failure for AE {AeTitle}.", printerAeTitle);
+            return Result.Failure(ErrorCode.DicomPrintFailed, $"Print failed: {baseException.Message}");
+        }
     }
 
     /// <inheritdoc/>
@@ -320,6 +350,21 @@ public sealed partial class DicomService : HnVue.Common.Abstractions.IDicomServi
         {
             return Result.Failure(ErrorCode.OperationCancelled, "Storage Commitment was cancelled.");
         }
+        catch (Exception ex) when (ex is not DicomNetworkException
+                                    and not OperationCanceledException
+                                    and not OutOfMemoryException)
+        {
+            var baseException = ex.GetBaseException();
+            if (baseException is System.Net.Sockets.SocketException)
+            {
+                return Result.Failure(ErrorCode.DicomConnectionFailed,
+                    $"Storage Commitment connection failed: {baseException.Message}");
+            }
+
+            _logger.LogError(ex, "Unexpected Storage Commitment failure for AE {AeTitle}.", pacsAeTitle);
+            return Result.Failure(ErrorCode.DicomStoreFailed,
+                $"Storage Commitment failed: {baseException.Message}");
+        }
     }
 
     // ── Private helpers ────────────────────────────────────────────────────────
@@ -370,28 +415,45 @@ public sealed partial class DicomService : HnVue.Common.Abstractions.IDicomServi
 
         DateOnly? studyDate = null;
         var dateStr = dataset.GetSingleValueOrDefault(DicomTag.StudyDate, string.Empty);
-        if (!string.IsNullOrEmpty(dateStr) && dateStr.Length == 8 &&
-            int.TryParse(dateStr[..4], out var year) &&
-            int.TryParse(dateStr[4..6], out var month) &&
-            int.TryParse(dateStr[6..8], out var day))
+        if (DateOnly.TryParseExact(
+                dateStr,
+                "yyyyMMdd",
+                CultureInfo.InvariantCulture,
+                DateTimeStyles.None,
+                out var parsedStudyDate))
         {
-            studyDate = new DateOnly(year, month, day);
+            studyDate = parsedStudyDate;
         }
 
         string? bodyPart = null;
-        string? requestedProcedure = dataset.GetSingleValueOrDefault<string>(DicomTag.RequestedProcedureDescription, null!);
-        if (string.IsNullOrEmpty(requestedProcedure))
-            requestedProcedure = null;
+        var requestedProcedure = GetOptionalString(dataset, DicomTag.RequestedProcedureDescription);
 
         if (dataset.TryGetSequence(DicomTag.ScheduledProcedureStepSequence, out var spsSequence)
             && spsSequence.Items.Count > 0)
         {
             var spsItem = spsSequence.Items[0];
-            var bp = spsItem.GetSingleValueOrDefault<string>(DicomTag.ScheduledProtocolCodeSequence, null!);
-            bodyPart = string.IsNullOrEmpty(bp) ? null : bp;
+            bodyPart =
+                GetOptionalString(spsItem, DicomTag.BodyPartExamined)
+                ?? GetOptionalString(spsItem, DicomTag.ScheduledProcedureStepDescription);
+
+            if (bodyPart is null
+                && spsItem.TryGetSequence(DicomTag.ScheduledProtocolCodeSequence, out var protocolSequence)
+                && protocolSequence.Items.Count > 0)
+            {
+                var protocolItem = protocolSequence.Items[0];
+                bodyPart =
+                    GetOptionalString(protocolItem, DicomTag.CodeMeaning)
+                    ?? GetOptionalString(protocolItem, DicomTag.CodeValue);
+            }
         }
 
         return new WorklistItem(accessionNumber, patientId, patientName, studyDate, bodyPart, requestedProcedure);
+    }
+
+    private static string? GetOptionalString(DicomDataset dataset, DicomTag tag)
+    {
+        var value = dataset.GetSingleValueOrDefault<string>(tag, null!);
+        return string.IsNullOrWhiteSpace(value) ? null : value;
     }
 
     // ── LoggerMessage definitions (CA1848 compliance) ─────────────────────────
