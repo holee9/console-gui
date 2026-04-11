@@ -16,7 +16,7 @@ DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/
 | **Coordinator** | — | **IDLE** | S05-R1 완료. 신규 DISPATCH 없음 — IDLE 보고 대기 |
 | **QA** | `S05-R2-qa.md` | **ACTIVE** | 릴리즈 준비도 보고서 생성 (DOC-034) |
 | **RA** | `S05-R2-ra.md` | **ACTIVE** | RMP v2.0 업데이트 (4-Tier + MR-072) |
-| **Design** | `S05-R2-design.md` | **ACTIVE** | AddPatientProcedureView PPT Slide 8 구현 |
+| **Design** | `S05-R2-design.md` | **MERGED** ✅ | AddPatientProcedureView Slide 8 기존 구현 100% 검증, main 머지 완료 |
 | **Team A** | — | **IDLE** | S05-R1 완료 (Data 85%+). 신규 DISPATCH 없음 — IDLE 보고 대기 |
 | **Team B** | — | **IDLE** | S05-R1 완료. 신규 DISPATCH 없음 — IDLE 보고 대기 |
 
