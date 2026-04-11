@@ -32,6 +32,12 @@ public sealed class HnVueDbContext(DbContextOptions<HnVueDbContext> options) : D
     /// <summary>Gets the software update installation history records.</summary>
     public DbSet<UpdateHistoryEntity> UpdateHistories => Set<UpdateHistoryEntity>();
 
+    /// <summary>Gets the radiation safety incident records.</summary>
+    public DbSet<IncidentEntity> Incidents => Set<IncidentEntity>();
+
+    /// <summary>Gets the system configuration settings (singleton row).</summary>
+    public DbSet<SystemSettingsEntity> SystemSettings => Set<SystemSettingsEntity>();
+
     /// <inheritdoc/>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -115,6 +121,20 @@ public sealed class HnVueDbContext(DbContextOptions<HnVueDbContext> options) : D
             e.HasIndex(u => u.Timestamp);
             e.HasIndex(u => u.FromVersion);
             e.HasIndex(u => u.ToVersion);
+        });
+
+        // ── IncidentEntity ──────────────────────────────────────────────────────
+        modelBuilder.Entity<IncidentEntity>(e =>
+        {
+            e.HasKey(i => i.IncidentId);
+            e.HasIndex(i => i.SeverityValue);
+            e.HasIndex(i => i.OccurredAtTicks);
+        });
+
+        // ── SystemSettingsEntity ────────────────────────────────────────────────
+        modelBuilder.Entity<SystemSettingsEntity>(e =>
+        {
+            e.HasKey(s => s.Id);
         });
     }
 }

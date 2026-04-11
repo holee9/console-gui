@@ -9,10 +9,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HnVue.Common\HnVue.Common.csproj" />
+    <ProjectReference Include="..\HnVue.Data\HnVue.Data.csproj" />
     <ProjectReference Include="..\HnVue.Security\HnVue.Security.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" />
     <PackageReference Include="Microsoft.Extensions.Http" />
     <PackageReference Include="Microsoft.Extensions.Options" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
