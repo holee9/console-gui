@@ -30,3 +30,8 @@
 *.dll   binary
 *.exe   binary
 *.db    binary
+
+# CC 전용 파일 — 팀 브랜치가 수정 시 main 버전 자동 유지
+# 팀 브랜치에서 이 파일들을 수정하지 말 것 (CC 전용)
+DISPATCH.md merge=ours
+CLAUDE.md merge=ours
