@@ -1,8 +1,32 @@
-# HnVue Team Ownership
+# HnVue Team Ownership (6 people)
+#
+# Human → Team Mapping:
+#   Commander Center (총괄 1명): CC (main) — planning/DISPATCH/verification only
+#   SW Dev Lead (팀장 1명):      @coordinator + @team-a
+#   Developer 1 (개발자 1명):    @team-b
+#   Developer 2 (개발자 1명):    @team-design (XAML only, no C# features) + @team-a assist
+#   QA (1명):                    @qa-team
+#   RA (1명):                    @ra-team
+#
 # QA team is required reviewer for ALL PRs
 *                                       @qa-team
 
+# ============================================================
+# Root Configuration Files
+# ============================================================
+HnVue.sln                              @coordinator @qa-team
+global.json                             @team-a @qa-team
+nuget.config                            @team-a @qa-team
+Directory.Build.props                   @team-a @qa-team
+Directory.Packages.props                @team-a @qa-team
+.editorconfig                           @qa-team
+coverage.runsettings                    @qa-team
+stryker-config.json                     @qa-team
+CHANGELOG.md                            @ra-team
+
+# ============================================================
 # Team A — Infrastructure
+# ============================================================
 src/HnVue.Common/                       @team-a @qa-team
 src/HnVue.Data/                         @team-a @qa-team
 src/HnVue.Security/                     @team-a @qa-team
@@ -13,10 +37,11 @@ tests/HnVue.Data.Tests/                @team-a
 tests/HnVue.Security.Tests/            @team-a
 tests/HnVue.SystemAdmin.Tests/         @team-a
 tests/HnVue.Update.Tests/              @team-a
-tests/HnVue.Architecture.Tests/        @team-a
-Directory.Packages.props                @team-a @qa-team
+tests/HnVue.Architecture.Tests/        @team-a @qa-team
 
+# ============================================================
 # Team B — Medical Domain
+# ============================================================
 src/HnVue.Dicom/                        @team-b @qa-team
 src/HnVue.Detector/                     @team-b @qa-team
 src/HnVue.Imaging/                      @team-b @qa-team
@@ -25,31 +50,87 @@ src/HnVue.Incident/                     @team-b @qa-team
 src/HnVue.Workflow/                     @team-b @qa-team
 src/HnVue.PatientManagement/           @team-b @qa-team
 src/HnVue.CDBurning/                   @team-b @qa-team
+tests/HnVue.Dicom.Tests/              @team-b
+tests/HnVue.Detector.Tests/           @team-b
+tests/HnVue.Imaging.Tests/            @team-b
+tests/HnVue.Dose.Tests/               @team-b
+tests/HnVue.Incident.Tests/           @team-b
+tests/HnVue.Workflow.Tests/           @team-b
+tests/HnVue.PatientManagement.Tests/  @team-b
+tests/HnVue.CDBurning.Tests/          @team-b
 
-# Design Team — UI
-src/HnVue.UI/                           @team-design @qa-team
+# ============================================================
+# Design Team — UI (Design Codification Only, No Coder)
+# ============================================================
+# Design Team owns: XAML files, Styles, Themes, DesignTime
+src/HnVue.UI/Views/                     @team-design @qa-team
+src/HnVue.UI/Styles/                    @team-design @qa-team
+src/HnVue.UI/Themes/                    @team-design @qa-team
+src/HnVue.UI/Assets/                    @team-design @qa-team
+src/HnVue.UI/DesignTime/                @team-design
+src/HnVue.UI/Components/Common/        @team-design @qa-team
+src/HnVue.UI/Components/Layout/        @team-design @qa-team
+src/Components/                         @team-design @qa-team
+src/Styles/                             @team-design @qa-team
+src/Themes/                             @team-design @qa-team
+
+# Medical domain components in HnVue.UI — Team B owns C# logic
+src/HnVue.UI/Components/Medical/       @team-b @team-design @qa-team
+
+# Domain-dependent converters — Team B owns logic
+src/HnVue.UI/Converters/SafeStateToColorConverter.cs  @team-b @qa-team
+src/HnVue.UI/Converters/AgeFromBirthDateConverter.cs   @team-b @qa-team
+# Pure UI converters — Design Team owns
+src/HnVue.UI/Converters/                @team-design @qa-team
+src/Converters/                         @team-design @qa-team
+
+# Services in HnVue.UI — Coordinator owns (not Design)
+src/HnVue.UI/Services/                  @coordinator @qa-team
+
+# MVVM infra in HnVue.UI — Team A owns (migration target to Common)
+src/HnVue.UI/Components/Common/ViewModelBase.cs  @team-a @qa-team
+
 tests/HnVue.UI.Tests/                  @team-design
 tests/UI/                               @team-design @qa-team
 
+# ============================================================
 # Coordinator — Integration
+# ============================================================
 src/HnVue.UI.Contracts/                @coordinator @qa-team
 src/HnVue.UI.ViewModels/               @coordinator @qa-team
 src/HnVue.App/                          @coordinator @qa-team
 tests.integration/                      @coordinator @qa-team
 
+# ============================================================
 # QA Team — CI/CD and Quality
+# ============================================================
 .github/workflows/                      @qa-team
 scripts/ci/                             @qa-team
 scripts/qa/                             @qa-team
+scripts/setup/                          @qa-team
 TestReports/                            @qa-team
 docs/testing/                           @qa-team @ra-team
 
-# RA Team — Regulatory
+# ============================================================
+# RA Team — Regulatory & Documentation
+# ============================================================
 docs/regulatory/                        @ra-team
 docs/planning/                          @ra-team
 docs/risk/                              @ra-team
 docs/verification/                      @ra-team
 docs/management/                        @ra-team
+docs/architecture/                      @ra-team @coordinator
+docs/design/                            @ra-team @team-design
+docs/usability/                         @ra-team @team-design
+docs/deployment/                        @ra-team @qa-team
+docs/development/                       @ra-team
+docs/research/                          @ra-team
+docs/style_guide/                       @team-design
+docs/ui_mockups/                        @team-design
+docs/reviews/                           @qa-team
+docs/archive/                           @ra-team
+docs/docfx/                             @ra-team
 scripts/ra/                             @ra-team
+scripts/issue/                          @qa-team
+scripts/team/                           @coordinator
 docfx.json                              @ra-team
-CHANGELOG.md                            @ra-team

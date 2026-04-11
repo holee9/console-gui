@@ -1,11 +1,27 @@
 # Team B — Medical Imaging Pipeline Rules
 
+Shared rules: see `team-common.md` (Philosophy, Self-Verification, Git Protocol)
+
 ## Module Ownership
 - HnVue.Dicom, HnVue.Detector, HnVue.Imaging, HnVue.Dose, HnVue.Incident
 - HnVue.Workflow, HnVue.PatientManagement, HnVue.CDBurning
 
+## Test Ownership
+- tests/HnVue.Dicom.Tests/
+- tests/HnVue.Detector.Tests/
+- tests/HnVue.Imaging.Tests/
+- tests/HnVue.Dose.Tests/
+- tests/HnVue.Incident.Tests/
+- tests/HnVue.Workflow.Tests/
+- tests/HnVue.PatientManagement.Tests/
+- tests/HnVue.CDBurning.Tests/
+
 ## Safety-Critical Module Standards
-- Dose and Incident modules: 90%+ Branch coverage (per DOC-012)
+- Safety-Critical (90%+ coverage): Dose, Incident
+- Safety-Adjacent (85%+ coverage, RA review recommended): Imaging, Workflow
+  - Imaging: rendering errors may affect diagnostic interpretation
+  - Workflow: state machine errors may affect patient safety sequence
+- Standard (85%+ coverage): Dicom, Detector, PatientManagement, CDBurning
 - All safety-critical changes require characterization tests before modification
 - Dose interlock 4-level logic is invariant — changes require RA risk assessment
 
@@ -32,17 +48,23 @@
 - Workflow state transition changes: create RA issue for RTM (DOC-032) update
 - Patient data model changes: coordinate with Team A (Data layer)
 
+## Design Team 기능구현 분담 (Team B 담당분)
+
+Design Team은 코더가 없으므로, 아래 도메인 UI 코드는 Team B가 구현:
+
+| 항목 | 파일 위치 | 설명 |
+|------|-----------|------|
+| 도메인 Converter | HnVue.UI/Converters/SafeStateToColorConverter.cs | SafeState enum 의존, 도메인 변경 시 Team B 수정 |
+| 도메인 Converter | HnVue.UI/Converters/AgeFromBirthDateConverter.cs | 환자 데이터 모델 의존 |
+| 의료 컨트롤 C# 로직 | HnVue.UI/Components/Medical/AcquisitionPreview.cs | DoseLevel, ExposureInfo 등 의료 도메인 속성 |
+| 의료 컨트롤 C# 로직 | HnVue.UI/Components/Medical/PatientInfoCard.xaml.cs | 환자 데이터 바인딩 |
+| 의료 컨트롤 C# 로직 | HnVue.UI/Components/Medical/StudyThumbnail.xaml.cs | 스터디 데이터 바인딩 |
+
+**공동 작업 패턴:**
+- Team B: C# 코드 (DependencyProperty, 도메인 로직, Converter)
+- Design Team: XAML 템플릿 (레이아웃, 색상, 스타일)
+- 동일 파일 수정 시: Team B가 먼저 C# 구현 → Design이 XAML 적용
+
 ## Issue Protocol
 - Safety-critical changes: create issue with `team-b` + `priority-high` labels
 - Workflow state changes: create issue + notify RA team for RTM update
-
-## Git Completion Protocol [HARD]
-
-After completing DISPATCH tasks:
-1. `git add` changed files (exclude secrets, temp files)
-2. `git commit` with conventional commit format matching team prefix
-3. `git push origin team/team-b`
-4. Create PR to main via Gitea API (check for existing open PR first to avoid duplicates)
-5. Record PR URL in DISPATCH.md Status section
-
-Push failure: report "PUSH_FAILED" status, do not block on git errors.

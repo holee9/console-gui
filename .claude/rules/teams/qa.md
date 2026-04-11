@@ -1,5 +1,7 @@
 # QA Team — Quality Assurance Rules
 
+Shared rules: see `team-common.md` (Philosophy, Self-Verification, Git Protocol)
+
 ## Ownership
 - .github/workflows/ (all CI/CD pipelines)
 - scripts/ci/, scripts/qa/
@@ -9,14 +11,19 @@
 - docs/testing/ (DOC-012 through DOC-031)
 
 ## Static Analysis Standards
-- SonarCloud quality gate: Bug=0, Vulnerability=0, Code Smell<50, Coverage>=85%
+- SonarCloud quality gate: per team-common.md Quality Standards (SINGLE SOURCE OF TRUTH)
 - StyleCop rules enforced via .stylecop.json
 - .editorconfig naming conventions are authoritative
 
 ## Dynamic Analysis Standards
-- Coverage gate: 85% overall, 90% for safety-critical modules (Dose, Incident, Security, Update)
-- Stryker.NET mutation testing: >=70% mutation score for safety-critical modules
+- Coverage gate: per team-common.md Quality Standards (SINGLE SOURCE OF TRUTH)
+- Stryker.NET mutation testing: per team-common.md Quality Standards (SINGLE SOURCE OF TRUTH)
 - DesignTime/ directory excluded from mutation testing
+
+## Architecture Tests Governance
+- tests/HnVue.Architecture.Tests/ is co-owned with Team A (CODEOWNERS)
+- Team A maintains test implementation, QA enforces pass/block policy
+- Architecture rule violations (NetArchTest) = PR blocked by QA
 
 ## OWASP Security Scanning
 - Aligned with DOC-019 SBOM (42 components, CycloneDX 1.5)
@@ -41,14 +48,3 @@
 - Mutation score < 70%: create issue with `qa-result` + `priority-medium` labels
 - Release report generated: create issue with `qa-result` label, post summary
 - Security vulnerability: create Gitea-only issue with `security` label
-
-## Git Completion Protocol [HARD]
-
-After completing DISPATCH tasks:
-1. `git add` changed files (exclude secrets, temp files)
-2. `git commit` with conventional commit format matching team prefix
-3. `git push origin team/qa`
-4. Create PR to main via Gitea API (check for existing open PR first to avoid duplicates)
-5. Record PR URL in DISPATCH.md Status section
-
-Push failure: report "PUSH_FAILED" status, do not block on git errors.

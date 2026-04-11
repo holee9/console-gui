@@ -74,11 +74,14 @@
 
 ## 개발운영 가이드
 
+> **프로젝트 핵심 철학: "속도보다 품질. 빠른 완료보다 올바른 완성."**
+
 | 문서 | 설명 |
 |------|------|
-| [개발운영 지침서](docs/development/DEV-OPS-GUIDELINES.md) | 6팀 워크트리 운영, DISPATCH 라이프사이클, Git 절차, 통합 검증 |
+| [개발운영 지침서 v2.0](docs/development/DEV-OPS-GUIDELINES.md) | 품질우선 철학, CC 역할경계, 6팀 워크트리 운영, DISPATCH 사이클, Git 절차 |
+| [운영 프로토콜 v2.0](.moai/dispatches/templates/operations-protocol.md) | CC-팀 역할분담, 자기검증 체크리스트, 위반 대응, DISPATCH 템플릿 |
 | [DISPATCH 스키마](.claude/rules/moai/workflow/dispatch-schema.md) | DISPATCH.md 필수 섹션 및 검증 규칙 |
-| [팀 규칙](.claude/rules/teams/) | 팀별 역할, 소유권, 교차 의존성 프로토콜 |
+| [팀 규칙](.claude/rules/teams/) | 팀별 역할, 품질 철학, 소유권, 자기검증 체크리스트 |
 
 ---
 
@@ -92,9 +95,26 @@
 | **FDA Predicate** | DRTECH EConsole1 ([FDA K231225](https://www.accessdata.fda.gov/cdrh_docs/pdf23/K231225.pdf)) |
 | **IEC 62304 분류** | Class B |
 | **인허가 대상** | MFDS 2등급, FDA 510(k), CE MDR Class IIa |
-| **개발 인력** | 2명 |
+| **개발 인력** | 6명 (SW 개발 5명 + 총괄 1명) |
 
 이 레포지토리는 H&abyz가 현재 판매 중인 HnVue 제품의 Console SW를 **자사 기술로 내재화하는 Greenfield 개발 프로젝트**입니다. 자세한 내용은 [ANALYSIS-002 -- 내재화 개발 컨텍스트](docs/ANALYSIS-002_InternalizationContext_v1.0.md)를 참조하세요.
+
+### 팀 구성 (6명)
+
+| 역할 | 인원 | 담당 워크트리 팀 | 핵심 업무 |
+|------|------|----------------|-----------|
+| **Commander Center (총괄)** | 1명 | CC (main) | DISPATCH 발행, 스프린트 계획, PR 관리, 통합 검증 |
+| **SW 개발팀장** | 1명 | Coordinator + Team A | UI.Contracts/ViewModels/App DI + Common/Data/Security 인프라 |
+| **개발자 1** | 1명 | Team B | 의료 영상 파이프라인 (Dicom, Detector, Dose, Workflow 등 8모듈) |
+| **개발자 2** | 1명 | Team Design + Team A 보조 | PPT→XAML 코드화 (기능구현 없음) + 인프라 보조 |
+| **QA** | 1명 | QA | CI/CD, 커버리지 분석, 릴리스 준비도 보고, 코드 리뷰 |
+| **RA** | 1명 | RA | IEC 62304 문서, SBOM, RTM, FDA 510(k) 제출 준비 |
+
+**운영 원칙:**
+- SW 개발팀장은 Coordinator(통합) + Team A(인프라)를 겸임하며, 코드 리뷰 최종 승인자
+- 개발자 2는 Design Team으로서 XAML 코드화만 수행, C# 기능구현은 팀장/개발자 1이 분담
+- AI 에이전트(MoAI)가 각 워크트리 팀의 실행을 보조하여 인력 효율 3.8배 달성
+- Commander Center는 계획/지시/검증만 수행, 직접 코드 구현 금지 ([운영 지침서](docs/development/DEV-OPS-GUIDELINES.md))
 
 ### 핵심 기능
 

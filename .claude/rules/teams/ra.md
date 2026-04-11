@@ -1,11 +1,19 @@
 # RA Team — Regulatory Affairs Rules
 
+Shared rules: see `team-common.md` (Philosophy, Self-Verification, Git Protocol)
+
 ## Ownership
 - docs/regulatory/ (16 regulatory documents: FDA, CE, KFDA)
 - docs/planning/ (SRS DOC-005, SAD DOC-006, SDS DOC-007, FRS DOC-004)
 - docs/risk/ (FMEA DOC-009, RMP DOC-008, RMR DOC-010, Threat Model DOC-017)
 - docs/verification/ (RTM DOC-032, SOUP DOC-033, V&V Master Plan DOC-011)
 - docs/management/ (DOC-042 CMP — PRIORITY: complete from Draft)
+- docs/development/ (development process documentation)
+- docs/research/ (research notes and analysis)
+- docs/archive/ (archived documentation)
+- docs/docfx/ (DocFX build configuration)
+- docs/deployment/ (co-owned with QA)
+- docs/architecture/ (co-owned with Coordinator)
 - scripts/ra/, docfx.json, CHANGELOG.md
 
 ## IEC 62304 Document Version Policy
@@ -33,12 +41,8 @@
 - P1 bug fix -> DOC-044 Known Anomalies + FMEA review
 - Architecture change -> DOC-006 SAD + DOC-007 SDS
 
-## Release Gate (RA Responsibilities)
-- RA checklist before release: RTM completeness, SBOM current, Known Anomalies=0, CMP-042 compliance
-- RA/QA Manager signature required in 4-signature chain (DOC-034 section 5)
-
 ## Priority Tasks
-1. Complete DOC-042 CMP (Configuration Management Plan) — currently Draft, no author/reviewer/approver
+1. Complete DOC-042 CMP (Configuration Management Plan) — currently Draft
 2. RMP v2.0 update (planned 2026-05) — integrate 4-Tier priority system + MR-072
 3. FDA 510(k) submission package preparation (DOC-036 eSTAR)
 
@@ -46,14 +50,3 @@
 - Document update needed: create issue with `ra-update` label
 - RTM traceability gap: create issue with `ra-update` + `priority-high` labels
 - SBOM update: triggered by QA OWASP results via `soup-update` label
-
-## Git Completion Protocol [HARD]
-
-After completing DISPATCH tasks:
-1. `git add` changed files (exclude secrets, temp files)
-2. `git commit` with conventional commit format matching team prefix
-3. `git push origin team/ra`
-4. Create PR to main via Gitea API (check for existing open PR first to avoid duplicates)
-5. Record PR URL in DISPATCH.md Status section
-
-Push failure: report "PUSH_FAILED" status, do not block on git errors.
