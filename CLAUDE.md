@@ -564,8 +564,33 @@ Large PDFs (>10 pages) return a lightweight reference when @-mentioned. Always s
 
 ---
 
-Version: 14.0.0 (Agency v3.2 + Harness Design Integration)
-Last Updated: 2026-04-03
+## 18. Harness: HnVue Team Skills
+
+**Goal:** 6 worktree teams with domain-specific senior-level skills for medical imaging WPF development
+
+**Trigger:** HnVue module work uses `hnvue-dev` skill to route to team agents. Each agent auto-loads its domain skill via `skills:` frontmatter.
+
+**Agent-Skill Mapping:**
+
+| Agent | Skill | Domain |
+|-------|-------|--------|
+| hnvue-infra | hnvue-skill-infra | Result\<T\>, EF Core+SQLCipher, JWT/bcrypt, audit chain |
+| hnvue-medical | hnvue-skill-medical | fo-dicom, 4-level dose interlock, 9-state FSM |
+| hnvue-ui | hnvue-skill-ui | WPF XAML, MahApps, 3-tier tokens, IEC 62366 |
+| hnvue-coordinator | hnvue-skill-coordinator | UI.Contracts, CommunityToolkit.Mvvm, DI composition |
+| hnvue-qa | hnvue-skill-qa | Coverlet, Stryker.NET, NetArchTest, FlaUI |
+| hnvue-ra | hnvue-skill-ra | IEC 62304, CycloneDX SBOM, RTM, FDA/CE/KFDA |
+
+**Change History:**
+| Date | Change | Target | Reason |
+|------|--------|--------|--------|
+| 2026-04-11 | Initial skill creation | 6 skills + 6 agent updates | Codify team domain expertise as auto-loaded skills |
+| 2026-04-11 | Quality upgrade | 6 references/ + SKILL.md enforcement | Add code templates, anti-patterns, verification scripts, quality gates |
+
+---
+
+Version: 15.0.0 (Team Skills Harness)
+Last Updated: 2026-04-12
 Language: English
 Core Rule: MoAI is an orchestrator; direct implementation is prohibited
 

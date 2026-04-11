@@ -3,13 +3,11 @@ using HnVue.CDBurning;
 using HnVue.Common.Abstractions;
 using HnVue.Common.Extensions;
 using HnVue.Common.Models;
-using HnVue.Common.Results;
 using HnVue.Data;
 using HnVue.Data.Extensions;
 using HnVue.Dicom;
 using HnVue.Dose;
 using HnVue.Incident;
-using HnVue.Incident.Models;
 using HnVue.PatientManagement;
 using HnVue.Security;
 using HnVue.Security.Extensions;
@@ -175,39 +173,39 @@ public partial class App : Application
                 services.AddScoped<IWorkflowEngine, WorkflowEngine>();
 
                 // ── HnVue.Dose ───────────────────────────────────────────────
-                // IDoseRepository: no EF implementation in Phase 1d — no-op stub.   // STUB
-                services.AddSingleton<IDoseRepository, NullDoseRepository>();
+                // IDoseRepository: EF Core implementation — replaced from NullDoseRepository (SPEC-COORDINATOR-001).
+                services.AddScoped<IDoseRepository, EfDoseRepository>();
                 services.AddScoped<IDoseService, DoseService>();
 
                 // ── HnVue.PatientManagement ──────────────────────────────────
-                // IWorklistRepository: no EF implementation in Phase 1d — stub.     // STUB
-                services.AddSingleton<IWorklistRepository, NullWorklistRepository>();
+                // IWorklistRepository: EF Core implementation — replaced from NullWorklistRepository (SPEC-COORDINATOR-001).
+                services.AddScoped<IWorklistRepository, EfWorklistRepository>();
                 services.AddScoped<IPatientService, PatientService>();
                 services.AddScoped<IWorklistService, WorklistService>();
 
                 // ── HnVue.Incident ───────────────────────────────────────────
-                // IIncidentRepository: no EF implementation in Phase 1d — stub.     // STUB
-                services.AddSingleton<IIncidentRepository, NullIncidentRepository>();
+                // IIncidentRepository: EF Core implementation — replaced from NullIncidentRepository (SPEC-COORDINATOR-001).
+                services.AddScoped<IIncidentRepository, EfIncidentRepository>();
                 services.AddScoped<IncidentResponseService>();
 
                 // ── HnVue.Update ─────────────────────────────────────────────
-                // IUpdateRepository: no EF implementation in Phase 1d — stub.       // STUB
-                services.AddSingleton<IUpdateRepository, NullUpdateRepository>();
+                // IUpdateRepository: EF Core implementation — replaced from NullUpdateRepository (SPEC-COORDINATOR-001).
+                services.AddScoped<IUpdateRepository, EfUpdateRepository>();
                 services.AddSingleton(new BackupService(
                     applicationDirectory: AppContext.BaseDirectory,
                     backupBaseDirectory: System.IO.Path.Combine(AppContext.BaseDirectory, "Backups")));
                 services.AddScoped<ISWUpdateService, SWUpdateService>();
 
                 // ── HnVue.SystemAdmin ────────────────────────────────────────
-                // ISystemSettingsRepository: no EF implementation in Phase 1d.      // STUB
-                services.AddSingleton<ISystemSettingsRepository, NullSystemSettingsRepository>();
+                // ISystemSettingsRepository: EF Core implementation — replaced from NullSystemSettingsRepository (SPEC-COORDINATOR-001).
+                services.AddScoped<ISystemSettingsRepository, EfSystemSettingsRepository>();
                 services.AddScoped<ISystemAdminService, SystemAdminService>();
 
                 // ── HnVue.CDBurning ──────────────────────────────────────────
                 // IMAPIComWrapper implements IBurnSession (simulated for Phase 1d).
-                // IStudyRepository (CDBurning-specific): no EF implementation.      // STUB
+                // IStudyRepository (CDBurning-specific): EF Core implementation — replaced from NullCdStudyRepository (SPEC-COORDINATOR-001).
                 services.AddSingleton<IBurnSession, IMAPIComWrapper>();
-                services.AddSingleton<HnVue.CDBurning.IStudyRepository, NullCdStudyRepository>();
+                services.AddScoped<HnVue.CDBurning.IStudyRepository, StudyRepository>();
                 services.AddScoped<ICDDVDBurnService, CDDVDBurnService>();
 
                 // ── HnVue.Dicom ──────────────────────────────────────────────
@@ -261,101 +259,6 @@ public partial class App : Application
                 services.AddSingleton<MainWindow>();
             })
             .Build();
-    }
-
-    // ── Phase 1d no-op stub repositories ─────────────────────────────────────
-    // These stubs satisfy the DI container until EF Core implementations are added.
-    // They return "not found" or "not supported" failures so that higher-level code
-    // handles absence gracefully rather than throwing NullReferenceExceptions.
-
-    /// <summary>No-op stub for <see cref="IDoseRepository"/>.</summary>
-    private sealed class NullDoseRepository : IDoseRepository
-    {
-        private const string NoStorageMessage = "NullDoseRepository: no storage configured.";
-
-        /// <inheritdoc/>
-        public Task<Result> SaveAsync(DoseRecord dose, CancellationToken cancellationToken = default)
-            => Task.FromResult(Result.Failure(ErrorCode.NotFound, NoStorageMessage));
-
-        /// <inheritdoc/>
-        public Task<Result<DoseRecord?>> GetByStudyAsync(string studyInstanceUid, CancellationToken cancellationToken = default)
-            => Task.FromResult(Result.Success<DoseRecord?>(null));
-
-        /// <inheritdoc/>
-        public Task<Result<IReadOnlyList<DoseRecord>>> GetByPatientAsync(
-            string patientId,
-            DateTimeOffset? from,
-            DateTimeOffset? until,
-            CancellationToken cancellationToken = default)
-            => Task.FromResult(Result.Success<IReadOnlyList<DoseRecord>>(
-                new List<DoseRecord>().AsReadOnly()));
-    }
-
-    /// <summary>No-op stub for <see cref="IWorklistRepository"/>.</summary>
-    private sealed class NullWorklistRepository : IWorklistRepository
-    {
-        /// <inheritdoc/>
-        public Task<Result<IReadOnlyList<WorklistItem>>> QueryTodayAsync(CancellationToken ct = default)
-            => Task.FromResult(Result.Success<IReadOnlyList<WorklistItem>>(Array.Empty<WorklistItem>()));
-    }
-
-    /// <summary>No-op stub for <see cref="IIncidentRepository"/>.</summary>
-    private sealed class NullIncidentRepository : IIncidentRepository
-    {
-        /// <inheritdoc/>
-        public Task<Result> SaveAsync(IncidentRecord record, CancellationToken cancellationToken = default)
-            => Task.FromResult(Result.Success());
-
-        /// <inheritdoc/>
-        public Task<Result<IReadOnlyList<IncidentRecord>>> GetBySeverityAsync(
-            HnVue.Common.Enums.IncidentSeverity severity, CancellationToken cancellationToken = default)
-            => Task.FromResult(Result.Success<IReadOnlyList<IncidentRecord>>(Array.Empty<IncidentRecord>()));
-
-        /// <inheritdoc/>
-        public Task<Result> ResolveAsync(string incidentId, string resolution, CancellationToken cancellationToken = default)
-            => Task.FromResult(Result.Success());
-    }
-
-    /// <summary>No-op stub for <see cref="IUpdateRepository"/>.</summary>
-    private sealed class NullUpdateRepository : IUpdateRepository
-    {
-        /// <inheritdoc/>
-        public Task<Result<UpdateInfo?>> CheckForUpdateAsync(CancellationToken cancellationToken = default)
-            => Task.FromResult(Result.Success<UpdateInfo?>(null));
-
-        /// <inheritdoc/>
-        public Task<Result<UpdateInfo>> GetPackageInfoAsync(string packagePath, CancellationToken cancellationToken = default)
-            => Task.FromResult(Result.Failure<UpdateInfo>(ErrorCode.NotFound, "NullUpdateRepository: no update source configured."));
-
-        /// <inheritdoc/>
-        public Task<Result> ApplyPackageAsync(string packagePath, CancellationToken cancellationToken = default)
-            => Task.FromResult(Result.Failure(ErrorCode.NotFound, "NullUpdateRepository: no update source configured."));
-    }
-
-    /// <summary>No-op stub for <see cref="ISystemSettingsRepository"/>.</summary>
-    private sealed class NullSystemSettingsRepository : ISystemSettingsRepository
-    {
-        private SystemSettings _settings = new();
-
-        /// <inheritdoc/>
-        public Task<Result<SystemSettings>> GetAsync(CancellationToken cancellationToken = default)
-            => Task.FromResult(Result.Success(_settings));
-
-        /// <inheritdoc/>
-        public Task<Result> SaveAsync(SystemSettings settings, CancellationToken cancellationToken = default)
-        {
-            _settings = settings;
-            return Task.FromResult(Result.Success());
-        }
-    }
-
-    /// <summary>No-op stub for <see cref="HnVue.CDBurning.IStudyRepository"/>.</summary>
-    private sealed class NullCdStudyRepository : HnVue.CDBurning.IStudyRepository
-    {
-        /// <inheritdoc/>
-        public Task<Result<IReadOnlyList<string>>> GetFilesForStudyAsync(
-            string studyInstanceUid, CancellationToken ct = default)
-            => Task.FromResult(Result.Success<IReadOnlyList<string>>(Array.Empty<string>()));
     }
 
     // ── Nested helper types ───────────────────────────────────────────────────
