@@ -106,6 +106,6 @@ git push origin team/coordinator
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: WorkflowView ViewModel (P1) | NOT_STARTED | -- | PreviewImage/ThumbnailList/SelectedPatient/WorkflowState |
-| Task 2: MergeView ViewModel (P2) | NOT_STARTED | -- | SelectedStudies + IsSelected |
-| Git 완료 프로토콜 | NOT_STARTED | -- | PR URL: -- |
+| Task 1: WorkflowView ViewModel (P1) | COMPLETED | 2026-04-12 | PreviewImagePath+ThumbnailList+SelectedPatient 추가, 53/53 통과 |
+| Task 2: MergeView ViewModel (P2) | COMPLETED | 2026-04-12 | StudyItem+SelectedStudies 추가, 53/53 통과 |
+| Git 완료 프로토콜 | COMPLETED | 2026-04-12 | PR #77 업데이트 (commit b3d265d) |
