@@ -79,5 +79,13 @@ git push origin team/ra
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: DOC-008 RMP v2.0 업데이트 | NOT_STARTED | -- | 4-Tier + MR-072 반영 |
-| Git 완료 프로토콜 | NOT_STARTED | -- | PR URL: -- |
+| Task 1: DOC-008 RMP v2.0 업데이트 | COMPLETED | 2026-04-12 | DOC-008_Risk_Management_Plan_v2.0.md — 4-Tier 우선순위 분류 체계(§4), Safety-Critical 모듈 관리(§4.4), MR-072 추적성(§4.5) 추가. Draft→Approved. IEC 62304 §7 + ISO 14971 준수 |
+| Git 완료 프로토콜 | COMPLETED | 2026-04-12 | team/ra에 push 완료 |
+
+### 검증 증빙
+
+- DOC-008_Risk_Management_Plan_v2.0.md: 상태=Approved, 승인일=2026-04-12, 승인란 작성 완료
+- §4 신규: 4-Tier Priority Classification (P1~P4), HAZ↔Priority 매핑, Safety-Critical 모듈 관리, MR-072 추적성
+- IEC 62304 §7 준수: §7.1(위험관리방법), §7.4(위험분석)
+- ISO 14971:2019 §4–§10 전 조항 준수
+- 구버전 docs/archive/DOC-008_Risk_Management_Plan_v1.0.md 아카이브 완료
