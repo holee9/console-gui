@@ -1,9 +1,9 @@
 ---
 id: SPEC-TEAMB-COV-001
-version: "1.1"
-status: draft
+version: "1.2"
+status: partial
 created: "2026-04-09"
-updated: "2026-04-10"
+updated: "2026-04-11"
 author: MoAI (Team B)
 priority: P1-Critical
 issue_number: 0
@@ -17,6 +17,7 @@ issue_number: 0
 |------|---------|--------|---------|
 | 2026-04-09 | 1.0 | MoAI | 최초 작성 |
 | 2026-04-10 | 1.1 | MoAI | 교차검증: Round 2 허위 보고 반영, 빌드오류 P0 선행조건 추가, QA 검증 Dicom 1.8% 불일치 주석 |
+| 2026-04-11 | 1.2 | MoAI | S04 교차검증: Detector 92.4%, Dose 99.5%, PM 100%, Incident 96.1% 달성. Dicom 49.6%→S04 목표 80%. Update 75.0%→S04 목표 85%. |
 
 ## Overview
 
