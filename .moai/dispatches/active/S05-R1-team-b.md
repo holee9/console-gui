@@ -95,3 +95,6 @@ git push origin team/team-b
 - HnVue.Data.Converters 스텁 생성 (Team A Converters 폴더 누락 해결)
 - Dose/Incident Safety-Critical 모듈 수정 없음 (99.4%/96.1% 유지)
 - 린터 소스 수정: DicomService, MppsScu 예외 처리 강화
+
+### PR
+- PR #82: http://10.11.1.40:7001/DR_RnD/Console-GUI/pulls/82 (기존 PR 자동 업데이트)
