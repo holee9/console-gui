@@ -80,7 +80,7 @@ git push origin team/team-design
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
 | Task 1: PatientListView 개선 | COMPLETED | 2026-04-12 | UISPEC-002 기준 스타일 개선 완료 |
-| Git 완료 프로토콜 | NOT_STARTED | -- | PR URL: -- |
+| Git 완료 프로토콜 | COMPLETED | 2026-04-12 | PR URL: http://10.11.1.40:7001/DR_RnD/Console-GUI/pulls/80 |
 
 ### 세부 내용
 
