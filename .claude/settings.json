@@ -8,7 +8,7 @@
     "ENABLE_TOOL_SEARCH": "1",
     "MOAI_CONFIG_SOURCE": "sections",
     "CLAUDE_CODE_SUBPROCESS_ENV_SCRUB": "1",
-    "PATH": "C:\\Users\\drake.lee\\.local\\bin;C:\\Users\\drake.lee\\go\\bin;/usr/local/bin;/usr/local/sbin;/usr/bin;/bin;/usr/sbin;/sbin"
+    "PATH": "C:\\Program Files\\dotnet;C:\\Users\\drake.lee\\.local\\bin;C:\\Users\\drake.lee\\go\\bin;/c/Program Files/dotnet;/usr/local/bin;/usr/local/sbin;/usr/bin;/bin;/usr/sbin;/sbin"
   },
   "attribution": {
     "commit": "🗿 MoAI <email@mo.ai.kr>",
@@ -247,12 +247,12 @@
     ],
     "PreToolUse": [
       {
-        "matcher": "Write|Edit|Bash",
+        "matcher": "Write|Edit",
         "hooks": [
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/moai/handle-pre-tool.sh\"",
-            "timeout": 5
+            "timeout": 30
           }
         ]
       }
