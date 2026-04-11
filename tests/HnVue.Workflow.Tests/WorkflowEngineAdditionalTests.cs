@@ -33,7 +33,9 @@ public sealed class WorkflowEngineAdditionalTests
         _generator = Substitute.For<IGeneratorInterface>();
         _detector = Substitute.For<IDetectorInterface>();
         _securityContext = Substitute.For<ISecurityContext>();
-        _securityContext.CurrentRole.Returns(UserRole.Radiographer);
+        // Use Radiologist as the default role — PrepareExposureAsync and StartEmergencyExposureAsync
+        // both require Radiologist or higher (SWR-IP-RBAC-001, SWR-WF-026).
+        _securityContext.CurrentRole.Returns(UserRole.Radiologist);
         _securityContext.IsAuthenticated.Returns(true);
         _sut = new WorkflowEngine(_doseService, _generator, _securityContext);
     }
@@ -261,7 +263,7 @@ public sealed class WorkflowEngineAdditionalTests
     [Fact]
     public async Task StartEmergencyExposureAsync_InsufficientRole_ReturnsFailure()
     {
-        _securityContext.CurrentRole.Returns(UserRole.Admin); // Admin cannot perform emergency exposure
+        _securityContext.CurrentRole.Returns(UserRole.Admin); // Admin lacks PerformEmergencyExposure permission (only Radiologist/higher)
 
         var result = await _sut.StartEmergencyExposureAsync("Patient", MakeParams());
 
