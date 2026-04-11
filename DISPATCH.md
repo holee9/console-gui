@@ -79,8 +79,29 @@ dotnet test HnVue.sln --filter "FullyQualifiedName~Architecture" --no-build
 
 ## Status
 
-- **State**: PENDING
+- **State**: COMPLETED
 - **Assigned**: QA
-- **PR**: (작성 후 기록)
-- **Started**: (시작 시 기록)
-- **Completed**: (완료 시 기록)
+- **PR**: http://10.11.1.40:7001/DR_RnD/Console-GUI/pulls/78
+- **Started**: 2026-04-11
+- **Completed**: 2026-04-11
+
+## Build Evidence
+
+```
+dotnet build HnVue.sln --no-incremental
+  경고 11202개 (기존 경고, pre-existing)
+  오류 0개
+  경과 시간: 00:00:45.26
+
+dotnet test HnVue.sln --filter "FullyQualifiedName~Architecture" --no-build
+  통과! - 실패: 0, 통과: 6, 건너뜀: 0, 전체: 6
+```
+
+## Deliverables
+
+| Task | 파일 | 상태 |
+|------|------|------|
+| T1 | tests/HnVue.Architecture.Tests/NamingConventionTests.cs | COMPLETED - 2개 신규 테스트 (총 6개) |
+| T2 | docs/testing/coverage-exclusion-policy.md | COMPLETED |
+| T3 | scripts/qa/Generate-CoverageReport.ps1 | COMPLETED |
+| T4 | .stylecop.json | COMPLETED |
