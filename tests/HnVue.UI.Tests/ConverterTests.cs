@@ -573,7 +573,7 @@ public class ConverterTests
     // StatusToBrushConverter
     // ====================================================================
 
-    private enum TestStatus { Safe, Warning, Error, Info, Online, Offline, Busy, Blocked, Unknown }
+    public enum TestStatus { Safe, Warning, Error, Info, Online, Offline, Busy, Blocked, Unknown }
 
     [Theory]
     [InlineData(TestStatus.Safe)]

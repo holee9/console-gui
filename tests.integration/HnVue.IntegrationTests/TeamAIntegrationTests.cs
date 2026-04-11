@@ -183,9 +183,10 @@ public sealed class TeamAIntegrationTests : IDisposable
         var userId = Guid.NewGuid().ToString();
         var entry = new AuditEntry(
             EntryId: Guid.NewGuid().ToString(),
+            Timestamp: DateTimeOffset.UtcNow,
             UserId: userId,
             Action: "TEST_ACTION",
-            Timestamp: DateTimeOffset.UtcNow,
+            Details: null,
             PreviousHash: null,
             CurrentHash: "test-hash");
 
