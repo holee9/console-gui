@@ -25,6 +25,7 @@
 |------|------|--------|-----------|
 | v1.0 | 2026-03-18 | 전략마케팅본부 | 초안 작성 — PRD v2.0, FRS v2.0, RMP v1.0 기반 전체 RTM 수립 |
 | v2.0 | 2026-04-02 | 전략마케팅본부 | MRD v3.0 4-Tier 체계 반영 (P0/P1/P2 → Tier 1/2/3/4 전면 교체), MR Tier 컬럼 추가, MR-072 (CD/DVD Burning) 행 추가 (PR-WF-019 연결), 보완 3건 반영 (MR-037 인시던트 대응 PR-CS-077, MR-039 업데이트 메커니즘 PR-CS-076/PR-SA-067, MR-050 STRIDE 위협 모델링 PR-NF-RG-060), 참조 문서 버전 업데이트 (MRD v3.0, PRD v2.0, FRS v2.0) |
+| v2.1 | 2026-04-11 | RA팀 | S04 R1: SWR-CS-080 PHI AES-256-GCM 암호화 TC 매핑 추가 (부록 B). TC-SEC-PHI-001~010 테스트 케이스 정의. Team A SPEC-INFRA-002 완료 전 PARTIAL 상태. |
 
 ---
 
@@ -664,12 +665,103 @@ FDA 21 CFR 820.30 및 IEC 62304 요건에 따른 RTM 완전성 기준:
 
 ---
 
+---
+
+## 부록 B. SWR-CS-080 PHI AES-256-GCM 암호화 TC 매핑
+
+> **상태**: PARTIAL — Team A SPEC-INFRA-002 구현 완료 후 실제 xUnit 테스트 메서드명으로 갱신 필요
+>
+> **배경**: MR-007 (사이버보안, Tier 1) → PR-CS-074 (PHI 보호, Tier 1) → SWR-CS-080 (PHI AES-256-GCM 암호화) 체인.
+> Team A의 SPEC-INFRA-002가 AES-256-GCM 기반 PHI 암호화를 구현하며, HnVue.Security 모듈의 xUnit 테스트가 해당 SWR을 검증한다.
+>
+> **의존성**: Team A SPEC-INFRA-002 완료 후 TC-SEC-PHI-xxx에 실제 xUnit Trait("SWR", "SWR-CS-080") 메서드명 기입.
+
+### B.1 RTM 매핑 체인
+
+```
+MR-007 (사이버보안, Tier 1)
+  └── PR-CS-074 (PHI 보호)
+        └── SWR-CS-080 (환자 건강정보 AES-256-GCM 암호화 저장)
+              └── SWR-CS-081 (PHI 복호화 접근 제어)
+                    └── TC-SEC-PHI-001 ~ TC-SEC-PHI-010
+```
+
+### B.2 SWR-CS-080 정의
+
+| 항목 | 내용 |
+|------|------|
+| **SWR ID** | SWR-CS-080 |
+| **요구사항명** | 환자 건강정보 (PHI) AES-256-GCM 암호화 저장 |
+| **상위 PR** | PR-CS-074 (PHI 보호) |
+| **상위 MR** | MR-007 (사이버보안, Tier 1) |
+| **위험 연결** | HAZ-DATA-002 (환자 개인정보 유출), HAZ-SEC-001 (무단 접근) |
+| **위험 통제** | RC-019 (TLS 1.3 이상), RC-020 (RBAC 접근 제어) |
+| **SAD 참조** | SAD-CS-700 |
+| **SDS 참조** | SDS §3.7 |
+| **구현 모듈** | HnVue.Security (Team A) |
+| **암호화 표준** | AES-256-GCM (FIPS 140-2 Level 1 준수) |
+| **키 파생** | HKDF (HMAC-SHA-256 기반) |
+| **라이브러리** | SQLitePCLRaw.bundle_e_sqlcipher 2.1.8 (SQLCipher) |
+| **검증 수준** | T (Unit Test), I (Integration Test) |
+| **검증 상태** | PARTIAL (Team A SPEC-INFRA-002 완료 대기) |
+
+### B.3 TC-SEC-PHI 테스트 케이스 목록
+
+| TC ID | 테스트 케이스명 | 테스트 유형 | xUnit 메서드 | SWR 연결 | 검증 항목 | 상태 |
+|-------|--------------|-----------|------------|---------|---------|------|
+| TC-SEC-PHI-001 | AES-256-GCM 암호화/복호화 왕복 | Unit | [PLACEHOLDER] | SWR-CS-080 | 암호화 후 복호화 시 원문 일치 확인 | PENDING |
+| TC-SEC-PHI-002 | 변조 태그 감지 (Authentication Tag) | Unit | [PLACEHOLDER] | SWR-CS-080 | GCM 인증 태그 변조 시 AES-GCM 예외 발생 | PENDING |
+| TC-SEC-PHI-003 | null/empty PHI 데이터 처리 | Unit | [PLACEHOLDER] | SWR-CS-080 | null 또는 빈 문자열 입력 시 ArgumentException | PENDING |
+| TC-SEC-PHI-004 | Nonce 랜덤성 (암호화 호출마다 다른 IV) | Unit | [PLACEHOLDER] | SWR-CS-080 | 동일 평문 2회 암호화 시 서로 다른 암호문 | PENDING |
+| TC-SEC-PHI-005 | HKDF 키 파생 정확성 | Unit | [PLACEHOLDER] | SWR-CS-080 | 동일 마스터키+컨텍스트 → 동일 파생키 | PENDING |
+| TC-SEC-PHI-006 | 잘못된 키로 복호화 시 실패 | Unit | [PLACEHOLDER] | SWR-CS-080 | 다른 키로 복호화 시 CryptographicException | PENDING |
+| TC-SEC-PHI-007 | PHI 필드 암호화 범위 검증 | Unit | [PLACEHOLDER] | SWR-CS-080 | DB 저장 시 PatientName, BirthDate, PatientId 암호화 확인 | PENDING |
+| TC-SEC-PHI-008 | SQLCipher 연결 암호화 확인 | Integration | [PLACEHOLDER] | SWR-CS-080 | 일반 SQLite 라이브러리로 DB 파일 읽기 시도 실패 | PENDING |
+| TC-SEC-PHI-009 | 암호화 성능 (1000건 기준) | Unit | [PLACEHOLDER] | SWR-CS-080 | 1000건 PHI 암호화 200ms 이내 완료 | PENDING |
+| TC-SEC-PHI-010 | 키 로테이션 후 기존 데이터 접근 | Integration | [PLACEHOLDER] | SWR-CS-080, SWR-CS-081 | 키 로테이션 후 이전 암호화 데이터 재복호화 가능 | PENDING |
+
+> **[PLACEHOLDER]** = Team A SPEC-INFRA-002 완료 후 실제 xUnit 메서드명으로 교체.
+> 예시: `AesGcmEncryptionService_Encrypt_Decrypt_RoundTrip_Succeeds`
+
+### B.4 SWR-CS-081 관련 TC
+
+| TC ID | 테스트 케이스명 | 테스트 유형 | SWR 연결 | 검증 항목 | 상태 |
+|-------|--------------|-----------|---------|---------|------|
+| TC-SEC-PHI-011 | RBAC 역할 기반 PHI 복호화 접근 제어 | Integration | SWR-CS-081 | 권한 없는 역할로 PHI 복호화 시도 시 AccessDeniedException | PENDING |
+| TC-SEC-PHI-012 | 감사 로그 — PHI 접근 이벤트 기록 | Integration | SWR-CS-081 | PHI 접근(암호화/복호화) 시 Audit Trail에 이벤트 기록 | PENDING |
+
+### B.5 xUnit Trait 어노테이션 가이드
+
+Team A SPEC-INFRA-002 구현 시 다음 Trait 어노테이션을 적용하여 RTM 자동 추적성 확보:
+
+```csharp
+[Fact]
+[Trait("SWR", "SWR-CS-080")]
+[Trait("TC", "TC-SEC-PHI-001")]
+public void AesGcmEncryptionService_Encrypt_Decrypt_RoundTrip_Succeeds()
+{
+    // ... 테스트 구현
+}
+```
+
+### B.6 갱신 절차
+
+Team A SPEC-INFRA-002 완료 후 다음 절차에 따라 본 부록을 갱신:
+
+1. Team A xUnit 테스트 메서드명 목록 수집 (`[Trait("SWR", "SWR-CS-080")]` 검색)
+2. TC-SEC-PHI-001~012의 `[PLACEHOLDER]` 를 실제 메서드명으로 교체
+3. 커버리지 결과 반영 (Coverlet 리포트 기반)
+4. 검증 상태 PENDING → Pass/Fail 업데이트
+5. 본 문서 버전 v2.2로 개정
+
+---
+
 > **문서 종료**
 >
 > 본 RTM은 FDA 21 CFR 820.30 Design Controls에 따라 HnVue Console SW의 Design History File (DHF)의 핵심 구성 요소로 관리되며, 요구사항 변경 시 반드시 업데이트되어야 한다.
 >
 > | 문서 ID | RTM-XRAY-GUI-001 |
 > |---------|-----------------|
-> | 버전 | v2.0 |
-> | 작성일 | 2026-04-02 |
+> | 버전 | v2.1 (SWR-CS-080 TC 매핑 PARTIAL) |
+> | 작성일 | 2026-04-02 / 개정일 2026-04-11 |
 > | 검토 예정 | 2026-05-02 (Phase 1 설계 착수 시) |
