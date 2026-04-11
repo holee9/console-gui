@@ -158,6 +158,19 @@ public class RelayCommandTests
     [Fact]
     [Trait("Category", "Commands")]
     [Trait("Command", "RelayCommandT")]
+    public void RelayCommandT_Execute_ValueTypeParameter_InvokesTypedAction()
+    {
+        int received = 0;
+        var cmd = new RelayCommand<int>(value => received = value);
+
+        cmd.Execute(7);
+
+        received.Should().Be(7);
+    }
+
+    [Fact]
+    [Trait("Category", "Commands")]
+    [Trait("Command", "RelayCommandT")]
     public void RelayCommandT_Execute_NullParameter_InvokesAction()
     {
         bool executed = false;
@@ -185,6 +198,19 @@ public class RelayCommandTests
     [Fact]
     [Trait("Category", "Commands")]
     [Trait("Command", "RelayCommandT")]
+    public void RelayCommandT_Execute_NullValueTypeParameter_DoesNotInvoke()
+    {
+        bool executed = false;
+        var cmd = new RelayCommand<int>(_ => executed = true);
+
+        cmd.Execute(null);
+
+        executed.Should().BeFalse();
+    }
+
+    [Fact]
+    [Trait("Category", "Commands")]
+    [Trait("Command", "RelayCommandT")]
     public void RelayCommandT_CanExecute_WithNoGuard_Returns_True_ForTypedParam()
     {
         var cmd = new RelayCommand<int>(_ => { });
@@ -195,11 +221,11 @@ public class RelayCommandTests
     [Fact]
     [Trait("Category", "Commands")]
     [Trait("Command", "RelayCommandT")]
-    public void RelayCommandT_CanExecute_WithNoGuard_NullParameter_ReturnsFalse_ForValueType()
+    public void RelayCommandT_CanExecute_WithNoGuard_NullParameter_ReturnsTrue_ForValueType()
     {
-        // int is a value type; null cannot be cast to T, so returns _canExecute is null => false
+        // Implementation contract: when no guard exists, an uncastable parameter still returns true.
         var cmd = new RelayCommand<int>(_ => { });
-        cmd.CanExecute(null).Should().BeFalse();
+        cmd.CanExecute(null).Should().BeTrue();
     }
 
     [Fact]
@@ -215,6 +241,16 @@ public class RelayCommandTests
     [Fact]
     [Trait("Category", "Commands")]
     [Trait("Command", "RelayCommandT")]
+    public void RelayCommandT_CanExecute_WithNoGuard_WrongTypeParameter_Returns_True()
+    {
+        var cmd = new RelayCommand<string>(_ => { });
+
+        cmd.CanExecute(42).Should().BeTrue();
+    }
+
+    [Fact]
+    [Trait("Category", "Commands")]
+    [Trait("Command", "RelayCommandT")]
     public void RelayCommandT_CanExecute_WithGuard_RespectsGuard()
     {
         bool canRun = false;
@@ -224,6 +260,16 @@ public class RelayCommandTests
 
         canRun = true;
         cmd.CanExecute("test").Should().BeTrue();
+    }
+
+    [Fact]
+    [Trait("Category", "Commands")]
+    [Trait("Command", "RelayCommandT")]
+    public void RelayCommandT_CanExecute_WithGuard_WrongTypeParameter_Returns_False()
+    {
+        var cmd = new RelayCommand<string>(_ => { }, _ => true);
+
+        cmd.CanExecute(42).Should().BeFalse();
     }
 
     [Fact]
@@ -274,6 +320,46 @@ public class RelayCommandTests
 /// </summary>
 public class StatusBarItemTests
 {
+    [Fact]
+    [Trait("Category", "Components")]
+    [Trait("Component", "StatusBar")]
+    public void StatusBar_DefaultValues_AreExpected()
+    {
+        StaRunner.Run(() =>
+        {
+            var statusBar = new StatusBar();
+
+            statusBar.Height.Should().Be(32);
+            statusBar.StatusMessage.Should().BeEmpty();
+            statusBar.ConnectionStatus.Should().Be("Connected");
+            statusBar.ShowTime.Should().BeTrue();
+            statusBar.Message.Should().BeEmpty();
+            statusBar.StatusItems.Should().NotBeNull().And.BeEmpty();
+            statusBar.InfoItems.Should().NotBeNull().And.BeEmpty();
+        });
+    }
+
+    [Fact]
+    [Trait("Category", "Components")]
+    [Trait("Component", "StatusBar")]
+    public void StatusBar_PropertyRoundTrip_PersistsValues()
+    {
+        StaRunner.Run(() =>
+        {
+            var statusBar = new StatusBar();
+
+            statusBar.StatusMessage = "Ready";
+            statusBar.ConnectionStatus = "Offline";
+            statusBar.ShowTime = false;
+            statusBar.Message = "Alert";
+
+            statusBar.StatusMessage.Should().Be("Ready");
+            statusBar.ConnectionStatus.Should().Be("Offline");
+            statusBar.ShowTime.Should().BeFalse();
+            statusBar.Message.Should().Be("Alert");
+        });
+    }
+
     [Fact]
     [Trait("Category", "Components")]
     [Trait("Component", "StatusBarItem")]
