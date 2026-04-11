@@ -92,7 +92,7 @@ QA는 소스 모듈 coverage owner가 아니라 **gate owner**.
 
 ## Status
 
-- **State**: PENDING
+- **State**: SUPERSEDED
 - **Started**: -
-- **Completed**: -
-- **Results**: -
+- **Completed**: 2026-04-11
+- **Results**: S04-R1-qa.md로 대체됨
