@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -78,6 +79,17 @@ public sealed partial class WorkflowViewModel : ObservableObject, IWorkflowViewM
     /// </summary>
     [ObservableProperty]
     private string _safeStateLabel = "IDLE";
+
+    /// <summary>Gets or sets the file path of the current preview image for the acquisition preview panel.</summary>
+    [ObservableProperty]
+    private string? _previewImagePath;
+
+    /// <summary>Gets or sets the currently selected patient for the patient info panel.</summary>
+    [ObservableProperty]
+    private PatientRecord? _selectedPatient;
+
+    /// <summary>Gets the thumbnail strip items for the acquisition workflow.</summary>
+    public ObservableCollection<StudyRecord> ThumbnailList { get; } = new();
 
     /// <summary>
     /// Prepares the generator and detector for an exposure.
