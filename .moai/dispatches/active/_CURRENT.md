@@ -16,7 +16,7 @@ DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/
 | **Coordinator** | `S05-R2-coordinator.md` | **ACTIVE** | MergeView ViewModel 보강 (SelectedStudies + StudyItem.IsSelected) |
 | **QA** | `S05-R2-qa.md` | **ACTIVE** | 릴리즈 준비도 보고서 생성 (DOC-034) |
 | **RA** | `S05-R2-ra.md` | **MERGED** ✅ | RMP v2.0 완료 — 4-Tier 우선순위 + MR-072 통합, main 머지 완료 |
-| **Design** | `S05-R2-design-3.md` | **ACTIVE** | WorkflowView PPT Slide 9-11 검증 |
+| **Design** | `S05-R2-design-3.md` | **BLOCKED** | WorkflowView 3열 레이아웃 — Coordinator ViewModel 완료 후 착수 |
 | **Team A** | — | **IDLE** | S05-R1 완료 (Data 85%+). 신규 DISPATCH 없음 — IDLE 보고 대기 |
 | **Team B** | — | **IDLE** | S05-R1 완료. 신규 DISPATCH 없음 — IDLE 보고 대기 |
 
