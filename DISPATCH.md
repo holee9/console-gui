@@ -89,8 +89,28 @@ dotnet test HnVue.sln --filter "FullyQualifiedName~HnVue.UI.QA" --no-build
 
 ## Status
 
-- **State**: PENDING
+- **State**: COMPLETED
 - **Assigned**: Team Design
-- **PR**: (작성 후 기록)
-- **Started**: (시작 시 기록)
-- **Completed**: (완료 시 기록)
+- **PR**: http://10.11.1.40:7001/DR_RnD/Console-GUI/pulls/80
+- **Started**: 2026-04-11
+- **Completed**: 2026-04-11
+
+### Build Evidence
+
+```
+dotnet build HnVue.sln → 0 에러 (integration test 기존 오류는 Team A 범위, Design 변경 무관)
+dotnet test --filter "HnVue.UI.QA" → 통과! - 실패: 0, 통과: 65, 건너뜀: 0, 전체: 65
+```
+
+### Task Results
+
+- T1 (UI.QA 실패 수정): COMPLETED — 52/65 → 65/65 (13건 수정)
+  - CoreTokens.xaml: BackgroundPage/Panel/Card 색상 PPT Slide 4 스펙 (#242424/#2A2A2A/#3B3B3B)
+  - LoginView.xaml: SectionBadge, UppercaseLabel, CancelButton/PrimaryButton 완전 재구현
+  - PatientListView.xaml: SectionBadge(Worklist), EmergencyBadge, OutlineButton, ListBoxItem H=44
+- T2 (StudylistView UISPEC-003): COMPLETED — PPT 5-7 구조 확인 및 동적 리소스 수정
+- T3 (PPT Scope Compliance): COMPLETED — StudylistView 슬라이드 5-7 요소만, 위반 없음
+
+### Commit
+
+- `ad71b2871d46677ffabcf42bd20bb6b4d371488e` on branch `team/team-design`
