@@ -1,7 +1,7 @@
 # HnVue 개발 진행 현황 및 로드맵
 
 > 원본: README.md "개발 진행 현황" + "개발 로드맵" 섹션에서 분리 (2026-04-09)
-> 최종 업데이트: 2026-04-10 (PROGRESS-002 반영)
+> 최종 업데이트: 2026-04-11 (S04 R1 QA Gate Report 반영)
 
 ## 현재 진도 요약
 
@@ -195,8 +195,23 @@ Worktree 기반 팀 분리 개발, QA/RA 자동화, UISPEC 문서 체계, DOC-04
 - RA: DOC-042 v1.1, SBOM v1.1 (45개), SOUP v1.1
 - Design: PPT LoginView/PatientListView/StudylistView 리디자인
 
-### 현재 단계 (2026-04-10)
+### Round 2~3 DISPATCH (완료, 2026-04-09~10)
+- 교차검증 기반 사양서 보강, Sprint v2.0~v3.1 개정
+- P0 빌드 에러 8건 수정 (commit 77a94bd)
+- Team A: MX 태깅 + SDS 동기화, Security 커버리지 향상
+- Coordinator: DISPATCH T0-3 전원 완료, 13 신규 통합테스트, PR #77
+
+### S04 R1 DISPATCH (진행중, 2026-04-11)
+- QA: S04 진입 게이트 평가 **CONDITIONAL PASS**
+  - 빌드 0 에러, 테스트 2,043P / 14F, Architecture 4/4, Integration 26/26
+  - Safety-Critical 3종 전원 90%+ 달성 (Dose 100%, Incident 94.4%, Security 92.3%)
+  - 커버리지 제외 정책 공식화: Views/**, Migrations/**, DesignTime/** 제외
+  - 이월 5건: Common -1.2% (Team A), Detector -4.7% (Team B), Update -2.3% (Team B), UI.QA 13F (Design), RelayCommand flaky (Design)
+- Team A/B/Design/Coordinator: DISPATCH 발행 완료, 실행 대기/진행중
+
+### 현재 단계 (2026-04-11)
 - **즉시 필요**: App.xaml.cs Null Stub 6개 -> 실 Repository DI 교체
+- **S04 R1 진행**: 5팀 DISPATCH 실행중, 커버리지 FAIL 3개 모듈 개선 목표
 - **진행 예정**: PPT 디자인 미적용 View 6개 리디자인
 - **M1 준비**: STRIDE 상세 구현 완성
 - **외부 대기**: Generator RS-232 프로토콜 문서, FPD 벤더 SDK
@@ -247,4 +262,4 @@ Tier 1+2 총 31개 MR 코드 기반 구축 완료.
 
 ---
 
-문서 최종 업데이트: 2026-04-10
+문서 최종 업데이트: 2026-04-11
