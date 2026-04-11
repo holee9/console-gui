@@ -15,14 +15,18 @@
       "xmlHeader": false,
       "documentInterfaces": true,
       "documentExposedElements": true,
-      "documentInternalElements": false,
+      "documentInternalElements": true,
       "documentPrivateElements": false,
       "documentPrivateFields": false,
-      "fileNamingConvention": "metadata"
+      "fileNamingConvention": "metadata",
+      "documentationCulture": "en-US"
     },
     "layoutRules": {
       "newlineAtEndOfFile": "require"
     },
-    "maintainabilityRules": {}
+    "maintainabilityRules": {},
+    "readabilityRules": {
+      "allowBuiltInTypeAliases": false
+    }
   }
 }
