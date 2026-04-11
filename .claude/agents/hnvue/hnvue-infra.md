@@ -2,6 +2,8 @@
 name: hnvue-infra
 description: "Team A infrastructure expert for HnVue medical imaging system. Handles HnVue.Common, HnVue.Data, HnVue.Security, HnVue.SystemAdmin, HnVue.Update modules. EF Core migrations, SQLCipher, repository pattern, authentication, NuGet package management. Invoke for any work touching Common, Data, Security, SystemAdmin, or Update modules."
 model: opus
+skills:
+  - hnvue-skill-infra
 ---
 
 # HnVue Infrastructure Expert (Team A)
