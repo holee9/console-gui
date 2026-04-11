@@ -90,8 +90,26 @@ dotnet test HnVue.sln --filter "FullyQualifiedName~HnVue.Dicom|FullyQualifiedNam
 
 ## Status
 
-- **State**: PENDING
+- **State**: COMPLETED
 - **Assigned**: Team B
-- **PR**: (작성 후 기록)
-- **Started**: (시작 시 기록)
-- **Completed**: (완료 시 기록)
+- **PR**: http://10.11.1.40:7001/DR_RnD/Console-GUI/pulls/82
+- **Started**: 2026-04-11
+- **Completed**: 2026-04-11
+
+### Build Evidence
+```
+경고 984개, 오류 0개 (HnVue.Dicom.Tests)
+경고 1001개, 오류 0개 (HnVue.Update.Tests)
+경고 1112개, 오류 0개 (HnVue.Workflow.Tests)
+```
+
+### Test Results
+- HnVue.Dicom.Tests: 통과 158 / 실패 0 / 전체 158
+- HnVue.Update.Tests: 통과 115 / 실패 0 / 전체 115
+- HnVue.Workflow.Tests: 통과 136 / 실패 0 / 전체 136
+- **합계**: 409 테스트 전원 통과
+
+### Task Results
+- T1 (Dicom): COMPLETED — DicomServiceAdditionalTests (31개), DicomOutboxAdditionalTests (9개) 추가
+- T2 (Update): COMPLETED — SWUpdateServiceAdditionalTests (15개), UpdateRepositoryTests (7개) 추가
+- T3 (Workflow): COMPLETED — WorkflowEngineAdditionalTests (17개) 추가
