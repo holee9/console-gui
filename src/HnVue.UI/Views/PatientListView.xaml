@@ -22,16 +22,29 @@
             <Setter Property="Height" Value="34"/>
         </Style>
         <Style x:Key="DarkRowStyle" TargetType="DataGridRow">
-            <Setter Property="Background" Value="#090909"/>
+            <Setter Property="Background" Value="#000000"/>
             <Setter Property="Foreground" Value="#dde6f4"/>
+            <Setter Property="BorderBrush" Value="#2a2a2a"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Background" Value="#162132"/>
+                    <Setter Property="Foreground" Value="White"/>
                 </Trigger>
                 <Trigger Property="IsSelected" Value="True">
                     <Setter Property="Background" Value="#4f79b8"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="BorderBrush" Value="#7ba3d8"/>
+                    <Setter Property="BorderThickness" Value="2,0,0,0"/>
                 </Trigger>
             </Style.Triggers>
+        </Style>
+        <!-- PPT Slide 4: Loading state indicator -->
+        <Style x:Key="LoadingTextStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#8899aa"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
         <Style x:Key="SideIconButtonStyle" TargetType="Button">
             <Setter Property="Width" Value="38"/>
@@ -110,7 +123,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Column="0" Background="#090909" BorderBrush="#505661" BorderThickness="1">
+            <Border Grid.Column="0" Background="#000000" BorderBrush="#505661" BorderThickness="1">
                 <Grid>
                     <DataGrid ItemsSource="{Binding Patients}"
                               SelectedItem="{Binding SelectedPatient}"
@@ -123,7 +136,7 @@
                               HorizontalGridLinesBrush="#2a2a2a"
                               BorderThickness="0"
                               RowHeaderWidth="0"
-                              Background="#090909"
+                              Background="#000000"
                               Foreground="#dde6f4"
                               ColumnHeaderHeight="34"
                               RowHeight="40">
@@ -142,12 +155,30 @@
                             <DataGridTextColumn Header="BirthDate" Binding="{Binding DateOfBirth, StringFormat={}{0:yyyyMMdd}}" Width="120"/>
                         </DataGrid.Columns>
                     </DataGrid>
-                    <Border Margin="0,34,0,0" Background="#0b0b0b">
+                    <!-- PPT Slide 4: Empty state with improved message -->
+                    <Border Margin="0,34,0,0" Background="#0a0a0a">
                         <Border.Style>
                             <Style TargetType="Border">
                                 <Setter Property="Visibility" Value="Collapsed"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding Patients.Count}" Value="0">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <!-- PPT Slide 4: Empty state message -->
+                        <Grid Margin="0,40,0,0">
+                            <TextBlock Text="No patients found" Style="{StaticResource LoadingTextStyle}"/>
+                        </Grid>
+                    </Border>
+                    <!-- PPT Slide 4: Loading state placeholder -->
+                    <Border Margin="0,34,0,0" Background="#0a0a0a">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsLoading}" Value="True">
                                         <Setter Property="Visibility" Value="Visible"/>
                                     </DataTrigger>
                                 </Style.Triggers>
@@ -201,7 +232,7 @@
                 </Grid>
             </Border>
 
-            <Border Grid.Column="2" Background="#090909" BorderBrush="#505661" BorderThickness="1">
+            <Border Grid.Column="2" Background="#000000" BorderBrush="#505661" BorderThickness="1">
                 <Grid>
                     <DataGrid ItemsSource="{Binding Patients}"
                               SelectedItem="{Binding SelectedPatient}"
@@ -214,7 +245,7 @@
                               HorizontalGridLinesBrush="#2a2a2a"
                               BorderThickness="0"
                               RowHeaderWidth="0"
-                              Background="#090909"
+                              Background="#000000"
                               Foreground="#dde6f4"
                               ColumnHeaderHeight="34"
                               RowHeight="40">
@@ -230,12 +261,30 @@
                             <DataGridTextColumn Header="StudyDescription" Binding="{Binding Name}" Width="*"/>
                         </DataGrid.Columns>
                     </DataGrid>
-                    <Border Margin="0,34,0,0" Background="#0b0b0b">
+                    <!-- PPT Slide 4: Empty state for study list -->
+                    <Border Margin="0,34,0,0" Background="#0a0a0a">
                         <Border.Style>
                             <Style TargetType="Border">
                                 <Setter Property="Visibility" Value="Collapsed"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding Patients.Count}" Value="0">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <!-- PPT Slide 4: Empty state message for study list -->
+                        <Grid Margin="0,40,0,0">
+                            <TextBlock Text="No studies found" Style="{StaticResource LoadingTextStyle}"/>
+                        </Grid>
+                    </Border>
+                    <!-- PPT Slide 4: Loading state placeholder for study list -->
+                    <Border Margin="0,34,0,0" Background="#0a0a0a">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsLoading}" Value="True">
                                         <Setter Property="Visibility" Value="Visible"/>
                                     </DataTrigger>
                                 </Style.Triggers>

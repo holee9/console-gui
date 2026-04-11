@@ -79,5 +79,28 @@ git push origin team/team-design
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: PatientListView 개선 | NOT_STARTED | -- | -- |
+| Task 1: PatientListView 개선 | COMPLETED | 2026-04-12 | UISPEC-002 기준 스타일 개선 완료 |
 | Git 완료 프로토콜 | NOT_STARTED | -- | PR URL: -- |
+
+### 세부 내용
+
+**완료 작업:**
+1. **데이터 표면 색상 개선**: #090909 → #000000 (UISPEC-002 시각 규칙 준수)
+2. **행 선택 강조 개선**: IsSelected 시 파란 배경(#4f79b8) + 왼쪽 테두리(2px, #7ba3d8) 추가
+3. **마우스 오버 강조**: IsMouseOver 시 전경색 White 변경
+4. **빈 상태 메시지 개선**: "No patients found" / "No studies found" 메시지 추가
+5. **로딩 상태 플레이스홀더**: IsLoading 바인딩 위한 로딩 상태 Border 추가
+
+**개선 사항:**
+- PPT Slide 2: 검색/필터 영역 레이아웃 유지
+- PPT Slide 3: 목록 테이블 스타일 및 선택 강조 개선
+- PPT Slide 4: 빈 상태 메시지 및 로딩 상태 UI 추가
+
+**빌드 결과:**
+- XAML 컴파일: 성공
+- 전체 솔루션: 기존 오류 1건 (HnVue.Data Converters - Team A 소유)
+- Design Team 변경사항: 문제 없음
+
+**준수율 추정:**
+- 이전: 44%
+- 현재: ~70% (배경색, 선택 강조, 빈 상태 메시지 개선 반영)
