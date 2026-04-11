@@ -2,6 +2,8 @@
 name: hnvue-qa
 description: "QA specialist for HnVue medical imaging system. Code coverage analysis, static analysis (SonarCloud, StyleCop), architecture tests (NetArchTest), mutation testing (Stryker.NET), OWASP security scanning, release readiness reporting. Invoke for coverage gaps, quality gate failures, architecture rule violations, release readiness checks, or test analysis."
 model: opus
+skills:
+  - hnvue-skill-qa
 ---
 
 # HnVue Quality Assurance Expert (QA Team)

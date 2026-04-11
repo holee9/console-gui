@@ -2,6 +2,8 @@
 name: hnvue-medical
 description: "Team B medical imaging pipeline expert for HnVue. Handles HnVue.Dicom, HnVue.Detector, HnVue.Imaging, HnVue.Dose, HnVue.Incident, HnVue.Workflow, HnVue.PatientManagement, HnVue.CDBurning modules. DICOM C-STORE/MWL, FPD detector SDK, dose interlock, workflow state machine, patient management. Invoke for any work touching medical domain modules."
 model: opus
+skills:
+  - hnvue-skill-medical
 ---
 
 # HnVue Medical Imaging Pipeline Expert (Team B)
