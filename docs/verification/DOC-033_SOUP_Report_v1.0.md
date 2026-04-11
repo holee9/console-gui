@@ -23,6 +23,7 @@
 |------|------|----------|--------|
 | v1.0 | 2026-03-18 | 최초 작성 — Phase 1 전체 SOUP 구성요소 평가 | SW 품질 팀 |
 | v1.1 | 2026-04-08 | 개발/QA 전용 구성요소 6종 추가 (SOUP-039~044): dotnet 로컬 도구 3종 (reportgenerator, stryker, dotnet-outdated) + Roslyn 분석기 3종 (StyleCop.Analyzers, Roslynator.Analyzers, SecurityCodeScan.VS2019) | SW 품질 팀 |
+| v2.0 | 2026-04-11 | S04 R1 NuGet 업그레이드 반영 (Team A SPEC-INFRA-001): fo-dicom 5.1.3→5.2.5 업그레이드, EF Core 8.0.2→9.0.0 업그레이드, Microsoft.Extensions.* 8.x→9.0.0 업그레이드, 신규 Class B SOUP 추가: SQLitePCLRaw.bundle_e_sqlcipher 2.1.8 (PHI AES-256-GCM 암호화), BCrypt.Net-Next 4.0.3 (bcrypt 해싱), System.IdentityModel.Tokens.Jwt 7.3.1 (JWT 인증). SBOM-XRAY-GUI-001 v2.0과 동기화. | RA팀 |
 
 ---
 
