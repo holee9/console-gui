@@ -85,6 +85,21 @@ dotnet test HnVue.sln --filter "FullyQualifiedName~Architecture" --no-build
 - **Started**: 2026-04-11
 - **Completed**: 2026-04-11
 
+### 작업 완료 증거
+
+| Task | 내용 | 상태 |
+|------|------|------|
+| T1 | GovernanceArchitectureTests.cs (5개 신규 테스트) | COMPLETED |
+| T2 | coverage-exclusion-policy.md (이전 구현 완료) | COMPLETED |
+| T3 | Generate-CoverageReport.ps1 (이전 구현 완료) | COMPLETED |
+| T4 | .stylecop.json 필드 _camelCase 허용 | COMPLETED |
+
+### 빌드 증거
+
+- 솔루션 빌드: 0 에러
+- 아키텍처 테스트: 11/11 통과 (기존 6 + 신규 5)
+- Push: team/qa (commit 3f5b163)
+
 ## Build Evidence
 
 ```
