@@ -28,11 +28,14 @@ Data 레이어 테스트가 필요.
 
 ---
 
-## 사전 확인
+## 사전 확인 [필수 — 워크트리 클린업 포함]
 
 ```bash
 git checkout team/team-a
 git pull origin main
+# [HARD] S04 잔여 변경 초기화 — 미커밋 변경 있을 경우 반드시 실행
+git checkout -- .
+git clean -fd --exclude=".moai/reports/"
 # S04에서 추가된 Repository 확인
 ls src/HnVue.Data/Repositories/Ef*.cs
 ```

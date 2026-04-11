@@ -27,11 +27,14 @@ S04에서 Detector(92%), Dose(99%), PatientManagement(100%)는 달성. Dicom만 
 
 ---
 
-## 사전 확인
+## 사전 확인 [필수 — 워크트리 클린업 포함]
 
 ```bash
 git checkout team/team-b
 git pull origin main
+# [HARD] S04 잔여 변경 초기화 (DicomService.cs, MppsScu.cs 등 미커밋 잔여물 제거)
+git checkout -- .
+git clean -fd --exclude=".moai/reports/"
 ```
 
 ---

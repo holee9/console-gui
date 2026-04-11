@@ -26,11 +26,14 @@
 
 ---
 
-## 사전 확인
+## 사전 확인 [필수 — 워크트리 클린업 포함]
 
 ```bash
 git checkout team/ra
 git pull origin main
+# [HARD] 이전 스프린트 잔여 변경 초기화
+git checkout -- .
+git clean -fd --exclude=".moai/reports/"
 # DOC-042 현재 상태 확인
 cat docs/management/DOC-042-CMP.md | head -20
 ```
