@@ -4,7 +4,7 @@
 > 자신의 팀 행(row)에서 파일명을 확인한 뒤, 해당 파일만 읽는다.
 > 상태가 `PR_OPEN` 또는 `IDLE`이면 → 새 DISPATCH 없음 → Commander Center에 IDLE 보고.
 
-Updated: 2026-04-12
+Updated: 2026-04-12 (RA MERGED)
 DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/`
 
 ---
@@ -15,8 +15,8 @@ DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/
 |----|-------------------|------|------|
 | **Coordinator** | `S05-R1-coordinator.md` | **MERGED** ✅ | EfRepository 테스트 + PHI Converter — 53/53 통과, main 머지 완료 |
 | **QA** | `S05-R1-qa.md` | **MERGED** ✅ | S05 게이트 통과 — 빌드 에러 0, 아키텍처 11/11 PASS |
-| **RA** | `S05-R1-ra.md` | **ACTIVE** | DOC-042 CMP 완료 |
-| **Design** | `S05-R1-design.md` | **ACTIVE** | PatientListView UISPEC-002 개선 |
+| **RA** | `S05-R1-ra.md` | **MERGED** ✅ | DOC-042 CMP v2.0 — IEC 62304 §8.1 충족, main 머지 완료 |
+| **Design** | `S05-R1-design.md` | **MERGED** ✅ | PatientListView UISPEC-002 준수율 44%→70% 개선, main 머지 완료 |
 | **Team A** | `S05-R1-team-a.md` | **ACTIVE** | Data 모듈 커버리지 85%+ |
 | **Team B** | `S05-R1-team-b.md` | **MERGED** ✅ | Dicom 46+Update 142+Workflow 179 테스트 통과, main 머지 완료 |
 
