@@ -132,7 +132,7 @@ v2.0부터 P1–P4 분류를 폐기하고 4-Tier 체계를 전면 적용한다.
 | [INT-05] | SAD-XRAY-GUI-001 | Software Architecture Design | **v2.0** |
 | [INT-06] | SDS-XRAY-GUI-001 | Software Design Specification | **v2.0** |
 | [INT-07] | DMP-XRAY-GUI-001 | Document Master Plan | **v2.0** |
-| [INT-08] | WBS-XRAY-GUI-001 | Work Breakdown Structure | **v2.0** |
+| [INT-08] | WBS-XRAY-GUI-001 | Work Breakdown Structure | **v3.0** |
 | [INT-09] | RMP-XRAY-GUI-001 | Risk Management Plan | v1.0 |
 | [INT-10] | DOC-001a | MR 상세 설명서 Part 1 — Tier 1 | v1.0 |
 | [INT-11] | DOC-001b | MR 상세 설명서 Part 2 — Tier 2/3/4 | v1.0 |

@@ -157,7 +157,7 @@ flowchart TD
     DHF["DHF\\nDOC-035"]
     ESTAR["510k eSTAR\\nDOC-036"]
     CE_DOC["CE Tech Doc\\nDOC-037"]
-    WBS_DOC["WBS v2.0\\nWBS-001"]
+    WBS_DOC["WBS v3.0\\nWBS-001"]
     DMP_DOC["DMP v2.0\\nDMP-001"]
 
     MRD --> PRD
@@ -197,7 +197,7 @@ flowchart TD
 |-------|---------|--------|:---:|------|------|
 | A | **DOC-001** | MRD | **v3.0** | 완료 ✅ | 4-Tier 체계, MR-072 추가 |
 | A | **DOC-002** | PRD | **v2.0** | 완료 ✅ | 4-Tier 반영 |
-| A | **WBS-001** | WBS | **v2.0** | 완료 ✅ | Tier 1/2 기준 재분해 |
+| A | **WBS-001** | WBS | **v3.0** | 완료 ✅ | Sprint/MM 기반, 6팀 단위, 통합 마일스톤 |
 | A | **DMP-001** | DMP (본 문서) | **v2.0** | 작성 중 | 4-Tier 반영 |
 | A | **DOC-003a** | SDP | **v2.0** | 완료 ✅ | CI/CD, STRIDE, 인시던트 대응 포함; SDP = Software Development Plan |
 | B | **DOC-004** | FRS | **v2.0** | 완료 ✅ | 4-Tier, MR-072, 보완 3건 |
@@ -229,7 +229,7 @@ flowchart TD
 | SDS v2.0 | v3.0 | v2.0 | ✅ | ✅ | ✅ |
 | DMP v2.0 (본 문서) | v3.0 | v2.0 | ✅ | ✅ | ✅ |
 | SDP v2.0 | v3.0 | v2.0 | ✅ | ✅ | ✅ |
-| WBS v2.0 | v3.0 | v2.0 | ✅ | ✅ | ✅ |
+| WBS v3.0 | v3.0 | v3.0 | ✅ | ✅ | ✅ |
 | DOC-008 RMP v1.0 | v2.0 | v2.0 | ❌ 개정 필요 | ❌ | ❌ |
 | DOC-016 CMP v1.0 | v2.0 | v2.0 | ❌ 개정 필요 | ❌ | ❌ |
 
@@ -245,7 +245,7 @@ flowchart TD
 |-------|---------|--------|:---:|----------|------|
 | A | DOC-001 | MRD | **v3.0** ✅ | 완료 | 4-Tier 체계 적용 |
 | A | DOC-002 | PRD v2.0 | **v2.0** ✅ | 완료 | |
-| A | WBS-001 | WBS v2.0 | **v2.0** ✅ | 완료 | Tier 1/2 기준 재분해 |
+| A | WBS-001 | WBS v3.0 | **v3.0** ✅ | 완료 | Sprint/MM 기반, 6팀 단위, 통합 마일스톤 |
 | A | DMP-001 | DMP v2.0 | **v2.0** | 2026-04 | 본 문서 |
 | A | DOC-003a | SDP v2.0 | **v2.0** ✅ | 완료 | CI/CD+STRIDE+인시던트 |
 | A | DOC-041 | PM 계획서 | v1.0 | 2026-04 | |
@@ -342,7 +342,7 @@ flowchart LR
         SAD2["SAD v2.0 ✅"]
         SDS2["SDS v2.0 ✅"]
         SDP2["SDP v2.0 ✅"]
-        WBS2["WBS v2.0 ✅"]
+        WBS2["WBS v3.0 ✅"]
         DMP2["DMP v2.0 ✅"]
     end
 
@@ -437,7 +437,7 @@ gantt
     section Phase A 기반 문서
     MRD v3.0                     :done, a1, 2026-03, 1M
     PRD v2.0                     :done, a2, 2026-03, 1M
-    WBS v2.0                     :done, a3, 2026-03, 1M
+    WBS v3.0                     :done, a3, 2026-03, 1M
     SDP v2.0                     :done, a4, 2026-04, 1M
     DMP v2.0                     :active, a5, 2026-04, 1M
     FRS v2.0                     :done, a6, 2026-04, 1M
@@ -586,7 +586,7 @@ python scripts/sync_docs.py --list-outdated
 
 - [ ] MRD v3.0 — 4-Tier 체계 적용 완료
 - [ ] PRD v2.0 — MR-072 (CD Burning) 포함
-- [ ] WBS v2.0 — Tier 1/2 기준 작업 분해
+- [ ] WBS v3.0 — Sprint/MM 기반, 6팀 단위, 통합 마일스톤
 - [ ] DMP v2.0 — 현행 버전 일람 업데이트
 - [ ] SDP v2.0 — CI/CD, STRIDE, 인시던트 대응 포함
 - [ ] FRS v2.0, SRS v2.0 — 4-Tier + 보완 3건 반영

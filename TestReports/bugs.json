@@ -1,0 +1,38 @@
+[
+  {
+    "Id": "BUG-001",
+    "Category": "Accessibility",
+    "Severity": "Medium",
+    "Title": "Touch Target Size Below Medical Device Recommendation",
+    "Description": "Button height is 36px, below 44px recommended for medical device touch targets",
+    "StepsToReproduce": "1. Review CoreTokens.xaml 2. Check button height specifications 3. Compare to IEC 62366 guidelines",
+    "ExpectedResult": "Touch targets should be 44x44px minimum",
+    "ActualResult": "Button height specified as 36px (Medium), 44px (Large)",
+    "Recommendation": "Use Large (44px) as default for medical device safety",
+    "Status": "Open"
+  },
+  {
+    "Id": "BUG-002",
+    "Category": "Testing",
+    "Severity": "Low",
+    "Title": "Visual Regression Tests Require UI Automation",
+    "Description": "Screenshot comparison tests cannot run without UI automation framework",
+    "StepsToReproduce": "1. Set up FlaUI or similar 2. Implement screenshot capture 3. Run comparison tests",
+    "ExpectedResult": "Automated visual regression tests",
+    "ActualResult": "Tests marked as PENDING",
+    "Recommendation": "Implement FlaUI-based test runner",
+    "Status": "Open"
+  },
+  {
+    "Id": "BUG-003",
+    "Category": "Performance",
+    "Severity": "Low",
+    "Title": "Performance Tests Require Runtime Metrics",
+    "Description": "Actual load time metrics require runtime instrumentation",
+    "StepsToReproduce": "1. Add performance counters 2. Run application under profiler 3. Collect metrics",
+    "ExpectedResult": "Real performance metrics",
+    "ActualResult": "Design verification only",
+    "Recommendation": "Add performance telemetry",
+    "Status": "Open"
+  }
+]

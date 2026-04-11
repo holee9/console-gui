@@ -242,13 +242,15 @@ When fixing bugs:
 - Fix the bug with minimal code changes
 - Verify the reproduction test passes after the fix
 
-### Go-Specific Guidelines
+### Language-Specific Guidelines
 
-For Go development:
-- Run `go test -race ./...` for concurrency safety
-- Use table-driven tests for comprehensive coverage
-- Maintain 85%+ test coverage per package
-- Run `go vet` and `golangci-lint` before commits
+The quality gate auto-detects the project language and runs the appropriate toolchain:
+- **Go**: `go vet` → `golangci-lint` → `go test`
+- **Node.js**: `eslint` → `npm test`
+- **Python**: `ruff` → `pytest`
+- **Rust**: `cargo clippy` → `cargo test`
+
+Tools that are not installed are skipped gracefully. Projects with no recognized language marker pass the gate silently.
 
 ---
 
@@ -562,33 +564,8 @@ Large PDFs (>10 pages) return a lightweight reference when @-mentioned. Always s
 
 ---
 
-## 18. Harness: HnVue Development
-
-**Goal:** HnVue 의료영상 WPF 애플리케이션의 17개 모듈을 6팀 전문 에이전트로 자동 라우팅
-
-**Trigger:** HnVue 모듈 개발, 구현, 빌드, 테스트, 커버리지, 리팩토링 작업 요청 시 `hnvue-dev` skill을 사용하라. 단순 질문은 직접 응답 가능.
-
-**Agents:** `.claude/agents/hnvue/` (hnvue-infra, hnvue-medical, hnvue-ui, hnvue-coordinator, hnvue-qa, hnvue-ra)
-
-**Change Log:**
-| Date | Change | Target | Reason |
-|------|--------|--------|--------|
-| 2026-04-09 | Initial build | All | Project analysis + harness construction |
-| 2026-04-10 | Completion Gate [HARD] 추가 | 6 agents | Round 1 허위 보고 + 빌드 오류 미감지 재발방지 |
-| 2026-04-10 | Git Completion Protocol 추가 | 6 team rules | 미push/미PR 방치 근절 |
-| 2026-04-10 | DISPATCH 스키마 표준화 | dispatch-schema.md | 팀 규칙 미반영 DISPATCH 재발방지 |
-| 2026-04-10 | dispatch-orchestrator v2.0 | SKILL.md | 분산 검증 + 중앙 수집 + 머지 순서 |
-| 2026-04-10 | DEV-OPS-GUIDELINES v1.0 | docs/development/ | 개발운영 지침서 신규 |
-| 2026-04-10 | .gitignore 강화 | .gitignore | temp_ppt_extract/.dotnet-home/tmp/ 오염 방지 |
-
-**Operational Docs:**
-- [개발운영 지침서](docs/development/DEV-OPS-GUIDELINES.md) — DISPATCH 라이프사이클, Git 절차, 통합 검증
-- [DISPATCH 스키마](.claude/rules/moai/workflow/dispatch-schema.md) — 필수 섹션, 검증 규칙
-
----
-
-Version: 16.0.0 (Agency v3.2 + HnVue Harness v2.0 — Completion Gate + Git Protocol)
-Last Updated: 2026-04-10
+Version: 14.0.0 (Agency v3.2 + Harness Design Integration)
+Last Updated: 2026-04-03
 Language: English
 Core Rule: MoAI is an orchestrator; direct implementation is prohibited
 

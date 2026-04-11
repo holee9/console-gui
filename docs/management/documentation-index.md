@@ -31,7 +31,8 @@
 | DOC-042 | CMP (형상관리 계획) -- Review 상태, 도구 확정 | v1.0 |
 | DOC-043 | Build Environment (28개 프로젝트) | v1.0 |
 | DOC-044 | Known Anomalies | v1.0 |
-| WBS-001 | WBS (작업 분해도) | v2.0 |
+| WBS-001 | WBS (작업 분해도) | v3.0 |
+| SPRINT-001 | Sprint 구현계획 (6팀 기반) | v1.0 |
 
 ### 위험 관리 (`docs/risk/`)
 

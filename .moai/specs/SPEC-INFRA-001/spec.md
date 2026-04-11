@@ -1,9 +1,9 @@
 ---
 id: SPEC-INFRA-001
-version: 1.0.0
-status: draft
+version: 1.2.0
+status: implemented
 created: "2026-04-09"
-updated: "2026-04-09"
+updated: "2026-04-11"
 author: moai
 priority: P1-Critical
 issue_number: 0
@@ -15,6 +15,8 @@ issue_number: 0
 | 버전 | 날짜 | 변경 내용 | 작성자 |
 |------|------|-----------|--------|
 | 1.0.0 | 2026-04-09 | 최초 작성 | MoAI |
+| 1.1.0 | 2026-04-10 | 교차검증 보강: Security 82.5%->90% 커버리지 목표 추가, SystemSettingsRepository 빌드오류 반영, 취약 패키지 업그레이드 상태 갱신 | MoAI |
+| 1.2.0 | 2026-04-11 | S04 교차검증: status=implemented. Security 95.5%, Data~82%, 440 테스트 통과. PHI 암호화는 SPEC-INFRA-002로 분리. | MoAI |
 
 ## 개요
 
