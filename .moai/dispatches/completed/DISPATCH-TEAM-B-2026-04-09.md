@@ -130,7 +130,7 @@ dotnet test HnVue.sln --configuration Release --no-build
 
 ## Status
 
-- **State**: PENDING
+- **State**: SUPERSEDED
 - **Started**: -
-- **Completed**: -
-- **Results**: -
+- **Completed**: 2026-04-11
+- **Results**: S04-R1-team-b.md로 대체됨
