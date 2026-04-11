@@ -6,9 +6,9 @@
 | **발행자** | Commander Center |
 | **대상** | Coordinator |
 | **브랜치** | team/coordinator |
-| **유형** | S05 Round 2 — MergeView ViewModel 보강 |
-| **우선순위** | P2 |
-| **SPEC 참조** | SPEC-UI-001 / UISPEC-005 |
+| **유형** | S05 Round 2 — MergeView + WorkflowView ViewModel 보강 |
+| **우선순위** | P1 |
+| **SPEC 참조** | SPEC-UI-001 / UISPEC-005, UISPEC-006 |
 
 ---
 
@@ -20,11 +20,19 @@
 
 ## 컨텍스트
 
-Design Team이 MergeView (PPT Slide 12-13) 검증 완료.
-MergeView XAML에서 스터디 체크박스 바인딩을 위한 ViewModel 속성이 필요함:
+Design Team이 두 화면에서 ViewModel 추가를 요청함:
+
+**MergeView (PPT Slide 12-13)**: 스터디 체크박스 바인딩 필요
 - `SelectedStudies` 컬렉션
 - `StudyItem.IsSelected` 속성
-- 체크박스 바인딩 지원
+
+**WorkflowView (PPT Slide 9-11)**: 3열 레이아웃 구현을 위한 ViewModel 속성 필요
+- `PreviewImage` (ImageSource) — AcquisitionPreview 바인딩
+- `ThumbnailList` (ObservableCollection<StudyThumbnail>)
+- `SelectedPatient` (PatientInfo) — 환자 정보 패널 바인딩
+- `WorkflowState` (enum: IDLE/READY/EXPOSING)
+
+**의존성**: Design은 이 ViewModel 속성이 추가된 후 WorkflowView XAML 3열 레이아웃 구현 가능.
 
 ---
 
@@ -35,13 +43,34 @@ git checkout team/coordinator
 git pull origin main
 git checkout -- .
 git clean -fd --exclude=".moai/reports/"
-# 현재 MergeView ViewModel 확인
-grep -r "MergeViewModel\|IMergeViewModel" src/HnVue.UI.Contracts/ src/HnVue.UI.ViewModels/ 2>/dev/null | head -20
+# 현재 ViewModel 확인
+grep -r "MergeViewModel\|WorkflowViewModel\|IWorkflowViewModel" src/HnVue.UI.Contracts/ src/HnVue.UI.ViewModels/ 2>/dev/null | head -20
 ```
 
 ---
 
-## Task 1 (P2): MergeView ViewModel 보강
+## Task 1 (P1): WorkflowView ViewModel 보강 [우선]
+
+Design이 WorkflowView 3열 레이아웃 구현 대기 중 — 이 Task가 먼저.
+
+### 대상 파일
+
+- `src/HnVue.UI.Contracts/` — IWorkflowViewModel 인터페이스 확장
+- `src/HnVue.UI.ViewModels/` — WorkflowViewModel 구현 추가
+
+### 구현 항목
+
+1. `IWorkflowViewModel`에 속성 추가:
+   - `PreviewImage` (ImageSource?)
+   - `ThumbnailList` (ObservableCollection<object> 또는 적절한 타입)
+   - `SelectedPatient` (PatientInfo 또는 적절한 타입)
+   - `WorkflowState` (기존 enum 사용 또는 신규)
+2. `WorkflowViewModel`에 구현 (mock 값으로 초기화 가능)
+3. 단위 테스트 (최소 각 속성 1개)
+
+---
+
+## Task 2 (P2): MergeView ViewModel 보강
 
 ### 대상 파일
 
@@ -53,18 +82,12 @@ grep -r "MergeViewModel\|IMergeViewModel" src/HnVue.UI.Contracts/ src/HnVue.UI.V
 1. `StudyItem` 모델에 `IsSelected` bool 속성 추가 (이미 있으면 확인만)
 2. `IMergeViewModel`에 `SelectedStudies` 컬렉션 속성 추가
 3. `MergeViewModel`에 구현 추가
-4. 단위 테스트 추가 (`tests.integration/` 또는 ViewModel 테스트)
-
-### 제약
-
-- UI.Contracts 변경 시 영향받는 팀(Design) 없음 — 이번은 추가이므로 파급 없음
-- 기존 MergeView XAML 바인딩은 이미 있는 것 유지
 
 ### 검증
 
 ```bash
 dotnet build HnVue.sln 2>&1 | tail -5
-dotnet test tests/ -k "Merge" 2>&1 | tail -10
+dotnet test tests/ 2>&1 | tail -10
 ```
 
 ---
@@ -73,7 +96,7 @@ dotnet test tests/ -k "Merge" 2>&1 | tail -10
 
 ```bash
 git add src/HnVue.UI.Contracts/ src/HnVue.UI.ViewModels/ tests/
-git commit -m "feat(coordinator): MergeView ViewModel 보강 — SelectedStudies + StudyItem.IsSelected"
+git commit -m "feat(coordinator): WorkflowView + MergeView ViewModel 보강 — Slide 9-11 바인딩 지원"
 git push origin team/coordinator
 ```
 
@@ -83,5 +106,6 @@ git push origin team/coordinator
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: MergeView ViewModel 보강 | NOT_STARTED | -- | SelectedStudies + IsSelected |
+| Task 1: WorkflowView ViewModel (P1) | NOT_STARTED | -- | PreviewImage/ThumbnailList/SelectedPatient/WorkflowState |
+| Task 2: MergeView ViewModel (P2) | NOT_STARTED | -- | SelectedStudies + IsSelected |
 | Git 완료 프로토콜 | NOT_STARTED | -- | PR URL: -- |
