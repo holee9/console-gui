@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HnVue.Common.Abstractions;
 using HnVue.Common.Models;
+using HnVue.UI.Contracts.Models;
 using HnVue.UI.Contracts.ViewModels;
 
 namespace HnVue.UI.ViewModels;
@@ -34,7 +35,7 @@ public sealed partial class MergeViewModel : ObservableObject, IMergeViewModel
     [ObservableProperty] private string _searchQueryB = string.Empty;
     [ObservableProperty] private PatientRecord? _selectedPatientA;
     [ObservableProperty] private PatientRecord? _selectedPatientB;
-    [ObservableProperty] private StudyRecord? _selectedPreviewStudy;
+    [ObservableProperty] private StudyItem? _selectedPreviewStudy;
     [ObservableProperty] private bool _isLoading;
     [ObservableProperty] private string? _errorMessage;
 
@@ -45,10 +46,13 @@ public sealed partial class MergeViewModel : ObservableObject, IMergeViewModel
     public ObservableCollection<PatientRecord> PatientsB { get; } = new();
 
     /// <inheritdoc/>
-    public ObservableCollection<StudyRecord> PreviewStudiesA { get; } = new();
+    public ObservableCollection<StudyItem> PreviewStudiesA { get; } = new();
 
     /// <inheritdoc/>
-    public ObservableCollection<StudyRecord> PreviewStudiesB { get; } = new();
+    public ObservableCollection<StudyItem> PreviewStudiesB { get; } = new();
+
+    /// <inheritdoc/>
+    public ObservableCollection<StudyItem> SelectedStudies { get; } = new();
 
     /// <inheritdoc/>
     public event EventHandler? MergeCompleted;

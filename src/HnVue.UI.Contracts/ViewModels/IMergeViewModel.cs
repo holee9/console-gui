@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using HnVue.Common.Models;
+using HnVue.UI.Contracts.Models;
 
 namespace HnVue.UI.Contracts.ViewModels;
 
@@ -29,13 +30,16 @@ public interface IMergeViewModel : IViewModelBase
     PatientRecord? SelectedPatientB { get; set; }
 
     /// <summary>Gets the studies to display in the center preview for Patient A.</summary>
-    ObservableCollection<StudyRecord> PreviewStudiesA { get; }
+    ObservableCollection<StudyItem> PreviewStudiesA { get; }
 
     /// <summary>Gets the studies to display in the center preview for Patient B.</summary>
-    ObservableCollection<StudyRecord> PreviewStudiesB { get; }
+    ObservableCollection<StudyItem> PreviewStudiesB { get; }
 
     /// <summary>Gets or sets the study currently selected for large preview.</summary>
-    StudyRecord? SelectedPreviewStudy { get; set; }
+    StudyItem? SelectedPreviewStudy { get; set; }
+
+    /// <summary>Gets the collection of studies selected via checkboxes for merge.</summary>
+    ObservableCollection<StudyItem> SelectedStudies { get; }
 
     /// <summary>Gets the command that searches patients for side A.</summary>
     ICommand SearchACommand { get; }
