@@ -77,5 +77,8 @@ git push origin team/team-b
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: Dicom 테스트 추가 | NOT_STARTED | -- | 목표: 60% |
-| Git 완료 프로토콜 | NOT_STARTED | -- | PR URL: -- |
+| Task 1: Dicom 테스트 추가 | **COMMITTED** | 2026-04-12 | 715줄, 3파일 — main 머지 완료 (ed63927) |
+| Git 완료 프로토콜 | **MERGED** | 2026-04-12 | CC 직접 머지 (PR 없음) — 커버리지 측정은 QA 게이트에서 확인 |
+
+> **CC 노트 (2026-04-12)**: Team B Dicom 테스트 코드가 main에 직접 머지됨.
+> 실제 커버리지 달성 여부(60% 목표)는 QA S05 게이트(S05-R1-qa.md Task 1) 실행 후 확인.
