@@ -256,9 +256,9 @@ public class GovernanceArchitectureTests
         var repoFiles = Directory.GetFiles(dataRepoDir, "*Repository.cs");
         if (repoFiles.Length == 0) return;
 
-        var abstractionsDir = Path.Combine(RepoRoot!, "src", "HnVue.Common", "Abstractions");
-        Directory.Exists(abstractionsDir).Should().BeTrue(
-            because: "HnVue.Common/Abstractions must exist for interface validation");
+        var srcDir = Path.Combine(RepoRoot!, "src");
+        Directory.Exists(srcDir).Should().BeTrue(
+            because: "src/ directory must exist for interface validation");
 
         var violations = new List<string>();
 
@@ -282,18 +282,20 @@ public class GovernanceArchitectureTests
             }
 
             var interfaceName = $"I{baseName}.cs";
-            var interfacePath = Path.Combine(abstractionsDir, interfaceName);
 
-            if (!File.Exists(interfacePath))
+            // Search for interface anywhere in src/ (supports domain-module-local interfaces)
+            // EfDoseRepository -> IDoseRepository may be in HnVue.Dose/, not Common/Abstractions
+            var matchingFiles = Directory.GetFiles(srcDir, interfaceName, SearchOption.AllDirectories);
+
+            if (matchingFiles.Length == 0)
             {
                 violations.Add(
-                    $"No interface '{interfaceName}' found for '{className}' " +
-                    $"in HnVue.Common/Abstractions");
+                    $"No interface '{interfaceName}' found anywhere in src/ for '{className}'");
             }
         }
 
         violations.Should().BeEmpty(
-            because: "Every repository implementation must have a matching interface. " +
+            because: "Every repository implementation must have a matching interface in src/. " +
                      "Violations:\n" + string.Join("\n", violations));
     }
 

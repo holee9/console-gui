@@ -28,7 +28,8 @@ public class NamingConventionTests
 
     /// <summary>
     /// Repository implementation classes in HnVue.Data must follow the {Name}Repository pattern.
-    /// A corresponding I{Name}Repository interface must exist in HnVue.Common.Abstractions.
+    /// A corresponding I{BaseName}Repository interface must exist somewhere in src/ (any module).
+    /// EfXxx prefix is stripped: EfUserRepository -> IUserRepository (searched in all src/ modules).
     /// </summary>
     [Fact]
     public void Repository_Classes_Must_Follow_Naming_Convention()
@@ -44,26 +45,48 @@ public class NamingConventionTests
         repoFiles.Should().NotBeEmpty(
             because: "HnVue.Data/Repositories must contain at least one repository implementation");
 
-        var abstractionsDir = Path.Combine(RepoRoot!, "src", "HnVue.Common", "Abstractions");
-        Directory.Exists(abstractionsDir).Should().BeTrue(
-            because: $"HnVue.Common/Abstractions directory must exist at '{abstractionsDir}'");
+        var srcDir = Path.Combine(RepoRoot!, "src");
+        Directory.Exists(srcDir).Should().BeTrue(
+            because: $"src/ directory must exist at '{srcDir}'");
+
+        var violations = new List<string>();
 
         foreach (var repoFile in repoFiles)
         {
             var className = Path.GetFileNameWithoutExtension(repoFile);
 
             // Verify file name ends with "Repository"
-            className.Should().EndWith("Repository",
-                because: $"Repository implementation file '{className}.cs' must end with 'Repository'");
+            if (!className.EndsWith("Repository", StringComparison.Ordinal))
+            {
+                violations.Add($"{className} does not end with 'Repository'");
+                continue;
+            }
 
-            // Verify corresponding interface exists: {Name}Repository -> I{Name}Repository
-            var interfaceName = $"I{className}.cs";
-            var interfacePath = Path.Combine(abstractionsDir, interfaceName);
+            // Derive interface name: strip optional "Ef" prefix for interface lookup
+            // e.g., EfUserRepository -> IUserRepository, AuditRepository -> IAuditRepository
+            var baseName = className;
+            if (baseName.StartsWith("Ef", StringComparison.Ordinal))
+            {
+                baseName = baseName.Substring(2); // Remove "Ef" prefix
+            }
 
-            File.Exists(interfacePath).Should().BeTrue(
-                because: $"Interface '{interfaceName}' must exist in HnVue.Common.Abstractions " +
-                         $"for repository implementation '{className}'");
+            var interfaceName = $"I{baseName}.cs";
+
+            // Search for interface anywhere in src/ (not just Common/Abstractions)
+            // Supports domain-module-local interfaces (e.g., HnVue.Dose/IDoseRepository.cs)
+            var matchingFiles = Directory.GetFiles(srcDir, interfaceName, SearchOption.AllDirectories);
+
+            if (matchingFiles.Length == 0)
+            {
+                violations.Add(
+                    $"Interface '{interfaceName}' not found anywhere in src/ " +
+                    $"for repository implementation '{className}'");
+            }
         }
+
+        violations.Should().BeEmpty(
+            because: "Every repository implementation must have a matching interface in src/. " +
+                     "Violations:\n" + string.Join("\n", violations));
     }
 
     // -------------------------------------------------------------------------
