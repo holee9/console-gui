@@ -166,7 +166,17 @@ git push origin team/ra
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: DOC-042 CMP Approved | NOT_STARTED | -- | -- |
-| Task 2: DOC-019 SBOM 갱신 | NOT_STARTED | -- | Team A NuGet 변경 반영 |
-| Task 3: DOC-032 RTM 매핑 | NOT_STARTED | -- | Team A 완료 후 실행 |
-| Git 완료 프로토콜 | NOT_STARTED | -- | PR URL: -- |
+| Task 1: DOC-042 CMP Approved | COMPLETED | 2026-04-11 | docs/management/DOC-042_CMP_v2.0.md 생성, Approved, 17개 모듈, Sprint 베이스라인, PR 기반 변경통제, Gitea Actions CI/CD |
+| Task 2: DOC-019 SBOM 갱신 | COMPLETED | 2026-04-11 | docs/regulatory/DOC-019_SBOM_v2.0.md 생성, CVSS>=7.0 0건, fo-dicom 5.2.5/EF Core 9.0.0/Extensions 9.0.0/SQLCipher 신규 반영 |
+| Task 3: DOC-032 RTM 매핑 | PARTIAL | 2026-04-11 | docs/verification/DOC-032_RTM_v2.0.md 부록 B 추가, TC-SEC-PHI-001~012 정의, Team A SPEC-INFRA-002 완료 후 PLACEHOLDER 갱신 필요 |
+| Git 완료 프로토콜 | COMPLETED | 2026-04-11 | commit cd9aff7, push 완료, PR URL: http://10.11.1.40:7001/DR_RnD/Console-GUI/pulls/79 |
+
+### Build Evidence
+
+RA 팀은 소스코드 빌드 대상 없음 (규제 문서 작업). 문서 산출물 증거:
+- DOC-042_CMP_v2.0.md: 생성 완료 (파일 존재 확인)
+- DOC-019_SBOM_v2.0.md: 생성 완료 (파일 존재 확인)
+- DOC-032_RTM_v2.0.md: 부록 B 추가 완료 (git diff 확인)
+- DOC-033_SOUP_Report_v1.0.md: v2.0 개정이력 추가 완료
+- git log: cd9aff7 docs(ra): CMP v2.0 approved + SBOM update + RTM SWR-CS-080 mapping (4 files changed, 823 insertions)
+- PR #79: http://10.11.1.40:7001/DR_RnD/Console-GUI/pulls/79
