@@ -4,7 +4,7 @@
 > 자신의 팀 행(row)에서 파일명을 확인한 뒤, 해당 파일만 읽는다.
 > 상태가 `PR_OPEN` 또는 `IDLE`이면 → 새 DISPATCH 없음 → Commander Center에 IDLE 보고.
 
-Updated: 2026-04-12 (S05-R2 진행중 — Design MergeView MERGED, Coordinator/Design/QA ACTIVE)
+Updated: 2026-04-12 (S05-R2 진행중 — RA MERGED, Design BLOCKED, Coordinator P1 URGENT)
 DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/`
 
 ---
@@ -13,7 +13,7 @@ DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/
 
 | 팀 | 현재 DISPATCH 파일 | 상태 | 비고 |
 |----|-------------------|------|------|
-| **Coordinator** | `S05-R2-coordinator.md` | **ACTIVE** | MergeView ViewModel 보강 (SelectedStudies + StudyItem.IsSelected) |
+| **Coordinator** | `S05-R2-coordinator-2.md` | **ACTIVE** | WorkflowView ViewModel 보강 (P1 URGENT — Design BLOCKED 해제) |
 | **QA** | `S05-R2-qa.md` | **ACTIVE** | 릴리즈 준비도 보고서 생성 (DOC-034) |
 | **RA** | `S05-R2-ra.md` | **MERGED** ✅ | RMP v2.0 완료 — 4-Tier 우선순위 + MR-072 통합, main 머지 완료 |
 | **Design** | `S05-R2-design-3.md` | **BLOCKED** | WorkflowView 3열 레이아웃 — Coordinator ViewModel 완료 후 착수 |
