@@ -78,5 +78,5 @@ git push origin team/coordinator
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: EfRepository 테스트 | NOT_STARTED | -- | -- |
-| Git 완료 프로토콜 | NOT_STARTED | -- | PR URL: -- |
+| Task 1: EfRepository 테스트 | COMPLETED | 2026-04-12 | EfWorklistRepository 1개 추가, PHI Converter 생성 + 테스트 수정, 53/53 통과 |
+| Git 완료 프로토콜 | COMPLETED | 2026-04-12 | PR #77 업데이트 |
