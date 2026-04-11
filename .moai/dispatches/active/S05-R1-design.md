@@ -16,6 +16,9 @@
 
 > [HARD] DISPATCH.md와 CLAUDE.md는 수정 금지. 이 파일(.moai/dispatches/active/S05-R1-design.md)만 Status 업데이트.
 
+> ⚠️ **경고**: 루트에 있던 `DISPATCH-DESIGN-2026-04-11.md`는 S04 구형 파일 (StudylistView 작업). `completed/`로 이동됨 — 읽지 말 것.
+> **S05 과제는 PatientListView (슬라이드 2-4)** — StudylistView 아님.
+
 ---
 
 ## 컨텍스트

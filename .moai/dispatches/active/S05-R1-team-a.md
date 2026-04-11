@@ -16,6 +16,9 @@
 
 > [HARD] DISPATCH.md와 CLAUDE.md는 수정 금지. 이 파일만 Status 업데이트.
 
+> ⚠️ **경고**: 루트에 있던 `DISPATCH-TEAM-A-2026-04-11.md`는 S04 구형 파일로 `completed/`에 이동됨. 읽지 말 것.
+> **이 파일이 S05 유효 DISPATCH**: `.moai/dispatches/active/S05-R1-team-a.md`
+
 ---
 
 ## 컨텍스트
