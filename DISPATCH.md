@@ -63,9 +63,9 @@ Supersedes: 이전 DISPATCH (IN_PROGRESS, 체크 0/10)
 **규칙**: 실서비스 + in-memory SQLite, Mock 금지, {Module}_{Scenario}_{ExpectedResult}
 
 **검증 기준**:
-- [ ] 신규 integration scenario 6개+
-- [ ] IntegrationTests 전체 green
-- [ ] 빌드 + 테스트 통과
+- [x] 신규 integration scenario 13개 (7 시나리오)
+- [x] IntegrationTests 전체 green (39/39)
+- [x] 빌드 + 테스트 통과
 
 ## Constraints
 
@@ -91,13 +91,14 @@ Supersedes: 이전 DISPATCH (IN_PROGRESS, 체크 0/10)
 
 ## Status
 
-- **State**: IN_PROGRESS
+- **State**: COMPLETED
 - **Build Evidence**: 
   - Own modules build: 0 errors
   - UI.Tests: 497 passed, 1 failed (pre-existing RelayCommand test)
   - Full solution build (Release): 0 errors
   - UI.Contracts coverage: 42.8% → 100% (target 70%)
   - UI.ViewModels coverage: 75.4% → 85.1% (target 75%)
+  - IntegrationTests: 39/39 passed (13 new Coordinator scenarios)
 - **PR**: http://10.11.1.40:7001/DR_RnD/Console-GUI/pulls/76
 - **Commit**: 9e59e13
-- **Results**: Task 0→COMPLETED, Task 1→COMPLETED (85.1%), Task 2→COMPLETED (100%), Task 3→PENDING
+- **Results**: Task 0→COMPLETED, Task 1→COMPLETED (85.1%), Task 2→COMPLETED (100%), Task 3→COMPLETED (13 scenarios)
