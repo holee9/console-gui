@@ -218,6 +218,24 @@ internal sealed class UserRepository(HnVueDbContext context) : IUserRepository
     }
 
     /// <inheritdoc/>
+    public async Task<Result> AddAsync(UserRecord user, CancellationToken ct = default)
+    {
+        try
+        {
+            var entity = EntityMapper.ToEntity(user);
+            await context.Users.AddAsync(entity, ct).ConfigureAwait(false);
+            await context.SaveChangesAsync(ct).ConfigureAwait(false);
+            return Result.Success();
+        }
+        catch (DbUpdateException ex)
+        {
+            return Result.Failure(
+                ErrorCode.AlreadyExists,
+                ex.InnerException?.Message ?? ex.Message);
+        }
+    }
+
+    /// <inheritdoc/>
     public async Task<Result> UpdateQuickPinFailureAsync(
         string userId,
         int failedCount,

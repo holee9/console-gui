@@ -270,7 +270,7 @@ public sealed class StudylistViewModelTests
         StudyInstanceUid: studyInstanceUid,
         PatientId: "P-001",
         StudyDate: DateTimeOffset.UtcNow,
-        Description: "Test Study",
-        AccessionNumber: "ACC-001",
+        Description: null,
+        AccessionNumber: null,
         BodyPart: "CHEST");
 }

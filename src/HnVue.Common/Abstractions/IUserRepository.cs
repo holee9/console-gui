@@ -90,4 +90,15 @@ public interface IUserRepository
         int failedCount,
         DateTimeOffset? lockedUntil,
         CancellationToken cancellationToken = default);
+
+    /// <summary>Persists a new user record to the store.</summary>
+    /// <param name="user">The user record to add.</param>
+    /// <param name="cancellationToken">Token to cancel the asynchronous operation.</param>
+    /// <returns>
+    /// A successful <see cref="Result"/> on success,
+    /// or a failure with <see cref="ErrorCode.Conflict"/> if the username is already taken.
+    /// </returns>
+    Task<Result> AddAsync(
+        UserRecord user,
+        CancellationToken cancellationToken = default);
 }

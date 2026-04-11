@@ -1,16 +1,35 @@
+using HnVue.Common.Abstractions;
+using HnVue.Data.Converters;
 using HnVue.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace HnVue.Data;
 
-// @MX:ANCHOR HnVueDbContext - @MX:REASON: EF Core context with 6 DbSets, IEC 62304 cascade rules for dose records
+// @MX:ANCHOR HnVueDbContext - @MX:REASON: EF Core context with 6 DbSets, IEC 62304 cascade rules for dose records; PHI value converters applied per REQ-PHI-003
 /// <summary>
 /// EF Core database context for the HnVue console application.
 /// Uses SQLite with optional SQLCipher AES-256 encryption.
 /// Pass the encryption key via the connection string: <c>Data Source=hnvue.db;Password=&lt;key&gt;</c>.
+/// PHI fields on PatientEntity are encrypted at rest via <see cref="PhiEncryptedValueConverter"/> (REQ-PHI-003, SWR-CS-080).
 /// </summary>
-public sealed class HnVueDbContext(DbContextOptions<HnVueDbContext> options) : DbContext(options)
+public sealed class HnVueDbContext : DbContext
 {
+    private readonly IPhiEncryptionService? _phiEncryptionService;
+
+    /// <summary>Initializes the context without PHI encryption (development/migration use).</summary>
+    public HnVueDbContext(DbContextOptions<HnVueDbContext> options) : base(options) { }
+
+    /// <summary>
+    /// Initializes the context with PHI column-level encryption (REQ-PHI-003).
+    /// </summary>
+    /// <param name="options">EF Core context options.</param>
+    /// <param name="phiEncryptionService">Service used to encrypt/decrypt PHI fields.</param>
+    public HnVueDbContext(DbContextOptions<HnVueDbContext> options, IPhiEncryptionService phiEncryptionService)
+        : base(options)
+    {
+        _phiEncryptionService = phiEncryptionService;
+    }
+
     /// <summary>Gets the patient demographic records.</summary>
     public DbSet<PatientEntity> Patients => Set<PatientEntity>();
 
@@ -50,6 +69,18 @@ public sealed class HnVueDbContext(DbContextOptions<HnVueDbContext> options) : D
             e.HasIndex(p => p.Name);
             // REQ-DATA-003: Composite index on (Name, IsDeleted) for search performance
             e.HasIndex(p => new { p.Name, p.IsDeleted });
+
+            // REQ-PHI-003: PHI field column-level encryption (SWR-CS-080, SPEC-INFRA-002)
+            // Apply value converters to encrypt Name, DateOfBirth, and PatientId when persisting.
+            if (_phiEncryptionService is not null)
+            {
+                var phiConverter = new PhiEncryptedValueConverter(_phiEncryptionService);
+                var nullablePhiConverter = new NullablePhiEncryptedValueConverter(_phiEncryptionService);
+
+                e.Property(p => p.Name).HasConversion(phiConverter);
+                e.Property(p => p.DateOfBirth).HasConversion(nullablePhiConverter);
+                e.Property(p => p.PatientId).HasConversion(phiConverter);
+            }
 
             // IEC 62304 / IEC 62133 data integrity: Restrict prevents accidental
             // deletion of audit-critical dose records when a patient record is removed.
