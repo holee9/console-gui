@@ -1,8 +1,10 @@
 # HnVue Development Operations Guidelines
 
-Version: 2.2.0
+Version: 3.0.0
 Last Updated: 2026-04-11
-Classification: HARD (All teams + Commander Center must comply)
+Classification: HARD (All AI agent teams + human reviewers must comply)
+
+> **Execution Model: AI agents implement, humans review and decide.**
 
 ---
 
