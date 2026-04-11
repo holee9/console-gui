@@ -18,7 +18,7 @@ DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/
 | **RA** | `S05-R1-ra.md` | **ACTIVE** | DOC-042 CMP 완료 |
 | **Design** | `S05-R1-design.md` | **ACTIVE** | PatientListView UISPEC-002 개선 |
 | **Team A** | `S05-R1-team-a.md` | **ACTIVE** | Data 모듈 커버리지 85%+ |
-| **Team B** | `S05-R1-team-b.md` | **ACTIVE** | Dicom 커버리지 49.6%→60% |
+| **Team B** | `S05-R1-team-b.md` | **IN_PROGRESS** | Dicom 테스트 3파일 커밋 완료, 커버리지 측정 대기 |
 
 **→ S05 Round 1 시작. 각 팀은 자신의 DISPATCH 파일을 읽고 즉시 착수.**
 
