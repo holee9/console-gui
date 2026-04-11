@@ -77,5 +77,21 @@ git push origin team/team-b
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: Dicom 테스트 추가 | NOT_STARTED | -- | 목표: 60% |
-| Git 완료 프로토콜 | NOT_STARTED | -- | PR URL: -- |
+| Task 1: Dicom 테스트 추가 | COMPLETED | 2026-04-12 | 신규 46 테스트 통과 (DicomService, MppsScu, DicomFileIO) |
+| Git 완료 프로토콜 | COMPLETED | 2026-04-12 | 커밋/푸시 완료 |
+
+### 빌드 증거
+- HnVue.Dicom.Tests: 204 total, 204 passed (0 실패)
+- 신규 Dicom 테스트: 46/46 통과
+- HnVue.Update.Tests: 142 total, 142 passed
+- HnVue.Workflow.Tests: 179 total, 179 passed
+- HnVue.Detector.Tests: 122 passed
+- HnVue.Dose.Tests: 111 passed (Safety-Critical 유지)
+- HnVue.PatientManagement.Tests: 59 passed
+- 신규 테스트 파일: DicomServiceCoverageTests.cs, MppsScuCoverageTests.cs, DicomFileIOCoverageTests.cs, UpdateCheckerCoverageTests.cs, BackupServiceCoverageTests.cs, UpdateOptionsCoverageTests.cs, WorkflowStateMachineCoverageTests.cs, WorkflowEngineCoverageTests.cs
+- 린터 수정: DicomService.cs 예외처리 강화, MppsScu.cs IsNullOrWhiteSpace + catch-all, DicomFileIOCoverageTests.cs 헬퍼 개선
+
+### 참고사항
+- HnVue.Data.Converters 스텁 생성 (Team A Converters 폴더 누락 해결)
+- Dose/Incident Safety-Critical 모듈 수정 없음 (99.4%/96.1% 유지)
+- 린터 소스 수정: DicomService, MppsScu 예외 처리 강화

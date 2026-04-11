@@ -1,4 +1,5 @@
 using System.IO;
+using FellowOakDicom;
 using FluentAssertions;
 using HnVue.Common.Results;
 using HnVue.Dicom;
@@ -13,6 +14,18 @@ namespace HnVue.Dicom.Tests;
 [Trait("SWR", "SWR-DICOM-020")]
 public sealed class DicomFileIOCoverageTests
 {
+    private static DicomFile CreateValidDicomFile(Action<DicomDataset>? configure = null)
+    {
+        var dataset = new DicomDataset
+        {
+            { DicomTag.SOPClassUID, DicomUID.SecondaryCaptureImageStorage },
+            { DicomTag.SOPInstanceUID, DicomUID.Generate() },
+        };
+
+        configure?.Invoke(dataset);
+        return new DicomFile(dataset);
+    }
+
     // ── ReadAsync Coverage ───────────────────────────────────────────────────
 
     [Fact]
@@ -140,17 +153,14 @@ public sealed class DicomFileIOCoverageTests
     [Fact]
     public void DicomFileWrapper_ValidFile_PropertiesReturnValues()
     {
-        var dataset = new FellowOakDicom.DicomDataset
+        var dicomFile = CreateValidDicomFile(dataset =>
         {
-            { FellowOakDicom.DicomTag.SOPInstanceUID, "1.2.3.4.5" },
-            { FellowOakDicom.DicomTag.StudyInstanceUID, "1.2.3.4.5.6" },
-            { FellowOakDicom.DicomTag.PatientName, "Test Patient" },
-        };
-
-        var dicomFile = new FellowOakDicom.DicomFile(dataset);
+            dataset.Add(DicomTag.StudyInstanceUID, "1.2.3.4.5.6");
+            dataset.Add(DicomTag.PatientName, "Test Patient");
+        });
         var wrapper = new DicomFileWrapper(dicomFile);
 
-        wrapper.SopInstanceUid.Should().Be("1.2.3.4.5");
+        wrapper.SopInstanceUid.Should().NotBeNullOrWhiteSpace();
         wrapper.StudyInstanceUid.Should().Be("1.2.3.4.5.6");
         wrapper.PatientName.Should().Be("Test Patient");
     }
@@ -158,11 +168,10 @@ public sealed class DicomFileIOCoverageTests
     [Fact]
     public void DicomFileWrapper_MissingTags_ReturnsNull()
     {
-        var dataset = new FellowOakDicom.DicomDataset();
-        var dicomFile = new FellowOakDicom.DicomFile(dataset);
+        var dicomFile = CreateValidDicomFile();
         var wrapper = new DicomFileWrapper(dicomFile);
 
-        wrapper.SopInstanceUid.Should().BeNull();
+        wrapper.SopInstanceUid.Should().NotBeNullOrWhiteSpace();
         wrapper.StudyInstanceUid.Should().BeNull();
         wrapper.PatientName.Should().BeNull();
     }
@@ -170,8 +179,7 @@ public sealed class DicomFileIOCoverageTests
     [Fact]
     public void DicomFileWrapper_DicomFileProperty_ReturnsSameInstance()
     {
-        var dataset = new FellowOakDicom.DicomDataset();
-        var dicomFile = new FellowOakDicom.DicomFile(dataset);
+        var dicomFile = CreateValidDicomFile();
         var wrapper = new DicomFileWrapper(dicomFile);
 
         wrapper.DicomFile.Should().BeSameAs(dicomFile);

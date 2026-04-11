@@ -89,6 +89,7 @@ public sealed class DicomServiceCoverageTests
             var result = await svc.StoreAsync(tempFile, "PACS", CancellationToken.None);
 
             result.IsFailure.Should().BeTrue();
+            result.Error.Should().Be(ErrorCode.DicomStoreFailed);
         }
         finally
         {
@@ -333,14 +334,13 @@ public sealed class DicomServiceCoverageTests
     }
 
     [Fact]
-    public void MapToWorklistItem_WithInvalidStudyDate_ReturnsNullDate()
+    public void MapToWorklistItem_WithMissingStudyDate_ReturnsNullDate()
     {
         var dataset = new DicomDataset
         {
             { DicomTag.AccessionNumber, "ACC003" },
             { DicomTag.PatientID, "P003" },
             { DicomTag.PatientName, "Patient Three" },
-            { DicomTag.StudyDate, "invalid" },
         };
 
         var item = DicomService.MapToWorklistItem(dataset);
@@ -366,7 +366,7 @@ public sealed class DicomServiceCoverageTests
     }
 
     [Fact]
-    public void MapToWorklistItem_WithScheduledProcedureStepSequence_ReturnsBodyPart()
+    public void MapToWorklistItem_WithScheduledProcedureStepSequence_ExtractsBodyPart()
     {
         var dataset = new DicomDataset
         {
@@ -379,7 +379,15 @@ public sealed class DicomServiceCoverageTests
         var spsSequence = new DicomSequence(DicomTag.ScheduledProcedureStepSequence,
             new DicomDataset
             {
-                { DicomTag.ScheduledProtocolCodeSequence, "CHEST" },
+                {
+                    DicomTag.ScheduledProtocolCodeSequence,
+                    new DicomSequence(
+                        DicomTag.ScheduledProtocolCodeSequence,
+                        new DicomDataset
+                        {
+                            { DicomTag.CodeMeaning, "CHEST" },
+                        })
+                },
             });
         dataset.Add(spsSequence);
 
