@@ -1,9 +1,9 @@
-# DISPATCH: S03 Round 3 — 최종 완료 보고
+# DISPATCH: S04 커맨드센터 상황판
 
-Issued: 2026-04-10
-Updated: 2026-04-11 (테스트 통합 + 커버리지 최종 측정)
+Issued: 2026-04-10 (S03 완료)
+Updated: 2026-04-11 (S04 R1+R2 완료, 프로세스 v2.0 배포)
 Issued By: Main (MoAI Commander Center)
-Type: 통합 완료 보고
+Type: 커맨드센터 동기 — S04 PR 검토 대기 중
 
 ## Phase 0 — P0 빌드 에러 수정 (완료)
 
@@ -124,11 +124,32 @@ Type: 통합 완료 보고
 
 **판정:** Safety-Critical 게이트 클리어. 전체 커버리지는 Views/Migrations 제외 정책 적용 필요.
 
+## S04 PR 현황 (검토 대기)
+
+| PR | 팀 | 작업 내용 | 상태 |
+|----|-----|-----------|------|
+| #77 | Coordinator | SPEC-COORDINATOR-001 NullRepository 6개 → EF Core 교체 + 통합테스트 13개 | OPEN |
+| #78 | QA | SPEC-GOVERNANCE-001 아키텍처 테스트 + coverage.runsettings 정책 | OPEN |
+| #79 | RA | DOC-042 CMP v2.0 승인 + SBOM v2.0 + RTM SWR-CS-080 TC 매핑 | OPEN |
+| #80 | Design | UI.QA 65/65 수정 + StudylistView PPT 5-7 리디자인 | OPEN |
+| #81 | Team A | SPEC-INFRA-002 PHI AES-256-GCM 암호화 완전 구현 | OPEN |
+| #82 | Team B | SPEC-TEAMB-COV-001 Dicom/Update/Workflow 커버리지 달성 | OPEN |
+
+**→ 6개 PR 검토 및 main 병합이 다음 작업.**
+
+## DISPATCH 프로세스 v2.0 배포 현황
+
+| 항목 | 상태 |
+|------|------|
+| active/_CURRENT.md (팀별 DISPATCH 인덱스) | ✅ 전 팀 배포 완료 |
+| DISPATCH_PROTOCOL.md (규칙 문서화) | ✅ main + 전 팀 배포 |
+| 04-09 구 DISPATCH → SUPERSEDED → completed/ | ✅ 아카이브 완료 |
+| 에이전트 구 DISPATCH 반복보고 버그 | ✅ 해소 |
+
 ## Status
 
-- **State**: S03_COMPLETE_PENDING_S04_GATE
-- **Remaining**: 
-  1. RelayCommand flaky 수정 (비우선)
-  2. UI.QA 디자인 준수 13건 (Design팀 작업 필요)
-  3. Views/Migrations 커버리지 제외 정책 확정 → 공식 S04 진입 결정
-- **Next Action**: S04 진입 게이트 최종 판정 (drake 승인 필요)
+- **State**: S04_PR_REVIEW_PENDING
+- **6팀 작업**: COMPLETED (브랜치에서 완료, PR 오픈)
+- **프로세스**: DISPATCH v2.0 전 팀 동기화 완료
+- **Next Action**: PR #77~82 검토 → main 병합 → S04 게이트 최종 판정
+- **S03 상태**: S03_COMPLETE (이전 섹션 참조)
