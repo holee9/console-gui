@@ -112,7 +112,7 @@
         </Style>
     </UserControl.Resources>
 
-    <Grid Background="#0d1527">
+    <Grid Background="{DynamicResource HnVue.Semantic.Surface.Page}">
         <Grid.RowDefinitions>
             <RowDefinition Height="44"/>   <!-- Header: nav + title + PACS -->
             <RowDefinition Height="40"/>   <!-- Filter bar -->
@@ -122,8 +122,8 @@
 
         <!-- ═══ Row 0: Header — prev/next + "Study List" title + PACS dropdown ═══ -->
         <Border Grid.Row="0"
-                Background="#080e1a"
-                BorderBrush="#1e2d4a"
+                Background="{DynamicResource HnVue.Semantic.Surface.Panel}"
+                BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
                 BorderThickness="0,0,0,1"
                 Padding="12,0">
             <Grid>

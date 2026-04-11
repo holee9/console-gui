@@ -9,6 +9,10 @@
              d:DesignWidth="1400">
     <UserControl.Resources>
         <converters:AgeFromBirthDateConverter x:Key="AgeConverter"/>
+        <!-- PPT Slide 5/6: ListBoxItem height 44px for accessibility (WCAG 2.5.5) -->
+        <Style TargetType="ListBoxItem">
+            <Setter Property="Height" Value="44"/>
+        </Style>
         <Style x:Key="DarkHeaderStyle" TargetType="DataGridColumnHeader">
             <Setter Property="Background" Value="#2f2f2f"/>
             <Setter Property="Foreground" Value="White"/>
@@ -42,7 +46,7 @@
         </Style>
     </UserControl.Resources>
 
-    <Grid Background="#242424" Margin="10">
+    <Grid Background="{DynamicResource HnVue.Semantic.Surface.Page}" Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="260"/>
@@ -57,22 +61,46 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" Text="Worklist &gt;" Foreground="White" FontSize="30" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,10,0"/>
-            <TextBlock Grid.Column="1" Text="&#xE76C;" FontFamily="Segoe MDL2 Assets" Foreground="#dce3f1" FontSize="26" VerticalAlignment="Center"/>
-            <StackPanel Grid.Column="3" Orientation="Horizontal">
-                <Button Content="Today" Command="{Binding FilterByPeriodCommand}" CommandParameter="Today" Width="82" Height="32" Margin="0,0,6,0"/>
-                <Button Content="3Days" Command="{Binding FilterByPeriodCommand}" CommandParameter="3Days" Width="82" Height="32" Margin="0,0,6,0"/>
-                <Button Content="1Week" Command="{Binding FilterByPeriodCommand}" CommandParameter="1Week" Width="82" Height="32" Margin="0,0,6,0"/>
-                <Button Content="All" Command="{Binding FilterByPeriodCommand}" CommandParameter="All" Width="70" Height="32" Margin="0,0,6,0"/>
-                <Button Content="1Month" Command="{Binding FilterByPeriodCommand}" CommandParameter="1Month" Width="90" Height="32"/>
+            <!-- PPT Slide 6: Section badge "Worklist" with SectionBadge.Bg background -->
+            <Border Grid.Column="0"
+                    Background="{DynamicResource HnVue.Component.SectionBadge.Bg}"
+                    CornerRadius="3"
+                    Padding="8,2"
+                    VerticalAlignment="Center"
+                    Margin="0,0,10,0">
+                <TextBlock Text="Worklist"
+                           Style="{StaticResource HnVue.SectionBadgeText}"/>
+            </Border>
+            <!-- PPT Slide 6: Emergency badge using Status.Emergency color -->
+            <Border Grid.Column="1"
+                    Background="{DynamicResource HnVue.Semantic.Status.Emergency}"
+                    CornerRadius="3"
+                    Padding="6,2"
+                    VerticalAlignment="Center"
+                    Margin="0,0,10,0"
+                    Visibility="Collapsed">
+                <TextBlock Text="EMRG"
+                           Foreground="White"
+                           FontSize="10"
+                           FontWeight="Bold"/>
+            </Border>
+            <TextBlock Grid.Column="2" Text="&#xE76C;" FontFamily="Segoe MDL2 Assets" Foreground="#dce3f1" FontSize="26" VerticalAlignment="Center"/>
+            <!-- PPT Slide 5: Period filter buttons with OutlineButton style -->
+            <StackPanel Grid.Column="4" Orientation="Horizontal">
+                <Button Content="Today" Style="{StaticResource HnVue.OutlineButton}" Command="{Binding FilterByPeriodCommand}" CommandParameter="Today" Width="82" Height="32" Margin="0,0,6,0"/>
+                <Button Content="3Days" Style="{StaticResource HnVue.OutlineButton}" Command="{Binding FilterByPeriodCommand}" CommandParameter="3Days" Width="82" Height="32" Margin="0,0,6,0"/>
+                <Button Content="1Week" Style="{StaticResource HnVue.OutlineButton}" Command="{Binding FilterByPeriodCommand}" CommandParameter="1Week" Width="82" Height="32" Margin="0,0,6,0"/>
+                <Button Content="All" Style="{StaticResource HnVue.OutlineButton}" Command="{Binding FilterByPeriodCommand}" CommandParameter="All" Width="70" Height="32" Margin="0,0,6,0"/>
+                <Button Content="1Month" Style="{StaticResource HnVue.OutlineButton}" Command="{Binding FilterByPeriodCommand}" CommandParameter="1Month" Width="90" Height="32"/>
             </StackPanel>
-            <DatePicker Grid.Column="4" Width="130" Height="32" Margin="12,0,6,0"/>
-            <DatePicker Grid.Column="5" Width="130" Height="32"/>
+            <DatePicker Grid.Column="5" Width="130" Height="32" Margin="12,0,6,0"/>
+            <DatePicker Grid.Column="6" Width="130" Height="32"/>
         </Grid>
 
         <Grid Grid.Column="0" Grid.Row="1" Margin="0,0,10,0">
