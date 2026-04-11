@@ -1,93 +1,103 @@
-# DISPATCH: Team A — 빌드 오류 수정 + 취약 패키지 + StyleCop
+# DISPATCH: S04 R2 — Team A (Infrastructure)
 
-Issued: 2026-04-10
+Issued: 2026-04-11
 Issued By: Main (MoAI Commander Center)
-Priority: **P0-Blocker** (빌드 오류) + P1-Critical (보안) + P2-High (품질)
-Supersedes: 이전 DISPATCH (Round 1 COMPLETE)
+Sprint: S04 Round 2
+SPEC: SPEC-INFRA-002 (P0-Blocker)
+Priority: P0-Blocker (Safety-Critical)
 
-## Team A 역할 재확인 (.claude/rules/teams/team-a.md)
+## Objective
 
-- **소유 모듈**: Common, Data, Security, SystemAdmin, Update
-- **NuGet 관리**: Directory.Packages.props 중앙 관리, 추가 시 보안 리뷰 + RA SOUP 알림
-- **Security 코드**: bcrypt 12+, JWT HS256, HMAC-SHA256 감사로그 — 암호화 코드 변경 금지
-- **Common 인터페이스 변경 시**: `breaking-change` 라벨 이슈 + Coordinator 알림
+PHI AES-256-GCM 암호화 완전 구현. 현재 `NullPhiEncryptionService`가 DI에 등록되어 환자 개인정보가 평문 저장됨.
+IEC 62304, HIPAA, 국내 의료기기 개인정보 보호 기준 충족 필요.
 
-## How to Execute
+## SPEC Reference
 
-1. **Task 1 (P0-Blocker)부터** 수행
-2. 각 Task 완료 후 체크박스 업데이트
-3. Final Build Verification 수행
-4. Status 업데이트
+`.moai/specs/SPEC-INFRA-002/spec.md` — 반드시 전문 읽고 구현할 것.
 
-## Task 1: SystemSettingsRepository 빌드 오류 수정 (P0-Blocker)
+## Tasks
 
-**오류**: `SystemSettingsRepository` 생성자 시그니처 불일치 (CS1729)
-**파일**: `tests/HnVue.SystemAdmin.Tests/SystemSettingsRepositoryTests.cs`
-**수행**: 현재 생성자 시그니처 확인 → 테스트의 생성자 호출 수정
+### T1: AesGcmPhiEncryptionService 구현 (REQ-PHI-001)
 
-**검증 기준**:
-- [x] HnVue.SystemAdmin.Tests 빌드 오류 0건
-- [x] 기존 테스트 전부 통과 (62/62)
+**파일**: `src/HnVue.Data/Services/AesGcmPhiEncryptionService.cs` (신규)
 
-## Task 2: 취약 패키지 업그레이드 (P1-Critical)
+구현 요구사항:
+- `System.Security.Cryptography.AesGcm` (.NET 8+) 사용
+- 키 길이: 256비트 (32바이트)
+- Nonce(IV): 96비트 (12바이트), 호출마다 랜덤 생성
+- 인증 태그: 128비트 (16바이트)
+- 암호화 출력: `[Nonce(12)] + [Ciphertext] + [Tag(16)]` base64 인코딩
+- 복호화 시 태그 불일치 → `CryptographicException` 발생
+- `IPhiEncryptionService` 인터페이스 구현
 
-**규칙**: 모든 버전 Directory.Packages.props 중앙 관리, RA SOUP 알림 필요
-**대상**: Microsoft.Extensions.Caching.Memory 8.0.0, System.Text.Json 8.0.0 → 9.x
-**RA 알림**: 패키지 변경 후 DISPATCH 보고에 `soup-update` 필요 명시
+### T2: SQLCipher 키 기반 PHI 키 파생 (REQ-PHI-002)
 
-**검증 기준**:
-- [ ] `dotnet list package --vulnerable` HIGH/CRITICAL 0건
-- [ ] Microsoft.Extensions.* 메이저 버전 통일
-- [ ] 빌드 성공
+**파일**: `src/HnVue.Data/Services/PhiKeyDerivationService.cs` (신규) 또는 AesGcmPhiEncryptionService 내 포함
 
-## Task 3: StyleCop — Common, Data (P2-High)
+구현 요구사항:
+- HKDF (HMAC-based Key Derivation) 사용
+- SQLCipher 마스터 키 → PHI 전용 암호화 키 파생
+- Salt: "HnVue-PHI-Encryption-v1" (고정)
+- 파생 키 길이: 32바이트 (AES-256)
 
-**제약**: 메서드 시그니처/동작 변경 금지, 빈 XML doc 금지
-**검증 기준**:
-- [ ] Common SA* 경고 수 감소 (before/after 기록)
-- [ ] Data SA* 경고 수 감소
-- [ ] 빌드 + 테스트 통과
+### T3: PatientEntity PHI 필드 암호화 적용 (REQ-PHI-003)
 
-## Task 4: StyleCop — Security, SystemAdmin, Update (P2-High)
+**파일**: `src/HnVue.Data/Entities/PatientEntity.cs` 수정
 
-**추가 제약**: Security 모듈 암호화/해싱/JWT 코드 변경 금지
+PHI 필드 암호화 적용:
+- `Name` (환자명)
+- `BirthDate` (생년월일)
+- `PatientId` (환자 ID)
 
-**검증 기준**:
-- [ ] Security/SystemAdmin/Update SA* 경고 수 감소
-- [ ] 빌드 + 테스트 통과
+### T4: DI 등록 교체 (REQ-PHI-004)
 
-## Constraints
+**파일**: `src/HnVue.App/App.xaml.cs` 수정
 
-- Team A 소유 파일만 수정, NuGet은 Directory.Packages.props만
-- Common 인터페이스 변경 시 breaking-change 이슈 + Coordinator 알림
-- Security 암호화/해싱/JWT 코드 변경 금지
+- `NullPhiEncryptionService` → `AesGcmPhiEncryptionService` 교체
+- 생성자 파라미터로 SQLCipher 키 전달
 
+### T5: 단위 테스트 작성 (REQ-PHI-005)
 
-## Final Verification [HARD — 이 섹션 미완료 시 COMPLETED 보고 금지]
+**파일**: `tests/HnVue.Data.Tests/Services/AesGcmPhiEncryptionServiceTests.cs` (신규)
 
-1. 자기 모듈 빌드: `dotnet build` → 오류 0건
-2. 자기 테스트: `dotnet test {소유 테스트}` → 전원 통과
-3. 전체 솔루션 빌드: `dotnet build HnVue.sln -c Release` → 결과 기록
-4. 빌드 출력 요약을 Status에 복사
+최소 10개 테스트:
+- 암호화→복호화 왕복 테스트 3개 (다양한 입력 길이)
+- 변조된 태그로 복호화 시 예외 발생 1개
+- null/empty 입력 처리 2개
+- 동일 평문 두 번 암호화 시 다른 결과(Nonce 랜덤성) 1개
+- 키 파생 일관성 테스트 2개
+- 경계값 테스트 1개
 
-## Git Completion Protocol [HARD]
+### T6: 통합 테스트 작성 (REQ-PHI-006)
 
-1. git add (DISPATCH.md + 변경 파일)
-2. git commit (conventional commit 형식)
-3. git push origin team/team-a
-4. PR 생성 (기존 open PR 확인 후 중복 방지)
-5. PR URL을 Status에 기록
+**파일**: `tests.integration/HnVue.IntegrationTests/PhiEncryptionIntegrationTests.cs` (신규)
 
-## Phase 2: Security Coverage Improvement
+최소 2개 테스트:
+- 실제 DbContext 연결 암호화→저장→복호화 검증
+- DI 컨테이너 통합 검증
 
-**목표**: Security 모듈 커버리지 90%+ (Safety-Critical)
-**결과**: 82.5% → **95.57% line / 92.97% branch** (목표 초과 달성)
-**신규 테스트**: 39개 (CoverageGapTests.cs)
-**전체 테스트**: 223 pass / 0 fail
+## Build Verification [HARD]
+
+완료 전 반드시 실행:
+```bash
+dotnet build HnVue.sln --no-incremental
+dotnet test HnVue.sln --filter "FullyQualifiedName~HnVue.Data" --no-build
+```
+
+**게이트**: 0 에러, 모든 신규 테스트 통과
+
+## Git Protocol [HARD]
+
+1. `git add` 관련 파일만
+2. `git commit -m "feat(team-a): SPEC-INFRA-002 PHI AES-256-GCM 암호화 완전 구현"`
+3. `git push origin team/team-a`
+4. PR 생성 (기존 open PR 있으면 업데이트)
+5. PR URL을 DISPATCH.md Status에 기록
 
 ## Status
 
-- **State**: IN_PROGRESS
-- **Build Evidence**: SystemAdmin.Tests 빌드 0 errors, 62/62 테스트 통과. Security.Tests 223P/0F, 커버리지 95.57%. 전체 솔루션 빌드 8 errors (IntegrationTests - Coordinator 소유, Team A 소유 모듈 무관)
-- **PR**: http://10.11.1.40:7001/DR_RnD/Console-GUI/pulls/74
-- **Results**: Task 1→COMPLETED, Phase 2 Security Coverage→COMPLETED (95.57%), Task 2→PENDING, Task 3→PENDING, Task 4→PENDING
+- **State**: PENDING
+- **Assigned**: Team A
+- **PR**: (작성 후 기록)
+- **Started**: (시작 시 기록)
+- **Completed**: (완료 시 기록)
