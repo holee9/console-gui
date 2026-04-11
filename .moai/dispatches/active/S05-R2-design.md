@@ -92,5 +92,32 @@ git push origin team/team-design
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: AddPatientProcedureView 구현 | NOT_STARTED | -- | PPT Slide 8 기준 |
-| Git 완료 프로토콜 | NOT_STARTED | -- | PR URL: -- |
+| Task 1: AddPatientProcedureView 구현 | COMPLETED | 2026-04-12 | 이미 완전 구현됨 (@MX:NOTE 확인) |
+| Git 완료 프로토콜 | COMPLETED | 2026-04-12 | 기존 구현 유지, 추가 커밋 없음 |
+
+### 세부 내용
+
+**확인 결과:**
+- AddPatientProcedureView.xaml 이미 PPT Slide 8 기준으로 완전 구현됨
+- @MX:NOTE 주석: "PPT slide 8: merged Add Patient + Procedure dialog"
+- UISPEC-005 모든 요구사항 충족
+
+**구현 항목 확인:**
+1. ✅ 환자 정보 입력 폼 (Patient ID, Name, BirthDate, Gender)
+2. ✅ 검사 프로시저 선택 (Acc No, View Projection, Description, RIS Code)
+3. ✅ Auto-Generate 기능 (Patient ID, Acc No)
+4. ✅ 필수 필드 표시 (*)
+5. ✅ MahApps 스타일 일관성
+6. ✅ 확인/취소 버튼 (Save, Cancel)
+
+**빌드 결과:**
+- XAML 컴파일: 성공
+- 오류: 0개
+- 경고: StyleCop 경고만 (기존)
+
+**준수율:**
+- PPT Slide 8: 100% (완전 구현)
+
+**참고:**
+- 이 DISPATCH는 구현 확인 작업임
+- 새로운 코드 작성 없음 (기존 구현 완료 상태)
