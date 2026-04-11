@@ -45,19 +45,28 @@ git log --oneline -5 -- src/HnVue.UI/Views/WorkflowView.xaml
 
 ---
 
-## Task 1 (P1): WorkflowView.xaml PPT Slide 9-11 검증 및 개선
+## ⚠️ 대기 조건 [BLOCKED — Coordinator 완료 후 착수]
+
+> Coordinator가 WorkflowView ViewModel 속성(PreviewImage/ThumbnailList/SelectedPatient/WorkflowState)을
+> push → CC가 main 머지 → `git pull origin main` 확인 후 착수.
+> Coordinator DISPATCH: `S05-R2-coordinator.md` Task 1 참조.
+
+---
+
+## Task 1 (P1): WorkflowView.xaml PPT Slide 9-11 3열 레이아웃 구현
 
 ### 범위 (PPT Slide 9-11만)
 
-- Slide 9: 워크플로우 상태 표시, 환자 정보 패널
-- Slide 10: 이미지 획득 영역 (Acquisition Preview)
-- Slide 11: Thumbnail strip (이 화면에서만 허용)
+- Slide 9: 환자 정보 패널 (좌열) — SelectedPatient 바인딩
+- Slide 10: AcquisitionPreview + Thumbnail strip (중앙) — PreviewImage/ThumbnailList 바인딩
+- Slide 11: 기존 제어 패널 유지 (우열)
 
 ### 작업
 
-1. 기존 WorkflowView.xaml이 PPT Slide 9-11과 일치하는지 검증
-2. 누락 요소 있으면 추가, 모두 구현됐으면 COMPLETED 보고
-3. ViewModel 변경 필요 시: `NEEDS_VIEWMODEL:` 기재 후 Coordinator 위임
+1. WorkflowView.xaml 3열 Grid 레이아웃 재구성
+2. 환자 정보 패널 추가 (PatientInfoCard 컴포넌트 활용)
+3. AcquisitionPreview 중앙 배치 + Thumbnail strip 추가
+4. Coordinator가 추가한 ViewModel 속성에 바인딩
 
 ### 금지 사항
 
