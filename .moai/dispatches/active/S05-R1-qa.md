@@ -85,7 +85,30 @@ git push origin team/qa
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: S05 게이트 검증 | NOT_STARTED | -- | -- |
-| 빌드 결과 | -- | -- | 에러 수: ? |
-| 아키텍처 테스트 | -- | -- | Pass/Fail: ? |
-| Git 완료 프로토콜 | NOT_STARTED | -- | PR URL: -- |
+| Task 1: S05 게이트 검증 | **BLOCKED** | 2026-04-12 | 아키텍처 테스트 2건 실패 |
+| 빌드 결과 | **PASS** | 2026-04-12 | 에러 0, 경고 0 |
+| 아키텍처 테스트 | **FAIL** | 2026-04-12 | 2 실패 / 11 (5개 인터페이스 미존재) |
+| Git 완료 프로토콜 | BLOCKED | -- | 아키텍처 수정 후 재실행 필요 |
+
+### 아키텍처 테스트 실패 상세
+
+**실패 1: NamingConventionTests.Repository_Classes_Must_Follow_Naming_Convention**
+- `IEfCdStudyRepository.cs` 미존재 (HnVue.Common.Abstractions 기준)
+
+**실패 2: GovernanceArchitectureTests.Repository_Implementations_Must_Have_Matching_Interfaces**
+- `ICdStudyRepository.cs` 미존재 (EfCdStudyRepository 대응)
+- `IDoseRepository.cs` 미존재 (EfDoseRepository 대응)
+- `IIncidentRepository.cs` 미존재 (EfIncidentRepository 대응)
+- `ISystemSettingsRepository.cs` 미존재 (EfSystemSettingsRepository 대응)
+- `IUpdateRepository.cs` 미존재 (EfUpdateRepository 대응)
+
+### 원인 분석
+
+S04 Coordinator가 `HnVue.Data/Repositories/`에 6개 EfXxx 내부 어댑터 클래스를 추가했으나
+`HnVue.Common/Abstractions/`에 대응 인터페이스를 누락. 각 EfXxx 클래스 주석에는
+"For DI registration, use HnVue.{Module}.EfXxxRepository which implements IXxxRepository"라고
+명시되어 있어 실제 도메인 레벨 인터페이스는 각 모듈에 존재.
+
+### CC 조치
+
+Coordinator 팀에 인터페이스 추가 DISPATCH 발행 (S05-R1-coordinator-hotfix.md 예정)

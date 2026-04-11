@@ -13,8 +13,8 @@ DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/
 
 | 팀 | 현재 DISPATCH 파일 | 상태 | 비고 |
 |----|-------------------|------|------|
-| **Coordinator** | `S05-R1-coordinator.md` | **MERGED** ✅ | EfRepository 테스트 + PHI Converter — 53/53 통과, main 머지 완료 |
-| **QA** | `S05-R1-qa.md` | **ACTIVE (P0)** | S05 진입 게이트 — 최우선 실행 |
+| **Coordinator** | `S05-R1-coordinator-hotfix.md` | **ACTIVE (P0)** | 아키텍처 테스트 수정 — 누락 인터페이스 5개 추가 |
+| **QA** | `S05-R1-qa.md` | **BLOCKED** | 빌드 PASS / 아키텍처 FAIL (5개 인터페이스 미존재) |
 | **RA** | `S05-R1-ra.md` | **ACTIVE** | DOC-042 CMP 완료 |
 | **Design** | `S05-R1-design.md` | **ACTIVE** | PatientListView UISPEC-002 개선 |
 | **Team A** | `S05-R1-team-a.md` | **ACTIVE** | Data 모듈 커버리지 85%+ |
