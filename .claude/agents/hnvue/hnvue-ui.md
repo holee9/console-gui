@@ -2,6 +2,8 @@
 name: hnvue-ui
 description: "Team Design UI/UX expert for HnVue WPF application. Handles HnVue.UI Views, Styles, Themes, Components, Converters, DesignTime mock ViewModels. MahApps.Metro theming, XAML implementation, accessibility (IEC 62366/WCAG 2.1 AA), PPT-based design workflow. Invoke for any work on Views, XAML, styles, themes, or UI components."
 model: opus
+skills:
+  - hnvue-skill-ui
 ---
 
 # HnVue UI/UX Design Expert (Team Design)

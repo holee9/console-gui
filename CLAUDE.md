@@ -242,13 +242,15 @@ When fixing bugs:
 - Fix the bug with minimal code changes
 - Verify the reproduction test passes after the fix
 
-### Go-Specific Guidelines
+### Language-Specific Guidelines
 
-For Go development:
-- Run `go test -race ./...` for concurrency safety
-- Use table-driven tests for comprehensive coverage
-- Maintain 85%+ test coverage per package
-- Run `go vet` and `golangci-lint` before commits
+The quality gate auto-detects the project language and runs the appropriate toolchain:
+- **Go**: `go vet` → `golangci-lint` → `go test`
+- **Node.js**: `eslint` → `npm test`
+- **Python**: `ruff` → `pytest`
+- **Rust**: `cargo clippy` → `cargo test`
+
+Tools that are not installed are skipped gracefully. Projects with no recognized language marker pass the gate silently.
 
 ---
 
@@ -562,33 +564,33 @@ Large PDFs (>10 pages) return a lightweight reference when @-mentioned. Always s
 
 ---
 
-## 18. Harness: HnVue Development
+## 18. Harness: HnVue Team Skills
 
-**Goal:** HnVue 의료영상 WPF 애플리케이션의 17개 모듈을 6팀 전문 에이전트로 자동 라우팅
+**Goal:** 6 worktree teams with domain-specific senior-level skills for medical imaging WPF development
 
-**Trigger:** HnVue 모듈 개발, 구현, 빌드, 테스트, 커버리지, 리팩토링 작업 요청 시 `hnvue-dev` skill을 사용하라. 단순 질문은 직접 응답 가능.
+**Trigger:** HnVue module work uses `hnvue-dev` skill to route to team agents. Each agent auto-loads its domain skill via `skills:` frontmatter.
 
-**Agents:** `.claude/agents/hnvue/` (hnvue-infra, hnvue-medical, hnvue-ui, hnvue-coordinator, hnvue-qa, hnvue-ra)
+**Agent-Skill Mapping:**
 
-**Change Log:**
+| Agent | Skill | Domain |
+|-------|-------|--------|
+| hnvue-infra | hnvue-skill-infra | Result\<T\>, EF Core+SQLCipher, JWT/bcrypt, audit chain |
+| hnvue-medical | hnvue-skill-medical | fo-dicom, 4-level dose interlock, 9-state FSM |
+| hnvue-ui | hnvue-skill-ui | WPF XAML, MahApps, 3-tier tokens, IEC 62366 |
+| hnvue-coordinator | hnvue-skill-coordinator | UI.Contracts, CommunityToolkit.Mvvm, DI composition |
+| hnvue-qa | hnvue-skill-qa | Coverlet, Stryker.NET, NetArchTest, FlaUI |
+| hnvue-ra | hnvue-skill-ra | IEC 62304, CycloneDX SBOM, RTM, FDA/CE/KFDA |
+
+**Change History:**
 | Date | Change | Target | Reason |
 |------|--------|--------|--------|
-| 2026-04-09 | Initial build | All | Project analysis + harness construction |
-| 2026-04-10 | Completion Gate [HARD] 추가 | 6 agents | Round 1 허위 보고 + 빌드 오류 미감지 재발방지 |
-| 2026-04-10 | Git Completion Protocol 추가 | 6 team rules | 미push/미PR 방치 근절 |
-| 2026-04-10 | DISPATCH 스키마 표준화 | dispatch-schema.md | 팀 규칙 미반영 DISPATCH 재발방지 |
-| 2026-04-10 | dispatch-orchestrator v2.0 | SKILL.md | 분산 검증 + 중앙 수집 + 머지 순서 |
-| 2026-04-10 | DEV-OPS-GUIDELINES v1.0 | docs/development/ | 개발운영 지침서 신규 |
-| 2026-04-10 | .gitignore 강화 | .gitignore | temp_ppt_extract/.dotnet-home/tmp/ 오염 방지 |
-
-**Operational Docs:**
-- [개발운영 지침서](docs/development/DEV-OPS-GUIDELINES.md) — DISPATCH 라이프사이클, Git 절차, 통합 검증
-- [DISPATCH 스키마](.claude/rules/moai/workflow/dispatch-schema.md) — 필수 섹션, 검증 규칙
+| 2026-04-11 | Initial skill creation | 6 skills + 6 agent updates | Codify team domain expertise as auto-loaded skills |
+| 2026-04-11 | Quality upgrade | 6 references/ + SKILL.md enforcement | Add code templates, anti-patterns, verification scripts, quality gates |
 
 ---
 
-Version: 16.0.0 (Agency v3.2 + HnVue Harness v2.0 — Completion Gate + Git Protocol)
-Last Updated: 2026-04-10
+Version: 15.0.0 (Team Skills Harness)
+Last Updated: 2026-04-11
 Language: English
 Core Rule: MoAI is an orchestrator; direct implementation is prohibited
 

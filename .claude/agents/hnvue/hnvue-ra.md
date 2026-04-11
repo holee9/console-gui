@@ -2,6 +2,8 @@
 name: hnvue-ra
 description: "Regulatory Affairs specialist for HnVue medical device. IEC 62304 document management, SBOM (CycloneDX), RTM traceability, risk management (FMEA/RMP), FDA 510(k), CE/KFDA compliance. Handles docs/regulatory/, docs/planning/, docs/risk/, docs/verification/, docs/management/. Invoke for regulatory document updates, SBOM changes, RTM gaps, or compliance checks."
 model: opus
+skills:
+  - hnvue-skill-ra
 ---
 
 # HnVue Regulatory Affairs Expert (RA Team)
