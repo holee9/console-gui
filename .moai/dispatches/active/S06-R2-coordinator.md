@@ -41,21 +41,31 @@ SDK DLL 존재 여부에 따라 조건부 등록 로직 추가.
 ### 구현 방식
 ```csharp
 // App.xaml.cs — 조건부 Detector 등록
-private static void RegisterDetectorService(IServiceCollection services)
+private static void RegisterDetectorService(IServiceCollection services, IConfiguration configuration)
 {
     var sdkPath = Path.Combine(AppContext.BaseDirectory, "AbyzSdk.dll");
     var hmePath = Path.Combine(AppContext.BaseDirectory, "libxd2.dll");
 
     if (File.Exists(sdkPath))
     {
-        // 자사 AbyzSdk 어댑터
-        services.AddSingleton<IDetectorInterface>(new OwnDetectorAdapter(
-            new OwnDetectorConfig(Host: "192.168.1.100", Port: 8888)));
+        // 자사 AbyzSdk 어댑터 (.NET managed, IL Only)
+        // 연결: TCP/IP (IP + Port, 단일 소켓)
+        services.AddSingleton<IDetectorInterface>(sp =>
+            new OwnDetectorAdapter(new OwnDetectorConfig(
+                Host: configuration["Detector:Host"] ?? "192.168.1.100",
+                Port: int.Parse(configuration["Detector:Port"] ?? "8888"),
+                CalibrationPath: configuration["Detector:CalibrationPath"] ?? @"C:\HnVue\Calibration\")));
     }
     else if (File.Exists(hmePath))
     {
-        // HME 어댑터 (Team B 구현 완료 후 활성화)
-        // services.AddSingleton<IDetectorInterface>(new HmeDetectorAdapter(...));
+        // HME 어댑터 (Native C, 5-소켓 연결)
+        // 연결: TCP 5-소켓 (Control:25000, Data:25001, Trigger:25002, Status:25003, SAlign:25004)
+        // Team B HmeDetectorAdapter 구현 완료 후 활성화
+        // services.AddSingleton<IDetectorInterface>(sp =>
+        //     new HmeDetectorAdapter(new HmeDetectorConfig(
+        //         Address: configuration["Detector:Host"] ?? "192.168.197.80",
+        //         Model: HmeDetectorModel.S4335WA,
+        //         ParamPath: configuration["Detector:ParamPath"] ?? @"C:\HnVue\HME\param\")));
         services.AddSingleton<IDetectorInterface, DetectorSimulator>(); // 임시
     }
     else
