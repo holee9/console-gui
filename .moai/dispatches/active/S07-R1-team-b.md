@@ -110,7 +110,7 @@ git push origin team/team-b
 | Task 3: Imaging 85% (P2) | COMPLETED | 2026-04-14 | 100% (이미 달성, 추가 작업 불필요) |
 | Task 4: CDBurning 85% (P3) | COMPLETED | 2026-04-14 | 100% (이미 달성, 추가 작업 불필요) |
 | Task 5: Detector 85% (P2) | COMPLETED | 2026-04-14 | 99.1% (이미 달성, 추가 작업 불필요) |
-| Git 완료 프로토콜 | IN_PROGRESS | -- | PR URL: -- |
+| Git 완료 프로토콜 | COMPLETED | 2026-04-14 | push 완료, PR 대기 |
 
 ### 빌드 증거
 - `dotnet build HnVue.sln --configuration Release`: 0 errors
