@@ -4,7 +4,7 @@
 > 자신의 팀 행(row)에서 파일명을 확인한 뒤, 해당 파일만 읽는다.
 > 상태가 `PR_OPEN` 또는 `IDLE`이면 → 새 DISPATCH 없음 → Commander Center에 IDLE 보고.
 
-Updated: 2026-04-13 (S05-R2 — Design/Coordinator/TeamA/RA MERGED, TeamB/QA agents running)
+Updated: 2026-04-13 (S05-R2 — Team A hotfix MERGED, Team B pending (API rate limit))
 DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/`
 
 ---
@@ -17,7 +17,7 @@ DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/
 | **QA** | `S05-R2-qa.md` | **MERGED** ✅ | 릴리즈 준비도 보고서 (Issue #83/#84) |
 | **RA** | `S05-R2-ra.md` | **MERGED** ✅ | RMP v2.0 완료 |
 | **Design** | `S05-R2-design-4.md` | **MERGED** ✅ | WorkflowView 3열 레이아웃 main 머지 완료 |
-| **Team A** | `S05-R2-team-a-2.md` | **ACTIVE** | P0 BLOCKER — Data.Tests 14건 빌드 에러 수정 (#83) |
+| **Team A** | `S05-R2-team-a-2.md` | **MERGED** ✅ | Data.Tests 빌드 에러 수정 (#83) |
 | **Team B** | `S05-R2-team-b.md` | **ACTIVE** | Dicom 커버리지 — 에이전트 실행중 |
 
 **→ S05 Round 2 시작. ACTIVE 팀은 자신의 DISPATCH 파일을 읽고 즉시 착수.**
