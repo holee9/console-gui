@@ -14,15 +14,35 @@
 - CODEOWNERS 및 PR 체크리스트 템플릿
 
 ### 변경
+
+#### S05 R2 (2026-04-13)
+
+- **Design**: WorkflowView PPT Slide 9-11 3-column layout (PatientInfoCard + AcquisitionPreview + Thumbnail strip)
+- **Coordinator**: WorkflowView ViewModel enhancement (PreviewImage, ThumbnailList, SelectedPatient, WorkflowState) + 89 unit tests
+- **Team A**: PHI AES-256-GCM encryption — PhiKeyDerivation (HKDF-SHA256) + NullPhiEncryptionService replaced
+- **RA**: DOC-008 RMP v2.0 — 4-Tier priority system + MR-072 integrated, ISO 14971 compliant
+- Issue tracking cleanup: PR #77-82 closed, Issue #59/60/61/62 closed with completion comments
+- team-common.md: Issue Tracking Protocol added (mandatory pre-work issue registration)
+- gitea-api.sh: Korean-safe API wrapper (curl U+FFFD workaround)
+
+#### S05 R1 (2026-04-12)
+
+- **Team A**: HnVue.Data EfRepository test reinforcement — 50 new tests, 135/135 passed
+- **Team B**: Dicom/Update/Workflow coverage enhancement
+- **Design**: LoginView/PatientListView/StudylistView PPT redesign verification
+- **Coordinator**: MergeView ViewModel + UI.Contracts interface expansion
+- **QA**: SPEC-GOVERNANCE-001 architecture tests + coverage policy
+- **RA**: DOC-042 CMP v2.0 + DOC-019 SBOM v2.0
+
+#### S04 R1+R2 (2026-04-11)
+
 - CI 파이프라인 확장 (커버리지 게이트, 보안 스캔)
 - S04 R1 QA 진입 게이트 평가: **CONDITIONAL PASS**
   - 테스트: 2,043 통과 / 14 실패 (1 flaky + 13 디자인준수)
   - Safety-Critical 커버리지: Dose 100%, Incident 94.4%, Security 92.3% (전원 90%+ PASS)
   - 전체 커버리지: 14/16 모듈 PASS (Views/Migrations/DesignTime 제외 정책 공식화)
   - Architecture Tests 4/4, Integration Tests 26/26 전원 통과
-  - 이월: Common -1.2%, Detector -4.7%, Update -2.3%, UI.QA 13F, RelayCommand flaky
 - S03 완료결과 main 통합, P0 빌드 에러 8건 수정 (commit 77a94bd)
-- S04 R1 DISPATCH 5팀 발행 (Team A, Team B, Design, Coordinator, QA)
 
 ---
 
