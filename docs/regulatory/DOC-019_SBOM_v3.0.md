@@ -9,8 +9,8 @@
 |------|------|
 | **문서 ID** | SBOM-XRAY-GUI-001 |
 | **문서명** | HnVue Console SW 소프트웨어 자재 명세서 |
-| **버전** | v2.0 |
-| **작성일** | 2026-04-11 |
+| **버전** | v3.0 |
+| **작성일** | 2026-04-13 |
 | **작성자** | SW 개발팀, RA 팀 |
 | **검토자** | SW Dev Lead |
 | **승인자** | PM |
@@ -24,6 +24,7 @@
 | v1.0 | 2026-03-18 | 최초 작성 — Phase 1 전체 구성요소 목록 | SW 개발팀 |
 | v1.1 | 2026-04-08 | 개발 전용 Roslyn 분석기 3종 추가 (SBOM-043~045): StyleCop.Analyzers, Roslynator.Analyzers, SecurityCodeScan.VS2019; 구성요소 수 42 → 45 | QA팀 |
 | v2.0 | 2026-04-11 | S04 R1 NuGet 업그레이드 반영 (Team A SPEC-INFRA-001): fo-dicom 5.1.3→5.2.5, EF Core 8.0.2→9.0.0, Microsoft.Data.Sqlite 8.0.2→9.0.0, Microsoft.Extensions.* 8.x→9.0.0, System.Text.Json 9.0.0 신규, SQLitePCLRaw.bundle_e_sqlcipher 2.1.8 신규 (SQLCipher PHI 암호화), BCrypt.Net-Next 4.0.3 신규, System.IdentityModel.Tokens.Jwt 7.3.1 신규, System.IO.Ports 8.0.0 신규, NetArchTest.Rules 1.3.2 신규, FlaUI 4.0.0 신규 (E2E 테스트) | RA팀 |
+| v3.0 | 2026-04-13 | S06 R2 Detector SDK 추가 (Team B SPEC-DETECTOR-001): AbyzSdk 0.1.0.0 (자사 CsI FPD), AbyzSdk.Imaging 0.1.0.0 (자사 FPD 이미징), HME libxd2 2.0 (2G 무선 FPD, 146 exports), HME libxd 1.0 (1G FPD, 100 exports), HME CIB_Mgr 1.0 (CR/DR 노출 제어, 9 exports) | RA팀 |
 
 ---
 
@@ -228,29 +229,60 @@ FDA Section 524B에 따라 Cyber Device로 분류된 의료기기는 FDA 510(k) 
 
 > SBOM-043~045는 `PrivateAssets=all` 설정으로 빌드 시에만 사용되며 배포 패키지에 포함되지 않는다.
 
-### 4.11 구성요소 요약 통계 (v2.0)
+### 4.11 Detector SDK (FPD Detector Interface)
 
-| 분류 | v1.1 항목 수 | v2.0 항목 수 | 변경 내용 |
+| SBOM-ID | 구성요소명 | 버전 | 공급자 | 라이선스 | SOUP Class | 의존성 | CVE 현황 | 위험도 |
+|---------|-----------|------|--------|---------|-----------|--------|---------|--------|
+| SBOM-046 | AbyzSdk | **0.1.0.0** (신규) | Abyzr Co.,Ltd. | Proprietary | N/A (자사) | Direct | 알려진 CVE 없음 | Low |
+| SBOM-047 | AbyzSdk.Imaging | **0.1.0.0** (신규) | Abyzr Co.,Ltd. | Proprietary | N/A (자사) | Direct | 알려진 CVE 없음 | Low |
+| SBOM-048 | libxd2 | **2.0** (신규) | HME | Commercial | Class B | Direct | 알려진 CVE 없음 | Medium |
+| SBOM-049 | libxd | **1.0** (신규) | HME | Commercial | Class B | Direct | 알려진 CVE 없음 | Medium |
+| SBOM-050 | CIB_Mgr | **1.0** (신규) | HME | Commercial | Class B | Direct | 알려진 CVE 없음 | High |
+
+> **v3.0 변경**: 자사 CsI FPD SDK 2종 (AbyzSdk, AbyzSdk.Imaging) 추가 — .NET managed, IL Only CLR 2.05, 의존성 Microsoft.Extensions.* 및 Microsoft.Extensions.DependencyInjection. HME 2G/1G 무선 FPD SDK 3종 (libxd2, libxd, CIB_Mgr) 추가 — Native C DLL, 총 255 exported functions, 지원 모델 S4335-CA/SZ4335-W/S4343-CA, TCP 5-소켓 (Port 25000-25004).
+
+#### libxd2 기능 분류 (146 exported functions)
+| 기능군 | 함수 수 | 대표 함수 | 환자 안전 영향 |
+|--------|---------|-----------|----------------|
+| Detector Lifecycle | 10+ | SD_Create/Destroy, CheckConnection | 낮음 |
+| Acquisition | 30+ | SDAcq_CreateEx_*, Execute, Abort | **높음** (노출제어) |
+| Calibration | 14 | SDCal_*, GenerateBPM, Validate | **높음** (영상품질) |
+| Sleep/Power | 5 | Sleep, WakeUp, PowerOff, Reboot | 중간 |
+| Firmware Update | 15 | SDUpdater_* | 중간 |
+| Diagnostic | 10+ | SDDiag_*, SDDebug_* | 낮음 |
+| File Transfer | 14 | SDFile_*, SDRemote_* | 낮음 |
+
+#### HME SDK 모델 지원
+| SDK | 지원 모델 | 프레임 크기 | 네트워크 |
+|-----|----------|-----------|---------|
+| libxd2 (2G) | S4335-CA, SZ4335-W | 3072x2560 | TCP 5-소켓 (25000-25004) |
+| libxd (1G) | S4335-CA | 3072x2560 | TCP 연결 |
+| CIB_Mgr | CR/DR 모드 지원 | — | CR/DR 회전/노출 제어 |
+
+### 4.12 구성요소 요약 통계 (v3.0)
+
+| 분류 | v2.0 항목 수 | v3.0 항목 수 | 변경 내용 |
 |------|------------|------------|---------|
 | OS/런타임 | 4 | 4 | 변경 없음 |
 | UI 프레임워크 | 4 | 4 | 변경 없음 |
-| DICOM | 1 (주요) | 1 | fo-dicom 버전 업 |
-| 데이터베이스 | 3 | 5 | EF Core 9, SQLCipher 신규 |
-| 보안 | 3 | 4 | BCrypt, JWT 신규 |
-| Microsoft Extensions | 8 | 11 | 9.0.0 업그레이드 + 3종 신규 |
-| 직렬화/유틸 | 6 | 2 (정리) | Polly, FluentValidation 유지 |
-| 로깅 | 3 | 2 | 핵심 유지 |
-| 테스트 (비배포) | 4 | 12 | NetArchTest, FlaUI 신규 |
+| DICOM | 1 | 1 | 변경 없음 |
+| 데이터베이스 | 5 | 5 | 변경 없음 |
+| 보안 | 4 | 4 | 변경 없음 |
+| Microsoft Extensions | 11 | 11 | 변경 없음 |
+| 직렬화/유틸 | 2 | 2 | 변경 없음 |
+| 로깅 | 2 | 2 | 변경 없음 |
+| Detector SDK | — | **5** | **AbyzSdk 2종 + HME 3종 신규** |
+| 테스트 (비배포) | 12 | 12 | 변경 없음 |
 | 분석기 (비배포) | 3 | 3 | 변경 없음 |
-| **합계 (배포 포함)** | **45** | **~47** | 신규 보안/암호화 컴포넌트 |
+| **합계 (배포 포함)** | **~47** | **~52** | **신규 Detector SDK 5종** |
 
 ---
 
-## 5. 취약점 관리 현황 (v2.0 기준)
+## 5. 취약점 관리 현황 (v3.0 기준)
 
 ### 5.1 CVSS >= 7.0 항목 현황
 
-**CVSS >= 7.0 항목: 0건** (v2.0 갱신 후)
+**CVSS >= 7.0 항목: 0건** (v3.0 갱신 후)
 
 | 조치 완료 항목 | 취약점 ID | 이전 버전 | 조치 버전 | CVSS | 조치 일자 |
 |-------------|---------|---------|---------|------|---------|
@@ -264,44 +296,98 @@ FDA Section 524B에 따라 Cyber Device로 분류된 의료기기는 FDA 510(k) 
 
 | 우선순위 | 구성요소 | 근거 | 다음 검토 |
 |---------|---------|------|---------|
-| 1 | SQLitePCLRaw.bundle_e_sqlcipher 2.1.8 | PHI 암호화 핵심 — 신규 추가 | 2026-07 |
-| 2 | fo-dicom 5.2.5 | DICOM 파서, 네트워크 노출 | 2026-07 |
-| 3 | Microsoft.IdentityModel.Tokens 7.3.1 | JWT 검증 핵심 | 2026-07 |
+| 1 | libxd2 2.0 | FPD 획득/노출 제어 — **환자 안전 핵심** | 2026-07 |
+| 2 | CIB_Mgr 1.0 | CR/DR 회전/노출 제어 — **환자 안전 핵심** | 2026-07 |
+| 3 | SQLitePCLRaw.bundle_e_sqlcipher 2.1.8 | PHI 암호화 핵심 | 2026-07 |
+| 4 | fo-dicom 5.2.5 | DICOM 파서, 네트워크 노출 | 2026-07 |
+| 5 | Microsoft.IdentityModel.Tokens 7.3.1 | JWT 검증 핵심 | 2026-07 |
 | 4 | .NET 8.0 Runtime | 플랫폼 전체 영향 | 2026-07 |
 
 ---
 
-## 6. SOUP 관리(IEC 62304 §8) — v2.0
+## 6. SOUP 관리(IEC 62304 §8) — v3.0
 
 ### 6.1 SOUP 위험 등급 변경 사항
 
 | 구성요소 | 변경 사유 | SOUP Class | 환자 안전 영향 |
 |---------|---------|-----------|------------|
-| SQLitePCLRaw.bundle_e_sqlcipher | PHI 암호화 핵심 — 신규 | Class B | PHI 데이터 보호 직접 관련 |
+| libxd2 2.0 | FPD 획득/노출 제어 — **신규** | Class B | **환자 안전 직접 영향 (노출제어)** |
+| CIB_Mgr 1.0 | CR/DR 회전/노출 제어 — **신규** | Class B | **환자 안전 직접 영향 (노출제어)** |
+| libxd 1.0 | FPD 1G 레거시 — **신규** | Class B | 환자 안전 간접 영향 |
+| SQLitePCLRaw.bundle_e_sqlcipher | PHI 암호화 핵심 | Class B | PHI 데이터 보호 직접 관련 |
 | BCrypt.Net-Next | 패스워드 해싱 | Class B | 인증 보안 |
 | System.IdentityModel.Tokens.Jwt | JWT 세션 관리 | Class B | 세션 인증 |
 | fo-dicom 5.2.5 | 버전 업그레이드 | Class B | DICOM 영상 전송 |
 
 ### 6.2 DOC-033 SOUP 동기화 상태
 
-DOC-033 SOUP Report v1.1을 v2.0으로 갱신 필요 (별도 문서 업데이트).
+DOC-033 SOUP Report v2.1로 갱신 필요 (신규 Detector SDK 5종 추가).
 
 ---
 
-## 7. CycloneDX 형식 예시 (신규 추가 항목)
+## 7. CycloneDX 형식 예시 (신규 Detector SDK 항목)
 
 ```json
 {
   "bomFormat": "CycloneDX",
   "specVersion": "1.5",
-  "serialNumber": "urn:uuid:sbom-hnvue-v2.0-20260411",
-  "version": 2,
+  "serialNumber": "urn:uuid:sbom-hnvue-v3.0-20260413",
+  "version": 3,
   "metadata": {
-    "timestamp": "2026-04-11T00:00:00Z",
-    "tools": [{"vendor": "HnVue RA Team", "name": "Manual SBOM", "version": "2.0"}],
+    "timestamp": "2026-04-13T00:00:00Z",
+    "tools": [{"vendor": "HnVue RA Team", "name": "Manual SBOM", "version": "3.0"}],
     "component": {"type": "application", "name": "HnVue Console SW", "version": "1.0"}
   },
   "components": [
+    {
+      "type": "library",
+      "name": "AbyzSdk",
+      "version": "0.1.0.0",
+      "purl": "pkg:nuget/AbyzSdk@0.1.0.0",
+      "licenses": [{"license": {"name": "Proprietary"}}],
+      "description": "자사 CsI FPD 디텍터 SDK (.NET managed, IL Only, CLR 2.05)",
+      "supplier": {"name": "Abyzr Co.,Ltd."},
+      "properties": [{"name": "addedInVersion", "value": "v3.0"}]
+    },
+    {
+      "type": "library",
+      "name": "AbyzSdk.Imaging",
+      "version": "0.1.0.0",
+      "purl": "pkg:nuget/AbyzSdk.Imaging@0.1.0.0",
+      "licenses": [{"license": {"name": "Proprietary"}}],
+      "description": "자사 FPD 이미징 처리 라이브러리 (.NET managed)",
+      "supplier": {"name": "Abyzr Co.,Ltd."},
+      "properties": [{"name": "addedInVersion", "value": "v3.0"}]
+    },
+    {
+      "type": "library",
+      "name": "libxd2",
+      "version": "2.0",
+      "licenses": [{"license": {"name": "Commercial (HME license)"}}],
+      "description": "HME 2G Wireless FPD Detector SDK — Native C DLL (146 exported functions: lifecycle, acquisition, calibration, diagnostics, firmware update)",
+      "supplier": {"name": "HME"},
+      "properties": [
+        {"name": "supported_models", "value": "S4335-CA, SZ4335-W, S4343-CA"},
+        {"name": "protocol", "value": "TCP 5-socket (ports 25000-25004)"},
+        {"name": "frame_sizes", "value": "3072x2560, 3072x3072"}
+      ]
+    },
+    {
+      "type": "library",
+      "name": "libxd",
+      "version": "1.0",
+      "licenses": [{"license": {"name": "Commercial (HME license)"}}],
+      "description": "HME 1G FPD Detector SDK — Native C DLL (100 exported functions)",
+      "supplier": {"name": "HME"}
+    },
+    {
+      "type": "library",
+      "name": "CIB_Mgr",
+      "version": "1.0",
+      "licenses": [{"license": {"name": "Commercial (HME license)"}}],
+      "description": "HME CIB 제어 모듈 — CR/DR 회전/노출 제어 (9 exports: ComOpen/Close, ExposeOn, CR_DR mode)",
+      "supplier": {"name": "HME"}
+    },
     {
       "type": "library",
       "name": "fo-dicom",
