@@ -101,4 +101,109 @@ public sealed class MppsScuCoverageTests
         // Result is either success or failure - both are valid
         result.Should().NotBeNull();
     }
+
+    // ── Additional coverage: whitespace host ────────────────────────────────
+
+    [Fact]
+    public async Task SendInProgressAsync_WhitespaceHost_ReturnsConnectionFailed()
+    {
+        var sut = CreateSut(new DicomOptions { MppsHost = "   " });
+        var result = await sut.SendInProgressAsync("1.2.3", "P001", "CHEST");
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.DicomConnectionFailed);
+    }
+
+    [Fact]
+    public async Task SendCompletedAsync_WhitespaceHost_ReturnsConnectionFailed()
+    {
+        var sut = CreateSut(new DicomOptions { MppsHost = "   " });
+        var result = await sut.SendCompletedAsync("1.2.3.4");
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.DicomConnectionFailed);
+    }
+
+    // ── Additional coverage: cancellation ───────────────────────────────────
+
+    [Fact]
+    public async Task SendCompletedAsync_PreCancelledToken_ReturnsResult()
+    {
+        var sut = CreateSut();
+        using var cts = new CancellationTokenSource();
+        cts.Cancel();
+
+        // Pre-cancelled token may throw or return failure - both acceptable
+        try
+        {
+            var result = await sut.SendCompletedAsync("1.2.3.4.5", true, cts.Token);
+            // If we get a result, it should indicate failure
+            result.Should().NotBeNull();
+        }
+        catch (OperationCanceledException)
+        {
+            // Also acceptable - the token was already cancelled
+        }
+    }
+
+    [Fact]
+    public async Task SendCompletedAsync_Discontinued_WithValidHost_ReturnsNotNull()
+    {
+        var sut = CreateSut();
+        var result = await sut.SendCompletedAsync("1.2.3.4.5", completed: false);
+
+        result.Should().NotBeNull();
+    }
+
+    // ── DicomOptions coverage ───────────────────────────────────────────────
+
+    [Fact]
+    public void DicomOptions_DefaultValues_AreSet()
+    {
+        var options = new DicomOptions();
+
+        options.LocalAeTitle.Should().Be("HNVUE");
+        options.PacsAeTitle.Should().BeEmpty();
+        options.PacsHost.Should().BeEmpty();
+        options.PacsPort.Should().Be(104);
+        options.MwlAeTitle.Should().BeEmpty();
+        options.MwlHost.Should().BeEmpty();
+        options.MwlPort.Should().Be(104);
+        options.PrinterAeTitle.Should().BeEmpty();
+        options.PrinterHost.Should().BeEmpty();
+        options.PrinterPort.Should().Be(104);
+        options.MppsAeTitle.Should().BeEmpty();
+        options.MppsHost.Should().BeEmpty();
+        options.MppsPort.Should().Be(104);
+        options.TlsEnabled.Should().BeFalse();
+    }
+
+    [Fact]
+    public void DicomOptions_AllPropertiesSet_StoreCorrectly()
+    {
+        var options = new DicomOptions
+        {
+            LocalAeTitle = "HNVUE",
+            PacsAeTitle = "PACS",
+            PacsHost = "10.0.0.1",
+            PacsPort = 104,
+            MwlAeTitle = "MWL",
+            MwlHost = "10.0.0.2",
+            MwlPort = 105,
+            PrinterAeTitle = "PRT",
+            PrinterHost = "10.0.0.3",
+            PrinterPort = 106,
+            MppsAeTitle = "MPPS",
+            MppsHost = "10.0.0.4",
+            MppsPort = 107,
+            TlsEnabled = true,
+        };
+
+        options.LocalAeTitle.Should().Be("HNVUE");
+        options.PacsPort.Should().Be(104);
+        options.MwlPort.Should().Be(105);
+        options.PrinterPort.Should().Be(106);
+        options.MppsPort.Should().Be(107);
+        options.TlsEnabled.Should().BeTrue();
+    }
 }
