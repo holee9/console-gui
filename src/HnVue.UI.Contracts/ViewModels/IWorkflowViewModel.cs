@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 using HnVue.Common.Enums;
 using HnVue.Common.Models;
+using HnVue.UI.Contracts.Models;
 
 namespace HnVue.UI.Contracts.ViewModels;
 
@@ -10,6 +11,12 @@ public interface IWorkflowViewModel : IViewModelBase
 {
     /// <summary>Gets the string representation of the current workflow state.</summary>
     string CurrentState { get; }
+
+    /// <summary>
+    /// Gets the current workflow state as the strongly-typed <see cref="WorkflowState"/> enum.
+    /// Bound to XAML DataTriggers for state-dependent visual changes (IDLE/READY/EXPOSING).
+    /// </summary>
+    WorkflowState WorkflowState { get; }
 
     /// <summary>Gets a value indicating whether the system is ready to accept an exposure trigger.</summary>
     bool IsExposureReady { get; }
@@ -24,10 +31,14 @@ public interface IWorkflowViewModel : IViewModelBase
     string SafeStateLabel { get; }
 
     /// <summary>Gets the file path of the current preview image for the acquisition preview panel.</summary>
+    /// <remarks>
+    /// For direct WPF image binding, use <c>PreviewImage</c> on the concrete ViewModel
+    /// via DataContext (see <see cref="IImageViewerViewModel"/> for the established pattern).
+    /// </remarks>
     string? PreviewImagePath { get; }
 
     /// <summary>Gets the thumbnail strip items for the acquisition workflow.</summary>
-    ObservableCollection<StudyRecord> ThumbnailList { get; }
+    ObservableCollection<StudyItem> ThumbnailList { get; }
 
     /// <summary>Gets or sets the currently selected patient for the patient info panel.</summary>
     PatientRecord? SelectedPatient { get; set; }
