@@ -105,9 +105,41 @@ git push origin team/team-b
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: Dicom 85% (P1) | NOT_STARTED | -- | 66.9% → 85% |
-| Task 2: Workflow 85% (P2) | NOT_STARTED | -- | FSM 전이 테스트 |
-| Task 3: Imaging 85% (P2) | NOT_STARTED | -- | Safety-Adjacent |
-| Task 4: CDBurning 85% (P3) | NOT_STARTED | -- | |
-| Task 5: Detector 85% (P2) | NOT_STARTED | -- | 42.6% → 85% |
-| Git 완료 프로토콜 | NOT_STARTED | -- | PR URL: -- |
+| Task 1: Dicom 85% (P1) | COMPLETED | 2026-04-14 | 91.9% (이미 달성, 추가 작업 불필요) |
+| Task 2: Workflow 85% (P2) | COMPLETED | 2026-04-14 | 82.4% → 88.1%, +29 테스트 (293P/0F) |
+| Task 3: Imaging 85% (P2) | COMPLETED | 2026-04-14 | 100% (이미 달성, 추가 작업 불필요) |
+| Task 4: CDBurning 85% (P3) | COMPLETED | 2026-04-14 | 100% (이미 달성, 추가 작업 불필요) |
+| Task 5: Detector 85% (P2) | COMPLETED | 2026-04-14 | 99.1% (이미 달성, 추가 작업 불필요) |
+| Git 완료 프로토콜 | IN_PROGRESS | -- | PR URL: -- |
+
+### 빌드 증거
+- `dotnet build HnVue.sln --configuration Release`: 0 errors
+- `dotnet test HnVue.sln --configuration Release --no-build`:
+  - Dicom: 401P/0F ✅
+  - Detector: 233P/0F ✅
+  - Dose: 318P/0F ✅
+  - Workflow: 293P/0F ✅ (신규 29테스트)
+  - Imaging: 54P/0F ✅
+  - CDBurning: 47P/0F ✅
+  - PatientManagement: 134P/0F ✅
+  - Incident: 통과 ✅
+
+### 커버리지 요약
+| 모듈 | 이전 | 현재 | 목표 | 달성 |
+|------|------|------|------|------|
+| Dicom | 66.9% | 91.9% | 85% | ✅ |
+| Detector | 42.6% | 99.1% | 85% | ✅ |
+| Workflow | 82.4% | 88.1% | 85% | ✅ |
+| Imaging | -- | 100% | 85% | ✅ |
+| CDBurning | -- | 100% | 85% | ✅ |
+
+### 신규 파일
+- `tests/HnVue.Workflow.Tests/GeneratorSerialPortCoverageTests.cs` (29 tests)
+  - ConnectAsync 예외 경로 (UnauthorizedAccess, IO, InvalidOperation, Busy, timeout, already-connected)
+  - DisconnectAsync 예외 경로 (Close IO exception)
+  - PrepareAsync 예외 경로 (port-not-open, timeout KVP/MAS/APR/READY, null params)
+  - TriggerExposureAsync 예외 경로 (port-not-open, error, timeout)
+  - AbortAsync with open port
+  - GetStatusAsync offline/timeout
+  - ObjectDisposedException 검증
+  - State change event tracking
