@@ -73,6 +73,15 @@ git push origin team/team-b
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: CDBurning 커버리지 (P2) | NOT_STARTED | -- | 85% 목표 |
-| Task 2: Dicom 회귀 방지 (P3) | NOT_STARTED | -- | 86% 유지 |
-| Git 완료 프로토콜 | NOT_STARTED | -- | PR URL: -- |
+| Task 1: CDBurning 커버리지 (P2) | COMPLETED | 2026-04-13T15:30 | 96.45% -> 100% (line+branch). 47 tests, 0 failures. Issue #86 |
+| Task 2: Dicom 회귀 방지 (P3) | COMPLETED | 2026-04-13T15:30 | 320 tests passed, 0 failures. No regression |
+| Git 완료 프로토콜 | COMPLETED | 2026-04-13T15:30 | commit 55d23ed, pushed to team/team-b |
+
+## Build Evidence
+
+```
+Team B owned tests: 939 passed + 320 Dicom = 1,259 total, 0 failures
+CDBurning coverage: 100% line-rate, 100% branch-rate
+CDBurning Tests build: 0 errors, 0 warnings (Release)
+Full solution build: FAILED (270 errors in tests/HnVue.Data.Tests/ — Team A ownership, not Team B)
+```
