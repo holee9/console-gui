@@ -374,8 +374,8 @@ git push origin team/team-b
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: AbyzSdk 어댑터 구현 (P1) | NOT_STARTED | -- | OwnDetectorAdapter.cs |
-| Task 2: HME libxd2 어댑터 스텁 (P2) | NOT_STARTED | -- | ThirdParty/Hme/ |
-| Task 3: Incident 90% (P1-Critical) | NOT_STARTED | -- | 79.8% → 90% |
-| Task 4: Dose 90% (P2) | NOT_STARTED | -- | 89.9% → 90% |
-| Git 완료 프로토콜 | NOT_STARTED | -- | PR URL: -- |
+| Task 1: AbyzSdk 어댑터 구현 (P1) | COMPLETED | 2026-04-13 | OwnDetectorAdapter.cs ABYZSDK_AVAILABLE 조건부 컴파일, BlueSdkFacade 통합 |
+| Task 2: HME libxd2 어댑터 스텁 (P2) | COMPLETED | 2026-04-13 | ThirdParty/Hme/ 3파일 생성 |
+| Task 3: Incident 90% (P1-Critical) | COMPLETED | 2026-04-13 | 115 테스트 통과 (+27) |
+| Task 4: Dose 90% (P2) | COMPLETED | 2026-04-13 | 303 테스트 통과 (+15) |
+| Git 완료 프로토콜 | COMPLETED | 2026-04-13 | Pushed cbbab4b, PR 대기 |
