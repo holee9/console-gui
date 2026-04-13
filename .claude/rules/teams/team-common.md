@@ -102,6 +102,25 @@ After completing ALL DISPATCH tasks and pushing:
 
 **자율 판단 기준**: DISPATCH Status + 빌드 증거 + diff 범위 검토. 이 3개가 통과되면 묻지 않고 실행.
 
+## CC Auto-Progression Protocol [HARD — Effective S07]
+
+**전팀 MERGED 후 수동 대기 금지. 즉시 다음 라운드 기획·발행.**
+
+- [HARD] CC 모니터링에서 **전팀 MERGED/IDLE** 감지 시 → 즉시 갭 분석 실행
+- [HARD] 갭 분석 항목: 커버리지 추이, 빌드 안정성, 통합테스트, 문서 동기화
+- [HARD] 분석 완료 후 **자동으로 다음 라운드 DISPATCH 생성·발행**
+- [HARD] 사용자에게 "전팀 완료 → S{N}-R1 발행" 보고 (대기 보고 금지)
+
+**자동 기획 프로세스:**
+```
+1. 전팀 MERGED 감지
+2. 갭 분석 (커버리지 < 85% 모듈, 통합테스트 누락, 문서 갭)
+3. 팀별 DISPATCH 생성 (각 팀의 소유 모듈 기준)
+4. _CURRENT.md 업데이트
+5. commit + push
+6. "S{N}-R1 발행 완료" 보고
+```
+
 ## Issue Tracking Protocol [HARD — Effective S05-R2]
 
 ### Pre-Work Issue Registration (Mandatory)

@@ -4,7 +4,7 @@
 > 자신의 팀 행(row)에서 파일명을 확인한 뒤, 해당 파일만 읽는다.
 > 상태가 `PR_OPEN` 또는 `IDLE`이면 → 새 DISPATCH 없음 → Commander Center에 IDLE 보고.
 
-Updated: 2026-04-13 (S06-R2 — ALL 4 TEAMS MERGED. Design QA IDLE)
+Updated: 2026-04-14 (S07-R1 — Team B, Team A, QA, RA ACTIVE. Coordinator, Design IDLE)
 DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/`
 
 ---
@@ -13,14 +13,14 @@ DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/
 
 | 팀 | 현재 DISPATCH 파일 | 상태 | 비고 |
 |----|-------------------|------|------|
-| **Coordinator** | `S06-R2-coordinator.md` | **MERGED** | DI 조건부 등록, App.xaml.cs +47/-3 |
-| **QA** | -- | **IDLE** | S06-R1 완료 (PR #88 merged) |
-| **RA** | `S06-R2-ra.md` | **MERGED** | SBOM v3.0 + SOUP v2.1, 5개 SDK 등록 |
-| **Design** | -- | **IDLE** | S06-R1 완료 (PR #89 merged) |
-| **Team A** | `S06-R2-team-a.md` | **MERGED** | Data 180P, SystemAdmin 68P, 62.9→90.3% |
-| **Team B** | `S06-R2-team-b.md` | **MERGED** | 13파일, 191P 통과, +387 신규 테스트 |
+| **Coordinator** | -- | **IDLE** | S06-R2 완료 |
+| **QA** | `S07-R1-qa.md` | **ACTIVE** | 전체 커버리지 현황 리포트 |
+| **RA** | `S07-R1-ra.md` | **ACTIVE** | CMP 완성 + RTM 업데이트 |
+| **Design** | -- | **IDLE** | S06-R1 완료 |
+| **Team A** | `S07-R1-team-a.md` | **ACTIVE** | Security/Update/Common 85% |
+| **Team B** | `S07-R1-team-b.md` | **ACTIVE** | Dicom/Workflow/Imaging/Detector 85% |
 
-**→ S06-R2 ALL 4 TEAMS MERGED. 대기 중, 새 DISPATCH 없음.**
+**→ S07-R1 발행. Team B, Team A, QA, RA ACTIVE.**
 
 ---
 
@@ -73,7 +73,8 @@ IDLE 보고 형식:
 | 2026-04-12 | S05 R1 | S05-R1-*.md | `completed/` 아카이브 (전팀 완료) |
 | 2026-04-13 | S05 R2 | S05-R2-*.md | ALL MERGED ✅ |
 | 2026-04-13 | S06 R1 | S06-R1-*.md | ALL MERGED ✅ (PR #88-90) |
-| 2026-04-13 | **S06 R2** | **S06-R2-*.md** | **ACTIVE — Team B, A, Coordinator, RA** |
+| 2026-04-13 | S06 R2 | S06-R2-*.md | ALL MERGED ✅ |
+| 2026-04-14 | **S07 R1** | **S07-R1-*.md** | **ACTIVE — Team B, Team A, QA, RA** |
 
 ---
 
