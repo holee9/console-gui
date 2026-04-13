@@ -43,7 +43,9 @@ public sealed class EfDoseRepositoryTests
     [Fact]
     public async Task SaveAsync_ValidDose_ReturnsSuccess()
     {
-        await using var (ctx, connection) = CreateSqliteContext();
+        var (ctx, connection) = CreateSqliteContext();
+        await using var _ctx = ctx;
+        using var _conn = connection;
         var repo = new EfDoseRepository(ctx);
         var dose = CreateSampleDose();
 
@@ -57,7 +59,9 @@ public sealed class EfDoseRepositoryTests
     [Fact]
     public async Task SaveAsync_NullDose_ThrowsArgumentNullException()
     {
-        await using var (ctx, connection) = CreateSqliteContext();
+        var (ctx, connection) = CreateSqliteContext();
+        await using var _ctx = ctx;
+        using var _conn = connection;
         var repo = new EfDoseRepository(ctx);
 
         // Act & Assert
@@ -70,7 +74,9 @@ public sealed class EfDoseRepositoryTests
     [Fact]
     public async Task GetByStudyAsync_ExistingDose_ReturnsDoseRecord()
     {
-        await using var (ctx, connection) = CreateSqliteContext();
+        var (ctx, connection) = CreateSqliteContext();
+        await using var _ctx = ctx;
+        using var _conn = connection;
         var repo = new EfDoseRepository(ctx);
         var dose = CreateSampleDose();
 
@@ -91,7 +97,9 @@ public sealed class EfDoseRepositoryTests
     [Fact]
     public async Task GetByStudyAsync_NonExistingStudy_ReturnsNull()
     {
-        await using var (ctx, connection) = CreateSqliteContext();
+        var (ctx, connection) = CreateSqliteContext();
+        await using var _ctx = ctx;
+        using var _conn = connection;
         var repo = new EfDoseRepository(ctx);
 
         // Act
@@ -105,7 +113,9 @@ public sealed class EfDoseRepositoryTests
     [Fact]
     public async Task GetByStudyAsync_NullStudyInstanceUid_ThrowsArgumentNullException()
     {
-        await using var (ctx, connection) = CreateSqliteContext();
+        var (ctx, connection) = CreateSqliteContext();
+        await using var _ctx = ctx;
+        using var _conn = connection;
         var repo = new EfDoseRepository(ctx);
 
         // Act & Assert
@@ -118,7 +128,9 @@ public sealed class EfDoseRepositoryTests
     [Fact]
     public async Task GetByPatientAsync_ExistingPatient_ReturnsDoseRecords()
     {
-        await using var (ctx, connection) = CreateSqliteContext();
+        var (ctx, connection) = CreateSqliteContext();
+        await using var _ctx = ctx;
+        using var _conn = connection;
         var repo = new EfDoseRepository(ctx);
 
         // Arrange - Add patient and studies
@@ -159,7 +171,9 @@ public sealed class EfDoseRepositoryTests
     [Fact]
     public async Task GetByPatientAsync_WithDateRange_ReturnsFilteredRecords()
     {
-        await using var (ctx, connection) = CreateSqliteContext();
+        var (ctx, connection) = CreateSqliteContext();
+        await using var _ctx = ctx;
+        using var _conn = connection;
         var repo = new EfDoseRepository(ctx);
 
         // Arrange
@@ -193,7 +207,9 @@ public sealed class EfDoseRepositoryTests
     [Fact]
     public async Task GetByPatientAsync_NullPatientId_ThrowsArgumentNullException()
     {
-        await using var (ctx, connection) = CreateSqliteContext();
+        var (ctx, connection) = CreateSqliteContext();
+        await using var _ctx = ctx;
+        using var _conn = connection;
         var repo = new EfDoseRepository(ctx);
 
         // Act & Assert

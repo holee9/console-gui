@@ -54,7 +54,9 @@ public sealed class EfSystemSettingsRepositoryTests
     [Fact]
     public async Task GetAsync_ExistingSettings_ReturnsSettings()
     {
-        await using var (ctx, connection) = CreateSqliteContext();
+        var (ctx, connection) = CreateSqliteContext();
+        await using var _ctx = ctx;
+        using var _conn = connection;
         var repo = new EfSystemSettingsRepository(ctx);
 
         // Arrange
@@ -75,7 +77,9 @@ public sealed class EfSystemSettingsRepositoryTests
     [Fact]
     public async Task GetAsync_NoSettings_ReturnsDefaults()
     {
-        await using var (ctx, connection) = CreateSqliteContext();
+        var (ctx, connection) = CreateSqliteContext();
+        await using var _ctx = ctx;
+        using var _conn = connection;
         var repo = new EfSystemSettingsRepository(ctx);
 
         // Act
@@ -93,7 +97,9 @@ public sealed class EfSystemSettingsRepositoryTests
     [Fact]
     public async Task SaveAsync_NewSettings_InsertsRecord()
     {
-        await using var (ctx, connection) = CreateSqliteContext();
+        var (ctx, connection) = CreateSqliteContext();
+        await using var _ctx = ctx;
+        using var _conn = connection;
         var repo = new EfSystemSettingsRepository(ctx);
         var settings = CreateSampleSettings();
 
@@ -112,7 +118,9 @@ public sealed class EfSystemSettingsRepositoryTests
     [Fact]
     public async Task SaveAsync_ExistingSettings_UpdatesRecord()
     {
-        await using var (ctx, connection) = CreateSqliteContext();
+        var (ctx, connection) = CreateSqliteContext();
+        await using var _ctx = ctx;
+        using var _conn = connection;
         var repo = new EfSystemSettingsRepository(ctx);
 
         // Arrange - Save initial settings
@@ -158,7 +166,9 @@ public sealed class EfSystemSettingsRepositoryTests
     [Fact]
     public async Task SaveAsync_NullSettings_ThrowsArgumentNullException()
     {
-        await using var (ctx, connection) = CreateSqliteContext();
+        var (ctx, connection) = CreateSqliteContext();
+        await using var _ctx = ctx;
+        using var _conn = connection;
         var repo = new EfSystemSettingsRepository(ctx);
 
         // Act & Assert
@@ -169,7 +179,9 @@ public sealed class EfSystemSettingsRepositoryTests
     [Fact]
     public async Task SaveAsync_PreservesAllSettings()
     {
-        await using var (ctx, connection) = CreateSqliteContext();
+        var (ctx, connection) = CreateSqliteContext();
+        await using var _ctx = ctx;
+        using var _conn = connection;
         var repo = new EfSystemSettingsRepository(ctx);
         var settings = CreateSampleSettings();
 
@@ -193,7 +205,9 @@ public sealed class EfSystemSettingsRepositoryTests
     [Fact]
     public async Task RoundTrip_DefaultSettingsToDatabaseAndBack()
     {
-        await using var (ctx, connection) = CreateSqliteContext();
+        var (ctx, connection) = CreateSqliteContext();
+        await using var _ctx = ctx;
+        using var _conn = connection;
         var repo = new EfSystemSettingsRepository(ctx);
 
         // Arrange - Get defaults

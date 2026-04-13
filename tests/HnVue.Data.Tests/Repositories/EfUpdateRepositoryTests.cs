@@ -32,7 +32,9 @@ public sealed class EfUpdateRepositoryTests
     [Fact]
     public async Task CheckForUpdateAsync_NoHistory_ReturnsNull()
     {
-        await using var (ctx, connection) = CreateSqliteContext();
+        var (ctx, connection) = CreateSqliteContext();
+        await using var _ctx = ctx;
+        using var _conn = connection;
         var repo = new EfUpdateRepository(ctx);
 
         // Act
@@ -46,7 +48,9 @@ public sealed class EfUpdateRepositoryTests
     [Fact]
     public async Task CheckForUpdateAsync_WithInstalledUpdate_ReturnsUpdateInfo()
     {
-        await using var (ctx, connection) = CreateSqliteContext();
+        var (ctx, connection) = CreateSqliteContext();
+        await using var _ctx = ctx;
+        using var _conn = connection;
         var repo = new EfUpdateRepository(ctx);
 
         // Arrange
@@ -65,7 +69,9 @@ public sealed class EfUpdateRepositoryTests
     [Fact]
     public async Task CheckForUpdateAsync_MultipleUpdates_ReturnsLatest()
     {
-        await using var (ctx, connection) = CreateSqliteContext();
+        var (ctx, connection) = CreateSqliteContext();
+        await using var _ctx = ctx;
+        using var _conn = connection;
         var repo = new EfUpdateRepository(ctx);
 
         // Arrange - Record multiple updates
@@ -88,7 +94,9 @@ public sealed class EfUpdateRepositoryTests
     [Fact]
     public async Task CheckForUpdateAsync_OnlyInstalledStatus_ReturnsLatest()
     {
-        await using var (ctx, connection) = CreateSqliteContext();
+        var (ctx, connection) = CreateSqliteContext();
+        await using var _ctx = ctx;
+        using var _conn = connection;
         var repo = new EfUpdateRepository(ctx);
 
         // Arrange
@@ -124,7 +132,9 @@ public sealed class EfUpdateRepositoryTests
     [Fact]
     public async Task RecordInstallationAsync_ValidParameters_ReturnsSuccess()
     {
-        await using var (ctx, connection) = CreateSqliteContext();
+        var (ctx, connection) = CreateSqliteContext();
+        await using var _ctx = ctx;
+        using var _conn = connection;
         var repo = new EfUpdateRepository(ctx);
 
         // Act
@@ -145,7 +155,9 @@ public sealed class EfUpdateRepositoryTests
     [Fact]
     public async Task RecordInstallationAsync_NullFromVersion_ThrowsArgumentNullException()
     {
-        await using var (ctx, connection) = CreateSqliteContext();
+        var (ctx, connection) = CreateSqliteContext();
+        await using var _ctx = ctx;
+        using var _conn = connection;
         var repo = new EfUpdateRepository(ctx);
 
         // Act & Assert
@@ -156,7 +168,9 @@ public sealed class EfUpdateRepositoryTests
     [Fact]
     public async Task RecordInstallationAsync_NullToVersion_ThrowsArgumentNullException()
     {
-        await using var (ctx, connection) = CreateSqliteContext();
+        var (ctx, connection) = CreateSqliteContext();
+        await using var _ctx = ctx;
+        using var _conn = connection;
         var repo = new EfUpdateRepository(ctx);
 
         // Act & Assert
@@ -167,7 +181,9 @@ public sealed class EfUpdateRepositoryTests
     [Fact]
     public async Task RecordInstallationAsync_NullPackageHash_SetsEmptyString()
     {
-        await using var (ctx, connection) = CreateSqliteContext();
+        var (ctx, connection) = CreateSqliteContext();
+        await using var _ctx = ctx;
+        using var _conn = connection;
         var repo = new EfUpdateRepository(ctx);
 
         // Act
@@ -184,7 +200,9 @@ public sealed class EfUpdateRepositoryTests
     [Fact]
     public async Task RecordInstallationAsync_SetsInstalledByToCurrentUserName()
     {
-        await using var (ctx, connection) = CreateSqliteContext();
+        var (ctx, connection) = CreateSqliteContext();
+        await using var _ctx = ctx;
+        using var _conn = connection;
         var repo = new EfUpdateRepository(ctx);
 
         // Act
@@ -199,7 +217,9 @@ public sealed class EfUpdateRepositoryTests
     [Fact]
     public async Task RecordInstallationAsync_MultipleInstallations_PreservesAllHistory()
     {
-        await using var (ctx, connection) = CreateSqliteContext();
+        var (ctx, connection) = CreateSqliteContext();
+        await using var _ctx = ctx;
+        using var _conn = connection;
         var repo = new EfUpdateRepository(ctx);
 
         // Act
@@ -220,7 +240,9 @@ public sealed class EfUpdateRepositoryTests
     [Fact]
     public async Task RoundTrip_InstallationAndCheck_ReturnsCorrectUpdateInfo()
     {
-        await using var (ctx, connection) = CreateSqliteContext();
+        var (ctx, connection) = CreateSqliteContext();
+        await using var _ctx = ctx;
+        using var _conn = connection;
         var repo = new EfUpdateRepository(ctx);
 
         // Arrange - Record installation
