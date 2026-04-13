@@ -14,7 +14,7 @@ namespace HnVue.Dicom;
 /// Implements <see cref="HnVue.Common.Abstractions.IDicomService"/> using the fo-dicom 5.x async client API.
 /// Provides C-STORE SCU, Modality Worklist C-FIND SCU, and DICOM Print SCU operations.
 /// </summary>
-public sealed partial class DicomService : HnVue.Common.Abstractions.IDicomService
+public partial class DicomService : HnVue.Common.Abstractions.IDicomService
 {
     private readonly DicomOptions _options;
     private readonly ILogger<DicomService> _logger;
@@ -369,7 +369,7 @@ public sealed partial class DicomService : HnVue.Common.Abstractions.IDicomServi
 
     // ── Private helpers ────────────────────────────────────────────────────────
 
-    private IDicomClient CreateClient(string host, int port, string callingAeTitle, string calledAeTitle)
+    internal virtual IDicomClient CreateClient(string host, int port, string callingAeTitle, string calledAeTitle)
     {
         return DicomClientFactory.Create(host, port, _options.TlsEnabled, callingAeTitle, calledAeTitle);
     }
