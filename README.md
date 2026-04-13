@@ -5,24 +5,35 @@
 | 상태 | 값 |
 |------|-----|
 | **빌드** | `dotnet build HnVue.sln -c Release` 기준 0 errors |
-| **테스트** | 2,043개 통과 / 14 실패 (1 flaky + 13 디자인준수), Safety-Critical 90%+ |
+| **테스트** | 2,043+ 통과, Safety-Critical 90%+ |
 | **커버리지** | 14/16 모듈 PASS (Views/Migrations 제외 정책), 4 Safety-Critical 전원 PASS |
 | **품질 점수** | 0.91/1.0 |
 | **인허가 분류** | IEC 62304 Class B |
-| **Gitea 이슈** | 58개 등록, 58개 해결 (100%) -- 2026-04-07 기준 |
+| **Sprint** | S05 R2 진행중 (2026-04-13) |
 
 ---
 
-## 개발 진도 현황 (2026-04-11 기준)
+## 개발 진도 현황 (2026-04-13 기준)
 
 > 상세: [개발 현황 상세](docs/management/development-status.md) | [정밀 분석 보고서](docs/management/PROGRESS-002_DetailedAnalysis_v1.0.md) | [WBS v3.0](docs/management/WBS-001_WBS_v3.0.md) | [WBS v2.0 (아카이브)](docs/archive/WBS-001_WBS_v2.0.md)
 
 ```
-Sprint: S04 / S24 (16.7%)     누적 AS: ~18 Agent Sessions
-기능:   ██████████░░░░░░░░░░ 48%     병목: 인간 리뷰 + HW/벤더 조달
+Sprint: S05 / S24 (20.8%)     누적 AS: ~30 Agent Sessions
+기능:   ████████████░░░░░░░░ 55%     병목: 인간 리뷰 + HW/벤더 조달
 ```
 
-### Sprint S04 R1 진행 현황 (CONDITIONAL PASS)
+### Sprint S05 R2 진행 현황
+
+| 팀 | 작업 | 상태 |
+|----|------|------|
+| Design | WorkflowView PPT Slide 9-11 3-column layout | MERGED |
+| Coordinator | WorkflowViewModel enhancement + 89 tests | MERGED |
+| Team A | PHI AES-256-GCM encryption (SPEC-INFRA-002) | MERGED |
+| RA | DOC-008 RMP v2.0 4-Tier priority | MERGED |
+| Team B | Dicom coverage 43% → 80% | 진행중 |
+| QA | Release readiness report DOC-034 | 진행중 |
+
+### S04 R1 결과 (CONDITIONAL PASS)
 
 | 게이트 | 기준 | 결과 | 판정 |
 |--------|------|------|------|
@@ -56,7 +67,7 @@ Sprint: S04 / S24 (16.7%)     누적 AS: ~18 Agent Sessions
 
 | 항목 | 잔여 MM | SW 해결 가능? |
 |------|---------|:------------:|
-| App.xaml.cs Null Stub 6개 -> 실 Repo DI 교체 | 0.1 | **즉시 가능** |
+| ~~App.xaml.cs Null Stub 6개~~ -> 실 Repo DI 교체 | **완료** (S05-R1) | -- |
 | Generator RS-232 실 구현 | 0.5 | HW 의존 |
 | FPD Detector SDK 통합 | 0.5 | 벤더 의존 |
 | PHI AES-256-GCM + TLS 1.3 | 0.35 | SW 가능 |

@@ -96,5 +96,19 @@ git push origin team/team-design
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: WorkflowView 3열 레이아웃 | NOT_STARTED | -- | ViewModel 준비 완료 |
-| Git 완료 프로토콜 | NOT_STARTED | -- | PR URL: -- |
+| Task 1: WorkflowView 3열 레이아웃 | COMPLETED | 2026-04-13 | 빌드 0 에러, PPT Slide 9-11 3열 구현 |
+| Git 완료 프로토콜 | IN_PROGRESS | -- | commit 대기 |
+
+### 세부 내용
+
+**구현 결과:**
+- WorkflowView.xaml 3열 Grid 레이아웃 재구성 완료
+  - Column 0 (280px): PatientInfoCard - SelectedPatient 바인딩
+  - Column 1 (*): AcquisitionPreview + Thumbnail strip - ThumbnailList 바인딩
+  - Column 2 (340px): 기존 제어 패널 보존 - CurrentState 바인딩 추가
+
+**바인딩:** PatientInfoCard(SelectedPatient), ListBox(ThumbnailList), CurrentState
+
+**빌드 결과:** 오류 0개, 경고 기존만
+
+**준수율:** PPT Slide 9-11 요구사항 100% 반영
