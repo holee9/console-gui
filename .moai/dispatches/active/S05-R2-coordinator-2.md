@@ -88,5 +88,5 @@ git push origin team/coordinator
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: WorkflowView ViewModel (P1) | NOT_STARTED | -- | Design BLOCKED 해제 긴급 |
-| Git 완료 프로토콜 | NOT_STARTED | -- | PR URL: -- |
+| Task 1: WorkflowView ViewModel (P1) | COMPLETED | 2026-04-13 | commit 1913fac, main 머지 완료 (b1418e3) |
+| Git 완료 프로토콜 | COMPLETED | 2026-04-13 | main 머지 완료, Design 블로킹 해제 |

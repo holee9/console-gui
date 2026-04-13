@@ -1,9 +1,12 @@
+using System.Collections.ObjectModel;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HnVue.Common.Abstractions;
 using HnVue.Common.Enums;
 using HnVue.Common.Models;
+using HnVue.UI.Contracts.Models;
 using HnVue.UI.Contracts.ViewModels;
 
 namespace HnVue.UI.ViewModels;
@@ -31,6 +34,7 @@ public sealed partial class WorkflowViewModel : ObservableObject, IWorkflowViewM
 
         // Initialise state from engine.
         CurrentState = _workflowEngine.CurrentState.ToString();
+        WorkflowState = _workflowEngine.CurrentState;
         UpdateDerivedProperties();
         UpdateSafeStateDisplay();
     }
@@ -57,6 +61,13 @@ public sealed partial class WorkflowViewModel : ObservableObject, IWorkflowViewM
     [NotifyCanExecuteChangedFor(nameof(TriggerExposureCommand))]
     private string _currentState = WorkflowState.Idle.ToString();
 
+    /// <summary>
+    /// Gets or sets the current workflow state as the strongly-typed enum.
+    /// Used by XAML DataTriggers for state-dependent visual changes.
+    /// </summary>
+    [ObservableProperty]
+    private WorkflowState _workflowState = WorkflowState.Idle;
+
     /// <summary>Gets or sets a value indicating whether the system is ready to expose.</summary>
     [ObservableProperty]
     private bool _isExposureReady;
@@ -78,6 +89,25 @@ public sealed partial class WorkflowViewModel : ObservableObject, IWorkflowViewM
     /// </summary>
     [ObservableProperty]
     private string _safeStateLabel = "IDLE";
+
+    /// <summary>Gets or sets the file path of the current preview image for the acquisition preview panel.</summary>
+    [ObservableProperty]
+    private string? _previewImagePath;
+
+    /// <summary>
+    /// Gets or sets the WPF image source for the acquisition preview.
+    /// Not in <see cref="IWorkflowViewModel"/> because BitmapSource is a WPF-specific type;
+    /// the View binds to this via DataContext (see IImageViewerViewModel pattern).
+    /// </summary>
+    [ObservableProperty]
+    private BitmapSource? _previewImage;
+
+    /// <summary>Gets or sets the currently selected patient for the patient info panel.</summary>
+    [ObservableProperty]
+    private PatientRecord? _selectedPatient;
+
+    /// <summary>Gets the thumbnail strip items for the acquisition workflow.</summary>
+    public ObservableCollection<StudyItem> ThumbnailList { get; } = new();
 
     /// <summary>
     /// Prepares the generator and detector for an exposure.
@@ -128,6 +158,7 @@ public sealed partial class WorkflowViewModel : ObservableObject, IWorkflowViewM
     private void OnWorkflowStateChanged(object? sender, WorkflowStateChangedEventArgs e)
     {
         CurrentState = e.NewState.ToString();
+        WorkflowState = e.NewState;
         UpdateDerivedProperties();
         UpdateSafeStateDisplay();
 

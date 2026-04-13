@@ -85,10 +85,25 @@ git push origin team/qa
 
 ---
 
+
 ## Status
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: 릴리즈 준비도 보고서 | NOT_STARTED | -- | DOC-034 기준 |
-| Task 2: 커버리지 갭 이슈 | NOT_STARTED | -- | 해당 없으면 SKIP |
-| Git 완료 프로토콜 | NOT_STARTED | -- | PR URL: -- |
+| Task 1: 릴리즈 준비도 보고서 | COMPLETED | 2026-04-13 15:01 | TestReports/RELEASE_READY_2026-04-13.md |
+| Task 2: 커버리지 갭 이슈 | COMPLETED | 2026-04-13 15:02 | Issue #83 (BLOCKER), #84 (coverage gap) |
+| Git 완료 프로토콜 | COMPLETED | 2026-04-13 15:05 | commit 95a4c6e pushed to team/qa |
+
+### 빌드 증거
+
+```
+Build: 270 errors (HnVue.Data.Tests ONLY - Team A 소유)
+       33/34 projects build successfully
+Tests: 2024/2025 passed (99.95%), 1 failed (Architecture: StudyItem in UI.Contracts)
+       HnVue.Data.Tests: BUILD FAIL (excluded from test run)
+Coverage (runsettings): 10/16 PASS, 6 FAIL
+  Safety-Critical: Dose 90.8%, Security 91.4%, Update 92.5%, Incident 82.8% (FAIL)
+  Standard FAIL: Data 43.6%, SystemAdmin 60.3%, Detector 80.0%, UI.ViewModels 81.2%, UI 83.1%
+Issues: #83 BLOCKER (Data.Tests), #84 Coverage gap
+판정: CONDITIONAL PASS (Blocker 1건 + 커버리지 갭 6개)
+```

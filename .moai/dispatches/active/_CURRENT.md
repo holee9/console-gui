@@ -4,7 +4,7 @@
 > 자신의 팀 행(row)에서 파일명을 확인한 뒤, 해당 파일만 읽는다.
 > 상태가 `PR_OPEN` 또는 `IDLE`이면 → 새 DISPATCH 없음 → Commander Center에 IDLE 보고.
 
-Updated: 2026-04-12 (S05-R2 진행중 — RA MERGED, Design BLOCKED, Coordinator P1 URGENT)
+Updated: 2026-04-13 (S06-R2 — Team B, Team A, Coordinator, RA ACTIVE. Design QA IDLE)
 DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/`
 
 ---
@@ -13,14 +13,14 @@ DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/
 
 | 팀 | 현재 DISPATCH 파일 | 상태 | 비고 |
 |----|-------------------|------|------|
-| **Coordinator** | `S05-R2-coordinator-2.md` | **ACTIVE** | WorkflowView ViewModel 보강 (P1 URGENT — Design BLOCKED 해제) |
-| **QA** | `S05-R2-qa.md` | **ACTIVE** | 릴리즈 준비도 보고서 생성 (DOC-034) |
-| **RA** | `S05-R2-ra.md` | **MERGED** ✅ | RMP v2.0 완료 — 4-Tier 우선순위 + MR-072 통합, main 머지 완료 |
-| **Design** | `S05-R2-design-3.md` | **BLOCKED** | WorkflowView 3열 레이아웃 — Coordinator ViewModel 완료 후 착수 |
-| **Team A** | — | **IDLE** | S05-R1 완료 (Data 85%+). 신규 DISPATCH 없음 — IDLE 보고 대기 |
-| **Team B** | — | **IDLE** | S05-R1 완료. 신규 DISPATCH 없음 — IDLE 보고 대기 |
+| **Coordinator** | `S06-R2-coordinator.md` | **ACTIVE** | Detector DI 조건부 등록 준비 |
+| **QA** | -- | **IDLE** | S06-R1 완료 (PR #88 merged) |
+| **RA** | `S06-R2-ra.md` | **ACTIVE** | AbyzSdk + HME libxd2 SBOM/SOUP 등록 |
+| **Design** | -- | **IDLE** | S06-R1 완료 (PR #89 merged) |
+| **Team A** | `S06-R2-team-a.md` | **ACTIVE** | Data.Tests 검증 + SystemAdmin 85% |
+| **Team B** | `S06-R2-team-b.md` | **ACTIVE** | AbyzSdk 어댑터 구현 + HME 스텁 + Incident/Dose 90% |
 
-**→ S05 Round 2 시작. ACTIVE 팀은 자신의 DISPATCH 파일을 읽고 즉시 착수.**
+**→ S06-R2 시작. ACTIVE 팀은 DISPATCH 파일 읽고 즉시 착수.**
 
 ---
 
@@ -31,7 +31,7 @@ DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/
 팀 브랜치에서 이 파일들을 절대 수정하지 마세요.
 → .gitattributes에 merge=ours 규칙 추가됨 (자동 충돌 방지)
 
-상태 업데이트: 반드시 .moai/dispatches/active/S05-R2-{team}.md 파일만 수정
+상태 업데이트: 반드시 .moai/dispatches/active/S06-R1-{team}.md 파일만 수정
 ```
 
 ---
@@ -71,7 +71,9 @@ IDLE 보고 형식:
 | 2026-04-09 | S03 QA Coverage | DISPATCH-*-2026-04-09.md | `completed/` 아카이브 |
 | 2026-04-11 | S04 R1+R2 | S04-R{1,2}-*.md | `completed/` 아카이브 (PR #77-82 머지 완료) |
 | 2026-04-12 | S05 R1 | S05-R1-*.md | `completed/` 아카이브 (전팀 완료) |
-| 2026-04-12 | **S05 R2** | **S05-R2-*.md** | **ACTIVE — 현재** |
+| 2026-04-13 | S05 R2 | S05-R2-*.md | ALL MERGED ✅ |
+| 2026-04-13 | S06 R1 | S06-R1-*.md | ALL MERGED ✅ (PR #88-90) |
+| 2026-04-13 | **S06 R2** | **S06-R2-*.md** | **ACTIVE — Team B, A, Coordinator, RA** |
 
 ---
 

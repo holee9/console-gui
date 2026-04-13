@@ -3,9 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:medical="clr-namespace:HnVue.UI.Components.Medical"
+             xmlns:vm="clr-namespace:HnVue.UI.Contracts.ViewModels;assembly=HnVue.UI.Contracts"
              mc:Ignorable="d"
              d:DesignHeight="720"
-             d:DesignWidth="340"
+             d:DesignWidth="1280"
+             d:DataContext="{d:DesignInstance Type=vm:IWorkflowViewModel, IsDesignTimeCreatable=False}"
              Background="#242424">
     <UserControl.Resources>
         <Style x:Key="ToolButtonStyle" TargetType="Button">
@@ -28,85 +31,174 @@
         </Style>
     </UserControl.Resources>
 
-    <StackPanel>
-        <Border Style="{StaticResource PanelBorderStyle}" Margin="0,0,0,10">
-            <StackPanel>
-                <Grid Margin="0,0,0,8">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Text="Acquisition" Foreground="#e9eef9" FontSize="15" FontWeight="Bold"/>
-                    <TextBlock Grid.Column="1" Text="IDLE" Foreground="#3de16a" FontWeight="Bold"/>
-                </Grid>
-                <UniformGrid Columns="3" Margin="0,0,0,10">
-                    <ToggleButton Content="Stand" IsChecked="True"/>
-                    <ToggleButton Content="Table"/>
-                    <ToggleButton Content="Portable"/>
-                </UniformGrid>
-                <Button Command="{Binding PrepareExposureCommand}" Height="40" Margin="0,0,0,8" Content="PREPARE"/>
-                <Button Command="{Binding TriggerExposureCommand}" Height="44" Background="#efefef" Foreground="#6a6a6a" BorderBrush="#efefef" Content="EXPOSE"/>
-            </StackPanel>
+    <!-- Slide 9-11: 3-Column Layout -->
+    <Grid Margin="8">
+        <Grid.ColumnDefinitions>
+            <!-- Slide 9: Patient Info Panel -->
+            <ColumnDefinition Width="280" />
+            <!-- Slide 10: Acquisition Preview + Thumbnail Strip -->
+            <ColumnDefinition Width="*" />
+            <!-- Slide 11: Control Panel (preserved) -->
+            <ColumnDefinition Width="340" />
+        </Grid.ColumnDefinitions>
+
+        <!-- ═══════════════════════════════════════════════════════════
+             Column 0: Patient Info Panel (Slide 9)
+             SelectedPatient binding from WorkflowViewModel
+             ═══════════════════════════════════════════════════════════ -->
+        <Border Grid.Column="0" Margin="0,0,8,0">
+            <medical:PatientInfoCard
+                PatientName="{Binding SelectedPatient.Name, TargetNullValue='--', FallbackValue='--'}"
+                PatientId="{Binding SelectedPatient.PatientId, TargetNullValue='--', FallbackValue='--'}"
+                BirthDate="{Binding SelectedPatient.DateOfBirth, TargetNullValue='', FallbackValue=''}"
+                Sex="{Binding SelectedPatient.Sex, TargetNullValue='--', FallbackValue='--'}"
+                IsEmergency="{Binding SelectedPatient.IsEmergency, FallbackValue=False}" />
         </Border>
 
-        <Border Style="{StaticResource PanelBorderStyle}" Margin="0,0,0,10">
-            <StackPanel>
-                <TextBlock Text="Crop &amp; Marker" Foreground="#e9eef9" FontSize="15" FontWeight="Bold" Margin="0,0,0,10"/>
-                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                    <TextBlock Text="Auto" Foreground="White" FontSize="22" FontWeight="Bold" Margin="0,0,16,0"/>
-                    <TextBlock Text="L" Foreground="White" FontSize="28" FontWeight="Bold" Margin="0,0,16,0"/>
-                    <TextBlock Text="R" Foreground="White" FontSize="28" FontWeight="Bold" Margin="0,0,16,0"/>
-                </StackPanel>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="40"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBox Text="Input Marker" Height="32" VerticalContentAlignment="Center"/>
-                    <Button Grid.Column="1" Style="{StaticResource ToolButtonStyle}" Width="40" Height="32" Content="&#xE710;" Margin="6,0,0,0"/>
-                </Grid>
-            </StackPanel>
-        </Border>
+        <!-- ═══════════════════════════════════════════════════════════
+             Column 1: Acquisition Preview + Thumbnail Strip (Slide 10)
+             PreviewImage and ThumbnailList binding from WorkflowViewModel
+             ═══════════════════════════════════════════════════════════ -->
+        <Grid Grid.Column="1" Margin="0,0,8,0">
+            <Grid.RowDefinitions>
+                <!-- Acquisition Preview -->
+                <RowDefinition Height="*" />
+                <!-- Thumbnail Strip -->
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
 
-        <Border Style="{StaticResource PanelBorderStyle}" Margin="0,0,0,10">
-            <StackPanel>
-                <TextBlock Text="Manipulation" Foreground="#e9eef9" FontSize="15" FontWeight="Bold" Margin="0,0,0,10"/>
-                <WrapPanel>
-                    <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE7AD;"/>
-                    <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE16E;"/>
-                    <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE1A3;"/>
-                    <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE8A3;"/>
-                    <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE777;"/>
-                    <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE123;"/>
-                </WrapPanel>
-            </StackPanel>
-        </Border>
+            <!-- AcquisitionPreview -->
+            <medical:AcquisitionPreview Grid.Row="0"
+                Margin="0,0,0,8" />
 
-        <Border Style="{StaticResource PanelBorderStyle}" Margin="0,0,0,10">
-            <StackPanel>
-                <TextBlock Text="Annotation" Foreground="#e9eef9" FontSize="15" FontWeight="Bold" Margin="0,0,0,10"/>
-                <WrapPanel>
-                    <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE70E;"/>
-                    <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE739;"/>
-                    <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE11B;"/>
-                    <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE160;"/>
-                    <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE11A;"/>
-                </WrapPanel>
-            </StackPanel>
-        </Border>
+            <!-- Thumbnail Strip -->
+            <Border Grid.Row="1"
+                    Background="#1b2230"
+                    BorderBrush="#495364"
+                    BorderThickness="1"
+                    CornerRadius="6"
+                    Padding="8"
+                    Height="120">
+                <ListBox ItemsSource="{Binding ThumbnailList}"
+                         SelectedIndex="0"
+                         Background="Transparent"
+                         BorderBrush="Transparent"
+                         BorderThickness="0"
+                         ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                         ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <medical:StudyThumbnail
+                                Width="100"
+                                Height="100"
+                                Margin="4,0"
+                                SeriesDescription="{Binding Description, TargetNullValue='--'}"
+                                ImageCount="" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Background" Value="Transparent" />
+                            <Setter Property="BorderBrush" Value="Transparent" />
+                            <Setter Property="Padding" Value="0" />
+                            <Setter Property="Margin" Value="0" />
+                            <Setter Property="Focusable" Value="False" />
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ListBox>
+            </Border>
+        </Grid>
 
-        <Border Style="{StaticResource PanelBorderStyle}">
+        <!-- ═══════════════════════════════════════════════════════════
+             Column 2: Control Panel (Slide 11 — preserved from original)
+             ═══════════════════════════════════════════════════════════ -->
+        <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto">
             <StackPanel>
-                <TextBlock Text="Tool" Foreground="#e9eef9" FontSize="15" FontWeight="Bold" Margin="0,0,0,10"/>
-                <WrapPanel>
-                    <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE74E;"/>
-                    <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE749;"/>
-                    <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE8C8;"/>
-                    <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE898;"/>
-                    <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE72D;"/>
-                </WrapPanel>
-                <Button Command="{Binding AbortCommand}" Height="44" Margin="0,10,0,0" Background="#df2626" BorderBrush="#df2626" Foreground="White" FontWeight="Bold" Content="STOP"/>
+                <Border Style="{StaticResource PanelBorderStyle}" Margin="0,0,0,10">
+                    <StackPanel>
+                        <Grid Margin="0,0,0,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Acquisition" Foreground="#e9eef9" FontSize="15" FontWeight="Bold"/>
+                            <TextBlock Grid.Column="1" Text="{Binding CurrentState, FallbackValue='IDLE'}" Foreground="#3de16a" FontWeight="Bold"/>
+                        </Grid>
+                        <UniformGrid Columns="3" Margin="0,0,0,10">
+                            <ToggleButton Content="Stand" IsChecked="True"/>
+                            <ToggleButton Content="Table"/>
+                            <ToggleButton Content="Portable"/>
+                        </UniformGrid>
+                        <Button Command="{Binding PrepareExposureCommand}" Height="40" Margin="0,0,0,8" Content="PREPARE"/>
+                        <Button Command="{Binding TriggerExposureCommand}" Height="44" Background="#efefef" Foreground="#6a6a6a" BorderBrush="#efefef" Content="EXPOSE"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource PanelBorderStyle}" Margin="0,0,0,10">
+                    <StackPanel>
+                        <TextBlock Text="Crop &amp; Marker" Foreground="#e9eef9" FontSize="15" FontWeight="Bold" Margin="0,0,0,10"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                            <TextBlock Text="Auto" Foreground="White" FontSize="22" FontWeight="Bold" Margin="0,0,16,0"/>
+                            <TextBlock Text="L" Foreground="White" FontSize="28" FontWeight="Bold" Margin="0,0,16,0"/>
+                            <TextBlock Text="R" Foreground="White" FontSize="28" FontWeight="Bold" Margin="0,0,16,0"/>
+                        </StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="40"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox Text="Input Marker" Height="32" VerticalContentAlignment="Center"/>
+                            <Button Grid.Column="1" Style="{StaticResource ToolButtonStyle}" Width="40" Height="32" Content="&#xE710;" Margin="6,0,0,0"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource PanelBorderStyle}" Margin="0,0,0,10">
+                    <StackPanel>
+                        <TextBlock Text="Manipulation" Foreground="#e9eef9" FontSize="15" FontWeight="Bold" Margin="0,0,0,10"/>
+                        <WrapPanel>
+                            <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE7AD;"/>
+                            <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE16E;"/>
+                            <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE1A3;"/>
+                            <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE8A3;"/>
+                            <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE777;"/>
+                            <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE123;"/>
+                        </WrapPanel>
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource PanelBorderStyle}" Margin="0,0,0,10">
+                    <StackPanel>
+                        <TextBlock Text="Annotation" Foreground="#e9eef9" FontSize="15" FontWeight="Bold" Margin="0,0,0,10"/>
+                        <WrapPanel>
+                            <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE70E;"/>
+                            <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE739;"/>
+                            <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE11B;"/>
+                            <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE160;"/>
+                            <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE11A;"/>
+                        </WrapPanel>
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource PanelBorderStyle}">
+                    <StackPanel>
+                        <TextBlock Text="Tool" Foreground="#e9eef9" FontSize="15" FontWeight="Bold" Margin="0,0,0,10"/>
+                        <WrapPanel>
+                            <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE74E;"/>
+                            <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE749;"/>
+                            <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE8C8;"/>
+                            <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE898;"/>
+                            <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE72D;"/>
+                        </WrapPanel>
+                        <Button Command="{Binding AbortCommand}" Height="44" Margin="0,10,0,0" Background="#df2626" BorderBrush="#df2626" Foreground="White" FontWeight="Bold" Content="STOP"/>
+                    </StackPanel>
+                </Border>
             </StackPanel>
-        </Border>
-    </StackPanel>
+        </ScrollViewer>
+    </Grid>
 </UserControl>

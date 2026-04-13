@@ -4,11 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:converters="clr-namespace:HnVue.UI.Converters"
+             xmlns:dt="clr-namespace:HnVue.UI.DesignTime"
              mc:Ignorable="d"
-             d:DesignHeight="650" d:DesignWidth="900">
+             d:DataContext="{d:DesignInstance dt:DesignTimeSettingsViewModel, IsDesignTimeCreatable=True}"
+             d:DesignHeight="720" d:DesignWidth="1024"
+             AutomationProperties.Name="Settings View">
     <!--
         @MX:NOTE SettingsView — Application settings dialog with TOP-tab navigation.
-                 PPT 슬라이드 14~21: menus moved from left sidebar to top row.
+                 PPT Slides 14~22: menus moved from left sidebar to top row.
                  Network tab consolidates PACS + Worklist + Print (was 3 separate tabs).
                  "Login Popup" renamed to "Access Notice" (System tab).
                  "Only No matching" renamed to "Un-Matched" (RIS Code sub-tab).
@@ -26,11 +29,13 @@
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Foreground" Value="{DynamicResource HnVue.Semantic.Text.Secondary}"/>
             <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Height" Value="36"/>
-            <Setter Property="Padding" Value="14,0"/>
+            <Setter Property="MinHeight" Value="44"/>
+            <Setter Property="MinWidth" Value="44"/>
+            <Setter Property="Padding" Value="16,0"/>
             <Setter Property="FontSize" Value="12"/>
             <Setter Property="FontFamily" Value="{DynamicResource HnVue.Core.FontFamily}"/>
             <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="IsTabStop" Value="True"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ToggleButton">
@@ -45,6 +50,7 @@
                             <Trigger Property="IsChecked" Value="True">
                                 <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource HnVue.Semantic.Brand.Accent}"/>
                                 <Setter Property="Foreground" Value="{DynamicResource HnVue.Semantic.Brand.Accent}"/>
+                                <Setter Property="FontWeight" Value="SemiBold"/>
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="Foreground" Value="{DynamicResource HnVue.Semantic.Text.Primary}"/>
@@ -57,8 +63,8 @@
 
         <!-- Sub-tab button (smaller, for RIS Code sub-tabs) -->
         <Style x:Key="RisSubTabButton" TargetType="ToggleButton" BasedOn="{StaticResource SettingsTabButton}">
-            <Setter Property="Height" Value="30"/>
-            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="MinHeight" Value="36"/>
+            <Setter Property="Padding" Value="12,0"/>
             <Setter Property="FontSize" Value="11"/>
         </Style>
 
@@ -68,7 +74,7 @@
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="Foreground" Value="{DynamicResource HnVue.Semantic.Text.Secondary}"/>
             <Setter Property="FontFamily" Value="{DynamicResource HnVue.Core.FontFamily}"/>
-            <Setter Property="Margin" Value="0,0,0,6"/>
+            <Setter Property="Margin" Value="0,0,0,8"/>
         </Style>
 
         <!-- Row label (160 px wide) -->
@@ -82,8 +88,8 @@
 
         <!-- Standard input TextBox -->
         <Style x:Key="SettingsTextBox" TargetType="TextBox">
-            <Setter Property="Height" Value="30"/>
-            <Setter Property="Padding" Value="8,0"/>
+            <Setter Property="MinHeight" Value="34"/>
+            <Setter Property="Padding" Value="8,4"/>
             <Setter Property="FontSize" Value="12"/>
             <Setter Property="FontFamily" Value="{DynamicResource HnVue.Core.FontFamily}"/>
             <Setter Property="Background" Value="{DynamicResource HnVue.Semantic.Surface.Card}"/>
@@ -91,6 +97,33 @@
             <Setter Property="BorderBrush" Value="{DynamicResource HnVue.Semantic.Border.Default}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="IsTabStop" Value="True"/>
+        </Style>
+
+        <!-- Standard ComboBox for settings forms -->
+        <Style x:Key="SettingsComboBox" TargetType="ComboBox">
+            <Setter Property="MinHeight" Value="34"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontFamily" Value="{DynamicResource HnVue.Core.FontFamily}"/>
+            <Setter Property="Background" Value="{DynamicResource HnVue.Semantic.Surface.Card}"/>
+            <Setter Property="Foreground" Value="{DynamicResource HnVue.Semantic.Text.Primary}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource HnVue.Semantic.Border.Default}"/>
+            <Setter Property="IsTabStop" Value="True"/>
+        </Style>
+
+        <!-- Standard CheckBox for settings forms -->
+        <Style x:Key="SettingsCheckBox" TargetType="CheckBox">
+            <Setter Property="MinHeight" Value="28"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontFamily" Value="{DynamicResource HnVue.Core.FontFamily}"/>
+            <Setter Property="Foreground" Value="{DynamicResource HnVue.Semantic.Text.Primary}"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="IsTabStop" Value="True"/>
+        </Style>
+
+        <!-- Settings form row: label + input in a grid -->
+        <Style x:Key="SettingsFormRow" TargetType="Grid">
+            <Setter Property="Margin" Value="0,0,0,12"/>
         </Style>
     </UserControl.Resources>
 
@@ -102,7 +135,7 @@
             <RowDefinition Height="Auto"/> <!-- Action bar -->
         </Grid.RowDefinitions>
 
-        <!-- ═══════════════════ Header ═══════════════════ -->
+        <!-- Header -->
         <Border Grid.Row="0"
                 Background="{DynamicResource HnVue.Semantic.Surface.Panel}"
                 BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
@@ -117,11 +150,12 @@
                            Margin="0,0,8,0"/>
                 <TextBlock Text="Settings"
                            Style="{StaticResource HnVue.SectionHeader}"
-                           VerticalAlignment="Center"/>
+                           VerticalAlignment="Center"
+                           AutomationProperties.Name="Settings Header"/>
             </StackPanel>
         </Border>
 
-        <!-- ═══════════════════ Tab Row — TOP navigation per PPT ═══════════════════ -->
+        <!-- Tab Row: TOP navigation per PPT Slide 14 -->
         <Border Grid.Row="1"
                 Background="{DynamicResource HnVue.Semantic.Surface.Panel}"
                 BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
@@ -131,57 +165,77 @@
                 <StackPanel Orientation="Horizontal">
                     <ToggleButton Content="System"
                                   Style="{StaticResource SettingsTabButton}"
+                                  AutomationProperties.Name="System Tab"
+                                  TabIndex="1"
                                   IsChecked="{Binding ActiveTab, Converter={StaticResource StringEqualityToBool}, ConverterParameter=System, Mode=OneWay}"
                                   Command="{Binding SelectTabCommand}" CommandParameter="System"/>
                     <ToggleButton Content="Account"
                                   Style="{StaticResource SettingsTabButton}"
+                                  AutomationProperties.Name="Account Tab"
+                                  TabIndex="2"
                                   IsChecked="{Binding ActiveTab, Converter={StaticResource StringEqualityToBool}, ConverterParameter=Account, Mode=OneWay}"
                                   Command="{Binding SelectTabCommand}" CommandParameter="Account"/>
                     <ToggleButton Content="Detector"
                                   Style="{StaticResource SettingsTabButton}"
+                                  AutomationProperties.Name="Detector Tab"
+                                  TabIndex="3"
                                   IsChecked="{Binding ActiveTab, Converter={StaticResource StringEqualityToBool}, ConverterParameter=Detector, Mode=OneWay}"
                                   Command="{Binding SelectTabCommand}" CommandParameter="Detector"/>
                     <ToggleButton Content="Generator"
                                   Style="{StaticResource SettingsTabButton}"
+                                  AutomationProperties.Name="Generator Tab"
+                                  TabIndex="4"
                                   IsChecked="{Binding ActiveTab, Converter={StaticResource StringEqualityToBool}, ConverterParameter=Generator, Mode=OneWay}"
                                   Command="{Binding SelectTabCommand}" CommandParameter="Generator"/>
                     <!-- Network: PPT consolidates PACS + Worklist + Print here -->
                     <ToggleButton Content="Network"
                                   Style="{StaticResource SettingsTabButton}"
+                                  AutomationProperties.Name="Network Tab"
+                                  TabIndex="5"
                                   IsChecked="{Binding ActiveTab, Converter={StaticResource StringEqualityToBool}, ConverterParameter=Network, Mode=OneWay}"
                                   Command="{Binding SelectTabCommand}" CommandParameter="Network"/>
                     <ToggleButton Content="Display"
                                   Style="{StaticResource SettingsTabButton}"
+                                  AutomationProperties.Name="Display Tab"
+                                  TabIndex="6"
                                   IsChecked="{Binding ActiveTab, Converter={StaticResource StringEqualityToBool}, ConverterParameter=Display, Mode=OneWay}"
                                   Command="{Binding SelectTabCommand}" CommandParameter="Display"/>
                     <ToggleButton Content="Option"
                                   Style="{StaticResource SettingsTabButton}"
+                                  AutomationProperties.Name="Option Tab"
+                                  TabIndex="7"
                                   IsChecked="{Binding ActiveTab, Converter={StaticResource StringEqualityToBool}, ConverterParameter=Option, Mode=OneWay}"
                                   Command="{Binding SelectTabCommand}" CommandParameter="Option"/>
                     <ToggleButton Content="Database"
                                   Style="{StaticResource SettingsTabButton}"
+                                  AutomationProperties.Name="Database Tab"
+                                  TabIndex="8"
                                   IsChecked="{Binding ActiveTab, Converter={StaticResource StringEqualityToBool}, ConverterParameter=Database, Mode=OneWay}"
                                   Command="{Binding SelectTabCommand}" CommandParameter="Database"/>
                     <ToggleButton Content="DicomSet"
                                   Style="{StaticResource SettingsTabButton}"
+                                  AutomationProperties.Name="DicomSet Tab"
+                                  TabIndex="9"
                                   IsChecked="{Binding ActiveTab, Converter={StaticResource StringEqualityToBool}, ConverterParameter=DicomSet, Mode=OneWay}"
                                   Command="{Binding SelectTabCommand}" CommandParameter="DicomSet"/>
                     <!-- RIS Code: has Matching / Un-Matched sub-tabs -->
                     <ToggleButton Content="RIS Code"
                                   Style="{StaticResource SettingsTabButton}"
+                                  AutomationProperties.Name="RIS Code Tab"
+                                  TabIndex="10"
                                   IsChecked="{Binding ActiveTab, Converter={StaticResource StringEqualityToBool}, ConverterParameter=RIS Code, Mode=OneWay}"
                                   Command="{Binding SelectTabCommand}" CommandParameter="RIS Code"/>
                 </StackPanel>
             </ScrollViewer>
         </Border>
 
-        <!-- ═══════════════════ Content Area ═══════════════════ -->
+        <!-- Content Area -->
         <ScrollViewer Grid.Row="2"
                       VerticalScrollBarVisibility="Auto"
                       HorizontalScrollBarVisibility="Disabled">
             <Grid Margin="24,20,24,20">
 
-                <!-- ─────── SYSTEM tab ─────── -->
+                <!-- SYSTEM tab (PPT Slide 14) -->
                 <StackPanel Visibility="{Binding ActiveTab, Converter={StaticResource ActiveTabToVisibility}, ConverterParameter=System}">
 
                     <TextBlock Text="NOTICE" Style="{StaticResource SettingsSectionLabel}"/>
@@ -191,43 +245,73 @@
                         <TextBlock Style="{StaticResource InputLabel}"
                                    Text="Access Notice"
                                    Margin="0,0,0,6"
-                                   ToolTip="Text shown when a session starts. PPT: renamed from Login Popup."/>
+                                   AutomationProperties.Name="Access Notice Label"/>
                         <TextBox Text="{Binding AccessNoticeText, UpdateSourceTrigger=PropertyChanged}"
                                  Style="{StaticResource SettingsTextBox}"
                                  Height="80"
                                  TextWrapping="Wrap"
                                  AcceptsReturn="True"
                                  VerticalContentAlignment="Top"
-                                 Padding="8,6"/>
+                                 Padding="8,6"
+                                 TabIndex="11"
+                                 AutomationProperties.Name="Access Notice Text"
+                                 AutomationProperties.HelpText="Text shown when a session starts"/>
                     </StackPanel>
 
                     <Separator Background="{DynamicResource HnVue.Semantic.Border.Default}" Margin="0,0,0,16"/>
                     <TextBlock Text="SYSTEM" Style="{StaticResource SettingsSectionLabel}"/>
 
-                    <Grid Margin="0,0,0,12">
+                    <Grid Style="{StaticResource SettingsFormRow}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="160"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0" Style="{StaticResource InputLabel}" Text="Priority"/>
-                        <ComboBox Grid.Column="1" Height="30" FontSize="12"
-                                  FontFamily="{DynamicResource HnVue.Core.FontFamily}"
-                                  Background="{DynamicResource HnVue.Semantic.Surface.Card}"
-                                  Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
-                                  BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}">
+                        <ComboBox Grid.Column="1"
+                                  Style="{StaticResource SettingsComboBox}"
+                                  TabIndex="12"
+                                  AutomationProperties.Name="System Priority">
                             <ComboBoxItem Content="Normal" IsSelected="True"/>
                             <ComboBoxItem Content="High"/>
                         </ComboBox>
                     </Grid>
+
+                    <Grid Style="{StaticResource SettingsFormRow}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Style="{StaticResource InputLabel}" Text="Language"/>
+                        <ComboBox Grid.Column="1"
+                                  Style="{StaticResource SettingsComboBox}"
+                                  TabIndex="13"
+                                  AutomationProperties.Name="System Language">
+                            <ComboBoxItem Content="Korean" IsSelected="True"/>
+                            <ComboBoxItem Content="English"/>
+                        </ComboBox>
+                    </Grid>
+
+                    <Grid Style="{StaticResource SettingsFormRow}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Style="{StaticResource InputLabel}" Text="Auto Logout (min)"/>
+                        <TextBox Grid.Column="1"
+                                 Style="{StaticResource SettingsTextBox}"
+                                 Text="30"
+                                 TabIndex="14"
+                                 AutomationProperties.Name="Auto Logout Minutes"/>
+                    </Grid>
                 </StackPanel>
 
-                <!-- ─────── ACCOUNT tab ─────── -->
+                <!-- ACCOUNT tab (PPT Slide 15) -->
                 <StackPanel Visibility="{Binding ActiveTab, Converter={StaticResource ActiveTabToVisibility}, ConverterParameter=Account}">
 
                     <TextBlock Text="NEW ACCOUNT" Style="{StaticResource SettingsSectionLabel}"/>
 
                     <!-- Account ID -->
-                    <Grid Margin="0,0,0,12">
+                    <Grid Style="{StaticResource SettingsFormRow}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="160"/>
                             <ColumnDefinition Width="*"/>
@@ -235,26 +319,43 @@
                         <TextBlock Grid.Column="0" Style="{StaticResource InputLabel}" Text="Account ID"/>
                         <TextBox Grid.Column="1"
                                  Text="{Binding NewAccountId, UpdateSourceTrigger=PropertyChanged}"
-                                 Style="{StaticResource SettingsTextBox}"/>
+                                 Style="{StaticResource SettingsTextBox}"
+                                 TabIndex="20"
+                                 AutomationProperties.Name="New Account ID"/>
                     </Grid>
 
-                    <!-- Role ComboBox — PPT: Operator field removed, role now a dropdown -->
-                    <Grid Margin="0,0,0,12">
+                    <!-- Password -->
+                    <Grid Style="{StaticResource SettingsFormRow}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="160"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Style="{StaticResource InputLabel}"
-                                   Text="Role"
-                                   ToolTip="PPT: Operator field removed. Role is now a dropdown (Admin / Technician / Radiologist)."/>
+                        <TextBlock Grid.Column="0" Style="{StaticResource InputLabel}" Text="Password"/>
+                        <PasswordBox Grid.Column="1"
+                                     MinHeight="34"
+                                     FontSize="12"
+                                     FontFamily="{DynamicResource HnVue.Core.FontFamily}"
+                                     Background="{DynamicResource HnVue.Semantic.Surface.Card}"
+                                     Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
+                                     BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
+                                     BorderThickness="1"
+                                     TabIndex="21"
+                                     AutomationProperties.Name="New Account Password"/>
+                    </Grid>
+
+                    <!-- Role ComboBox (PPT: Operator field removed, role now a dropdown) -->
+                    <Grid Style="{StaticResource SettingsFormRow}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Style="{StaticResource InputLabel}" Text="Role"/>
                         <ComboBox Grid.Column="1"
-                                  Height="30" FontSize="12"
-                                  FontFamily="{DynamicResource HnVue.Core.FontFamily}"
-                                  Background="{DynamicResource HnVue.Semantic.Surface.Card}"
-                                  Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
-                                  BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
+                                  Style="{StaticResource SettingsComboBox}"
                                   ItemsSource="{Binding AvailableRoles}"
-                                  SelectedItem="{Binding NewAccountRole}"/>
+                                  SelectedItem="{Binding NewAccountRole}"
+                                  TabIndex="22"
+                                  AutomationProperties.Name="New Account Role"/>
                     </Grid>
 
                     <Grid Margin="0,0,0,16">
@@ -265,53 +366,164 @@
                         <Button Grid.Column="1"
                                 Content="Add Account"
                                 Style="{StaticResource HnVue.OutlineButton}"
-                                Height="30" Padding="12,0" FontSize="11"
-                                FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
+                                MinHeight="36" Padding="16,0" FontSize="11"
+                                FontFamily="{DynamicResource HnVue.Core.FontFamily}"
+                                TabIndex="23"
+                                AutomationProperties.Name="Add Account Button"/>
                     </Grid>
 
                     <Separator Background="{DynamicResource HnVue.Semantic.Border.Default}" Margin="0,0,0,16"/>
                     <TextBlock Text="ACCOUNT LIST" Style="{StaticResource SettingsSectionLabel}"/>
 
-                    <Border MinHeight="160"
-                            Background="{DynamicResource HnVue.Semantic.Surface.Card}"
-                            BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
-                            BorderThickness="1">
-                        <TextBlock Text="Account list will be populated here."
-                                   Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}"
-                                   FontSize="12" FontFamily="{DynamicResource HnVue.Core.FontFamily}"
-                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    </Border>
+                    <!-- Account list DataGrid -->
+                    <DataGrid MinHeight="160"
+                              AutoGenerateColumns="False"
+                              CanUserAddRows="False"
+                              IsReadOnly="True"
+                              HeadersVisibility="Column"
+                              GridLinesVisibility="Horizontal"
+                              Background="{DynamicResource HnVue.Semantic.Surface.Card}"
+                              BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
+                              BorderThickness="1"
+                              FontSize="12"
+                              FontFamily="{DynamicResource HnVue.Core.FontFamily}"
+                              TabIndex="24"
+                              AutomationProperties.Name="Account List">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Account ID" Width="*" Binding="{Binding AccountId}"/>
+                            <DataGridTextColumn Header="Role" Width="120" Binding="{Binding Role}"/>
+                            <DataGridTextColumn Header="Created" Width="140" Binding="{Binding CreatedDate}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
                 </StackPanel>
 
-                <!-- ─────── DETECTOR tab ─────── -->
+                <!-- DETECTOR tab (PPT Slide 16) -->
                 <StackPanel Visibility="{Binding ActiveTab, Converter={StaticResource ActiveTabToVisibility}, ConverterParameter=Detector}">
                     <TextBlock Text="DETECTOR SETTINGS" Style="{StaticResource SettingsSectionLabel}"/>
-                    <Border MinHeight="240"
-                            Background="{DynamicResource HnVue.Semantic.Surface.Card}"
-                            BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
-                            BorderThickness="1">
-                        <TextBlock Text="Detector configuration (keep as-is per PPT)."
-                                   Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}"
-                                   FontSize="12" FontFamily="{DynamicResource HnVue.Core.FontFamily}"
-                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    </Border>
+
+                    <Grid Style="{StaticResource SettingsFormRow}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Style="{StaticResource InputLabel}" Text="Detector Type"/>
+                        <ComboBox Grid.Column="1"
+                                  Style="{StaticResource SettingsComboBox}"
+                                  TabIndex="30"
+                                  AutomationProperties.Name="Detector Type">
+                            <ComboBoxItem Content="CsI FPD" IsSelected="True"/>
+                            <ComboBoxItem Content="GOS FPD"/>
+                        </ComboBox>
+                    </Grid>
+
+                    <Grid Style="{StaticResource SettingsFormRow}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Style="{StaticResource InputLabel}" Text="Connection"/>
+                        <ComboBox Grid.Column="1"
+                                  Style="{StaticResource SettingsComboBox}"
+                                  TabIndex="31"
+                                  AutomationProperties.Name="Detector Connection Type">
+                            <ComboBoxItem Content="Ethernet" IsSelected="True"/>
+                            <ComboBoxItem Content="Wi-Fi"/>
+                        </ComboBox>
+                    </Grid>
+
+                    <Grid Style="{StaticResource SettingsFormRow}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Style="{StaticResource InputLabel}" Text="IP Address"/>
+                        <TextBox Grid.Column="1"
+                                 Style="{StaticResource SettingsTextBox}"
+                                 Text="192.168.1.10"
+                                 TabIndex="32"
+                                 AutomationProperties.Name="Detector IP Address"/>
+                    </Grid>
+
+                    <Separator Background="{DynamicResource HnVue.Semantic.Border.Default}" Margin="0,4,0,16"/>
+                    <TextBlock Text="CALIBRATION" Style="{StaticResource SettingsSectionLabel}"/>
+
+                    <Grid Style="{StaticResource SettingsFormRow}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Style="{StaticResource InputLabel}" Text="Last Calibration"/>
+                        <TextBox Grid.Column="1"
+                                 Style="{StaticResource SettingsTextBox}"
+                                 Text="2026-04-01"
+                                 IsReadOnly="True"
+                                 TabIndex="33"
+                                 AutomationProperties.Name="Last Calibration Date"/>
+                        <Button Grid.Column="2"
+                                Content="Calibrate"
+                                Style="{StaticResource HnVue.OutlineButton}"
+                                MinHeight="34" Padding="12,0" FontSize="11"
+                                FontFamily="{DynamicResource HnVue.Core.FontFamily}"
+                                Margin="8,0,0,0"
+                                TabIndex="34"
+                                AutomationProperties.Name="Run Calibration"/>
+                    </Grid>
                 </StackPanel>
 
-                <!-- ─────── GENERATOR tab ─────── -->
+                <!-- GENERATOR tab (PPT Slide 17) -->
                 <StackPanel Visibility="{Binding ActiveTab, Converter={StaticResource ActiveTabToVisibility}, ConverterParameter=Generator}">
                     <TextBlock Text="GENERATOR SETTINGS" Style="{StaticResource SettingsSectionLabel}"/>
-                    <Border MinHeight="240"
-                            Background="{DynamicResource HnVue.Semantic.Surface.Card}"
-                            BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
-                            BorderThickness="1">
-                        <TextBlock Text="Generator configuration (keep as-is per PPT)."
-                                   Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}"
-                                   FontSize="12" FontFamily="{DynamicResource HnVue.Core.FontFamily}"
-                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    </Border>
+
+                    <Grid Style="{StaticResource SettingsFormRow}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Style="{StaticResource InputLabel}" Text="Generator Model"/>
+                        <ComboBox Grid.Column="1"
+                                  Style="{StaticResource SettingsComboBox}"
+                                  TabIndex="40"
+                                  AutomationProperties.Name="Generator Model">
+                            <ComboBoxItem Content="Model A" IsSelected="True"/>
+                            <ComboBoxItem Content="Model B"/>
+                        </ComboBox>
+                    </Grid>
+
+                    <Grid Style="{StaticResource SettingsFormRow}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Style="{StaticResource InputLabel}" Text="Connection Port"/>
+                        <ComboBox Grid.Column="1"
+                                  Style="{StaticResource SettingsComboBox}"
+                                  TabIndex="41"
+                                  AutomationProperties.Name="Generator Connection Port">
+                            <ComboBoxItem Content="COM1" IsSelected="True"/>
+                            <ComboBoxItem Content="COM2"/>
+                            <ComboBoxItem Content="COM3"/>
+                        </ComboBox>
+                    </Grid>
+
+                    <Grid Style="{StaticResource SettingsFormRow}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Style="{StaticResource InputLabel}" Text="Baud Rate"/>
+                        <ComboBox Grid.Column="1"
+                                  Style="{StaticResource SettingsComboBox}"
+                                  TabIndex="42"
+                                  AutomationProperties.Name="Generator Baud Rate">
+                            <ComboBoxItem Content="9600" IsSelected="True"/>
+                            <ComboBoxItem Content="19200"/>
+                            <ComboBoxItem Content="115200"/>
+                        </ComboBox>
+                    </Grid>
                 </StackPanel>
 
-                <!-- ─────── NETWORK tab — PPT: PACS + Worklist + Print merged ─────── -->
+                <!-- NETWORK tab (PPT Slide 18): PACS + Worklist + Print merged -->
                 <StackPanel Visibility="{Binding ActiveTab, Converter={StaticResource ActiveTabToVisibility}, ConverterParameter=Network}">
 
                     <!-- PACS section -->
@@ -327,20 +539,27 @@
                         <TextBlock Grid.Column="0" Style="{StaticResource InputLabel}" Text="Server Address"/>
                         <TextBox Grid.Column="1"
                                  Text="{Binding PacsServerAddress, UpdateSourceTrigger=PropertyChanged}"
-                                 Style="{StaticResource SettingsTextBox}" Margin="0,0,6,0"/>
+                                 Style="{StaticResource SettingsTextBox}" Margin="0,0,6,0"
+                                 TabIndex="50"
+                                 AutomationProperties.Name="PACS Server Address"/>
                         <TextBox Grid.Column="2"
                                  Text="{Binding PacsServerPort, UpdateSourceTrigger=PropertyChanged}"
                                  Style="{StaticResource SettingsTextBox}" Margin="0,0,6,0"
-                                 ToolTip="Port"/>
+                                 TabIndex="51"
+                                 AutomationProperties.Name="PACS Server Port"/>
                         <Button Grid.Column="3" Content="Add"
                                 Style="{StaticResource HnVue.OutlineButton}"
-                                Height="30" Padding="10,0" FontSize="11"
+                                MinHeight="34" Padding="10,0" FontSize="11"
                                 Margin="0,0,4,0"
-                                FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
+                                FontFamily="{DynamicResource HnVue.Core.FontFamily}"
+                                TabIndex="52"
+                                AutomationProperties.Name="Add PACS Server"/>
                         <Button Grid.Column="4" Content="Edit"
                                 Style="{StaticResource HnVue.OutlineButton}"
-                                Height="30" Padding="10,0" FontSize="11"
-                                FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
+                                MinHeight="34" Padding="10,0" FontSize="11"
+                                FontFamily="{DynamicResource HnVue.Core.FontFamily}"
+                                TabIndex="53"
+                                AutomationProperties.Name="Edit PACS Server"/>
                     </Grid>
                     <Border MinHeight="70" Margin="0,0,0,20"
                             Background="{DynamicResource HnVue.Semantic.Surface.Card}"
@@ -367,20 +586,27 @@
                         <TextBlock Grid.Column="0" Style="{StaticResource InputLabel}" Text="Server Address"/>
                         <TextBox Grid.Column="1"
                                  Text="{Binding WorklistServerAddress, UpdateSourceTrigger=PropertyChanged}"
-                                 Style="{StaticResource SettingsTextBox}" Margin="0,0,6,0"/>
+                                 Style="{StaticResource SettingsTextBox}" Margin="0,0,6,0"
+                                 TabIndex="54"
+                                 AutomationProperties.Name="Worklist Server Address"/>
                         <TextBox Grid.Column="2"
                                  Text="{Binding WorklistServerPort, UpdateSourceTrigger=PropertyChanged}"
                                  Style="{StaticResource SettingsTextBox}" Margin="0,0,6,0"
-                                 ToolTip="Port"/>
+                                 TabIndex="55"
+                                 AutomationProperties.Name="Worklist Server Port"/>
                         <Button Grid.Column="3" Content="Add"
                                 Style="{StaticResource HnVue.OutlineButton}"
-                                Height="30" Padding="10,0" FontSize="11"
+                                MinHeight="34" Padding="10,0" FontSize="11"
                                 Margin="0,0,4,0"
-                                FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
+                                FontFamily="{DynamicResource HnVue.Core.FontFamily}"
+                                TabIndex="56"
+                                AutomationProperties.Name="Add Worklist Server"/>
                         <Button Grid.Column="4" Content="Edit"
                                 Style="{StaticResource HnVue.OutlineButton}"
-                                Height="30" Padding="10,0" FontSize="11"
-                                FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
+                                MinHeight="34" Padding="10,0" FontSize="11"
+                                FontFamily="{DynamicResource HnVue.Core.FontFamily}"
+                                TabIndex="57"
+                                AutomationProperties.Name="Edit Worklist Server"/>
                     </Grid>
                     <Border MinHeight="70" Margin="0,0,0,20"
                             Background="{DynamicResource HnVue.Semantic.Surface.Card}"
@@ -396,79 +622,265 @@
 
                     <!-- Print section -->
                     <TextBlock Text="PRINT" Style="{StaticResource SettingsSectionLabel}"/>
-                    <Grid Margin="0,0,0,12">
+                    <Grid Style="{StaticResource SettingsFormRow}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="140"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0" Style="{StaticResource InputLabel}" Text="Printer"/>
-                        <ComboBox Grid.Column="1" Height="30" FontSize="12"
-                                  FontFamily="{DynamicResource HnVue.Core.FontFamily}"
-                                  Background="{DynamicResource HnVue.Semantic.Surface.Card}"
-                                  Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
-                                  BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}">
+                        <ComboBox Grid.Column="1"
+                                  Style="{StaticResource SettingsComboBox}"
+                                  TabIndex="58"
+                                  AutomationProperties.Name="Printer Selection">
                             <ComboBoxItem Content="Default Printer" IsSelected="True"/>
                         </ComboBox>
                     </Grid>
                 </StackPanel>
 
-                <!-- ─────── DISPLAY tab ─────── -->
+                <!-- DISPLAY tab (PPT Slide 19) -->
                 <StackPanel Visibility="{Binding ActiveTab, Converter={StaticResource ActiveTabToVisibility}, ConverterParameter=Display}">
                     <TextBlock Text="DISPLAY SETTINGS" Style="{StaticResource SettingsSectionLabel}"/>
-                    <Border MinHeight="200"
-                            Background="{DynamicResource HnVue.Semantic.Surface.Card}"
-                            BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
-                            BorderThickness="1">
-                        <TextBlock Text="Display configuration placeholder."
-                                   Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}"
-                                   FontSize="12" FontFamily="{DynamicResource HnVue.Core.FontFamily}"
-                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    </Border>
+
+                    <Grid Style="{StaticResource SettingsFormRow}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Style="{StaticResource InputLabel}" Text="Theme"/>
+                        <ComboBox Grid.Column="1"
+                                  Style="{StaticResource SettingsComboBox}"
+                                  TabIndex="60"
+                                  AutomationProperties.Name="Display Theme">
+                            <ComboBoxItem Content="Dark" IsSelected="True"/>
+                            <ComboBoxItem Content="Light"/>
+                            <ComboBoxItem Content="High Contrast"/>
+                        </ComboBox>
+                    </Grid>
+
+                    <Grid Style="{StaticResource SettingsFormRow}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Style="{StaticResource InputLabel}" Text="Window Mode"/>
+                        <ComboBox Grid.Column="1"
+                                  Style="{StaticResource SettingsComboBox}"
+                                  TabIndex="61"
+                                  AutomationProperties.Name="Window Mode">
+                            <ComboBoxItem Content="Full Screen" IsSelected="True"/>
+                            <ComboBoxItem Content="Windowed"/>
+                        </ComboBox>
+                    </Grid>
+
+                    <CheckBox Content="Show Patient Info Overlay"
+                              Style="{StaticResource SettingsCheckBox}"
+                              IsChecked="True"
+                              Margin="0,0,0,8"
+                              TabIndex="62"
+                              AutomationProperties.Name="Show Patient Info Overlay"/>
+
+                    <CheckBox Content="Show Annotation Tools"
+                              Style="{StaticResource SettingsCheckBox}"
+                              IsChecked="True"
+                              Margin="0,0,0,8"
+                              TabIndex="63"
+                              AutomationProperties.Name="Show Annotation Tools"/>
                 </StackPanel>
 
-                <!-- ─────── OPTION tab ─────── -->
+                <!-- OPTION tab (PPT Slide 20) -->
                 <StackPanel Visibility="{Binding ActiveTab, Converter={StaticResource ActiveTabToVisibility}, ConverterParameter=Option}">
                     <TextBlock Text="OPTIONS" Style="{StaticResource SettingsSectionLabel}"/>
-                    <Border MinHeight="200"
-                            Background="{DynamicResource HnVue.Semantic.Surface.Card}"
-                            BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
-                            BorderThickness="1">
-                        <TextBlock Text="Option configuration placeholder."
-                                   Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}"
-                                   FontSize="12" FontFamily="{DynamicResource HnVue.Core.FontFamily}"
-                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    </Border>
+
+                    <CheckBox Content="Auto-receive images from PACS"
+                              Style="{StaticResource SettingsCheckBox}"
+                              IsChecked="True"
+                              Margin="0,0,0,8"
+                              TabIndex="70"
+                              AutomationProperties.Name="Auto-receive Images"/>
+
+                    <CheckBox Content="Auto-print after acquisition"
+                              Style="{StaticResource SettingsCheckBox}"
+                              Margin="0,0,0,8"
+                              TabIndex="71"
+                              AutomationProperties.Name="Auto-print After Acquisition"/>
+
+                    <CheckBox Content="Confirm before delete"
+                              Style="{StaticResource SettingsCheckBox}"
+                              IsChecked="True"
+                              Margin="0,0,0,8"
+                              TabIndex="72"
+                              AutomationProperties.Name="Confirm Before Delete"/>
+
+                    <CheckBox Content="Enable audit logging"
+                              Style="{StaticResource SettingsCheckBox}"
+                              IsChecked="True"
+                              Margin="0,0,0,8"
+                              TabIndex="73"
+                              AutomationProperties.Name="Enable Audit Logging"/>
+
+                    <Separator Background="{DynamicResource HnVue.Semantic.Border.Default}" Margin="0,8,0,16"/>
+                    <TextBlock Text="IMAGE PROCESSING" Style="{StaticResource SettingsSectionLabel}"/>
+
+                    <Grid Style="{StaticResource SettingsFormRow}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Style="{StaticResource InputLabel}" Text="Default W/L"/>
+                        <ComboBox Grid.Column="1"
+                                  Style="{StaticResource SettingsComboBox}"
+                                  TabIndex="74"
+                                  AutomationProperties.Name="Default Window Level">
+                            <ComboBoxItem Content="Auto" IsSelected="True"/>
+                            <ComboBoxItem Content="Chest"/>
+                            <ComboBoxItem Content="Bone"/>
+                            <ComboBoxItem Content="Abdomen"/>
+                        </ComboBox>
+                    </Grid>
                 </StackPanel>
 
-                <!-- ─────── DATABASE tab ─────── -->
+                <!-- DATABASE tab (PPT Slide 21) -->
                 <StackPanel Visibility="{Binding ActiveTab, Converter={StaticResource ActiveTabToVisibility}, ConverterParameter=Database}">
                     <TextBlock Text="DATABASE SETTINGS" Style="{StaticResource SettingsSectionLabel}"/>
-                    <Border MinHeight="200"
-                            Background="{DynamicResource HnVue.Semantic.Surface.Card}"
-                            BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
-                            BorderThickness="1">
-                        <TextBlock Text="Database configuration placeholder."
-                                   Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}"
-                                   FontSize="12" FontFamily="{DynamicResource HnVue.Core.FontFamily}"
-                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    </Border>
+
+                    <Grid Style="{StaticResource SettingsFormRow}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Style="{StaticResource InputLabel}" Text="Database Path"/>
+                        <Grid Grid.Column="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox Grid.Column="0"
+                                     Style="{StaticResource SettingsTextBox}"
+                                     Text="C:\HnVue\Data\hnvue.db"
+                                     IsReadOnly="True"
+                                     TabIndex="80"
+                                     AutomationProperties.Name="Database File Path"/>
+                            <Button Grid.Column="1"
+                                    Content="Browse"
+                                    Style="{StaticResource HnVue.OutlineButton}"
+                                    MinHeight="34" Padding="12,0" FontSize="11"
+                                    FontFamily="{DynamicResource HnVue.Core.FontFamily}"
+                                    Margin="8,0,0,0"
+                                    TabIndex="81"
+                                    AutomationProperties.Name="Browse Database Path"/>
+                        </Grid>
+                    </Grid>
+
+                    <Grid Style="{StaticResource SettingsFormRow}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Style="{StaticResource InputLabel}" Text="Backup Schedule"/>
+                        <ComboBox Grid.Column="1"
+                                  Style="{StaticResource SettingsComboBox}"
+                                  TabIndex="82"
+                                  AutomationProperties.Name="Database Backup Schedule">
+                            <ComboBoxItem Content="Daily" IsSelected="True"/>
+                            <ComboBoxItem Content="Weekly"/>
+                            <ComboBoxItem Content="Manual"/>
+                        </ComboBox>
+                    </Grid>
+
+                    <Separator Background="{DynamicResource HnVue.Semantic.Border.Default}" Margin="0,4,0,16"/>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0"
+                                Content="Backup Now"
+                                Style="{StaticResource HnVue.OutlineButton}"
+                                MinHeight="36" Padding="16,0" FontSize="11"
+                                FontFamily="{DynamicResource HnVue.Core.FontFamily}"
+                                Margin="0,0,8,0"
+                                TabIndex="83"
+                                AutomationProperties.Name="Backup Database Now"/>
+                        <Button Grid.Column="1"
+                                Content="Restore"
+                                Style="{StaticResource HnVue.OutlineButton}"
+                                MinHeight="36" Padding="16,0" FontSize="11"
+                                FontFamily="{DynamicResource HnVue.Core.FontFamily}"
+                                TabIndex="84"
+                                AutomationProperties.Name="Restore Database"/>
+                    </Grid>
                 </StackPanel>
 
-                <!-- ─────── DICOMSET tab ─────── -->
+                <!-- DICOMSET tab (PPT Slide 22) -->
                 <StackPanel Visibility="{Binding ActiveTab, Converter={StaticResource ActiveTabToVisibility}, ConverterParameter=DicomSet}">
                     <TextBlock Text="DICOM SETTINGS" Style="{StaticResource SettingsSectionLabel}"/>
-                    <Border MinHeight="200"
-                            Background="{DynamicResource HnVue.Semantic.Surface.Card}"
-                            BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
-                            BorderThickness="1">
-                        <TextBlock Text="DICOM set configuration placeholder."
-                                   Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}"
-                                   FontSize="12" FontFamily="{DynamicResource HnVue.Core.FontFamily}"
-                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    </Border>
+
+                    <Grid Style="{StaticResource SettingsFormRow}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Style="{StaticResource InputLabel}" Text="AE Title"/>
+                        <TextBox Grid.Column="1"
+                                 Style="{StaticResource SettingsTextBox}"
+                                 Text="HNVUE_SCU"
+                                 TabIndex="90"
+                                 AutomationProperties.Name="DICOM AE Title"/>
+                    </Grid>
+
+                    <Grid Style="{StaticResource SettingsFormRow}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Style="{StaticResource InputLabel}" Text="Station Name"/>
+                        <TextBox Grid.Column="1"
+                                 Style="{StaticResource SettingsTextBox}"
+                                 Text="STATION01"
+                                 TabIndex="91"
+                                 AutomationProperties.Name="DICOM Station Name"/>
+                    </Grid>
+
+                    <Grid Style="{StaticResource SettingsFormRow}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Style="{StaticResource InputLabel}" Text="Implementation UID"/>
+                        <TextBox Grid.Column="1"
+                                 Style="{StaticResource SettingsTextBox}"
+                                 Text="1.2.840.113619.2.55"
+                                 IsReadOnly="True"
+                                 TabIndex="92"
+                                 AutomationProperties.Name="DICOM Implementation UID"/>
+                    </Grid>
+
+                    <Separator Background="{DynamicResource HnVue.Semantic.Border.Default}" Margin="0,4,0,16"/>
+                    <TextBlock Text="TRANSFER SYNTAX" Style="{StaticResource SettingsSectionLabel}"/>
+
+                    <CheckBox Content="Implicit VR Little Endian (1.2.840.10008.1.2)"
+                              Style="{StaticResource SettingsCheckBox}"
+                              IsChecked="True"
+                              Margin="0,0,0,8"
+                              TabIndex="93"
+                              AutomationProperties.Name="Implicit VR Little Endian"/>
+
+                    <CheckBox Content="Explicit VR Little Endian (1.2.840.10008.1.2.1)"
+                              Style="{StaticResource SettingsCheckBox}"
+                              IsChecked="True"
+                              Margin="0,0,0,8"
+                              TabIndex="94"
+                              AutomationProperties.Name="Explicit VR Little Endian"/>
+
+                    <CheckBox Content="JPEG Lossless (1.2.840.10008.1.2.4.70)"
+                              Style="{StaticResource SettingsCheckBox}"
+                              Margin="0,0,0,8"
+                              TabIndex="95"
+                              AutomationProperties.Name="JPEG Lossless Transfer Syntax"/>
                 </StackPanel>
 
-                <!-- ─────── RIS CODE tab ─────── -->
+                <!-- RIS CODE tab (PPT Slide 22 continued) -->
                 <!-- PPT: "Only No matching" renamed to "Un-Matched" -->
                 <StackPanel Visibility="{Binding ActiveTab, Converter={StaticResource ActiveTabToVisibility}, ConverterParameter=RIS Code}">
 
@@ -481,12 +893,16 @@
                         <StackPanel Orientation="Horizontal">
                             <ToggleButton Content="Matching"
                                           Style="{StaticResource RisSubTabButton}"
+                                          AutomationProperties.Name="RIS Matching Sub-Tab"
+                                          TabIndex="100"
                                           IsChecked="{Binding ActiveRisTab, Converter={StaticResource StringEqualityToBool}, ConverterParameter=Matching, Mode=OneWay}"
                                           Command="{Binding SelectTabCommand}"
                                           CommandParameter="Matching"/>
-                            <!-- PPT: "Only No matching" → "Un-Matched" -->
+                            <!-- PPT: "Only No matching" renamed to "Un-Matched" -->
                             <ToggleButton Content="Un-Matched"
                                           Style="{StaticResource RisSubTabButton}"
+                                          AutomationProperties.Name="RIS Un-Matched Sub-Tab"
+                                          TabIndex="101"
                                           IsChecked="{Binding ActiveRisTab, Converter={StaticResource StringEqualityToBool}, ConverterParameter=Un-Matched, Mode=OneWay}"
                                           Command="{Binding SelectTabCommand}"
                                           CommandParameter="Un-Matched"/>
@@ -494,34 +910,56 @@
                     </Border>
 
                     <!-- Matching sub-tab content -->
-                    <Border Visibility="{Binding ActiveRisTab, Converter={StaticResource ActiveTabToVisibility}, ConverterParameter=Matching}"
-                            MinHeight="200"
-                            Background="{DynamicResource HnVue.Semantic.Surface.Card}"
-                            BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
-                            BorderThickness="1">
-                        <TextBlock Text="Matching RIS code list and mapping configuration."
-                                   Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}"
-                                   FontSize="12" FontFamily="{DynamicResource HnVue.Core.FontFamily}"
-                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    </Border>
+                    <StackPanel Visibility="{Binding ActiveRisTab, Converter={StaticResource ActiveTabToVisibility}, ConverterParameter=Matching}">
+                        <DataGrid MinHeight="200"
+                                  AutoGenerateColumns="False"
+                                  CanUserAddRows="False"
+                                  IsReadOnly="True"
+                                  HeadersVisibility="Column"
+                                  GridLinesVisibility="Horizontal"
+                                  Background="{DynamicResource HnVue.Semantic.Surface.Card}"
+                                  BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
+                                  BorderThickness="1"
+                                  FontSize="12"
+                                  FontFamily="{DynamicResource HnVue.Core.FontFamily}"
+                                  TabIndex="102"
+                                  AutomationProperties.Name="RIS Matching Code List">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="RIS Code" Width="120" Binding="{Binding RisCode}"/>
+                                <DataGridTextColumn Header="Body Part" Width="120" Binding="{Binding BodyPart}"/>
+                                <DataGridTextColumn Header="Protocol" Width="*" Binding="{Binding Protocol}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
 
                     <!-- Un-Matched sub-tab content (PPT: formerly "Only No matching") -->
-                    <Border Visibility="{Binding ActiveRisTab, Converter={StaticResource ActiveTabToVisibility}, ConverterParameter=Un-Matched}"
-                            MinHeight="200"
-                            Background="{DynamicResource HnVue.Semantic.Surface.Card}"
-                            BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
-                            BorderThickness="1">
-                        <TextBlock Text="Un-Matched RIS codes (formerly: Only No matching)."
-                                   Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}"
-                                   FontSize="12" FontFamily="{DynamicResource HnVue.Core.FontFamily}"
-                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    </Border>
+                    <StackPanel Visibility="{Binding ActiveRisTab, Converter={StaticResource ActiveTabToVisibility}, ConverterParameter=Un-Matched}">
+                        <DataGrid MinHeight="200"
+                                  AutoGenerateColumns="False"
+                                  CanUserAddRows="False"
+                                  IsReadOnly="True"
+                                  HeadersVisibility="Column"
+                                  GridLinesVisibility="Horizontal"
+                                  Background="{DynamicResource HnVue.Semantic.Surface.Card}"
+                                  BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
+                                  BorderThickness="1"
+                                  FontSize="12"
+                                  FontFamily="{DynamicResource HnVue.Core.FontFamily}"
+                                  TabIndex="103"
+                                  AutomationProperties.Name="RIS Un-Matched Code List">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="RIS Code" Width="120" Binding="{Binding RisCode}"/>
+                                <DataGridTextColumn Header="Description" Width="*" Binding="{Binding Description}"/>
+                                <DataGridTextColumn Header="Received" Width="140" Binding="{Binding ReceivedDate}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
                 </StackPanel>
 
             </Grid>
         </ScrollViewer>
 
-        <!-- ═══════════════════ Action Bar ═══════════════════ -->
+        <!-- Action Bar -->
         <Border Grid.Row="3"
                 Background="{DynamicResource HnVue.Semantic.Surface.Panel}"
                 BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
@@ -541,22 +979,27 @@
                            VerticalAlignment="Center"
                            FontSize="12"
                            FontFamily="{DynamicResource HnVue.Core.FontFamily}"
-                           Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}"/>
+                           Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}"
+                           AutomationProperties.Name="Error Message"/>
 
                 <Button Grid.Column="1"
                         Content="Cancel"
                         Command="{Binding CancelCommand}"
                         Style="{StaticResource HnVue.OutlineButton}"
-                        Width="100" Height="36"
+                        Width="100" MinHeight="44"
                         Margin="0,0,8,0"
-                        FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
+                        FontFamily="{DynamicResource HnVue.Core.FontFamily}"
+                        TabIndex="110"
+                        AutomationProperties.Name="Cancel Settings"/>
 
                 <Button Grid.Column="2"
                         Content="Save"
                         Command="{Binding SaveCommand}"
                         Style="{StaticResource HnVue.PrimaryButton}"
-                        Width="100" Height="36"
-                        FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
+                        Width="100" MinHeight="44"
+                        FontFamily="{DynamicResource HnVue.Core.FontFamily}"
+                        TabIndex="111"
+                        AutomationProperties.Name="Save Settings"/>
             </Grid>
         </Border>
     </Grid>

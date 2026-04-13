@@ -32,8 +32,7 @@ public sealed class EfCdStudyRepositoryTests
         new()
         {
             StudyInstanceUid = studyInstanceUid,
-            FilePath = filePath,
-            ImagePosition = 1
+            FilePath = filePath
         };
 
     // ── GetFilesForStudyAsync ───────────────────────────────────────────────────────
@@ -41,7 +40,9 @@ public sealed class EfCdStudyRepositoryTests
     [Fact]
     public async Task GetFilesForStudyAsync_ExistingStudy_ReturnsFilePaths()
     {
-        await using var (ctx, connection) = CreateSqliteContext();
+        var (ctx, connection) = CreateSqliteContext();
+        await using var _ctx = ctx;
+        await using var _conn = connection;
         var repo = new EfCdStudyRepository(ctx);
 
         // Arrange
@@ -62,7 +63,9 @@ public sealed class EfCdStudyRepositoryTests
     [Fact]
     public async Task GetFilesForStudyAsync_NoImages_ReturnsEmptyList()
     {
-        await using var (ctx, connection) = CreateSqliteContext();
+        var (ctx, connection) = CreateSqliteContext();
+        await using var _ctx = ctx;
+        await using var _conn = connection;
         var repo = new EfCdStudyRepository(ctx);
 
         // Arrange - No images added for this study
@@ -80,7 +83,9 @@ public sealed class EfCdStudyRepositoryTests
     [Fact]
     public async Task GetFilesForStudyAsync_NullStudyInstanceUid_ThrowsArgumentNullException()
     {
-        await using var (ctx, connection) = CreateSqliteContext();
+        var (ctx, connection) = CreateSqliteContext();
+        await using var _ctx = ctx;
+        await using var _conn = connection;
         var repo = new EfCdStudyRepository(ctx);
 
         // Act & Assert
@@ -91,7 +96,9 @@ public sealed class EfCdStudyRepositoryTests
     [Fact]
     public async Task GetFilesForStudyAsync_EmptyStudyInstanceUid_ThrowsArgumentNullException()
     {
-        await using var (ctx, connection) = CreateSqliteContext();
+        var (ctx, connection) = CreateSqliteContext();
+        await using var _ctx = ctx;
+        await using var _conn = connection;
         var repo = new EfCdStudyRepository(ctx);
 
         // Act & Assert

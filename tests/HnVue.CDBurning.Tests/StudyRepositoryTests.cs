@@ -143,4 +143,17 @@ public sealed class StudyRepositoryTests
 
         await act.Should().ThrowAsync<OperationCanceledException>();
     }
+
+    [Fact]
+    public async Task GetFilesForStudyAsync_DisposedContext_ReturnsDatabaseError()
+    {
+        var ctx = CreateInMemoryContext();
+        var repo = new StudyRepository(ctx);
+        await ctx.DisposeAsync();
+
+        var result = await repo.GetFilesForStudyAsync("1.2.3");
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.DatabaseError);
+    }
 }
