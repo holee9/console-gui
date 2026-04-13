@@ -14,7 +14,7 @@ DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/
 | 팀 | 현재 DISPATCH 파일 | 상태 | 비고 |
 |----|-------------------|------|------|
 | **Coordinator** | `S05-R2-coordinator-2.md` | **MERGED** ✅ | WorkflowView ViewModel main 머지 완료 |
-| **QA** | `S05-R2-qa.md` | **ACTIVE** | 릴리즈 준비도 보고서 — 에이전트 실행중 |
+| **QA** | `S05-R2-qa.md` | **MERGED** ✅ | 릴리즈 준비도 보고서 (Issue #83/#84) |
 | **RA** | `S05-R2-ra.md` | **MERGED** ✅ | RMP v2.0 완료 |
 | **Design** | `S05-R2-design-4.md` | **MERGED** ✅ | WorkflowView 3열 레이아웃 main 머지 완료 |
 | **Team A** | `S05-R2-team-a-2.md` | **ACTIVE** | P0 BLOCKER — Data.Tests 14건 빌드 에러 수정 (#83) |
