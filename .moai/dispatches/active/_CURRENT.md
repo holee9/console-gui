@@ -4,7 +4,7 @@
 > 자신의 팀 행(row)에서 파일명을 확인한 뒤, 해당 파일만 읽는다.
 > 상태가 `PR_OPEN` 또는 `IDLE`이면 → 새 DISPATCH 없음 → Commander Center에 IDLE 보고.
 
-Updated: 2026-04-13 (S05-R2 — ALL MERGED ✅ S05-R2 완료)
+Updated: 2026-04-13 (S05-R2 — ALL MERGED ✅ Team B Dicom 86.0% 머지 완료. S06 준비)
 DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/`
 
 ---
