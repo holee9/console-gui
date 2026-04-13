@@ -4,7 +4,7 @@
 > 자신의 팀 행(row)에서 파일명을 확인한 뒤, 해당 파일만 읽는다.
 > 상태가 `PR_OPEN` 또는 `IDLE`이면 → 새 DISPATCH 없음 → Commander Center에 IDLE 보고.
 
-Updated: 2026-04-13 (S06-R1 — Design, Team B, QA ACTIVE. Coordinator, Team A, RA IDLE)
+Updated: 2026-04-13 (S06-R2 — Team B, Team A, Coordinator, RA ACTIVE. Design QA IDLE)
 DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/`
 
 ---
@@ -13,14 +13,14 @@ DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/
 
 | 팀 | 현재 DISPATCH 파일 | 상태 | 비고 |
 |----|-------------------|------|------|
-| **Coordinator** | -- | **IDLE** | S05-R2 완료, 다음 DISPATCH 대기 |
-| **QA** | `S06-R1-qa.md` | **ACTIVE** | 전체 빌드 검증 + 커버리지 리포트 |
-| **RA** | -- | **IDLE** | S05-R2 RMP v2.0 완료, 다음 DISPATCH 대기 |
-| **Design** | `S06-R1-design.md` | **ACTIVE** | SettingsView PPT Slide 14-22 정합성 개선 |
-| **Team A** | -- | **IDLE** | S05-R2 완료, 다음 DISPATCH 대기 |
-| **Team B** | `S06-R1-team-b.md` | **ACTIVE** | CDBurning 커버리지 + Dicom 회귀 방지 |
+| **Coordinator** | `S06-R2-coordinator.md` | **ACTIVE** | Detector DI 조건부 등록 준비 |
+| **QA** | -- | **IDLE** | S06-R1 완료 (PR #88 merged) |
+| **RA** | `S06-R2-ra.md` | **ACTIVE** | AbyzSdk + HME libxd2 SBOM/SOUP 등록 |
+| **Design** | -- | **IDLE** | S06-R1 완료 (PR #89 merged) |
+| **Team A** | `S06-R2-team-a.md` | **ACTIVE** | Data.Tests 검증 + SystemAdmin 85% |
+| **Team B** | `S06-R2-team-b.md` | **ACTIVE** | AbyzSdk 어댑터 구현 + HME 스텁 + Incident/Dose 90% |
 
-**→ S06-R1 시작. ACTIVE 팀은 DISPATCH 파일 읽고 즉시 착수.**
+**→ S06-R2 시작. ACTIVE 팀은 DISPATCH 파일 읽고 즉시 착수.**
 
 ---
 
@@ -72,7 +72,8 @@ IDLE 보고 형식:
 | 2026-04-11 | S04 R1+R2 | S04-R{1,2}-*.md | `completed/` 아카이브 (PR #77-82 머지 완료) |
 | 2026-04-12 | S05 R1 | S05-R1-*.md | `completed/` 아카이브 (전팀 완료) |
 | 2026-04-13 | S05 R2 | S05-R2-*.md | ALL MERGED ✅ |
-| 2026-04-13 | **S06 R1** | **S06-R1-*.md** | **ACTIVE — Design, Team B, QA** |
+| 2026-04-13 | S06 R1 | S06-R1-*.md | ALL MERGED ✅ (PR #88-90) |
+| 2026-04-13 | **S06 R2** | **S06-R2-*.md** | **ACTIVE — Team B, A, Coordinator, RA** |
 
 ---
 

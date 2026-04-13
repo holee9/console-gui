@@ -80,5 +80,33 @@ git push origin team/team-design
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: SettingsView PPT 정합성 (P1) | NOT_STARTED | -- | Slide 14-22 |
-| Git 완료 프로토콜 | NOT_STARTED | -- | PR URL: -- |
+| Task 1: SettingsView PPT 정합성 (P1) | **COMPLETED** | 2026-04-13 09:15 | Build 0 errors, 524 tests passed. Issue #85. DesignTime+접근성+10탭 폼 구현 |
+| Git 완료 프로토콜 | **COMPLETED** | 2026-04-13 09:16 | commit 0ce907f, pushed to team/team-design |
+
+### Build Evidence
+
+```
+HnVue.UI Build: 0 errors (Release)
+HnVue.UI.Tests: 524 passed, 0 failed, 0 skipped
+Full Solution: errors in HnVue.Data.Tests (other team code) - Design modules clean
+```
+
+### PPT 1:1 Comparison
+
+| PPT Slide | Element | Status |
+|-----------|---------|--------|
+| 14 (System) | Access Notice + Priority + Language + Auto Logout | Match |
+| 15 (Account) | ID + Password + Role ComboBox + DataGrid | Match |
+| 16 (Detector) | Type + Connection + IP + Calibration | Match |
+| 17 (Generator) | Model + Port + Baud Rate | Match |
+| 18 (Network) | PACS + Worklist + Print merged | Match |
+| 19 (Display) | Theme + Window Mode + Overlays | Match |
+| 20 (Option) | Auto-receive + Auto-print + W/L default | Match |
+| 21 (Database) | Path + Backup + Restore | Match |
+| 22 (DicomSet) | AE Title + Station + Transfer Syntax | Match |
+| 22 (RIS Code) | Matching + Un-Matched DataGrids | Match |
+
+### Files Modified (Scope: SettingsView ONLY)
+
+- `src/HnVue.UI/Views/SettingsView.xaml` (modified)
+- `src/HnVue.UI/DesignTime/DesignTimeSettingsViewModel.cs` (new)
