@@ -4,6 +4,7 @@ using Xunit;
 using HnVue.Common.Enums;
 using HnVue.Common.Models;
 using HnVue.Common.Results;
+using HnVue.UI.Contracts.Models;
 using HnVue.UI.ViewModels;
 using NSubstitute;
 
@@ -33,6 +34,94 @@ public sealed class WorkflowViewModelTests
         var sut = new WorkflowViewModel(_workflowEngine, _securityContext);
 
         sut.CurrentState.Should().Be(WorkflowState.PatientSelected.ToString());
+    }
+
+    [Fact]
+    public void Constructor_SetsWorkflowStateFromEngine()
+    {
+        _workflowEngine.CurrentState.Returns(WorkflowState.PatientSelected);
+        _workflowEngine.CurrentSafeState.Returns(SafeState.Idle);
+
+        var sut = new WorkflowViewModel(_workflowEngine, _securityContext);
+
+        sut.WorkflowState.Should().Be(WorkflowState.PatientSelected);
+    }
+
+    [Fact]
+    public void Constructor_SetsWorkflowState_ToIdle_ByDefault()
+    {
+        var sut = CreateSut();
+
+        sut.WorkflowState.Should().Be(WorkflowState.Idle);
+    }
+
+    [Fact]
+    public void StateChanged_Event_UpdatesWorkflowState()
+    {
+        var sut = CreateSut();
+
+        _workflowEngine.CurrentState.Returns(WorkflowState.ReadyToExpose);
+        RaiseStateChanged(sut, WorkflowState.Idle, WorkflowState.ReadyToExpose);
+
+        sut.WorkflowState.Should().Be(WorkflowState.ReadyToExpose);
+    }
+
+    [Fact]
+    public void StateChanged_Event_UpdatesWorkflowState_ToExposing()
+    {
+        var sut = CreateSut();
+
+        _workflowEngine.CurrentState.Returns(WorkflowState.Exposing);
+        RaiseStateChanged(sut, WorkflowState.ReadyToExpose, WorkflowState.Exposing);
+
+        sut.WorkflowState.Should().Be(WorkflowState.Exposing);
+    }
+
+    [Fact]
+    public void StateChanged_Event_UpdatesWorkflowState_ToError()
+    {
+        var sut = CreateSut();
+
+        _workflowEngine.CurrentState.Returns(WorkflowState.Error);
+        RaiseStateChanged(sut, WorkflowState.Exposing, WorkflowState.Error);
+
+        sut.WorkflowState.Should().Be(WorkflowState.Error);
+    }
+
+    [Fact]
+    public void PreviewImage_IsNull_ByDefault()
+    {
+        var sut = CreateSut();
+
+        sut.PreviewImage.Should().BeNull();
+    }
+
+    [Fact]
+    public void ThumbnailList_IsEmpty_ByDefault()
+    {
+        var sut = CreateSut();
+
+        sut.ThumbnailList.Should().BeEmpty();
+    }
+
+    [Fact]
+    public void ThumbnailList_CanAdd_StudyItems()
+    {
+        var sut = CreateSut();
+        var record = new StudyRecord("ST-001", "P-001", DateTimeOffset.UtcNow, "Chest PA", "ACC-001", "CHEST");
+        var item = new StudyItem(record);
+
+        sut.ThumbnailList.Add(item);
+
+        sut.ThumbnailList.Should().ContainSingle().Which.Study.Should().Be(record);
+    }
+
+    [Fact]
+    public void SelectedPatient_IsNull_ByDefault()
+    {
+        var sut = CreateSut();
+
+        sut.SelectedPatient.Should().BeNull();
     }
 
     [Fact]
