@@ -49,6 +49,21 @@ public sealed class EfDoseRepositoryTests
         var repo = new EfDoseRepository(ctx);
         var dose = CreateSampleDose();
 
+        // Arrange - Create parent study for FK constraint
+        ctx.Patients.Add(new Data.Entities.PatientEntity
+        {
+            PatientId = "P001",
+            Name = "Test^Patient",
+            CreatedAtTicks = DateTimeOffset.UtcNow.Ticks
+        });
+        ctx.Studies.Add(new Data.Entities.StudyEntity
+        {
+            StudyInstanceUid = "STUDY-001",
+            PatientId = "P001",
+            StudyDateTicks = DateTimeOffset.UtcNow.Ticks
+        });
+        await ctx.SaveChangesAsync();
+
         // Act
         var result = await repo.SaveAsync(dose);
 
@@ -80,7 +95,21 @@ public sealed class EfDoseRepositoryTests
         var repo = new EfDoseRepository(ctx);
         var dose = CreateSampleDose();
 
-        // Arrange
+        // Arrange - Create parent study for FK constraint
+        ctx.Patients.Add(new Data.Entities.PatientEntity
+        {
+            PatientId = "P001",
+            Name = "Test^Patient",
+            CreatedAtTicks = DateTimeOffset.UtcNow.Ticks
+        });
+        ctx.Studies.Add(new Data.Entities.StudyEntity
+        {
+            StudyInstanceUid = "STUDY-001",
+            PatientId = "P001",
+            StudyDateTicks = DateTimeOffset.UtcNow.Ticks
+        });
+        await ctx.SaveChangesAsync();
+
         await repo.SaveAsync(dose);
 
         // Act

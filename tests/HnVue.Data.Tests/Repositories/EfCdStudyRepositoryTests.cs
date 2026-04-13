@@ -28,12 +28,39 @@ public sealed class EfCdStudyRepositoryTests
 
     private static ImageEntity CreateSampleImage(
         string studyInstanceUid = "STUDY-001",
-        string filePath = "/data/images/image.dcm") =>
+        string filePath = "/data/images/image.dcm",
+        string imageId = "IMG-001") =>
         new()
         {
+            ImageId = imageId,
             StudyInstanceUid = studyInstanceUid,
             FilePath = filePath
         };
+
+    private static async Task EnsureStudyExistsAsync(HnVueDbContext ctx, string studyInstanceUid)
+    {
+        if (!await ctx.Studies.AnyAsync(s => s.StudyInstanceUid == studyInstanceUid))
+        {
+            var patientId = $"P-{studyInstanceUid}";
+            if (!await ctx.Patients.AnyAsync(p => p.PatientId == patientId))
+            {
+                ctx.Patients.Add(new PatientEntity
+                {
+                    PatientId = patientId,
+                    Name = "Test^Patient",
+                    CreatedAtTicks = DateTimeOffset.UtcNow.Ticks
+                });
+            }
+
+            ctx.Studies.Add(new StudyEntity
+            {
+                StudyInstanceUid = studyInstanceUid,
+                PatientId = patientId,
+                StudyDateTicks = DateTimeOffset.UtcNow.Ticks
+            });
+            await ctx.SaveChangesAsync();
+        }
+    }
 
     // ── GetFilesForStudyAsync ───────────────────────────────────────────────────────
 
@@ -46,9 +73,11 @@ public sealed class EfCdStudyRepositoryTests
         var repo = new EfCdStudyRepository(ctx);
 
         // Arrange
-        ctx.Images.Add(CreateSampleImage("STUDY-001", "/path1/image1.dcm"));
-        ctx.Images.Add(CreateSampleImage("STUDY-001", "/path1/image2.dcm"));
-        ctx.Images.Add(CreateSampleImage("STUDY-002", "/path2/image3.dcm"));
+        await EnsureStudyExistsAsync(ctx, "STUDY-001");
+        await EnsureStudyExistsAsync(ctx, "STUDY-002");
+        ctx.Images.Add(CreateSampleImage("STUDY-001", "/path1/image1.dcm", "IMG-001"));
+        ctx.Images.Add(CreateSampleImage("STUDY-001", "/path1/image2.dcm", "IMG-002"));
+        ctx.Images.Add(CreateSampleImage("STUDY-002", "/path2/image3.dcm", "IMG-003"));
         await ctx.SaveChangesAsync();
 
         // Act
@@ -69,7 +98,8 @@ public sealed class EfCdStudyRepositoryTests
         var repo = new EfCdStudyRepository(ctx);
 
         // Arrange - No images added for this study
-        ctx.Images.Add(CreateSampleImage("STUDY-002", "/path2/image.dcm"));
+        await EnsureStudyExistsAsync(ctx, "STUDY-002");
+        ctx.Images.Add(CreateSampleImage("STUDY-002", "/path2/image.dcm", "IMG-010"));
         await ctx.SaveChangesAsync();
 
         // Act
@@ -94,15 +124,18 @@ public sealed class EfCdStudyRepositoryTests
     }
 
     [Fact]
-    public async Task GetFilesForStudyAsync_EmptyStudyInstanceUid_ThrowsArgumentNullException()
+    public async Task GetFilesForStudyAsync_EmptyStudyInstanceUid_ReturnsEmptyList()
     {
         var (ctx, connection) = CreateSqliteContext();
         await using var _ctx = ctx;
         await using var _conn = connection;
         var repo = new EfCdStudyRepository(ctx);
 
-        // Act & Assert
-        await Assert.ThrowsAsync<ArgumentNullException>(
-            () => repo.GetFilesForStudyAsync(string.Empty));
+        // Act - Empty string is not null, returns empty result
+        var result = await repo.GetFilesForStudyAsync(string.Empty);
+
+        // Assert - No match for empty UID
+        result.IsSuccess.Should().BeTrue();
+        result.Value.Should().BeEmpty();
     }
 }
