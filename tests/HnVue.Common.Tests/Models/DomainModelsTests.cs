@@ -209,4 +209,83 @@ public sealed class DomainModelsTests
         settings.Generator.BaudRate.Should().Be(115200);
         settings.Generator.TimeoutMs.Should().Be(3000);
     }
+
+    // ── DetectorStatus ────────────────────────────────────────────────────────
+
+    [Fact]
+    public void DetectorStatus_SetsAllProperties()
+    {
+        var ts = DateTimeOffset.UtcNow;
+        var status = new DetectorStatus
+        {
+            State = DetectorState.Idle,
+            IsReadyToArm = true,
+            TemperatureCelsius = 25.5,
+            SerialNumber = "FPD-001",
+            FirmwareVersion = "2.1.0",
+            Timestamp = ts,
+        };
+
+        status.State.Should().Be(DetectorState.Idle);
+        status.IsReadyToArm.Should().BeTrue();
+        status.TemperatureCelsius.Should().Be(25.5);
+        status.SerialNumber.Should().Be("FPD-001");
+        status.FirmwareVersion.Should().Be("2.1.0");
+        status.Timestamp.Should().Be(ts);
+    }
+
+    [Fact]
+    public void DetectorStatus_Defaults()
+    {
+        var status = new DetectorStatus
+        {
+            State = DetectorState.Disconnected,
+            IsReadyToArm = false,
+            TemperatureCelsius = 0,
+        };
+
+        status.SerialNumber.Should().BeNull();
+        status.FirmwareVersion.Should().BeNull();
+        status.Timestamp.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(5));
+    }
+
+    // ── DetectorStateChangedEventArgs ──────────────────────────────────────────
+
+    [Fact]
+    public void DetectorStateChangedEventArgs_SetsAllProperties()
+    {
+        var args = new DetectorStateChangedEventArgs(DetectorState.Disconnected, DetectorState.Idle, "Power on");
+
+        args.PreviousState.Should().Be(DetectorState.Disconnected);
+        args.NewState.Should().Be(DetectorState.Idle);
+        args.Reason.Should().Be("Power on");
+    }
+
+    [Fact]
+    public void DetectorStateChangedEventArgs_NullReason()
+    {
+        var args = new DetectorStateChangedEventArgs(DetectorState.Idle, DetectorState.Armed);
+
+        args.PreviousState.Should().Be(DetectorState.Idle);
+        args.NewState.Should().Be(DetectorState.Armed);
+        args.Reason.Should().BeNull();
+    }
+
+    // ── ImageAcquiredEventArgs ─────────────────────────────────────────────────
+
+    [Fact]
+    public void ImageAcquiredEventArgs_SetsImage()
+    {
+        var rawImage = new RawDetectorImage(512, 512, 14, new byte[512 * 512 * 2]);
+        var args = new ImageAcquiredEventArgs(rawImage);
+
+        args.Image.Should().BeSameAs(rawImage);
+    }
+
+    [Fact]
+    public void ImageAcquiredEventArgs_NullImage_Throws()
+    {
+        var act = () => new ImageAcquiredEventArgs(null!);
+        act.Should().Throw<ArgumentNullException>();
+    }
 }
