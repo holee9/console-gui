@@ -41,9 +41,7 @@ public sealed class EfCdStudyRepositoryTests
     [Fact]
     public async Task GetFilesForStudyAsync_ExistingStudy_ReturnsFilePaths()
     {
-        var (ctx, connection) = CreateSqliteContext();
-        await using var _ctx = ctx;
-        using var _conn = connection;
+        await using var (ctx, connection) = CreateSqliteContext();
         var repo = new EfCdStudyRepository(ctx);
 
         // Arrange
@@ -64,9 +62,7 @@ public sealed class EfCdStudyRepositoryTests
     [Fact]
     public async Task GetFilesForStudyAsync_NoImages_ReturnsEmptyList()
     {
-        var (ctx, connection) = CreateSqliteContext();
-        await using var _ctx = ctx;
-        using var _conn = connection;
+        await using var (ctx, connection) = CreateSqliteContext();
         var repo = new EfCdStudyRepository(ctx);
 
         // Arrange - No images added for this study
@@ -84,9 +80,7 @@ public sealed class EfCdStudyRepositoryTests
     [Fact]
     public async Task GetFilesForStudyAsync_NullStudyInstanceUid_ThrowsArgumentNullException()
     {
-        var (ctx, connection) = CreateSqliteContext();
-        await using var _ctx = ctx;
-        using var _conn = connection;
+        await using var (ctx, connection) = CreateSqliteContext();
         var repo = new EfCdStudyRepository(ctx);
 
         // Act & Assert
@@ -97,9 +91,7 @@ public sealed class EfCdStudyRepositoryTests
     [Fact]
     public async Task GetFilesForStudyAsync_EmptyStudyInstanceUid_ThrowsArgumentNullException()
     {
-        var (ctx, connection) = CreateSqliteContext();
-        await using var _ctx = ctx;
-        using var _conn = connection;
+        await using var (ctx, connection) = CreateSqliteContext();
         var repo = new EfCdStudyRepository(ctx);
 
         // Act & Assert

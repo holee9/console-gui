@@ -61,9 +61,7 @@ public sealed class EfWorklistRepositoryTests
     [Fact]
     public async Task QueryTodayAsync_TodaysStudies_ReturnsWorklistItems()
     {
-        var (ctx, connection) = CreateSqliteContext();
-        await using var _ctx = ctx;
-        using var _conn = connection;
+        await using var (ctx, connection) = CreateSqliteContext();
         var repo = new EfWorklistRepository(ctx);
 
         // Arrange - Add study scheduled for today
@@ -90,9 +88,7 @@ public sealed class EfWorklistRepositoryTests
     [Fact]
     public async Task QueryTodayAsync_NoStudiesToday_ReturnsEmptyList()
     {
-        var (ctx, connection) = CreateSqliteContext();
-        await using var _ctx = ctx;
-        using var _conn = connection;
+        await using var (ctx, connection) = CreateSqliteContext();
         var repo = new EfWorklistRepository(ctx);
 
         // Arrange - Add study scheduled for yesterday
@@ -113,9 +109,7 @@ public sealed class EfWorklistRepositoryTests
     [Fact]
     public async Task QueryTodayAsync_MultipleStudiesToday_ReturnsAllItems()
     {
-        var (ctx, connection) = CreateSqliteContext();
-        await using var _ctx = ctx;
-        using var _conn = connection;
+        await using var (ctx, connection) = CreateSqliteContext();
         var repo = new EfWorklistRepository(ctx);
 
         // Arrange - Add multiple studies for today
@@ -150,9 +144,7 @@ public sealed class EfWorklistRepositoryTests
     [Fact]
     public async Task QueryTodayAsync_WithNullAccessionNumber_ReturnsEmptyAccession()
     {
-        var (ctx, connection) = CreateSqliteContext();
-        await using var _ctx = ctx;
-        using var _conn = connection;
+        await using var (ctx, connection) = CreateSqliteContext();
         var repo = new EfWorklistRepository(ctx);
 
         // Arrange
@@ -173,9 +165,7 @@ public sealed class EfWorklistRepositoryTests
     [Fact]
     public async Task QueryTodayAsync_PreservesStudyDate()
     {
-        var (ctx, connection) = CreateSqliteContext();
-        await using var _ctx = ctx;
-        using var _conn = connection;
+        await using var (ctx, connection) = CreateSqliteContext();
         var repo = new EfWorklistRepository(ctx);
 
         // Arrange

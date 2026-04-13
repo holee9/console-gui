@@ -43,9 +43,7 @@ public sealed class EfIncidentRepositoryTests
     [Fact]
     public async Task SaveAsync_ValidIncident_ReturnsSuccess()
     {
-        var (ctx, connection) = CreateSqliteContext();
-        await using var _ctx = ctx;
-        using var _conn = connection;
+        await using var (ctx, connection) = CreateSqliteContext();
         var repo = new EfIncidentRepository(ctx);
         var incident = CreateSampleIncident();
 
@@ -59,9 +57,7 @@ public sealed class EfIncidentRepositoryTests
     [Fact]
     public async Task SaveAsync_NullIncident_ThrowsArgumentNullException()
     {
-        var (ctx, connection) = CreateSqliteContext();
-        await using var _ctx = ctx;
-        using var _conn = connection;
+        await using var (ctx, connection) = CreateSqliteContext();
         var repo = new EfIncidentRepository(ctx);
 
         // Act & Assert
@@ -74,9 +70,7 @@ public sealed class EfIncidentRepositoryTests
     [Fact]
     public async Task GetBySeverityAsync_ExistingSeverity_ReturnsIncidents()
     {
-        var (ctx, connection) = CreateSqliteContext();
-        await using var _ctx = ctx;
-        using var _conn = connection;
+        await using var (ctx, connection) = CreateSqliteContext();
         var repo = new EfIncidentRepository(ctx);
 
         // Arrange
@@ -96,9 +90,7 @@ public sealed class EfIncidentRepositoryTests
     [Fact]
     public async Task GetBySeverityAsync_NoMatchingSeverity_ReturnsEmptyList()
     {
-        var (ctx, connection) = CreateSqliteContext();
-        await using var _ctx = ctx;
-        using var _conn = connection;
+        await using var (ctx, connection) = CreateSqliteContext();
         var repo = new EfIncidentRepository(ctx);
 
         // Arrange
@@ -116,9 +108,7 @@ public sealed class EfIncidentRepositoryTests
     [Fact]
     public async Task GetBySeverityAsync_ReturnsOrderedByOccurredAtDescending()
     {
-        var (ctx, connection) = CreateSqliteContext();
-        await using var _ctx = ctx;
-        using var _conn = connection;
+        await using var (ctx, connection) = CreateSqliteContext();
         var repo = new EfIncidentRepository(ctx);
 
         // Arrange
@@ -150,9 +140,7 @@ public sealed class EfIncidentRepositoryTests
     [Fact]
     public async Task ResolveAsync_ExistingIncident_ResolvesSuccessfully()
     {
-        var (ctx, connection) = CreateSqliteContext();
-        await using var _ctx = ctx;
-        using var _conn = connection;
+        await using var (ctx, connection) = CreateSqliteContext();
         var repo = new EfIncidentRepository(ctx);
 
         // Arrange
@@ -178,9 +166,7 @@ public sealed class EfIncidentRepositoryTests
     [Fact]
     public async Task ResolveAsync_NonExistingIncident_ReturnsNotFound()
     {
-        var (ctx, connection) = CreateSqliteContext();
-        await using var _ctx = ctx;
-        using var _conn = connection;
+        await using var (ctx, connection) = CreateSqliteContext();
         var repo = new EfIncidentRepository(ctx);
 
         // Act
@@ -194,9 +180,7 @@ public sealed class EfIncidentRepositoryTests
     [Fact]
     public async Task ResolveAsync_AlreadyResolved_ReturnsValidationFailed()
     {
-        var (ctx, connection) = CreateSqliteContext();
-        await using var _ctx = ctx;
-        using var _conn = connection;
+        await using var (ctx, connection) = CreateSqliteContext();
         var repo = new EfIncidentRepository(ctx);
 
         // Arrange
@@ -217,9 +201,7 @@ public sealed class EfIncidentRepositoryTests
     [Fact]
     public async Task ResolveAsync_NullIncidentId_ThrowsArgumentNullException()
     {
-        var (ctx, connection) = CreateSqliteContext();
-        await using var _ctx = ctx;
-        using var _conn = connection;
+        await using var (ctx, connection) = CreateSqliteContext();
         var repo = new EfIncidentRepository(ctx);
 
         // Act & Assert
@@ -230,9 +212,7 @@ public sealed class EfIncidentRepositoryTests
     [Fact]
     public async Task ResolveAsync_NullResolution_ThrowsArgumentNullException()
     {
-        var (ctx, connection) = CreateSqliteContext();
-        await using var _ctx = ctx;
-        using var _conn = connection;
+        await using var (ctx, connection) = CreateSqliteContext();
         var repo = new EfIncidentRepository(ctx);
 
         // Act & Assert
