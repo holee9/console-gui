@@ -1,5 +1,7 @@
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 using HnVue.Common.Enums;
+using HnVue.Common.Models;
 
 namespace HnVue.UI.Contracts.ViewModels;
 
@@ -20,6 +22,15 @@ public interface IWorkflowViewModel : IViewModelBase
 
     /// <summary>Gets the localised display label for the current safety state.</summary>
     string SafeStateLabel { get; }
+
+    /// <summary>Gets the file path of the current preview image for the acquisition preview panel.</summary>
+    string? PreviewImagePath { get; }
+
+    /// <summary>Gets the thumbnail strip items for the acquisition workflow.</summary>
+    ObservableCollection<StudyRecord> ThumbnailList { get; }
+
+    /// <summary>Gets or sets the currently selected patient for the patient info panel.</summary>
+    PatientRecord? SelectedPatient { get; set; }
 
     /// <summary>Gets the command that transitions the system into exposure-ready state.</summary>
     ICommand PrepareExposureCommand { get; }

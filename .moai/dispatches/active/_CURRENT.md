@@ -4,7 +4,7 @@
 > 자신의 팀 행(row)에서 파일명을 확인한 뒤, 해당 파일만 읽는다.
 > 상태가 `PR_OPEN` 또는 `IDLE`이면 → 새 DISPATCH 없음 → Commander Center에 IDLE 보고.
 
-Updated: 2026-04-12 (RA MERGED)
+Updated: 2026-04-13 (S05-R2 전팀 ACTIVE — Coordinator/RA MERGED, Design/QA/TeamA/TeamB 작업 진행)
 DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/`
 
 ---
@@ -13,14 +13,14 @@ DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/
 
 | 팀 | 현재 DISPATCH 파일 | 상태 | 비고 |
 |----|-------------------|------|------|
-| **Coordinator** | `S05-R1-coordinator.md` | **MERGED** ✅ | EfRepository 테스트 + PHI Converter — 53/53 통과, main 머지 완료 |
-| **QA** | `S05-R1-qa.md` | **MERGED** ✅ | S05 게이트 통과 — 빌드 에러 0, 아키텍처 11/11 PASS |
-| **RA** | `S05-R1-ra.md` | **MERGED** ✅ | DOC-042 CMP v2.0 — IEC 62304 §8.1 충족, main 머지 완료 |
-| **Design** | `S05-R1-design.md` | **MERGED** ✅ | PatientListView UISPEC-002 준수율 44%→70% 개선, main 머지 완료 |
-| **Team A** | `S05-R1-team-a.md` | **ACTIVE** | Data 모듈 커버리지 85%+ |
-| **Team B** | `S05-R1-team-b.md` | **MERGED** ✅ | Dicom 46+Update 142+Workflow 179 테스트 통과, main 머지 완료 |
+| **Coordinator** | `S05-R2-coordinator-2.md` | **MERGED** ✅ | WorkflowView ViewModel main 머지 완료 (b1418e3) |
+| **QA** | `S05-R2-qa.md` | **ACTIVE** | 릴리즈 준비도 보고서 생성 (DOC-034) |
+| **RA** | `S05-R2-ra.md` | **MERGED** ✅ | RMP v2.0 완료 — 4-Tier 우선순위 + MR-072 통합, main 머지 완료 |
+| **Design** | `S05-R2-design-4.md` | **ACTIVE** | WorkflowView 3열 레이아웃 — ViewModel 준비 완료, 착수 가능 |
+| **Team A** | `S05-R2-team-a.md` | **ACTIVE** | SPEC-INFRA-002 PHI AES-256-GCM 암호화 (P0-Blocker) |
+| **Team B** | `S05-R2-team-b.md` | **ACTIVE** | SPEC-TEAMB-FIX-001 Dicom 커버리지 43%→80% + 방어적 개선 |
 
-**→ S05 Round 1 시작. 각 팀은 자신의 DISPATCH 파일을 읽고 즉시 착수.**
+**→ S05 Round 2 시작. ACTIVE 팀은 자신의 DISPATCH 파일을 읽고 즉시 착수.**
 
 ---
 
@@ -31,7 +31,7 @@ DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/
 팀 브랜치에서 이 파일들을 절대 수정하지 마세요.
 → .gitattributes에 merge=ours 규칙 추가됨 (자동 충돌 방지)
 
-상태 업데이트: 반드시 .moai/dispatches/active/S05-R1-{team}.md 파일만 수정
+상태 업데이트: 반드시 .moai/dispatches/active/S05-R2-{team}.md 파일만 수정
 ```
 
 ---
@@ -50,14 +50,14 @@ git push origin team/{your-team}
 ## IDLE 상태 팀 행동 지침
 
 ```
-상태가 PR_OPEN 또는 IDLE인 경우:
+상태가 IDLE인 경우:
 1. 아래 IDLE 보고를 Commander Center에 전달
 2. 추가 작업을 임의로 시작하지 않는다
 
 IDLE 보고 형식:
   State: IDLE
-  Reason: _CURRENT.md 상태가 PR_OPEN — 신규 DISPATCH 없음
-  PR: [PR 번호]
+  Reason: _CURRENT.md 상태가 IDLE — 신규 DISPATCH 없음
+  Last completed: [마지막 완료 작업 요약]
   Awaiting: New DISPATCH from Commander Center
 ```
 
@@ -70,7 +70,8 @@ IDLE 보고 형식:
 | 2026-04-08 | Phase 0 | DISPATCH-*-2026-04-08.md | `completed/` 아카이브 |
 | 2026-04-09 | S03 QA Coverage | DISPATCH-*-2026-04-09.md | `completed/` 아카이브 |
 | 2026-04-11 | S04 R1+R2 | S04-R{1,2}-*.md | `completed/` 아카이브 (PR #77-82 머지 완료) |
-| 2026-04-12 | **S05 R1** | **S05-R1-*.md** | **ACTIVE — 현재** |
+| 2026-04-12 | S05 R1 | S05-R1-*.md | `completed/` 아카이브 (전팀 완료) |
+| 2026-04-13 | **S05 R2** | **S05-R2-*.md** | **ACTIVE — 전팀 DISPATCH 발행 완료** |
 
 ---
 
