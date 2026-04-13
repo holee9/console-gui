@@ -176,6 +176,16 @@ git push origin team/ra
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: DOC-019 SBOM 업데이트 (P1) | NOT_STARTED | -- | 2개 컴포넌트 추가 |
-| Task 2: DOC-033 SOUP 업데이트 (P1) | NOT_STARTED | -- | 2개 항목 추가 |
-| Git 완료 프로토콜 | NOT_STARTED | -- | PR URL: -- |
+| Task 1: DOC-019 SBOM 업데이트 (P1) | ✅ COMPLETED | 2026-04-13 12:40 | v3.0: 5개 컴포넌트 추가 (SBOM-046~050) |
+| Task 2: DOC-033 SOUP 업데이트 (P1) | ✅ COMPLETED | 2026-04-13 12:40 | v2.1: 5개 항목 SOUP 평가 완료 (SOUP-046~050) |
+| Git 완료 프로토콜 | ✅ COMPLETED | 2026-04-13 12:40 | Commit: 46456bd, Push: team/ra → Issue #92 |
+
+### 빌드 증거
+```bash
+git add docs/regulatory/ docs/verification/
+git commit -m "docs(ra): S06-R2 신규 Detector SDK SBOM + SOUP 등록 (#92)"
+git push origin team/ra
+```
+- 변경 파일: 2개 (DOC-019 v2.0→v3.0, DOC-033 v1.0→v2.1)
+- 추가 라인: 216 lines
+- Commit hash: 46456bd
