@@ -4,7 +4,7 @@
 > 자신의 팀 행(row)에서 파일명을 확인한 뒤, 해당 파일만 읽는다.
 > 상태가 `PR_OPEN` 또는 `IDLE`이면 → 새 DISPATCH 없음 → Commander Center에 IDLE 보고.
 
-Updated: 2026-04-14 (S07-R1 — Team A MERGED. Team B, QA, RA ACTIVE. Coordinator, Design IDLE)
+Updated: 2026-04-14 (S07-R1 — Team A, Team B MERGED. QA, RA ACTIVE. Coordinator, Design IDLE)
 DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/`
 
 ---
@@ -18,9 +18,9 @@ DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/
 | **RA** | `S07-R1-ra.md` | **ACTIVE** | CMP 완성 + RTM 업데이트 |
 | **Design** | -- | **IDLE** | S06-R1 완료 |
 | **Team A** | `S07-R1-team-a.md` | **MERGED** | Security 286P + Update 191P + Common 126P |
-| **Team B** | `S07-R1-team-b.md` | **ACTIVE** | Dicom/Workflow/Imaging/Detector 85% |
+| **Team B** | `S07-R1-team-b.md` | **MERGED** | Dicom 91.9% + Workflow 88.1% + Detector 99.1% |
 
-**→ S07-R1 발행. Team B, Team A, QA, RA ACTIVE.**
+**→ S07-R1 진행 중. Team A, Team B MERGED. QA, RA ACTIVE.**
 
 ---
 
