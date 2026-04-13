@@ -22,6 +22,21 @@
     </Reference>
   </ItemGroup>
 
+  <!-- ── AbyzSdk (자사 BlueSDK) ──────────────────────────────────────────────
+       Managed .NET SDK for 자사 CsI+FPD detector.
+       DLL 위치: sdk\own-detector\bluesdk\AbyzSdk.dll
+  ─────────────────────────────────────────────────────────────────────────── -->
+  <ItemGroup Condition="Exists('$(SolutionDir)sdk\own-detector\bluesdk\AbyzSdk.dll')">
+    <Reference Include="AbyzSdk">
+      <HintPath>$(SolutionDir)sdk\own-detector\bluesdk\AbyzSdk.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="AbyzSdk.Imaging">
+      <HintPath>$(SolutionDir)sdk\own-detector\bluesdk\AbyzSdk.Imaging.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+  </ItemGroup>
+
   <!-- ── 타사 (Third-Party) Detector SDKs ──────────────────────────────────
        각 타사 vendor SDK는 sdk\third-party\{vendor-name}\ 폴더에 배치합니다.
        아래 예시를 참고하여 vendor별로 블록을 추가하세요:
