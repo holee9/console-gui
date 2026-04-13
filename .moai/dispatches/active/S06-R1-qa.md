@@ -67,6 +67,40 @@ git push origin team/qa
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: 전체 빌드+테스트 (P1) | NOT_STARTED | -- | 0 errors, all pass |
-| Task 2: 커버리지 리포트 (P2) | NOT_STARTED | -- | 모듈별 현황 |
-| Git 완료 프로토콜 | NOT_STARTED | -- | PR URL: -- |
+| Task 1: 전체 빌드+테스트 (P1) | COMPLETED | 2026-04-13 18:20 | 0 errors/707 warnings, 320P/0F, tuple deconstruction 6파일 수정 |
+| Task 2: 커버리지 리포트 (P2) | COMPLETED | 2026-04-13 18:25 | Safety-Critical: Dose 89.9%/Incident 79.8% FAIL, Security 92.3%/Update 93.1% PASS. Standard 6모듈 미달 |
+| Git 완료 프로토콜 | IN_PROGRESS | -- | Issue #87, PR: CC exclusive |
+
+## Build Evidence
+
+```
+dotnet build HnVue.sln -c Release: 0 errors, 707 warnings
+dotnet test HnVue.sln: 320 Passed, 0 Failed, 0 Errors
+```
+
+## Coverage Summary (S06-R1)
+
+| Module | Line Coverage | Target | Status | Classification |
+|--------|-------------|--------|--------|---------------|
+| HnVue.Dose | 89.9% | 90% | FAIL (-0.1%) | Safety-Critical |
+| HnVue.Incident | 79.8% | 90% | FAIL (-10.2%) | Safety-Critical |
+| HnVue.Security | 92.3% | 90% | PASS | Safety-Critical |
+| HnVue.Update | 93.1% | 90% | PASS | Safety-Critical |
+| HnVue.Common | 88.8% | 85% | PASS | Standard |
+| HnVue.Data | 92.7% | 85% | PASS | Standard |
+| HnVue.Detector | 80.3% | 85% | FAIL (-4.7%) | Standard |
+| HnVue.Dicom | 84.9% | 85% | FAIL (-0.1%) | Standard |
+| HnVue.Imaging | 87.5% | 85% | PASS | Standard |
+| HnVue.PatientManagement | 100% | 85% | PASS | Standard |
+| HnVue.CDBurning | 100% | 85% | PASS | Standard |
+| HnVue.SystemAdmin | 62.9% | 85% | FAIL (-22.1%) | Standard |
+| HnVue.UI | 84.6% | 85% | FAIL (-0.4%) | Standard |
+| HnVue.UI.Contracts | 100% | 85% | PASS | Standard |
+| HnVue.UI.ViewModels | 80.9% | 85% | FAIL (-4.1%) | Standard |
+| HnVue.Workflow | 91.5% | 85% | PASS | Standard |
+
+## Build Fix Applied
+
+Data.Tests 6파일 `await using var (ctx, connection)` tuple deconstruction 구문 오류 수정:
+- EfWorklistRepositoryTests.cs, EfCdStudyRepositoryTests.cs, EfDoseRepositoryTests.cs
+- EfIncidentRepositoryTests.cs, EfUpdateRepositoryTests.cs, EfSystemSettingsRepositoryTests.cs
