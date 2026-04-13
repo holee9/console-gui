@@ -18,6 +18,8 @@ using HnVue.UI.ViewModels;
 using HnVue.App.Services;
 using HnVue.Update;
 using HnVue.Detector;
+using HnVue.Detector.OwnDetector;
+using HnVue.Detector.ThirdParty.Hme;
 using HnVue.Workflow;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -166,10 +168,9 @@ public partial class App : Application
                 // ── HnVue.Workflow ───────────────────────────────────────────
                 // WorkflowEngine depends on IDoseService, IGeneratorInterface, and IDetectorInterface.
                 // IGeneratorInterface: GeneratorSimulator (safe, no real hardware).
-                // IDetectorInterface: DetectorSimulator (safe, no real hardware).
-                // Production: replace DetectorSimulator with OwnDetectorAdapter — see sdk/own-detector/README.md
+                // IDetectorInterface: conditional registration based on SDK DLL availability.
                 services.AddSingleton<IGeneratorInterface, GeneratorSimulator>();
-                services.AddSingleton<IDetectorInterface, DetectorSimulator>();
+                RegisterDetectorService(services, configuration);
                 services.AddScoped<IWorkflowEngine, WorkflowEngine>();
 
                 // ── HnVue.Dose ───────────────────────────────────────────────
@@ -262,6 +263,49 @@ public partial class App : Application
     }
 
     // ── Nested helper types ───────────────────────────────────────────────────
+
+    /// <summary>
+    /// Registers the appropriate <see cref="IDetectorInterface"/> implementation
+    /// based on which SDK DLL is available at runtime.
+    /// <list type="bullet">
+    ///   <item>AbyzSdk.dll present → <see cref="OwnDetectorAdapter"/> (자사 CsI FPD)</item>
+    ///   <item>libxd2.dll present → <see cref="DetectorSimulator"/> (HME adapter pending SDK integration)</item>
+    ///   <item>No SDK DLL → <see cref="DetectorSimulator"/> (development/test)</item>
+    /// </list>
+    /// </summary>
+    // @MX:NOTE Conditional detector DI registration — SDK DLL presence determines adapter at runtime
+    private static void RegisterDetectorService(IServiceCollection services, IConfiguration configuration)
+    {
+        var sdkPath = System.IO.Path.Combine(AppContext.BaseDirectory, "AbyzSdk.dll");
+        var hmePath = System.IO.Path.Combine(AppContext.BaseDirectory, "libxd2.dll");
+
+        if (System.IO.File.Exists(sdkPath))
+        {
+            // 자사 AbyzSdk 어댑터 (.NET managed, IL Only)
+            // 연결: TCP/IP (IP + Port, 단일 소켓)
+            services.AddSingleton<IDetectorInterface>(sp =>
+                new OwnDetectorAdapter(new OwnDetectorConfig(
+                    Host: configuration["Detector:Host"] ?? "192.168.1.100",
+                    Port: int.Parse(configuration["Detector:Port"] ?? "8888", System.Globalization.CultureInfo.InvariantCulture),
+                    CalibrationPath: configuration["Detector:CalibrationPath"] ?? @"C:\HnVue\Calibration\")));
+        }
+        else if (System.IO.File.Exists(hmePath))
+        {
+            // HME 어댑터 (Native C, 5-소켓 연결)
+            // 연결: TCP 5-소켓 (Control:25000, Data:25001, Trigger:25002, Status:25003, SAlign:25004)
+            // Team B HmeDetectorAdapter 구현 완료 후 아래 코드 활성화:
+            // services.AddSingleton<IDetectorInterface>(sp =>
+            //     new HmeDetectorAdapter(new HmeDetectorConfig(
+            //         Host: configuration["Detector:Host"] ?? "192.168.197.80",
+            //         ParamFilePath: configuration["Detector:ParamPath"] ?? @"C:\HnVue\HME\param\")));
+            services.AddSingleton<IDetectorInterface, DetectorSimulator>(); // 임시 — HME SDK 통합 대기
+        }
+        else
+        {
+            // 개발/테스트용 시뮬레이터
+            services.AddSingleton<IDetectorInterface, DetectorSimulator>();
+        }
+    }
 
     /// <summary>
     /// Value-object implementation of <see cref="IDicomNetworkConfig"/> that supplies
