@@ -32,8 +32,7 @@ public sealed class EfCdStudyRepositoryTests
         new()
         {
             StudyInstanceUid = studyInstanceUid,
-            FilePath = filePath,
-            ImagePosition = 1
+            FilePath = filePath
         };
 
     // ── GetFilesForStudyAsync ───────────────────────────────────────────────────────

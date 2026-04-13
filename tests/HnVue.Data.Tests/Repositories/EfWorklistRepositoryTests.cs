@@ -40,7 +40,7 @@ public sealed class EfWorklistRepositoryTests
         };
 
         var studyDateValue = studyDate ?? DateOnly.FromDateTime(DateTime.UtcNow);
-        var studyDateTime = new DateTimeOffset(studyDateValue, TimeSpan.Zero);
+        var studyDateTime = new DateTimeOffset(studyDateValue.ToDateTime(TimeOnly.MinValue), TimeSpan.Zero);
 
         var study = new Data.Entities.StudyEntity
         {

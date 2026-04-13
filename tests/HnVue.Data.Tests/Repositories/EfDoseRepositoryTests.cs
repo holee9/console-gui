@@ -32,9 +32,9 @@ public sealed class EfDoseRepositoryTests
         new(
             DoseId: "DOSE-001",
             StudyInstanceUid: studyInstanceUid,
-            Dap: 100.5m,
-            Ei: 50.2m,
-            EffectiveDose: 2.5m,
+            Dap: 100.5,
+            Ei: 50.2,
+            EffectiveDose: 2.5,
             BodyPart: "CHEST",
             RecordedAt: new DateTimeOffset(2026, 4, 12, 10, 30, 0, TimeSpan.Zero));
 
@@ -90,7 +90,7 @@ public sealed class EfDoseRepositoryTests
         result.IsSuccess.Should().BeTrue();
         result.Value.Should().NotBeNull();
         result.Value!.DoseId.Should().Be("DOSE-001");
-        result.Value.Dap.Should().Be(100.5m);
+        result.Value.Dap.Should().Be(100.5);
         result.Value.BodyPart.Should().Be("CHEST");
     }
 
@@ -157,7 +157,7 @@ public sealed class EfDoseRepositoryTests
         // Add dose records
         await repo.SaveAsync(CreateSampleDose("STUDY-001"));
         await repo.SaveAsync(new DoseRecord(
-            "DOSE-002", "STUDY-002", 200m, 100m, 5m, "ABDOMEN",
+            "DOSE-002", "STUDY-002", 200, 100, 5, "ABDOMEN",
             new DateTimeOffset(2026, 4, 12, 11, 0, 0, TimeSpan.Zero)));
 
         // Act
@@ -193,7 +193,7 @@ public sealed class EfDoseRepositoryTests
 
         var baseDate = new DateTimeOffset(2026, 4, 12, 10, 0, 0, TimeSpan.Zero);
         await repo.SaveAsync(new DoseRecord(
-            "DOSE-001", "STUDY-001", 100m, 50m, 2.5m, "CHEST", baseDate));
+            "DOSE-001", "STUDY-001", 100, 50, 2.5, "CHEST", baseDate));
 
         // Act - Query with date range that excludes the record
         var from = new DateTimeOffset(2026, 4, 13, 0, 0, 0, TimeSpan.Zero);
