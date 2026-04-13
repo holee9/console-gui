@@ -174,7 +174,7 @@ public sealed class EfIncidentRepositoryTests
 
         // Assert
         result.IsFailure.Should().BeTrue();
-        result.Error.Code.Should().Be(ErrorCode.NotFound);
+        result.Error.Should().Be(ErrorCode.NotFound);
     }
 
     [Fact]
@@ -195,7 +195,7 @@ public sealed class EfIncidentRepositoryTests
 
         // Assert
         result.IsFailure.Should().BeTrue();
-        result.Error.Code.Should().Be(ErrorCode.ValidationFailed);
+        result.Error.Should().Be(ErrorCode.ValidationFailed);
     }
 
     [Fact]
