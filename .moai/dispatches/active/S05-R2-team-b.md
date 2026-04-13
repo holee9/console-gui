@@ -98,22 +98,22 @@ git push origin team/team-b
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: Dicom 커버리지 (P1) | COMPLETED | 2026-04-13 | 48.5% → 84.9% line, 97.5% branch |
+| Task 1: Dicom 커버리지 (P1) | COMPLETED | 2026-04-13 | 48.5% -> 86.0% line, 82.4% branch (80% target met) |
 | Task 2: 방어적 개선 (P2) | COMPLETED | 2026-04-13 | Incident 22 test, Workflow 85 test 추가 |
 | Git 완료 프로토콜 | COMPLETED | 2026-04-13 | PR URL: TBD |
 
 ### Build Evidence
 
 ```
-dotnet build src/HnVue.Dicom/ --configuration Release → 0 errors
+dotnet build tests/HnVue.Dicom.Tests/ --configuration Release -> 0 errors
 dotnet build src/HnVue.Incident/ --configuration Release → 0 errors
 dotnet build src/HnVue.Workflow/ --configuration Release → 0 errors
 
-dotnet test tests/HnVue.Dicom.Tests/ → 279/279 passed
+dotnet test tests/HnVue.Dicom.Tests/ → 320/320 passed
 dotnet test tests/HnVue.Incident.Tests/ → 81/81 passed
 dotnet test tests/HnVue.Workflow.Tests/ → 264/264 passed
 
-Dicom coverage (coverage.runsettings): Line 84.9% | Branch 97.5%
+Dicom coverage (Cobertura): Line 86.0% | Branch 82.4%
 ```
 
 ### Files Added (5 new test files, 178 new tests)

@@ -4,7 +4,7 @@
 > 자신의 팀 행(row)에서 파일명을 확인한 뒤, 해당 파일만 읽는다.
 > 상태가 `PR_OPEN` 또는 `IDLE`이면 → 새 DISPATCH 없음 → Commander Center에 IDLE 보고.
 
-Updated: 2026-04-13 (S05-R2 — ALL MERGED ✅ Team B Dicom 86.0% 머지 완료. S06 준비)
+Updated: 2026-04-13 (S06-R1 — Design, Team B, QA ACTIVE. Coordinator, Team A, RA IDLE)
 DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/`
 
 ---
@@ -13,14 +13,14 @@ DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/
 
 | 팀 | 현재 DISPATCH 파일 | 상태 | 비고 |
 |----|-------------------|------|------|
-| **Coordinator** | `S05-R2-coordinator-2.md` | **MERGED** ✅ | WorkflowView ViewModel main 머지 완료 |
-| **QA** | `S05-R2-qa.md` | **MERGED** ✅ | 릴리즈 준비도 보고서 (Issue #83/#84) |
-| **RA** | `S05-R2-ra.md` | **MERGED** ✅ | RMP v2.0 완료 |
-| **Design** | `S05-R2-design-4.md` | **MERGED** ✅ | WorkflowView 3열 레이아웃 main 머지 완료 |
-| **Team A** | `S05-R2-team-a-2.md` | **MERGED** ✅ | Data.Tests 빌드 에러 수정 (#83) |
-| **Team B** | `S05-R2-team-b.md` | **MERGED** ✅ | Dicom 84.9% + 방어적 개선 (178 tests) |
+| **Coordinator** | -- | **IDLE** | S05-R2 완료, 다음 DISPATCH 대기 |
+| **QA** | `S06-R1-qa.md` | **ACTIVE** | 전체 빌드 검증 + 커버리지 리포트 |
+| **RA** | -- | **IDLE** | S05-R2 RMP v2.0 완료, 다음 DISPATCH 대기 |
+| **Design** | `S06-R1-design.md` | **ACTIVE** | SettingsView PPT Slide 14-22 정합성 개선 |
+| **Team A** | -- | **IDLE** | S05-R2 완료, 다음 DISPATCH 대기 |
+| **Team B** | `S06-R1-team-b.md` | **ACTIVE** | CDBurning 커버리지 + Dicom 회귀 방지 |
 
-**→ S05-R2 전원 MERGED 완료. 다음 라운드 대기.**
+**→ S06-R1 시작. ACTIVE 팀은 DISPATCH 파일 읽고 즉시 착수.**
 
 ---
 
@@ -31,7 +31,7 @@ DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/
 팀 브랜치에서 이 파일들을 절대 수정하지 마세요.
 → .gitattributes에 merge=ours 규칙 추가됨 (자동 충돌 방지)
 
-상태 업데이트: 반드시 .moai/dispatches/active/S05-R2-{team}.md 파일만 수정
+상태 업데이트: 반드시 .moai/dispatches/active/S06-R1-{team}.md 파일만 수정
 ```
 
 ---
@@ -71,7 +71,8 @@ IDLE 보고 형식:
 | 2026-04-09 | S03 QA Coverage | DISPATCH-*-2026-04-09.md | `completed/` 아카이브 |
 | 2026-04-11 | S04 R1+R2 | S04-R{1,2}-*.md | `completed/` 아카이브 (PR #77-82 머지 완료) |
 | 2026-04-12 | S05 R1 | S05-R1-*.md | `completed/` 아카이브 (전팀 완료) |
-| 2026-04-13 | **S05 R2** | **S05-R2-*.md** | **ACTIVE — 전팀 DISPATCH 발행 완료** |
+| 2026-04-13 | S05 R2 | S05-R2-*.md | ALL MERGED ✅ |
+| 2026-04-13 | **S06 R1** | **S06-R1-*.md** | **ACTIVE — Design, Team B, QA** |
 
 ---
 
