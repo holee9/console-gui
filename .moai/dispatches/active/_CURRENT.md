@@ -4,7 +4,7 @@
 > 자신의 팀 행(row)에서 파일명을 확인한 뒤, 해당 파일만 읽는다.
 > 상태가 `PR_OPEN` 또는 `IDLE`이면 → 새 DISPATCH 없음 → Commander Center에 IDLE 보고.
 
-Updated: 2026-04-14 (S08-R1 — ACTIVE 6/6)
+Updated: 2026-04-14 (S08-R1 — QA만 ACTIVE, 5/6 MERGED)
 DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/`
 
 ---
@@ -13,14 +13,14 @@ DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/
 
 | 팀 | 현재 DISPATCH 파일 | 상태 | 비고 |
 |----|-------------------|------|------|
-| **Coordinator** | `S08-R1-coordinator.md` | **ACTIVE** | IStudylistViewModel 인터페이스 + ViewModel + DI 등록 |
+| **Coordinator** | `-` | **MERGED** | StudylistViewModel + DesignTime Mock + 통합테스트 |
 | **QA** | `S08-R1-qa.md` | **ACTIVE** | 전팀 완료 후 품질게이트 + 커버리지 검증 |
-| **RA** | `S08-R1-ra.md` | **ACTIVE** | RTM v2.4 + SRS/FRS 동기화 |
-| **Design** | `S08-R1-team-design.md` | **ACTIVE** | StudylistView XAML (PPT slides 5-7) |
-| **Team A** | `S08-R1-team-a.md` | **ACTIVE** | IDLE CONFIRM |
-| **Team B** | `S08-R1-team-b.md` | **ACTIVE** | IDLE CONFIRM |
+| **RA** | `-` | **MERGED** | RTM v2.4 + SRS/FRS 동기화 |
+| **Design** | `-` | **MERGED** | StudylistView XAML (PPT slides 5-7) |
+| **Team A** | `-` | **MERGED** | IDLE CONFIRM |
+| **Team B** | `-` | **MERGED** | IDLE CONFIRM + DoseBranchCoverageTests |
 
-**→ S08-R1: ACTIVE 6/6 — StudylistView 구현 라운드**
+**→ S08-R1: QA ACTIVE 1/6 — 품질게이트 대기**
 
 ---
 
@@ -59,7 +59,7 @@ git push origin team/{your-team}
 | 2026-04-13 | S06 R1 | S06-R1-*.md | ALL MERGED (PR #88-90) |
 | 2026-04-13 | S06 R2 | S06-R2-*.md | ALL MERGED |
 | 2026-04-14 | S07 R1~R5 | S07-R{1~5}-*.md | ALL MERGED (Sprint S07 종료) |
-| 2026-04-14 | **S08 R1** | **S08-R1-*.md** | **ACTIVE 6/6** |
+| 2026-04-14 | **S08 R1** | **S08-R1-*.md** | **5/6 MERGED (QA 대기 중)** |
 
 ---
 
