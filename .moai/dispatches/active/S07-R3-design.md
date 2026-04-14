@@ -92,7 +92,13 @@ git push origin team/team-design
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: PatientListView 하드코딩 75건 수정 (P1) | NOT_STARTED | | |
-| Task 2: WorkflowView Emergency Stop + 하드코딩 16건 (P1) | NOT_STARTED | | |
-| Task 3: UI 스크롤 성능 최적화 (P2) | NOT_STARTED | | |
-| Git 완료 프로토콜 | NOT_STARTED | | |
+| Task 1: PatientListView 하드코딩 75건 수정 (P1) | COMPLETED | 2026-04-14 | 75건 하드코딩 0건, DynamicResource 마이그레이션 완료 |
+| Task 2: WorkflowView Emergency Stop + 하드코딩 16건 (P1) | COMPLETED | 2026-04-14 | 16건 하드코딩 0건, HnVue.EmergencyStopButton 스타일 적용, 56px min-height |
+| Task 3: UI 스크롤 성능 최적화 (P2) | COMPLETED | 2026-04-14 | VirtualizingStackPanel.VirtualizationMode=Recycling 추가 |
+| Git 완료 프로토콜 | COMPLETED | 2026-04-14 | dotnet build 0 errors, HnVue.sln Release 0 errors |
+
+**빌드 증거:**
+- `dotnet build src/HnVue.UI/` -> 0 errors, warnings are pre-existing SA1101/IDE0005
+- `dotnet build HnVue.sln -c Release` -> 0 errors
+- PatientListView.xaml: 하드코딩 색상 0건 (grep 확인)
+- WorkflowView.xaml: 하드코딩 색상 0건 (grep 확인)
