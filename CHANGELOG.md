@@ -15,15 +15,15 @@
 - role-matrix.md (CONSTITUTIONAL): 7팀 역할 경계 최상위 규약, CC 자가점검 4문, QA 독립성 보장
 - 디렉토리 단위 소유권 테이블: DesignTime/ Design 단독 소유, 아키텍처 테스트로 검증
 
+#### S09 R1 (2026-04-14)
+
+- **Coordinator**: Detector DI 조건부 등록 통합테스트 (#93)
+- **Design**: 하드코딩 색상 토큰 교체 + EmergencyStop 스타일 (#98, #103)
+- **RA**: SBOM/SOUP 이미 등록 확인 완료
+- **Team A**: IDLE CONFIRM
+- **Team B**: IDLE CONFIRM
+
 #### S08 R2 (2026-04-14)
-
-- **Coordinator**: AddPatientProcedureViewModel DI 등록 + 통합테스트 보완
-- **Design**: DesignTimeStudylistViewModel 정비 (샘플 데이터 5→10개 확장, Body Part 다양화)
-- **Team A**: 디렉토리 소유권 아키텍처 테스트 추가 (DesignTime/ Design 단독 소유 검증)
-- **RA**: role-matrix v2.0 반영, SAD/SDS 디렉토리 소유권 업데이트
-- **QA**: S08-R2 품질게이트 PASS
-
-#### S08 R1 (2026-04-14)
 
 - **Coordinator**: StudylistViewModel 구현 (CommunityToolkit.Mvvm) + DI 등록 + DesignTime Mock + 통합테스트 2건
 - **Design**: StudylistView.xaml 구현 (PPT slides 5-7, #102)
