@@ -4,7 +4,7 @@
 > 자신의 팀 행(row)에서 파일명을 확인한 뒤, 해당 파일만 읽는다.
 > 상태가 `PR_OPEN` 또는 `IDLE`이면 → 새 DISPATCH 없음 → Commander Center에 IDLE 보고.
 
-Updated: 2026-04-14 (S07-R4 — 6/6 ALL MERGED)
+Updated: 2026-04-14 (S07-R5 — ALL MERGED 6/6)
 DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/`
 
 ---
@@ -13,14 +13,14 @@ DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/
 
 | 팀 | 현재 DISPATCH 파일 | 상태 | 비고 |
 |----|-------------------|------|------|
-| **Coordinator** | — | **IDLE** | S07-R4 MERGED |
-| **QA** | — | **IDLE** | S07-R4 MERGED — 빌드 0에러, 2372/2374, 커버리지 89.4% |
-| **RA** | — | **IDLE** | S07-R4 MERGED |
-| **Design** | — | **IDLE** | S07-R4 MERGED |
-| **Team A** | — | **IDLE** | S07-R4 MERGED |
-| **Team B** | — | **IDLE** | S07-R4 MERGED |
+| **Coordinator** | `-` | **MERGED** | CC 검증: QA 게이트로 DI+통합테스트 확인 (변경사항 없음) |
+| **QA** | `-` | **MERGED** | 릴리즈 준비도 PASS (100/100), 2539P |
+| **RA** | `-` | **MERGED** | RTM v2.3 CDBurning/DICOM TC 매핑 완료 |
+| **Design** | `-` | **MERGED** | IDLE CONFIRM 완료 (변경사항 없음) |
+| **Team A** | `-` | **MERGED** | Security flaky 안정화 + Data/Update 커버리지 보강 (cherry-pick 0e107ea) |
+| **Team B** | `-` | **MERGED** | Detector/Dicom 커버리지 보강 (cherry-pick dad875d) |
 
-**→ S07-R4: 6/6 ALL MERGED | 전팀 IDLE 대기 중**
+**→ S07-R5: ALL MERGED 6/6 — Sprint S07 종료**
 
 ---
 
@@ -37,7 +37,7 @@ Team A R4 DISPATCH 인식 후 완료. MERGED 처리됨.
 팀 브랜치에서 이 파일들을 절대 수정하지 마세요.
 → .gitattributes에 merge=ours 규칙 추가됨 (자동 충돌 방지)
 
-상태 업데이트: 반드시 .moai/dispatches/active/S07-R4-{team}.md 파일만 수정
+상태 업데이트: 반드시 .moai/dispatches/active/S07-R5-{team}.md 파일만 수정
 ```
 
 ---
@@ -84,6 +84,7 @@ IDLE 보고 형식:
 | 2026-04-14 | **S07 R2** | **S07-R2-*.md** | **ALL MERGED** |
 | 2026-04-14 | **S07 R3** | **S07-R3-*.md** | **ALL MERGED** |
 | 2026-04-14 | **S07 R4** | **S07-R4-*.md** | **ALL MERGED (6/6)** |
+| 2026-04-14 | **S07 R5** | **S07-R5-*.md** | **ALL MERGED 6/6 — Sprint S07 종료** |
 
 ---
 
