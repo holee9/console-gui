@@ -62,5 +62,13 @@ git push origin team/team-b
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: IDLE CONFIRM (P3) | NOT_STARTED | | |
-| Git 완료 프로토콜 | NOT_STARTED | | |
+| Task 1: IDLE CONFIRM (P3) | COMPLETED | 2026-04-14 | main 동기화 + 빌드 에러 수정 (DoseBranchCoverageTests) |
+| Git 완료 프로토콜 | COMPLETED | 2026-04-14 | push origin team/team-b |
+
+### 빌드 증거
+- `dotnet build HnVue.sln --configuration Release`: **0 errors**
+- `dotnet test HnVue.sln --configuration Release`: Team B 모듈 전원 통과
+  - Dose: 381P/0F, Dicom: 482P/0F, Workflow: 293P/0F, Incident: 138P/0F, Integration: 53P/0F
+- 수정 파일:
+  - `tests/HnVue.Dose.Tests/DoseBranchCoverageTests.cs`: EsdMgyCm2→EsdMgy, _repoMock→_repo, ExposureParameters StudyInstanceUid 추가
+  - `src/HnVue.Dose/EfDoseRepository.cs`: InvalidOperationException catch 추가 (tracking conflict)
