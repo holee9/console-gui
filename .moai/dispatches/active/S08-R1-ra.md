@@ -77,4 +77,4 @@ git push origin team/ra
 |------|------|---------|------|
 | Task 1: RTM 업데이트 (P2) | COMPLETED | 2026-04-14 | RTM v2.4: StudylistView UI 동기화 확인 완료 |
 | Task 2: SRS/FRS 동기화 (P3) | COMPLETED | 2026-04-14 | 변경 불필요 확인 (IStudylistViewModel은 UI 설계 구현사항) |
-| Git 완료 프로토콜 | NOT_STARTED | | |
+| Git 완료 프로토콜 | COMPLETED | 2026-04-14 | commit 5719310 |
