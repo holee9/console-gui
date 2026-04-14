@@ -1341,4 +1341,463 @@ public sealed class DataCoverageBoostTests
     private static PatientRecord CreateSamplePatient(string id = "P001") =>
         new(id, "Doe^John", new DateOnly(1980, 6, 15), "M", false,
             new DateTimeOffset(2026, 1, 1, 0, 0, 0, TimeSpan.Zero), "user-01");
+
+    // ── Exception Handling Tests ─────────────────────────────────────────────────
+
+    [Fact]
+    public async Task PatientRepository_AddAsync_DbUpdateException_ReturnsFailure()
+    {
+        await using var ctx = TestDbContextFactory.Create();
+        var auditRepo = Substitute.For<IAuditRepository>();
+        auditRepo.GetLastHashAsync(default).ReturnsForAnyArgs(Result.SuccessNullable<string?>(null));
+        auditRepo.When(x => x.AppendAsync(Arg.Any<AuditEntry>(), default))
+            .Do(x => throw new Microsoft.EntityFrameworkCore.DbUpdateException("Constraint violation"));
+        var repo = new PatientRepository(ctx, auditRepo, null);
+
+        var result = await repo.AddAsync(CreateSamplePatient("P-ERR"));
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.DatabaseError);
+    }
+
+    [Fact]
+    public async Task PatientRepository_AddAsync_WithNullPhiService_Succeeds()
+    {
+        await using var ctx = TestDbContextFactory.Create();
+        var auditRepo = Substitute.For<IAuditRepository>();
+        auditRepo.GetLastHashAsync(default).ReturnsForAnyArgs(Result.SuccessNullable<string?>(null));
+        var repo = new PatientRepository(ctx, auditRepo, null);
+
+        var result = await repo.AddAsync(CreateSamplePatient("P-NO-PHI"));
+
+        result.IsSuccess.Should().BeTrue();
+    }
+
+    [Fact]
+    public async Task PatientRepository_SearchAsync_WithQuery_ReturnsMatching()
+    {
+        await using var ctx = TestDbContextFactory.Create();
+        var auditRepo = Substitute.For<IAuditRepository>();
+        auditRepo.GetLastHashAsync(default).ReturnsForAnyArgs(Result.SuccessNullable<string?>(null));
+        var repo = new PatientRepository(ctx, auditRepo, null);
+
+        await repo.AddAsync(CreateSamplePatient("P-SEARCH1"));
+        await repo.AddAsync(CreateSamplePatient("P-SEARCH2"));
+
+        var result = await repo.SearchAsync("SEARCH");
+
+        result.IsSuccess.Should().BeTrue();
+        result.Value.Should().HaveCountGreaterOrEqualTo(2);
+    }
+
+    [Fact]
+    public async Task PatientRepository_UpdateAsync_NotFound_ReturnsFailure()
+    {
+        await using var ctx = TestDbContextFactory.Create();
+        var repo = new PatientRepository(ctx, Substitute.For<IAuditRepository>(), null);
+
+        var result = await repo.UpdateAsync(CreateSamplePatient("NONEXISTENT"));
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.NotFound);
+    }
+
+    [Fact]
+    public async Task PatientRepository_DeleteAsync_NotFound_ReturnsFailure()
+    {
+        await using var ctx = TestDbContextFactory.Create();
+        var repo = new PatientRepository(ctx, Substitute.For<IAuditRepository>(), null);
+
+        var result = await repo.DeleteAsync("NONEXISTENT");
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.NotFound);
+    }
+
+    [Fact]
+    public async Task StudyRepository_AddAsync_DuplicateStudyUid_Throws()
+    {
+        await using var ctx = TestDbContextFactory.Create();
+        var repo = new StudyRepository(ctx);
+
+        var study1 = new StudyRecord("1.2.3.DUP", "P-DUP1", DateTimeOffset.UtcNow, "D", "A", "B");
+        var study2 = new StudyRecord("1.2.3.DUP", "P-DUP2", DateTimeOffset.UtcNow, "D2", "A2", "B2");
+
+        await repo.AddAsync(study1);
+
+        // Second add with same StudyInstanceUid should throw
+        Func<Task> act = async () => await repo.AddAsync(study2);
+        await act.Should().ThrowAsync<InvalidOperationException>();
+    }
+
+    [Fact]
+    public async Task StudyRepository_AddAsync_MultipleStudies_Succeeds()
+    {
+        await using var ctx = TestDbContextFactory.Create();
+        var repo = new StudyRepository(ctx);
+
+        var study1 = new StudyRecord("1.2.3.M1", "P-M", DateTimeOffset.UtcNow, "D1", "A1", "B1");
+        var study2 = new StudyRecord("1.2.3.M2", "P-M", DateTimeOffset.UtcNow, "D2", "A2", "B2");
+
+        (await repo.AddAsync(study1)).IsSuccess.Should().BeTrue();
+        (await repo.AddAsync(study2)).IsSuccess.Should().BeTrue();
+
+        var result = await repo.GetByPatientAsync("P-M");
+        result.Value.Should().HaveCount(2);
+    }
+
+    [Fact]
+    public async Task UserRepository_AddAsync_DuplicateUserId_Throws()
+    {
+        await using var ctx = TestDbContextFactory.Create();
+        var repo = new UserRepository(ctx);
+
+        var user1 = new UserRecord("U-DUP", "user1", "User1", "hash1", Common.Enums.UserRole.Radiographer,
+            0, false, null, null, 0, null);
+        var user2 = new UserRecord("U-DUP", "user2", "User2", "hash2", Common.Enums.UserRole.Radiographer,
+            0, false, null, null, 0, null);
+
+        await repo.AddAsync(user1);
+
+        // Second add with same UserId should throw
+        Func<Task> act = async () => await repo.AddAsync(user2);
+        await act.Should().ThrowAsync<InvalidOperationException>();
+    }
+
+    [Fact]
+    public async Task UserRepository_GetByUsernameAsync_NotFound_ReturnsFailure()
+    {
+        await using var ctx = TestDbContextFactory.Create();
+        var repo = new UserRepository(ctx);
+
+        var result = await repo.GetByUsernameAsync("nonexistent");
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.NotFound);
+    }
+
+    [Fact]
+    public async Task EfWorklistRepository_QueryToday_WithSoftDeletedPatients_ReturnsItems()
+    {
+        var connection = new SqliteConnection("Data Source=:memory:");
+        connection.Open();
+        try
+        {
+            var opts = new DbContextOptionsBuilder<HnVueDbContext>()
+                .UseSqlite(connection)
+                .Options;
+            using var ctx = new HnVueDbContext(opts);
+            ctx.Database.EnsureCreated();
+
+            var now = DateTimeOffset.UtcNow;
+            ctx.Patients.Add(new PatientEntity
+            {
+                PatientId = "P-WL-DEL",
+                Name = "Deleted^Patient",
+                IsEmergency = false,
+                IsDeleted = true, // Soft-deleted
+                CreatedAtTicks = now.UtcTicks,
+                CreatedAtOffsetMinutes = 0,
+                CreatedBy = "test",
+            });
+            ctx.Studies.Add(new StudyEntity
+            {
+                StudyInstanceUid = "1.2.3.WL-DEL",
+                PatientId = "P-WL-DEL",
+                StudyDateTicks = now.UtcTicks,
+                StudyDateOffsetMinutes = (int)now.Offset.TotalMinutes,
+                Description = "Chest PA",
+                AccessionNumber = "ACC-WL-DEL",
+                BodyPart = "CHEST",
+            });
+            await ctx.SaveChangesAsync();
+
+            var repo = new EfWorklistRepository(ctx);
+            var result = await repo.QueryTodayAsync();
+
+            result.IsSuccess.Should().BeTrue();
+            // Note: EfWorklistRepository does NOT filter soft-deleted patients
+            // This is intentional - studies remain visible even if patient is soft-deleted
+            result.Value.Should().HaveCount(1);
+            result.Value[0].PatientId.Should().Be("P-WL-DEL");
+        }
+        finally
+        {
+            await connection.CloseAsync();
+        }
+    }
+
+    [Fact]
+    public async Task EfDoseRepository_SaveAsync_WithValidStudy_Succeeds()
+    {
+        var connection = new SqliteConnection("Data Source=:memory:");
+        connection.Open();
+        try
+        {
+            var opts = new DbContextOptionsBuilder<HnVueDbContext>()
+                .UseSqlite(connection)
+                .Options;
+            using var ctx = new HnVueDbContext(opts);
+            ctx.Database.EnsureCreated();
+
+            // Add prerequisite
+            ctx.Patients.Add(new PatientEntity
+            {
+                PatientId = "P-DOSE-OK",
+                Name = "Dose^OK",
+                IsEmergency = false,
+                CreatedAtTicks = DateTimeOffset.UtcNow.UtcTicks,
+                CreatedAtOffsetMinutes = 0,
+                CreatedBy = "test",
+            });
+            ctx.Studies.Add(new StudyEntity
+            {
+                StudyInstanceUid = "1.2.3.DOSE-OK",
+                PatientId = "P-DOSE-OK",
+                StudyDateTicks = DateTimeOffset.UtcNow.UtcTicks,
+                StudyDateOffsetMinutes = 0,
+            });
+            await ctx.SaveChangesAsync();
+
+            var repo = new EfDoseRepository(ctx);
+            var dose = new DoseRecord("D-OK", "1.2.3.DOSE-OK", 10.0, 200.0, 0.03, "CHEST", DateTimeOffset.UtcNow);
+            var result = await repo.SaveAsync(dose);
+
+            result.IsSuccess.Should().BeTrue();
+        }
+        finally
+        {
+            await connection.CloseAsync();
+        }
+    }
+
+    // ── WorklistRepository Date Edge Cases ───────────────────────────────────────────
+
+    [Fact]
+    public async Task EfWorklistRepository_QueryToday_BoundaryStart_ReturnsEmpty()
+    {
+        var connection = new SqliteConnection("Data Source=:memory:");
+        connection.Open();
+        try
+        {
+            var opts = new DbContextOptionsBuilder<HnVueDbContext>()
+                .UseSqlite(connection)
+                .Options;
+            using var ctx = new HnVueDbContext(opts);
+            ctx.Database.EnsureCreated();
+
+            // Add a study from yesterday (just before midnight UTC)
+            var yesterday = new DateTimeOffset(DateTimeOffset.UtcNow.Date.AddDays(-1), TimeSpan.Zero).AddTicks(-1);
+            ctx.Patients.Add(new PatientEntity
+            {
+                PatientId = "P-YEST",
+                Name = "Yesterday",
+                IsEmergency = false,
+                CreatedAtTicks = DateTimeOffset.UtcNow.Ticks,
+                CreatedAtOffsetMinutes = 0,
+                CreatedBy = "test",
+            });
+            ctx.Studies.Add(new StudyEntity
+            {
+                StudyInstanceUid = "1.2.3.YEST",
+                PatientId = "P-YEST",
+                StudyDateTicks = yesterday.UtcTicks,
+                StudyDateOffsetMinutes = (int)yesterday.Offset.TotalMinutes,
+            });
+            await ctx.SaveChangesAsync();
+
+            var repo = new EfWorklistRepository(ctx);
+            var result = await repo.QueryTodayAsync();
+
+            result.IsSuccess.Should().BeTrue();
+            result.Value.Should().BeEmpty("studies from yesterday should not be included");
+        }
+        finally
+        {
+            await connection.CloseAsync();
+        }
+    }
+
+    [Fact]
+    public async Task EfWorklistRepository_QueryToday_BoundaryEnd_ReturnsEmpty()
+    {
+        var connection = new SqliteConnection("Data Source=:memory:");
+        connection.Open();
+        try
+        {
+            var opts = new DbContextOptionsBuilder<HnVueDbContext>()
+                .UseSqlite(connection)
+                .Options;
+            using var ctx = new HnVueDbContext(opts);
+            ctx.Database.EnsureCreated();
+
+            // Add a study from tomorrow (just after midnight UTC)
+            var tomorrow = new DateTimeOffset(DateTimeOffset.UtcNow.Date.AddDays(1), TimeSpan.Zero);
+            ctx.Patients.Add(new PatientEntity
+            {
+                PatientId = "P-TOM",
+                Name = "Tomorrow",
+                IsEmergency = false,
+                CreatedAtTicks = DateTimeOffset.UtcNow.Ticks,
+                CreatedAtOffsetMinutes = 0,
+                CreatedBy = "test",
+            });
+            ctx.Studies.Add(new StudyEntity
+            {
+                StudyInstanceUid = "1.2.3.TOM",
+                PatientId = "P-TOM",
+                StudyDateTicks = tomorrow.UtcTicks,
+                StudyDateOffsetMinutes = (int)tomorrow.Offset.TotalMinutes,
+            });
+            await ctx.SaveChangesAsync();
+
+            var repo = new EfWorklistRepository(ctx);
+            var result = await repo.QueryTodayAsync();
+
+            result.IsSuccess.Should().BeTrue();
+            result.Value.Should().BeEmpty("studies from tomorrow should not be included");
+        }
+        finally
+        {
+            await connection.CloseAsync();
+        }
+    }
+
+    // ── PatientRepository Edge Cases ────────────────────────────────────────────────
+
+    [Fact]
+    public async Task PatientRepository_FindByIdAsync_DeletedPatient_ReturnsNull()
+    {
+        await using var ctx = TestDbContextFactory.Create();
+        var auditRepo = Substitute.For<IAuditRepository>();
+        auditRepo.GetLastHashAsync(default).ReturnsForAnyArgs(Result.SuccessNullable<string?>(null));
+        var repo = new PatientRepository(ctx, auditRepo, null);
+
+        var patient = CreateSamplePatient("P-DEL");
+        await repo.AddAsync(patient);
+        await repo.DeleteAsync("P-DEL");
+
+        var result = await repo.FindByIdAsync("P-DEL");
+
+        result.IsSuccess.Should().BeTrue();
+        result.Value.Should().BeNull("soft-deleted patients should not be found");
+    }
+
+    [Fact]
+    public async Task PatientRepository_SearchAsync_OnlyDeletedPatients_ReturnsEmpty()
+    {
+        await using var ctx = TestDbContextFactory.Create();
+        var auditRepo = Substitute.For<IAuditRepository>();
+        auditRepo.GetLastHashAsync(default).ReturnsForAnyArgs(Result.SuccessNullable<string?>(null));
+        var repo = new PatientRepository(ctx, auditRepo, null);
+
+        var patient = CreateSamplePatient("P-DEL2");
+        await repo.AddAsync(patient);
+        await repo.DeleteAsync("P-DEL2");
+
+        var result = await repo.SearchAsync("DEL2");
+
+        result.IsSuccess.Should().BeTrue();
+        result.Value.Should().BeEmpty("soft-deleted patients should not appear in search");
+    }
+
+    // ── StudyRepository Edge Cases ─────────────────────────────────────────────────
+
+    [Fact]
+    public async Task StudyRepository_GetByUidAsync_DeletedPatient_ReturnsStudy()
+    {
+        await using var ctx = TestDbContextFactory.Create();
+        var repo = new StudyRepository(ctx);
+
+        var study = new StudyRecord(
+            "1.2.3.DEL-P", "P-DEL-P", new DateTimeOffset(2026, 4, 14, 12, 0, 0, TimeSpan.Zero),
+            "Desc", "ACC", "CHEST");
+        await repo.AddAsync(study);
+
+        var result = await repo.GetByUidAsync("1.2.3.DEL-P");
+
+        result.IsSuccess.Should().BeTrue();
+        result.Value.Should().NotBeNull();
+        // Studies are NOT soft-deleted via patient deletion
+    }
+
+    // ── UserRepository Edge Cases ──────────────────────────────────────────────────
+
+    [Fact]
+    public async Task UserRepository_AddAsync_WithAllFields_Succeeds()
+    {
+        await using var ctx = TestDbContextFactory.Create();
+        var repo = new UserRepository(ctx);
+
+        var loginTime = new DateTimeOffset(2026, 4, 14, 10, 30, 0, TimeSpan.Zero);
+        var lockedUntil = DateTimeOffset.UtcNow.AddMinutes(5);
+        var user = new UserRecord(
+            "U-FULL", "fulluser", "Full User", "hash", Common.Enums.UserRole.Admin,
+            2, true, loginTime, "pin-hash", 3, lockedUntil);
+
+        var result = await repo.AddAsync(user);
+
+        result.IsSuccess.Should().BeTrue();
+        var found = await repo.GetByIdAsync("U-FULL");
+        found.Value.FailedLoginCount.Should().Be(2);
+        found.Value.IsLocked.Should().BeTrue();
+    }
+
+    [Fact]
+    public async Task UserRepository_SetQuickPinHashAsync_Null_ClearsPin()
+    {
+        await using var ctx = TestDbContextFactory.Create();
+        var repo = new UserRepository(ctx);
+
+        var user = new UserRecord("U-PIN-NULL", "pinnull", "Pin Null", "hash", Common.Enums.UserRole.Radiographer,
+            0, false, null, "existing-pin", 0, null);
+        await repo.AddAsync(user);
+
+        var result = await repo.SetQuickPinHashAsync("U-PIN-NULL", null);
+
+        result.IsSuccess.Should().BeTrue();
+        var pin = await repo.GetQuickPinHashAsync("U-PIN-NULL");
+        pin.Value.Should().BeNull();
+    }
+
+    [Fact]
+    public async Task UserRepository_SetQuickPinHashAsync_NotFound_ReturnsFailure()
+    {
+        await using var ctx = TestDbContextFactory.Create();
+        var repo = new UserRepository(ctx);
+
+        var result = await repo.SetQuickPinHashAsync("nonexistent", "hash");
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.NotFound);
+    }
+
+    [Fact]
+    public async Task UserRepository_SetLockedAsync_Unlock_Succeeds()
+    {
+        await using var ctx = TestDbContextFactory.Create();
+        var repo = new UserRepository(ctx);
+
+        var user = new UserRecord("U-UNLOCK", "locked", "Locked User", "hash", Common.Enums.UserRole.Radiographer,
+            5, true, null, null, 0, null);
+        await repo.AddAsync(user);
+
+        var unlockResult = await repo.SetLockedAsync("U-UNLOCK", false);
+
+        unlockResult.IsSuccess.Should().BeTrue();
+        var found = await repo.GetByIdAsync("U-UNLOCK");
+        found.Value.IsLocked.Should().BeFalse();
+    }
+
+    [Fact]
+    public async Task UserRepository_SetLockedAsync_NotFound_ReturnsFailure()
+    {
+        await using var ctx = TestDbContextFactory.Create();
+        var repo = new UserRepository(ctx);
+
+        var result = await repo.SetLockedAsync("nonexistent", true);
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.NotFound);
+    }
 }

@@ -18,6 +18,7 @@ namespace HnVue.Security.Tests;
 /// Covers constructor validation, async JWT paths, DI registration,
 /// RBAC edge cases, and error handling branches.
 /// </summary>
+[Collection("Security-Sequential")]
 public sealed class CoverageGapTests
 {
     // ── AuditService constructor validation ──────────────────────────────────
