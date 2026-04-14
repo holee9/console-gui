@@ -12,6 +12,35 @@
 - 이슈 추적 스크립트 (Gitea + GitHub, 한글 안전)
 - 팀별 Claude Context 최적화 규칙
 - CODEOWNERS 및 PR 체크리스트 템플릿
+- role-matrix.md (CONSTITUTIONAL): 7팀 역할 경계 최상위 규약, CC 자가점검 4문, QA 독립성 보장
+- 디렉토리 단위 소유권 테이블: DesignTime/ Design 단독 소유, 아키텍처 테스트로 검증
+
+#### S08 R2 (2026-04-14)
+
+- **Coordinator**: AddPatientProcedureViewModel DI 등록 + 통합테스트 보완
+- **Design**: DesignTimeStudylistViewModel 정비 (샘플 데이터 5→10개 확장, Body Part 다양화)
+- **Team A**: 디렉토리 소유권 아키텍처 테스트 추가 (DesignTime/ Design 단독 소유 검증)
+- **RA**: role-matrix v2.0 반영, SAD/SDS 디렉토리 소유권 업데이트
+- **QA**: S08-R2 품질게이트 PASS
+
+#### S08 R1 (2026-04-14)
+
+- **Coordinator**: StudylistViewModel 구현 (CommunityToolkit.Mvvm) + DI 등록 + DesignTime Mock + 통합테스트 2건
+- **Design**: StudylistView.xaml 구현 (PPT slides 5-7, #102)
+- **RA**: RTM v2.4 + 문서 동기화
+- **Team B**: IDLE CONFIRM + DoseBranchCoverageTests 추가
+- **QA**: 품질게이트 PASS (빌드 0에러, 482/482 테스트, 아키텍처 11/11, 모듈 경계 100%)
+
+#### S07 R5 (2026-04-14)
+
+- **QA**: 릴리즈 준비도 PASS (2,539/2,539 테스트, Flaky 0건, Safety-Critical 전원 PASS)
+- **Team A**: Security flaky test 안정화 + 커버리지 보강
+- **Team B**: 의료모듈 커버리지 보강
+
+#### S07 R4 (2026-04-14)
+
+- **Coordinator**: Flaky Test 안정화 + CDBurning race condition 수정
+- **Team B**: Dicom 커버리지 86% 달성
 
 #### S07 R3 (2026-04-14)
 
@@ -20,9 +49,9 @@
 #### S07 R2 (2026-04-14)
 
 - **RA**: DOC-032 RTM v2.2 승급 (Draft → Approved), DOC-042 CMP v2.1 Approved 상태 확인, DOC-006 SAD v2.0 아키텍처 규칙 추가 (구체 클래스 금지)
-- **Team A**: Data 47.4% → 85% 커버리지 향상 (Repository/DbContext/SQLCipher/트랜잭션 테스트), SystemAdmin 66.7% → 85%, Update 75.7% → 90% (Safety-Critical), Common 83.9% → 85%
-- **Team B**: Incident 70.2% → 90% (Safety-Critical), Detector 73.9% → 85%, Workflow 85.5% 유지
-- **Coordinator**: StudyItem 아키텍처 위반 수정 (구체 클래스 → 인터페이스 분리), 통합테스트 53개 → 70개 확대
+- **Team A**: Data 47.4% → 85% 커버리지 향상, SystemAdmin 66.7% → 85%, Update 75.7% → 90%, Common 83.9% → 85%
+- **Team B**: Incident 70.2% → 90% (Safety-Critical), Detector 73.9% → 85%
+- **Coordinator**: StudyItem 아키텍처 위반 수정 (구체 클래스 → 인터페이스 분리), 통합테스트 53→70개 확대
 
 #### S07 R1 (2026-04-14)
 
