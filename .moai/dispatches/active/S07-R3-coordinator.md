@@ -83,7 +83,27 @@ git push origin team/coordinator
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: 아키텍처 테스트 검증 (P1) | NOT_STARTED | | |
-| Task 2: 통합테스트 확대 53→70+ (P2) | NOT_STARTED | | |
-| Task 3: DI Registration 검증 (P3) | NOT_STARTED | | |
-| Git 완료 프로토콜 | NOT_STARTED | | |
+| Task 1: 아키텍처 테스트 검증 (P1) | COMPLETED | 2026-04-14 | 11/11 통과, 0 실패 |
+| Task 2: 통합테스트 확대 53→70+ (P2) | COMPLETED | 2026-04-14 | 569→640 (71 신규), 7개 테스트 클래스 |
+| Task 3: DI Registration 검증 (P3) | COMPLETED | 2026-04-14 | 14개 DI 검증 테스트, 모든 ViewModel 인터페이스 일치 |
+| Git 완료 프로토콜 | IN_PROGRESS | | |
+
+## 빌드 증거
+
+```
+dotnet build HnVue.sln: 0 errors, 0 build failures
+dotnet test tests/HnVue.Architecture.Tests/: Passed 11, Failed 0
+dotnet test tests/HnVue.UI.Tests/: Passed 640, Failed 0
+```
+
+## 변경 파일
+
+- tests/HnVue.UI.Tests/CrossModuleExpandedIntegrationTests.cs (NEW): 71 integration tests
+  - SecurityLoginIntegrationTests (8): LoginViewModel ↔ ISecurityService ↔ ISecurityContext
+  - DoseServiceIntegrationTests (7): DoseViewModel ↔ IDoseService
+  - WorkflowFullTransitionPathTests (8): Full 9-state transition path + SafeState labels
+  - InterfaceContractConsistencyTests (15): All ViewModel ↔ Interface contracts
+  - DetectorDoseWorkflowCascadeTests (7): Detector → Dose → Workflow cascade
+  - PatientStudyWorkflowE2ETests (6): End-to-end patient → study → workflow
+  - ViewModelValidationIntegrationTests (5): Validation and error handling
+  - DIRegistrationVerificationTests (16): DI constructor chain + interface inheritance
