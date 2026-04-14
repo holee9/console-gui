@@ -43,6 +43,11 @@
     <SolidColorBrush x:Key="HnVue.Semantic.Status.Reported"
                      Color="{DynamicResource HnVue.Core.Color.StatusReported}" />
 
+    <!-- ═══ Text on Status Backgrounds (IEC 62366 Contrast Requirements) ═══ -->
+    <!-- Text on emergency/emergency backgrounds: High contrast white for WCAG 2.1 AA 4.5:1 -->
+    <SolidColorBrush x:Key="HnVue.Semantic.Text.OnEmergency"
+                     Color="{DynamicResource HnVue.Core.Color.TextPrimary}" />
+
     <!-- ═══ Interactive: Button ═══ -->
     <SolidColorBrush x:Key="HnVue.Semantic.Button.Primary"
                      Color="{DynamicResource HnVue.Core.Color.ButtonPrimary}" />
