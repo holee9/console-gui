@@ -84,6 +84,6 @@ git push origin team/coordinator
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: DI 등록 보완 (P1) | COMPLETED | 2026-04-14 | 이미 등록됨: IAddPatientProcedureViewModel(line 245), IMainViewModel(line 249-250 Singleton) |
-| Task 2: 통합테스트 (P2) | COMPLETED | 2026-04-14 | 이미 검증됨: 55/55 통합테스트 통과, DI_ResolveAllViewModels 포함 |
-| Git 완료 프로토콜 | COMPLETED | 2026-04-14 | Build 0 errors, 55/55 tests pass |
+| Task 1: DI 등록 보완 (P1) | COMPLETED | 2026-04-14 | AddPatientProcedureViewModel DI 등록 추가. IMainViewModel 기존 Singleton 등록 확인 |
+| Task 2: 통합테스트 (P2) | COMPLETED | 2026-04-14 | DI_ResolveAllViewModels에 IAddPatientProcedureViewModel 검증 추가. 전체 55P/0F 통과 |
+| Git 완료 프로토콜 | COMPLETED | 2026-04-14 | push origin team/coordinator 성공 (f7cf2c9) |
