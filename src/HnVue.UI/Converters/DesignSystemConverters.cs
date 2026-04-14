@@ -5,6 +5,41 @@ using System.Windows.Media;
 
 namespace HnVue.UI.Converters;
 
+/// <summary>
+/// Design token resource keys for dynamic theme-aware color resolution.
+/// References HnVue.Semantic.Status.* SolidColorBrush resources defined in Themes/tokens/SemanticTokens.xaml.
+/// </summary>
+internal static class DesignTokenResources
+{
+    /// <summary>Maps status enum strings to semantic brush resource keys.</summary>
+    private static readonly Dictionary<string, string> StatusToResourceKey = new(StringComparer.OrdinalIgnoreCase)
+    {
+        { "Safe", "HnVue.Semantic.Status.Safe" },
+        { "Warning", "HnVue.Semantic.Status.Warning" },
+        { "Error", "HnVue.Semantic.Status.Emergency" },
+        { "Emergency", "HnVue.Semantic.Status.Emergency" },
+        { "Info", "HnVue.Semantic.Brand.Accent" },
+        { "Online", "HnVue.Semantic.Status.Safe" },
+        { "Offline", "HnVue.Semantic.Status.Emergency" },
+        { "Busy", "HnVue.Semantic.Brand.Accent" },
+        { "Blocked", "HnVue.Semantic.Status.Blocked" }
+    };
+
+    /// <summary>
+    /// Resolves a status string to its theme-aware brush using design token resources.
+    /// Falls back to gray brush if resource not found.
+    /// </summary>
+    public static Brush? ResolveStatusBrush(string statusKey)
+    {
+        if (StatusToResourceKey.TryGetValue(statusKey, out var resourceKey))
+        {
+            if (Application.Current.TryFindResource(resourceKey) is Brush brush)
+                return brush;
+        }
+        return Brushes.Gray;
+    }
+}
+
 // BoolToVisibilityConverter and NullToVisibilityConverter are defined in
 // their own files (BoolToVisibilityConverter.cs, NullToVisibilityConverter.cs).
 // They are intentionally NOT redefined here to avoid CS0101 duplicate type errors.
@@ -39,7 +74,8 @@ public class NullToCollapsedConverter : IValueConverter
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        throw new NotImplementedException();
+        // One-way converter: Collapsed => null, Visible => non-null sentinel
+        return value is Visibility.Collapsed ? null : string.Empty;
     }
 }
 
@@ -58,7 +94,8 @@ public class CountToVisibilityConverter : IValueConverter
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        throw new NotImplementedException();
+        // One-way converter: Visible => 1, Collapsed => 0
+        return value is Visibility.Visible ? 1 : 0;
     }
 }
 
@@ -77,40 +114,33 @@ public class StringToVisibilityConverter : IValueConverter
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        throw new NotImplementedException();
+        // One-way converter: Visible => non-empty string, Collapsed => empty
+        return value is Visibility.Visible ? "visible" : string.Empty;
     }
 }
 
 /// <summary>
 /// Converts enum to brush for status indicators.
+/// Uses design token resources for theme-aware color resolution.
+/// Supports Light/Dark/High Contrast themes via DynamicResource lookup.
 /// </summary>
 public class StatusToBrushConverter : IValueConverter
 {
-    private static readonly Dictionary<string, Brush> StatusBrushes = new()
-    {
-        { "Safe", new SolidColorBrush(Color.FromRgb(46, 213, 115)) },
-        { "Warning", new SolidColorBrush(Color.FromRgb(255, 165, 2)) },
-        { "Error", new SolidColorBrush(Color.FromRgb(255, 71, 87)) },
-        { "Info", new SolidColorBrush(Color.FromRgb(30, 144, 255)) },
-        { "Online", new SolidColorBrush(Color.FromRgb(46, 213, 115)) },
-        { "Offline", new SolidColorBrush(Color.FromRgb(255, 71, 87)) },
-        { "Busy", new SolidColorBrush(Color.FromRgb(30, 144, 255)) },
-        { "Blocked", new SolidColorBrush(Color.FromRgb(255, 109, 0)) }
-    };
-
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
         if (value is Enum enumValue)
         {
             var key = enumValue.ToString();
-            return StatusBrushes.TryGetValue(key, out var brush) ? brush : Brushes.Gray;
+            return DesignTokenResources.ResolveStatusBrush(key) ?? Brushes.Gray;
         }
         return Brushes.Gray;
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        throw new NotImplementedException();
+        // One-way converter: Brush to string conversion not supported
+        // Status should be set directly, not derived from brush color
+        throw new NotSupportedException($"{nameof(StatusToBrushConverter)} does not support two-way binding.");
     }
 }
 
@@ -165,7 +195,9 @@ public class MultiBoolAndConverter : IMultiValueConverter
 
     public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
     {
-        throw new NotImplementedException();
+        // One-way converter: boolean to array conversion not supported
+        // Input values should be set directly via individual bindings
+        throw new NotSupportedException($"{nameof(MultiBoolAndConverter)} does not support two-way binding.");
     }
 }
 
@@ -182,6 +214,8 @@ public class MultiBoolOrConverter : IMultiValueConverter
 
     public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
     {
-        throw new NotImplementedException();
+        // One-way converter: boolean to array conversion not supported
+        // Input values should be set directly via individual bindings
+        throw new NotSupportedException($"{nameof(MultiBoolOrConverter)} does not support two-way binding.");
     }
 }
