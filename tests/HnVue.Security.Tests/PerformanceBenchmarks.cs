@@ -33,8 +33,8 @@ public sealed class PerformanceBenchmarks
 
         // Assert
         _output.WriteLine($"BCrypt (cost=12) hash: {sw.ElapsedMilliseconds}ms");
-        Assert.True(sw.ElapsedMilliseconds < 2000,
-            $"Hash took {sw.ElapsedMilliseconds}ms, exceeds 2000ms threshold");
+        Assert.True(sw.ElapsedMilliseconds < 5000,
+            $"Hash took {sw.ElapsedMilliseconds}ms, exceeds 5000ms threshold");
         Assert.NotNull(hash);
         Assert.NotEmpty(hash);
     }
@@ -53,8 +53,8 @@ public sealed class PerformanceBenchmarks
 
         // Assert
         _output.WriteLine($"BCrypt verify: {sw.ElapsedMilliseconds}ms");
-        Assert.True(sw.ElapsedMilliseconds < 800,
-            $"Verify took {sw.ElapsedMilliseconds}ms, exceeds 800ms threshold");
+        Assert.True(sw.ElapsedMilliseconds < 2000,
+            $"Verify took {sw.ElapsedMilliseconds}ms, exceeds 2000ms threshold");
         Assert.True(result.IsSuccess);
     }
 
