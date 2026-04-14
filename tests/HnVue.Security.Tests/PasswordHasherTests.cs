@@ -5,6 +5,7 @@ using Xunit;
 namespace HnVue.Security.Tests;
 
 [Trait("SWR", "SWR-SEC-010")]
+[Collection("Security-Sequential")]
 public sealed class PasswordHasherTests
 {
     [Fact]

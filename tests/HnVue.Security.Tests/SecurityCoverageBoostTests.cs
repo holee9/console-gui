@@ -23,6 +23,7 @@ namespace HnVue.Security.Tests;
 /// PhiEncryptionService, PasswordHasher, RbacPolicy, PersistentTokenDenylist,
 /// InMemoryTokenDenylist, ServiceCollectionExtensions, and options classes.
 /// </summary>
+[Collection("Security-Sequential")]
 public sealed class SecurityCoverageBoostTests
 {
     // ── SecurityService: VerifyQuickPinAsync ──────────────────────────────────
