@@ -80,6 +80,6 @@ git push origin team/team-design
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: StudylistView.xaml 구현 (P1) | NOT_STARTED | | |
-| Task 2: PPT 1:1 비교 (P2) | NOT_STARTED | | |
-| Git 완료 프로토콜 | NOT_STARTED | | |
+| Task 1: StudylistView.xaml 구현 (P1) | COMPLETED | | |
+| Task 2: PPT 1:1 비교 (P2) | COMPLETED | | |
+| Git 완료 프로토콜 | COMPLETED | | |

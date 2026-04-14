@@ -40,6 +40,8 @@
                      Color="{DynamicResource HnVue.Core.Color.StatusBlocked}" />
     <SolidColorBrush x:Key="HnVue.Semantic.Status.Emergency"
                      Color="{DynamicResource HnVue.Core.Color.StatusEmergency}" />
+    <SolidColorBrush x:Key="HnVue.Semantic.Status.Reported"
+                     Color="{DynamicResource HnVue.Core.Color.StatusReported}" />
 
     <!-- ═══ Interactive: Button ═══ -->
     <SolidColorBrush x:Key="HnVue.Semantic.Button.Primary"

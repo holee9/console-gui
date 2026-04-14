@@ -7,7 +7,7 @@
 | 항목 | 내용 |
 |------|------|
 | **문서 ID** | RTM-XRAY-GUI-001 |
-| **버전** | v2.3 |
+| **버전** | v2.4 |
 | **작성일** | 2026-04-02 |
 | **개정일** | 2026-04-14 |
 
@@ -30,6 +30,7 @@
 | v2.1 | 2026-04-11 | RA팀 | S04 R1: SWR-CS-080 PHI AES-256-GCM 암호화 TC 매핑 추가 (부록 B). TC-SEC-PHI-001~010 테스트 케이스 정의. Team A SPEC-INFRA-002 완료 전 PARTIAL 상태. |
 | v2.2 | 2026-04-14 | RA팀 | S07 R1: Detector SDK 통합 TC 매핑 추가 (부록 C). SWR-DET-010 (Detector 설정/어댑터), SWR-DT-060 (HME Detector 어댑터), SWR-DT-061 (HME Detector 설정) xUnit Trait 기반 TC 정의. SBOM v3.0/SOUP v2.1 동기화. |
 | v2.3 | 2026-04-14 | RA팀 | S07 R5: CDBurning 및 DICOM TC 매핑 추가 (부록 D). SWR-CD-010/020/030 (CDBurning 서비스/IMAPI/Repository), SWR-DICOM-010/020 (DICOM FileIO/Service) xUnit Trait 기반 TC 정의. |
+| v2.4 | 2026-04-14 | RA팀 | S08 R1: StudylistView UI 동기화 확인. IStudylistViewModel 인터페이스 추가 (Coordinator)에 따른 UI 계층 변경사항 반영. SRS/FRS 문서 동기화 확인 (별도 SWR 추가 불필요 - UI 설계 구현사항). |
 
 ---
 

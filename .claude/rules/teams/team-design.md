@@ -35,6 +35,13 @@ Additional Design-specific philosophy:
 - Mock ViewModels in src/HnVue.UI/DesignTime/ folder
 - Mock data must be representative (Korean names, realistic IDs)
 
+## DesignTime/ 단독 소유권 [HARD — S08-R1 사고교훈]
+
+- [HARD] `src/HnVue.UI/DesignTime/` 디렉토리는 Design 팀 단독 소유
+- [HARD] 다른 팀(Coordinator 포함)이 DesignTime/에 파일 생성/수정 금지
+- [HARD] DesignTime Mock ViewModel은 Design 팀이 XAML 디자인타임 렌더링을 위해 관리
+- [HARD] Coordinator가 통합테스트용 Mock이 필요하면 `tests.integration/`에 별도 생성 (DesignTime/ 아님)
+
 ## Accessibility Requirements (IEC 62366 / WCAG 2.1 AA)
 - Color contrast ratio >= 4.5:1
 - Touch targets >= 44x44px

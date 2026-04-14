@@ -38,6 +38,10 @@ public sealed class EfDoseRepository(HnVueDbContext context) : IDoseRepository
         {
             return Result.Failure(ErrorCode.DatabaseError, ex.InnerException?.Message ?? ex.Message);
         }
+        catch (InvalidOperationException ex)
+        {
+            return Result.Failure(ErrorCode.DatabaseError, ex.InnerException?.Message ?? ex.Message);
+        }
     }
 
     /// <inheritdoc/>
