@@ -9,12 +9,12 @@
 | **문서 ID** | SAD-XRAY-GUI-001 |
 | **문서명 (Korean)** | HnVue Console SW 소프트웨어 아키텍처 설계 |
 | **문서명 (English)** | Software Architecture Design for HnVue Console SW |
-| **버전 (Version)** | v2.0 |
+| **버전 (Version)** | v2.1 |
 | **작성일 (Date)** | 2026-04-03 |
 | **작성자 (Author)** | SW Architecture Team |
 | **검토자 (Reviewer)** | SW Lead Engineer |
 | **승인자 (Approver)** | R&D Director |
-| **상태 (Status)** | Draft |
+| **상태 (Status)** | Approved |
 | **기준 규격** | IEC 62304:2006+AMD1:2015 §5.3, IEC 81001-5-1:2021, FDA Section 524B |
 | **제품** | HnVue Console SW |
 | **SW Safety Class** | IEC 62304 Class B |
@@ -29,6 +29,7 @@
 | v0.2 | 2026-02-20 | SW Architecture Team | 아키텍처 뷰 보완, SOUP 항목 추가 |
 | v1.0 | 2026-03-18 | SW Architecture Team | 정식 릴리즈, SWR 추적성 매트릭스 완성 |
 | v2.0 | 2026-04-03 | SW Architecture Team | 4-Tier 우선순위 체계 반영 (P1–P4 제거); Tier 1+2 MR 모듈 매핑 추가; SAD-CD-1000 CDDVDBurning 모듈 상세화; 인시던트 대응 모듈 (IEC 81001-5-1) 및 SW 업데이트 모듈 (FDA 524B) 명시; STRIDE 위협 모델링 결과 요약 섹션 추가; 외부 인터페이스 (FPD SDK, Generator, PACS, RIS) 상세 기술; C4 Context/Container 다이어그램 4-Tier 반영; 기술 스택 WPF .NET 8 + fo-dicom 5.x + SQLCipher + Serilog로 확정 |
+| v2.1 | 2026-04-14 | RA팀 | S07-R2 StudyItem 아키텍처 수정 반영; IStudyItem 인터페이스(UI.Contracts Models) 추가; StudyItem 구현체(ViewModels Models) 재배치; 인터페이스 분리 패턴 명시화; PR #77 Coordinator 변경사항 반영 |
 
 ---
 
