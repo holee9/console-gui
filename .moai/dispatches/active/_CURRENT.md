@@ -4,7 +4,7 @@
 > 자신의 팀 행(row)에서 파일명을 확인한 뒤, 해당 파일만 읽는다.
 > 상태가 `PR_OPEN` 또는 `IDLE`이면 → 새 DISPATCH 없음 → Commander Center에 IDLE 보고.
 
-Updated: 2026-04-14 (S07-R1 — ALL MERGED. Coordinator, Design IDLE. Auto-Progression ready.)
+Updated: 2026-04-14 (S07-R2 — 6팀 전원 ACTIVE. Auto-Progression v2 발행.)
 DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/`
 
 ---
@@ -13,14 +13,14 @@ DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/
 
 | 팀 | 현재 DISPATCH 파일 | 상태 | 비고 |
 |----|-------------------|------|------|
-| **Coordinator** | -- | **IDLE** | S06-R2 완료 |
-| **QA** | `S07-R1-qa.md` | **MERGED** | 전체 커버리지 리포트 (2192P/5F, Safety-Critical 2 FAIL) |
-| **RA** | `S07-R1-ra.md` | **MERGED** | CMP v2.1 + RTM v2.2 (12TC 100% 매핑) |
-| **Design** | -- | **IDLE** | S06-R1 완료 |
-| **Team A** | `S07-R1-team-a.md` | **MERGED** | Security 286P + Update 191P + Common 126P |
-| **Team B** | `S07-R1-team-b.md` | **MERGED** | Dicom 91.9% + Workflow 88.1% + Detector 99.1% |
+| **Coordinator** | `S07-R2-coordinator.md` | **ACTIVE** | StudyItem 아키텍처 수정 + 통합테스트 확대 |
+| **QA** | `S07-R2-qa.md` | **ACTIVE** | 품질게이트 재검증 + CI 커버리지 게이트 |
+| **RA** | `S07-R2-ra.md` | **ACTIVE** | 규제문서 승급 + 변경이력 동기화 |
+| **Design** | `S07-R2-design.md` | **ACTIVE** | PPT 스펙 검증 + 테마 일관성 + 접근성 |
+| **Team A** | `S07-R2-team-a.md` | **ACTIVE** | Data 85% + SystemAdmin 85% + Update 90% + Common 85% |
+| **Team B** | `S07-R2-team-b.md` | **ACTIVE** | Incident 90% (Safety) + Detector 85% |
 
-**→ S07-R1 ALL MERGED. Coordinator, Design IDLE. Auto-Progression 대기.**
+**→ S07-R2 6팀 전원 ACTIVE. Auto-Progression v2.**
 
 ---
 
@@ -31,7 +31,7 @@ DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/
 팀 브랜치에서 이 파일들을 절대 수정하지 마세요.
 → .gitattributes에 merge=ours 규칙 추가됨 (자동 충돌 방지)
 
-상태 업데이트: 반드시 .moai/dispatches/active/S06-R1-{team}.md 파일만 수정
+상태 업데이트: 반드시 .moai/dispatches/active/S07-R2-{team}.md 파일만 수정
 ```
 
 ---
@@ -75,6 +75,7 @@ IDLE 보고 형식:
 | 2026-04-13 | S06 R1 | S06-R1-*.md | ALL MERGED ✅ (PR #88-90) |
 | 2026-04-13 | S06 R2 | S06-R2-*.md | ALL MERGED ✅ |
 | 2026-04-14 | **S07 R1** | **S07-R1-*.md** | **ALL MERGED** |
+| 2026-04-14 | **S07 R2** | **S07-R2-*.md** | **ACTIVE — 6팀 전원** |
 
 ---
 
