@@ -4,7 +4,7 @@
 > 자신의 팀 행(row)에서 파일명을 확인한 뒤, 해당 파일만 읽는다.
 > 상태가 `PR_OPEN` 또는 `IDLE`이면 → 새 DISPATCH 없음 → Commander Center에 IDLE 보고.
 
-Updated: 2026-04-14 (S09-R1 — ACTIVE 6/6)
+Updated: 2026-04-14 (S09-R1 — 4/6 MERGED, Team A+QA 대기)
 DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/`
 
 ---
@@ -13,14 +13,14 @@ DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/
 
 | 팀 | 현재 DISPATCH 파일 | 상태 | 비고 |
 |----|-------------------|------|------|
-| **Coordinator** | `S09-R1-coordinator.md` | **ACTIVE** | Detector DI conditional registration |
-| **QA** | `S09-R1-qa.md` | **ACTIVE** | 전팀 완료 후 품질게이트 |
-| **RA** | `S09-R1-ra.md` | **ACTIVE** | Detector SDK SBOM/SOUP 등록 |
-| **Design** | `S09-R1-team-design.md` | **ACTIVE** | 하드코딩 색상 + Emergency Stop |
-| **Team A** | `S09-R1-team-a.md` | **ACTIVE** | IDLE CONFIRM |
-| **Team B** | `S09-R1-team-b.md` | **ACTIVE** | IDLE CONFIRM |
+| **Coordinator** | - | **MERGED** | Detector DI 통합테스트 완료 |
+| **QA** | `S09-R1-qa.md` | **ACTIVE** | 전팀 COMPLETED 후 품질게이트 |
+| **RA** | - | **MERGED** | SBOM/SOUP 이미 등록 확인 |
+| **Design** | - | **MERGED** | 하드코딩 색상 토큰 교체 완료 |
+| **Team A** | `S09-R1-team-a.md` | **ACTIVE** | IDLE CONFIRM (push 대기) |
+| **Team B** | - | **MERGED** | IDLE CONFIRM |
 
-**→ S09-R1: ACTIVE 6/6 — DI 조건부 등록 + Emergency Stop + SBOM 업데이트**
+**→ S09-R1: 4/6 MERGED — Team A IDLE CONFIRM + QA 품질게이트 대기**
 
 ---
 
@@ -61,7 +61,7 @@ git push origin team/{your-team}
 | 2026-04-14 | S07 R1~R5 | S07-R{1~5}-*.md | ALL MERGED (Sprint S07 종료) |
 | 2026-04-14 | S08 R1 | S08-R1-*.md | ALL MERGED (PASS) |
 | 2026-04-14 | S08 R2 | S08-R2-*.md | ALL MERGED (PASS) |
-| 2026-04-14 | **S09 R1** | **S09-R1-*.md** | **ACTIVE 6/6** |
+| 2026-04-14 | **S09 R1** | **S09-R1-*.md** | **4/6 MERGED (Design,Coordinator,RA,TeamB)** |
 
 ---
 
