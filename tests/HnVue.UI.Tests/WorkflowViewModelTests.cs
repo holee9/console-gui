@@ -6,6 +6,7 @@ using HnVue.Common.Models;
 using HnVue.Common.Results;
 using HnVue.UI.Contracts.Models;
 using HnVue.UI.ViewModels;
+using HnVue.UI.ViewModels.Models;
 using NSubstitute;
 
 namespace HnVue.UI.Tests;

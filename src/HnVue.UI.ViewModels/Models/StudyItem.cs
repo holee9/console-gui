@@ -1,13 +1,15 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using HnVue.Common.Models;
+using HnVue.UI.Contracts.Models;
 
-namespace HnVue.UI.Contracts.Models;
+namespace HnVue.UI.ViewModels.Models;
 
 /// <summary>
+/// Concrete implementation of <see cref="IStudyItem"/>.
 /// UI presentation wrapper for <see cref="StudyRecord"/> with selection state.
 /// Used in MergeView for checkbox binding (PPT Slide 12-13).
 /// </summary>
-public sealed partial class StudyItem : ObservableObject
+public sealed partial class StudyItem : ObservableObject, IStudyItem
 {
     /// <summary>Gets the underlying study record.</summary>
     public StudyRecord Study { get; }
