@@ -8,6 +8,7 @@
     <ProjectReference Include="..\..\src\HnVue.Common\HnVue.Common.csproj" />
     <ProjectReference Include="..\..\src\HnVue.Data\HnVue.Data.csproj" />
     <ProjectReference Include="..\..\src\HnVue.Security\HnVue.Security.csproj" />
+    <ProjectReference Include="..\..\src\HnVue.Detector\HnVue.Detector.csproj" />
     <ProjectReference Include="..\..\src\HnVue.Dicom\HnVue.Dicom.csproj" />
     <ProjectReference Include="..\..\src\HnVue.Workflow\HnVue.Workflow.csproj" />
     <ProjectReference Include="..\..\src\HnVue.Incident\HnVue.Incident.csproj" />
