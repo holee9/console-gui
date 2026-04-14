@@ -73,7 +73,7 @@ git push origin team/ra
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: RMP v2.0 초안 (P1) | NOT_STARTED | | |
-| Task 2: S07-R2 변경사항 문서 반영 (P2) | NOT_STARTED | | |
-| Task 3: IDLE CONFIRM (P3) | NOT_STARTED | | |
-| Git 완료 프로토콜 | NOT_STARTED | | |
+| Task 1: RMP v2.0 초안 (P1) | COMPLETED | 2026-04-14 | v2.0 이미 Approved 상태, 초안 작성 불필요 확인 |
+| Task 2: S07-R2 변경사항 문서 반영 (P2) | COMPLETED | 2026-04-14 | DOC-006 SAD v2.1 업데이트, CHANGELOG.md S07-R3 추가 |
+| Task 3: IDLE CONFIRM (P3) | COMPLETED | 2026-04-14 | 추가 작업 없음, IDLE 상태 |
+| Git 완료 프로토콜 | COMPLETED | 2026-04-14 | commit c153cb5 pushed to team/ra |
