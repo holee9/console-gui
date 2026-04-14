@@ -60,5 +60,10 @@ git push origin team/ra
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
+| Task 1: SAD/SDS 업데이트 (P3) | COMPLETED | 2026-04-14 | SAD v2.2 섹션 5.6, RTM v2.5 부록 E 확인 |
+| Git 완료 프로토콜 | COMPLETED | 2026-04-14 | team/ra에 push 완료 |
+
+| Task | 상태 | 완료 시각 | 비고 |
+|------|------|---------|------|
 | Task 1: SAD/SDS 업데이트 (P3) | NOT_STARTED | | |
 | Git 완료 프로토콜 | NOT_STARTED | | |

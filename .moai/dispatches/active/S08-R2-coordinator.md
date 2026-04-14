@@ -84,6 +84,6 @@ git push origin team/coordinator
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: DI 등록 보완 (P1) | NOT_STARTED | | |
-| Task 2: 통합테스트 (P2) | NOT_STARTED | | |
-| Git 완료 프로토콜 | NOT_STARTED | | |
+| Task 1: DI 등록 보완 (P1) | COMPLETED | 2026-04-14 | 이미 등록됨: IAddPatientProcedureViewModel(line 245), IMainViewModel(line 249-250 Singleton) |
+| Task 2: 통합테스트 (P2) | COMPLETED | 2026-04-14 | 이미 검증됨: 55/55 통합테스트 통과, DI_ResolveAllViewModels 포함 |
+| Git 완료 프로토콜 | COMPLETED | 2026-04-14 | Build 0 errors, 55/55 tests pass |
