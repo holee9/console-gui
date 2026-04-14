@@ -4,7 +4,7 @@
 > 자신의 팀 행(row)에서 파일명을 확인한 뒤, 해당 파일만 읽는다.
 > 상태가 `PR_OPEN` 또는 `IDLE`이면 → 새 DISPATCH 없음 → Commander Center에 IDLE 보고.
 
-Updated: 2026-04-14 (S07-R4 — 6/6 ALL MERGED)
+Updated: 2026-04-14 (S07-R5 — 6/6 ACTIVE)
 DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/`
 
 ---
@@ -13,14 +13,14 @@ DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/
 
 | 팀 | 현재 DISPATCH 파일 | 상태 | 비고 |
 |----|-------------------|------|------|
-| **Coordinator** | — | **IDLE** | S07-R4 MERGED |
-| **QA** | — | **IDLE** | S07-R4 MERGED — 빌드 0에러, 2372/2374, 커버리지 89.4% |
-| **RA** | — | **IDLE** | S07-R4 MERGED |
-| **Design** | — | **IDLE** | S07-R4 MERGED |
-| **Team A** | — | **IDLE** | S07-R4 MERGED |
-| **Team B** | — | **IDLE** | S07-R4 MERGED |
+| **Coordinator** | `S07-R5-coordinator.md` | **ACTIVE** | 통합 검증 + DI 등록 확인 |
+| **QA** | `S07-R5-qa.md` | **ACTIVE** | 최종 품질게이트 + 릴리즈 준비도 평가 |
+| **RA** | `S07-R5-ra.md` | **ACTIVE** | 문서 최종 동기화 + SBOM 검증 |
+| **Design** | `S07-R5-design.md` | **ACTIVE** | IDLE CONFIRM |
+| **Team A** | `S07-R5-team-a.md` | **ACTIVE** | Security flaky 수정 + 커버리지 보강 |
+| **Team B** | `S07-R5-team-b.md` | **ACTIVE** | 의료모듈 커버리지 보강 |
 
-**→ S07-R4: 6/6 ALL MERGED | 전팀 IDLE 대기 중**
+**→ S07-R5: 6/6 ACTIVE — Sprint 최종 라운드**
 
 ---
 
@@ -37,7 +37,7 @@ Team A R4 DISPATCH 인식 후 완료. MERGED 처리됨.
 팀 브랜치에서 이 파일들을 절대 수정하지 마세요.
 → .gitattributes에 merge=ours 규칙 추가됨 (자동 충돌 방지)
 
-상태 업데이트: 반드시 .moai/dispatches/active/S07-R4-{team}.md 파일만 수정
+상태 업데이트: 반드시 .moai/dispatches/active/S07-R5-{team}.md 파일만 수정
 ```
 
 ---
@@ -84,6 +84,7 @@ IDLE 보고 형식:
 | 2026-04-14 | **S07 R2** | **S07-R2-*.md** | **ALL MERGED** |
 | 2026-04-14 | **S07 R3** | **S07-R3-*.md** | **ALL MERGED** |
 | 2026-04-14 | **S07 R4** | **S07-R4-*.md** | **ALL MERGED (6/6)** |
+| 2026-04-14 | **S07 R5** | **S07-R5-*.md** | **6/6 ACTIVE** |
 
 ---
 
