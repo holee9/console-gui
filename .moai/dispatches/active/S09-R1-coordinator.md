@@ -39,14 +39,15 @@ S09-R1에서는 Issue #93 Detector DI conditional registration 완료.
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: Detector DI (P1) | NOT_STARTED | | |
-| Git 완료 프로토콜 | NOT_STARTED | | |
+| Task 1: Detector DI (P1) | COMPLETED | 2026-04-14 | Conditional registration 이미 구현됨 (App.xaml.cs:278). 통합테스트 4개 추가: DI resolve, lifecycle, WorkflowEngine injection, conditional selection |
+| Task 2: IDLE CONFIRM (P3) | SKIPPED | 2026-04-14 | Task 1에서 작업 완료 |
+| Git 완료 프로토콜 | COMPLETED | 2026-04-14 | Build 0 errors, 59/59 tests pass (55 existing + 4 new) |
 
 ---
 
 ## Self-Verification Checklist
 
-- [ ] `dotnet build` 0 errors
-- [ ] `dotnet test` all pass (통합테스트 포함)
-- [ ] Only modified files within Coordinator ownership (UI.Contracts, ViewModels, App, IntegrationTests)
-- [ ] DISPATCH Status updated with build evidence
+- [x] `dotnet build` 0 errors
+- [x] `dotnet test` all pass (통합테스트 포함) — 59/59
+- [x] Only modified files within Coordinator ownership (UI.Contracts, ViewModels, App, IntegrationTests)
+- [x] DISPATCH Status updated with build evidence
