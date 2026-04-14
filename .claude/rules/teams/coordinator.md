@@ -53,8 +53,11 @@ Design Team이 DISPATCH에서 `NEEDS_VIEWMODEL` 을 보고하면:
 - Run integration tests before every PR merge to main
 
 ## Scope Limitation [HARD]
-- Coordinator worktree only inspects its OWN modules
+- Coordinator worktree only inspects its OWN source code modules
 - Analyzing other teams' work is Commander Center's role
+- **예외**: `team-common.md` DISPATCH Resolution Protocol(`_CURRENT.md`, `DISPATCH 파일`)은
+  [HARD — FIRST ACTION] 규칙에 따라 반드시 실행. Scope Limitation은 소스 코드 모듈에만 적용.
+- **예외**: `Completion Gate`를 위한 전체 솔루션 빌드(`HnVue.sln`)는 허용
 
 ## PR Review Responsibilities
 - Review ALL PRs that touch UI.Contracts, UI.ViewModels, App
