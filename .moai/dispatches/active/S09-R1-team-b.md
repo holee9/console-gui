@@ -25,7 +25,7 @@ S09-R1에서 Team B에 할당된 긴급 작업 없음.
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: IDLE CONFIRM (P3) | NOT_STARTED | | |
+| Task 1: IDLE CONFIRM (P3) | COMPLETED | 2026-04-14 | IDLE — 할당된 긴급 작업 없음 |
 
 ---
 

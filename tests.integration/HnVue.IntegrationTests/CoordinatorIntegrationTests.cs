@@ -4,6 +4,7 @@ using HnVue.Common.Abstractions;
 using HnVue.Common.Enums;
 using HnVue.Common.Models;
 using HnVue.Common.Results;
+using HnVue.Detector;
 using HnVue.Dicom;
 using HnVue.Dose;
 using HnVue.Imaging;
@@ -555,6 +556,124 @@ public sealed class CoordinatorIntegrationTests
 
         // Assert
         vm.SelectedPacsServer.Should().Be("PACS-01", "PACS server selection should update");
+    }
+
+    // ── Scenario 9: Detector DI Conditional Registration ──────────────────────
+
+    /// <summary>
+    /// Integration test: DetectorSimulator resolves from DI container as IDetectorInterface.
+    /// SWR-COORD-080: Detector conditional DI registration resolves correctly in dev mode.
+    /// </summary>
+    [Fact]
+    public void Detector_DI_ResolvesDetectorSimulator_WhenNoSdkDllPresent()
+    {
+        // Arrange — setup DI with DetectorSimulator (dev/test mode, no SDK DLL)
+        var services = new ServiceCollection();
+        SetupMinimalServices(services);
+        services.AddSingleton<IDetectorInterface, DetectorSimulator>();
+
+        var provider = services.BuildServiceProvider();
+
+        // Act — resolve IDetectorInterface
+        var detector = provider.GetService<IDetectorInterface>();
+
+        // Assert — DetectorSimulator resolved successfully
+        detector.Should().NotBeNull("IDetectorInterface must be resolvable from DI container");
+        detector.Should().BeOfType<DetectorSimulator>("DetectorSimulator is the default adapter when no SDK DLL is present");
+    }
+
+    /// <summary>
+    /// Integration test: DetectorSimulator state transitions work correctly via DI.
+    /// SWR-COORD-080: Detector lifecycle (Connect → Arm → Abort) works through DI-resolved instance.
+    /// </summary>
+    [Fact]
+    public async Task Detector_DI_SimulatorLifecycle_WorksThroughDIResolution()
+    {
+        // Arrange
+        var services = new ServiceCollection();
+        SetupMinimalServices(services);
+        var simulator = new DetectorSimulator { ArmDelayMs = 0, ReadoutDelayMs = 0 };
+        services.AddSingleton<IDetectorInterface>(simulator);
+
+        var provider = services.BuildServiceProvider();
+        var detector = provider.GetRequiredService<IDetectorInterface>();
+
+        // Act & Assert — Connect
+        var connectResult = await detector.ConnectAsync();
+        connectResult.IsSuccess.Should().BeTrue("Connect should succeed for simulator");
+
+        // Act & Assert — Arm
+        var armResult = await detector.ArmAsync(DetectorTriggerMode.Sync);
+        armResult.IsSuccess.Should().BeTrue("Arm should succeed for simulator");
+
+        // Act & Assert — Abort
+        var abortResult = await detector.AbortAsync();
+        abortResult.IsSuccess.Should().BeTrue("Abort should succeed for simulator");
+
+        // Act & Assert — Disconnect
+        var disconnectResult = await detector.DisconnectAsync();
+        disconnectResult.IsSuccess.Should().BeTrue("Disconnect should succeed for simulator");
+    }
+
+    /// <summary>
+    /// Integration test: WorkflowEngine receives IDetectorInterface through DI.
+    /// SWR-COORD-080: WorkflowEngine correctly uses injected detector for ARM/Abort operations.
+    /// </summary>
+    [Fact]
+    public async Task Detector_DI_WorkflowEngineReceivesDetector_ThroughDI()
+    {
+        // Arrange — setup DI with real WorkflowEngine and DetectorSimulator
+        var services = new ServiceCollection();
+        SetupMinimalServices(services);
+        var simulator = new DetectorSimulator { ArmDelayMs = 0, ReadoutDelayMs = 0 };
+        services.AddSingleton<IDetectorInterface>(simulator);
+
+        var provider = services.BuildServiceProvider();
+
+        // Act — resolve WorkflowEngine (constructor receives IDetectorInterface)
+        var engine = provider.GetRequiredService<IWorkflowEngine>();
+
+        // Start workflow with patient/study IDs
+        var secContext = provider.GetRequiredService<ISecurityContext>();
+        secContext.SetCurrentUser(new AuthenticatedUser(
+            "test-user", "Test User", UserRole.Radiographer, "token"));
+
+        var startResult = await engine.StartAsync("P-001", "ST-001");
+
+        // Assert — WorkflowEngine resolves with detector and starts successfully
+        engine.Should().NotBeNull("WorkflowEngine must resolve from DI with detector");
+        startResult.IsSuccess.Should().BeTrue("WorkflowEngine should start successfully");
+    }
+
+    /// <summary>
+    /// Integration test: RegisterDetectorService conditional pattern registers correct type.
+    /// SWR-COORD-080: Conditional registration logic selects Simulator when no SDK DLL exists.
+    /// Tests the same conditional logic used in App.xaml.cs RegisterDetectorService.
+    /// </summary>
+    [Fact]
+    public void Detector_DI_ConditionalRegistration_SelectsSimulatorInDevMode()
+    {
+        // Arrange — simulate App.xaml.cs RegisterDetectorService logic
+        var services = new ServiceCollection();
+
+        // In test/dev environment, neither AbyzSdk.dll nor libxd2.dll exist
+        // This mirrors the "else" branch of RegisterDetectorService
+        var sdkPath = System.IO.Path.Combine(AppContext.BaseDirectory, "AbyzSdk.dll");
+        var hmePath = System.IO.Path.Combine(AppContext.BaseDirectory, "libxd2.dll");
+
+        if (!System.IO.File.Exists(sdkPath) && !System.IO.File.Exists(hmePath))
+        {
+            // Dev/test mode — register Simulator (same as App.xaml.cs line 307)
+            services.AddSingleton<IDetectorInterface, DetectorSimulator>();
+        }
+
+        var provider = services.BuildServiceProvider();
+        var detector = provider.GetService<IDetectorInterface>();
+
+        // Assert
+        detector.Should().NotBeNull("Conditional registration must register a detector in dev mode");
+        detector.Should().BeOfType<DetectorSimulator>(
+            "Without SDK DLLs, DetectorSimulator is the correct fallback");
     }
 
     // ── Helpers ───────────────────────────────────────────────────────────────

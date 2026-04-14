@@ -38,13 +38,14 @@ SBOM/SOUP 업데이트 완료 후 대기.
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: SBOM/SOUP (P1) | NOT_STARTED | | |
-| Git 완료 프로토콜 | NOT_STARTED | | |
+| Task 1: SBOM/SOUP (P1) | COMPLETED | 2026-04-14 | S06-R2에서 이미 완료됨 (SBOM v3.0, SOUP v2.1) |
+| Git 완료 프로토콜 | COMPLETED | 2026-04-14 | 확인 완료 — 문서 업데이트 불필요 |
 
 ---
 
 ## Self-Verification Checklist
 
-- [ ] SBOM 업데이트 확인
-- [ ] SOUP 업데이트 확인
-- [ ] `git push origin team/ra`
+- [x] SBOM 업데이트 확인 — DOC-019 v3.0 (2026-04-13)
+- [x] SOUP 업데이트 확인 — DOC-033 v2.1 (2026-04-13)
+- [x] RTM 매핑 확인 — 문서 내 연동 완료
+- [x] `git push origin team/ra`
