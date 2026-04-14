@@ -13,6 +13,10 @@
 - 팀별 Claude Context 최적화 규칙
 - CODEOWNERS 및 PR 체크리스트 템플릿
 
+#### S07 R3 (2026-04-14)
+
+- **RA**: DOC-006 SAD v2.1 업데이트 (StudyItem 아키텍처 수정 반영, IStudyItem 인터페이스 분리), DOC-008 RMP v2.0 Approved 상태 확인
+
 #### S07 R2 (2026-04-14)
 
 - **RA**: DOC-032 RTM v2.2 승급 (Draft → Approved), DOC-042 CMP v2.1 Approved 상태 확인, DOC-006 SAD v2.0 아키텍처 규칙 추가 (구체 클래스 금지)
