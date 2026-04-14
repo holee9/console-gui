@@ -53,6 +53,13 @@ Design Team이 DISPATCH에서 `NEEDS_VIEWMODEL` 을 보고하면:
 - Test naming: {Module}_{Scenario}_{ExpectedResult}
 - Run integration tests before every PR merge to main
 
+## DesignTime/ 접근 금지 [HARD — S08-R1 사고교훈]
+
+- [HARD] Coordinator는 `src/HnVue.UI/DesignTime/` 디렉토리에 파일 생성/수정 금지
+- [HARD] DesignTime/은 Design 팀 단독 소유 — Mock ViewModel은 Design이 관리
+- [HARD] 통합테스트용 Mock이 필요하면 `tests.integration/`에 별도 생성
+- [HARD] 통합테스트 Mock은 실제 ViewModel 인터페이스(UI.Contracts)를 구현하되, DesignTime/와 분리
+
 ## Scope Limitation [HARD]
 - Coordinator worktree only inspects its OWN source code modules
 - Analyzing other teams' work is Commander Center's role

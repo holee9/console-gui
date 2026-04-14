@@ -77,6 +77,29 @@ Q4: 이것이 내 소유 모듈 밖의 직접 작업인가?           → YES = 
 | CO | HnVue.UI.Contracts, HnVue.UI.ViewModels, HnVue.App | tests.integration/ | scripts/team/ |
 | TD | HnVue.UI (Views, Styles, Themes, Components, Converters, Assets, DesignTime) | — | — |
 
+### 디렉토리 단위 소유권 테이블 [HARD — S08 사고교훈]
+
+공유 프로젝트(HnVue.UI) 내에서 파일 생성 위치별 소유권을 명확히 한다.
+
+| 디렉토리/패턴 | 소유 팀 | 비고 |
+|---------------|---------|------|
+| `src/HnVue.UI/Views/**` | Design (TD) | XAML + code-behind |
+| `src/HnVue.UI/Styles/**` | Design (TD) | 스타일 리소스 |
+| `src/HnVue.UI/Themes/**` | Design (TD) | 테마, 토큰 |
+| `src/HnVue.UI/Components/**` | Design (TD) | UI 컴포넌트 |
+| `src/HnVue.UI/Converters/**` | 소유권에 따라 분류 | 도메인 Converter = TB, UI Converter = TD |
+| `src/HnVue.UI/Assets/**` | Design (TD) | 이미지, 아이콘 |
+| `src/HnVue.UI/DesignTime/**` | **Design (TD) 단독** | Mock ViewModel. Coordinator 수정 금지 |
+| `src/HnVue.UI.ViewModels/**` | Coordinator (CO) | 실제 ViewModel 구현 |
+| `src/HnVue.UI.Contracts/**` | Coordinator (CO) | 인터페이스 정의 |
+| `tests.integration/**` | Coordinator (CO) | 통합테스트 + 테스트용 Mock |
+
+**DesignTime/ 규칙 [HARD]**:
+- [HARD] `DesignTime/` 디렉토리는 Design 팀 단독 소유 — 다른 팀이 파일 생성/수정 금지
+- [HARD] Coordinator가 통합테스트용 Mock이 필요하면 `tests.integration/`에 별도 생성
+- [HARD] CC는 DISPATCH 기획 시 Mock 파일 생성 위치를 반드시 명시
+- [HARD] 이 규칙 위반 시 아키텍처 테스트가 검출 (Layer 2)
+
 ### 구현 팀 허용 작업
 
 | 작업 | 설명 |
@@ -218,10 +241,11 @@ CC: 갭 분석 → 다음 라운드 6팀 DISPATCH 발행 → 반복
 | S05~S07 | CC 직접구현 | CC | 소스코드 직접 수정, 에이전트로 구현 호출 | CC 구현 금지 강화 |
 | S07-R4 | CC 빌드/테스트 | CC | dotnet build/test 직접 실행 | QA 독립성 명문화 |
 | S07-R4 | CC 커버리지 | CC | 커버리지 분석 직접 실행 | role-matrix.md 도입 |
+| S08-R1 | CO+TD DesignTime 충돌 | CO | Coordinator가 DesignTime/에 Mock 파일 생성 (Design 영역 침범) | 디렉토리 단위 소유권 테이블 추가, 아키텍처 테스트 검증 추가 |
 
 ---
 
-Version: 1.0.0
+Version: 2.0.0
 Classification: CONSTITUTIONAL (FROZEN)
 Effective: 2026-04-14
-Source: S07-R4 사고교훈 + 사용자 지적 "Team B 역할 확인"
+Source: S07-R4 사고교훈 + S08-R1 DesignTime 충돌 사고교훈
