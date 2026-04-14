@@ -7,9 +7,9 @@
 | 항목 | 내용 |
 |------|------|
 | **문서 ID** | RTM-XRAY-GUI-001 |
-| **버전** | v2.4 |
+| **버전** | v2.5 |
 | **작성일** | 2026-04-02 |
-| **개정일** | 2026-04-14 |
+| **개정일** | 2026-04-14 (S08-R2) |
 
 | **작성자** | RA팀 |
 | **검토자** | SW Dev Lead |
@@ -31,6 +31,7 @@
 | v2.2 | 2026-04-14 | RA팀 | S07 R1: Detector SDK 통합 TC 매핑 추가 (부록 C). SWR-DET-010 (Detector 설정/어댑터), SWR-DT-060 (HME Detector 어댑터), SWR-DT-061 (HME Detector 설정) xUnit Trait 기반 TC 정의. SBOM v3.0/SOUP v2.1 동기화. |
 | v2.3 | 2026-04-14 | RA팀 | S07 R5: CDBurning 및 DICOM TC 매핑 추가 (부록 D). SWR-CD-010/020/030 (CDBurning 서비스/IMAPI/Repository), SWR-DICOM-010/020 (DICOM FileIO/Service) xUnit Trait 기반 TC 정의. |
 | v2.4 | 2026-04-14 | RA팀 | S08 R1: StudylistView UI 동기화 확인. IStudylistViewModel 인터페이스 추가 (Coordinator)에 따른 UI 계층 변경사항 반영. SRS/FRS 문서 동기화 확인 (별도 SWR 추가 불필요 - UI 설계 구현사항). |
+| v2.5 | 2026-04-14 | RA팀 | S08 R2: role-matrix v2.0 디렉토리 단위 소유권 테이블 반영. DesignTime/ 경계 아키텍처 테스트 추적성 추가 (부록 E). HnVue.UI 공유 프로젝트 내 파일 생성 위치별 소유권 테스트 매핑. |
 
 ---
 
@@ -1027,12 +1028,103 @@ Team A SPEC-INFRA-002 완료 후 다음 절차에 따라 본 부록을 갱신:
 
 ---
 
+## 부록 E. S08-R2 아키텍처 테스트 추적성 (role-matrix v2.0)
+
+### E.1 개요
+
+role-matrix v2.0 (S08 사고교훈 반영)의 디렉토리 단위 소유권 테이블 관련 아키텍처 테스트 추적성 매트릭스.
+
+**목적**: HnVue.UI 공유 프로젝트 내에서 파일 생성 위치별 소유권 경계 준수 검증
+
+### E.2 디렉토리 소유권 아키텍처 테스트 매핑
+
+| 아키텍처 규칙 | SWR ID | TC ID | 테스트 항목 | 테스트 파일 | 상태 |
+|---------------|--------|-------|-------------|-------------|------|
+| DesignTime/ 단독 소유 (TD) | SWR-ARCH-001 | TC-ARCH-001 | DesignTime 디렉토리 내 Mock 파일 생성 권한 | tests/HnVue.Architecture.Tests/DesignTimeOwnershipTests.cs | **Pending** |
+| Converter 분류 규칙 | SWR-ARCH-002 | TC-ARCH-002 | 도메인 vs UI Converter 소유권 분류 | tests/HnVue.Architecture.Tests/ConverterClassificationTests.cs | **Pending** |
+| 통합테스트 Mock 분리 | SWR-ARCH-003 | TC-ARCH-003 | Coordinator Mock은 tests.integration/ 생성 | tests/HnVue.Architecture.Tests/IntegrationTestMockSeparationTests.cs | **Pending** |
+| Views/ XAML 소유권 | SWR-ARCH-004 | TC-ARCH-004 | Views/ 디렉토리 XAML + code-behind 소유권 | tests/HnVue.Architecture.Tests/ViewOwnershipTests.cs | **Pending** |
+| UI.Contracts 소유권 | SWR-ARCH-005 | TC-ARCH-005 | UI.Contracts 인터페이스 정의 소유권 | tests/HnVue.Architecture.Tests/UIContractsOwnershipTests.cs | **Pending** |
+
+### E.3 DesignTime/ 경계 규칙 상세
+
+| 규칙 ID | 규칙 설명 | 위반 예시 | 허용 패턴 |
+|----------|-----------|-----------|-----------|
+| ARCH-RULE-001 | DesignTime/은 Design 팀 단독 소유 | Coordinator가 DesignTimeStudylistViewModel.cs 생성/수정 | Design 팀이 자율 생성/수정 |
+| ARCH-RULE-002 | 통합테스트 Mock은 tests.integration/ 생성 | DesignTime/에 IStudylistServiceMock 생성 | tests.integration/Mocks/ 에 생성 |
+| ARCH-RULE-003 | 도메인 Converter는 Team B 소유 | Design 팀이 SafeStateToColorConverter.cs 생성 | Team B가 생성/수정 |
+| ARCH-RULE-004 | UI Converter는 Design 소유 | Team B가 BoolToVisibilityConverter.cs 생성 | Design 팀이 생성/수정 |
+
+### E.4 NetArchTest 아키텍처 테스트 구현 예시
+
+```csharp
+// tests/HnVue.Architecture.Tests/DesignTimeOwnershipTests.cs
+using NetArchTest.Rules;
+using Xunit;
+using static NetArchTest.Rules.Syntax;
+
+public class DesignTimeOwnershipTests
+{
+    [Fact]
+    public void DesignTime_Directory_Should_Only_Contain_Design_Team_Files()
+    {
+        // Given
+        var designTimeTypes = Types.InAssembly(typeof(HnVue.UI.DesignTime.DesignTimeStudylistViewModel).Assembly)
+            .That()
+            .ResideInNamespace("HnVue.UI.DesignTime");
+        
+        // Then
+        designTimeTypes.Should()
+            .MeetCustomRule("DesignTime files must not be modified by non-Design teams",
+                type => !type.Name.Contains("Mock") || 
+                       type.Assembly.GetName().Name.Contains("HnVue.UI.DesignTime"));
+    }
+    
+    [Fact]
+    public void Integration_Test_Mocks_Should_Reside_In_tests_integration()
+    {
+        // Given
+        var mockTypes = Types.InAssembly(typeof(HnVue.UI.Tests.Mocks.IStudylistServiceMock).Assembly)
+            .That()
+            .HaveNameEndingWith("Mock");
+        
+        // Then
+        mockTypes.Should()
+            .ResideInNamespace("HnVue.UI.Tests.Mocks", 
+                             "Integration test mocks must be in tests.integration/");
+    }
+}
+```
+
+### E.5 S08-R2 추적성 요약
+
+| 규칙 유형 | SWR 수 | TC 수 | 매핑 상태 |
+|-----------|-------|-------|---------|
+| DesignTime/ 경계 | 1 | 1 | **Pending** (Team A Architecture Tests 구현 예정) |
+| Converter 분류 | 1 | 1 | **Pending** |
+| 통합테스트 Mock 분리 | 1 | 1 | **Pending** |
+| Views/ 소유권 | 1 | 1 | **Pending** |
+| UI.Contracts 소유권 | 1 | 1 | **Pending** |
+| **합계** | **5** | **5** | **0% (구현 예정)** |
+
+### E.6 S08 전체 SWR Trait 매핑 종합 (업데이트)
+
+| 부록 | 도메인 | SWR 수 | TC 수 | 매핑 상태 |
+|------|--------|-------|-------|---------|
+| B | PHI 암호화 (SWR-CS-080/081) | 2 | 12 | PARTIAL (PLACEHOLDER) |
+| C | Detector SDK (SWR-DET/DT) | 4 | 12 | **100%** |
+| D | CDBurning/DICOM (SWR-CD/DICOM) | 5 | 11 | **100%** |
+| E | 아키텍처 소유권 (role-matrix v2.0) | 5 | 5 | **0% (Pending)** |
+| 본문 | 전체 도메인 (90개 PR) | 90 | - | MR->PR->SWR **100%**, SWR->TC Pending (계획 중) |
+
+---
+
 > **문서 종료**
 >
 > 본 RTM은 FDA 21 CFR 820.30 Design Controls에 따라 HnVue Console SW의 Design History File (DHF)의 핵심 구성 요소로 관리되며, 요구사항 변경 시 반드시 업데이트되어야 한다.
 >
 > | 문서 ID | RTM-XRAY-GUI-001 |
 > |---------|-----------------|
-> | 버전 | v2.3 (SWR-CD-010/020/030 + SWR-DICOM-010/020 CDBurning/DICOM TC 매핑 추가) |
+> | 버전 | v2.5 (S08-R2 role-matrix v2.0 디렉토리 단위 소유권 테이블 반영 + 아키텍처 TC 추적성 추가) |
 > | 작성일 | 2026-04-02 / 개정일 2026-04-14 |
 > | 검토 예정 | 2026-05-02 (Phase 1 설계 착수 시) |
