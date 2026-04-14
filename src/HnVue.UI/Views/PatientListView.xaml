@@ -14,34 +14,34 @@
             <Setter Property="Height" Value="44"/>
         </Style>
         <Style x:Key="DarkHeaderStyle" TargetType="DataGridColumnHeader">
-            <Setter Property="Background" Value="#2f2f2f"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="BorderBrush" Value="#585858"/>
+            <Setter Property="Background" Value="{DynamicResource HnVue.Semantic.Surface.Panel}"/>
+            <Setter Property="Foreground" Value="{DynamicResource HnVue.Semantic.Text.Primary}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource HnVue.Semantic.Text.Secondary}"/>
             <Setter Property="BorderThickness" Value="0,0,1,1"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="Height" Value="34"/>
         </Style>
         <Style x:Key="DarkRowStyle" TargetType="DataGridRow">
-            <Setter Property="Background" Value="#000000"/>
-            <Setter Property="Foreground" Value="#dde6f4"/>
-            <Setter Property="BorderBrush" Value="#2a2a2a"/>
+            <Setter Property="Background" Value="{DynamicResource HnVue.Semantic.Surface.Page}"/>
+            <Setter Property="Foreground" Value="{DynamicResource HnVue.Semantic.Text.Primary}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource HnVue.Component.DataGrid.GridLine}"/>
             <Setter Property="BorderThickness" Value="0,0,0,1"/>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#162132"/>
-                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="Background" Value="{DynamicResource HnVue.Semantic.Surface.Card}"/>
+                    <Setter Property="Foreground" Value="{DynamicResource HnVue.Semantic.Text.Primary}"/>
                 </Trigger>
                 <Trigger Property="IsSelected" Value="True">
-                    <Setter Property="Background" Value="#4f79b8"/>
-                    <Setter Property="Foreground" Value="White"/>
-                    <Setter Property="BorderBrush" Value="#7ba3d8"/>
+                    <Setter Property="Background" Value="{DynamicResource HnVue.Component.DataGrid.SelectionBg}"/>
+                    <Setter Property="Foreground" Value="{DynamicResource HnVue.Semantic.Text.Primary}"/>
+                    <Setter Property="BorderBrush" Value="{DynamicResource HnVue.Semantic.Brand.PrimaryLight}"/>
                     <Setter Property="BorderThickness" Value="2,0,0,0"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
         <!-- PPT Slide 4: Loading state indicator -->
         <Style x:Key="LoadingTextStyle" TargetType="TextBlock">
-            <Setter Property="Foreground" Value="#8899aa"/>
+            <Setter Property="Foreground" Value="{DynamicResource HnVue.Semantic.Text.Secondary}"/>
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -50,10 +50,10 @@
             <Setter Property="Width" Value="38"/>
             <Setter Property="Height" Value="38"/>
             <Setter Property="Margin" Value="0,0,6,6"/>
-            <Setter Property="Background" Value="#1d2433"/>
-            <Setter Property="BorderBrush" Value="#59657b"/>
+            <Setter Property="Background" Value="{DynamicResource HnVue.Semantic.Surface.Panel}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource HnVue.Semantic.Border.Default}"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Foreground" Value="#f0f4fd"/>
+            <Setter Property="Foreground" Value="{DynamicResource HnVue.Semantic.Text.Primary}"/>
             <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
             <Setter Property="FontSize" Value="17"/>
         </Style>
@@ -99,11 +99,11 @@
                     Margin="0,0,10,0"
                     Visibility="Collapsed">
                 <TextBlock Text="EMRG"
-                           Foreground="White"
+                           Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
                            FontSize="10"
                            FontWeight="Bold"/>
             </Border>
-            <TextBlock Grid.Column="2" Text="&#xE76C;" FontFamily="Segoe MDL2 Assets" Foreground="#dce3f1" FontSize="26" VerticalAlignment="Center"/>
+            <TextBlock Grid.Column="2" Text="&#xE76C;" FontFamily="Segoe MDL2 Assets" Foreground="{DynamicResource HnVue.Semantic.Text.Primary}" FontSize="26" VerticalAlignment="Center"/>
             <!-- PPT Slide 5: Period filter buttons with OutlineButton style -->
             <StackPanel Grid.Column="4" Orientation="Horizontal">
                 <Button Content="Today" Style="{StaticResource HnVue.OutlineButton}" Command="{Binding FilterByPeriodCommand}" CommandParameter="Today" Width="82" Height="32" Margin="0,0,6,0"/>
@@ -123,7 +123,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Column="0" Background="#000000" BorderBrush="#505661" BorderThickness="1">
+            <Border Grid.Column="0" Background="{DynamicResource HnVue.Semantic.Surface.Page}" BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}" BorderThickness="1">
                 <Grid>
                     <DataGrid ItemsSource="{Binding Patients}"
                               SelectedItem="{Binding SelectedPatient}"
@@ -133,13 +133,15 @@
                               CanUserResizeRows="False"
                               HeadersVisibility="Column"
                               GridLinesVisibility="Horizontal"
-                              HorizontalGridLinesBrush="#2a2a2a"
+                              HorizontalGridLinesBrush="{DynamicResource HnVue.Component.DataGrid.GridLine}"
                               BorderThickness="0"
                               RowHeaderWidth="0"
-                              Background="#000000"
-                              Foreground="#dde6f4"
+                              Background="{DynamicResource HnVue.Semantic.Surface.Page}"
+                              Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
                               ColumnHeaderHeight="34"
-                              RowHeight="40">
+                              RowHeight="40"
+                              VirtualizingStackPanel.IsVirtualizing="True"
+                              VirtualizingStackPanel.VirtualizationMode="Recycling">
                         <DataGrid.ColumnHeaderStyle>
                             <StaticResource ResourceKey="DarkHeaderStyle"/>
                         </DataGrid.ColumnHeaderStyle>
@@ -156,7 +158,7 @@
                         </DataGrid.Columns>
                     </DataGrid>
                     <!-- PPT Slide 4: Empty state with improved message -->
-                    <Border Margin="0,34,0,0" Background="#0a0a0a">
+                    <Border Margin="0,34,0,0" Background="{DynamicResource HnVue.Semantic.Surface.Page}">
                         <Border.Style>
                             <Style TargetType="Border">
                                 <Setter Property="Visibility" Value="Collapsed"/>
@@ -173,7 +175,7 @@
                         </Grid>
                     </Border>
                     <!-- PPT Slide 4: Loading state placeholder -->
-                    <Border Margin="0,34,0,0" Background="#0a0a0a">
+                    <Border Margin="0,34,0,0" Background="{DynamicResource HnVue.Semantic.Surface.Page}">
                         <Border.Style>
                             <Style TargetType="Border">
                                 <Setter Property="Visibility" Value="Collapsed"/>
@@ -199,40 +201,40 @@
                                 <ColumnDefinition Width="80"/>
                                 <ColumnDefinition Width="120"/>
                             </Grid.ColumnDefinitions>
-                            <Border Grid.Row="0" Grid.ColumnSpan="6" Background="#101824"/>
-                            <Border Grid.Row="1" Grid.ColumnSpan="6" Background="#0b0b0b"/>
-                            <Border Grid.Row="2" Grid.ColumnSpan="6" Background="#101824"/>
-                            <Border Grid.Row="3" Grid.ColumnSpan="6" Background="#0b0b0b"/>
-                            <TextBlock Grid.Row="0" Grid.Column="0" Margin="12,11,0,0" Foreground="#dfe6f4" Text="1"/>
-                            <TextBlock Grid.Row="0" Grid.Column="1" Margin="12,11,0,0" Foreground="#dfe6f4" Text="PT-20251013-001"/>
-                            <TextBlock Grid.Row="0" Grid.Column="2" Margin="12,11,0,0" Foreground="#dfe6f4" Text="Sample Patient"/>
-                            <TextBlock Grid.Row="0" Grid.Column="3" Margin="12,11,0,0" Foreground="#dfe6f4" Text="M"/>
-                            <TextBlock Grid.Row="0" Grid.Column="4" Margin="12,11,0,0" Foreground="#dfe6f4" Text="38"/>
-                            <TextBlock Grid.Row="0" Grid.Column="5" Margin="12,11,0,0" Foreground="#dfe6f4" Text="19880101"/>
-                            <TextBlock Grid.Row="1" Grid.Column="0" Margin="12,11,0,0" Foreground="#b7c5da" Text="2"/>
-                            <TextBlock Grid.Row="1" Grid.Column="1" Margin="12,11,0,0" Foreground="#b7c5da" Text="PT-20251012-018"/>
-                            <TextBlock Grid.Row="1" Grid.Column="2" Margin="12,11,0,0" Foreground="#b7c5da" Text="Minji Park"/>
-                            <TextBlock Grid.Row="1" Grid.Column="3" Margin="12,11,0,0" Foreground="#b7c5da" Text="F"/>
-                            <TextBlock Grid.Row="1" Grid.Column="4" Margin="12,11,0,0" Foreground="#b7c5da" Text="42"/>
-                            <TextBlock Grid.Row="1" Grid.Column="5" Margin="12,11,0,0" Foreground="#b7c5da" Text="19840211"/>
-                            <TextBlock Grid.Row="2" Grid.Column="0" Margin="12,11,0,0" Foreground="#dfe6f4" Text="3"/>
-                            <TextBlock Grid.Row="2" Grid.Column="1" Margin="12,11,0,0" Foreground="#dfe6f4" Text="PT-20251012-009"/>
-                            <TextBlock Grid.Row="2" Grid.Column="2" Margin="12,11,0,0" Foreground="#dfe6f4" Text="Jisoo Kim"/>
-                            <TextBlock Grid.Row="2" Grid.Column="3" Margin="12,11,0,0" Foreground="#dfe6f4" Text="F"/>
-                            <TextBlock Grid.Row="2" Grid.Column="4" Margin="12,11,0,0" Foreground="#dfe6f4" Text="29"/>
-                            <TextBlock Grid.Row="2" Grid.Column="5" Margin="12,11,0,0" Foreground="#dfe6f4" Text="19961030"/>
-                            <TextBlock Grid.Row="3" Grid.Column="0" Margin="12,11,0,0" Foreground="#b7c5da" Text="4"/>
-                            <TextBlock Grid.Row="3" Grid.Column="1" Margin="12,11,0,0" Foreground="#b7c5da" Text="PT-20251011-004"/>
-                            <TextBlock Grid.Row="3" Grid.Column="2" Margin="12,11,0,0" Foreground="#b7c5da" Text="Daniel Lee"/>
-                            <TextBlock Grid.Row="3" Grid.Column="3" Margin="12,11,0,0" Foreground="#b7c5da" Text="M"/>
-                            <TextBlock Grid.Row="3" Grid.Column="4" Margin="12,11,0,0" Foreground="#b7c5da" Text="55"/>
-                            <TextBlock Grid.Row="3" Grid.Column="5" Margin="12,11,0,0" Foreground="#b7c5da" Text="19710204"/>
+                            <Border Grid.Row="0" Grid.ColumnSpan="6" Background="{DynamicResource HnVue.Semantic.Surface.Card}"/>
+                            <Border Grid.Row="1" Grid.ColumnSpan="6" Background="{DynamicResource HnVue.Semantic.Surface.Page}"/>
+                            <Border Grid.Row="2" Grid.ColumnSpan="6" Background="{DynamicResource HnVue.Semantic.Surface.Card}"/>
+                            <Border Grid.Row="3" Grid.ColumnSpan="6" Background="{DynamicResource HnVue.Semantic.Surface.Page}"/>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Margin="12,11,0,0" Foreground="{DynamicResource HnVue.Semantic.Text.Primary}" Text="1"/>
+                            <TextBlock Grid.Row="0" Grid.Column="1" Margin="12,11,0,0" Foreground="{DynamicResource HnVue.Semantic.Text.Primary}" Text="PT-20251013-001"/>
+                            <TextBlock Grid.Row="0" Grid.Column="2" Margin="12,11,0,0" Foreground="{DynamicResource HnVue.Semantic.Text.Primary}" Text="Sample Patient"/>
+                            <TextBlock Grid.Row="0" Grid.Column="3" Margin="12,11,0,0" Foreground="{DynamicResource HnVue.Semantic.Text.Primary}" Text="M"/>
+                            <TextBlock Grid.Row="0" Grid.Column="4" Margin="12,11,0,0" Foreground="{DynamicResource HnVue.Semantic.Text.Primary}" Text="38"/>
+                            <TextBlock Grid.Row="0" Grid.Column="5" Margin="12,11,0,0" Foreground="{DynamicResource HnVue.Semantic.Text.Primary}" Text="19880101"/>
+                            <TextBlock Grid.Row="1" Grid.Column="0" Margin="12,11,0,0" Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}" Text="2"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1" Margin="12,11,0,0" Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}" Text="PT-20251012-018"/>
+                            <TextBlock Grid.Row="1" Grid.Column="2" Margin="12,11,0,0" Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}" Text="Minji Park"/>
+                            <TextBlock Grid.Row="1" Grid.Column="3" Margin="12,11,0,0" Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}" Text="F"/>
+                            <TextBlock Grid.Row="1" Grid.Column="4" Margin="12,11,0,0" Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}" Text="42"/>
+                            <TextBlock Grid.Row="1" Grid.Column="5" Margin="12,11,0,0" Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}" Text="19840211"/>
+                            <TextBlock Grid.Row="2" Grid.Column="0" Margin="12,11,0,0" Foreground="{DynamicResource HnVue.Semantic.Text.Primary}" Text="3"/>
+                            <TextBlock Grid.Row="2" Grid.Column="1" Margin="12,11,0,0" Foreground="{DynamicResource HnVue.Semantic.Text.Primary}" Text="PT-20251012-009"/>
+                            <TextBlock Grid.Row="2" Grid.Column="2" Margin="12,11,0,0" Foreground="{DynamicResource HnVue.Semantic.Text.Primary}" Text="Jisoo Kim"/>
+                            <TextBlock Grid.Row="2" Grid.Column="3" Margin="12,11,0,0" Foreground="{DynamicResource HnVue.Semantic.Text.Primary}" Text="F"/>
+                            <TextBlock Grid.Row="2" Grid.Column="4" Margin="12,11,0,0" Foreground="{DynamicResource HnVue.Semantic.Text.Primary}" Text="29"/>
+                            <TextBlock Grid.Row="2" Grid.Column="5" Margin="12,11,0,0" Foreground="{DynamicResource HnVue.Semantic.Text.Primary}" Text="19961030"/>
+                            <TextBlock Grid.Row="3" Grid.Column="0" Margin="12,11,0,0" Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}" Text="4"/>
+                            <TextBlock Grid.Row="3" Grid.Column="1" Margin="12,11,0,0" Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}" Text="PT-20251011-004"/>
+                            <TextBlock Grid.Row="3" Grid.Column="2" Margin="12,11,0,0" Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}" Text="Daniel Lee"/>
+                            <TextBlock Grid.Row="3" Grid.Column="3" Margin="12,11,0,0" Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}" Text="M"/>
+                            <TextBlock Grid.Row="3" Grid.Column="4" Margin="12,11,0,0" Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}" Text="55"/>
+                            <TextBlock Grid.Row="3" Grid.Column="5" Margin="12,11,0,0" Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}" Text="19710204"/>
                         </Grid>
                     </Border>
                 </Grid>
             </Border>
 
-            <Border Grid.Column="2" Background="#000000" BorderBrush="#505661" BorderThickness="1">
+            <Border Grid.Column="2" Background="{DynamicResource HnVue.Semantic.Surface.Page}" BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}" BorderThickness="1">
                 <Grid>
                     <DataGrid ItemsSource="{Binding Patients}"
                               SelectedItem="{Binding SelectedPatient}"
@@ -242,13 +244,15 @@
                               CanUserResizeRows="False"
                               HeadersVisibility="Column"
                               GridLinesVisibility="Horizontal"
-                              HorizontalGridLinesBrush="#2a2a2a"
+                              HorizontalGridLinesBrush="{DynamicResource HnVue.Component.DataGrid.GridLine}"
                               BorderThickness="0"
                               RowHeaderWidth="0"
-                              Background="#000000"
-                              Foreground="#dde6f4"
+                              Background="{DynamicResource HnVue.Semantic.Surface.Page}"
+                              Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
                               ColumnHeaderHeight="34"
-                              RowHeight="40">
+                              RowHeight="40"
+                              VirtualizingStackPanel.IsVirtualizing="True"
+                              VirtualizingStackPanel.VirtualizationMode="Recycling">
                         <DataGrid.ColumnHeaderStyle>
                             <StaticResource ResourceKey="DarkHeaderStyle"/>
                         </DataGrid.ColumnHeaderStyle>
@@ -262,7 +266,7 @@
                         </DataGrid.Columns>
                     </DataGrid>
                     <!-- PPT Slide 4: Empty state for study list -->
-                    <Border Margin="0,34,0,0" Background="#0a0a0a">
+                    <Border Margin="0,34,0,0" Background="{DynamicResource HnVue.Semantic.Surface.Page}">
                         <Border.Style>
                             <Style TargetType="Border">
                                 <Setter Property="Visibility" Value="Collapsed"/>
@@ -279,7 +283,7 @@
                         </Grid>
                     </Border>
                     <!-- PPT Slide 4: Loading state placeholder for study list -->
-                    <Border Margin="0,34,0,0" Background="#0a0a0a">
+                    <Border Margin="0,34,0,0" Background="{DynamicResource HnVue.Semantic.Surface.Page}">
                         <Border.Style>
                             <Style TargetType="Border">
                                 <Setter Property="Visibility" Value="Collapsed"/>
@@ -302,31 +306,31 @@
                                 <ColumnDefinition Width="140"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Border Grid.Row="0" Grid.ColumnSpan="3" Background="#101824"/>
-                            <Border Grid.Row="1" Grid.ColumnSpan="3" Background="#0b0b0b"/>
-                            <Border Grid.Row="2" Grid.ColumnSpan="3" Background="#101824"/>
-                            <Border Grid.Row="3" Grid.ColumnSpan="3" Background="#0b0b0b"/>
-                            <TextBlock Grid.Row="0" Grid.Column="0" Margin="12,11,0,0" Foreground="#dfe6f4" Text="ACC-24101301"/>
-                            <TextBlock Grid.Row="0" Grid.Column="1" Margin="12,11,0,0" Foreground="#dfe6f4" Text="20251013"/>
-                            <TextBlock Grid.Row="0" Grid.Column="2" Margin="12,11,0,0" Foreground="#dfe6f4" Text="CHEST PA"/>
-                            <TextBlock Grid.Row="1" Grid.Column="0" Margin="12,11,0,0" Foreground="#b7c5da" Text="ACC-24101218"/>
-                            <TextBlock Grid.Row="1" Grid.Column="1" Margin="12,11,0,0" Foreground="#b7c5da" Text="20251012"/>
-                            <TextBlock Grid.Row="1" Grid.Column="2" Margin="12,11,0,0" Foreground="#b7c5da" Text="L-SPINE AP/LAT"/>
-                            <TextBlock Grid.Row="2" Grid.Column="0" Margin="12,11,0,0" Foreground="#dfe6f4" Text="ACC-24101209"/>
-                            <TextBlock Grid.Row="2" Grid.Column="1" Margin="12,11,0,0" Foreground="#dfe6f4" Text="20251012"/>
-                            <TextBlock Grid.Row="2" Grid.Column="2" Margin="12,11,0,0" Foreground="#dfe6f4" Text="KNEE BOTH AP/LAT"/>
-                            <TextBlock Grid.Row="3" Grid.Column="0" Margin="12,11,0,0" Foreground="#b7c5da" Text="ACC-24101104"/>
-                            <TextBlock Grid.Row="3" Grid.Column="1" Margin="12,11,0,0" Foreground="#b7c5da" Text="20251011"/>
-                            <TextBlock Grid.Row="3" Grid.Column="2" Margin="12,11,0,0" Foreground="#b7c5da" Text="ABDOMEN SUPINE"/>
+                            <Border Grid.Row="0" Grid.ColumnSpan="3" Background="{DynamicResource HnVue.Semantic.Surface.Card}"/>
+                            <Border Grid.Row="1" Grid.ColumnSpan="3" Background="{DynamicResource HnVue.Semantic.Surface.Page}"/>
+                            <Border Grid.Row="2" Grid.ColumnSpan="3" Background="{DynamicResource HnVue.Semantic.Surface.Card}"/>
+                            <Border Grid.Row="3" Grid.ColumnSpan="3" Background="{DynamicResource HnVue.Semantic.Surface.Page}"/>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Margin="12,11,0,0" Foreground="{DynamicResource HnVue.Semantic.Text.Primary}" Text="ACC-24101301"/>
+                            <TextBlock Grid.Row="0" Grid.Column="1" Margin="12,11,0,0" Foreground="{DynamicResource HnVue.Semantic.Text.Primary}" Text="20251013"/>
+                            <TextBlock Grid.Row="0" Grid.Column="2" Margin="12,11,0,0" Foreground="{DynamicResource HnVue.Semantic.Text.Primary}" Text="CHEST PA"/>
+                            <TextBlock Grid.Row="1" Grid.Column="0" Margin="12,11,0,0" Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}" Text="ACC-24101218"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1" Margin="12,11,0,0" Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}" Text="20251012"/>
+                            <TextBlock Grid.Row="1" Grid.Column="2" Margin="12,11,0,0" Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}" Text="L-SPINE AP/LAT"/>
+                            <TextBlock Grid.Row="2" Grid.Column="0" Margin="12,11,0,0" Foreground="{DynamicResource HnVue.Semantic.Text.Primary}" Text="ACC-24101209"/>
+                            <TextBlock Grid.Row="2" Grid.Column="1" Margin="12,11,0,0" Foreground="{DynamicResource HnVue.Semantic.Text.Primary}" Text="20251012"/>
+                            <TextBlock Grid.Row="2" Grid.Column="2" Margin="12,11,0,0" Foreground="{DynamicResource HnVue.Semantic.Text.Primary}" Text="KNEE BOTH AP/LAT"/>
+                            <TextBlock Grid.Row="3" Grid.Column="0" Margin="12,11,0,0" Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}" Text="ACC-24101104"/>
+                            <TextBlock Grid.Row="3" Grid.Column="1" Margin="12,11,0,0" Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}" Text="20251011"/>
+                            <TextBlock Grid.Row="3" Grid.Column="2" Margin="12,11,0,0" Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}" Text="ABDOMEN SUPINE"/>
                         </Grid>
                     </Border>
                 </Grid>
             </Border>
         </Grid>
 
-        <TextBlock Grid.Column="0" Grid.Row="2" Text="{Binding Patients.Count, StringFormat=Total: {0}}" Foreground="#d5dceb" Margin="8,8,0,0"/>
+        <TextBlock Grid.Column="0" Grid.Row="2" Text="{Binding Patients.Count, StringFormat=Total: {0}}" Foreground="{DynamicResource HnVue.Semantic.Text.Primary}" Margin="8,8,0,0"/>
 
-        <Border Grid.Column="1" Grid.RowSpan="3" Background="#1a2130" BorderBrush="#505661" BorderThickness="1" Padding="10">
+        <Border Grid.Column="1" Grid.RowSpan="3" Background="{DynamicResource HnVue.Semantic.Surface.Panel}" BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}" BorderThickness="1" Padding="10">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -352,8 +356,8 @@
                 </Grid>
 
                 <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,10">
-                    <CheckBox Content="Suspend" Foreground="#dce3f1" Margin="0,0,10,0"/>
-                    <CheckBox Content="Hide" Foreground="#dce3f1"/>
+                    <CheckBox Content="Suspend" Foreground="{DynamicResource HnVue.Semantic.Text.Primary}" Margin="0,0,10,0"/>
+                    <CheckBox Content="Hide" Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"/>
                 </StackPanel>
 
                 <Grid Grid.Row="2" Margin="0,0,0,10">
@@ -375,9 +379,9 @@
                         Content="Quick Start"
                         Command="{Binding SelectPatientCommand}"
                         CommandParameter="{Binding SelectedPatient}"
-                        Background="#df4938"
-                        BorderBrush="#df4938"
-                        Foreground="White"
+                        Background="{DynamicResource HnVue.Semantic.Status.Emergency}"
+                        BorderBrush="{DynamicResource HnVue.Semantic.Status.Emergency}"
+                        Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
                         FontWeight="Bold"
                         Height="46"
                         VerticalAlignment="Top"/>
