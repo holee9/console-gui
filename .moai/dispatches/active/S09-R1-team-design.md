@@ -44,14 +44,28 @@ StudylistView XAML 구현(#102)은 다음 라운드로 이관.
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: 하드코딩+EmergencyStop (P1) | NOT_STARTED | | |
-| Git 완료 프로토콜 | NOT_STARTED | | |
+| Task 1: 하드코딩+EmergencyStop (P1) | COMPLETED | 2026-04-14 21:47 | Issue #103 |
+| Git 완료 프로토콜 | COMPLETED | 2026-04-14 21:47 | commit de4d33a |
 
 ---
 
 ## Self-Verification Checklist
 
-- [ ] `dotnet build` 0 errors
-- [ ] Only modified files within Design ownership (Views, Styles, Themes, Components, DesignTime)
-- [ ] PPT scope compliance (slides 9-11 ONLY)
-- [ ] 3테마 렌더링 확인
+- [x] `dotnet build` 0 errors
+- [x] Only modified files within Design ownership (Views, Styles, Themes, Components, DesignTime)
+- [x] PPT scope compliance (slides 9-11 ONLY)
+- [x] 3테마 렌더링 확인
+
+---
+
+## Build Evidence
+
+```
+Build Result: 0 errors, 1627 warnings (StyleCop/IDE unused using)
+Files Modified:
+- src/HnVue.UI/Themes/tokens/SemanticTokens.xaml (HnVue.Semantic.Text.OnEmergency 추가)
+- src/HnVue.UI/Themes/HnVueTheme.xaml (Foreground="White" → 토큰 교체)
+
+Commit: de4d33a
+Issue: #103
+```
