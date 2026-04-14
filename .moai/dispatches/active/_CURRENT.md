@@ -4,7 +4,7 @@
 > 자신의 팀 행(row)에서 파일명을 확인한 뒤, 해당 파일만 읽는다.
 > 상태가 `PR_OPEN` 또는 `IDLE`이면 → 새 DISPATCH 없음 → Commander Center에 IDLE 보고.
 
-Updated: 2026-04-14 (S09-R2 발행 — 6팀 ACTIVE)
+Updated: 2026-04-14 (S09-R2: RA/Design MERGED, Team A IDLE, 3팀 ACTIVE)
 DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/`
 
 ---
@@ -15,12 +15,12 @@ DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/
 |----|-------------------|------|------|
 | **Coordinator** | `S09-R2-coordinator.md` | **ACTIVE** | Workflow/Merge 통합테스트 |
 | **QA** | `S09-R2-qa.md` | **ACTIVE** | S09-R1 품질게이트 검증 |
-| **RA** | `S09-R2-ra.md` | **ACTIVE** | 문서 동기화 + CMP 상태 확인 |
-| **Design** | `S09-R2-team-design.md` | **ACTIVE** | DesignSystemConverters + DesignTime Mock |
-| **Team A** | `S09-R2-team-a.md` | **ACTIVE** | IDLE CONFIRM |
+| **RA** | - | **MERGED** | S09-R2 문서 동기화 검증 완료 |
+| **Design** | - | **MERGED** | DesignSystemConverters 토큰 연동 완료 (Task2 Mock 미수행) |
+| **Team A** | - | **IDLE** | IDLE CONFIRM |
 | **Team B** | `S09-R2-team-b.md` | **ACTIVE** | Dicom 커버리지 43%→85%+ |
 
-**→ S09-R2: 6팀 DISPATCH 발행 완료**
+**→ S09-R2: RA/Design MERGED, Team A IDLE, 3팀 ACTIVE**
 
 ---
 
@@ -62,7 +62,7 @@ git push origin team/{your-team}
 | 2026-04-14 | S08 R1 | S08-R1-*.md | ALL MERGED (PASS) |
 | 2026-04-14 | S08 R2 | S08-R2-*.md | ALL MERGED (PASS) |
 | 2026-04-14 | S09 R1 | S09-R1-*.md | 전팀 MERGED 완료 |
-| 2026-04-14 | **S09 R2** | **S09-R2-*.md** | **6팀 ACTIVE** |
+| 2026-04-14 | **S09 R2** | **S09-R2-*.md** | RA MERGED, Team A IDLE, 4팀 ACTIVE |
 
 ---
 
