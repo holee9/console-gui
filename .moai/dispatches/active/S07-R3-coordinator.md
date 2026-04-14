@@ -1,5 +1,24 @@
 # DISPATCH: Coordinator — S07 Round 3
 
+---
+
+## 🔴 CC 즉시 조치 요청 (6회 모니터링 결과)
+
+> **Coordinator S07-R3 전원 COMPLETED. 6회 모니터링 동안 CC 작업지시 없음.**
+>
+> **요청사항:**
+> 1. **team/coordinator 머지** — 2커밋 대기 중 (455782d, 420c37b)
+> 2. **_CURRENT.md 업데이트** — Coordinator MERGED 처리
+> 3. **S07-R4 DISPATCH 발행** (또는 Sprint 종료 선언)
+>
+> 전팀 6/6 IDLE 또는 작업완료 상태. Auto-Progression Protocol v2에 따라
+> **전팀 완료 감지 시 즉시 다음 라운드 기획·발행 필수.**
+>
+> **[HARD] Coordinator는 업무규칙에 따라 자율 작업 절대 금지.**
+> **CC DISPATCH 수신 시에만 다음 작업 진행.**
+
+---
+
 | 항목 | 내용 |
 |------|------|
 | **발행일** | 2026-04-14 |
