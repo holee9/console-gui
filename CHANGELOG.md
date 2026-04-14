@@ -15,7 +15,10 @@
 
 #### S07 R2 (2026-04-14)
 
-- **RA**: DOC-032 RTM v2.2 승급 (Draft → Approved), DOC-042 CMP v2.1 Approved 상태 확인
+- **RA**: DOC-032 RTM v2.2 승급 (Draft → Approved), DOC-042 CMP v2.1 Approved 상태 확인, DOC-006 SAD v2.0 아키텍처 규칙 추가 (구체 클래스 금지)
+- **Team A**: Data 47.4% → 85% 커버리지 향상 (Repository/DbContext/SQLCipher/트랜잭션 테스트), SystemAdmin 66.7% → 85%, Update 75.7% → 90% (Safety-Critical), Common 83.9% → 85%
+- **Team B**: Incident 70.2% → 90% (Safety-Critical), Detector 73.9% → 85%, Workflow 85.5% 유지
+- **Coordinator**: StudyItem 아키텍처 위반 수정 (구체 클래스 → 인터페이스 분리), 통합테스트 53개 → 70개 확대
 
 #### S07 R1 (2026-04-14)
 
