@@ -65,6 +65,6 @@ git push origin team/ra
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: DOC-042 CMP 완성 (P1) | NOT_STARTED | -- | Draft → Complete |
-| Task 2: DOC-032 RTM 업데이트 (P2) | NOT_STARTED | -- | SDK 통합 매핑 |
-| Git 완료 프로토콜 | NOT_STARTED | -- | PR URL: -- |
+| Task 1: DOC-042 CMP 완성 (P1) | COMPLETED | 2026-04-14 | v2.1: IEC 62304 Section 8.2.2 백업/복구 절차 신설, CI-006 SDK 5종 상세화, v1.0 Obsolete 표시 |
+| Task 2: DOC-032 RTM 업데이트 (P2) | COMPLETED | 2026-04-14 | v2.2: SWR-DET-010(7TC), SWR-DT-060(1TC), SWR-DT-061(1TC), SWR-WF-030(3TC) = 12TC 100% 매핑 |
+| Git 완료 프로토콜 | COMPLETED | 2026-04-14 | commit fcb1e85, pushed to origin/main |

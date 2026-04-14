@@ -4,13 +4,14 @@
 |------|------|
 | **문서 번호** | DOC-042 |
 | **버전** | v1.1 |
+| **상태** | **OBSOLETE — Superseded by DOC-042 CMP v2.0 (2026-04-11)** |
 | **작성일** | 2026-04-08 |
 | **작성자** | drake.lee (SW 개발 책임자) |
 | **검토자** | [TBD - 검토 필요] |
 | **승인자** | [TBD - 검토 필요] |
 | **제품** | HnVue Console SW (HnVue) |
 | **회사** | HnVue (가칭) |
-| **분류** | ✅ 최소 필수 |
+| **분류** | 최소 필수 |
 | **적용 시장** | FDA 510(k) ✅ / MFDS 2등급 ✅ / EU MDR Class IIa ✅ |
 | **근거 규격** | IEC 62304:2006+AMD1:2015 §8.1, §8.3, FDA SW Guidance (2019) Section IV-G, ISO 13485:2016 §4.2.3, §7.3.8 |
 | **IEC 62304 Class** | B (Basic Level) |
