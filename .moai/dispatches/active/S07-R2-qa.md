@@ -79,7 +79,22 @@ git push origin team/qa
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: 전체 품질게이트 재검증 (P1) | NOT_STARTED | | |
-| Task 2: CI/CD 커버리지 게이트 (P2) | NOT_STARTED | | |
-| Task 3: 전체 커버리지 리포트 (P3) | NOT_STARTED | | |
-| Git 완료 프로토콜 | NOT_STARTED | | |
+| Task 1: 전체 품질게이트 재검증 (P1) | PARTIAL | 2026-04-14 | 빌드 0에러, 테스트 2545/2547 (2F: StudyItem 아키텍처, UI 성능) |
+| Task 2: CI/CD 커버리지 게이트 (P2) | COMPLETED | 2026-04-14 | .github/workflows/desktop-ci.yml + scripts/ci/Invoke-CoverageGate.ps1 |
+| Task 3: 전체 커버리지 리포트 (P3) | COMPLETED | 2026-04-14 | TestReports/S07-R2-COVERAGE.md |
+| Git 완료 프로토콜 | COMPLETED | 2026-04-14 | commit a41a21d, pushed to team/qa |
+
+### 빌드 증거
+
+```
+솔루션 빌드: 0 errors, 15967 warnings (StyleCop)
+테스트 결과: 2545 passed, 2 failed (99.92%)
+  - 아키텍처 1개 실패 (StudyItem concrete class)
+  - UI 성능 1개 실패 (Scrolling 90.96ms > 83.35ms)
+```
+
+### 신규 파일 3개 (총 262 lines)
+
+1. `.github/workflows/desktop-ci.yml` (수정, +6 lines)
+2. `TestReports/S07-R2-COVERAGE.md` (신규, ~119 lines)
+3. `scripts/ci/Invoke-CoverageGate.ps1` (신규, ~137 lines)
