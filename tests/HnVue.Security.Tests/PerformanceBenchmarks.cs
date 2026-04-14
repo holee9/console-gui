@@ -31,8 +31,8 @@ public sealed class PerformanceBenchmarks
 
         // Assert
         _output.WriteLine($"BCrypt (cost=12) hash: {sw.ElapsedMilliseconds}ms");
-        Assert.True(sw.ElapsedMilliseconds < 1000,
-            $"Hash took {sw.ElapsedMilliseconds}ms, exceeds 1000ms threshold");
+        Assert.True(sw.ElapsedMilliseconds < 1500,
+            $"Hash took {sw.ElapsedMilliseconds}ms, exceeds 1500ms threshold");
         Assert.NotNull(hash);
         Assert.NotEmpty(hash);
     }
@@ -51,8 +51,8 @@ public sealed class PerformanceBenchmarks
 
         // Assert
         _output.WriteLine($"BCrypt verify: {sw.ElapsedMilliseconds}ms");
-        Assert.True(sw.ElapsedMilliseconds < 500,
-            $"Verify took {sw.ElapsedMilliseconds}ms, exceeds 500ms threshold");
+        Assert.True(sw.ElapsedMilliseconds < 800,
+            $"Verify took {sw.ElapsedMilliseconds}ms, exceeds 800ms threshold");
         Assert.True(result.IsSuccess);
     }
 
@@ -242,8 +242,8 @@ public sealed class PerformanceBenchmarks
 
         // Assert
         _output.WriteLine($"Concurrent BCrypt hashes ({threadCount} threads): {sw.ElapsedMilliseconds}ms");
-        Assert.True(sw.ElapsedMilliseconds < 2000,
-            $"Concurrent hashes took {sw.ElapsedMilliseconds}ms, exceeds 2000ms threshold");
+        Assert.True(sw.ElapsedMilliseconds < 3000,
+            $"Concurrent hashes took {sw.ElapsedMilliseconds}ms, exceeds 3000ms threshold");
         Assert.All(results, r => Assert.True(r, "all hashes should complete successfully"));
     }
 

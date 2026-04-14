@@ -184,7 +184,14 @@ public sealed class IMAPIComWrapperTests
 
         var result = await _sut.BurnFilesAsync(files, "LABEL", progress);
         // Allow progress callbacks to be invoked on the thread pool
-        await Task.Delay(50);
+        // Progress<T> posts to SynchronizationContext or ThreadPool;
+        // retry with backoff to handle timing variance in CI/parallel runs.
+        var retries = 0;
+        while (progressReports.Count < 2 && retries < 20)
+        {
+            await Task.Delay(50);
+            retries++;
+        }
 
         result.IsSuccess.Should().BeTrue();
         progressReports.Should().HaveCount(2);
