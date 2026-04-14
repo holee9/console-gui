@@ -78,6 +78,12 @@ jobs:
         shell: pwsh
         run: ./scripts/qa/Invoke-LocalAnalysis.ps1 -Mode Coverage -Configuration Release -OutputDirectory "$env:GITHUB_WORKSPACE\TestReports"
 
+      - name: Enforce coverage gate
+        if: ${{ success() }}
+        shell: pwsh
+        run: |
+          . ./scripts/ci/Invoke-CoverageGate.ps1 -ReportPath "$env:GITHUB_WORKSPACE\TestReports" -MinCoverage 85 -SafetyCriticalCoverage 90
+
       - name: Upload desktop build output
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
