@@ -4,7 +4,7 @@
 > 자신의 팀 행(row)에서 파일명을 확인한 뒤, 해당 파일만 읽는다.
 > 상태가 `PR_OPEN` 또는 `IDLE`이면 → 새 DISPATCH 없음 → Commander Center에 IDLE 보고.
 
-Updated: 2026-04-15 (S09-R2: Team B MERGED, QA ACTIVE, 나머지 MERGED/IDLE)
+Updated: 2026-04-15 (S09-R3: QA CONDITIONAL PASS 후 Converter 수정 라운드)
 DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/`
 
 ---
@@ -13,14 +13,14 @@ DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/
 
 | 팀 | 현재 DISPATCH 파일 | 상태 | 비고 |
 |----|-------------------|------|------|
-| **Coordinator** | - | **MERGED** | Workflow/Merge 통합테스트 18개 추가 |
-| **QA** | `S09-R2-qa.md` | **ACTIVE** | S09-R1 품질게이트 검증 |
-| **RA** | - | **MERGED** | S09-R2 문서 동기화 검증 완료 |
-| **Design** | - | **MERGED** | DesignSystemConverters 토큰 연동 완료 (Task2 Mock 미수행) |
+| **Coordinator** | - | **IDLE** | S09-R2 MERGED — 대기 |
+| **QA** | `S09-R3-qa.md` | **ACTIVE** | Converter 수정 후 재검증 + 커버리지 도구 복구 |
+| **RA** | - | **IDLE** | S09-R2 MERGED — 대기 |
+| **Design** | `S09-R3-team-design.md` | **ACTIVE** | DesignSystemConverter NullReference 14건 수정 |
 | **Team A** | - | **IDLE** | IDLE CONFIRM |
-| **Team B** | - | **MERGED** | Dicom Line 86.0%, Branch 83.0% — 85%+ 달성 |
+| **Team B** | - | **IDLE** | S09-R2 MERGED — 대기 |
 
-**→ S09-R2: Team B/RA/Design/Coordinator MERGED, Team A IDLE, QA ACTIVE**
+**→ S09-R3: Design+QA ACTIVE, 나머지 IDLE**
 
 ---
 
@@ -62,7 +62,8 @@ git push origin team/{your-team}
 | 2026-04-14 | S08 R1 | S08-R1-*.md | ALL MERGED (PASS) |
 | 2026-04-14 | S08 R2 | S08-R2-*.md | ALL MERGED (PASS) |
 | 2026-04-14 | S09 R1 | S09-R1-*.md | 전팀 MERGED 완료 |
-| 2026-04-14 | **S09 R2** | **S09-R2-*.md** | Team B MERGED, QA ACTIVE, 나머지 완료 |
+| 2026-04-14 | **S09 R2** | **S09-R2-*.md** | 전팀 MERGED, QA CONDITIONAL PASS |
+| 2026-04-15 | **S09 R3** | **S09-R3-*.md** | Design Converter 수정 + QA 재검증 |
 
 ---
 
