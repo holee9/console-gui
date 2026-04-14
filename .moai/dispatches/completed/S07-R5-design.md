@@ -59,5 +59,5 @@ git push origin team/design
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: IDLE CONFIRM (P3) | NOT_STARTED | | |
-| Git 완료 프로토콜 | NOT_STARTED | | |
+| Task 1: IDLE CONFIRM (P3) | COMPLETED | 2026-04-14 | 빌드 0에러, UI 12개 화면 정상, 디자인 토큰 일관성 유지 |
+| Git 완료 프로토콜 | COMPLETED | 2026-04-14 | 변경사항 없음 (상태 확인만) |

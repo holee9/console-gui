@@ -73,6 +73,6 @@ git push origin team/ra
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: RTM 최종 검증 (P1) | NOT_STARTED | | |
-| Task 2: SBOM/문서 동기화 (P2) | NOT_STARTED | | |
-| Git 완료 프로토콜 | NOT_STARTED | | |
+| Task 1: RTM 최종 검증 (P1) | COMPLETED | 2026-04-14 | RTM v2.3 갱신. 부록 D 추가: CDBurning(SWR-CD-010/020/030) + DICOM(SWR-DICOM-010/020) TC 매핑 100%. 98개 고유 SWR Trait 매핑 확인. 기존 Detector SDK(부록 C) 100% 유지. |
+| Task 2: SBOM/문서 동기화 (P2) | COMPLETED | 2026-04-14 | SBOM v3.0/SOUP v2.1/CMP v2.1 모두 최신 상태 확인. S07 기간 NuGet 변경 없음. 확인 완료, 변경 불필요. |
+| Git 완료 프로토콜 | COMPLETED | 2026-04-14 | commit be3ce88 push 완료. RTM v2.2->v2.3, 부록 D 추가 (150 insertions). |
