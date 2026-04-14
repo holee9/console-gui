@@ -221,6 +221,19 @@ function New-TeamContextMd {
     $content = @"
 # Team Context
 
+## [HARD] Session Start — FIRST ACTION
+
+After /clear or new session, IMMEDIATELY execute DISPATCH Resolution Protocol:
+1. `git pull origin main`
+2. Read `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/_CURRENT.md`
+3. Find $TeamName row -> read the specified DISPATCH file
+4. If ACTIVE -> start working on tasks immediately (no user prompt needed)
+5. If IDLE/MERGED -> report IDLE to Commander Center and wait
+
+Do NOT wait for user input. This is automatic.
+
+---
+
 This worktree is configured for **$TeamName** ($($TeamDef.DisplayName)).
 
 ## Active Team
