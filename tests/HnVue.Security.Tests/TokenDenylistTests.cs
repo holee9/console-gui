@@ -5,7 +5,9 @@ namespace HnVue.Security.Tests;
 
 /// <summary>
 /// Tests for <see cref="InMemoryTokenDenylist"/> implementing SWR-CS-077 (Concurrent Session Handling).
+/// Sequential collection to prevent timing-dependent test flakiness under parallel execution.
 /// </summary>
+[Collection("Security-Sequential")]
 public class TokenDenylistTests
 {
     private readonly TimeSpan _defaultTtl = TimeSpan.FromMinutes(15);

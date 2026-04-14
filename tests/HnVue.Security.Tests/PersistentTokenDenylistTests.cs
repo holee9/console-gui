@@ -10,7 +10,9 @@ namespace HnVue.Security.Tests;
 
 /// <summary>
 /// Tests for <see cref="PersistentTokenDenylist"/> implementing IEC 62304 compliance (durable token revocation).
+/// Sequential collection to prevent file I/O and timing flakiness under parallel execution.
 /// </summary>
+[Collection("Security-Sequential")]
 public class PersistentTokenDenylistTests : IDisposable
 {
     private readonly TimeSpan _defaultTtl = TimeSpan.FromMinutes(15);
