@@ -242,6 +242,7 @@ public partial class App : Application
                 services.AddTransient<IQuickPinLockViewModel, QuickPinLockViewModel>();
                 services.AddTransient<IMergeViewModel, MergeViewModel>();
                 services.AddTransient<ISettingsViewModel, SettingsViewModel>();
+                services.AddTransient<IAddPatientProcedureViewModel, AddPatientProcedureViewModel>();
                 // MainViewModel registered as Singleton: NavigationService depends on IMainViewModel,
                 // and MainWindow is Singleton — both require the same shell instance for the app lifetime.
                 // Single registration via interface; concrete type forwarded to avoid two separate instances.
