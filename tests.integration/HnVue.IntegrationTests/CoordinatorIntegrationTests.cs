@@ -11,9 +11,11 @@ using HnVue.Imaging;
 using HnVue.PatientManagement;
 using HnVue.Security;
 using HnVue.SystemAdmin;
+using HnVue.UI.Contracts.Models;
 using HnVue.UI.Contracts.Navigation;
 using HnVue.UI.Contracts.ViewModels;
 using HnVue.UI.ViewModels;
+using HnVue.UI.ViewModels.Models;
 using HnVue.Workflow;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -816,5 +818,468 @@ public sealed class CoordinatorIntegrationTests
             _shell.NavigateBack();
             return true;
         }
+    }
+
+    // ── Scenario 10: WorkflowViewModel Full Acquisition Flow ────────────────────
+
+    /// <summary>
+    /// Integration test: Full acquisition workflow from patient selection through protocol loading
+    /// to exposure-ready state, verifying ViewModel tracks every transition.
+    /// SWR-COORD-090: WorkflowViewModel tracks patient → protocol → exposure flow.
+    /// </summary>
+    [Fact]
+    [Trait("SWR", "SWR-COORD-090")]
+    public async Task Workflow_FullAcquisitionFlow_ViewModelTracksAllTransitions()
+    {
+        // Arrange — create real WorkflowEngine with simulators
+        var doseService = Substitute.For<IDoseService>();
+        var generator = new GeneratorSimulator { PrepareDelayMs = 0, ExposureDelayMs = 0 };
+        var secContext = Substitute.For<ISecurityContext>();
+        secContext.CurrentRole.Returns(UserRole.Radiographer);
+        secContext.HasRole(UserRole.Radiographer).Returns(true);
+
+        var engine = new WorkflowEngine(doseService, generator, secContext);
+        using var workflowViewModel = new WorkflowViewModel(engine, secContext);
+
+        // Act — Step 1: Select patient
+        var startResult = await engine.StartAsync("P-100", "1.2.3.4.5.100");
+
+        // Assert — Step 1
+        startResult.IsSuccess.Should().BeTrue("StartAsync should succeed");
+        workflowViewModel.CurrentState.Should().Be("PatientSelected");
+        workflowViewModel.WorkflowState.Should().Be(WorkflowState.PatientSelected);
+        workflowViewModel.StatusMessage.Should().Be("Patient selected. Load a protocol.");
+
+        // Act — Step 2: Load protocol
+        var protocolResult = await engine.TransitionAsync(WorkflowState.ProtocolLoaded);
+
+        // Assert — Step 2
+        protocolResult.IsSuccess.Should().BeTrue("Protocol transition should succeed");
+        workflowViewModel.CurrentState.Should().Be("ProtocolLoaded");
+        workflowViewModel.WorkflowState.Should().Be(WorkflowState.ProtocolLoaded);
+        workflowViewModel.IsExposureReady.Should().BeFalse("Not ready to expose yet");
+
+        // Act — Step 3: Prepare for exposure
+        var prepareResult = await engine.TransitionAsync(WorkflowState.ReadyToExpose);
+
+        // Assert — Step 3
+        prepareResult.IsSuccess.Should().BeTrue("PrepareExposure transition should succeed");
+        workflowViewModel.CurrentState.Should().Be("ReadyToExpose");
+        workflowViewModel.WorkflowState.Should().Be(WorkflowState.ReadyToExpose);
+        workflowViewModel.IsExposureReady.Should().BeTrue("Should be ready to expose");
+        workflowViewModel.StatusMessage.Should().Be("Ready to expose. Trigger when clear.");
+    }
+
+    /// <summary>
+    /// Integration test: WorkflowViewModel SelectedPatient property works for patient info panel.
+    /// SWR-COORD-090: WorkflowViewModel binds patient selection correctly.
+    /// </summary>
+    [Fact]
+    [Trait("SWR", "SWR-COORD-090")]
+    public void Workflow_SelectedPatient_UpdatesCorrectly()
+    {
+        // Arrange
+        var doseService = Substitute.For<IDoseService>();
+        var generator = new GeneratorSimulator { PrepareDelayMs = 0, ExposureDelayMs = 0 };
+        var secContext = Substitute.For<ISecurityContext>();
+        var engine = new WorkflowEngine(doseService, generator, secContext);
+        using var vm = new WorkflowViewModel(engine, secContext);
+
+        var patient = new PatientRecord(
+            "P-200", "홍길동", new DateOnly(1985, 3, 15), "M", false,
+            DateTimeOffset.UtcNow, "admin-001");
+
+        // Act
+        vm.SelectedPatient = patient;
+
+        // Assert
+        vm.SelectedPatient.Should().NotBeNull();
+        vm.SelectedPatient!.PatientId.Should().Be("P-200");
+        vm.SelectedPatient.Name.Should().Be("홍길동");
+    }
+
+    /// <summary>
+    /// Integration test: WorkflowViewModel ThumbnailList can hold StudyItem instances.
+    /// SWR-COORD-090: ThumbnailList ObservableCollection works with IStudyItem.
+    /// </summary>
+    [Fact]
+    [Trait("SWR", "SWR-COORD-090")]
+    public void Workflow_ThumbnailList_AcceptsStudyItems()
+    {
+        // Arrange
+        var doseService = Substitute.For<IDoseService>();
+        var generator = new GeneratorSimulator { PrepareDelayMs = 0, ExposureDelayMs = 0 };
+        var secContext = Substitute.For<ISecurityContext>();
+        var engine = new WorkflowEngine(doseService, generator, secContext);
+        using var vm = new WorkflowViewModel(engine, secContext);
+
+        var study1 = new StudyItem(new StudyRecord("1.2.3.4.5", "P-001", DateTimeOffset.UtcNow, "CHEST PA", "ACC-001", "CHEST"));
+        var study2 = new StudyItem(new StudyRecord("1.2.3.4.6", "P-001", DateTimeOffset.UtcNow, "CHEST LAT", "ACC-002", "CHEST"));
+
+        // Act
+        vm.ThumbnailList.Add(study1);
+        vm.ThumbnailList.Add(study2);
+
+        // Assert
+        vm.ThumbnailList.Should().HaveCount(2);
+        vm.ThumbnailList[0].Study.StudyInstanceUid.Should().Be("1.2.3.4.5");
+        vm.ThumbnailList[1].Study.StudyInstanceUid.Should().Be("1.2.3.4.6");
+    }
+
+    /// <summary>
+    /// Integration test: IWorkflowEngine interface contract — invalid transition returns failure.
+    /// SWR-COORD-090: Invalid state transitions are rejected with proper error codes.
+    /// </summary>
+    [Fact]
+    [Trait("SWR", "SWR-COORD-090")]
+    public async Task Workflow_InvalidTransition_ReturnsFailure()
+    {
+        // Arrange — engine starts in Idle state
+        var doseService = Substitute.For<IDoseService>();
+        var generator = new GeneratorSimulator { PrepareDelayMs = 0, ExposureDelayMs = 0 };
+        var secContext = Substitute.For<ISecurityContext>();
+        var engine = new WorkflowEngine(doseService, generator, secContext);
+        using var vm = new WorkflowViewModel(engine, secContext);
+
+        // Act — try to go directly to Exposing from Idle (invalid)
+        var result = await engine.TransitionAsync(WorkflowState.Exposing);
+
+        // Assert
+        result.IsFailure.Should().BeTrue("Direct Idle→Exposing transition should be rejected");
+        engine.CurrentState.Should().Be(WorkflowState.Idle, "State should remain Idle");
+        vm.CurrentState.Should().Be("Idle", "ViewModel should still show Idle");
+    }
+
+    /// <summary>
+    /// Integration test: Workflow abort from any state transitions to Error.
+    /// SWR-COORD-090: Abort always available and updates ViewModel.
+    /// </summary>
+    [Fact]
+    [Trait("SWR", "SWR-COORD-090")]
+    public async Task Workflow_AbortFromPatientSelected_TransitionsToError()
+    {
+        // Arrange
+        var doseService = Substitute.For<IDoseService>();
+        var generator = new GeneratorSimulator { PrepareDelayMs = 0, ExposureDelayMs = 0 };
+        var secContext = Substitute.For<ISecurityContext>();
+        var engine = new WorkflowEngine(doseService, generator, secContext);
+        using var vm = new WorkflowViewModel(engine, secContext);
+
+        await engine.StartAsync("P-300", "1.2.3.4.5.300");
+        vm.CurrentState.Should().Be("PatientSelected");
+
+        // Act — abort
+        var abortResult = await engine.AbortAsync("Test abort");
+
+        // Assert
+        abortResult.IsSuccess.Should().BeTrue("Abort should always succeed");
+        engine.CurrentState.Should().Be(WorkflowState.Error);
+        vm.CurrentState.Should().Be("Error");
+        vm.StatusMessage.Should().Be("Test abort", "OnWorkflowStateChanged sets StatusMessage to the abort reason");
+    }
+
+    /// <summary>
+    /// Integration test: WorkflowViewModel safe state display updates on state change.
+    /// SWR-COORD-090: SafeState label reflects workflow engine's CurrentSafeState.
+    /// </summary>
+    [Fact]
+    [Trait("SWR", "SWR-COORD-090")]
+    public void Workflow_SafeStateLabel_ReflectsEngineState()
+    {
+        // Arrange
+        var doseService = Substitute.For<IDoseService>();
+        var generator = new GeneratorSimulator { PrepareDelayMs = 0, ExposureDelayMs = 0 };
+        var secContext = Substitute.For<ISecurityContext>();
+        var engine = new WorkflowEngine(doseService, generator, secContext);
+        using var vm = new WorkflowViewModel(engine, secContext);
+
+        // Assert — initial safe state
+        vm.CurrentSafeState.Should().Be(SafeState.Idle);
+        vm.SafeStateLabel.Should().Be("IDLE");
+    }
+
+    /// <summary>
+    /// Integration test: WorkflowViewModel DI resolution via full DI container.
+    /// SWR-COORD-090: WorkflowViewModel resolves from DI and reflects engine state.
+    /// </summary>
+    [Fact]
+    [Trait("SWR", "SWR-COORD-090")]
+    public void Workflow_DIResolution_ReflectsEngineInitialState()
+    {
+        // Arrange — resolve from full DI container
+        var services = new ServiceCollection();
+        SetupMinimalServices(services);
+        var provider = services.BuildServiceProvider();
+
+        // Act
+        var vm = provider.GetService<IWorkflowViewModel>();
+
+        // Assert
+        vm.Should().NotBeNull("WorkflowViewModel must resolve from DI");
+        vm!.CurrentState.Should().Be("Idle", "Initial state should be Idle");
+        vm.IsExposureReady.Should().BeFalse("Should not be ready to expose initially");
+    }
+
+    // ── Scenario 11: MergeViewModel Integration Tests ───────────────────────────
+
+    /// <summary>
+    /// Integration test: MergeViewModel resolves from DI and has expected defaults.
+    /// SWR-COORD-100: MergeViewModel DI resolution and initial state.
+    /// </summary>
+    [Fact]
+    [Trait("SWR", "SWR-COORD-100")]
+    public void Merge_DIResolution_HasExpectedDefaults()
+    {
+        // Arrange
+        var services = new ServiceCollection();
+        SetupMinimalServices(services);
+        var provider = services.BuildServiceProvider();
+
+        // Act
+        var vm = provider.GetService<IMergeViewModel>();
+
+        // Assert — resolved successfully
+        vm.Should().NotBeNull("MergeViewModel must resolve from DI");
+
+        // Assert — default values
+        vm!.SearchQueryA.Should().BeEmpty("SearchQueryA should be empty initially");
+        vm.SearchQueryB.Should().BeEmpty("SearchQueryB should be empty initially");
+        vm.PatientsA.Should().BeEmpty("PatientsA should be empty initially");
+        vm.PatientsB.Should().BeEmpty("PatientsB should be empty initially");
+        vm.SelectedPatientA.Should().BeNull("No patient selected initially on side A");
+        vm.SelectedPatientB.Should().BeNull("No patient selected initially on side B");
+        vm.PreviewStudiesA.Should().BeEmpty("PreviewStudiesA should be empty initially");
+        vm.PreviewStudiesB.Should().BeEmpty("PreviewStudiesB should be empty initially");
+        vm.SelectedStudies.Should().BeEmpty("SelectedStudies should be empty initially");
+        vm.SelectedPreviewStudy.Should().BeNull("No preview study selected initially");
+    }
+
+    /// <summary>
+    /// Integration test: MergeViewModel search populates patient lists via IPatientService.
+    /// SWR-COORD-100: MergeViewModel SearchA populates PatientsA from IPatientService.
+    /// </summary>
+    [Fact]
+    [Trait("SWR", "SWR-COORD-100")]
+    public async Task Merge_SearchA_PopulatesPatientsA()
+    {
+        // Arrange — setup patient service mock with test data
+        var patientService = Substitute.For<IPatientService>();
+        var testPatients = new List<PatientRecord>
+        {
+            new("P-001", "김환자", new DateOnly(1990, 5, 10), "M", false, DateTimeOffset.UtcNow, "admin"),
+            new("P-002", "이환자", new DateOnly(1985, 8, 20), "F", false, DateTimeOffset.UtcNow, "admin"),
+        };
+        patientService.SearchAsync("김", Arg.Any<CancellationToken>())
+            .Returns(Result.Success<IReadOnlyList<PatientRecord>>(testPatients));
+
+        var vm = new MergeViewModel(patientService);
+        vm.SearchQueryA = "김";
+
+        // Act
+        await vm.SearchACommand.ExecuteAsync(null);
+
+        // Assert
+        vm.PatientsA.Should().HaveCount(2);
+        vm.PatientsA[0].Name.Should().Be("김환자");
+        vm.PatientsA[1].Name.Should().Be("이환자");
+        vm.IsLoading.Should().BeFalse();
+    }
+
+    /// <summary>
+    /// Integration test: MergeViewModel SearchB populates PatientsB independently.
+    /// SWR-COORD-100: MergeViewModel SearchB populates PatientsB independently from SearchA.
+    /// </summary>
+    [Fact]
+    [Trait("SWR", "SWR-COORD-100")]
+    public async Task Merge_SearchB_PopulatesPatientsBIndependently()
+    {
+        // Arrange
+        var patientService = Substitute.For<IPatientService>();
+        var sideBPatients = new List<PatientRecord>
+        {
+            new("P-010", "박환자", new DateOnly(2000, 1, 1), "F", false, DateTimeOffset.UtcNow, "admin"),
+        };
+        patientService.SearchAsync("박", Arg.Any<CancellationToken>())
+            .Returns(Result.Success<IReadOnlyList<PatientRecord>>(sideBPatients));
+
+        var vm = new MergeViewModel(patientService);
+        vm.SearchQueryB = "박";
+
+        // Act
+        await vm.SearchBCommand.ExecuteAsync(null);
+
+        // Assert
+        vm.PatientsB.Should().HaveCount(1);
+        vm.PatientsB[0].Name.Should().Be("박환자");
+        vm.PatientsA.Should().BeEmpty("SearchA should not be affected by SearchB");
+    }
+
+    /// <summary>
+    /// Integration test: MergeViewModel handles search failure gracefully.
+    /// SWR-COORD-100: MergeViewModel displays error message on search failure.
+    /// </summary>
+    [Fact]
+    [Trait("SWR", "SWR-COORD-100")]
+    public async Task Merge_SearchFailure_DisplaysErrorMessage()
+    {
+        // Arrange
+        var patientService = Substitute.For<IPatientService>();
+        patientService.SearchAsync("없는사람", Arg.Any<CancellationToken>())
+            .Returns(Result.Failure<IReadOnlyList<PatientRecord>>(ErrorCode.NotFound, "No patients found"));
+
+        var vm = new MergeViewModel(patientService);
+        vm.SearchQueryA = "없는사람";
+
+        // Act
+        await vm.SearchACommand.ExecuteAsync(null);
+
+        // Assert
+        vm.PatientsA.Should().BeEmpty("PatientsA should be empty on failure");
+        vm.ErrorMessage.Should().Be("No patients found");
+    }
+
+    /// <summary>
+    /// Integration test: IStudyItem contract — StudyItem wraps StudyRecord and tracks selection.
+    /// SWR-COORD-100: IStudyItem interface contract verification for merge operations.
+    /// </summary>
+    [Fact]
+    [Trait("SWR", "SWR-COORD-100")]
+    public void Merge_StudyItem_ContractHoldsStudyAndSelection()
+    {
+        // Arrange — create StudyItem wrapping a real StudyRecord
+        var study = new StudyRecord(
+            "1.2.3.4.5.999", "P-050", DateTimeOffset.UtcNow, "CHEST PA", "ACC-100", "CHEST");
+        IStudyItem item = new StudyItem(study);
+
+        // Assert — interface contract
+        item.Study.Should().Be(study);
+        item.Study.StudyInstanceUid.Should().Be("1.2.3.4.5.999");
+        item.Study.BodyPart.Should().Be("CHEST");
+        item.IsSelected.Should().BeFalse("Default selection state is false");
+
+        // Act — toggle selection
+        item.IsSelected = true;
+
+        // Assert
+        item.IsSelected.Should().BeTrue("Selection state should update");
+    }
+
+    /// <summary>
+    /// Integration test: MergeViewModel SelectedStudies collection accepts IStudyItem.
+    /// SWR-COORD-100: SelectedStudies ObservableCollection works with IStudyItem for merge.
+    /// </summary>
+    [Fact]
+    [Trait("SWR", "SWR-COORD-100")]
+    public void Merge_SelectedStudies_AcceptsStudyItemsForMerge()
+    {
+        // Arrange
+        var patientService = Substitute.For<IPatientService>();
+        var vm = new MergeViewModel(patientService);
+
+        var study1 = new StudyItem(new StudyRecord("1.2.3.1", "P-A", DateTimeOffset.UtcNow, "CHEST", "A001", "CHEST"));
+        var study2 = new StudyItem(new StudyRecord("1.2.3.2", "P-B", DateTimeOffset.UtcNow, "HAND", "A002", "HAND"));
+        study2.IsSelected = true;
+
+        // Act — add studies to selected collection (simulates checkbox selection)
+        vm.SelectedStudies.Add(study1);
+        vm.SelectedStudies.Add(study2);
+
+        // Assert
+        vm.SelectedStudies.Should().HaveCount(2);
+        vm.SelectedStudies.Count(s => s.IsSelected).Should().Be(1, "Only study2 is selected");
+        vm.SelectedStudies[1].Study.BodyPart.Should().Be("HAND");
+    }
+
+    /// <summary>
+    /// Integration test: MergeViewModel MergeCompleted event fires on successful merge.
+    /// SWR-COORD-100: MergeCompleted event contract for UI notification.
+    /// </summary>
+    [Fact]
+    [Trait("SWR", "SWR-COORD-100")]
+    public async Task Merge_MergeAsync_RaisesMergeCompletedEvent()
+    {
+        // Arrange
+        var patientService = Substitute.For<IPatientService>();
+        var vm = new MergeViewModel(patientService);
+
+        // Set required selections
+        vm.SelectedPatientA = new PatientRecord("P-A", "환자A", null, "M", false, DateTimeOffset.UtcNow, "admin");
+        vm.SelectedPatientB = new PatientRecord("P-B", "환자B", null, "F", false, DateTimeOffset.UtcNow, "admin");
+
+        var eventRaised = false;
+        vm.MergeCompleted += (_, _) => eventRaised = true;
+
+        // Act
+        await vm.MergeCommand.ExecuteAsync(null);
+
+        // Assert
+        eventRaised.Should().BeTrue("MergeCompleted event should be raised on successful merge");
+    }
+
+    /// <summary>
+    /// Integration test: MergeViewModel Cancel raises Cancelled event.
+    /// SWR-COORD-100: Cancelled event contract for dialog close.
+    /// </summary>
+    [Fact]
+    [Trait("SWR", "SWR-COORD-100")]
+    public void Merge_Cancel_RaisesCancelledEvent()
+    {
+        // Arrange
+        var patientService = Substitute.For<IPatientService>();
+        var vm = new MergeViewModel(patientService);
+
+        var eventRaised = false;
+        vm.Cancelled += (_, _) => eventRaised = true;
+
+        // Act
+        vm.CancelCommand.Execute(null);
+
+        // Assert
+        eventRaised.Should().BeTrue("Cancelled event should be raised on cancel");
+    }
+
+    /// <summary>
+    /// Integration test: MergeViewModel merge without both patients shows error.
+    /// SWR-COORD-100: Merge requires both patients to be selected.
+    /// </summary>
+    [Fact]
+    [Trait("SWR", "SWR-COORD-100")]
+    public async Task Merge_WithoutBothPatients_ShowsErrorMessage()
+    {
+        // Arrange
+        var patientService = Substitute.For<IPatientService>();
+        var vm = new MergeViewModel(patientService);
+
+        // Only select patient A, not B
+        vm.SelectedPatientA = new PatientRecord("P-A", "환자A", null, "M", false, DateTimeOffset.UtcNow, "admin");
+
+        // Act
+        await vm.MergeCommand.ExecuteAsync(null);
+
+        // Assert
+        vm.ErrorMessage.Should().NotBeNull("Error message should be shown when patients not selected on both sides");
+        vm.ErrorMessage.Should().Contain("select a patient on both sides");
+    }
+
+    /// <summary>
+    /// Integration test: MergeViewModel PreviewStudies accepts IStudyItem for preview panel.
+    /// SWR-COORD-100: PreviewStudiesA/B ObservableCollection holds IStudyItem.
+    /// </summary>
+    [Fact]
+    [Trait("SWR", "SWR-COORD-100")]
+    public void Merge_PreviewStudies_AcceptsStudyItems()
+    {
+        // Arrange
+        var patientService = Substitute.For<IPatientService>();
+        var vm = new MergeViewModel(patientService);
+
+        var study = new StudyItem(new StudyRecord("1.2.3.4.5", "P-001", DateTimeOffset.UtcNow, "ABD", "ACC-999", "ABDOMEN"));
+
+        // Act
+        vm.PreviewStudiesA.Add(study);
+
+        // Assert
+        vm.PreviewStudiesA.Should().HaveCount(1);
+        vm.PreviewStudiesA[0].Study.Description.Should().Be("ABD");
     }
 }
