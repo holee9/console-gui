@@ -9,22 +9,22 @@
              d:DesignHeight="720"
              d:DesignWidth="1280"
              d:DataContext="{d:DesignInstance Type=vm:IWorkflowViewModel, IsDesignTimeCreatable=False}"
-             Background="#242424">
+             Background="{DynamicResource HnVue.Semantic.Surface.Page}">
     <UserControl.Resources>
         <Style x:Key="ToolButtonStyle" TargetType="Button">
             <Setter Property="Width" Value="44"/>
             <Setter Property="Height" Value="44"/>
             <Setter Property="Margin" Value="0,0,6,6"/>
-            <Setter Property="Background" Value="#1d2433"/>
-            <Setter Property="BorderBrush" Value="#5d6880"/>
+            <Setter Property="Background" Value="{DynamicResource HnVue.Semantic.Surface.Panel}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource HnVue.Semantic.Border.Default}"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Foreground" Value="#ecf1ff"/>
+            <Setter Property="Foreground" Value="{DynamicResource HnVue.Semantic.Text.Primary}"/>
             <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
             <Setter Property="FontSize" Value="18"/>
         </Style>
         <Style x:Key="PanelBorderStyle" TargetType="Border">
-            <Setter Property="Background" Value="#1b2230"/>
-            <Setter Property="BorderBrush" Value="#495364"/>
+            <Setter Property="Background" Value="{DynamicResource HnVue.Semantic.Surface.Panel}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource HnVue.Semantic.Border.Default}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="CornerRadius" Value="6"/>
             <Setter Property="Padding" Value="12"/>
@@ -42,10 +42,8 @@
             <ColumnDefinition Width="340" />
         </Grid.ColumnDefinitions>
 
-        <!-- ═══════════════════════════════════════════════════════════
-             Column 0: Patient Info Panel (Slide 9)
-             SelectedPatient binding from WorkflowViewModel
-             ═══════════════════════════════════════════════════════════ -->
+        <!-- Column 0: Patient Info Panel (Slide 9)
+             SelectedPatient binding from WorkflowViewModel -->
         <Border Grid.Column="0" Margin="0,0,8,0">
             <medical:PatientInfoCard
                 PatientName="{Binding SelectedPatient.Name, TargetNullValue='--', FallbackValue='--'}"
@@ -55,10 +53,8 @@
                 IsEmergency="{Binding SelectedPatient.IsEmergency, FallbackValue=False}" />
         </Border>
 
-        <!-- ═══════════════════════════════════════════════════════════
-             Column 1: Acquisition Preview + Thumbnail Strip (Slide 10)
-             PreviewImage and ThumbnailList binding from WorkflowViewModel
-             ═══════════════════════════════════════════════════════════ -->
+        <!-- Column 1: Acquisition Preview + Thumbnail Strip (Slide 10)
+             PreviewImage and ThumbnailList binding from WorkflowViewModel -->
         <Grid Grid.Column="1" Margin="0,0,8,0">
             <Grid.RowDefinitions>
                 <!-- Acquisition Preview -->
@@ -73,8 +69,8 @@
 
             <!-- Thumbnail Strip -->
             <Border Grid.Row="1"
-                    Background="#1b2230"
-                    BorderBrush="#495364"
+                    Background="{DynamicResource HnVue.Semantic.Surface.Panel}"
+                    BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
                     BorderThickness="1"
                     CornerRadius="6"
                     Padding="8"
@@ -114,9 +110,7 @@
             </Border>
         </Grid>
 
-        <!-- ═══════════════════════════════════════════════════════════
-             Column 2: Control Panel (Slide 11 — preserved from original)
-             ═══════════════════════════════════════════════════════════ -->
+        <!-- Column 2: Control Panel (Slide 11 — preserved from original) -->
         <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto">
             <StackPanel>
                 <Border Style="{StaticResource PanelBorderStyle}" Margin="0,0,0,10">
@@ -126,8 +120,8 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="Acquisition" Foreground="#e9eef9" FontSize="15" FontWeight="Bold"/>
-                            <TextBlock Grid.Column="1" Text="{Binding CurrentState, FallbackValue='IDLE'}" Foreground="#3de16a" FontWeight="Bold"/>
+                            <TextBlock Text="Acquisition" Foreground="{DynamicResource HnVue.Semantic.Text.Primary}" FontSize="15" FontWeight="Bold"/>
+                            <TextBlock Grid.Column="1" Text="{Binding CurrentState, FallbackValue='IDLE'}" Foreground="{DynamicResource HnVue.Semantic.Status.Safe}" FontWeight="Bold"/>
                         </Grid>
                         <UniformGrid Columns="3" Margin="0,0,0,10">
                             <ToggleButton Content="Stand" IsChecked="True"/>
@@ -135,17 +129,17 @@
                             <ToggleButton Content="Portable"/>
                         </UniformGrid>
                         <Button Command="{Binding PrepareExposureCommand}" Height="40" Margin="0,0,0,8" Content="PREPARE"/>
-                        <Button Command="{Binding TriggerExposureCommand}" Height="44" Background="#efefef" Foreground="#6a6a6a" BorderBrush="#efefef" Content="EXPOSE"/>
+                        <Button Command="{Binding TriggerExposureCommand}" Height="44" Background="{DynamicResource HnVue.Semantic.Surface.Card}" Foreground="{DynamicResource HnVue.Semantic.Text.Disabled}" BorderBrush="{DynamicResource HnVue.Semantic.Surface.Card}" Content="EXPOSE"/>
                     </StackPanel>
                 </Border>
 
                 <Border Style="{StaticResource PanelBorderStyle}" Margin="0,0,0,10">
                     <StackPanel>
-                        <TextBlock Text="Crop &amp; Marker" Foreground="#e9eef9" FontSize="15" FontWeight="Bold" Margin="0,0,0,10"/>
+                        <TextBlock Text="Crop &amp; Marker" Foreground="{DynamicResource HnVue.Semantic.Text.Primary}" FontSize="15" FontWeight="Bold" Margin="0,0,0,10"/>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                            <TextBlock Text="Auto" Foreground="White" FontSize="22" FontWeight="Bold" Margin="0,0,16,0"/>
-                            <TextBlock Text="L" Foreground="White" FontSize="28" FontWeight="Bold" Margin="0,0,16,0"/>
-                            <TextBlock Text="R" Foreground="White" FontSize="28" FontWeight="Bold" Margin="0,0,16,0"/>
+                            <TextBlock Text="Auto" Foreground="{DynamicResource HnVue.Semantic.Text.Primary}" FontSize="22" FontWeight="Bold" Margin="0,0,16,0"/>
+                            <TextBlock Text="L" Foreground="{DynamicResource HnVue.Semantic.Text.Primary}" FontSize="28" FontWeight="Bold" Margin="0,0,16,0"/>
+                            <TextBlock Text="R" Foreground="{DynamicResource HnVue.Semantic.Text.Primary}" FontSize="28" FontWeight="Bold" Margin="0,0,16,0"/>
                         </StackPanel>
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -160,7 +154,7 @@
 
                 <Border Style="{StaticResource PanelBorderStyle}" Margin="0,0,0,10">
                     <StackPanel>
-                        <TextBlock Text="Manipulation" Foreground="#e9eef9" FontSize="15" FontWeight="Bold" Margin="0,0,0,10"/>
+                        <TextBlock Text="Manipulation" Foreground="{DynamicResource HnVue.Semantic.Text.Primary}" FontSize="15" FontWeight="Bold" Margin="0,0,0,10"/>
                         <WrapPanel>
                             <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE7AD;"/>
                             <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE16E;"/>
@@ -174,7 +168,7 @@
 
                 <Border Style="{StaticResource PanelBorderStyle}" Margin="0,0,0,10">
                     <StackPanel>
-                        <TextBlock Text="Annotation" Foreground="#e9eef9" FontSize="15" FontWeight="Bold" Margin="0,0,0,10"/>
+                        <TextBlock Text="Annotation" Foreground="{DynamicResource HnVue.Semantic.Text.Primary}" FontSize="15" FontWeight="Bold" Margin="0,0,0,10"/>
                         <WrapPanel>
                             <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE70E;"/>
                             <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE739;"/>
@@ -187,7 +181,7 @@
 
                 <Border Style="{StaticResource PanelBorderStyle}">
                     <StackPanel>
-                        <TextBlock Text="Tool" Foreground="#e9eef9" FontSize="15" FontWeight="Bold" Margin="0,0,0,10"/>
+                        <TextBlock Text="Tool" Foreground="{DynamicResource HnVue.Semantic.Text.Primary}" FontSize="15" FontWeight="Bold" Margin="0,0,0,10"/>
                         <WrapPanel>
                             <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE74E;"/>
                             <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE749;"/>
@@ -195,7 +189,13 @@
                             <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE898;"/>
                             <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE72D;"/>
                         </WrapPanel>
-                        <Button Command="{Binding AbortCommand}" Height="44" Margin="0,10,0,0" Background="#df2626" BorderBrush="#df2626" Foreground="White" FontWeight="Bold" Content="STOP"/>
+                        <!-- Emergency Stop: IEC 62366 safety-critical, 56px min-height, always visible and enabled -->
+                        <Button Command="{Binding AbortCommand}"
+                                Style="{StaticResource HnVue.EmergencyStopButton}"
+                                Margin="0,10,0,0"
+                                Content="EMERGENCY STOP"
+                                AutomationProperties.Name="Emergency Stop"
+                                AutomationProperties.HelpText="Immediately stops radiation exposure. Keyboard: Escape"/>
                     </StackPanel>
                 </Border>
             </StackPanel>
