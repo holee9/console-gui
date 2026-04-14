@@ -13,6 +13,15 @@
 - 팀별 Claude Context 최적화 규칙
 - CODEOWNERS 및 PR 체크리스트 템플릿
 
+#### S07 R2 (2026-04-14)
+
+- **RA**: DOC-032 RTM v2.2 승급 (Draft → Approved), DOC-042 CMP v2.1 Approved 상태 확인
+
+#### S07 R1 (2026-04-14)
+
+- **RA**: DOC-042 CMP v2.1 완성 (IEC 62304 Section 8.2.2 백업/복구 절차 신설, CI-006 SDK 5종 상세화)
+- **RA**: DOC-032 RTM v2.2 업데이트 (SWR-DET-010, SWR-DT-060, SWR-DT-061, SWR-WF-030 TC 매핑 12건)
+
 ### 변경
 
 #### S05 R2 (2026-04-13)
