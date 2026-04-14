@@ -492,6 +492,69 @@ public sealed class CoordinatorIntegrationTests
         availableRoles.Should().Contain("Radiologist", "Radiologist role must be available");
     }
 
+    // ── Scenario 8: StudylistViewModel Composition ────────────────────────────
+
+    /// <summary>
+    /// Integration test: StudylistViewModel resolves from DI and has expected default values.
+    /// SWR-COORD-070: StudylistViewModel DI resolution and initial state.
+    /// </summary>
+    [Fact]
+    [Trait("SWR", "SWR-COORD-070")]
+    public void Studylist_ResolveFromDI_HasExpectedDefaults()
+    {
+        // Arrange
+        var services = new ServiceCollection();
+        SetupMinimalServices(services);
+        var provider = services.BuildServiceProvider();
+
+        // Act
+        var vm = provider.GetService<IStudylistViewModel>();
+
+        // Assert — resolved successfully
+        vm.Should().NotBeNull("StudylistViewModel must be resolvable from DI");
+
+        // Assert — default values
+        vm!.ActivePeriodFilter.Should().Be("All", "Default period filter should be 'All'");
+        vm.PacsServers.Should().NotBeEmpty("PACS server list should not be empty");
+        vm.PacsServers.Should().Contain("LOCAL", "LOCAL PACS server must be available");
+        vm.Studies.Should().NotBeNull("Studies collection should be initialized");
+        vm.Studies.Should().BeEmpty("Studies should be empty initially");
+        vm.SearchQuery.Should().BeEmpty("Search query should be empty initially");
+    }
+
+    /// <summary>
+    /// Integration test: StudylistViewModel property changes propagate correctly.
+    /// SWR-COORD-070: StudylistViewModel property binding works for UI.
+    /// </summary>
+    [Fact]
+    [Trait("SWR", "SWR-COORD-070")]
+    public void Studylist_PropertyChanges_PropagateCorrectly()
+    {
+        // Arrange
+        var services = new ServiceCollection();
+        SetupMinimalServices(services);
+        var provider = services.BuildServiceProvider();
+        var vm = provider.GetRequiredService<IStudylistViewModel>();
+
+        // Act — change period filter
+        vm.ActivePeriodFilter = "Today";
+
+        // Assert
+        vm.ActivePeriodFilter.Should().Be("Today", "Period filter should update to 'Today'");
+
+        // Act — change search query
+        vm.SearchQuery = "CHEST";
+
+        // Assert
+        vm.SearchQuery.Should().Be("CHEST", "Search query should update");
+
+        // Act — change PACS server selection
+        vm.SelectedPacsServer = "PACS-01";
+
+        // Assert
+        vm.SelectedPacsServer.Should().Be("PACS-01", "PACS server selection should update");
+    }
+
     // ── Helpers ───────────────────────────────────────────────────────────────
 
     /// <summary>

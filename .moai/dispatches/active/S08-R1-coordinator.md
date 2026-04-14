@@ -89,7 +89,12 @@ git push origin team/coordinator
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: IStudylistViewModel 인터페이스 (P1) | NOT_STARTED | | |
-| Task 2: StudylistViewModel 구현 (P1) | NOT_STARTED | | |
-| Task 3: DI 등록 + 통합테스트 (P2) | NOT_STARTED | | |
-| Git 완료 프로토콜 | NOT_STARTED | | |
+| Task 1: IStudylistViewModel 인터페이스 (P1) | COMPLETED | 2026-04-14 | 기존 구현 완성됨 (45 lines, all props/commands) |
+| Task 2: StudylistViewModel 구현 (P1) | COMPLETED | 2026-04-14 | 기존 구현 완성 + DesignTime Mock 추가 |
+| Task 3: DI 등록 + 통합테스트 (P2) | COMPLETED | 2026-04-14 | 기존 DI 등록 확인 + 통합테스트 2건 추가 (SWR-COORD-070) |
+| Git 완료 프로토콜 | IN_PROGRESS | | 빌드 0에러, 통합테스트 55/55 통과 |
+
+**빌드 증뢰**:
+- `MSBuild HnVue.sln`: 0 errors, warnings only (기존 StyleCop)
+- `dotnet test`: 55/55 passed (53 기존 + 2 신규 StudylistViewModel)
+- 신규 파일: `DesignTimeStudylistViewModel.cs`, `CoordinatorIntegrationTests.cs` Scenario 8 (2 tests)
