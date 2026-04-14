@@ -111,6 +111,7 @@ Before reporting COMPLETED, verify ALL:
 - [ ] Only modified files within ownership scope?
 - [ ] DISPATCH.md Status contains build evidence?
 - [ ] Incomplete items honestly marked as PARTIAL?
+- [ ] **`/clear` 실행 완료? (Session Lifecycle 필수)**
 
 ## Git Completion Protocol [HARD]
 
@@ -119,23 +120,44 @@ After completing DISPATCH tasks:
 2. `git commit` with conventional commit format matching team prefix
 3. `git push origin team/{team-name}`
 4. Update DISPATCH Status table with build evidence
-5. **DO NOT create PR** — PR creation is Commander Center exclusive authority
+5. **`/clear` 실행** — COMPLETED push 직후 세션 컨텍스트 초기화 (아래 Session Lifecycle 참조)
+6. **DO NOT create PR** — PR creation is Commander Center exclusive authority
 
 Push failure: report "PUSH_FAILED" status in DISPATCH.md, commit+push the status update.
 
-## Session Lifecycle [HARD — Effective S05-R3]
+## Session Lifecycle [HARD — Effective S09-R3]
 
 **목표**: 완료 후 세션 컨텍스트를 정리하여 토큰 낭비 방지. Worktree는 유지.
+
+**사고이력 (S09-R2)**: QA 에이전트가 context limit 도달 후 28회 연속 작업 불능 발생.
+원인: 이전 라운드 컨텍스트가 누적되어 새 DISPATCH 수행 불가. `/clear` 미실행.
 
 After completing ALL DISPATCH tasks and pushing:
 
 1. Update DISPATCH Status → COMPLETED + build evidence
 2. Push the status update to `team/{team-name}`
-3. Report completion to Commander Center (DISPATCH 상태 업데이트로 대체)
-4. **Session 종료**: 보고 완료 후 세션을 깔끔하게 종료
-   - 새 DISPATCH가 오면 **새 세션**으로 시작 (이전 컨텍스트 없이)
+3. **`/clear` 실행 [HARD]**: COMPLETED push 직후 반드시 `/clear`로 세션 컨텍스트 초기화
+   - [HARD] `/clear` 없이 다음 DISPATCH 대기 = context 누적 → 작업 불능 위험
+   - [HARD] 새 DISPATCH 수신 시 **항상 깨끗한 세션**으로 시작
    - Worktree 디렉토리와 브랜치는 유지 (소스 관리)
-   - `/clear` 또는 세션 재시작으로 컨텍스트 초기화
+   - DISPATCH 파일은 git에 push되므로 `/clear` 후에도 CC가 확인 가능
+4. Report completion to Commander Center (DISPATCH 상태 업데이트로 대체)
+
+### 완료 프로세스 흐름 (개정)
+
+```
+DISPATCH 작업 완료
+    ↓
+git add → git commit → git push origin team/{team-name}
+    ↓
+DISPATCH Status COMPLETED 업데이트 → push
+    ↓
+[HARD] /clear 실행 ← 이 단계 누락 = context 누적 = 다음 라운드 작업 불능
+    ↓
+CC가 DISPATCH Status 확인 → 머지 → _CURRENT.md 업데이트
+    ↓
+새 DISPATCH 발행 → 팀은 깨끗한 세션으로 수행
+```
 
 ## CC Merge Protocol [HARD — 자율 주행 원칙 v2]
 
