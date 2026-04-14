@@ -30,16 +30,16 @@ public interface IMergeViewModel : IViewModelBase
     PatientRecord? SelectedPatientB { get; set; }
 
     /// <summary>Gets the studies to display in the center preview for Patient A.</summary>
-    ObservableCollection<StudyItem> PreviewStudiesA { get; }
+    ObservableCollection<IStudyItem> PreviewStudiesA { get; }
 
     /// <summary>Gets the studies to display in the center preview for Patient B.</summary>
-    ObservableCollection<StudyItem> PreviewStudiesB { get; }
+    ObservableCollection<IStudyItem> PreviewStudiesB { get; }
 
     /// <summary>Gets or sets the study currently selected for large preview.</summary>
-    StudyItem? SelectedPreviewStudy { get; set; }
+    IStudyItem? SelectedPreviewStudy { get; set; }
 
     /// <summary>Gets the collection of studies selected via checkboxes for merge.</summary>
-    ObservableCollection<StudyItem> SelectedStudies { get; }
+    ObservableCollection<IStudyItem> SelectedStudies { get; }
 
     /// <summary>Gets the command that searches patients for side A.</summary>
     ICommand SearchACommand { get; }

@@ -8,6 +8,7 @@ using HnVue.Common.Enums;
 using HnVue.Common.Models;
 using HnVue.UI.Contracts.Models;
 using HnVue.UI.Contracts.ViewModels;
+using HnVue.UI.ViewModels.Models;
 
 namespace HnVue.UI.ViewModels;
 
@@ -107,7 +108,7 @@ public sealed partial class WorkflowViewModel : ObservableObject, IWorkflowViewM
     private PatientRecord? _selectedPatient;
 
     /// <summary>Gets the thumbnail strip items for the acquisition workflow.</summary>
-    public ObservableCollection<StudyItem> ThumbnailList { get; } = new();
+    public ObservableCollection<IStudyItem> ThumbnailList { get; } = new();
 
     /// <summary>
     /// Prepares the generator and detector for an exposure.
