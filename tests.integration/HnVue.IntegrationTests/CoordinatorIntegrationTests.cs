@@ -77,6 +77,7 @@ public sealed class CoordinatorIntegrationTests
         var imageViewerViewModel = provider.GetService<IImageViewerViewModel>();
         var doseViewModel = provider.GetService<IDoseViewModel>();
         var quickPinLockViewModel = provider.GetService<IQuickPinLockViewModel>();
+        var addPatientProcedureViewModel = provider.GetService<IAddPatientProcedureViewModel>();
 
         // Assert — all ViewModels resolved successfully
         mainViewModel.Should().NotBeNull("MainViewModel must be resolvable from DI container");
@@ -92,6 +93,7 @@ public sealed class CoordinatorIntegrationTests
         imageViewerViewModel.Should().NotBeNull("ImageViewerViewModel must be resolvable");
         doseViewModel.Should().NotBeNull("DoseViewModel must be resolvable");
         quickPinLockViewModel.Should().NotBeNull("QuickPinLockViewModel must be resolvable");
+        addPatientProcedureViewModel.Should().NotBeNull("AddPatientProcedureViewModel must be resolvable from DI container");
 
         // Assert — NavigationService also resolves
         var navService = provider.GetService<INavigationService>();
@@ -632,6 +634,7 @@ public sealed class CoordinatorIntegrationTests
         services.AddSingleton<ICDBurnViewModel, CDBurnViewModel>();
         services.AddSingleton<ISystemAdminViewModel, SystemAdminViewModel>();
         services.AddSingleton<IQuickPinLockViewModel, QuickPinLockViewModel>();
+        services.AddSingleton<IAddPatientProcedureViewModel, AddPatientProcedureViewModel>();
         services.AddSingleton<IMainViewModel, MainViewModel>();
 
         // Register NavigationService (inline implementation)

@@ -67,5 +67,10 @@ public sealed partial class DesignTimeStudylistViewModel : ObservableObject
         new("1.2.840.113619.2.55.1.3", "P-2026-002", new DateTimeOffset(2026, 4, 13, 14, 0, 0, TimeSpan.FromHours(9)), "Skull LAT", "ACC-003", "SKULL"),
         new("1.2.840.113619.2.55.1.4", "P-2026-003", new DateTimeOffset(2026, 4, 12, 11, 45, 0, TimeSpan.FromHours(9)), "Pelvis AP", "ACC-004", "PELVIS"),
         new("1.2.840.113619.2.55.1.5", "P-2026-003", new DateTimeOffset(2026, 4, 11, 8, 0, 0, TimeSpan.FromHours(9)), "Spine LAT", "ACC-005", "SPINE"),
+        new("1.2.840.113619.2.55.1.6", "P-2026-004", new DateTimeOffset(2026, 4, 10, 16, 20, 0, TimeSpan.FromHours(9)), "Extremity Hand", "ACC-006", "EXTREMITY"),
+        new("1.2.840.113619.2.55.1.7", "P-2026-005", new DateTimeOffset(2026, 4, 9, 13, 10, 0, TimeSpan.FromHours(9)), "Rib Series", "ACC-007", "RIB"),
+        new("1.2.840.113619.2.55.1.8", "P-2026-005", new DateTimeOffset(2026, 4, 8, 15, 30, 0, TimeSpan.FromHours(9)), "Clavicle AP", "ACC-008", "CLAVICLE"),
+        new("1.2.840.113619.2.55.1.9", "P-2026-006", new DateTimeOffset(2026, 4, 7, 10, 0, 0, TimeSpan.FromHours(9)), "Sinus", "ACC-009", "SINUS"),
+        new("1.2.840.113619.2.55.1.10", "P-2026-007", new DateTimeOffset(2026, 4, 6, 11, 15, 0, TimeSpan.FromHours(9)), "Mastoid", "ACC-010", "MASTOID"),
     ];
 }

@@ -9,8 +9,8 @@
 | **문서 ID** | SAD-XRAY-GUI-001 |
 | **문서명 (Korean)** | HnVue Console SW 소프트웨어 아키텍처 설계 |
 | **문서명 (English)** | Software Architecture Design for HnVue Console SW |
-| **버전 (Version)** | v2.1 |
-| **작성일 (Date)** | 2026-04-03 |
+| **버전 (Version)** | v2.2 |
+| **작성일 (Date)** | 2026-04-14 |
 | **작성자 (Author)** | SW Architecture Team |
 | **검토자 (Reviewer)** | SW Lead Engineer |
 | **승인자 (Approver)** | R&D Director |
@@ -30,6 +30,8 @@
 | v1.0 | 2026-03-18 | SW Architecture Team | 정식 릴리즈, SWR 추적성 매트릭스 완성 |
 | v2.0 | 2026-04-03 | SW Architecture Team | 4-Tier 우선순위 체계 반영 (P1–P4 제거); Tier 1+2 MR 모듈 매핑 추가; SAD-CD-1000 CDDVDBurning 모듈 상세화; 인시던트 대응 모듈 (IEC 81001-5-1) 및 SW 업데이트 모듈 (FDA 524B) 명시; STRIDE 위협 모델링 결과 요약 섹션 추가; 외부 인터페이스 (FPD SDK, Generator, PACS, RIS) 상세 기술; C4 Context/Container 다이어그램 4-Tier 반영; 기술 스택 WPF .NET 8 + fo-dicom 5.x + SQLCipher + Serilog로 확정 |
 | v2.1 | 2026-04-14 | RA팀 | S07-R2 StudyItem 아키텍처 수정 반영; IStudyItem 인터페이스(UI.Contracts Models) 추가; StudyItem 구현체(ViewModels Models) 재배치; 인터페이스 분리 패턴 명시화; PR #77 Coordinator 변경사항 반영 |
+| v2.2 | 2026-04-14 | RA팀 | S08-R2 role-matrix v2.0 디렉토리 단위 소유권 테이블 추가; DesignTime/ 경계 규칙 명시; HnVue.UI 공유 프로젝트 내 파일 생성 위치별 소유권 정의 |
+
 
 ---
 
@@ -385,7 +387,34 @@ flowchart TD
 **정적 분석:** Roslyn Analyzers, SonarQube
 **단위 테스트:** xUnit 2.x + Coverlet
 
-### 5.5 Physical View (물리 뷰) — 배포 다이어그램
+### 5.6 디렉토리 단위 소유권 테이블 [HARD — role-matrix v2.0 S08 사고교훈]
+
+공유 프로젝트(HnVue.UI) 내에서 파일 생성 위치별 소유권을 명확히 한다.
+
+| 디렉토리/패턴 | 소유 팀 | 비고 |
+|---------------|---------|------|
+| `src/HnVue.UI/Views/**` | Design (TD) | XAML + code-behind |
+| `src/HnVue.UI/Styles/**` | Design (TD) | 스타일 리소스 |
+| `src/HnVue.UI/Themes/**` | Design (TD) | 테마, 토큰 |
+| `src/HnVue.UI/Components/**` | Design (TD) | UI 컴포넌트 |
+| `src/HnVue.UI/Converters/**` | 소유권에 따라 분류 | 도메인 Converter = TB, UI Converter = TD |
+| `src/HnVue.UI/Assets/**` | Design (TD) | 이미지, 아이콘 |
+| `src/HnVue.UI/DesignTime/**` | **Design (TD) 단독** | Mock ViewModel. Coordinator 수정 금지 |
+| `src/HnVue.UI.ViewModels/**` | Coordinator (CO) | 실제 ViewModel 구현 |
+| `src/HnVue.UI.Contracts/**` | Coordinator (CO) | 인터페이스 정의 |
+| `tests.integration/**` | Coordinator (CO) | 통합테스트 + 테스트용 Mock |
+
+**DesignTime/ 규칙 [HARD]**:
+- [HARD] `DesignTime/` 디렉토리는 Design 팀 단독 소유 — 다른 팀이 파일 생성/수정 금지
+- [HARD] Coordinator가 통합테스트용 Mock이 필요하면 `tests.integration/`에 별도 생성
+- [HARD] CC는 DISPATCH 기획 시 Mock 파일 생성 위치를 반드시 명시
+
+**소유권 분류 규칙**:
+- 도메인 Converter(예: SafeStateToColorConverter): 의료 도메인 의존 → Team B 소유
+- UI Converter(예: BoolToVisibilityConverter): 순수 UI 변환 → Design 소유
+- 혼합 의존시: 도메인 의존도가 높으면 Team B, UI 의존도가 높으면 Design
+
+### 5.7 Physical View (물리 뷰) — 배포 다이어그램
 
 ```mermaid
 flowchart TB

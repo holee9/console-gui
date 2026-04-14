@@ -71,5 +71,5 @@ git push origin team/team-design
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: DesignTime Mock 정비 (P2) | NOT_STARTED | | |
-| Git 완료 프로토콜 | NOT_STARTED | | |
+| Task 1: DesignTime Mock 정비 (P2) | **COMPLETED** | 2026-04-14 | 검토 완료, 현재 상태 올바름 (변경 불필요) |
+| Git 완료 프로토콜 | NOT_STARTED | | 변경 없으므로 skip |
