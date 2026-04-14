@@ -4,7 +4,7 @@
 > 자신의 팀 행(row)에서 파일명을 확인한 뒤, 해당 파일만 읽는다.
 > 상태가 `PR_OPEN` 또는 `IDLE`이면 → 새 DISPATCH 없음 → Commander Center에 IDLE 보고.
 
-Updated: 2026-04-14 (S07-R3 — 6팀 전원 ACTIVE. Design PPT 하드코딩 수정 + Team B Imaging + Coordinator 검증)
+Updated: 2026-04-14 (S07-R3 — 5/6 MERGED, Coordinator ACTIVE)
 DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/`
 
 ---
@@ -14,13 +14,13 @@ DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/
 | 팀 | 현재 DISPATCH 파일 | 상태 | 비고 |
 |----|-------------------|------|------|
 | **Coordinator** | `S07-R3-coordinator.md` | **ACTIVE** | 아키텍처 테스트 검증 + 통합테스트 53→70+ |
-| **QA** | `S07-R3-qa.md` | **ACTIVE** | 전체 빌드 재검증 + 최신 커버리지 리포트 |
-| **RA** | `S07-R3-ra.md` | **ACTIVE** | RMP v2.0 초안 + S07-R2 변경 문서 반영 |
-| **Design** | `S07-R3-design.md` | **ACTIVE** | PatientListView 75 하드코딩 수정 + WorkflowView + 스크롤 성능 |
-| **Team A** | `S07-R3-team-a.md` | **ACTIVE** | 4모듈 커버리지 유지 확인 + Security |
-| **Team B** | `S07-R3-team-b.md` | **ACTIVE** | Imaging 0→85% + Incident 90% 검증 + Detector 유지 |
+| **QA** | `S07-R3-qa.md` | **MERGED** | 품질게이트 2996/2997, 아키텍처/UI 성능 해결 |
+| **RA** | `S07-R3-ra.md` | **MERGED** | RMP v2.0 초안 + DOC-006 SAD 업데이트 |
+| **Design** | `S07-R3-design.md` | **MERGED** | 하드코딩 91건 semantic token 마이그레이션 (#98) |
+| **Team A** | `S07-R3-team-a.md` | **MERGED** | Data/Update 커버리지 보강 36 테스트 (#99) |
+| **Team B** | `S07-R3-team-b.md` | **MERGED** | Imaging/Detector/Incident 73 테스트, 1082 LoC |
 
-**→ S07-R3 6팀 전원 ACTIVE. Auto-Progression v2.**
+**→ S07-R3: 5/6 MERGED ✅ | Coordinator ACTIVE**
 
 ---
 
@@ -76,7 +76,7 @@ IDLE 보고 형식:
 | 2026-04-13 | S06 R2 | S06-R2-*.md | ALL MERGED ✅ |
 | 2026-04-14 | **S07 R1** | **S07-R1-*.md** | **ALL MERGED** |
 | 2026-04-14 | **S07 R2** | **S07-R2-*.md** | **ALL MERGED** |
-| 2026-04-14 | **S07 R3** | **S07-R3-*.md** | **ACTIVE — 6팀 전원** |
+| 2026-04-14 | **S07 R3** | **S07-R3-*.md** | **5/6 MERGED, Coordinator ACTIVE** |
 
 ---
 
