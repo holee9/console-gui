@@ -60,5 +60,5 @@ git push origin team/ra
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: SAD/SDS 업데이트 (P3) | NOT_STARTED | | |
-| Git 완료 프로토콜 | NOT_STARTED | | |
+| Task 1: SAD/SDS 업데이트 (P3) | COMPLETED | 2026-04-14 17:50 | SAD v2.2 + RTM v2.5 업데이트 완료 |
+| Git 완료 프로토콜 | COMPLETED | 2026-04-14 17:50 | commit a376ca7, team/ra push 완료 |
