@@ -4,7 +4,7 @@
 > 자신의 팀 행(row)에서 파일명을 확인한 뒤, 해당 파일만 읽는다.
 > 상태가 `PR_OPEN` 또는 `IDLE`이면 → 새 DISPATCH 없음 → Commander Center에 IDLE 보고.
 
-Updated: 2026-04-14 (S07-R4 — 3/6 MERGED, 3/6 ACTIVE)
+Updated: 2026-04-14 (S07-R4 — 5/6 MERGED, 1/6 ACTIVE)
 DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/`
 
 ---
@@ -13,14 +13,14 @@ DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/
 
 | 팀 | 현재 DISPATCH 파일 | 상태 | 비고 |
 |----|-------------------|------|------|
-| **Coordinator** | `S07-R4-coordinator.md` | **ACTIVE** | DI Null Stub 6개 교체 + 통합테스트 70+ |
+| **Coordinator** | — | **MERGED** | Flaky Test 안정화 + CDBurning race condition 수정 완료 |
 | **QA** | `S07-R4-qa.md` | **ACTIVE** | 품질게이트 재검증 + 커버리지 리포트 |
 | **RA** | — | **MERGED** | RMP v2.0 확정 + RTM 갱신 + CMP 검증 완료 |
 | **Design** | — | **MERGED** | 토큰 검증 + 접근성 확인 + PPT 요구사항 정리 완료 |
 | **Team A** | — | **MERGED** | Security flaky 안정화 + 커버리지 85% 유지 + 일치성 검증 완료 |
-| **Team B** | `S07-R4-team-b.md` | **ACTIVE** | Dicom 커버리지 85% 달성 |
+| **Team B** | — | **MERGED** | Dicom 커버리지 86% 달성 + 전 모듈 0 실패 |
 
-**→ S07-R4: 3/6 MERGED (Design, RA, Team A) | 3/6 ACTIVE**
+**→ S07-R4: 5/6 MERGED (Design, RA, Team A, Coordinator, Team B) | 1/6 ACTIVE**
 
 ---
 
@@ -83,7 +83,7 @@ IDLE 보고 형식:
 | 2026-04-14 | **S07 R1** | **S07-R1-*.md** | **ALL MERGED** |
 | 2026-04-14 | **S07 R2** | **S07-R2-*.md** | **ALL MERGED** |
 | 2026-04-14 | **S07 R3** | **S07-R3-*.md** | **ALL MERGED** |
-| 2026-04-14 | **S07 R4** | **S07-R4-*.md** | **3/6 MERGED, 3/6 ACTIVE** |
+| 2026-04-14 | **S07 R4** | **S07-R4-*.md** | **5/6 MERGED, 1/6 ACTIVE** |
 
 ---
 
