@@ -6,6 +6,7 @@ using HnVue.Common.Abstractions;
 using HnVue.Common.Models;
 using HnVue.UI.Contracts.Models;
 using HnVue.UI.Contracts.ViewModels;
+using HnVue.UI.ViewModels.Models;
 
 namespace HnVue.UI.ViewModels;
 
@@ -35,7 +36,7 @@ public sealed partial class MergeViewModel : ObservableObject, IMergeViewModel
     [ObservableProperty] private string _searchQueryB = string.Empty;
     [ObservableProperty] private PatientRecord? _selectedPatientA;
     [ObservableProperty] private PatientRecord? _selectedPatientB;
-    [ObservableProperty] private StudyItem? _selectedPreviewStudy;
+    [ObservableProperty] private IStudyItem? _selectedPreviewStudy;
     [ObservableProperty] private bool _isLoading;
     [ObservableProperty] private string? _errorMessage;
 
@@ -46,13 +47,13 @@ public sealed partial class MergeViewModel : ObservableObject, IMergeViewModel
     public ObservableCollection<PatientRecord> PatientsB { get; } = new();
 
     /// <inheritdoc/>
-    public ObservableCollection<StudyItem> PreviewStudiesA { get; } = new();
+    public ObservableCollection<IStudyItem> PreviewStudiesA { get; } = new();
 
     /// <inheritdoc/>
-    public ObservableCollection<StudyItem> PreviewStudiesB { get; } = new();
+    public ObservableCollection<IStudyItem> PreviewStudiesB { get; } = new();
 
     /// <inheritdoc/>
-    public ObservableCollection<StudyItem> SelectedStudies { get; } = new();
+    public ObservableCollection<IStudyItem> SelectedStudies { get; } = new();
 
     /// <inheritdoc/>
     public event EventHandler? MergeCompleted;

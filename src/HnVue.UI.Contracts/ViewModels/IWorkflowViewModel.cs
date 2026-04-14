@@ -38,7 +38,7 @@ public interface IWorkflowViewModel : IViewModelBase
     string? PreviewImagePath { get; }
 
     /// <summary>Gets the thumbnail strip items for the acquisition workflow.</summary>
-    ObservableCollection<StudyItem> ThumbnailList { get; }
+    ObservableCollection<IStudyItem> ThumbnailList { get; }
 
     /// <summary>Gets or sets the currently selected patient for the patient info panel.</summary>
     PatientRecord? SelectedPatient { get; set; }

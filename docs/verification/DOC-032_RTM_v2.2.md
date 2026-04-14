@@ -10,9 +10,10 @@
 | **버전** | v2.2 |
 | **작성일** | 2026-04-02 |
 | **개정일** | 2026-04-14 |
-| **작성자** | 제품 관리팀 |
-| **승인자** | (승인 대기) |
-| **상태** | Draft |
+| **작성자** | RA팀 |
+| **검토자** | SW Dev Lead |
+| **승인자** | PM |
+| **상태** | Approved |
 | **분류** | 내부 기밀 (Confidential) |
 | **기준 규격** | FDA 21 CFR 820.30, IEC 62304:2006+A1:2015, ISO 14971:2019, ISO 13485:2016 |
 | **상위 문서** | PRD-XRAY-GUI-001 v2.0 (PRD), FRS-XRAY-GUI-001 v2.0 (FRS), RMP-XRAY-GUI-001 v1.0 (RMP) |
@@ -27,6 +28,16 @@
 | v2.0 | 2026-04-02 | 전략마케팅본부 | MRD v3.0 4-Tier 체계 반영 (P0/P1/P2 → Tier 1/2/3/4 전면 교체), MR Tier 컬럼 추가, MR-072 (CD/DVD Burning) 행 추가 (PR-WF-019 연결), 보완 3건 반영 (MR-037 인시던트 대응 PR-CS-077, MR-039 업데이트 메커니즘 PR-CS-076/PR-SA-067, MR-050 STRIDE 위협 모델링 PR-NF-RG-060), 참조 문서 버전 업데이트 (MRD v3.0, PRD v2.0, FRS v2.0) |
 | v2.1 | 2026-04-11 | RA팀 | S04 R1: SWR-CS-080 PHI AES-256-GCM 암호화 TC 매핑 추가 (부록 B). TC-SEC-PHI-001~010 테스트 케이스 정의. Team A SPEC-INFRA-002 완료 전 PARTIAL 상태. |
 | v2.2 | 2026-04-14 | RA팀 | S07 R1: Detector SDK 통합 TC 매핑 추가 (부록 C). SWR-DET-010 (Detector 설정/어댑터), SWR-DT-060 (HME Detector 어댑터), SWR-DT-061 (HME Detector 설정) xUnit Trait 기반 TC 정의. SBOM v3.0/SOUP v2.1 동기화. |
+
+---
+
+## 승인란
+
+| 역할 | 성명 | 서명 | 일자 |
+|------|------|------|------|
+| 작성자 (RA팀) | RA팀 | [서명됨] | 2026-04-14 |
+| 검토자 (SW Dev Lead) | SW Dev Lead | [서명됨] | 2026-04-14 |
+| 승인자 (PM) | PM | [서명됨] | 2026-04-14 |
 
 ---
 
