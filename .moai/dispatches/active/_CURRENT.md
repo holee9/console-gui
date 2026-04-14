@@ -4,7 +4,7 @@
 > 자신의 팀 행(row)에서 파일명을 확인한 뒤, 해당 파일만 읽는다.
 > 상태가 `PR_OPEN` 또는 `IDLE`이면 → 새 DISPATCH 없음 → Commander Center에 IDLE 보고.
 
-Updated: 2026-04-14 (S07-R3 — 5/6 MERGED, Coordinator ACTIVE)
+Updated: 2026-04-14 (S07-R3 — 5/6 IDLE, Coordinator ACTIVE)
 DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/`
 
 ---
@@ -14,13 +14,13 @@ DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/
 | 팀 | 현재 DISPATCH 파일 | 상태 | 비고 |
 |----|-------------------|------|------|
 | **Coordinator** | `S07-R3-coordinator.md` | **ACTIVE** | 아키텍처 테스트 검증 + 통합테스트 53→70+ |
-| **QA** | `S07-R3-qa.md` | **MERGED** | 품질게이트 2996/2997, 아키텍처/UI 성능 해결 |
-| **RA** | `S07-R3-ra.md` | **MERGED** | RMP v2.0 초안 + DOC-006 SAD 업데이트 |
-| **Design** | `S07-R3-design.md` | **MERGED** | 하드코딩 91건 semantic token 마이그레이션 (#98) |
-| **Team A** | `S07-R3-team-a.md` | **MERGED** | Data/Update 커버리지 보강 36 테스트 (#99) |
-| **Team B** | `S07-R3-team-b.md` | **MERGED** | Imaging/Detector/Incident 73 테스트, 1082 LoC |
+| **QA** | — | **IDLE** | S07-R3 MERGED 완료, S07-R4 대기 |
+| **RA** | — | **IDLE** | S07-R3 MERGED 완료, S07-R4 대기 |
+| **Design** | — | **IDLE** | S07-R3 MERGED 완료, S07-R4 대기 |
+| **Team A** | — | **IDLE** | S07-R3 MERGED 완료, S07-R4 대기 |
+| **Team B** | — | **IDLE** | S07-R3 MERGED 완료, S07-R4 대기 |
 
-**→ S07-R3: 5/6 MERGED ✅ | Coordinator ACTIVE**
+**→ S07-R3: 1/6 ACTIVE (Coordinator) | 5/6 IDLE — S07-R4 대기**
 
 ---
 

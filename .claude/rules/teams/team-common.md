@@ -106,6 +106,12 @@ After completing ALL DISPATCH tasks and pushing:
 - [HARD] diff에 문제가 있으면 (빌드 에러, 범위 외 수정) → 머지 보류, 사용자에게 보고
 - [HARD] 머지 완료 후 _CURRENT.md 업데이트 + DISPATCH 파일 completed/ 이동 + push → 결과 보고
 
+### 머지 후 정리 [HARD — Effective S07-R3]
+- [HARD] 머지 완료 즉시 해당 팀 DISPATCH 파일을 `active/` → `completed/` 로 이동
+- [HARD] _CURRENT.md 해당 팀 행을 `IDLE`로 업데이트 (파일명 `-` 로 표시)
+- [HARD] 정리 후 반드시 `git add .moai/dispatches/ && git commit && git push origin main` 실행
+- [HARD] **MERGED DISPATCH 파일이 active/에 잔존하면 팀이 세션 재시작 시 계속 IDLE 보고 반복** — 이것이 S07-R3 사고 원인
+
 ### 직접 main push 감지 [S07-R1 사고교훈]
 - [HARD] team/{team} 브랜치에 미머지 커밋이 없는데 DISPATCH Status가 COMPLETED → main 직접 push 케이스
 - [HARD] 이 경우 머지는 불필요, _CURRENT.md MERGED 업데이트만 실행
@@ -115,6 +121,12 @@ After completing ALL DISPATCH tasks and pushing:
 ## CC Auto-Progression Protocol [HARD — Effective S07-R2]
 
 **전팀 MERGED 후 수동 대기 금지. 즉시 다음 라운드 기획·발행. 6팀 전원 포함.**
+
+### N-1팀 완료 시 선제 관리 [HARD — Effective S07-R3]
+- [HARD] 5/6팀 MERGED 감지 시 → Coordinator 외 5팀 DISPATCH 즉시 `completed/` 이동 + _CURRENT.md IDLE 업데이트
+- [HARD] IDLE 팀의 worktree 세션 시작 시 깨끗한 IDLE 상태로 인식 → 반복 IDLE 보고 방지
+- [HARD] 마지막 1팀(COMMONDINATOR 등) 작업 완료 대기 중에도 갭 분석 **병행 준비**
+- [HARD] 절대 "사용자가 모니터링 지시할 때까지 대기" 금지 — CC가 자율 판단하여 실행
 
 ### 전팀 완료 감지
 - [HARD] CC 모니터링에서 **전팀 MERGED/IDLE** 감지 시 → 즉시 갭 분석 실행
