@@ -97,5 +97,7 @@
     <Color x:Key="HnVue.Core.Color.DetailHeaderText">#7BC8F5</Color>
     <!-- Label uppercase style: per PPT slide 3: 10px/600/#7090b0 -->
     <Color x:Key="HnVue.Core.Color.LabelMuted">#7090B0</Color>
+    <!-- Studylist reported status accent per UISPEC-003 -->
+    <Color x:Key="HnVue.Core.Color.StatusReported">#7B68EE</Color>
 
 </ResourceDictionary>
