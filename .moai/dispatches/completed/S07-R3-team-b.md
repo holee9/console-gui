@@ -88,7 +88,7 @@ git push origin team/team-b
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: Imaging 커버리지 0% → 85% (P1) | NOT_STARTED | | |
-| Task 2: Incident 커버리지 검증 → 90% (P1) | NOT_STARTED | | |
-| Task 3: Detector 커버리지 유지 (P2) | NOT_STARTED | | |
-| Git 완료 프로토콜 | NOT_STARTED | | |
+| Task 1: Imaging 커버리지 0% → 85% (P1) | COMPLETED | 2026-04-14 | ImagingCoverageAdditionalTests 23 신규, 총 77 통과 |
+| Task 2: Incident 커버리지 검증 → 90% (P1) | COMPLETED | 2026-04-14 | EfIncidentRepositoryTests 25 신규 (SQLite), 총 138 통과 |
+| Task 3: Detector 커버리지 유지 (P2) | COMPLETED | 2026-04-14 | DetectorCoverageAdditionalTests 25 신규, 총 272 통과 |
+| Git 완료 프로토콜 | COMPLETED | 2026-04-14 | commit a272c74 pushed to team/team-b |
