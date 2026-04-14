@@ -71,5 +71,5 @@ git push origin team/team-a
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: 디렉토리 소유권 테스트 (P2) | NOT_STARTED | | |
-| Git 완료 프로토콜 | NOT_STARTED | | |
+| Task 1: 디렉토리 소유권 테스트 (P2) | COMPLETED | 2026-04-14 19:30 | DirectoryOwnershipTests.cs 3개 테스트, Build 0 errors, Tests 14/14 passed |
+| Git 완료 프로토콜 | COMPLETED | 2026-04-14 19:30 | Pushed to origin/team/team-a (bbd069f) |
