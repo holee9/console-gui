@@ -82,7 +82,7 @@ git push origin team/coordinator
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: StudyItem 아키텍처 수정 (P1) | NOT_STARTED | | |
-| Task 2: 통합테스트 확대 53→70 (P2) | NOT_STARTED | | |
-| Task 3: ViewModel 검증 (P3) | NOT_STARTED | | |
-| Git 완료 프로토콜 | NOT_STARTED | | |
+| Task 1: StudyItem 아키텍처 수정 (P1) | COMPLETED | 2026-04-14 | IStudyItem 인터페이스 + 구현체 분리, 아키텍처 테스트 11P 통과 |
+| Task 2: 통합테스트 확대 53→70 (P2) | COMPLETED | 2026-04-14 | +16 크로스모듈 통합테스트 (Detector/Workflow/Chain/Settings) |
+| Task 3: ViewModel 검증 (P3) | COMPLETED | 2026-04-14 | +29 ViewModel 검증테스트 (ICommand/PropertyChanged/Interface) |
+| Git 완료 프로토콜 | COMPLETED | 2026-04-14 | push 완료 41df9ea, 빌드 0에러, UI 569P, Arch 11P |
