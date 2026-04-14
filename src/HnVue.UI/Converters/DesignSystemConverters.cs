@@ -27,13 +27,15 @@ internal static class DesignTokenResources
 
     /// <summary>
     /// Resolves a status string to its theme-aware brush using design token resources.
-    /// Falls back to gray brush if resource not found.
+    /// Falls back to gray brush if resource not found or Application.Current is null (DesignTime/Test environment).
     /// </summary>
     public static Brush? ResolveStatusBrush(string statusKey)
     {
         if (StatusToResourceKey.TryGetValue(statusKey, out var resourceKey))
         {
-            if (Application.Current.TryFindResource(resourceKey) is Brush brush)
+            var app = Application.Current;
+            if (app == null) return Brushes.Gray; // DesignTime/Test fallback
+            if (app.TryFindResource(resourceKey) is Brush brush)
                 return brush;
         }
         return Brushes.Gray;
