@@ -935,6 +935,12 @@ flowchart TD
 - 도메인 서비스 바인딩을 위한 추상화 계층
 - GUI 교체 가능 아키텍처의 핵심 경계 (UI 기술 비종속)
 
+**아키텍처 규칙 [S07-R2]:**
+- [HARD] **구체 클래스 금지**: UI.Contracts는 인터페이스만 포함해야 함
+- 도메인 모델(예: StudyItem)은 HnVue.Common 또는 HnVue.UI에 정의
+- 인터페이스 분리가 필요한 경우: I{Entity} 인터페이스(UI.Contracts) + 구현체(도메인 모듈) 패턴 사용
+- 예: IStudyItem 인터페이스(UI.Contracts) + StudyItem 구현체(HnVue.Common)
+
 **의존관계:** SAD-COMMON-000
 **변경 통제:** Coordinator가 유일한 수정 권한자. 인터페이스 변경 시 전체 팀 알림 (`interface-contract` 이슈)
 

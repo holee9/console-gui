@@ -77,7 +77,7 @@ git push origin team/ra
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: Draft 문서 승급 (P1) | NOT_STARTED | | |
-| Task 2: 변경이력 동기화 (P2) | NOT_STARTED | | |
-| Task 3: RMP v2.0 준비 (P3) | NOT_STARTED | | |
-| Git 완료 프로토콜 | NOT_STARTED | | |
+| Task 1: Draft 문서 승급 (P1) | COMPLETED | 2026-04-14 | DOC-032 RTM v2.2 Draft→Approved, DOC-042 CMP v2.1 이미 Approved |
+| Task 2: 변경이력 동기화 (P2) | COMPLETED | 2026-04-14 | CHANGELOG.md S07-R1/R2 변경사항 추가 |
+| Task 3: RMP v2.0 준비 (P3) | PARTIAL | 2026-04-14 | 문서 검토만 완료, v2.0 초안 작성은 다음 라운드로 연기 |
+| Git 완료 프로토콜 | COMPLETED | 2026-04-14 | commit pending |
