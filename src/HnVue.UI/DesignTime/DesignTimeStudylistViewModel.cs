@@ -47,6 +47,12 @@ public sealed partial class DesignTimeStudylistViewModel : ObservableObject
 
     public IReadOnlyList<string> PacsServers { get; } = new[] { "LOCAL", "PACS-01", "PACS-02" };
 
+    // Summary counts (Design Team addition)
+    public int CompletedCount { get; } = 18;
+    public int InProgressCount { get; } = 5;
+    public int CancelledCount { get; } = 2;
+    public int ReportedCount { get; } = 9;
+
     // Commands
     public ICommand NavigatePreviousCommand { get; }
     public ICommand NavigateNextCommand { get; }
