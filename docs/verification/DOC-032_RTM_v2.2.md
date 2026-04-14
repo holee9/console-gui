@@ -7,9 +7,10 @@
 | 항목 | 내용 |
 |------|------|
 | **문서 ID** | RTM-XRAY-GUI-001 |
-| **버전** | v2.2 |
+| **버전** | v2.3 |
 | **작성일** | 2026-04-02 |
 | **개정일** | 2026-04-14 |
+
 | **작성자** | RA팀 |
 | **검토자** | SW Dev Lead |
 | **승인자** | PM |
@@ -28,6 +29,7 @@
 | v2.0 | 2026-04-02 | 전략마케팅본부 | MRD v3.0 4-Tier 체계 반영 (P0/P1/P2 → Tier 1/2/3/4 전면 교체), MR Tier 컬럼 추가, MR-072 (CD/DVD Burning) 행 추가 (PR-WF-019 연결), 보완 3건 반영 (MR-037 인시던트 대응 PR-CS-077, MR-039 업데이트 메커니즘 PR-CS-076/PR-SA-067, MR-050 STRIDE 위협 모델링 PR-NF-RG-060), 참조 문서 버전 업데이트 (MRD v3.0, PRD v2.0, FRS v2.0) |
 | v2.1 | 2026-04-11 | RA팀 | S04 R1: SWR-CS-080 PHI AES-256-GCM 암호화 TC 매핑 추가 (부록 B). TC-SEC-PHI-001~010 테스트 케이스 정의. Team A SPEC-INFRA-002 완료 전 PARTIAL 상태. |
 | v2.2 | 2026-04-14 | RA팀 | S07 R1: Detector SDK 통합 TC 매핑 추가 (부록 C). SWR-DET-010 (Detector 설정/어댑터), SWR-DT-060 (HME Detector 어댑터), SWR-DT-061 (HME Detector 설정) xUnit Trait 기반 TC 정의. SBOM v3.0/SOUP v2.1 동기화. |
+| v2.3 | 2026-04-14 | RA팀 | S07 R5: CDBurning 및 DICOM TC 매핑 추가 (부록 D). SWR-CD-010/020/030 (CDBurning 서비스/IMAPI/Repository), SWR-DICOM-010/020 (DICOM FileIO/Service) xUnit Trait 기반 TC 정의. |
 
 ---
 
@@ -878,12 +880,158 @@ Team A SPEC-INFRA-002 완료 후 다음 절차에 따라 본 부록을 갱신:
 
 ---
 
+## 부록 D. CDBurning 및 DICOM TC 매핑 (S07-R5)
+
+> **상태**: COMPLETE -- xUnit Trait 기반 실제 테스트 메서드 매핑
+>
+> **배경**: S06~S07에서 CDBurning 및 DICOM 모듈 테스트 커버리지 강화. 본 부록은 xUnit 테스트에 적용된 SWR Trait 기반 추적성 매핑을 정의한다.
+>
+> **S07 전체 SWR Trait 통계**: 98개 고유 SWR ID가 테스트 코드에 Trait으로 매핑됨.
+
+### D.1 CDBurning TC 매핑
+
+#### D.1.1 SWR-CD-010: CD/DVD Burn Service
+
+| 항목 | 내용 |
+|------|------|
+| **SWR ID** | SWR-CD-010 |
+| **요구사항명** | CD/DVD Burning 서비스 |
+| **상위 PR** | PR-WF-019 (CD/DVD Burning with DICOM Viewer) |
+| **상위 MR** | MR-072 (CD/DVD Burning, Tier 2) |
+| **위험 연결** | HAZ-DATA-001 |
+| **위험 통제** | RC-018 |
+| **SAD 참조** | SAD-CD-1000 |
+| **SDS 참조** | SDS Section 3.10 |
+| **구현 모듈** | HnVue.CDBurning (Team B) |
+| **검증 수준** | T (Unit Test) |
+| **검증 상태** | Pass |
+
+#### D.1.2 SWR-CD-010 TC 매핑 (xUnit Trait 기반)
+
+| TC ID | 테스트 케이스명 | 테스트 파일 | SWR 연결 | 검증 항목 | 상태 |
+|-------|--------------|-----------|---------|---------|------|
+| TC-CD-010-001 | CD/DVD Burn Service 생성 및 수명주기 | CDDVDBurnServiceTests.cs | SWR-CD-010 | CDDVDBurnService DI 주입, BurnSession/StudyRepository 연동, Dispose 흐름 검증 | Pass |
+
+#### D.1.3 SWR-CD-020: IMAPI COM Wrapper
+
+| 항목 | 내용 |
+|------|------|
+| **SWR ID** | SWR-CD-020 |
+| **요구사항명** | IMAPI COM 래퍼 (디스크 삽입/포맷/굽기) |
+| **상위 PR** | PR-WF-019 (CD/DVD Burning with DICOM Viewer) |
+| **상위 MR** | MR-072 (CD/DVD Burning, Tier 2) |
+| **위험 연결** | HAZ-DATA-001 |
+| **위험 통제** | RC-018 |
+| **구현 모듈** | HnVue.CDBurning (Team B) |
+| **검증 수준** | T (Unit Test) |
+| **검증 상태** | Pass |
+
+#### D.1.4 SWR-CD-020 TC 매핑
+
+| TC ID | 테스트 케이스명 | 테스트 파일 | SWR 연결 | 검증 항목 | 상태 |
+|-------|--------------|-----------|---------|---------|------|
+| TC-CD-020-001 | IMAPIComWrapper 초기 상태 및 디스크 작업 | IMAPIComWrapperTests.cs | SWR-CD-020 | IsDiscInserted/IsDiscBlank 초기 상태, WriteAsync/CommitAsync 흐름 검증 | Pass |
+
+#### D.1.5 SWR-CD-030: Study Repository
+
+| 항목 | 내용 |
+|------|------|
+| **SWR ID** | SWR-CD-030 |
+| **요구사항명** | Study Repository (DICOM 굽기용 데이터 접근) |
+| **상위 PR** | PR-WF-019 (CD/DVD Burning with DICOM Viewer) |
+| **상위 MR** | MR-072 (CD/DVD Burning, Tier 2) |
+| **위험 연결** | HAZ-DATA-001 |
+| **위험 통제** | RC-018 |
+| **구현 모듈** | HnVue.CDBurning (Team B) |
+| **검증 수준** | T (Unit Test) |
+| **검증 상태** | Pass |
+
+#### D.1.6 SWR-CD-030 TC 매핑
+
+| TC ID | 테스트 케이스명 | 테스트 파일 | SWR 연결 | 검증 항목 | 상태 |
+|-------|--------------|-----------|---------|---------|------|
+| TC-CD-030-001 | StudyRepository EF Core 기반 조회 | StudyRepositoryTests.cs | SWR-CD-030 | InMemory DB 기반 Study 조회, Patient 연관 데이터 검증 | Pass |
+
+### D.2 DICOM TC 매핑
+
+#### D.2.1 SWR-DICOM-010: DICOM File I/O
+
+| 항목 | 내용 |
+|------|------|
+| **SWR ID** | SWR-DICOM-010 |
+| **요구사항명** | DICOM 파일 읽기/쓰기 |
+| **상위 PR** | PR-DC-050 (DICOM Storage SCU) |
+| **상위 MR** | MR-005 (DICOM/통신, Tier 1) |
+| **위험 연결** | HAZ-DATA-001 |
+| **위험 통제** | RC-018 |
+| **SAD 참조** | SAD-DC-500 |
+| **SDS 참조** | SDS Section 3.5 |
+| **구현 모듈** | HnVue.Dicom (Team B) |
+| **검증 수준** | T (Unit Test) |
+| **검증 상태** | Pass |
+
+#### D.2.2 SWR-DICOM-010 TC 매핑
+
+| TC ID | 테스트 케이스명 | 테스트 파일 | SWR 연결 | 검증 항목 | 상태 |
+|-------|--------------|-----------|---------|---------|------|
+| TC-DICOM-010-001 | DICOM File I/O 읽기/쓰기 왕복 | DicomFileIOTests.cs | SWR-DICOM-010 | DICOM 파일 생성/저장/로드 왕복 테스트, fo-dicom API 검증 | Pass |
+
+#### D.2.3 SWR-DICOM-020: DICOM Service (SCU/SCP/Network)
+
+| 항목 | 내용 |
+|------|------|
+| **SWR ID** | SWR-DICOM-020 |
+| **요구사항명** | DICOM 서비스 (C-STORE SCU, Network, Callback, Outbox) |
+| **상위 PR** | PR-DC-050 (DICOM Storage), PR-DC-051 (Worklist), PR-DC-053 (MPPS) |
+| **상위 MR** | MR-005 (DICOM/통신, Tier 1) |
+| **위험 연결** | HAZ-DATA-001, HAZ-NET-002 |
+| **위험 통제** | RC-018, RC-036 |
+| **SAD 참조** | SAD-DC-500 |
+| **SDS 참조** | SDS Section 3.5 |
+| **구현 모듈** | HnVue.Dicom (Team B) |
+| **검증 수준** | T (Unit Test) |
+| **검증 상태** | Pass |
+
+#### D.2.4 SWR-DICOM-020 TC 매핑
+
+| TC ID | 테스트 케이스명 | 테스트 파일 | SWR 연결 | 검증 항목 | 상태 |
+|-------|--------------|-----------|---------|---------|------|
+| TC-DICOM-020-001 | DICOM File I/O 확장 커버리지 | DicomFileIOExtendedTests.cs | SWR-DICOM-020 | fo-dicom Dataset 조작, 태그 접근, 메타데이터 검증 | Pass |
+| TC-DICOM-020-002 | DICOM File I/O 커버리지 보강 | DicomFileIOCoverageTests.cs | SWR-DICOM-020 | 파일 시스템 연동, 경로 처리, 예외 상황 검증 | Pass |
+| TC-DICOM-020-003 | DICOM Service 콜백 | DicomServiceCallbackTests.cs | SWR-DICOM-020 | C-STORE SCP/SCU 콜백 이벤트 처리 검증 | Pass |
+| TC-DICOM-020-004 | DICOM Service 네트워크 | DicomServiceNetworkTests.cs | SWR-DICOM-020 | DICOM 연결 설정/해제, 타임아웃, 재시도 검증 | Pass |
+| TC-DICOM-020-005 | DICOM Service 커버리지 | DicomServiceCoverageTests.cs | SWR-DICOM-020 | 서비스 수명주기, 설정, 예외 처리 보강 | Pass |
+| TC-DICOM-020-006 | DICOM Outbox 관리 | DicomOutboxTests.cs | SWR-DICOM-020 | 전송 대기열 관리, 재전송, 상태 추적 (10개 테스트 메서드) | Pass |
+| TC-DICOM-020-007 | DICOM Store SCU | DicomStoreSCUTests.cs | SWR-DICOM-020 | C-STORE 요청/응답, 연결 설정, 오류 처리 검증 | Pass |
+
+### D.3 CDBurning/DICOM 추적성 요약
+
+| SWR ID | TC 수 | 매핑 상태 | xUnit Trait 확인 |
+|--------|-------|---------|----------------|
+| SWR-CD-010 | 1 | **100% 매핑** | `[Trait("SWR", "SWR-CD-010")]` -- CDDVDBurnServiceTests |
+| SWR-CD-020 | 1 | **100% 매핑** | `[Trait("SWR", "SWR-CD-020")]` -- IMAPIComWrapperTests |
+| SWR-CD-030 | 1 | **100% 매핑** | `[Trait("SWR", "SWR-CD-030")]` -- StudyRepositoryTests |
+| SWR-DICOM-010 | 1 | **100% 매핑** | `[Trait("SWR", "SWR-DICOM-010")]` -- DicomFileIOTests |
+| SWR-DICOM-020 | 7 | **100% 매핑** | `[Trait("SWR", "SWR-DICOM-020")]` -- 7개 테스트 클래스 |
+| **합계** | **11** | **100%** | |
+
+### D.4 S07 전체 SWR Trait 매핑 종합
+
+| 부록 | 도메인 | SWR 수 | TC 수 | 매핑 상태 |
+|------|--------|-------|-------|---------|
+| B | PHI 암호화 (SWR-CS-080/081) | 2 | 12 | PARTIAL (PLACEHOLDER) |
+| C | Detector SDK (SWR-DET/DT) | 4 | 12 | **100%** |
+| D | CDBurning/DICOM (SWR-CD/DICOM) | 5 | 11 | **100%** |
+| 본문 | 전체 도메인 (90개 PR) | 90 | - | MR->PR->SWR **100%**, SWR->TC Pending (계획 중) |
+
+---
+
 > **문서 종료**
 >
 > 본 RTM은 FDA 21 CFR 820.30 Design Controls에 따라 HnVue Console SW의 Design History File (DHF)의 핵심 구성 요소로 관리되며, 요구사항 변경 시 반드시 업데이트되어야 한다.
 >
 > | 문서 ID | RTM-XRAY-GUI-001 |
 > |---------|-----------------|
-> | 버전 | v2.2 (SWR-DET-010/SWR-DT-060/SWR-DT-061 Detector SDK TC 매핑) |
+> | 버전 | v2.3 (SWR-CD-010/020/030 + SWR-DICOM-010/020 CDBurning/DICOM TC 매핑 추가) |
 > | 작성일 | 2026-04-02 / 개정일 2026-04-14 |
 > | 검토 예정 | 2026-05-02 (Phase 1 설계 착수 시) |
