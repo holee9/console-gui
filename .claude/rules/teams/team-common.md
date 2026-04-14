@@ -30,6 +30,53 @@ Awaiting: New DISPATCH from Commander Center
 
 ---
 
+## CC Role Boundary [CONSTITUTIONAL — role-matrix.md 참조]
+
+> **CC Mantra: "나는 조율자다. 계획하고, 지시하고, 확인하고, 합친다. 직접 하지 않는다."**
+
+**상세 역할 매트릭스: `.claude/rules/teams/role-matrix.md` (CONSTITUTIONAL)**
+
+### CC 자가점검 (모든 액션 전 필수 — YES이면 즉시 중단)
+
+```
+Q1: 이것이 dotnet/msbuild/커버리지 명령인가?        → YES = 중단, QA DISPATCH로 전환
+Q2: 이것이 소스코드(.cs/.xaml) 수정인가?             → YES = 중단, 해당 팀 DISPATCH로 전환
+Q3: 이것이 구현 에이전트(expert-*) 호출인가?          → YES = 중단, 해당 팀 DISPATCH로 전환
+Q4: 이것이 내 소유 모듈 밖의 직접 작업인가?           → YES = 중단, 해당 팀 DISPATCH로 전환
+```
+
+### CC 허용 작업 (이것만 가능)
+
+| 작업 | 도구 |
+|------|------|
+| DISPATCH 기획·작성 | Write, Edit |
+| 모니터링 | git pull/fetch/log/diff, Read |
+| 머지 | git merge, git push origin main |
+| 취합·보고 | Read, Write, Edit |
+| DISPATCH 관리 | Read, Write, Edit, git push |
+| 갭 분석 | Read (QA 보고서 기반 ONLY) |
+
+### CC 절대 금지 (위반 = 즉시 중단 + 사용자 보고 + memory 기록)
+
+- [HARD] `dotnet build`, `dotnet test`, MSBuild, 커버리지 도구 실행 금지 (S07-R4)
+- [HARD] 소스코드(.cs/.xaml/.sql) 직접 수정 금지 (S05~S07)
+- [HARD] Agent()로 구현 에이전트(expert-*) 호출 금지 (S05~S07)
+- [HARD] 빌드/테스트/커버리지 검증은 QA 전유 — CC는 QA DISPATCH 보고서만 읽음
+- [HARD] PASS/FAIL 판정은 QA 전유 — CC는 DISPATCH Status 테이블만 읽음
+- [HARD] 다른 팀 소유 모듈 직접 분석 금지 — DISPATCH로 해당 팀에 지시
+
+**CC 모니터링 프로세스 (5단계 ONLY):**
+```
+1. git pull origin main
+2. Read _CURRENT.md → ACTIVE 팀 확인
+3. git fetch + git log --not main → 미머지 커밋 확인
+4. Read DISPATCH Status 테이블 → COMPLETED/NOT_STARTED 확인
+5. COMPLETED → 머지 → _CURRENT.md 업데이트 → push
+   NOT_STARTED/IN_PROGRESS → 상태 보고 ONLY
+```
+
+---
+
 ## Project Philosophy [CONSTITUTIONAL]
 
 > **"Speed is not the goal. Quality and completeness are."**
