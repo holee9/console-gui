@@ -4,7 +4,7 @@
 > 자신의 팀 행(row)에서 파일명을 확인한 뒤, 해당 파일만 읽는다.
 > 상태가 `PR_OPEN` 또는 `IDLE`이면 → 새 DISPATCH 없음 → Commander Center에 IDLE 보고.
 
-Updated: 2026-04-14 (S08-R2 — ACTIVE 6/6)
+Updated: 2026-04-14 (S08-R2 — ALL MERGED)
 DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/`
 
 ---
@@ -13,14 +13,14 @@ DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/
 
 | 팀 | 현재 DISPATCH 파일 | 상태 | 비고 |
 |----|-------------------|------|------|
-| **Coordinator** | `S08-R2-coordinator.md` | **ACTIVE** | DI 등록 누락 보완 + 통합테스트 |
-| **QA** | `S08-R2-qa.md` | **ACTIVE** | 전팀 완료 후 품질게이트 |
-| **RA** | `S08-R2-ra.md` | **ACTIVE** | SAD/SDS 디렉토리 소유권 업데이트 |
-| **Design** | `S08-R2-team-design.md` | **ACTIVE** | DesignTime Mock 정비 |
-| **Team A** | `S08-R2-team-a.md` | **ACTIVE** | 디렉토리 소유권 아키텍처 테스트 |
-| **Team B** | `S08-R2-team-b.md` | **ACTIVE** | IDLE CONFIRM |
+| **Coordinator** | - | **IDLE** | S08-R2 MERGED |
+| **QA** | - | **IDLE** | S08-R2 MERGED |
+| **RA** | - | **IDLE** | S08-R2 MERGED |
+| **Design** | - | **IDLE** | S08-R2 MERGED |
+| **Team A** | - | **IDLE** | S08-R2 MERGED |
+| **Team B** | - | **IDLE** | S08-R2 MERGED (IDLE CONFIRM) |
 
-**→ S08-R2: ACTIVE 6/6 — DI 보완 + 아키텍처 테스트 + 문서 동기화**
+**→ S08-R2: ALL MERGED — 전팀 IDLE**
 
 ---
 
@@ -59,8 +59,8 @@ git push origin team/{your-team}
 | 2026-04-13 | S06 R1 | S06-R1-*.md | ALL MERGED (PR #88-90) |
 | 2026-04-13 | S06 R2 | S06-R2-*.md | ALL MERGED |
 | 2026-04-14 | S07 R1~R5 | S07-R{1~5}-*.md | ALL MERGED (Sprint S07 종료) |
-| 2026-04-14 | **S08 R1** | **S08-R1-*.md** | **ALL MERGED (PASS)** |
-| 2026-04-14 | **S08 R2** | **S08-R2-*.md** | **ACTIVE 6/6** |
+| 2026-04-14 | S08 R1 | S08-R1-*.md | ALL MERGED (PASS) |
+| 2026-04-14 | **S08 R2** | **S08-R2-*.md** | **ALL MERGED** |
 
 ---
 
