@@ -1,6 +1,7 @@
 # Team B — Medical Imaging Pipeline Rules
 
 Shared rules: see `team-common.md` (Philosophy, Self-Verification, Git Protocol)
+Role boundaries: see `role-matrix.md` (ALLOWED/PROHIBITED 작업 매트릭스)
 
 ## Module Ownership
 - HnVue.Dicom, HnVue.Detector, HnVue.Imaging, HnVue.Dose, HnVue.Incident

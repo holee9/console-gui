@@ -1,6 +1,7 @@
 # RA Team — Regulatory Affairs Rules
 
 Shared rules: see `team-common.md` (Philosophy, Self-Verification, Git Protocol)
+Role boundaries: see `role-matrix.md` (ALLOWED/PROHIBITED 작업 매트릭스)
 
 ## Ownership
 - docs/regulatory/ (16 regulatory documents: FDA, CE, KFDA)

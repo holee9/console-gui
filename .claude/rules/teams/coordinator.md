@@ -1,6 +1,7 @@
 # Coordinator — Integration & UI Contracts Rules
 
 Shared rules: see `team-common.md` (Philosophy, Self-Verification, Git Protocol)
+Role boundaries: see `role-matrix.md` (ALLOWED/PROHIBITED 작업 매트릭스)
 
 ## Module Ownership
 - HnVue.UI.Contracts (interface gate)
