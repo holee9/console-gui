@@ -32,10 +32,9 @@ S09-R1 변경사항에 대한 규제 문서 업데이트 확인:
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: 문서 동기화 (P1) | NOT_STARTED | | |
-| Task 2: CMP 상태 (P2) | NOT_STARTED | | |
-| Git 완료 프로토콜 | NOT_STARTED | | |
-
+| Task 1: 문서 동기화 (P1) | COMPLETED | 2026-04-14 | Design 토큰 SDS/SAD 일치, Detector DI CMP 반영 |
+| Task 2: CMP 상태 (P2) | COMPLETED | 2026-04-14 | DOC-042 v2.1 Approved 상태 확인 |
+| Git 완료 프로토콜 | COMPLETED | 2026-04-14 | 문서 검증 완료 (소스코드 변경 없음) |
 ---
 
 ## Self-Verification Checklist
