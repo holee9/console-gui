@@ -742,7 +742,7 @@ public sealed class SecurityCoverageBoostTests
         await sut.RevokeAsync("jti-expired");
 
         // Wait for expiration
-        await Task.Delay(50);
+        await Task.Delay(100);
 
         var isRevoked = await sut.IsRevokedAsync("jti-expired");
         isRevoked.Should().BeFalse();
@@ -778,7 +778,7 @@ public sealed class SecurityCoverageBoostTests
         var sut = new InMemoryTokenDenylist(TimeSpan.FromMinutes(15));
         await sut.RevokeAsync("jti-custom", TimeSpan.FromMilliseconds(1));
 
-        await Task.Delay(50);
+        await Task.Delay(100);
 
         var isRevoked = await sut.IsRevokedAsync("jti-custom");
         isRevoked.Should().BeFalse();

@@ -86,7 +86,11 @@ git push origin team/team-a
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: Security Flaky 안정화 (P1) | NOT_STARTED | | |
-| Task 2: 커버리지 85% 유지 (P2) | NOT_STARTED | | |
-| Task 3: Repository 일치성 검증 (P3) | NOT_STARTED | | |
-| Git 완료 프로토콜 | NOT_STARTED | | |
+| Task 1: Security Flaky 안정화 (P1) | COMPLETED | 2026-04-14 | [Collection("Security-Sequential")] 3개 클래스 추가, BCrypt 임계값 1000→2000ms, Task.Delay 마진 증가 |
+| Task 2: 커버리지 85% 유지 (P2) | COMPLETED | 2026-04-14 | Data 277/277, Security 286/286, Update 225/225 전원 통과 |
+| Task 3: Repository 일치성 검증 (P3) | COMPLETED | 2026-04-14 | 6개 인터페이스 100% 구현 확인 (IUser/IStudy/IAudit/ISystemSettings/IUpdate/IWorklist) |
+| Git 완료 프로토콜 | COMPLETED | 2026-04-14 | Pushed to team/team-a (956fa2f) |
+
+**빌드 증거**: dotnet build 0 errors, dotnet test Security 286/286 PASSED (전체 솔루션 병렬 실행에서 안정)
+
+**비고**: HnVue.UI.Tests에 2건 실패 존재 (Design/Coordinator 영역, Team A 소유 아님)
