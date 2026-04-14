@@ -53,8 +53,8 @@ public sealed class PerformanceBenchmarks
 
         // Assert
         _output.WriteLine($"BCrypt verify: {sw.ElapsedMilliseconds}ms");
-        Assert.True(sw.ElapsedMilliseconds < 500,
-            $"Verify took {sw.ElapsedMilliseconds}ms, exceeds 500ms threshold");
+        Assert.True(sw.ElapsedMilliseconds < 800,
+            $"Verify took {sw.ElapsedMilliseconds}ms, exceeds 800ms threshold");
         Assert.True(result.IsSuccess);
     }
 

@@ -4,7 +4,7 @@
 > 자신의 팀 행(row)에서 파일명을 확인한 뒤, 해당 파일만 읽는다.
 > 상태가 `PR_OPEN` 또는 `IDLE`이면 → 새 DISPATCH 없음 → Commander Center에 IDLE 보고.
 
-Updated: 2026-04-14 (S07-R4 — 2/6 MERGED, 4/6 ACTIVE)
+Updated: 2026-04-14 (S07-R4 — 6/6 ALL MERGED)
 DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/`
 
 ---
@@ -13,21 +13,20 @@ DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/
 
 | 팀 | 현재 DISPATCH 파일 | 상태 | 비고 |
 |----|-------------------|------|------|
-| **Coordinator** | `S07-R4-coordinator.md` | **ACTIVE** | DI Null Stub 6개 교체 + 통합테스트 70+ |
-| **QA** | `S07-R4-qa.md` | **ACTIVE** | 품질게이트 재검증 + 커버리지 리포트 |
-| **RA** | — | **MERGED** | RMP v2.0 확정 + RTM 갱신 + CMP 검증 완료 |
-| **Design** | — | **MERGED** | 토큰 검증 + 접근성 확인 + PPT 요구사항 정리 완료 |
-| **Team A** | `S07-R4-team-a.md` | **ACTIVE** | **주의: main pull 필요 (4회 연속 IDLE 보고)** |
-| **Team B** | `S07-R4-team-b.md` | **ACTIVE** | Dicom 커버리지 85% 달성 |
+| **Coordinator** | — | **IDLE** | S07-R4 MERGED |
+| **QA** | — | **IDLE** | S07-R4 MERGED — 빌드 0에러, 2372/2374, 커버리지 89.4% |
+| **RA** | — | **IDLE** | S07-R4 MERGED |
+| **Design** | — | **IDLE** | S07-R4 MERGED |
+| **Team A** | — | **IDLE** | S07-R4 MERGED |
+| **Team B** | — | **IDLE** | S07-R4 MERGED |
 
-**→ S07-R4: 2/6 MERGED (Design, RA) | 4/6 ACTIVE**
+**→ S07-R4: 6/6 ALL MERGED | 전팀 IDLE 대기 중**
 
 ---
 
 ## Team A 특이사항
 
-Team A가 구버전 _CURRENT.md로 인해 R4 DISPATCH를 인식하지 못하고 4회 연속 IDLE 보고 중.
-**조치**: Team A는 반드시 `git pull origin main` 후 `_CURRENT.md`를 재확인할 것.
+Team A R4 DISPATCH 인식 후 완료. MERGED 처리됨.
 
 ---
 
@@ -84,7 +83,7 @@ IDLE 보고 형식:
 | 2026-04-14 | **S07 R1** | **S07-R1-*.md** | **ALL MERGED** |
 | 2026-04-14 | **S07 R2** | **S07-R2-*.md** | **ALL MERGED** |
 | 2026-04-14 | **S07 R3** | **S07-R3-*.md** | **ALL MERGED** |
-| 2026-04-14 | **S07 R4** | **S07-R4-*.md** | **2/6 MERGED, 4/6 ACTIVE** |
+| 2026-04-14 | **S07 R4** | **S07-R4-*.md** | **ALL MERGED (6/6)** |
 
 ---
 

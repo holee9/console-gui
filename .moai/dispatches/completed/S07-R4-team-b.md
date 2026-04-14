@@ -79,6 +79,12 @@ git push origin team/team-b
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: Dicom 커버리지 85% (P1) | NOT_STARTED | | |
-| Task 2: 기타 모듈 유지 (P2) | NOT_STARTED | | |
-| Git 완료 프로토콜 | NOT_STARTED | | |
+| Task 1: Dicom 커버리지 85% (P1) | COMPLETED | 2026-04-14 | line 49.1%→86.0%, branch 56.2%→83.0%, 64 신규 테스트(465 total) |
+| Task 2: 기타 모듈 유지 (P2) | COMPLETED | 2026-04-14 | 전 모듈 0 실패: Det 272P, Dose 349P, Inc 138P, Img 77P, WF 293P, PM 139P, CD 47P |
+| Git 완료 프로토콜 | COMPLETED | 2026-04-14 | commit bdecc10, push origin team/team-b 성공 |
+
+### 빌드 증거
+- `dotnet build HnVue.sln --configuration Release`: 오류 0개
+- `dotnet test` Dicom 465P/0F, 전체 1,780P/0F
+- Dicom 커버리지: line 86.0%, branch 83.0% (Cobertura)
+- 신규 파일: tests/HnVue.Dicom.Tests/DicomCoverageTargetTests.cs (64 tests)
