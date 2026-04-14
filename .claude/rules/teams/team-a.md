@@ -1,6 +1,7 @@
 # Team A — Infrastructure & Foundation Rules
 
 Shared rules: see `team-common.md` (Philosophy, Self-Verification, Git Protocol)
+Role boundaries: see `role-matrix.md` (ALLOWED/PROHIBITED 작업 매트릭스)
 
 ## Module Ownership
 - HnVue.Common, HnVue.Data, HnVue.Security, HnVue.SystemAdmin, HnVue.Update
