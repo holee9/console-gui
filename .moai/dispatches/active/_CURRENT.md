@@ -17,10 +17,10 @@ DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/
 | **QA** | `S10-R2-qa.md` | **ACTIVE** | IDLE CONFIRM |
 | **RA** | `S10-R2-ra.md` | **ACTIVE** | IDLE CONFIRM |
 | **Design** | `S10-R2-team-design.md` | **ACTIVE** | MergeView PPT 구현 |
-| **Team A** | `S10-R3-team-a.md` | **ACTIVE** | 루프 긴급 중단 지시 |
+| **Team A** | - | **IDLE** | S10-R3 EMERGENCY STOP 완료 |
 | **Team B** | - | **IDLE** | S10-R2 Task 2 MERGED — CDBurning 100% |
 
-**→ S10-R2/R3: 1팀 MERGED, 5팀 ACTIVE**
+**→ S10-R2/R3: 2팀 MERGED, 4팀 ACTIVE**
 
 ---
 

@@ -53,7 +53,7 @@ Team A가 S10-R2 DISPATCH를 읽지 않고 계속 루프 실행 중.
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: EMERGENCY STOP (P0) | NOT_STARTED | - | 긴급 중단 지시 |
+| Task 1: EMERGENCY STOP (P0) | COMPLETED | 2026-04-15 | 루프 중단 완료, IDLE 보고 완료 |
 
 ---
 
