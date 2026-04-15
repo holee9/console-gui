@@ -3,49 +3,64 @@
 Sprint: S10 | Round: 3 | Team: Team A
 Updated: 2026-04-15
 
-> **[EMERGENCY] 루프 즉시 중단 지시**
-> 
-> **현재 상황**: Team A가 11회 연속 루프 실행 중
-> **문제점**: 매번 `.claude/logs/dispatch-monitor.log`에 쓰려고 사용자 승인 요청
-> 
-> **즉시 조치**:
-> 1. **모든 루프/반복 작업 즉시 중단**
-> 2. **DISPATCH 파일 읽기만 수행**
-> 3. **CC에게 IDLE 보고**
-> 
-> **[HARD] 금지 작업**:
-> - Bash echo 명령 사용 금지
-> - 로그 파일 쓰기 금지
-> - 루프/반복 실행 금지
-> 
-> **[HARD] 허용 작업**:
-> - DISPATCH 파일 Read만 수행
-> - IDLE 보고 후 종료
+> **[CC 안내]** IDLE CONFIRM. 긴급 작업 없음.
+
+---
+
+## [HARD] Protocol — 자율주행 철학
+
+**자율주행 = "마음대로"가 아닙니다. 명확한 룰 내에서 자율적으로 실행하는 것입니다.**
+
+### [HARD] FIRST ACTION (세션 시작 시 반드시 실행)
+
+```
+Step 0: git pull origin main  ← _CURRENT.md 읽기 전 반드시 실행
+Step 1: Read _Current.md
+Step 2: 자신의 팀 행(row)에서 파일명 확인
+Step 3: 해당 파일만 읽기 (다른 팀 DISPATCH 절대 읽기 금지)
+Step 4: 상태가 IDLE이면 → 즉시 IDLE 보고 (다른 작업 금지)
+```
+
+### [HARD] 자율주행 범위
+
+**허용된 자율성:**
+- Task 구현 방법 선택 (기술적 판단)
+- 작업 순서 최적화 (효율성 추구)
+- 문제 해결 방법 결정 (전문성 발휴)
+
+**금지된 자율성:**
+- [HARD] DISPATCH 파일 자율 검색 (CC 전용)
+- [HARD] 다른 팀 DISPATCH 읽기 (Scope Limitation 위반)
+- [HARD] IDLE 상태에서 자율 작업 (Protocol 위반)
+- [HARD] _CURRENT.md 무시 (구버전 오독 위험)
+
+### [HARD] IDLE 상태 절대 규칙
+
+```
+_Current.md에서 자신의 팀이 IDLE이면:
+1. 즉시 IDLE 보고
+2. DISPATCH 파일 검색 금지
+3. 자율 작업 금지
+4. CC 지시 대기
+```
 
 ---
 
 ## Context
 
-사용자가 "a team 해결 안되었어"라고 불만 표명.
-
-Team A가 S10-R2 DISPATCH를 읽지 않고 계속 루프 실행 중.
+S09-R3 QA PASS. 전체 커버리지 90.3% 달성.
 
 ---
 
 ## Tasks
 
-### Task 1: EMERGENCY STOP (P0)
+### Task 1: IDLE CONFIRM (P3)
 
-**[CRITICAL] 모든 루프 즉시 중단**
-
-**실행 순서**:
-1. S10-R3-team-a.md 파일 Read
-2. CC에게 "State: IDLE" 보고
-3. **그 외 어떤 작업도 하지 않음**
+현재 Team A에 긴급 작업 없음. IDLE 상태 확인.
 
 **검증 기준**:
-- [ ] 사용자 승인 요청 없이 완료
-- [ ] 루프 실행 중단
+- [ ] DISPATCH 읽기 완료
+- [ ] IDLE 상태를 CC에 보고
 
 ---
 
@@ -53,13 +68,11 @@ Team A가 S10-R2 DISPATCH를 읽지 않고 계속 루프 실행 중.
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: EMERGENCY STOP (P0) | COMPLETED | 2026-04-15 | 루프 중단 완료, IDLE 보고 완료 |
+| Task 1: IDLE CONFIRM (P3) | NOT_STARTED | - | |
 
 ---
 
 ## Self-Verification Checklist
 
-- [ ] Bash echo 명령 사용 안 함
-- [ ] 로그 파일 쓰기 안 함
-- [ ] DISPATCH Read만 수행
-- [ ] 사용자 승인 요청 없이 완료
+- [ ] DISPATCH 읽기 완료
+- [ ] [HARD] Protocol 준수 확인
