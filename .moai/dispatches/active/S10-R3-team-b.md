@@ -1,9 +1,9 @@
-# DISPATCH: S10-R2 — Coordinator
+# DISPATCH: S10-R3 — Team B
 
-Sprint: S10 | Round: 2 | Team: Coordinator
+Sprint: S10 | Round: 3 | Team: Team B
 Updated: 2026-04-15
 
-> **[CC 안내]** S10-R1 Task 완료 머지됨. IDLE CONFIRM 필요.
+> **[CC 안내]** UI 커버리지 갭 해결 지원. Design 팀과 협업 필요.
 
 ---
 
@@ -26,7 +26,7 @@ Step 4: 상태가 IDLE이면 → 즉시 IDLE 보고 (다른 작업 금지)
 **허용된 자율성:**
 - Task 구현 방법 선택 (기술적 판단)
 - 작업 순서 최적화 (효율성 추구)
-- 문제 해결 방법 결정 (전문성 발휘)
+- 문제 해결 방법 결정 (전문성 발휴)
 
 **금지된 자율성:**
 - [HARD] DISPATCH 파일 자율 검색 (CC 전용)
@@ -37,7 +37,7 @@ Step 4: 상태가 IDLE이면 → 즉시 IDLE 보고 (다른 작업 금지)
 ### [HARD] IDLE 상태 절대 규칙
 
 ```
-_CURRENT.md에서 자신의 팀이 IDLE이면:
+_Current.md에서 자신의 팀이 IDLE이면:
 1. 즉시 IDLE 보고
 2. DISPATCH 파일 검색 금지
 3. 자율 작업 금지
@@ -48,15 +48,29 @@ _CURRENT.md에서 자신의 팀이 IDLE이면:
 
 ## Context
 
-S10-R1 Task 1,2 MERGED 완료. SettingsView 통합테스트 6개 추가됨.
+S09-R3 QA PASS (90.3% 커버리지).
+HnVue.UI 83.0%로 85% 미달. 도메인 Converter/컨트롤 테스트 지원 필요.
 
 ---
 
 ## Tasks
 
-### Task 1: IDLE CONFIRM (P3)
+### Task 1: 도메인 Converter 테스트 추가 (P2)
 
-현재 Coordinator에 긴급 작업 없음. IDLE 상태 확인.
+Design 팀 UI Components 커버리지 향상 지원.
+
+**대상**:
+- `HnVue.UI/Converters/SafeStateToColorConverter.cs`
+- `HnVue.UI/Converters/AgeFromBirthDateConverter.cs`
+
+**검증 기준**:
+- [ ] Converter 단위 테스트 추가
+- [ ] `dotnet build` 0 errors
+- [ ] `dotnet test` PASS
+
+### Task 2: IDLE CONFIRM (P3)
+
+긴급 작업 없음. IDLE 상태 확인.
 
 **검증 기준**:
 - [ ] DISPATCH 읽기 완료
@@ -68,10 +82,14 @@ S10-R1 Task 1,2 MERGED 완료. SettingsView 통합테스트 6개 추가됨.
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: IDLE CONFIRM (P3) | COMPLETED | 2026-04-15 | IDLE 상태 확인 완료 | |
+| Task 1: Converter 테스트 (P2) | NOT_STARTED | - | |
+| Task 2: IDLE CONFIRM (P3) | NOT_STARTED | - | |
 
 ---
 
 ## Self-Verification Checklist
 
-- [ ] DISPATCH 읽기 완료
+- [ ] `dotnet build` 0 errors
+- [ ] `dotnet test` PASS
+- [ ] DISPATCH Status 업데이트 완료
+- [ ] `/clear` 실행 완료

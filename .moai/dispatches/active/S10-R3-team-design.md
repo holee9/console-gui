@@ -1,9 +1,9 @@
-# DISPATCH: S10-R2 — Coordinator
+# DISPATCH: S10-R3 — Design
 
-Sprint: S10 | Round: 2 | Team: Coordinator
+Sprint: S10 | Round: 3 | Team: Design
 Updated: 2026-04-15
 
-> **[CC 안내]** S10-R1 Task 완료 머지됨. IDLE CONFIRM 필요.
+> **[CC 안내]** S10-R1 미완료 Task 재진행. MergeView PPT 구현 필요.
 
 ---
 
@@ -26,7 +26,7 @@ Step 4: 상태가 IDLE이면 → 즉시 IDLE 보고 (다른 작업 금지)
 **허용된 자율성:**
 - Task 구현 방법 선택 (기술적 판단)
 - 작업 순서 최적화 (효율성 추구)
-- 문제 해결 방법 결정 (전문성 발휘)
+- 문제 해결 방법 결정 (전문성 발휴)
 
 **금지된 자율성:**
 - [HARD] DISPATCH 파일 자율 검색 (CC 전용)
@@ -48,19 +48,33 @@ _CURRENT.md에서 자신의 팀이 IDLE이면:
 
 ## Context
 
-S10-R1 Task 1,2 MERGED 완료. SettingsView 통합테스트 6개 추가됨.
+S09-R3 QA PASS 달성 (90.3% 커버리지).
+HnVue.UI 83.0%로 85% 미달. MergeView PPT 구현 미완료.
 
 ---
 
 ## Tasks
 
-### Task 1: IDLE CONFIRM (P3)
+### Task 1: MergeView PPT 구현 (P1)
 
-현재 Coordinator에 긴급 작업 없음. IDLE 상태 확인.
+PPT slides 12-13에 해당하는 MergeView.xaml 구현.
+
+**PPT Scope Compliance [HARD]**:
+- Slides 12-13: MergeView.xaml ONLY
+- 다른 화면 요소 절대 포함 금지 (Issue #59)
 
 **검증 기준**:
-- [ ] DISPATCH 읽기 완료
-- [ ] IDLE 상태를 CC에 보고
+- [ ] PPT 1:1 비교 완료
+- [ ] `dotnet build` 0 errors
+- [ ] DesignTime Mock 렌더링 정상
+
+### Task 2: UI Components 커버리지 개선 (P2)
+
+HnVue.UI 83.0% → 85%+ 기여. Components/Converters 테스트 가능 코드 개선.
+
+**검증 기준**:
+- [ ] UI Components 테스트 커버리지 향상
+- [ ] `dotnet build` 0 errors
 
 ---
 
@@ -68,10 +82,15 @@ S10-R1 Task 1,2 MERGED 완료. SettingsView 통합테스트 6개 추가됨.
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: IDLE CONFIRM (P3) | COMPLETED | 2026-04-15 | IDLE 상태 확인 완료 | |
+| Task 1: MergeView (P1) | NOT_STARTED | - | PPT slides 12-13 |
+| Task 2: UI 커버리지 (P2) | NOT_STARTED | - | |
 
 ---
 
 ## Self-Verification Checklist
 
-- [ ] DISPATCH 읽기 완료
+- [ ] `dotnet build` 0 errors
+- [ ] PPT 1:1 비교 완료
+- [ ] DesignTime Mock 렌더링 정상
+- [ ] DISPATCH Status 업데이트 완료
+- [ ] `/clear` 실행 완료

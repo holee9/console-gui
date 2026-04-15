@@ -1,9 +1,9 @@
-# DISPATCH: S10-R2 — Coordinator
+# DISPATCH: S10-R2 — Team B
 
-Sprint: S10 | Round: 2 | Team: Coordinator
+Sprint: S10 | Round: 2 | Team: Team B
 Updated: 2026-04-15
 
-> **[CC 안내]** S10-R1 Task 완료 머지됨. IDLE CONFIRM 필요.
+> **[CC 안내]** S10-R2 Task 완료. IDLE CONFIRM 필요.
 
 ---
 
@@ -48,7 +48,7 @@ _CURRENT.md에서 자신의 팀이 IDLE이면:
 
 ## Context
 
-S10-R1 Task 1,2 MERGED 완료. SettingsView 통합테스트 6개 추가됨.
+S10-R2 Task 2 완료됨. CDBurning 100% 달성, PR #104 머지 완료.
 
 ---
 
@@ -56,7 +56,7 @@ S10-R1 Task 1,2 MERGED 완료. SettingsView 통합테스트 6개 추가됨.
 
 ### Task 1: IDLE CONFIRM (P3)
 
-현재 Coordinator에 긴급 작업 없음. IDLE 상태 확인.
+현재 Team B에 긴급 작업 없음. IDLE 상태 확인.
 
 **검증 기준**:
 - [ ] DISPATCH 읽기 완료
@@ -68,10 +68,11 @@ S10-R1 Task 1,2 MERGED 완료. SettingsView 통합테스트 6개 추가됨.
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: IDLE CONFIRM (P3) | COMPLETED | 2026-04-15 | IDLE 상태 확인 완료 | |
+| Task 1: IDLE CONFIRM (P3) | NOT_STARTED | - | |
 
 ---
 
 ## Self-Verification Checklist
 
 - [ ] DISPATCH 읽기 완료
+- [ ] [HARD] Protocol 준수 확인
