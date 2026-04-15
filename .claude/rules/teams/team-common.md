@@ -65,14 +65,21 @@ Q4: 이것이 내 소유 모듈 밖의 직접 작업인가?           → YES = 
 - [HARD] PASS/FAIL 판정은 QA 전유 — CC는 DISPATCH Status 테이블만 읽음
 - [HARD] 다른 팀 소유 모듈 직접 분석 금지 — DISPATCH로 해당 팀에 지시
 
-**CC 모니터링 프로세스 (5단계 ONLY):**
+**CC 모니터링 프로세스 (6단계):**
 ```
 1. git pull origin main
 2. Read _CURRENT.md → ACTIVE 팀 확인
 3. git fetch + git log --not main → 미머지 커밋 확인
 4. Read DISPATCH Status 테이블 → COMPLETED/NOT_STARTED 확인
-5. COMPLETED → 머지 → _CURRENT.md 업데이트 → push
+5. COMPLETED → 소유권 검증 → 머지 → team 브랜치 동기화 → _CURRENT.md 업데이트 → push
    NOT_STARTED/IN_PROGRESS → 상태 보고 ONLY
+```
+
+**Step 5 소유권 검증 (S09-R3 사고교훈):**
+```
+git diff --name-only main..origin/team/{team}
+→ role-matrix.md 디렉토리 소유권 테이블과 교차 확인
+→ 타 팀 소유 파일 발견 시: 머지 보류 + 사용자 보고
 ```
 
 ---
@@ -124,6 +131,16 @@ After completing DISPATCH tasks:
 6. **DO NOT create PR** — PR creation is Commander Center exclusive authority
 
 Push failure: report "PUSH_FAILED" status in DISPATCH.md, commit+push the status update.
+
+## DISPATCH File Management [HARD — Effective S09-R3]
+
+**DISPATCH 파일은 CC 단독 관리. 팀은 수정/이동/삭제 금지.**
+
+- [HARD] 팀은 `active/`, `completed/`, `_CURRENT.md` 파일을 **생성, 이동, 삭제 금지**
+- [HARD] 팀은 DISPATCH Status 테이블 업데이트만 수행 (자체 DISPATCH 파일 내 Status 섹션)
+- [HARD] DISPATCH 파일의 active/ ↔ completed/ 이동은 **CC만** 실행
+- [HARD] S09-R3 사고: Design과 Coordinator가 서로 다른 방향으로 DISPATCH 파일 이동 → 머지 충돌
+- [HARD] 위반 시: CC가 머지 시 충돌 발생 → 사용자 개입 필요 → 진행 지연
 
 ## Session Lifecycle [HARD — Effective S09-R3]
 
@@ -180,6 +197,18 @@ CC가 DISPATCH Status 확인 → 머지 → _CURRENT.md 업데이트
 - [HARD] _CURRENT.md 해당 팀 행을 `IDLE`로 업데이트 (파일명 `-` 로 표시)
 - [HARD] 정리 후 반드시 `git add .moai/dispatches/ && git commit && git push origin main` 실행
 - [HARD] **MERGED DISPATCH 파일이 active/에 잔존하면 팀이 세션 재시작 시 계속 IDLE 보고 반복** — 이것이 S07-R3 사고 원인
+
+### 머지 후 team 브랜치 동기화 [HARD — Effective S09-R3]
+- [HARD] CC가 머지 완료 후 `git checkout team/{team} && git merge main && git push origin team/{team}` 실행
+- [HARD] 미동기화 시 `git log origin/team/{team} --not main`이 **이미 머지된 커밋을 false positive**로 보고
+- [HARD] S09-R3 사고: Coordinator 머지 완료했으나 team/coordinator 브랜치 미동기화 → 다음 모니터링에서 동일 커밋 재감지
+- [HARD] 동기화 후 `git checkout main`으로 복귀
+
+### 머지 전 소유권 교차 검증 [HARD — Effective S09-R3]
+- [HARD] CC가 머지 전 `git diff --name-only main..origin/team/{team}` 로 변경 파일 목록 확인
+- [HARD] role-matrix.md 디렉토리 단위 소유권 테이블과 교차 검증
+- [HARD] **타 팀 소유 파일 포함 시**: 머지 보류 + 사용자 보고 + 해당 팀에 범위 위반 통지
+- [HARD] S09-R3 사고: Coordinator가 Design 소유(Converters, DesignTime) 수정 + Design이 Coordinator 소유(tests.integration) 수정
 
 ### 직접 main push 감지 [S07-R1 사고교훈]
 - [HARD] team/{team} 브랜치에 미머지 커밋이 없는데 DISPATCH Status가 COMPLETED → main 직접 push 케이스
