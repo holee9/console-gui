@@ -34,7 +34,7 @@ _CURRENT.md에서 자신의 팀이 IDLE이면:
 
 ---
 
-Updated: 2026-04-15 (S10-R3: 6팀 발행 완료, 갭 분석 기반)
+Updated: 2026-04-16 (S10-R4: 6팀 발행 완료, 커버리지 85% 목표)
 DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/`
 
 ---
@@ -43,14 +43,14 @@ DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/
 
 | 팀 | 현재 DISPATCH 파일 | 상태 | 비고 |
 |----|-------------------|------|------|
-| **Coordinator** | `S10-R3-coordinator.md` | **ACTIVE** | ViewModel 커버리지 |
-| **QA** | `S10-R3-qa.md` | **ACTIVE** | QA Gate 검증 |
-| **RA** | `S10-R3-ra.md` | **ACTIVE** | 문서 동기화 확인 |
-| **Design** | `S10-R3-team-design.md` | **ACTIVE** | MergeView PPT 구현 |
-| **Team A** | `S10-R3-team-a.md` | **ACTIVE** | IDLE CONFIRM |
-| **Team B** | `S10-R3-team-b.md` | **ACTIVE** | Converter 테스트 |
+| **Team A** | `S10-R4-team-a.md` | **ACTIVE** | Data 85%+ Update 85%+ |
+| **Team B** | `S10-R4-team-b.md` | **ACTIVE** | Dicom 85%+ (1.3% 부족) |
+| **Coordinator** | `S10-R4-coordinator.md` | **ACTIVE** | ToastItem 커버리지 |
+| **QA** | `S10-R4-qa.md` | **ACTIVE** | QA Gate CONDITIONAL→PASS 목표 |
+| **RA** | `S10-R4-ra.md` | **ACTIVE** | 문서 동기화 확인 |
+| **Design** | `S10-R4-team-design.md` | **ACTIVE** | IDLE CONFIRM |
 
-**→ S10-R3: 6팀 전원 ACTIVE**
+**→ S10-R4: 6팀 전원 ACTIVE (커버리지 79.3% → 85% 목표)**
 
 ---
 
@@ -96,7 +96,8 @@ git push origin team/{your-team}
 | 2026-04-15 | **S09 R3** | **S09-R3-*.md** | 전팀 MERGED, QA PASS (#104) |
 | 2026-04-15 | **S10 R1** | **S10-R1-*.md** | 6팀 발행 (갭 분석 기반) |
 | 2026-04-15 | **S10 R2** | **S10-R2-*.md** | 3팀 MERGED, 3팀 IDLE |
-| 2026-04-15 | **S10 R3** | **S10-R3-*.md** | 6팀 발행 (UI 커버리지 갭) |
+| 2026-04-15 | **S10 R3** | **S10-R3-*.md** | 전팀 MERGED (Coordinator 92.58%, QA CONDITIONAL PASS, Design MergeView) |
+| 2026-04-16 | **S10 R4** | **S10-R4-*.md** | 6팀 발행 (Data 85%, Update 85%, Dicom 85% 목표) |
 
 ---
 
