@@ -30,7 +30,7 @@ S09-R3 QA PASS. 전체 빌드 0에러, 4020 테스트, 커버리지 90.3%. Team 
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: IDLE CONFIRM (P3) | NOT_STARTED | - | |
+| Task 1: IDLE CONFIRM (P3) | COMPLETED | 2026-04-15 | IDLE 상태 확인 완료 |
 
 ---
 

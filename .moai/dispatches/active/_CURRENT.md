@@ -17,10 +17,10 @@ DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/
 | **QA** | - | **IDLE** | S10-R1 Task 2 MERGED — CI 커버리지 게이트 수정 |
 | **RA** | - | **IDLE** | S10-R1 MERGED — CMP v2.2 + RTM v2.6 |
 | **Design** | - | **IDLE** | S10-R1 MERGED — MergeView Mock + XAML |
-| **Team A** | `S10-R1-team-a.md` | **ACTIVE** | IDLE CONFIRM |
+| **Team A** | - | **IDLE** | S10-R1 IDLE CONFIRM 완료 |
 | **Team B** | `S10-R1-team-b.md` | **ACTIVE** | Dicom 90% + CDBurning 85% |
 
-**→ S10-R1: 4팀 MERGED, 2팀 ACTIVE**
+**→ S10-R1: 5팀 MERGED, 1팀 ACTIVE**
 
 ---
 
