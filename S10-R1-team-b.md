@@ -43,7 +43,7 @@ S09-R3 QA PASS. Dicom 커버리지 86.0% 달성. Dose 99.5%+ 유지.
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
 | Task 1: Dicom 90% (P1) | COMPLETED | 2026-04-15 | 커밋 c7f5c83: 482/482 PASS, 테스트 추가 완료 |
-| Task 2: CDBurning (P2) | NOT_STARTED | - | |
+| Task 2: CDBurning (P2) | COMPLETED | 2026-04-15 | 47/47 PASS, Line Coverage 100% (목표 85% 초과) |
 
 ---
 
