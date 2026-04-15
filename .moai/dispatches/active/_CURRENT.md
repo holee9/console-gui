@@ -4,6 +4,36 @@
 > 자신의 팀 행(row)에서 파일명을 확인한 뒤, 해당 파일만 읽는다.
 > 상태가 `PR_OPEN` 또는 `IDLE`이면 → 새 DISPATCH 없음 → Commander Center에 IDLE 보고.
 
+---
+
+## [HARD] 자율주행 철학 — 모든 팀 필독
+
+**자율주행 = "마음대로"가 아닙니다. 명확한 룰 내에서 자율적으로 실행하는 것입니다.**
+
+### [HARD] 세션 시작 절차 (모든 팀 필수)
+
+```
+Step 0: git pull origin main  ← [HARD] 이 파일 읽기 전 반드시 실행
+Step 1: Read _CURRENT.md (이 파일)
+Step 2: 자신의 팀 행(row)에서 파일명 확인
+Step 3: 해당 파일만 읽기 (다른 팀 DISPATCH 절대 읽기 금지)
+Step 4: 상태가 IDLE이면 → 즉시 IDLE 보고 (다른 작업 금지)
+```
+
+### [HARD] IDLE 상태 절대 규칙
+
+```
+_CURRENT.md에서 자신의 팀이 IDLE이면:
+1. 즉시 IDLE 보고
+2. DISPATCH 파일 검색 금지
+3. 자율 작업 금지
+4. CC 지시 대기
+```
+
+**위반 시 프로토콜 위반으로 간주합니다.**
+
+---
+
 Updated: 2026-04-15 (S10-R1: RA+Design+Coordinator+QA MERGED, 2팀 ACTIVE)
 DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/`
 
