@@ -40,8 +40,8 @@ Configuration Management Plan을 Draft에서 완성으로 승격.
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: 문서 동기화 (P1) | NOT_STARTED | - | |
-| Task 2: CMP 완성 (P2) | NOT_STARTED | - | |
+| Task 1: 문서 동기화 (P1) | COMPLETED | 2026-04-15 | DOC-032 RTM v2.6: S09-R3 부록 F 추가 (SWR-DC-055, SWR-DS-020, TC-UI-CONV-001). DOC-005 SRS/DOC-033 SOUP: 업데이트 불필요 (UI 내부 구현, 라이브러리 변경 없음) |
+| Task 2: CMP 완성 (P2) | COMPLETED | 2026-04-15 | DOC-042 CMP v2.2: Sprint S08~S09 이력 추가, S07 완료 처리, 문서 상태 v2.2 갱신 |
 
 ---
 
