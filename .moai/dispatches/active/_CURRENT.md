@@ -44,7 +44,7 @@ DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/
 | 팀 | 현재 DISPATCH 파일 | 상태 | 비고 |
 |----|-------------------|------|------|
 | **Coordinator** | `S10-R2-coordinator.md` | **ACTIVE** | IDLE CONFIRM |
-| **QA** | - | **IDLE** | S10-R2 IDLE CONFIRM 완료 |
+| **QA** | `S10-R2-qa.md` | **ACTIVE** | IDLE CONFIRM |
 | **RA** | `S10-R2-ra.md` | **ACTIVE** | IDLE CONFIRM |
 | **Design** | `S10-R2-team-design.md` | **ACTIVE** | MergeView PPT 구현 |
 | **Team A** | `S10-R2-team-a.md` | **ACTIVE** | STOP LOGGING |
