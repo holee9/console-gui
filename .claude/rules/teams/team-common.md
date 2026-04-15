@@ -70,9 +70,10 @@ Q4: 이것이 내 소유 모듈 밖의 직접 작업인가?           → YES = 
 1. git pull origin main
 2. Read _CURRENT.md → ACTIVE 팀 확인
 3. git fetch + git log --not main → 미머지 커밋 확인
-4. Read DISPATCH Status 테이블 → COMPLETED/NOT_STARTED 확인
+4. Read DISPATCH Status 테이블 → COMPLETED/NOT_STARTED/BLOCKED 확인
 5. COMPLETED → 소유권 검증 → 머지 → team 브랜치 동기화 → _CURRENT.md 업데이트 → push
    NOT_STARTED/IN_PROGRESS → 상태 보고 ONLY
+   BLOCKED → 사용자에게 보고 (환경/의존성 문제 해결 필요)
 ```
 
 **Step 5 소유권 검증 (S09-R3 사고교훈):**
@@ -81,6 +82,11 @@ git diff --name-only main..origin/team/{team}
 → role-matrix.md 디렉토리 소유권 테이블과 교차 확인
 → 타 팀 소유 파일 발견 시: 머지 보류 + 사용자 보고
 ```
+
+**CC Stall Detection [HARD — Effective S09-R3]:**
+- [HARD] 동일 팀이 **3회 연속 NOT_STARTED** 감지 시 → 사용자에게 "작업 지연 의심" 경고
+- [HARD] 동일 팀이 **5회 연속 NOT_STARTED** 감지 시 → BLOCKED로 간주, 사용자에게 조치 요청
+- [HARD] S09-R3 사고: QA 12회 연속 NOT_STARTED → CC가 계속 "대기 유지"만 보고, 실제 조치 없음
 
 ---
 
@@ -141,6 +147,18 @@ Push failure: report "PUSH_FAILED" status in DISPATCH.md, commit+push the status
 - [HARD] DISPATCH 파일의 active/ ↔ completed/ 이동은 **CC만** 실행
 - [HARD] S09-R3 사고: Design과 Coordinator가 서로 다른 방향으로 DISPATCH 파일 이동 → 머지 충돌
 - [HARD] 위반 시: CC가 머지 시 충돌 발생 → 사용자 개입 필요 → 진행 지연
+
+## DISPATCH Status Update Protocol [HARD — Effective S09-R3]
+
+**팀은 DISPATCH 수령 후 반드시 Status를 업데이트해야 한다. CC는 DISPATCH Status만 읽는다.**
+
+- [HARD] DISPATCH 읽기 직후: Task Status를 `NOT_STARTED` → `IN_PROGRESS`로 업데이트 + push
+- [HARD] 작업 완료 후: Task Status를 `IN_PROGRESS` → `COMPLETED` + 빌드 증거 + push
+- [HARD] **작업 불가 시**: Task Status를 `NOT_STARTED` → `BLOCKED` + 사유 기재 + push
+  - 예: 환경 문제, 의존성 미해결, 도구 오류
+  - BLOCKED 상태에서는 CC가 즉시 인지하고 조치 가능
+- [HARD] **Status 업데이트 없이 대기 = 소통 단절 = 프로토콜 위반**
+- [HARD] S09-R3 사고: QA가 READY 상태였으나 DISPATCH Status를 NOT_STARTED로 방치 → CC가 12회 연속 모니터링하며 변화 감지 불가
 
 ## Session Lifecycle [HARD — Effective S09-R3]
 
