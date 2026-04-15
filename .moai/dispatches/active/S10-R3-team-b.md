@@ -82,7 +82,7 @@ Design 팀 UI Components 커버리지 향상 지원.
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: Converter 테스트 (P2) | NOT_STARTED | - | |
+| Task 1: Converter 테스트 (P2) | IN_PROGRESS | - | |
 | Task 2: IDLE CONFIRM (P3) | NOT_STARTED | - | |
 
 ---
