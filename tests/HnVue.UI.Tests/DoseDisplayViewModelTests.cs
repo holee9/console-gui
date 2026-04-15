@@ -112,4 +112,110 @@ public sealed class DoseDisplayViewModelTests
         sut.DrlReferenceLevel = 100.0;
         sut.IsDoseAlert.Should().BeTrue();
     }
+
+    [Fact]
+    public void IViewModelBase_IsLoading_MapsToIsRefreshing()
+    {
+        var sut = CreateSut();
+        sut.IsRefreshing = false;
+        ((HnVue.UI.Contracts.ViewModels.IViewModelBase)sut).IsLoading.Should().BeFalse();
+
+        sut.IsRefreshing = true;
+        ((HnVue.UI.Contracts.ViewModels.IViewModelBase)sut).IsLoading.Should().BeTrue();
+    }
+
+    [Fact]
+    public void IDoseDisplayViewModel_RefreshCommand_ReturnsRefreshCommand()
+    {
+        var sut = CreateSut();
+        ((HnVue.UI.Contracts.ViewModels.IDoseDisplayViewModel)sut).RefreshCommand
+            .Should().BeSameAs(sut.RefreshCommand);
+    }
+
+    [Fact]
+    public void DrlPercentage_ReturnsZeroWhenDrlReferenceLevelIsZero()
+    {
+        var sut = CreateSut();
+        sut.DrlReferenceLevel = 0.0;
+        sut.CurrentDoseDap = 100.0;
+
+        sut.DrlPercentage.Should().Be(0.0);
+    }
+
+    [Fact]
+    public void DrlPercentage_CalculatesCorrectlyForVariousDoses()
+    {
+        var sut = CreateSut();
+        sut.DrlReferenceLevel = 100.0;
+
+        sut.CurrentDoseDap = 50.0;
+        sut.DrlPercentage.Should().Be(50.0);
+
+        sut.CurrentDoseDap = 90.0;
+        sut.DrlPercentage.Should().Be(90.0);
+
+        sut.CurrentDoseDap = 100.0;
+        sut.DrlPercentage.Should().Be(100.0);
+
+        // Should cap at 100% for doses above DRL
+        sut.CurrentDoseDap = 150.0;
+        sut.DrlPercentage.Should().Be(100.0);
+    }
+
+    [Fact]
+    public async Task RefreshCommand_WithEmptyStudyUid_DoesNotCallService()
+    {
+        var sut = CreateSut();
+        await sut.RefreshCommand.ExecuteAsync(string.Empty);
+
+        await _doseService.DidNotReceive().GetDoseByStudyAsync(Arg.Any<string>(), Arg.Any<CancellationToken>());
+    }
+
+    [Fact]
+    public async Task RefreshCommand_WithWhitespaceStudyUid_DoesNotCallService()
+    {
+        var sut = CreateSut();
+        await sut.RefreshCommand.ExecuteAsync("   ");
+
+        await _doseService.DidNotReceive().GetDoseByStudyAsync(Arg.Any<string>(), Arg.Any<CancellationToken>());
+    }
+
+    [Fact]
+    public async Task RefreshCommand_ClearsExistingHistoryBeforeAdding()
+    {
+        var record1 = MakeDoseRecord(100.0);
+        var record2 = MakeDoseRecord(150.0);
+
+        _doseService
+            .GetDoseByStudyAsync(Arg.Any<string>(), Arg.Any<CancellationToken>())
+            .Returns(Result.SuccessNullable<DoseRecord>(record2));
+
+        var sut = CreateSut();
+
+        // Add first record manually
+        sut.DoseHistory.Add(record1);
+        sut.DoseHistory.Should().ContainSingle();
+
+        // Refresh should clear and replace
+        await sut.RefreshCommand.ExecuteAsync("1.2.3.4");
+
+        sut.DoseHistory.Should().ContainSingle();
+        sut.DoseHistory[0].Dap.Should().Be(150.0);
+    }
+
+    [Fact]
+    public async Task RefreshCommand_WhenServiceReturnsNull_DoesNotUpdateCurrentDose()
+    {
+        _doseService
+            .GetDoseByStudyAsync(Arg.Any<string>(), Arg.Any<CancellationToken>())
+            .Returns(Result.SuccessNullable<DoseRecord>(null));
+
+        var sut = CreateSut();
+        sut.CurrentDoseDap = 50.0; // Set initial value
+
+        await sut.RefreshCommand.ExecuteAsync("1.2.3.4");
+
+        // CurrentDoseDap should remain unchanged when result.Value is null
+        sut.CurrentDoseDap.Should().Be(50.0);
+    }
 }
