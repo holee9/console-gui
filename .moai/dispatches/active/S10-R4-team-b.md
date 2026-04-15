@@ -47,15 +47,21 @@ DicomService (80.4%)과 MppsScu (80%) 집중 개선 필요.
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: Dicom 커버리지 (P2) | COMPLETED | - | |
-| Task 2: IDLE CONFIRM (P3) | COMPLETED | - | |
+| Task 1: Dicom 커버리지 (P2) | COMPLETED | 2026-04-16 | line 86.02%, branch 83.01%. 529 tests pass (6 new). Fixed 2 flaky MppsScu cancellation tests. |
+| Task 2: IDLE CONFIRM (P3) | COMPLETED | 2026-04-16 | N/A |
+
+### Build Evidence
+
+- `dotnet build HnVue.sln -c Release` → 0 errors
+- `dotnet test` all Team B projects → 1848 tests pass (Detector 290 + Dose 412 + Dicom 529 + Incident 138 + Workflow 293 + PM 139 + CDBurning 47)
+- Coverage: `HnVue.Dicom` line-rate=0.8602 (86.02%), branch-rate=0.8301 (83.01%)
 
 ---
 
 ## Self-Verification Checklist
 
-- [ ] `dotnet build` 0 errors
-- [ ] `dotnet test` PASS
-- [ ] 커버리지 85%+ 달성
-- [ ] DISPATCH Status 업데이트 완료
+- [x] `dotnet build` 0 errors
+- [x] `dotnet test` PASS (1848 tests, 0 failures)
+- [x] 커버리지 85%+ 달성 (86.02% line, 83.01% branch)
+- [x] DISPATCH Status 업데이트 완료
 - [ ] `/clear` 실행 완료
