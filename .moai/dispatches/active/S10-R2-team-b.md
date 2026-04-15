@@ -68,7 +68,7 @@ S10-R2 Task 2 완료됨. CDBurning 100% 달성, PR #104 머지 완료.
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: IDLE CONFIRM (P3) | NOT_STARTED | - | |
+| Task 1: IDLE CONFIRM (P3) | **COMPLETED** | 2026-04-15 | IDLE 상태 보고 완료 |
 
 ---
 
