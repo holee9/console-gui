@@ -1115,7 +1115,81 @@ public class DesignTimeOwnershipTests
 | C | Detector SDK (SWR-DET/DT) | 4 | 12 | **100%** |
 | D | CDBurning/DICOM (SWR-CD/DICOM) | 5 | 11 | **100%** |
 | E | 아키텍처 소유권 (role-matrix v2.0) | 5 | 5 | **0% (Pending)** |
+| F | S09-R3 커버리지 강화 (DICOM/Dose/UI) | 3 | 3 | **100%** |
 | 본문 | 전체 도메인 (90개 PR) | 90 | - | MR->PR->SWR **100%**, SWR->TC Pending (계획 중) |
+
+---
+
+## 부록 F. S09-R3 커버리지 강화 추적성
+
+### F.1 개요
+
+S09-R3에서 발생한 DICOM/Dose/UI 커버리지 강화 테스트의 SWR Trait 기반 추적성 매핑.
+QA PASS (4020/4020, 90.3% 커버리지) 달성.
+
+### F.2 SWR-DC-055: DICOM 커버리지 강화 (S09-R3)
+
+| 항목 | 내용 |
+|------|------|
+| **SWR ID** | SWR-DC-055 |
+| **요구사항명** | DICOM 모듈 분기 커버리지 강화 |
+| **상위 PR** | PR-DC-055 (DICOM 통신) |
+| **상위 MR** | MR-002 (촬영 워크플로우, Tier 2) |
+| **구현 모듈** | HnVue.Dicom (Team B) |
+| **검증 수준** | T (Unit Test) |
+| **검증 상태** | Pass |
+
+### F.3 SWR-DC-055 TC 매핑
+
+| TC ID | 테스트 케이스명 | 테스트 파일 | SWR 연결 | 검증 항목 | 상태 |
+|-------|--------------|-----------|---------|---------|------|
+| TC-DC-055-001 | DICOM 커버리지 강화 (Round 2) | DicomCoverageBoost2Tests.cs | SWR-DC-055 | fo-dicom 서비스 수명주기, 콜백, 예외 처리, 클라이언트 목업 분기 커버리지 | Pass |
+
+### F.4 SWR-DS-020: Dose 분기 갭 커버리지 (S09-R3)
+
+| 항목 | 내용 |
+|------|------|
+| **SWR ID** | SWR-DS-020 |
+| **요구사항명** | Dose 모듈 분기 갭 커버리지 강화 |
+| **상위 PR** | PR-DS-020 (방사선 선량 관리) |
+| **상위 MR** | MR-002 (촬영 워크플로우, Tier 2) |
+| **구현 모듈** | HnVue.Dose (Team B) |
+| **검증 수준** | T (Unit Test) |
+| **검증 상태** | Pass |
+
+### F.5 SWR-DS-020 TC 매핑
+
+| TC ID | 테스트 케이스명 | 테스트 파일 | SWR 연결 | 검증 항목 | 상태 |
+|-------|--------------|-----------|---------|---------|------|
+| TC-DS-020-001 | Dose 분기 갭 커버리지 | DoseBranchGapTests.cs | SWR-DS-020 | Dose interlock 분기 로직, 예외 처리, 엣지 케이스 보강 | Pass |
+
+### F.6 UI Converter 테스트 (DesignSystemConverters 수정)
+
+| 항목 | 내용 |
+|------|------|
+| **테스트 ID** | TC-UI-CONV-001 |
+| **테스트명** | DesignSystemConverters NullReference 수정 검증 |
+| **테스트 파일** | ConverterTests.cs |
+| **검증 항목** | DesignSystemConverters null 입력 처리, 14건 NullReference 수정 검증 |
+| **상태** | Pass |
+
+### F.7 S09-R3 추적성 요약
+
+| SWR ID | TC 수 | 매핑 상태 | xUnit Trait 확인 |
+|--------|-------|---------|----------------|
+| SWR-DC-055 | 1 | **100% 매핑** | `[Trait("SWR", "SWR-DC-055")]` -- DicomCoverageBoost2Tests |
+| SWR-DS-020 | 1 | **100% 매핑** | `[Trait("SWR", "SWR-DS-020")]` -- DoseBranchGapTests |
+| UI Converter | 1 | **100% 매핑** | ConverterTests (DesignSystemConverters null 처리 검증) |
+| **합계** | **3** | **100%** | |
+
+### F.8 S09-R3 QA 결과 반영
+
+| 항목 | 결과 |
+|------|------|
+| 테스트 결과 | 4020/4020 Pass |
+| 라인 커버리지 | **90.3%** |
+| QA 판정 | PASS (#104) |
+| PR | #104 |
 
 ---
 
@@ -1125,6 +1199,6 @@ public class DesignTimeOwnershipTests
 >
 > | 문서 ID | RTM-XRAY-GUI-001 |
 > |---------|-----------------|
-> | 버전 | v2.5 (S08-R2 role-matrix v2.0 디렉토리 단위 소유권 테이블 반영 + 아키텍처 TC 추적성 추가) |
-> | 작성일 | 2026-04-02 / 개정일 2026-04-14 |
+> | 버전 | v2.6 (S09-R3 DICOM/Dose/UI 커버리지 강화 TC 추적성 추가 + QA PASS 90.3% 반영) |
+> | 작성일 | 2026-04-02 / 개정일 2026-04-15 |
 > | 검토 예정 | 2026-05-02 (Phase 1 설계 착수 시) |
