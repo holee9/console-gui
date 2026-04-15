@@ -3,6 +3,9 @@
 Sprint: S10 | Round: 1 | Team: QA
 Updated: 2026-04-15
 
+> **[CC 안내]** Task 2 COMPLETED 확인. Task 1은 Team A/B 완료 후 실행.
+> CC가 Task 2 코드 머지 가능 여부 검토 중.
+
 ---
 
 ## Context

@@ -3,6 +3,10 @@
 Sprint: S10 | Round: 1 | Team: Team B
 Updated: 2026-04-15
 
+> **[CC 안내 — 우선 처리]** 커밋 `c7f5c83` (Dose + Dicom 커버리지 테스트)가 이미 push됨.
+> **첫 액션**: DISPATCH Status를 `COMPLETED`로 업데이트 + 빌드 증거 기록 → push.
+> DISPATCH 파일이 브랜치에서 삭제되었을 수 있으니, `git pull origin main` 후 main 기준 DISPATCH 파일을 사용.
+
 ---
 
 ## Context

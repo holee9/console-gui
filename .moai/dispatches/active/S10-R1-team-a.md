@@ -3,6 +3,9 @@
 Sprint: S10 | Round: 1 | Team: Team A
 Updated: 2026-04-15
 
+> **[CC 안내]** IDLE CONFIRM만 필요. DISPATCH Status를 COMPLETED로 업데이트 후 push.
+> `team/team-a` 브랜치가 없으므로 새 브랜치에서 작업.
+
 ---
 
 ## Context
