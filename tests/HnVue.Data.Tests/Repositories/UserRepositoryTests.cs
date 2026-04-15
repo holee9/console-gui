@@ -427,4 +427,86 @@ public sealed class UserRepositoryTests
             await act.Should().ThrowAsync<Exception>("SQLite unique constraint on Username should fail");
         }
     }
+
+    [Fact]
+    public async Task UpdateFailedLoginCountAsync_ZeroCount_ResetsToZero()
+    {
+        await using var ctx = TestDbContextFactory.Create();
+        var entity = CreateUserEntity("U001", "user1");
+        entity.FailedLoginCount = 5;
+        await SeedUserAsync(ctx, entity);
+        var repo = new UserRepository(ctx);
+
+        var result = await repo.UpdateFailedLoginCountAsync("U001", 0);
+
+        result.IsSuccess.Should().BeTrue();
+        var user = await repo.GetByIdAsync("U001");
+        user.Value.FailedLoginCount.Should().Be(0);
+    }
+
+    [Fact]
+    public async Task SetLockedAsync_Unlock_SetsIsLockedToFalse()
+    {
+        await using var ctx = TestDbContextFactory.Create();
+        var entity = CreateUserEntity("U001", "user1");
+        entity.IsLocked = true;
+        await SeedUserAsync(ctx, entity);
+        var repo = new UserRepository(ctx);
+
+        var result = await repo.SetLockedAsync("U001", false);
+
+        result.IsSuccess.Should().BeTrue();
+        var user = await repo.GetByIdAsync("U001");
+        user.Value.IsLocked.Should().BeFalse();
+    }
+
+    [Fact]
+    public async Task GetAllAsync_WithMixedRoles_ReturnsAllWithCorrectRoles()
+    {
+        await using var ctx = TestDbContextFactory.Create();
+        await SeedUserAsync(ctx, CreateUserEntity("U001", "user1", UserRole.Radiographer));
+        await SeedUserAsync(ctx, CreateUserEntity("U002", "user2", UserRole.Admin));
+        await SeedUserAsync(ctx, CreateUserEntity("U003", "user3", UserRole.Radiologist));
+        await SeedUserAsync(ctx, CreateUserEntity("U004", "user4", UserRole.Radiographer));
+        var repo = new UserRepository(ctx);
+
+        var result = await repo.GetAllAsync();
+
+        result.IsSuccess.Should().BeTrue();
+        result.Value.Should().HaveCount(4);
+        result.Value.Count(u => u.Role == UserRole.Radiographer).Should().Be(2);
+        result.Value.Any(u => u.Role == UserRole.Admin).Should().BeTrue();
+        result.Value.Any(u => u.Role == UserRole.Radiologist).Should().BeTrue();
+    }
+
+    [Fact]
+    public async Task SetQuickPinHashAsync_OverwritesExistingPin()
+    {
+        await using var ctx = TestDbContextFactory.Create();
+        await SeedUserAsync(ctx);
+        var repo = new UserRepository(ctx);
+        await repo.SetQuickPinHashAsync("U001", "$old$pin");
+
+        var result = await repo.SetQuickPinHashAsync("U001", "$new$pin");
+
+        result.IsSuccess.Should().BeTrue();
+        var pinHash = await repo.GetQuickPinHashAsync("U001");
+        pinHash.Value.Should().Be("$new$pin");
+    }
+
+    [Fact]
+    public async Task UpdateQuickPinFailureAsync_IncrementsFailedCount()
+    {
+        await using var ctx = TestDbContextFactory.Create();
+        await SeedUserAsync(ctx);
+        var repo = new UserRepository(ctx);
+        var lockedUntil = DateTimeOffset.UtcNow.AddMinutes(15);
+
+        await repo.UpdateQuickPinFailureAsync("U001", 1, lockedUntil);
+        var result = await repo.UpdateQuickPinFailureAsync("U001", 2, lockedUntil.AddMinutes(15));
+
+        result.IsSuccess.Should().BeTrue();
+        var user = await repo.GetByIdAsync("U001");
+        user.Value.QuickPinFailedCount.Should().Be(2);
+    }
 }

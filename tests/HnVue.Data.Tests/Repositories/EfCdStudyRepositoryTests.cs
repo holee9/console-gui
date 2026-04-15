@@ -138,4 +138,60 @@ public sealed class EfCdStudyRepositoryTests
         result.IsSuccess.Should().BeTrue();
         result.Value.Should().BeEmpty();
     }
+
+    [Fact]
+    public async Task GetFilesForStudyAsync_CancelledToken_ThrowsOperationCanceledException()
+    {
+        var (ctx, connection) = CreateSqliteContext();
+        await using var _ctx = ctx;
+        await using var _conn = connection;
+        var repo = new EfCdStudyRepository(ctx);
+
+        using var cts = new CancellationTokenSource();
+        cts.Cancel();
+
+        // Act & Assert
+        await Assert.ThrowsAsync<OperationCanceledException>(
+            () => repo.GetFilesForStudyAsync("STUDY-001", cts.Token));
+    }
+
+    [Fact]
+    public async Task GetFilesForStudyAsync_WhitespaceStudyInstanceUid_ReturnsEmptyList()
+    {
+        var (ctx, connection) = CreateSqliteContext();
+        await using var _ctx = ctx;
+        await using var _conn = connection;
+        var repo = new EfCdStudyRepository(ctx);
+
+        // Act - Whitespace UID won't match any study
+        var result = await repo.GetFilesForStudyAsync("   ");
+
+        // Assert
+        result.IsSuccess.Should().BeTrue();
+        result.Value.Should().BeEmpty();
+    }
+
+    [Fact]
+    public async Task GetFilesForStudyAsync_LargeImageSet_ReturnsAllPaths()
+    {
+        var (ctx, connection) = CreateSqliteContext();
+        await using var _ctx = ctx;
+        await using var _conn = connection;
+        var repo = new EfCdStudyRepository(ctx);
+
+        // Arrange - Create 100 images for a study
+        await EnsureStudyExistsAsync(ctx, "LARGE-STUDY");
+        for (int i = 0; i < 100; i++)
+        {
+            ctx.Images.Add(CreateSampleImage("LARGE-STUDY", $"/path/image{i:000}.dcm", $"IMG-{i:000}"));
+        }
+        await ctx.SaveChangesAsync();
+
+        // Act
+        var result = await repo.GetFilesForStudyAsync("LARGE-STUDY");
+
+        // Assert
+        result.IsSuccess.Should().BeTrue();
+        result.Value.Should().HaveCount(100);
+    }
 }

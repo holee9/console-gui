@@ -258,4 +258,120 @@ public sealed class EfUpdateRepositoryTests
         result.Value.ReleaseNotes.Should().Contain("1.0.0");
         result.Value.Sha256Hash.Should().Be("release-hash");
     }
+
+    [Fact]
+    public async Task CheckForUpdateAsync_CancelledToken_ThrowsOperationCanceledException()
+    {
+        var (ctx, connection) = CreateSqliteContext();
+        await using var _ctx = ctx;
+        await using var _conn = connection;
+        var repo = new EfUpdateRepository(ctx);
+
+        using var cts = new CancellationTokenSource();
+        cts.Cancel();
+
+        var act = async () => await repo.CheckForUpdateAsync(cts.Token);
+
+        await act.Should().ThrowAsync<OperationCanceledException>();
+    }
+
+    [Fact]
+    public async Task RecordInstallationAsync_CancelledToken_ThrowsOperationCanceledException()
+    {
+        var (ctx, connection) = CreateSqliteContext();
+        await using var _ctx = ctx;
+        await using var _conn = connection;
+        var repo = new EfUpdateRepository(ctx);
+
+        using var cts = new CancellationTokenSource();
+        cts.Cancel();
+
+        var act = async () => await repo.RecordInstallationAsync("1.0.0", "2.0.0", "hash", cts.Token);
+
+        await act.Should().ThrowAsync<OperationCanceledException>();
+    }
+
+    [Fact]
+    public async Task RecordInstallationAsync_EmptyFromVersion_ThrowsArgumentNullException()
+    {
+        var (ctx, connection) = CreateSqliteContext();
+        await using var _ctx = ctx;
+        await using var _conn = connection;
+        var repo = new EfUpdateRepository(ctx);
+
+        // Act & Assert - Empty string is treated as null
+        await Assert.ThrowsAsync<ArgumentNullException>(
+            () => repo.RecordInstallationAsync("", "2.0.0", "hash"));
+    }
+
+    [Fact]
+    public async Task RecordInstallationAsync_EmptyToVersion_ThrowsArgumentNullException()
+    {
+        var (ctx, connection) = CreateSqliteContext();
+        await using var _ctx = ctx;
+        await using var _conn = connection;
+        var repo = new EfUpdateRepository(ctx);
+
+        // Act & Assert - Empty string is treated as null
+        await Assert.ThrowsAsync<ArgumentNullException>(
+            () => repo.RecordInstallationAsync("1.0.0", "", "hash"));
+    }
+
+    [Fact]
+    public async Task RecordInstallationAsync_SetsTimestampToUtcNow()
+    {
+        var (ctx, connection) = CreateSqliteContext();
+        await using var _ctx = ctx;
+        await using var _conn = connection;
+        var repo = new EfUpdateRepository(ctx);
+
+        var before = DateTime.UtcNow;
+
+        await repo.RecordInstallationAsync("1.0.0", "2.0.0", "hash");
+
+        var after = DateTime.UtcNow.AddSeconds(1);
+
+        var history = await ctx.UpdateHistories.FirstOrDefaultAsync();
+        history.Should().NotBeNull();
+        history!.Timestamp.Should().BeOnOrAfter(before);
+        history.Timestamp.Should().BeBefore(after);
+    }
+
+    [Fact]
+    public async Task CheckForUpdateAsync_MixedStatuses_ReturnsLatestInstalled()
+    {
+        var (ctx, connection) = CreateSqliteContext();
+        await using var _ctx = ctx;
+        await using var _conn = connection;
+        var repo = new EfUpdateRepository(ctx);
+
+        // Arrange - Mix of Pending and Installed records
+        ctx.UpdateHistories.Add(new Data.Entities.UpdateHistoryEntity
+        {
+            Timestamp = DateTime.UtcNow.AddHours(-3),
+            FromVersion = "1.0.0", ToVersion = "1.1.0",
+            Status = "Pending", InstalledBy = "test", PackageHash = "h1"
+        });
+        ctx.UpdateHistories.Add(new Data.Entities.UpdateHistoryEntity
+        {
+            Timestamp = DateTime.UtcNow.AddHours(-2),
+            FromVersion = "1.1.0", ToVersion = "1.2.0",
+            Status = "Installed", InstalledBy = "test", PackageHash = "h2"
+        });
+        ctx.UpdateHistories.Add(new Data.Entities.UpdateHistoryEntity
+        {
+            Timestamp = DateTime.UtcNow.AddHours(-1),
+            FromVersion = "1.2.0", ToVersion = "1.3.0",
+            Status = "Pending", InstalledBy = "test", PackageHash = "h3"
+        });
+        await ctx.SaveChangesAsync();
+
+        // Act
+        var result = await repo.CheckForUpdateAsync();
+
+        // Assert - Only "Installed" status counts
+        result.IsSuccess.Should().BeTrue();
+        result.Value!.Version.Should().Be("1.2.0");
+        result.Value.Sha256Hash.Should().Be("h2");
+    }
 }
