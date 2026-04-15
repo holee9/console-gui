@@ -6,17 +6,45 @@
              xmlns:converters="clr-namespace:HnVue.UI.Converters"
              xmlns:designTime="clr-namespace:HnVue.UI.DesignTime"
              mc:Ignorable="d"
-             d:DesignHeight="700" d:DesignWidth="1000"
+             d:DesignHeight="800" d:DesignWidth="1400"
              d:DataContext="{d:DesignInstance designTime:DesignTimeMergeViewModel, IsDesignTimeCreatable=True}">
     <!--
-        @MX:NOTE MergeView — "Sync Study" dialog. PPT 슬라이드 13.
-                 Renamed from "Same Studylist". Three-column layout:
-                 Left = Patient A search/list, Center = Preview + thumbnail strip,
-                 Right = Patient B search/list. Bottom bar: Cancel / Sync Study.
+        @MX:NOTE MergeView — "Sync Study" dialog. PPT 슬라이드 12-13.
+                 UISPEC-006 v2.0 기준 구현.
+                 Layout: Patient A lane | Patient B lane | Preview (larger).
+                 각 lane: Only WorkList 체크, 검색, patient list, study list.
+                 Preview panel: Image A/B 비교 + thumbnail strip.
                  PatientRecord.Name is DICOM PN format (family^given^...).
     -->
     <UserControl.Resources>
         <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
+        <!-- PPT Slide 12: 목록 스타일 통일 (Worklist/Studylist와 동일) -->
+        <Style x:Key="MergeHeaderStyle" TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="{DynamicResource HnVue.Semantic.Surface.Panel}"/>
+            <Setter Property="Foreground" Value="{DynamicResource HnVue.Semantic.Text.Primary}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource HnVue.Semantic.Text.Secondary}"/>
+            <Setter Property="BorderThickness" Value="0,0,1,1"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontFamily" Value="{DynamicResource HnVue.Core.FontFamily}"/>
+        </Style>
+        <Style x:Key="MergeRowStyle" TargetType="DataGridRow">
+            <Setter Property="Background" Value="{DynamicResource HnVue.Semantic.Surface.Page}"/>
+            <Setter Property="Foreground" Value="{DynamicResource HnVue.Semantic.Text.Primary}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource HnVue.Component.DataGrid.GridLine}"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource HnVue.Semantic.Surface.Card}"/>
+                </Trigger>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource HnVue.Component.DataGrid.SelectionBg}"/>
+                    <Setter Property="BorderBrush" Value="{DynamicResource HnVue.Semantic.Brand.PrimaryLight}"/>
+                    <Setter Property="BorderThickness" Value="2,0,0,0"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </UserControl.Resources>
 
     <Grid Background="{DynamicResource HnVue.Semantic.Surface.Page}">
@@ -26,34 +54,58 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Header -->
+        <!-- ═══ Header ═══ -->
         <Border Grid.Row="0"
                 Background="{DynamicResource HnVue.Semantic.Surface.Panel}"
                 BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
                 BorderThickness="0,0,0,1"
                 Padding="16,0">
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                <TextBlock Text="&#xE8FD;"
-                           FontFamily="Segoe MDL2 Assets"
-                           FontSize="16"
-                           Foreground="{DynamicResource HnVue.Semantic.Brand.Accent}"
-                           VerticalAlignment="Center"
-                           Margin="0,0,8,0"/>
-                <TextBlock Text="Sync Study"
-                           Style="{StaticResource HnVue.SectionHeader}"
-                           VerticalAlignment="Center"/>
-            </StackPanel>
+            <Grid>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <!-- PPT: 파란 title bar icon -->
+                    <TextBlock Text="&#xE8FD;"
+                               FontFamily="Segoe MDL2 Assets"
+                               FontSize="16"
+                               Foreground="{DynamicResource HnVue.Semantic.Brand.Accent}"
+                               VerticalAlignment="Center"
+                               Margin="0,0,8,0"/>
+                    <TextBlock Text="Sync Study"
+                               Style="{StaticResource HnVue.SectionHeader}"
+                               VerticalAlignment="Center"/>
+                    <!-- PPT Slide 3: Section badge "병합 화면" -->
+                    <Border Background="{DynamicResource HnVue.Component.SectionBadge.Bg}"
+                            CornerRadius="3"
+                            Padding="8,2"
+                            Margin="12,0,0,0"
+                            VerticalAlignment="Center">
+                        <TextBlock Text="병합 화면"
+                                   Style="{StaticResource HnVue.SectionBadgeText}"/>
+                    </Border>
+                </StackPanel>
+                <!-- Close button (우측) -->
+                <Button HorizontalAlignment="Right"
+                        Content="&#xE711;"
+                        FontFamily="Segoe MDL2 Assets"
+                        FontSize="14"
+                        Command="{Binding CancelCommand}"
+                        Style="{StaticResource HnVue.OutlineButton}"
+                        Width="36" Height="36"
+                        Padding="0"
+                        ToolTip="Close"/>
+            </Grid>
         </Border>
 
-        <!-- Three-column main area -->
-        <Grid Grid.Row="1">
+        <!-- ═══ Three-column main area: Patient A | Patient B | Preview ═══ -->
+        <Grid Grid.Row="1" Margin="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="300"/>
-                <ColumnDefinition Width="*"/>
+                <!-- PPT Slide 12: A/B lane 동일 비율 -->
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="3*"/>
+                <!-- PPT notes: 우측 preview 더 크게 -->
+                <ColumnDefinition Width="4*"/>
             </Grid.ColumnDefinitions>
 
-            <!-- ═══════════════════ Patient A Panel ═══════════════════ -->
+            <!-- ═══════════════════ Patient A Lane ═══════════════════ -->
             <Border Grid.Column="0"
                     Background="{DynamicResource HnVue.Semantic.Surface.Panel}"
                     BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
@@ -63,13 +115,32 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="120"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Row="0"
-                               Text="Patient A"
-                               Style="{StaticResource HnVue.SectionHeader}"
-                               Margin="0,0,0,8"/>
+                    <!-- Lane header with checkbox -->
+                    <Grid Grid.Row="0" Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="Patient A"
+                                       Style="{StaticResource HnVue.SectionHeader}"
+                                       Foreground="{DynamicResource HnVue.Semantic.Brand.Accent}"/>
+                        </StackPanel>
+                        <!-- PPT UISPEC-006: Only WorkList checkbox -->
+                        <CheckBox Grid.Column="1"
+                                  Content="Only WorkList"
+                                  Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}"
+                                  FontSize="11"
+                                  FontFamily="{DynamicResource HnVue.Core.FontFamily}"
+                                  VerticalAlignment="Center"
+                                  IsChecked="{Binding OnlyWorkListA}"/>
+                    </Grid>
 
                     <!-- Search A row -->
                     <Border Grid.Row="1"
@@ -110,7 +181,11 @@
                     </Border>
 
                     <!-- Patient A list -->
-                    <ListBox Grid.Row="2"
+                    <TextBlock Grid.Row="2"
+                               Text="환자 목록"
+                               Style="{StaticResource HnVue.UppercaseLabel}"
+                               Margin="0,0,0,4"/>
+                    <ListBox Grid.Row="3"
                              ItemsSource="{Binding PatientsA}"
                              SelectedItem="{Binding SelectedPatientA}"
                              Background="Transparent"
@@ -118,7 +193,8 @@
                              FontFamily="{DynamicResource HnVue.Core.FontFamily}">
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="ListBoxItem">
-                                <Setter Property="Height" Value="40"/>
+                                <!-- PPT: 44px touch target (WCAG 2.5.5) -->
+                                <Setter Property="Height" Value="44"/>
                                 <Setter Property="Padding" Value="8,0"/>
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                                 <Setter Property="Background" Value="Transparent"/>
@@ -126,8 +202,11 @@
                                 <Setter Property="BorderThickness" Value="0,0,0,1"/>
                                 <Setter Property="BorderBrush" Value="{DynamicResource HnVue.Semantic.Border.Default}"/>
                                 <Style.Triggers>
+                                    <!-- PPT: 선택 row 파란 highlight -->
                                     <Trigger Property="IsSelected" Value="True">
-                                        <Setter Property="Background" Value="{DynamicResource HnVue.Semantic.Brand.Primary}"/>
+                                        <Setter Property="Background" Value="{DynamicResource HnVue.Component.DataGrid.SelectionBg}"/>
+                                        <Setter Property="BorderBrush" Value="{DynamicResource HnVue.Semantic.Brand.PrimaryLight}"/>
+                                        <Setter Property="BorderThickness" Value="2,0,0,0"/>
                                     </Trigger>
                                     <Trigger Property="IsMouseOver" Value="True">
                                         <Setter Property="Background" Value="{DynamicResource HnVue.Semantic.Surface.Card}"/>
@@ -137,150 +216,95 @@
                         </ListBox.ItemContainerStyle>
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel VerticalAlignment="Center">
-                                    <!-- PatientRecord.Name is DICOM PN format (family^given) -->
-                                    <TextBlock Text="{Binding Name}"
-                                               FontWeight="SemiBold" FontSize="12"
-                                               FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
-                                    <TextBlock Text="{Binding PatientId}"
-                                               FontSize="11"
-                                               Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}"
-                                               FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
-                                </StackPanel>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel VerticalAlignment="Center">
+                                        <!-- PatientRecord.Name is DICOM PN (family^given) -->
+                                        <TextBlock Text="{Binding Name}"
+                                                   FontWeight="SemiBold" FontSize="12"
+                                                   FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
+                                        <TextBlock Text="{Binding PatientId}"
+                                                   FontSize="11"
+                                                   Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}"
+                                                   FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
+                                    </StackPanel>
+                                </Grid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
-                </Grid>
-            </Border>
 
-            <!-- ═══════════════════ Center Preview Panel ═══════════════════ -->
-            <Border Grid.Column="1"
-                    Background="{DynamicResource HnVue.Semantic.Surface.Page}"
-                    Padding="12">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="80"/>
-                    </Grid.RowDefinitions>
-
-                    <TextBlock Grid.Row="0"
-                               Text="Preview"
-                               Style="{StaticResource HnVue.SectionHeader}"
-                               HorizontalAlignment="Center"
-                               Margin="0,0,0,12"/>
-
-                    <!-- Two preview image placeholders side by side -->
-                    <Grid Grid.Row="1">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-
-                        <!-- Image A placeholder -->
-                        <Border Grid.Column="0"
-                                Background="{DynamicResource HnVue.Semantic.Surface.Card}"
-                                BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
-                                BorderThickness="1"
-                                Margin="0,0,4,0">
-                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                                <TextBlock Text="&#xE8B9;"
-                                           FontFamily="Segoe MDL2 Assets"
-                                           FontSize="28"
-                                           Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}"
-                                           HorizontalAlignment="Center"/>
-                                <TextBlock Text="A"
-                                           FontSize="12"
-                                           Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}"
-                                           HorizontalAlignment="Center"
-                                           FontFamily="{DynamicResource HnVue.Core.FontFamily}"
-                                           Margin="0,4,0,0"/>
-                            </StackPanel>
-                        </Border>
-
-                        <!-- Image B placeholder -->
-                        <Border Grid.Column="1"
-                                Background="{DynamicResource HnVue.Semantic.Surface.Card}"
-                                BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
-                                BorderThickness="1"
-                                Margin="4,0,0,0">
-                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                                <TextBlock Text="&#xE8B9;"
-                                           FontFamily="Segoe MDL2 Assets"
-                                           FontSize="28"
-                                           Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}"
-                                           HorizontalAlignment="Center"/>
-                                <TextBlock Text="B"
-                                           FontSize="12"
-                                           Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}"
-                                           HorizontalAlignment="Center"
-                                           FontFamily="{DynamicResource HnVue.Core.FontFamily}"
-                                           Margin="0,4,0,0"/>
-                            </StackPanel>
-                        </Border>
-                    </Grid>
-
-                    <!-- Thumbnail strip (PPT: 중앙 섹션에 Thumbnail 추가) -->
-                    <Border Grid.Row="2"
-                            Background="{DynamicResource HnVue.Semantic.Surface.Panel}"
+                    <!-- Study list for Patient A (PPT Slide 12: 스터디 비교 영역) -->
+                    <TextBlock Grid.Row="4"
+                               Text="스터디 목록"
+                               Style="{StaticResource HnVue.UppercaseLabel}"
+                               Margin="0,8,0,4"/>
+                    <Border Grid.Row="5"
+                            Background="{DynamicResource HnVue.Semantic.Surface.Page}"
                             BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
-                            BorderThickness="0,1,0,0"
-                            Padding="4">
-                        <ScrollViewer HorizontalScrollBarVisibility="Auto"
-                                      VerticalScrollBarVisibility="Disabled">
-                            <ItemsControl ItemsSource="{Binding PreviewStudiesA}">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <StackPanel Orientation="Horizontal"/>
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Border Width="64" Height="64"
-                                                Background="{DynamicResource HnVue.Semantic.Surface.Card}"
-                                                BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
-                                                BorderThickness="1"
-                                                Margin="0,0,4,0"
-                                                ToolTip="{Binding Description}">
-                                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                                                <TextBlock Text="&#xE8B9;"
-                                                           FontFamily="Segoe MDL2 Assets"
-                                                           FontSize="20"
-                                                           Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}"
-                                                           HorizontalAlignment="Center"/>
-                                                <TextBlock Text="{Binding BodyPart}"
-                                                           FontSize="9"
-                                                           Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}"
-                                                           HorizontalAlignment="Center"
-                                                           FontFamily="{DynamicResource HnVue.Core.FontFamily}"
-                                                           TextTrimming="CharacterEllipsis"/>
-                                            </StackPanel>
-                                        </Border>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </ScrollViewer>
+                            BorderThickness="1" CornerRadius="4">
+                        <DataGrid ItemsSource="{Binding PreviewStudiesA}"
+                                  SelectedItem="{Binding SelectedPreviewStudy}"
+                                  AutoGenerateColumns="False"
+                                  CanUserAddRows="False"
+                                  CanUserDeleteRows="False"
+                                  IsReadOnly="True"
+                                  HeadersVisibility="Column"
+                                  GridLinesVisibility="Horizontal"
+                                  HorizontalGridLinesBrush="{DynamicResource HnVue.Component.DataGrid.GridLine}"
+                                  ColumnHeaderStyle="{StaticResource MergeHeaderStyle}"
+                                  RowStyle="{StaticResource MergeRowStyle}"
+                                  Background="Transparent"
+                                  BorderThickness="0"
+                                  FontFamily="{DynamicResource HnVue.Core.FontFamily}"
+                                  FontSize="11">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="*"/>
+                                <DataGridTextColumn Header="Body Part" Binding="{Binding BodyPart}" Width="60"/>
+                                <DataGridTextColumn Header="Date" Binding="{Binding StudyDate}" Width="70"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
                     </Border>
                 </Grid>
             </Border>
 
-            <!-- ═══════════════════ Patient B Panel ═══════════════════ -->
-            <Border Grid.Column="2"
+            <!-- ═══════════════════ Patient B Lane ═══════════════════ -->
+            <Border Grid.Column="1"
                     Background="{DynamicResource HnVue.Semantic.Surface.Panel}"
                     BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
-                    BorderThickness="1,0,0,0"
+                    BorderThickness="0,0,1,0"
                     Padding="12">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="120"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Row="0"
-                               Text="Patient B"
-                               Style="{StaticResource HnVue.SectionHeader}"
-                               Margin="0,0,0,8"/>
+                    <!-- Lane header with checkbox -->
+                    <Grid Grid.Row="0" Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="Patient B"
+                                       Style="{StaticResource HnVue.SectionHeader}"
+                                       Foreground="{DynamicResource HnVue.Semantic.Brand.Accent}"/>
+                        </StackPanel>
+                        <CheckBox Grid.Column="1"
+                                  Content="Only WorkList"
+                                  Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}"
+                                  FontSize="11"
+                                  FontFamily="{DynamicResource HnVue.Core.FontFamily}"
+                                  VerticalAlignment="Center"
+                                  IsChecked="{Binding OnlyWorkListB}"/>
+                    </Grid>
 
                     <!-- Search B row -->
                     <Border Grid.Row="1"
@@ -321,7 +345,11 @@
                     </Border>
 
                     <!-- Patient B list -->
-                    <ListBox Grid.Row="2"
+                    <TextBlock Grid.Row="2"
+                               Text="환자 목록"
+                               Style="{StaticResource HnVue.UppercaseLabel}"
+                               Margin="0,0,0,4"/>
+                    <ListBox Grid.Row="3"
                              ItemsSource="{Binding PatientsB}"
                              SelectedItem="{Binding SelectedPatientB}"
                              Background="Transparent"
@@ -329,7 +357,7 @@
                              FontFamily="{DynamicResource HnVue.Core.FontFamily}">
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="ListBoxItem">
-                                <Setter Property="Height" Value="40"/>
+                                <Setter Property="Height" Value="44"/>
                                 <Setter Property="Padding" Value="8,0"/>
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                                 <Setter Property="Background" Value="Transparent"/>
@@ -338,7 +366,9 @@
                                 <Setter Property="BorderBrush" Value="{DynamicResource HnVue.Semantic.Border.Default}"/>
                                 <Style.Triggers>
                                     <Trigger Property="IsSelected" Value="True">
-                                        <Setter Property="Background" Value="{DynamicResource HnVue.Semantic.Brand.Primary}"/>
+                                        <Setter Property="Background" Value="{DynamicResource HnVue.Component.DataGrid.SelectionBg}"/>
+                                        <Setter Property="BorderBrush" Value="{DynamicResource HnVue.Semantic.Brand.PrimaryLight}"/>
+                                        <Setter Property="BorderThickness" Value="2,0,0,0"/>
                                     </Trigger>
                                     <Trigger Property="IsMouseOver" Value="True">
                                         <Setter Property="Background" Value="{DynamicResource HnVue.Semantic.Surface.Card}"/>
@@ -360,11 +390,193 @@
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
+
+                    <!-- Study list for Patient B -->
+                    <TextBlock Grid.Row="4"
+                               Text="스터디 목록"
+                               Style="{StaticResource HnVue.UppercaseLabel}"
+                               Margin="0,8,0,4"/>
+                    <Border Grid.Row="5"
+                            Background="{DynamicResource HnVue.Semantic.Surface.Page}"
+                            BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
+                            BorderThickness="1" CornerRadius="4">
+                        <DataGrid ItemsSource="{Binding PreviewStudiesB}"
+                                  SelectedItem="{Binding SelectedPreviewStudy}"
+                                  AutoGenerateColumns="False"
+                                  CanUserAddRows="False"
+                                  CanUserDeleteRows="False"
+                                  IsReadOnly="True"
+                                  HeadersVisibility="Column"
+                                  GridLinesVisibility="Horizontal"
+                                  HorizontalGridLinesBrush="{DynamicResource HnVue.Component.DataGrid.GridLine}"
+                                  ColumnHeaderStyle="{StaticResource MergeHeaderStyle}"
+                                  RowStyle="{StaticResource MergeRowStyle}"
+                                  Background="Transparent"
+                                  BorderThickness="0"
+                                  FontFamily="{DynamicResource HnVue.Core.FontFamily}"
+                                  FontSize="11">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="*"/>
+                                <DataGridTextColumn Header="Body Part" Binding="{Binding BodyPart}" Width="60"/>
+                                <DataGridTextColumn Header="Date" Binding="{Binding StudyDate}" Width="70"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Border>
+                </Grid>
+            </Border>
+
+            <!-- ═══════════════════ Preview Panel (Larger) ═══════════════════ -->
+            <Border Grid.Column="2"
+                    Background="{DynamicResource HnVue.Semantic.Surface.Page}"
+                    Padding="12">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="100"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0"
+                               Text="Preview"
+                               Style="{StaticResource HnVue.SectionHeader}"
+                               HorizontalAlignment="Center"
+                               Margin="0,0,0,12"/>
+
+                    <!-- PPT Slide 13: A/B 비교 preview (larger) -->
+                    <Grid Grid.Row="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Image A preview -->
+                        <Border Grid.Row="0"
+                                Background="{DynamicResource HnVue.Semantic.Surface.Card}"
+                                BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
+                                BorderThickness="1"
+                                Margin="0,0,0,4"
+                                CornerRadius="4">
+                            <Grid>
+                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <TextBlock Text="&#xE8B9;"
+                                               FontFamily="Segoe MDL2 Assets"
+                                               FontSize="36"
+                                               Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}"
+                                               HorizontalAlignment="Center"/>
+                                    <TextBlock Text="Patient A"
+                                               FontSize="11"
+                                               Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}"
+                                               HorizontalAlignment="Center"
+                                               FontFamily="{DynamicResource HnVue.Core.FontFamily}"
+                                               Margin="0,4,0,0"/>
+                                </StackPanel>
+                                <!-- Overlay info (PPT: 환자 ID, 검사 일자) -->
+                                <Border VerticalAlignment="Bottom"
+                                        Background="#80000000"
+                                        Padding="8,4"
+                                        CornerRadius="0,0,4,4">
+                                    <TextBlock Text="{Binding SelectedPatientA.Name}"
+                                               Foreground="White"
+                                               FontSize="10"
+                                               FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
+                                </Border>
+                            </Grid>
+                        </Border>
+
+                        <!-- Image B preview -->
+                        <Border Grid.Row="1"
+                                Background="{DynamicResource HnVue.Semantic.Surface.Card}"
+                                BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
+                                BorderThickness="1"
+                                Margin="0,4,0,0"
+                                CornerRadius="4">
+                            <Grid>
+                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <TextBlock Text="&#xE8B9;"
+                                               FontFamily="Segoe MDL2 Assets"
+                                               FontSize="36"
+                                               Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}"
+                                               HorizontalAlignment="Center"/>
+                                    <TextBlock Text="Patient B"
+                                               FontSize="11"
+                                               Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}"
+                                               HorizontalAlignment="Center"
+                                               FontFamily="{DynamicResource HnVue.Core.FontFamily}"
+                                               Margin="0,4,0,0"/>
+                                </StackPanel>
+                                <Border VerticalAlignment="Bottom"
+                                        Background="#80000000"
+                                        Padding="8,4"
+                                        CornerRadius="0,0,4,4">
+                                    <TextBlock Text="{Binding SelectedPatientB.Name}"
+                                               Foreground="White"
+                                               FontSize="10"
+                                               FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
+                                </Border>
+                            </Grid>
+                        </Border>
+                    </Grid>
+
+                    <!-- PPT notes: 중앙 thumbnail 영역 (Preview 하단) -->
+                    <Border Grid.Row="2"
+                            Background="{DynamicResource HnVue.Semantic.Surface.Panel}"
+                            BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
+                            BorderThickness="0,1,0,0"
+                            Padding="4"
+                            Margin="0,8,0,0">
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                      VerticalScrollBarVisibility="Disabled">
+                            <ItemsControl ItemsSource="{Binding PreviewStudiesA}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Width="80" Height="80"
+                                                Background="{DynamicResource HnVue.Semantic.Surface.Card}"
+                                                BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
+                                                BorderThickness="1"
+                                                CornerRadius="4"
+                                                Margin="0,0,4,0"
+                                                ToolTip="{Binding Description}">
+                                            <Grid>
+                                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                    <TextBlock Text="&#xE8B9;"
+                                                               FontFamily="Segoe MDL2 Assets"
+                                                               FontSize="24"
+                                                               Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}"
+                                                               HorizontalAlignment="Center"/>
+                                                    <TextBlock Text="{Binding BodyPart}"
+                                                               FontSize="9"
+                                                               Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}"
+                                                               HorizontalAlignment="Center"
+                                                               FontFamily="{DynamicResource HnVue.Core.FontFamily}"
+                                                               TextTrimming="CharacterEllipsis"/>
+                                                </StackPanel>
+                                                <!-- Date overlay -->
+                                                <Border VerticalAlignment="Bottom"
+                                                        Background="#80000000"
+                                                        Padding="4,2"
+                                                        CornerRadius="0,0,4,4">
+                                                    <TextBlock Text="{Binding StudyDate}"
+                                                               Foreground="White"
+                                                               FontSize="8"
+                                                               FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
+                                                </Border>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </Border>
                 </Grid>
             </Border>
         </Grid>
 
-        <!-- Bottom action bar -->
+        <!-- ═══ Bottom action bar ═══ -->
         <Border Grid.Row="2"
                 Background="{DynamicResource HnVue.Semantic.Surface.Panel}"
                 BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
@@ -373,6 +585,7 @@
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
@@ -386,7 +599,17 @@
                            FontFamily="{DynamicResource HnVue.Core.FontFamily}"
                            Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}"/>
 
-                <Button Grid.Column="1"
+                <!-- Sync toggle (PPT notes: Sync on/off) -->
+                <ToggleButton Grid.Column="1"
+                              Content="&#xE895; Sync"
+                              FontFamily="Segoe MDL2 Assets"
+                              FontSize="12"
+                              IsChecked="{Binding IsSyncEnabled}"
+                              Style="{StaticResource HnVue.OutlineButton}"
+                              Width="90" Height="36"
+                              Margin="0,0,8,0"/>
+
+                <Button Grid.Column="2"
                         Content="Cancel"
                         Command="{Binding CancelCommand}"
                         Style="{StaticResource HnVue.OutlineButton}"
@@ -394,7 +617,7 @@
                         Margin="0,0,8,0"
                         FontFamily="{DynamicResource HnVue.Core.FontFamily}"/>
 
-                <Button Grid.Column="2"
+                <Button Grid.Column="3"
                         Content="Sync Study"
                         Command="{Binding MergeCommand}"
                         Style="{StaticResource HnVue.PrimaryButton}"

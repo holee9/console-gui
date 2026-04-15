@@ -8,7 +8,7 @@ namespace HnVue.UI.DesignTime;
 /// <summary>
 /// Designer-only mock data for MergeView (Sync Study dialog).
 /// Keeps the VS2022 designer usable without running the application.
-/// PPT Slides 12-13.
+/// PPT Slides 12-13, UISPEC-006 v2.0.
 /// </summary>
 public sealed partial class DesignTimeMergeViewModel : ObservableObject
 {
@@ -22,14 +22,19 @@ public sealed partial class DesignTimeMergeViewModel : ObservableObject
         PatientsA = new ObservableCollection<DesignTimeMergePatient>(CreateSamplePatientsA());
         PatientsB = new ObservableCollection<DesignTimeMergePatient>(CreateSamplePatientsB());
 
+        StudiesA = new ObservableCollection<DesignTimeStudyItem>(CreateSampleStudies());
+        StudiesB = new ObservableCollection<DesignTimeStudyItem>(CreateSampleStudies());
+
         PreviewStudiesA = new ObservableCollection<DesignTimeStudyItem>(CreateSampleStudies());
         PreviewStudiesB = new ObservableCollection<DesignTimeStudyItem>(CreateSampleStudies());
 
         SelectedPatientA = PatientsA.FirstOrDefault();
         SelectedPatientB = PatientsB.Skip(1).FirstOrDefault();
+        SelectedStudyA = StudiesA.FirstOrDefault();
+        SelectedStudyB = StudiesB.Skip(1).FirstOrDefault();
     }
 
-    // Patient A (left column)
+    // Patient A (left lane)
     public ObservableCollection<DesignTimeMergePatient> PatientsA { get; }
 
     [ObservableProperty]
@@ -38,7 +43,10 @@ public sealed partial class DesignTimeMergeViewModel : ObservableObject
     [ObservableProperty]
     private string _searchQueryA = string.Empty;
 
-    // Patient B (right column)
+    [ObservableProperty]
+    private bool _onlyWorkListA;
+
+    // Patient B (center lane)
     public ObservableCollection<DesignTimeMergePatient> PatientsB { get; }
 
     [ObservableProperty]
@@ -47,7 +55,21 @@ public sealed partial class DesignTimeMergeViewModel : ObservableObject
     [ObservableProperty]
     private string _searchQueryB = string.Empty;
 
-    // Preview studies (center thumbnail strip)
+    [ObservableProperty]
+    private bool _onlyWorkListB;
+
+    // Study lists (PPT Slide 12: 스터디 비교 DataGrid)
+    public ObservableCollection<DesignTimeStudyItem> StudiesA { get; }
+
+    public ObservableCollection<DesignTimeStudyItem> StudiesB { get; }
+
+    [ObservableProperty]
+    private DesignTimeStudyItem? _selectedStudyA;
+
+    [ObservableProperty]
+    private DesignTimeStudyItem? _selectedStudyB;
+
+    // Preview studies (thumbnail strip)
     public ObservableCollection<DesignTimeStudyItem> PreviewStudiesA { get; }
 
     public ObservableCollection<DesignTimeStudyItem> PreviewStudiesB { get; }
@@ -57,6 +79,10 @@ public sealed partial class DesignTimeMergeViewModel : ObservableObject
 
     // Selected studies for merge
     public ObservableCollection<DesignTimeStudyItem> SelectedStudies { get; } = [];
+
+    // Sync toggle
+    [ObservableProperty]
+    private bool _isSyncEnabled = true;
 
     // Error message display
     [ObservableProperty]
@@ -97,7 +123,7 @@ public sealed partial class DesignTimeMergeViewModel : ObservableObject
         public required string PatientId { get; init; }
     }
 
-    /// <summary>Mock study item for MergeView thumbnail strip rendering.</summary>
+    /// <summary>Mock study item for MergeView study list and thumbnail strip.</summary>
     public sealed class DesignTimeStudyItem
     {
         public required string Description { get; init; }

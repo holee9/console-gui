@@ -68,7 +68,7 @@ S10-R1 RA Task 완료됨. DOC-032 RTM v2.6, DOC-042 CMP v2.2 완성.
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: IDLE CONFIRM (P3) | NOT_STARTED | - | |
+| Task 1: IDLE CONFIRM (P3) | COMPLETED | 2026-04-15 | IDLE 확인 |
 
 ---
 
