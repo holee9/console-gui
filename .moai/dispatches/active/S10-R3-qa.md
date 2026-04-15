@@ -78,8 +78,8 @@ HnVue.UI 83.0% → 85%+ 향상 확인.
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: QA Gate (P1) | NOT_STARTED | - | |
-| Task 2: UI 커버리지 (P2) | NOT_STARTED | - | |
+| Task 1: QA Gate (P1) | COMPLETED | 2026-04-15 22:00 | Build 0err, 3726P/0F, Coverage 79.3%, CONDITIONAL PASS |
+| Task 2: UI 커버리지 (P2) | COMPLETED | 2026-04-15 22:00 | UI 67.8% (Views 0%, Components 88%), ViewModel 91% |
 
 ---
 
