@@ -13,14 +13,14 @@ DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/
 
 | 팀 | 현재 DISPATCH 파일 | 상태 | 비고 |
 |----|-------------------|------|------|
-| **Coordinator** | - | **IDLE** | S10-R1 MERGED — SettingsView 통합테스트 6개 |
-| **QA** | - | **IDLE** | S10-R1 Task 2 MERGED — CI 커버리지 게이트 수정 |
-| **RA** | - | **IDLE** | S10-R1 MERGED — CMP v2.2 + RTM v2.6 |
-| **Design** | - | **IDLE** | S10-R1 MERGED — MergeView Mock + XAML |
+| **Coordinator** | `S10-R2-coordinator.md` | **ACTIVE** | IDLE CONFIRM |
+| **QA** | `S10-R2-qa.md` | **ACTIVE** | IDLE CONFIRM |
+| **RA** | `S10-R2-ra.md` | **ACTIVE** | IDLE CONFIRM |
+| **Design** | `S10-R2-team-design.md` | **ACTIVE** | MergeView PPT 구현 |
 | **Team A** | `S10-R2-team-a.md` | **ACTIVE** | 로그 작업 중단 지시 |
 | **Team B** | `S10-R2-team-b.md` | **ACTIVE** | CDBurning 커버리지 향상 |
 
-**→ S10-R2: 4팀 IDLE, 2팀 ACTIVE**
+**→ S10-R2: 6팀 전원 ACTIVE**
 
 ---
 
