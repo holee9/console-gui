@@ -1,0 +1,248 @@
+Summary
+  Generated on: 2026-04-16 - 오전 8:35:10
+  Coverage date: 2026-04-16 - 오전 8:28:21 - 2026-04-16 - 오전 8:33:46
+  Parser: MultiReport (17x Cobertura)
+  Assemblies: 16
+  Classes: 196
+  Files: 201
+  Line coverage: 81.3%
+  Covered lines: 6783
+  Uncovered lines: 1552
+  Coverable lines: 8335
+  Total lines: 24433
+  Branch coverage: 78.8% (1801 of 2284)
+  Covered branches: 1801
+  Total branches: 2284
+  Method coverage: 90.1% (1222 of 1356)
+  Full method coverage: 79.5% (1079 of 1356)
+  Covered methods: 1222
+  Fully covered methods: 1079
+  Total methods: 1356
+
+HnVue.CDBurning                                               100%
+  HnVue.CDBurning.BurnFileEntry                               100%
+  HnVue.CDBurning.CDDVDBurnService                            100%
+  HnVue.CDBurning.IMAPIComWrapper                             100%
+  HnVue.CDBurning.StudyRepository                             100%
+
+HnVue.Common                                                 97.1%
+  HnVue.Common.Configuration.HnVueOptions                    95.2%
+  HnVue.Common.Extensions.ServiceCollectionExtensions         100%
+  HnVue.Common.Extensions.ThreadLocalSecurityContext         85.7%
+  HnVue.Common.Models.AuditEntry                              100%
+  HnVue.Common.Models.AuditQueryFilter                        100%
+  HnVue.Common.Models.AuthenticatedUser                       100%
+  HnVue.Common.Models.AuthenticationToken                     100%
+  HnVue.Common.Models.DetectorStateChangedEventArgs           100%
+  HnVue.Common.Models.DetectorStatus                         85.7%
+  HnVue.Common.Models.DicomSettings                           100%
+  HnVue.Common.Models.DoseRecord                              100%
+  HnVue.Common.Models.DoseValidationResult                    100%
+  HnVue.Common.Models.ExposureParameters                     85.7%
+  HnVue.Common.Models.GeneratorSettings                       100%
+  HnVue.Common.Models.GeneratorStateChangedEventArgs          100%
+  HnVue.Common.Models.GeneratorStatus                          80%
+  HnVue.Common.Models.ImageAcquiredEventArgs                  100%
+  HnVue.Common.Models.PatientRecord                           100%
+  HnVue.Common.Models.ProcessedImage                          100%
+  HnVue.Common.Models.ProcessingParameters                    100%
+  HnVue.Common.Models.RawDetectorImage                        100%
+  HnVue.Common.Models.SecuritySettings                        100%
+  HnVue.Common.Models.StudyRecord                             100%
+  HnVue.Common.Models.SystemSettings                          100%
+  HnVue.Common.Models.UpdateInfo                              100%
+  HnVue.Common.Models.UserRecord                              100%
+  HnVue.Common.Models.WorkflowStateChangedEventArgs           100%
+  HnVue.Common.Models.WorklistItem                            100%
+  HnVue.Common.Models.WorklistQuery                           100%
+  HnVue.Common.Results.Result                                 100%
+  HnVue.Common.Results.Result<T>                              100%
+
+HnVue.Data                                                     50%
+  HnVue.Data.Converters.NullablePhiEncryptedValueConverter    100%
+  HnVue.Data.Converters.PhiEncryptedValueConverter            100%
+  HnVue.Data.Entities.AuditLogEntity                          100%
+  HnVue.Data.Entities.DoseRecordEntity                        100%
+  HnVue.Data.Entities.ImageEntity                             100%
+  HnVue.Data.Entities.IncidentEntity                          100%
+  HnVue.Data.Entities.PatientEntity                           100%
+  HnVue.Data.Entities.StudyEntity                              90%
+  HnVue.Data.Entities.SystemSettingsEntity                    100%
+  HnVue.Data.Entities.UpdateHistoryEntity                    85.7%
+  HnVue.Data.Entities.UserEntity                              100%
+  HnVue.Data.Extensions.ServiceCollectionExtensions          96.8%
+  HnVue.Data.HnVueDbContext                                   100%
+  HnVue.Data.HnVueDbContextFactory                            100%
+  HnVue.Data.Mappers.EntityMapper                             100%
+  HnVue.Data.Migrations.HnVueDbContextModelSnapshot             0%
+  HnVue.Data.Migrations.InitialCreate                           0%
+  HnVue.Data.Repositories.AuditRepository                    84.6%
+  HnVue.Data.Repositories.EfCdStudyRepository                73.3%
+  HnVue.Data.Repositories.EfDoseRepository                   90.7%
+  HnVue.Data.Repositories.EfIncidentRepository               81.8%
+  HnVue.Data.Repositories.EfSystemSettingsRepository         92.6%
+  HnVue.Data.Repositories.EfUpdateRepository                 88.8%
+  HnVue.Data.Repositories.EfWorklistRepository               88.8%
+  HnVue.Data.Repositories.PatientRepository                  84.4%
+  HnVue.Data.Repositories.StudyRepository                    77.3%
+  HnVue.Data.Repositories.UserRepository                     72.9%
+  HnVue.Data.Security.PhiEncryptionService                   97.2%
+  HnVue.Data.Security.PhiKeyDerivation                        100%
+  HnVue.Data.Services.AesGcmPhiEncryptionService             97.8%
+
+HnVue.Detector                                                 96%
+  HnVue.Detector.DetectorConfig                               100%
+  HnVue.Detector.DetectorSimulator                            100%
+  HnVue.Detector.OwnDetector.OwnDetectorAdapter              79.4%
+  HnVue.Detector.OwnDetector.OwnDetectorConfig                100%
+  HnVue.Detector.ThirdParty.Hme.HmeDetectorAdapter            100%
+  HnVue.Detector.ThirdParty.Hme.HmeDetectorConfig             100%
+  HnVue.Detector.ThirdParty.Hme.HmeNativeMethods              100%
+  HnVue.Detector.ThirdParty.VendorAdapterTemplate            97.3%
+
+HnVue.Dicom                                                  86.5%
+  HnVue.Dicom.DicomFileIO                                    88.2%
+  HnVue.Dicom.DicomFileWrapper                                100%
+  HnVue.Dicom.DicomOptions                                    100%
+  HnVue.Dicom.DicomOutbox                                    97.1%
+  HnVue.Dicom.DicomService                                   83.4%
+  HnVue.Dicom.DicomStoreScu                                    92%
+  HnVue.Dicom.Extensions.ServiceCollectionExtensions          100%
+  HnVue.Dicom.MppsScu                                          84%
+
+HnVue.Dose                                                   99.6%
+  HnVue.Dose.DoseRepository                                   100%
+  HnVue.Dose.DoseService                                     99.1%
+  HnVue.Dose.EfDoseRepository                                 100%
+
+HnVue.Imaging                                                90.6%
+  HnVue.Imaging.ImageProcessor                               90.6%
+
+HnVue.Incident                                               94.7%
+  HnVue.Incident.EfIncidentRepository                        90.9%
+  HnVue.Incident.Extensions.ServiceCollectionExtensions       100%
+  HnVue.Incident.IncidentRepository                           100%
+  HnVue.Incident.IncidentResponseService                      100%
+  HnVue.Incident.IncidentService                             90.3%
+  HnVue.Incident.Models.IncidentRecord                        100%
+  HnVue.Incident.NotificationService                          100%
+
+HnVue.PatientManagement                                      99.2%
+  HnVue.PatientManagement.EfWorklistRepository               96.2%
+  HnVue.PatientManagement.PatientService                      100%
+  HnVue.PatientManagement.WorklistRepository                  100%
+  HnVue.PatientManagement.WorklistService                     100%
+
+HnVue.Security                                               95.5%
+  HnVue.Security.AuditOptions                                 100%
+  HnVue.Security.AuditService                                 100%
+  HnVue.Security.Extensions.ServiceCollectionExtensions      62.5%
+  HnVue.Security.InMemoryTokenDenylist                        100%
+  HnVue.Security.JwtOptions                                   100%
+  HnVue.Security.JwtTokenService                             94.6%
+  HnVue.Security.PasswordHasher                               100%
+  HnVue.Security.PersistentTokenDenylist                     91.6%
+  HnVue.Security.PhiEncryptionService                         100%
+  HnVue.Security.RbacPolicy                                   100%
+  HnVue.Security.SecurityService                              100%
+
+HnVue.SystemAdmin                                              93%
+  HnVue.SystemAdmin.EfSystemSettingsRepository                 91%
+  HnVue.SystemAdmin.SystemAdminService                       98.3%
+  HnVue.SystemAdmin.SystemSettingsRepository                   80%
+
+HnVue.UI                                                     82.3%
+  HnVue.UI.Components.Common.Card                            93.3%
+  HnVue.UI.Components.Common.MedicalButton                   94.7%
+  HnVue.UI.Components.Common.MedicalTextBox                  96.6%
+  HnVue.UI.Components.Common.Modal                           87.1%
+  HnVue.UI.Components.Common.RelayCommand                     100%
+  HnVue.UI.Components.Common.RelayCommand<T>                  100%
+  HnVue.UI.Components.Common.ToastItem                         80%
+  HnVue.UI.Components.Common.ToastService                    92.8%
+  HnVue.UI.Components.Common.ViewModelBase                    100%
+  HnVue.UI.Components.Layout.Header                          93.6%
+  HnVue.UI.Components.Layout.Sidebar                         89.4%
+  HnVue.UI.Components.Layout.StatusBar                        100%
+  HnVue.UI.Components.Layout.StatusBarItem                   97.3%
+  HnVue.UI.Components.Medical.AcquisitionPreview             80.6%
+  HnVue.UI.Components.Medical.PatientInfoCard                  97%
+  HnVue.UI.Components.Medical.StudyThumbnail                 86.5%
+  HnVue.UI.Converters.ActiveTabToVisibilityConverter          100%
+  HnVue.UI.Converters.AgeFromBirthDateConverter               100%
+  HnVue.UI.Converters.BoolToVisibilityConverter               100%
+  HnVue.UI.Converters.CountToVisibilityConverter              100%
+  HnVue.UI.Converters.DateOnlyToStringConverter               100%
+  HnVue.UI.Converters.DesignTokenResources                   88.8%
+  HnVue.UI.Converters.InverseBoolConverter                    100%
+  HnVue.UI.Converters.InvertedBoolToVisibilityConverter       100%
+  HnVue.UI.Converters.MultiBoolAndConverter                   100%
+  HnVue.UI.Converters.MultiBoolOrConverter                    100%
+  HnVue.UI.Converters.NullToCollapsedConverter                100%
+  HnVue.UI.Converters.NullToVisibilityConverter               100%
+  HnVue.UI.Converters.SafeStateToColorConverter              91.6%
+  HnVue.UI.Converters.StatusToBrushConverter                  100%
+  HnVue.UI.Converters.StringEqualityToBoolConverter           100%
+  HnVue.UI.Converters.StringToVisibilityConverter             100%
+  HnVue.UI.DesignTime.DesignTimeMergeViewModel                100%
+  HnVue.UI.DesignTime.DesignTimeSettingsViewModel             100%
+  HnVue.UI.DesignTime.DesignTimeStudylistViewModel            100%
+  HnVue.UI.DesignTime.DesignTimeWorkflowViewModel             100%
+  HnVue.UI.Services.ThemeRollbackService                     90.2%
+  HnVue.UI.Views.AddPatientProcedureView                        0%
+  HnVue.UI.Views.CDBurnView                                     0%
+  HnVue.UI.Views.DoseDisplayView                                0%
+  HnVue.UI.Views.ImageViewerView                                0%
+  HnVue.UI.Views.LoginView                                      0%
+  HnVue.UI.Views.MergeView                                      0%
+  HnVue.UI.Views.PatientListView                                0%
+  HnVue.UI.Views.QuickPinLockView                               0%
+  HnVue.UI.Views.SettingsView                                   0%
+  HnVue.UI.Views.StudylistView                                  0%
+  HnVue.UI.Views.SystemAdminView                                0%
+  HnVue.UI.Views.WorkflowView                                   0%
+
+HnVue.UI.Contracts                                            100%
+  HnVue.UI.Contracts.Events.LoginSuccessEventArgs             100%
+  HnVue.UI.Contracts.Events.NavigationRequestedMessage        100%
+  HnVue.UI.Contracts.Events.PatientSelectedMessage            100%
+  HnVue.UI.Contracts.Events.SessionTimeoutMessage             100%
+  HnVue.UI.Contracts.Theming.ThemeInfo                        100%
+
+HnVue.UI.ViewModels                                          93.2%
+  HnVue.UI.ViewModels.AddPatientProcedureViewModel           95.4%
+  HnVue.UI.ViewModels.CDBurnViewModel                        86.1%
+  HnVue.UI.ViewModels.DoseDisplayViewModel                    100%
+  HnVue.UI.ViewModels.DoseViewModel                           100%
+  HnVue.UI.ViewModels.ImageViewerViewModel                   98.4%
+  HnVue.UI.ViewModels.LoginViewModel                          100%
+  HnVue.UI.ViewModels.MainViewModel                          89.7%
+  HnVue.UI.ViewModels.MergeViewModel                         97.8%
+  HnVue.UI.ViewModels.Models.StudyItem                        100%
+  HnVue.UI.ViewModels.PatientListViewModel                   83.8%
+  HnVue.UI.ViewModels.QuickPinLockViewModel                  89.4%
+  HnVue.UI.ViewModels.SettingsViewModel                       100%
+  HnVue.UI.ViewModels.StudylistViewModel                     90.3%
+  HnVue.UI.ViewModels.SystemAdminViewModel                   90.6%
+  HnVue.UI.ViewModels.WorkflowViewModel                      90.4%
+
+HnVue.Update                                                 88.9%
+  HnVue.Update.BackupManager                                 94.9%
+  HnVue.Update.BackupService                                 89.2%
+  HnVue.Update.CodeSignVerifier                              85.7%
+  HnVue.Update.EfUpdateRepository                            89.5%
+  HnVue.Update.Extensions.ServiceCollectionExtensions         100%
+  HnVue.Update.SignatureVerifier                              100%
+  HnVue.Update.SWUpdateService                               80.4%
+  HnVue.Update.UpdateChecker                                  100%
+  HnVue.Update.UpdateFailedException                          100%
+  HnVue.Update.UpdateOptions                                  100%
+  HnVue.Update.UpdateRepository                                84%
+
+HnVue.Workflow                                               89.2%
+  HnVue.Workflow.GeneratorConfig                              100%
+  HnVue.Workflow.GeneratorSerialPort                         82.9%
+  HnVue.Workflow.GeneratorSimulator                           100%
+  HnVue.Workflow.SerialPortAdapter                           69.2%
+  HnVue.Workflow.WorkflowEngine                              91.9%
+  HnVue.Workflow.WorkflowStateMachine                         100%
