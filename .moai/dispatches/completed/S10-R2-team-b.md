@@ -32,7 +32,7 @@ S10-R1 Task 1 MERGED 완료. Dicom 커버리지 테스트 482개 추가 완료.
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 2: CDBurning (P2) | NOT_STARTED | - | |
+| Task 2: CDBurning (P2) | COMPLETED | 2026-04-15 | 47/47 PASS, Line Coverage 100% (목표 85% 초과) |
 
 ---
 
