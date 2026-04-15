@@ -245,7 +245,8 @@ CC: 갭 분석 → 다음 라운드 6팀 DISPATCH 발행 → 반복
 | S07-R4 | CC 커버리지 | CC | 커버리지 분석 직접 실행 | role-matrix.md 도입 |
 | S08-R1 | CO+TD DesignTime 충돌 | CO | Coordinator가 DesignTime/에 Mock 파일 생성 (Design 영역 침범) | 디렉토리 단위 소유권 테이블 추가, 아키텍처 테스트 검증 추가 |
 | S09-R3 | CO+TD 교차 소유권 침범 | CO, TD | Coordinator가 Converters/DesignTime 수정, Design이 tests.integration/ 수정 + DISPATCH 파일 관리 충돌 | CC 머지 후 team 브랜치 동기화 의무화, DISPATCH 파일 CC 단독 관리, 머지 전 소유권 교차 검증 추가 |
-| S09-R3 | QA Status 업데이트 누락 | QA | QA가 작업 불가(node 없음) 상태를 DISPATCH에 BLOCKED로 업데이트 않고 NOT_STARTED 방치 → CC 12회 연속 대기만 반복 | DISPATCH Status 의무 업데이트, CC Stall Detection(3회 연속 NOT_STARTED→경고, 5회→BLOCKED), 자가점검 Q6 추가 |
+| S09-R3 | QA Status 업데이트 누락 | QA | QA가 작업 불가(node 없음) 상태를 DISPATCH에 BLOCKED로 업데이트 않고 NOT_STARTED 방치 → CC 12회 연속 대기만 반복 | DISPATCH Status 의무 업데이트, CC Stall Detection(3회→경고, 5회→사용자 조치요청), 자가점검 Q6 추가 |
+| S09-R3 | CC 임의 Status 변경 | CC | CC가 QA 확인 없이 DISPATCH Status를 BLOCKED로 임의 변경 → QA 실제 작업 중이었음 → 상태 왜곡 | CC는 팀 DISPATCH Status 임의 변경 금지, CC는 읽기만. Stall Detection도 경고만, 임의 BLOCKED 금지 |
 
 ---
 

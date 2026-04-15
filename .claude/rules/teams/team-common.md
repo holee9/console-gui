@@ -85,8 +85,9 @@ git diff --name-only main..origin/team/{team}
 
 **CC Stall Detection [HARD — Effective S09-R3]:**
 - [HARD] 동일 팀이 **3회 연속 NOT_STARTED** 감지 시 → 사용자에게 "작업 지연 의심" 경고
-- [HARD] 동일 팀이 **5회 연속 NOT_STARTED** 감지 시 → BLOCKED로 간주, 사용자에게 조치 요청
-- [HARD] S09-R3 사고: QA 12회 연속 NOT_STARTED → CC가 계속 "대기 유지"만 보고, 실제 조치 없음
+- [HARD] 동일 팀이 **5회 연속 NOT_STARTED** 감지 시 → 사용자에게 조치 요청 (CC가 임의로 BLOCKED 변경 금지)
+- [HARD] CC는 **경고만** 하고 팀 DISPATCH Status를 임의 변경하지 않는다
+- [HARD] S09-R3 사고: QA 12회 연속 NOT_STARTED → CC가 임의로 BLOCKED 처리 → QA 실제 작업 중이었음 → 상태 왜곡
 
 ---
 
@@ -150,7 +151,7 @@ Push failure: report "PUSH_FAILED" status in DISPATCH.md, commit+push the status
 
 ## DISPATCH Status Update Protocol [HARD — Effective S09-R3]
 
-**팀은 DISPATCH 수령 후 반드시 Status를 업데이트해야 한다. CC는 DISPATCH Status만 읽는다.**
+**팀이 자체 DISPATCH Status를 업데이트한다. CC는 읽기만 한다. CC는 팀 Status를 임의 변경 금지.**
 
 - [HARD] DISPATCH 읽기 직후: Task Status를 `NOT_STARTED` → `IN_PROGRESS`로 업데이트 + push
 - [HARD] 작업 완료 후: Task Status를 `IN_PROGRESS` → `COMPLETED` + 빌드 증거 + push
@@ -159,6 +160,13 @@ Push failure: report "PUSH_FAILED" status in DISPATCH.md, commit+push the status
   - BLOCKED 상태에서는 CC가 즉시 인지하고 조치 가능
 - [HARD] **Status 업데이트 없이 대기 = 소통 단절 = 프로토콜 위반**
 - [HARD] S09-R3 사고: QA가 READY 상태였으나 DISPATCH Status를 NOT_STARTED로 방치 → CC가 12회 연속 모니터링하며 변화 감지 불가
+
+### CC Status 변경 금지 [HARD — Effective S09-R3]
+
+- [HARD] CC는 팀의 DISPATCH Status 테이블(IN_PROGRESS/BLOCKED/COMPLETED)을 **임의로 수정 금지**
+- [HARD] Status 변경은 **팀 자체**가 수행. CC는 DISPATCH Status를 **읽기만** 한다
+- [HARD] CC가 할 수 있는 것: _CURRENT.md의 팀 상태 행(IDLE/ACTIVE/MERGED) 관리 + DISPATCH 파일 active/↔completed/ 이동
+- [HARD] S09-R3 사고: CC가 QA 확인 없이 BLOCKED로 임의 변경 → QA 실제로 작업 중이었음 → 상태 왜곡
 
 ## Session Lifecycle [HARD — Effective S09-R3]
 
