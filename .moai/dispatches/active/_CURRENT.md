@@ -34,7 +34,7 @@ _CURRENT.md에서 자신의 팀이 IDLE이면:
 
 ---
 
-Updated: 2026-04-16 (S10-R4: Coordinator/Design/RA/TeamA MERGED, TeamB/QA 진행 중)
+Updated: 2026-04-16 (S10-R4: 5/6 MERGED, QA Gate 대기)
 DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/`
 
 ---
@@ -43,14 +43,14 @@ DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/
 
 | 팀 | 현재 DISPATCH 파일 | 상태 | 비고 |
 |----|-------------------|------|------|
-| **Team A** | - | **IDLE** | S10-R4 MERGED (Data+Update 85%+, 52 신규 테스트) |
-| **Team B** | `S10-R4-team-b.md` | **ACTIVE** | Dicom 85%+ (P2) |
 | **QA** | `S10-R4-qa.md` | **ACTIVE** | QA Gate CONDITIONAL→PASS |
-| **RA** | - | **IDLE** | S10-R4 MERGED (문서 동기화 불필요) |
+| **Team A** | - | **IDLE** | S10-R4 MERGED (Data+Update 85%+, 52 테스트) |
+| **Team B** | - | **IDLE** | S10-R4 MERGED (Dicom 86.02%) |
 | **Coordinator** | - | **IDLE** | S10-R4 MERGED (ToastItem 32 테스트) |
+| **RA** | - | **IDLE** | S10-R4 MERGED (문서 동기화 불필요) |
 | **Design** | - | **IDLE** | S10-R4 MERGED (IDLE CONFIRM) |
 
-**→ S10-R4: 4/6 MERGED, 2/6 ACTIVE (Team B + QA)**
+**→ S10-R4: 5/6 MERGED, QA만 ACTIVE**
 
 ---
 
