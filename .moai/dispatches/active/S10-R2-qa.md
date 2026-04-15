@@ -29,7 +29,7 @@ S10-R1 QA Task 2 완료됨. CI 커버리지 게이트 수정 완료.
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: IDLE CONFIRM (P3) | NOT_STARTED | - | |
+| Task 1: IDLE CONFIRM (P3) | COMPLETED | 2026-04-15 | DISPATCH 읽기 완료, IDLE 보고 |
 
 ---
 
