@@ -32,7 +32,7 @@ Views code-behind 0%은 FlaUI E2E 필요 — 현재 라운드에서 불가.
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: IDLE CONFIRM (P3) | NOT_STARTED | - | |
+| Task 1: IDLE CONFIRM (P3) | COMPLETED | 2026-04-16 | DISPATCH 읽기 완료, 추가 작업 없음 |
 
 ---
 
