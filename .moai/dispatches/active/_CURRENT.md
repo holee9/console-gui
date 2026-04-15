@@ -34,7 +34,7 @@ _CURRENT.md에서 자신의 팀이 IDLE이면:
 
 ---
 
-Updated: 2026-04-15 (S10-R1: RA+Design+Coordinator+QA MERGED, 2팀 ACTIVE)
+Updated: 2026-04-15 (S10-R3: 6팀 발행 완료, 갭 분석 기반)
 DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/`
 
 ---
@@ -43,14 +43,14 @@ DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/
 
 | 팀 | 현재 DISPATCH 파일 | 상태 | 비고 |
 |----|-------------------|------|------|
-| **Coordinator** | `S10-R2-coordinator.md` | **ACTIVE** | IDLE CONFIRM |
-| **QA** | `S10-R2-qa.md` | **ACTIVE** | IDLE CONFIRM |
-| **RA** | `S10-R2-ra.md` | **ACTIVE** | IDLE CONFIRM |
-| **Design** | `S10-R2-team-design.md` | **ACTIVE** | MergeView PPT 구현 |
-| **Team A** | `S10-R2-team-a.md` | **ACTIVE** | STOP LOGGING |
-| **Team B** | `S10-R2-team-b.md` | **ACTIVE** | IDLE CONFIRM |
+| **Coordinator** | `S10-R3-coordinator.md` | **ACTIVE** | ViewModel 커버리지 |
+| **QA** | `S10-R3-qa.md` | **ACTIVE** | QA Gate 검증 |
+| **RA** | `S10-R3-ra.md` | **ACTIVE** | 문서 동기화 확인 |
+| **Design** | `S10-R3-team-design.md` | **ACTIVE** | MergeView PPT 구현 |
+| **Team A** | `S10-R3-team-a.md` | **ACTIVE** | IDLE CONFIRM |
+| **Team B** | `S10-R3-team-b.md` | **ACTIVE** | Converter 테스트 |
 
-**→ S10-R2/R3: 3팀 MERGED, 3팀 ACTIVE**
+**→ S10-R3: 6팀 전원 ACTIVE**
 
 ---
 
@@ -95,6 +95,8 @@ git push origin team/{your-team}
 | 2026-04-14 | **S09 R2** | **S09-R2-*.md** | 전팀 MERGED, QA CONDITIONAL PASS |
 | 2026-04-15 | **S09 R3** | **S09-R3-*.md** | 전팀 MERGED, QA PASS (#104) |
 | 2026-04-15 | **S10 R1** | **S10-R1-*.md** | 6팀 발행 (갭 분석 기반) |
+| 2026-04-15 | **S10 R2** | **S10-R2-*.md** | 3팀 MERGED, 3팀 IDLE |
+| 2026-04-15 | **S10 R3** | **S10-R3-*.md** | 6팀 발행 (UI 커버리지 갭) |
 
 ---
 
