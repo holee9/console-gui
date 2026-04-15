@@ -29,7 +29,18 @@ $totalCovered = 0
 $totalValid = 0
 
 # Find all coverage files
-$coverageFiles = Get-ChildItem -Path $ReportPath -Recurse -Filter "coverage.cobertura.xml" -ErrorAction SilentlyContinue
+# Prefer ReportGenerator merged output (Cobertura.xml) over raw Coverlet files
+# to avoid double-counting shared modules across test projects
+$mergedFiles = Get-ChildItem -Path $ReportPath -Recurse -Filter "Cobertura.xml" -ErrorAction SilentlyContinue
+
+if ($mergedFiles.Count -gt 0) {
+    $coverageFiles = $mergedFiles
+    Write-Host "Using $($mergedFiles.Count) merged ReportGenerator file(s)" -ForegroundColor Green
+}
+else {
+    $coverageFiles = Get-ChildItem -Path $ReportPath -Recurse -Filter "coverage.cobertura.xml" -ErrorAction SilentlyContinue
+    Write-Host "Using $($coverageFiles.Count) raw Coverlet file(s) - consider running ReportGenerator merge" -ForegroundColor Yellow
+}
 
 if ($coverageFiles.Count -eq 0) {
     Write-Host "[ERROR] No coverage files found in $ReportPath" -ForegroundColor Red
@@ -50,9 +61,40 @@ foreach ($file in $coverageFiles) {
             # Skip test assemblies and Architecture
             if ($name -match "\.Tests$" -or $name -match "Architecture") { continue }
 
-            # Handle PowerShell 5.1 compatibility (no null coalescing operator)
-            $linesCovered = if ($pkg."lines-covered") { [int]$pkg."lines-covered" } else { 0 }
-            $linesValid = if ($pkg."lines-valid") { [int]$pkg."lines-valid" } else { 0 }
+            # Try lines-covered/lines-valid attributes first (Coverlet raw format)
+            $linesCovered = 0
+            $linesValid = 0
+
+            if ($pkg.HasAttribute("lines-covered") -and $pkg.HasAttribute("lines-valid")) {
+                $linesCovered = [int]$pkg.GetAttribute("lines-covered")
+                $linesValid = [int]$pkg.GetAttribute("lines-valid")
+            }
+            else {
+                # Fallback: count lines from classes/methods/lines elements
+                $classes = $pkg.classes.class
+                if ($null -ne $classes) {
+                    foreach ($cls in $classes) {
+                        $methods = $cls.methods.method
+                        if ($null -ne $methods) {
+                            foreach ($method in $methods) {
+                                $lines = $method.lines.line
+                                if ($null -ne $lines) {
+                                    foreach ($line in $lines) {
+                                        if ($line.branch -eq "False" -or $line.branch -eq "false") {
+                                            $linesValid++
+                                            if ([int]$line.hits -gt 0) {
+                                                $linesCovered++
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            if ($linesValid -eq 0) { continue }
 
             if (-not $moduleCoverage.ContainsKey($name)) {
                 $moduleCoverage[$name] = @{ Covered = 0; Valid = 0 }
@@ -73,7 +115,7 @@ if ($totalValid -eq 0) {
 }
 
 $overallCoverage = ($totalCovered / $totalValid) * 100
-Write-Host "Overall Coverage: $overallCoverage.ToString('F2'))% ($totalCovered/$totalValid lines)" -ForegroundColor Cyan
+Write-Host "Overall Coverage: $($overallCoverage.ToString('F2'))% ($totalCovered/$totalValid lines)" -ForegroundColor Cyan
 
 # Check Safety-Critical modules
 Write-Host ""
@@ -89,7 +131,7 @@ foreach ($module in $safetyCriticalModules) {
         $status = if ($coverage -ge $SafetyCriticalCoverage) { "✅ PASS" } else { "❌ FAIL" }
         $color = if ($coverage -ge $SafetyCriticalCoverage) { "Green" } else { "Red" }
 
-        Write-Host "  $module : $coverage.ToString('F2'))% ($covered/$valid) $status" -ForegroundColor $color
+        Write-Host "  $module : $($coverage.ToString('F2'))% ($covered/$valid) $status" -ForegroundColor $color
 
         if ($coverage -lt $SafetyCriticalCoverage) {
             $safetyCriticalFailed = $true
@@ -106,10 +148,10 @@ Write-Host "=== Coverage Gate Results ===" -ForegroundColor Cyan
 $gatePassed = $true
 
 if ($overallCoverage -lt $MinCoverage) {
-    Write-Host "[FAIL] Overall coverage ($overallCoverage.ToString('F2'))%) is below minimum ($MinCoverage%)" -ForegroundColor Red
+    Write-Host "[FAIL] Overall coverage ($($overallCoverage.ToString('F2'))%) is below minimum ($MinCoverage%)" -ForegroundColor Red
     $gatePassed = $false
 } else {
-    Write-Host "[PASS] Overall coverage ($overallCoverage.ToString('F2'))%) meets minimum ($MinCoverage%)" -ForegroundColor Green
+    Write-Host "[PASS] Overall coverage ($($overallCoverage.ToString('F2'))%) meets minimum ($MinCoverage%)" -ForegroundColor Green
 }
 
 if ($safetyCriticalFailed) {
