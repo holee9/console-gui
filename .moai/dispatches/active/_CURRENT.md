@@ -34,7 +34,7 @@ _CURRENT.md에서 자신의 팀이 IDLE이면:
 
 ---
 
-Updated: 2026-04-16 (S10-R4: 6팀 발행 완료, 커버리지 85% 목표)
+Updated: 2026-04-16 (S10-R4: Coordinator/Design MERGED, Team A/B/QA/RA 진행 중)
 DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/`
 
 ---
@@ -43,14 +43,14 @@ DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/
 
 | 팀 | 현재 DISPATCH 파일 | 상태 | 비고 |
 |----|-------------------|------|------|
-| **Team A** | `S10-R4-team-a.md` | **ACTIVE** | Data 85%+ Update 85%+ |
-| **Team B** | `S10-R4-team-b.md` | **ACTIVE** | Dicom 85%+ (1.3% 부족) |
-| **Coordinator** | `S10-R4-coordinator.md` | **ACTIVE** | ToastItem 커버리지 |
-| **QA** | `S10-R4-qa.md` | **ACTIVE** | QA Gate CONDITIONAL→PASS 목표 |
+| **Team A** | `S10-R4-team-a.md` | **ACTIVE** | Data 85%+ Update 85%+ (P1) |
+| **Team B** | `S10-R4-team-b.md` | **ACTIVE** | Dicom 85%+ (P2) |
+| **QA** | `S10-R4-qa.md` | **ACTIVE** | QA Gate CONDITIONAL→PASS |
 | **RA** | `S10-R4-ra.md` | **ACTIVE** | 문서 동기화 확인 |
-| **Design** | `S10-R4-team-design.md` | **ACTIVE** | IDLE CONFIRM |
+| **Coordinator** | - | **IDLE** | S10-R4 MERGED (ToastItem 32 테스트) |
+| **Design** | - | **IDLE** | S10-R4 MERGED (IDLE CONFIRM) |
 
-**→ S10-R4: 6팀 전원 ACTIVE (커버리지 79.3% → 85% 목표)**
+**→ S10-R4: 2/6 MERGED, 4/6 ACTIVE**
 
 ---
 
