@@ -46,7 +46,7 @@ S10-R3 CONDITIONAL PASS (79.3%). S10-R4에서 Team A (Data+Update)와 Team B (Di
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: QA Gate (P1) | NOT_STARTED | - | 선행 팀 완료 후 실행 |
+| Task 1: QA Gate (P1) | IN_PROGRESS | - | 선행 팀 완료 확인, QA Gate 시작 |
 | Task 2: IDLE CONFIRM (P3) | NOT_STARTED | - | |
 
 ---
