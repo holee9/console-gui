@@ -46,7 +46,7 @@ S09-R2에서 커버리지 0% 수집 이슈 해결.
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: 재검증 (P1) | NOT_STARTED | - | Design 완료 후 |
+| Task 1: 재검증 (P1) | NOT_STARTED | - | QA 작업 중 (환경 준비) |
 | Task 2: 커버리지 복구 (P2) | NOT_STARTED | - | runsettings 점검 |
 
 ---
