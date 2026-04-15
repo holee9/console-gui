@@ -29,7 +29,7 @@ S10-R1 Task 1,2 MERGED 완료. SettingsView 통합테스트 6개 추가됨.
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: IDLE CONFIRM (P3) | NOT_STARTED | - | |
+| Task 1: IDLE CONFIRM (P3) | COMPLETED | 2026-04-15 | IDLE 상태 확인 완료 | |
 
 ---
 
