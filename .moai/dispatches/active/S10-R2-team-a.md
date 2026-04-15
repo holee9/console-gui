@@ -3,10 +3,7 @@
 Sprint: S10 | Round: 2 | Team: Team A
 Updated: 2026-04-15
 
-> **[CRITICAL] 로그 파일 작업 금지**
-> - `.claude/logs/`에 쓰기 작업 절대 금지
-> - 이것이 사용자 승인 요청의 원인임
-> - DISPATCH 읽기 + IDLE 보고만 수행
+> **[CC 안내]** 로그 파일 작업 금지. DISPATCH 읽기 + IDLE 보고만 수행.
 
 ---
 
