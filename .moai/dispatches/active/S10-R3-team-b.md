@@ -82,8 +82,8 @@ Design 팀 UI Components 커버리지 향상 지원.
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: Converter 테스트 (P2) | IN_PROGRESS | - | |
-| Task 2: IDLE CONFIRM (P3) | NOT_STARTED | - | |
+| Task 1: Converter 테스트 (P2) | COMPLETED | 2026-04-15 21:10 | 테스트 2,338개 PASS, 빌드 0 에러 |
+| Task 2: IDLE CONFIRM (P3) | COMPLETED | 2026-04-15 21:10 | DISPATCH 읽기 완료, IDLE 보고 |
 
 ---
 
