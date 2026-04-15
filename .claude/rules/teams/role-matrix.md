@@ -128,6 +128,7 @@ Q1: 이 파일이 다른 팀 소유 모듈인가?               → YES = 중단
 Q2: 이 작업이 DISPATCH에 명시되지 않았는가?          → YES = 중단
 Q3: 빌드/테스트 검증 없이 완료 보고하려는가?         → YES = 중단
 Q4: 다른 팀 DISPATCH를 읽으려 하는가?               → YES = 중단
+Q5: DISPATCH 파일(active/completed/_CURRENT.md)을 수정/이동하려는가? → YES = 중단 (CC 전유)
 ```
 
 ---
@@ -225,7 +226,7 @@ CC: _CURRENT.md 업데이트 + commit + push
          ↓
 각 팀: git pull → DISPATCH 읽기 → 이슈 등록 → 구현 → 자가검증 → push → COMPLETED
          ↓
-CC: COMPLETED 감지 → diff 검토 → 머지 → _CURRENT.md MERGED → completed/ 이동 → push
+CC: COMPLETED 감지 → 소유권 검증 → 머지 → team 브랜치 동기화 → _CURRENT.md MERGED → completed/ 이동 → push
          ↓
 전팀 MERGED/IDLE 감지
          ↓
@@ -242,6 +243,7 @@ CC: 갭 분석 → 다음 라운드 6팀 DISPATCH 발행 → 반복
 | S07-R4 | CC 빌드/테스트 | CC | dotnet build/test 직접 실행 | QA 독립성 명문화 |
 | S07-R4 | CC 커버리지 | CC | 커버리지 분석 직접 실행 | role-matrix.md 도입 |
 | S08-R1 | CO+TD DesignTime 충돌 | CO | Coordinator가 DesignTime/에 Mock 파일 생성 (Design 영역 침범) | 디렉토리 단위 소유권 테이블 추가, 아키텍처 테스트 검증 추가 |
+| S09-R3 | CO+TD 교차 소유권 침범 | CO, TD | Coordinator가 Converters/DesignTime 수정, Design이 tests.integration/ 수정 + DISPATCH 파일 관리 충돌 | CC 머지 후 team 브랜치 동기화 의무화, DISPATCH 파일 CC 단독 관리, 머지 전 소유권 교차 검증 추가 |
 
 ---
 
