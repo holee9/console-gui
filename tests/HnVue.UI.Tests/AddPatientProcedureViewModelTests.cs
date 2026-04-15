@@ -343,4 +343,143 @@ public sealed class AddPatientProcedureViewModelTests
 
         vm.ErrorMessage.Should().NotBeNullOrEmpty("error message should be set on service failure");
     }
+
+    // ── Explicit interface implementation tests ─────────────────────────────
+
+    [Fact]
+    public void IViewModelBase_IsLoading_MapsToIsLoading()
+    {
+        var (vm, _) = CreateSut();
+        vm.IsLoading = false;
+        ((HnVue.UI.Contracts.ViewModels.IViewModelBase)vm).IsLoading.Should().BeFalse();
+
+        vm.IsLoading = true;
+        ((HnVue.UI.Contracts.ViewModels.IViewModelBase)vm).IsLoading.Should().BeTrue();
+    }
+
+    [Fact]
+    public void IAddPatientProcedureViewModel_AddProjectionCommand_ReturnsAddProjectionCommand()
+    {
+        var (vm, _) = CreateSut();
+        ((HnVue.UI.Contracts.ViewModels.IAddPatientProcedureViewModel)vm).AddProjectionCommand
+            .Should().BeSameAs(vm.AddProjectionCommand);
+    }
+
+    [Fact]
+    public void IAddPatientProcedureViewModel_RemoveProjectionCommand_ReturnsRemoveProjectionCommand()
+    {
+        var (vm, _) = CreateSut();
+        ((HnVue.UI.Contracts.ViewModels.IAddPatientProcedureViewModel)vm).RemoveProjectionCommand
+            .Should().BeSameAs(vm.RemoveProjectionCommand);
+    }
+
+    [Fact]
+    public void IAddPatientProcedureViewModel_AddDescriptionCommand_ReturnsAddDescriptionCommand()
+    {
+        var (vm, _) = CreateSut();
+        ((HnVue.UI.Contracts.ViewModels.IAddPatientProcedureViewModel)vm).AddDescriptionCommand
+            .Should().BeSameAs(vm.AddDescriptionCommand);
+    }
+
+    [Fact]
+    public void IAddPatientProcedureViewModel_RemoveDescriptionCommand_ReturnsRemoveDescriptionCommand()
+    {
+        var (vm, _) = CreateSut();
+        ((HnVue.UI.Contracts.ViewModels.IAddPatientProcedureViewModel)vm).RemoveDescriptionCommand
+            .Should().BeSameAs(vm.RemoveDescriptionCommand);
+    }
+
+    [Fact]
+    public void IAddPatientProcedureViewModel_ToggleAccNoAutoGenerateCommand_ReturnsToggleAccNoAutoGenerateCommand()
+    {
+        var (vm, _) = CreateSut();
+        ((HnVue.UI.Contracts.ViewModels.IAddPatientProcedureViewModel)vm).ToggleAccNoAutoGenerateCommand
+            .Should().BeSameAs(vm.ToggleAccNoAutoGenerateCommand);
+    }
+
+    [Fact]
+    public void IAddPatientProcedureViewModel_TogglePatientIdAutoGenerateCommand_ReturnsTogglePatientIdAutoGenerateCommand()
+    {
+        var (vm, _) = CreateSut();
+        ((HnVue.UI.Contracts.ViewModels.IAddPatientProcedureViewModel)vm).TogglePatientIdAutoGenerateCommand
+            .Should().BeSameAs(vm.TogglePatientIdAutoGenerateCommand);
+    }
+
+    [Fact]
+    public void IAddPatientProcedureViewModel_SaveCommand_ReturnsSaveCommand()
+    {
+        var (vm, _) = CreateSut();
+        ((HnVue.UI.Contracts.ViewModels.IAddPatientProcedureViewModel)vm).SaveCommand
+            .Should().BeSameAs(vm.SaveCommand);
+    }
+
+    [Fact]
+    public void IAddPatientProcedureViewModel_CancelCommand_ReturnsCancelCommand()
+    {
+        var (vm, _) = CreateSut();
+        ((HnVue.UI.Contracts.ViewModels.IAddPatientProcedureViewModel)vm).CancelCommand
+            .Should().BeSameAs(vm.CancelCommand);
+    }
+
+    // ── Additional edge case tests ──────────────────────────────────────────────
+
+    [Fact]
+    public void RemoveProjectionCommand_WithNull_DoesNotThrow()
+    {
+        var (vm, _) = CreateSut();
+        vm.AddProjectionCommand.Execute("Chest PA");
+
+        vm.RemoveProjectionCommand.Execute(null);
+
+        vm.SelectedProjections.Should().ContainSingle("Chest PA", "removing null should not remove anything");
+    }
+
+    [Fact]
+    public void RemoveProjectionCommand_WithWhitespace_DoesNotThrow()
+    {
+        var (vm, _) = CreateSut();
+        vm.AddProjectionCommand.Execute("Chest PA");
+
+        vm.RemoveProjectionCommand.Execute("  ");
+
+        vm.SelectedProjections.Should().ContainSingle("Chest PA", "removing whitespace should not remove anything");
+    }
+
+    [Fact]
+    public void RemoveDescriptionCommand_WithNull_DoesNotThrow()
+    {
+        var (vm, _) = CreateSut();
+        vm.AddDescriptionCommand.Execute("Routine");
+
+        vm.RemoveDescriptionCommand.Execute(null);
+
+        vm.SelectedDescriptions.Should().ContainSingle("Routine", "removing null should not remove anything");
+    }
+
+    [Fact]
+    public void AddDescriptionCommand_WithWhitespaceOnly_DoesNotAdd()
+    {
+        var (vm, _) = CreateSut();
+        vm.DescriptionInput = "   ";
+
+        vm.AddDescriptionCommand.Execute(null);
+
+        vm.SelectedDescriptions.Should().BeEmpty();
+    }
+
+    [Fact]
+    public void IsAccNoAutoGenerate_WhenToggledOn_RegeneratesAccessionNumber()
+    {
+        var (vm, _) = CreateSut();
+
+        vm.ToggleAccNoAutoGenerateCommand.Execute(null); // disable
+        vm.AccessionNumber = "MANUAL-ACC-123";
+
+        // Add a delay to ensure timestamp changes (1 second to be safe)
+        Thread.Sleep(1000);
+
+        vm.ToggleAccNoAutoGenerateCommand.Execute(null); // re-enable
+
+        vm.AccessionNumber.Should().StartWith("ACC", "re-enabling auto-generate should regenerate the accession number");
+    }
 }
