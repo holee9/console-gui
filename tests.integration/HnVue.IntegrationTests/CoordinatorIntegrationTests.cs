@@ -1282,4 +1282,158 @@ public sealed class CoordinatorIntegrationTests
         vm.PreviewStudiesA.Should().HaveCount(1);
         vm.PreviewStudiesA[0].Study.Description.Should().Be("ABD");
     }
+
+    // ── Scenario 12: SettingsViewModel Tab Selection ───────────────────────────
+
+    /// <summary>
+    /// Integration test: SettingsViewModel tab selection updates ActiveTab property.
+    /// SWR-COORD-110: SettingsViewModel tab navigation works through command.
+    /// </summary>
+    [Fact]
+    [Trait("SWR", "SWR-COORD-110")]
+    public void Settings_TabSelection_UpdatesActiveTabProperty()
+    {
+        // Arrange
+        var settingsViewModel = new SettingsViewModel();
+
+        // Act — select Account tab
+        settingsViewModel.ActiveTab = "Account";
+
+        // Assert
+        settingsViewModel.ActiveTab.Should().Be("Account", "ActiveTab should update to Account");
+
+        // Act — select Network tab
+        settingsViewModel.ActiveTab = "Network";
+
+        // Assert
+        settingsViewModel.ActiveTab.Should().Be("Network", "ActiveTab should update to Network");
+    }
+
+    /// <summary>
+    /// Integration test: SettingsViewModel SaveCommand raises SaveCompleted event.
+    /// SWR-COORD-110: SettingsViewModel save notification works through event.
+    /// </summary>
+    [Fact]
+    [Trait("SWR", "SWR-COORD-110")]
+    public async Task Settings_SaveCommand_RaisesSaveCompletedEvent()
+    {
+        // Arrange
+        var settingsViewModel = new SettingsViewModel();
+        var eventRaised = false;
+        settingsViewModel.SaveCompleted += (_, _) => eventRaised = true;
+
+        // Act
+        await settingsViewModel.SaveCommand.ExecuteAsync(null);
+
+        // Assert
+        eventRaised.Should().BeTrue("SaveCompleted event should be raised when SaveCommand executes");
+        settingsViewModel.IsLoading.Should().BeFalse("IsLoading should be false after save completes");
+    }
+
+    /// <summary>
+    /// Integration test: SettingsViewModel CancelCommand raises Cancelled event.
+    /// SWR-COORD-110: SettingsViewModel cancel notification works through event.
+    /// </summary>
+    [Fact]
+    [Trait("SWR", "SWR-COORD-110")]
+    public void Settings_CancelCommand_RaisesCancelledEvent()
+    {
+        // Arrange
+        var settingsViewModel = new SettingsViewModel();
+        var eventRaised = false;
+        settingsViewModel.Cancelled += (_, _) => eventRaised = true;
+
+        // Act
+        settingsViewModel.CancelCommand.Execute(null);
+
+        // Assert
+        eventRaised.Should().BeTrue("Cancelled event should be raised when CancelCommand executes");
+    }
+
+    /// <summary>
+    /// Integration test: SettingsViewModel properties have expected default values.
+    /// SWR-COORD-110: SettingsViewModel initializes with correct defaults.
+    /// </summary>
+    [Fact]
+    [Trait("SWR", "SWR-COORD-110")]
+    public void Settings_Properties_HaveExpectedDefaults()
+    {
+        // Arrange & Act
+        var settingsViewModel = new SettingsViewModel();
+
+        // Assert — default tab
+        settingsViewModel.ActiveTab.Should().Be("System", "Default active tab should be System");
+
+        // Assert — account defaults
+        settingsViewModel.NewAccountId.Should().BeEmpty("NewAccountId should be empty initially");
+        settingsViewModel.NewAccountRole.Should().Be("Technician", "Default role should be Technician");
+
+        // Assert — network defaults
+        settingsViewModel.PacsServerAddress.Should().BeEmpty("PACS server address should be empty initially");
+        settingsViewModel.PacsServerPort.Should().Be(104, "Default PACS port should be 104");
+        settingsViewModel.WorklistServerAddress.Should().BeEmpty("Worklist server address should be empty initially");
+        settingsViewModel.WorklistServerPort.Should().Be(4006, "Default Worklist port should be 4006");
+
+        // Assert — RIS tab defaults
+        settingsViewModel.ActiveRisTab.Should().Be("Matching", "Default RIS tab should be Matching");
+
+        // Assert — state defaults
+        settingsViewModel.IsLoading.Should().BeFalse("IsLoading should be false initially");
+        settingsViewModel.ErrorMessage.Should().BeNull("ErrorMessage should be null initially");
+    }
+
+    /// <summary>
+    /// Integration test: SettingsViewModel DI registration as ISettingsViewModel.
+    /// SWR-COORD-110: SettingsViewModel implements ISettingsViewModel contract.
+    /// </summary>
+    [Fact]
+    [Trait("SWR", "SWR-COORD-110")]
+    public void Settings_DI_Registration_ISettingsViewModel()
+    {
+        // Arrange
+        var services = new ServiceCollection();
+        SetupMinimalServices(services);
+        var provider = services.BuildServiceProvider();
+
+        // Act
+        var settingsViewModel = provider.GetService<ISettingsViewModel>();
+
+        // Assert — resolved successfully
+        settingsViewModel.Should().NotBeNull("ISettingsViewModel must resolve from DI container");
+
+        // Assert — interface contract
+        settingsViewModel!.Tabs.Should().NotBeEmpty("Tabs collection should not be empty");
+        settingsViewModel.AvailableRoles.Should().NotBeEmpty("AvailableRoles should not be empty");
+        settingsViewModel.SaveCommand.Should().NotBeNull("SaveCommand should be available");
+        settingsViewModel.CancelCommand.Should().NotBeNull("CancelCommand should be available");
+        settingsViewModel.SelectTabCommand.Should().NotBeNull("SelectTabCommand should be available");
+    }
+
+    /// <summary>
+    /// Integration test: SettingsViewModel PACS and Worklist properties work with data binding.
+    /// SWR-COORD-110: Network settings properties support two-way binding.
+    /// </summary>
+    [Fact]
+    [Trait("SWR", "SWR-COORD-110")]
+    public void Settings_NetworkProperties_DataBindingWorksCorrectly()
+    {
+        // Arrange
+        var settingsViewModel = new SettingsViewModel();
+
+        // Act — set PACS server properties
+        settingsViewModel.PacsServerAddress = "192.168.1.100";
+        settingsViewModel.PacsServerPort = 11112;
+
+        // Assert
+        settingsViewModel.PacsServerAddress.Should().Be("192.168.1.100", "PACS server address should update");
+        settingsViewModel.PacsServerPort.Should().Be(11112, "PACS server port should update");
+
+        // Act — set Worklist server properties
+        settingsViewModel.WorklistServerAddress = "192.168.1.200";
+        settingsViewModel.WorklistServerPort = 4006;
+
+        // Assert
+        settingsViewModel.WorklistServerAddress.Should().Be("192.168.1.200", "Worklist server address should update");
+        settingsViewModel.WorklistServerPort.Should().Be(4006, "Worklist server port should update");
+    }
 }
