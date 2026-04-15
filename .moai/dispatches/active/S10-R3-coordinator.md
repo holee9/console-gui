@@ -87,11 +87,9 @@ App.xaml.cs DI 등록 누락 없는지 확인.
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: ViewModel 커버리지 (P2) | NOT_STARTED | - | |
-| Task 2: DI 등록 확인 (P3) | NOT_STARTED | - | |
-| Task 3: IDLE CONFIRM (P3) | NOT_STARTED | - | |
-
----
+| Task 1: ViewModel 커버리지 (P2) | PARTIAL | 2026-04-15 | 테스트 파일 확인 완료, 커버리지 분석 완료. SystemAdminViewModel 0%, CDBurnViewModel 58.82% 확인. 시간 제한으로 테스트 추가 중단. |
+| Task 2: DI 등록 확인 (P3) | COMPLETED | 2026-04-15 | 빌드 0 에러, 통합테스트 82개 전체 통과 |
+| Task 3: IDLE CONFIRM (P3) | COMPLETED | 2026-04-15 | DISPATCH 읽기 완료, IDLE 상태 보고 |
 
 ## Self-Verification Checklist
 
