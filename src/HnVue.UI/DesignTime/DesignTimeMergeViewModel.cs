@@ -17,10 +17,13 @@ public sealed partial class DesignTimeMergeViewModel : ObservableObject
         SearchACommand = new RelayCommand(() => { });
         SearchBCommand = new RelayCommand(() => { });
         CancelCommand = new RelayCommand(() => { });
-        SyncStudyCommand = new RelayCommand(() => { });
+        MergeCommand = new RelayCommand(() => { });
 
         PatientsA = new ObservableCollection<DesignTimeMergePatient>(CreateSamplePatientsA());
         PatientsB = new ObservableCollection<DesignTimeMergePatient>(CreateSamplePatientsB());
+
+        PreviewStudiesA = new ObservableCollection<DesignTimeStudyItem>(CreateSampleStudies());
+        PreviewStudiesB = new ObservableCollection<DesignTimeStudyItem>(CreateSampleStudies());
 
         SelectedPatientA = PatientsA.FirstOrDefault();
         SelectedPatientB = PatientsB.Skip(1).FirstOrDefault();
@@ -44,11 +47,26 @@ public sealed partial class DesignTimeMergeViewModel : ObservableObject
     [ObservableProperty]
     private string _searchQueryB = string.Empty;
 
+    // Preview studies (center thumbnail strip)
+    public ObservableCollection<DesignTimeStudyItem> PreviewStudiesA { get; }
+
+    public ObservableCollection<DesignTimeStudyItem> PreviewStudiesB { get; }
+
+    [ObservableProperty]
+    private DesignTimeStudyItem? _selectedPreviewStudy;
+
+    // Selected studies for merge
+    public ObservableCollection<DesignTimeStudyItem> SelectedStudies { get; } = [];
+
+    // Error message display
+    [ObservableProperty]
+    private string? _errorMessage;
+
     // Commands
     public ICommand SearchACommand { get; }
     public ICommand SearchBCommand { get; }
     public ICommand CancelCommand { get; }
-    public ICommand SyncStudyCommand { get; }
+    public ICommand MergeCommand { get; }
 
     private static List<DesignTimeMergePatient> CreateSamplePatientsA() =>
     [
@@ -78,4 +96,20 @@ public sealed partial class DesignTimeMergeViewModel : ObservableObject
         public required string Name { get; init; }
         public required string PatientId { get; init; }
     }
+
+    /// <summary>Mock study item for MergeView thumbnail strip rendering.</summary>
+    public sealed class DesignTimeStudyItem
+    {
+        public required string Description { get; init; }
+        public required string BodyPart { get; init; }
+        public required string StudyDate { get; init; }
+    }
+
+    private static List<DesignTimeStudyItem> CreateSampleStudies() =>
+    [
+        new() { Description = "Chest PA", BodyPart = "Chest", StudyDate = "2026-04-15" },
+        new() { Description = "Abdomen CT", BodyPart = "Abdomen", StudyDate = "2026-04-14" },
+        new() { Description = "Skull LAT", BodyPart = "Skull", StudyDate = "2026-04-13" },
+        new() { Description = "Spine AP", BodyPart = "Spine", StudyDate = "2026-04-12" },
+    ];
 }

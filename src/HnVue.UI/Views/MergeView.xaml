@@ -4,8 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:converters="clr-namespace:HnVue.UI.Converters"
+             xmlns:designTime="clr-namespace:HnVue.UI.DesignTime"
              mc:Ignorable="d"
-             d:DesignHeight="700" d:DesignWidth="1000">
+             d:DesignHeight="700" d:DesignWidth="1000"
+             d:DataContext="{d:DesignInstance designTime:DesignTimeMergeViewModel, IsDesignTimeCreatable=True}">
     <!--
         @MX:NOTE MergeView — "Sync Study" dialog. PPT 슬라이드 13.
                  Renamed from "Same Studylist". Three-column layout:
