@@ -58,7 +58,7 @@ ToastItem 완료 (68.9% → 85%+), 다른 Components/Converters 낮음:
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: UI 커버리지 (P2) | NOT_STARTED | - | 2.7% gap 해소 |
+| Task 1: UI 커버리지 (P2) | IN_PROGRESS | - | Converters/Services 테스트 작성 시작 |
 | Task 2: IDLE CONFIRM (P3) | NOT_STARTED | - | - |
 
 ---
