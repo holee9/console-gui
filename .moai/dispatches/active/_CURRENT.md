@@ -34,7 +34,7 @@ _CURRENT.md에서 자신의 팀이 IDLE이면:
 
 ---
 
-Updated: 2026-04-16 (S10-R4: 6/6 MERGED — Sprint S10 종료)
+Updated: 2026-04-16 (S11-R1: 6/6 ACTIVE — Sprint S11 시작)
 DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/`
 
 ---
@@ -43,14 +43,14 @@ DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/
 
 | 팀 | 현재 DISPATCH 파일 | 상태 | 비고 |
 |----|-------------------|------|------|
-| **QA** | - | **IDLE** | S10-R4 MERGED (CONDITIONAL PASS, 81.3%) |
-| **Team A** | - | **IDLE** | S10-R4 MERGED (Data+Update 85%+, 52 테스트) |
-| **Team B** | - | **IDLE** | S10-R4 MERGED (Dicom 86.02%) |
-| **Coordinator** | - | **IDLE** | S10-R4 MERGED (ToastItem 32 테스트) |
-| **RA** | - | **IDLE** | S10-R4 MERGED (문서 동기화 불필요) |
-| **Design** | - | **IDLE** | S10-R4 MERGED (IDLE CONFIRM) |
+| **QA** | S11-R1-qa.md | **ACTIVE** | QA Gate 검증 (PASS 전환 목표) |
+| **Team A** | S11-R1-team-a.md | **ACTIVE** | Data 50%→85%, Update 88.9%→90% |
+| **Team B** | S11-R1-team-b.md | **ACTIVE** | IDLE CONFIRM |
+| **Coordinator** | S11-R1-coordinator.md | **ACTIVE** | UI 82.3%→85% (Converters/Services) |
+| **RA** | S11-R1-ra.md | **ACTIVE** | 문서 동기화 확인 |
+| **Design** | S11-R1-team-design.md | **ACTIVE** | SettingsView PPT (슬라이드 14-22) |
 
-**→ S10-R4: 6/6 MERGED — Sprint S10 종료**
+**→ S11-R1: 6/6 ACTIVE — Sprint S11 시작**
 
 ---
 
@@ -98,6 +98,7 @@ git push origin team/{your-team}
 | 2026-04-15 | **S10 R2** | **S10-R2-*.md** | 3팀 MERGED, 3팀 IDLE |
 | 2026-04-15 | **S10 R3** | **S10-R3-*.md** | 전팀 MERGED (Coordinator 92.58%, QA CONDITIONAL PASS, Design MergeView) |
 | 2026-04-16 | **S10 R4** | **S10-R4-*.md** | 6/6 MERGED, QA CONDITIONAL PASS (81.3%) |
+| 2026-04-16 | **S11 R1** | **S11-R1-*.md** | 6팀 발행 (갭 분석 기반, PASS 전환 목표) |
 
 ---
 
