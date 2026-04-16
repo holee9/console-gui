@@ -70,3 +70,22 @@ ToastItem 완료 (68.9% → 85%+), 다른 Components/Converters 낮음:
 - [ ] 커버리지 85%+ 달성
 - [ ] DISPATCH Status 업데이트 완료
 - [ ] `/clear` 실행 완료
+
+---
+
+## [HARD] 15분 동기화 프로토콜 (S11-R1부터 적용)
+
+**작업 진행 중 주기적 상태 보고:**
+1. **DISPATCH 읽기 직후**: Status `NOT_STARTED` → `IN_PROGRESS` 업데이트 + push
+2. **15분마다**: 작업 진행 상황 확인 + 필요 시 Status 업데이트
+3. **작업 완료 시**: Status `IN_PROGRESS` → `COMPLETED` + 빌드 증거 + push
+4. **작업 불가 시**: Status `NOT_STARTED` → `BLOCKED` + 사유 기재 + push
+
+**예시 Status 업데이트:**
+```markdown
+| Task | 상태 | 완료 시각 | 비고 |
+|------|------|---------|------|
+| Task 1: UI 커버리지 (P2) | IN_PROGRESS | - | Converters 테스트 작성 중 (15분 경과) |
+```
+
+**목적**: CC가 20분 모니터링 시 실시간 진행상황 파악

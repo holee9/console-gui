@@ -310,6 +310,53 @@ CC가 DISPATCH Status 확인 → 머지 → _CURRENT.md 업데이트
 6. "S{N}-R{M} 발행 완료 (6팀)" 보고
 ```
 
+### CC 모니터링 주기 [HARD — Effective S11-R1]
+
+**20분 모니터링 + 15분 팀 동기화 (자율주행 진화 v3.0)**
+
+- [HARD] CC 모니터링 주기: **20분** (S10-R4 데이터: 평균 팀간 간격 30분의 66%)
+- [HARD] 팀 작업 동기화 주기: **15분** (S10-R4 데이터: 표준편차 21분의 72%)
+- [HARD] **자율주행 진화**: S11 데이터 축적 → S11 종료 후 분석 → S12부터 최적화 적용
+
+**모니터링 절차:**
+```
+1. git fetch origin
+2. git log --oneline origin/team/* --not main (6팀)
+3. DISPATCH 파일 Status 테이블 확인
+4. COMPLETED → 소유권 검증 → 머지 → _CURRENT.md 업데이트
+5. 20분 후 다시 모니터링 (루프)
+```
+
+**팀 동기화 규칙:**
+```
+1. DISPATCH 읽기 직후: Status NOT_STARTED → IN_PROGRESS 업데이트 + push
+2. 작업 진행 중: 15분마다 Status 확인 + 필요 시 업데이트
+3. 작업 완료 시: Status IN_PROGRESS → COMPLETED + 빌드 증거 + push
+4. 작업 불가 시: Status NOT_STARTED → BLOCKED + 사유 기재 + push
+```
+
+**비상 규칙:**
+- [HARD] 전팀 MERGED 후 **1시간 이내** 다음 라운드 발행 미준비 = 사용자 즉시 보고
+- [HARD] S10-R4→S11-R1 사례(12시간 지연) 재발 방지
+- [HARD] CC 모니터링 0회 = 프로토콜 위반 (S11-R1 교훈)
+
+**진화 메트릭 (데이터 기반 최적화 목표):**
+| 지표 | S10 기준 | S11 목표 | S12 목표 |
+|------|----------|----------|----------|
+| 라운드 소요 시간 | 2시간 1분 | 1시간 30분 | 1시간 15분 |
+| CC 모니터링 횟수 | 0회 (실패) | 6회/라운드 | 4회/라운드 |
+| 전팀 MERGED→발행 | 11시간 53분 | 10분 이내 | 5분 이내 |
+| 팀간 완료 편차 | 18분 | 10분 | 5분 |
+
+**데이터 기반 최적 주기 (Phase 3 공식):**
+```
+최적 CC 모니터링 주기 = (평균 팀간 완료 간격) × 0.5
+최적 팀 동기화 주기 = (표준편차) × 0.8
+```
+S10-R4 데이터 기반: 15분/17분 → 20분/15분 설정 (보수적 조정)
+
+---
+
 ## Issue Tracking Protocol [HARD — Effective S05-R2]
 
 ### Pre-Work Issue Registration (Mandatory)

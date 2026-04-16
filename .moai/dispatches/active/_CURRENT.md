@@ -39,6 +39,23 @@ DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/
 
 ---
 
+## [HARD] CC 모니터링 주기 (S11-R1부터 적용)
+
+- **CC 모니터링**: 20분 간격 (git log + DISPATCH Status 확인)
+- **팀 동기화**: 15분 간격 (DISPATCH Status 주기적 업데이트)
+- **자율주행 진화**: S11 데이터 축적 → S12 최적화 적용
+
+**모니터링 절차**:
+1. `git fetch origin`
+2. `git log --oneline origin/team/* --not main` (6팀)
+3. DISPATCH 파일 Status 테이블 확인
+4. COMPLETED → 소유권 검증 → 머지 → _CURRENT.md 업데이트
+5. 20분 후 다시 모니터링 (루프)
+
+---
+
+---
+
 ## 현재 팀별 DISPATCH 상태
 
 | 팀 | 현재 DISPATCH 파일 | 상태 | 비고 |
