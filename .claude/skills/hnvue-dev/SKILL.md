@@ -11,7 +11,7 @@ metadata:
   version: "1.0.0"
   category: "workflow"
   status: "active"
-  updated: "2026-04-09"
+  updated: "2026-04-16"
 ---
 
 # HnVue Development Orchestrator
