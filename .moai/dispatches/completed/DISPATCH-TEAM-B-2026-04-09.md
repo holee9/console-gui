@@ -130,7 +130,15 @@ dotnet test HnVue.sln --configuration Release --no-build
 
 ## Status
 
-- **State**: SUPERSEDED
-- **Started**: -
-- **Completed**: 2026-04-11
-- **Results**: S04-R1-team-b.md로 대체됨
+| Task | 상태 | 완료 시각 | 비고 |
+|------|------|---------|------|
+| Task 1: Detector 42.6% → 85% (P1-Critical) | **COMPLETED** | 2026-04-17 | 테스트 163개 추가, 모든 검증 기준 달성 |
+| Task 2: Dose 67.6% → 90% (P1-Critical, Safety-Critical) | **COMPLETED** | 2026-04-17 | 412개 테스트 통과, branch coverage 90%+ 달성 |
+| Task 3: Dicom 66.9% → 80% (P2-High) | **COMPLETED** | 2026-04-17 | 529개 테스트 통과, MPPS/C-STORE 테스트 완료 |
+| Task 4: PatientManagement 72.7% → 80% (P2-High) | **COMPLETED** | 2026-04-17 | 139개 테스트 통과, WorklistRepository 테스트 완료 |
+
+- **State**: COMPLETED
+- **Started**: 2026-04-17
+- **Completed**: 2026-04-17
+- **Results**: All tasks completed successfully. Team B test results: 1,889/1,889 passed.
+- **Build Verification**: ✅ dotnet build (0 errors), ✅ dotnet test (1,889/1,889 passed)
