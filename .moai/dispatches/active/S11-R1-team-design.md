@@ -64,7 +64,7 @@ SettingsView PPT (슬라이드 14-22) 미구현 상태.
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: SettingsView PPT (P3) | NOT_STARTED | - | 슬라이드 14-22 |
+| Task 1: SettingsView PPT (P3) | IN_PROGRESS | - | 슬라이드 14-22 구현 준비 |
 | Task 2: IDLE CONFIRM (P3) | NOT_STARTED | - | - |
 
 ---
