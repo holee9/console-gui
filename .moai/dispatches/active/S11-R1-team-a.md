@@ -79,9 +79,27 @@ S10-R4 QA CONDITIONAL PASS. 가장 큰 커버리지 갭:
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: Data 커버리지 (P1) | NOT_STARTED | - | 35% gap 해소 목표 |
-| Task 2: Update 커버리지 (P1) | NOT_STARTED | - | Safety-Critical 90%+ |
-| Task 3: IDLE CONFIRM (P3) | NOT_STARTED | - | - |
+| Task 1: Data 커버리지 (P1) | **BLOCKED** | - | 소유권 위반으로 머지 보류 |
+| Task 2: Update 커버리지 (P1) | **BLOCKED** | - | 소유권 위반으로 머지 보류 |
+| Task 3: IDLE CONFIRM (P3) | **BLOCKED** | - | 소유권 위반으로 머지 보류 |
+
+---
+
+## 🚨 CC 강제 지시 (BLOCKED)
+
+**소유권 위반 발견**:
+- Team A가 DISPATCH 파일 (7개)과 .claude 파일들을 수정했습니다
+- 이것은 S09-R3 사고교훈을 위반하는 행위입니다
+- **DISPATCH 파일은 CC 단독 관리 영역입니다**
+
+**머지 보류**:
+- EfUpdateRepository.cs 커밋은 소유권 내 수정이지만
+- DISPATCH 파일 수정이 동반되었으므로 전체 머지 보류
+
+**재지시**:
+- DISPATCH 파일 수정을 되돌리고 (git revert)
+- EfUpdateRepository.cs만 다시 커밋하세요
+- DISPATCH 파일은 CC가 관리합니다
 
 ---
 

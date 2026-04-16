@@ -60,14 +60,14 @@ DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/
 
 | 팀 | 현재 DISPATCH 파일 | 상태 | 비고 |
 |----|-------------------|------|------|
-| **QA** | S11-R1-qa.md | **ACTIVE** | QA Gate 검증 (PASS 전환 목표) |
-| **Team A** | S11-R1-team-a.md | **ACTIVE** | Data 50%→85%, Update 88.9%→90% |
-| **Team B** | S11-R1-team-b.md | **ACTIVE** | IDLE CONFIRM |
-| **Coordinator** | S11-R1-coordinator.md | **ACTIVE** | UI 82.3%→85% (Converters/Services) |
-| **RA** | S11-R1-ra.md | **ACTIVE** | 문서 동기화 확인 |
-| **Design** | S11-R1-team-design.md | **ACTIVE** | SettingsView PPT (슬라이드 14-22) |
+| **Team A** | S11-R1-team-a.md | **BLOCKED** | 소유권 위반 (DISPATCH 파일 수정) |
+| **Team B** | S11-R1-team-b.md | **BLOCKED** | 소유권 위반 + 지시 무시 |
+| **Coordinator** | S11-R1-coordinator.md | **BLOCKED** | 소유권 위반 가능성 |
+| **QA** | S11-R1-qa.md | **BLOCKED** | 언어 프로토콜 위반 (중국어 사용) |
+| **RA** | S11-R1-ra.md | **IDLE** | 이미 머지됨 |
+| **Design** | S11-R1-team-design.md | **IDLE** | 작업 없음 |
 
-**→ S11-R1: 6/6 ACTIVE — Sprint S11 시작**
+**→ S11-R1: 4/6 BLOCKED, 2/6 IDLE — CC 강제 지시 발행**
 
 ---
 

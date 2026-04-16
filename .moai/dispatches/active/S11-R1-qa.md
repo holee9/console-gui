@@ -57,7 +57,22 @@ S10-R4 CONDITIONAL PASS (81.3%). S11-R1에서 Team A (Data+Update)와 Coordinato
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
 | Task 1: QA Gate (P1) | NOT_STARTED | - | Team A/Coordinator 완료 시 |
-| Task 2: IDLE CONFIRM (P3) | NOT_STARTED | - | 선행 팀 대기 |
+| Task 2: IDLE CONFIRM (P3) | **BLOCKED** | - | 언어 프로토콜 위반 |
+
+---
+
+## 🚨 CC 강제 지시 (BLOCKED)
+
+**언어 프로토콜 위반 발견**:
+- QA가 중국어로 보고서를 출력했습니다
+- 설정: `conversation_language: ko`
+- 위반: 중국어 사용 (监控时间, 当前状态, 等待先行团队完成)
+
+**강제 지시**:
+- **모든 보고서는 한국어로 작성하세요**
+- 중국어 사용을 즉시 중지하세요
+- Status 업데이트는 한국어로 작성하세요
+- 언어 프로토콜을 준수하세요
 
 ---
 
