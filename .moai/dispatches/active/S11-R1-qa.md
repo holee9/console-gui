@@ -56,8 +56,8 @@ S10-R4 CONDITIONAL PASS (81.3%). S11-R1에서 Team A (Data+Update)와 Coordinato
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: QA Gate (P1) | IN_PROGRESS | - | Team A/Coordinator 완료 대기 중 |
-| Task 2: IDLE CONFIRM (P3) | NOT_STARTED | - | 선행 팀 대기 |
+| Task 1: QA Gate (P1) | NOT_STARTED | - | Team A/Coordinator 완료 대기 중 (트리거 미충족)
+| Task 2: IDLE CONFIRM (P3) | IN_PROGRESS | 2026-04-16 | 선행 팀(Team A, Team B, Coordinator) ACTIVE 상태 - 대기 중 |
 
 ---
 
