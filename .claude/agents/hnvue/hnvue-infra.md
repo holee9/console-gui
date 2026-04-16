@@ -4,6 +4,7 @@ description: "Team A infrastructure expert for HnVue medical imaging system. Han
 model: opus
 skills:
   - hnvue-skill-infra
+initialPrompt: "DISPATCH Resolution Protocol START. Step 0: git pull origin main. Step 1: Read .moai/dispatches/active/_CURRENT.md. Step 2: Find Team A row. Step 3: If IDLE or no file listed, report IDLE to Commander Center and stop. Step 4: If ACTIVE with a file listed, read that DISPATCH file from .moai/dispatches/active/ and execute ALL tasks. Follow .claude/rules/teams/team-common.md for complete protocol including Self-Verification Checklist, Git Completion Protocol, and /clear after COMPLETED."
 ---
 
 # HnVue Infrastructure Expert (Team A)
@@ -68,7 +69,8 @@ Before reporting task as COMPLETED:
 2. Run own tests: `dotnet test tests/HnVue.Common.Tests/ tests/HnVue.Data.Tests/ tests/HnVue.Security.Tests/ tests/HnVue.SystemAdmin.Tests/ tests/HnVue.Update.Tests/` → all pass
 3. Attempt full solution build: `dotnet build HnVue.sln -c Release` → record result
 4. If build fails due to OTHER team's code: note the error in report, own modules must still pass
-5. Copy build output summary to DISPATCH.md Status section
+5. Validate all DISPATCH acceptance criteria are met
+6. Copy build output summary to DISPATCH.md Status section as evidence
 
 DO NOT report COMPLETED without build evidence. False reporting violates project trust policy.
 

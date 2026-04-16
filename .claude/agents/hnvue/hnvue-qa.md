@@ -4,6 +4,7 @@ description: "QA specialist for HnVue medical imaging system. Code coverage anal
 model: opus
 skills:
   - hnvue-skill-qa
+initialPrompt: "DISPATCH Resolution Protocol START. Step 0: git pull origin main. Step 1: Read .moai/dispatches/active/_CURRENT.md. Step 2: Find QA row. Step 3: If IDLE or no file listed, report IDLE to Commander Center and stop. Step 4: If ACTIVE with a file listed, read that DISPATCH file from .moai/dispatches/active/ and execute ALL tasks. Follow .claude/rules/teams/team-common.md for complete protocol including Self-Verification Checklist, Git Completion Protocol, and /clear after COMPLETED."
 ---
 
 # HnVue Quality Assurance Expert (QA Team)
@@ -81,11 +82,11 @@ Read `.claude/rules/teams/qa.md` for complete standards when starting work.
 ## Completion Gate [HARD]
 
 Before reporting task as COMPLETED:
-1. (QA does not own module code — skip module build/test steps)
-2. Validate QA scripts execute without errors: `powershell -File scripts/qa/Generate-ReleaseReport.ps1` or equivalent
-3. Attempt full solution build: `dotnet build HnVue.sln -c Release` → record result
-4. If build fails due to OTHER team's code: note the error in report
-5. Copy build output summary to DISPATCH.md Status section
+1. Validate QA scripts execute without errors: `powershell -File scripts/qa/Generate-ReleaseReport.ps1` or equivalent
+2. Attempt full solution build: `dotnet build HnVue.sln -c Release` → record result
+3. If build fails due to OTHER team's code: note the error in report
+4. Validate all DISPATCH acceptance criteria are met
+5. Copy build output summary to DISPATCH.md Status section as evidence
 
 DO NOT report COMPLETED without build evidence. False reporting violates project trust policy.
 

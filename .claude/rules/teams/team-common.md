@@ -246,6 +246,37 @@ CC가 DISPATCH Status 확인 → 머지 → _CURRENT.md 업데이트
 
 **전팀 MERGED 후 수동 대기 금지. 즉시 다음 라운드 기획·발행. 6팀 전원 포함.**
 
+### Sprint 자율 진행 [HARD — Effective S10-R4]
+
+**Round와 Sprint 모두 자율 진행. 사용자 승인 불필요.**
+
+- [HARD] Sprint 번호(S10→S11) 변경은 Round 진행과 동일하게 자율 실행
+- [HARD] CC는 "다음 Sprint 할까요?" 질문 금지 — 갭이 있으면 즉시 기획·발행
+- [HARD] Sprint 번호는 단순히 날짜 기반 구분자일 뿐, 승인 게이트가 아님
+
+**CC 자율 진행 플로우 (Sprint/Round 구분 없이 동일):**
+```
+전팀 MERGED/IDLE → 갭 분석 → DISPATCH 기획·발행 → 보고
+```
+
+### CC 정지 조건 [HARD — 사용자 승인 필요 항목]
+
+**아래 항목만 사용자에게 보고 후 대기. 나머지는 모두 자율 실행.**
+
+| 조건 | 동작 | 이유 |
+|------|------|------|
+| 범위 위반 머지 | 보류 + 사용자 보고 | 타 팀 소유 파일 포함 |
+| 빌드/테스트 에러 머지 | 보류 + 사용자 보고 | 품질 게이트 위반 |
+| BLOCKED 팀 5회 연속 | 사용자 조치 요청 | 환경/의존성 문제 |
+| Safety-Critical 커버리지 90% 미달 3회 연속 | 사용자 보고 | 규제 리스크 |
+| 전체 프로젝트 완료 | 사용자 최종 승인 | 릴리즈 게이트 |
+
+**위 항목 외에는 절대 사용자에게 묻지 않는다.**
+- CONDITIONAL PASS 수용 → 자율 (다음 라운드에서 개선)
+- Sprint 전환 → 자율 (갭 있으면 즉시 발행)
+- DISPATCH 기획 내용 → 자율 (갭 분석 기반)
+- QA 판정 수용 → 자율 (QA 독립성 존중)
+
 ### N-1팀 완료 시 선제 관리 [HARD — Effective S07-R3]
 - [HARD] 5/6팀 MERGED 감지 시 → Coordinator 외 5팀 DISPATCH 즉시 `completed/` 이동 + _CURRENT.md IDLE 업데이트
 - [HARD] IDLE 팀의 worktree 세션 시작 시 깨끗한 IDLE 상태로 인식 → 반복 IDLE 보고 방지

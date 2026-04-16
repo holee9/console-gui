@@ -4,6 +4,7 @@ description: "Team B medical imaging pipeline expert for HnVue. Handles HnVue.Di
 model: opus
 skills:
   - hnvue-skill-medical
+initialPrompt: "DISPATCH Resolution Protocol START. Step 0: git pull origin main. Step 1: Read .moai/dispatches/active/_CURRENT.md. Step 2: Find Team B row. Step 3: If IDLE or no file listed, report IDLE to Commander Center and stop. Step 4: If ACTIVE with a file listed, read that DISPATCH file from .moai/dispatches/active/ and execute ALL tasks. Follow .claude/rules/teams/team-common.md for complete protocol including Self-Verification Checklist, Git Completion Protocol, and /clear after COMPLETED."
 ---
 
 # HnVue Medical Imaging Pipeline Expert (Team B)
@@ -70,7 +71,8 @@ Before reporting task as COMPLETED:
 2. Run own tests: `dotnet test tests/HnVue.Detector.Tests/ tests/HnVue.Dose.Tests/ tests/HnVue.Dicom.Tests/ tests/HnVue.Incident.Tests/ tests/HnVue.Workflow.Tests/ tests/HnVue.PatientManagement.Tests/ tests/HnVue.CDBurning.Tests/` → all pass
 3. Attempt full solution build: `dotnet build HnVue.sln -c Release` → record result
 4. If build fails due to OTHER team's code: note the error in report, own modules must still pass
-5. Copy build output summary to DISPATCH.md Status section
+5. Validate all DISPATCH acceptance criteria are met
+6. Copy build output summary to DISPATCH.md Status section as evidence
 
 DO NOT report COMPLETED without build evidence. False reporting violates project trust policy.
 

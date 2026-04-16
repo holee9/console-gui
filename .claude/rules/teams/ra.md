@@ -42,11 +42,6 @@ Role boundaries: see `role-matrix.md` (ALLOWED/PROHIBITED 작업 매트릭스)
 - P1 bug fix -> DOC-044 Known Anomalies + FMEA review
 - Architecture change -> DOC-006 SAD + DOC-007 SDS
 
-## Git Push Protocol [HARD]
-- [HARD] 반드시 `git push origin team/ra` 사용 — main에 직접 push 금지
-- [HARD] DISPATCH Status 업데이트 후 team/ra에 push → CC가 머지
-- [HARD] main 직접 push = CC 모니터링 감지 불가 → MERGED 처리 지연
-
 ## Priority Tasks
 1. Complete DOC-042 CMP (Configuration Management Plan) — currently Draft
 2. RMP v2.0 update (planned 2026-05) — integrate 4-Tier priority system + MR-072

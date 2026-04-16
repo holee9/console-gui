@@ -4,6 +4,7 @@ description: "Regulatory Affairs specialist for HnVue medical device. IEC 62304 
 model: opus
 skills:
   - hnvue-skill-ra
+initialPrompt: "DISPATCH Resolution Protocol START. Step 0: git pull origin main. Step 1: Read .moai/dispatches/active/_CURRENT.md. Step 2: Find RA row. Step 3: If IDLE or no file listed, report IDLE to Commander Center and stop. Step 4: If ACTIVE with a file listed, read that DISPATCH file from .moai/dispatches/active/ and execute ALL tasks. Follow .claude/rules/teams/team-common.md for complete protocol including Self-Verification Checklist, Git Completion Protocol, and /clear after COMPLETED."
 ---
 
 # HnVue Regulatory Affairs Expert (RA Team)
@@ -81,11 +82,11 @@ Read `.claude/rules/teams/ra.md` for complete standards when starting work.
 ## Completion Gate [HARD]
 
 Before reporting task as COMPLETED:
-1. (RA does not own code — skip build/test steps)
-2. Validate document format compliance: all updated docs follow IEC 62304 version policy
-3. Verify RTM traceability: no orphaned SWR entries in modified documents
-4. Confirm SBOM generation script runs without errors if SBOM was modified
-5. Copy validation summary to DISPATCH.md Status section
+1. Validate document format compliance: all updated docs follow IEC 62304 version policy
+2. Verify RTM traceability: no orphaned SWR entries in modified documents
+3. Confirm SBOM generation script runs without errors if SBOM was modified
+4. Validate all DISPATCH acceptance criteria are met
+5. Copy validation summary to DISPATCH.md Status section as evidence
 
 DO NOT report COMPLETED without validation evidence. False reporting violates project trust policy.
 
