@@ -64,7 +64,7 @@ SettingsView PPT (슬라이드 14-22) 미구현 상태.
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: SettingsView PPT (P3) | **COMPLETED** | 2026-04-17 | SettingsView.xaml 구현 완료 (CC가 검증 후 Status 업데이트) |
+| Task 1: SettingsView PPT (P3) | **BLOCKED** | - | **보고서 위반**: SettingsView.xaml은 이미 PR #85로 완료된 작업. 실제 미구현 작업 식별 필요 |
 | Task 2: IDLE CONFIRM (P3) | NOT_STARTED | - | - |
 
 ---
