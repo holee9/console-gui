@@ -14,7 +14,7 @@ namespace HnVue.Detector.OwnDetector;
 /// </param>
 /// <param name="BitsPerPixel">Detector pixel depth (default: 14 for 자사 CsI panel).</param>
 public sealed record OwnDetectorConfig(
-    string Host,
+    string Host = "192.168.1.100",  // Non-nullable string enables null check
     int Port = 8888,
     int ReadoutTimeoutMs = 5000,
     int ArmTimeoutMs = 2000,
