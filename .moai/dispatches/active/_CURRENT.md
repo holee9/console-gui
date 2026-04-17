@@ -61,13 +61,13 @@ DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/
 | 팀 | 현재 DISPATCH 파일 | 상태 | 비고 |
 |----|-------------------|------|------|
 | **Team A** | S11-R2-team-a.md | **ACTIVE** | EfUpdateRepository 커버리지 개선 |
-| **Team B** | S11-R2-team-b.md | **ACTIVE** | Dicom C-STORE 에러 처리 개선 |
+| **Team B** | - | **MERGED** | Dicom C-STORE 에러 처리 개선 ✅ |
 | **Coordinator** | S11-R2-coordinator.md | **ACTIVE** | ISettingsViewModel 인터페이스 |
 | **Design** | S11-R2-team-design.md | **ACTIVE** | AcquisitionView 디자인 (슬라이드 9-11) |
-| **QA** | S11-R2-qa.md | **ACTIVE** | 전체 테스트 실행 + 커버리지 측정 |
+| **QA** | - | **MERGED** | 전체 테스트 실행 + 커버리지 리포트 ✅ |
 | **RA** | S11-R2-ra.md | **ACTIVE** | CHANGELOG + SBOM 업데이트 |
 
-**→ S11-R2: 6/6 ACTIVE — 갭 분석 기반 실질 작업 할당**
+**→ S11-R2: 2/6 MERGED, 4/6 ACTIVE**
 
 ---
 
