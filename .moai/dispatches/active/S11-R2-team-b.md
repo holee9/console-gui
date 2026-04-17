@@ -49,8 +49,8 @@ S11-R1 종료. Dicom/Workflow/Imaging 모듈의 안정화 작업 필요.
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: Dicom C-STORE 에러 처리 (P2) | IN_PROGRESS | - | - |
-| Task 2: Workflow 상태 전달 (P3) | NOT_STARTED | - | - |
+| Task 1: Dicom C-STORE 에러 처리 (P2) | COMPLETED | - | - |
+| Task 2: Workflow 상태 전달 (P3) | COMPLETED | - | - |
 
 ---
 
