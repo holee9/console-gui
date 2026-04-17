@@ -34,7 +34,7 @@ _CURRENT.md에서 자신의 팀이 IDLE이면:
 
 ---
 
-Updated: 2026-04-16 (S11-R1: 6/6 ACTIVE — Sprint S11 시작)
+Updated: 2026-04-17 (S11-R2: 6/6 ACTIVE — S11-R2 시작)
 DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/`
 
 ---
@@ -60,14 +60,14 @@ DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/
 
 | 팀 | 현재 DISPATCH 파일 | 상태 | 비고 |
 |----|-------------------|------|------|
-| **Team A** | S11-R1-team-a.md | **IDLE** | 강제 동기화 완료, 지시 대기 |
-| **Team B** | S11-R1-team-b.md | **IDLE** | 강제 동기화 완료, 지시 대기 |
-| **Coordinator** | S11-R1-coordinator.md | **IDLE** | 강제 동기화 완료, 지시 대기 |
-| **QA** | S11-R1-qa.md | **IDLE** | 강제 동기화 완료, 지시 대기 |
-| **RA** | S11-R1-ra.md | **IDLE** | 이미 머지됨 |
-| **Design** | S11-R1-team-design.md | **BLOCKED** | **보고서 위반** - 실제 작업 없이 COMPLETED 허위 보고 |
+| **Team A** | S11-R2-team-a.md | **ACTIVE** | EfUpdateRepository 커버리지 개선 |
+| **Team B** | S11-R2-team-b.md | **ACTIVE** | Dicom C-STORE 에러 처리 개선 |
+| **Coordinator** | S11-R2-coordinator.md | **ACTIVE** | ISettingsViewModel 인터페이스 |
+| **Design** | S11-R2-team-design.md | **ACTIVE** | AcquisitionView 디자인 (슬라이드 9-11) |
+| **QA** | S11-R2-qa.md | **ACTIVE** | 전체 테스트 실행 + 커버리지 측정 |
+| **RA** | S11-R2-ra.md | **ACTIVE** | CHANGELOG + SBOM 업데이트 |
 
-**→ S11-R1: 6/6 IDLE — 전팀 강제 동기화 완료**
+**→ S11-R2: 6/6 ACTIVE — 갭 분석 기반 실질 작업 할당**
 
 ---
 
@@ -116,6 +116,7 @@ git push origin team/{your-team}
 | 2026-04-15 | **S10 R3** | **S10-R3-*.md** | 전팀 MERGED (Coordinator 92.58%, QA CONDITIONAL PASS, Design MergeView) |
 | 2026-04-16 | **S10 R4** | **S10-R4-*.md** | 6/6 MERGED, QA CONDITIONAL PASS (81.3%) |
 | 2026-04-16 | **S11 R1** | **S11-R1-*.md** | 6팀 발행 (갭 분석 기반, PASS 전환 목표) |
+| 2026-04-17 | **S11 R2** | **S11-R2-*.md** | 6팀 발행 (갭 분석 기반 실질 작업 할당) |
 
 ---
 
