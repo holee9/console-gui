@@ -52,8 +52,8 @@ S11-R1 SettingsView 완료 (PR #85).
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: AcquisitionView 디자인 (P2) | NOT_STARTED | - | - |
-| Task 2: DesignToken 업데이트 (P3) | NOT_STARTED | - | - |
+| Task 1: AcquisitionView 디자인 (P2) | **IN_PROGRESS** | 2026-04-17 | PPT 확인 및 작업 시작 |
+| Task 2: DesignToken 업데이트 (P3) | **IN_PROGRESS** | 2026-04-17 | 토큰 업데이트 대기 |
 
 ---
 
