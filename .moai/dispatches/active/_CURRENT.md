@@ -116,6 +116,7 @@ git push origin team/{your-team}
 | 2026-04-15 | **S10 R3** | **S10-R3-*.md** | 전팀 MERGED (Coordinator 92.58%, QA CONDITIONAL PASS, Design MergeView) |
 | 2026-04-16 | **S10 R4** | **S10-R4-*.md** | 6/6 MERGED, QA CONDITIONAL PASS (81.3%) |
 | 2026-04-16 | **S11 R1** | **S11-R1-*.md** | 6팀 발행 (갭 분석 기반, PASS 전환 목표) |
+| 2026-04-17 | **S11 R2** | **S11-R2-*.md** | 6팀 발행 (갭 분석 기반 실질 작업 할당) |
 
 ---
 
