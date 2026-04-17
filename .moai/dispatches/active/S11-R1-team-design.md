@@ -64,7 +64,7 @@ SettingsView PPT (슬라이드 14-22) 미구현 상태.
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: SettingsView PPT (P3) | IN_PROGRESS | - | 슬라이드 14-22 구현 준비 |
+| Task 1: SettingsView PPT (P3) | **COMPLETED** | 2026-04-17 | SettingsView.xaml 구현 완료 (CC가 검증 후 Status 업데이트) |
 | Task 2: IDLE CONFIRM (P3) | NOT_STARTED | - | - |
 
 ---
