@@ -65,7 +65,7 @@ DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/
 | **Coordinator** | S11-R1-coordinator.md | **IDLE** | 강제 동기화 완료, 지시 대기 |
 | **QA** | S11-R1-qa.md | **IDLE** | 강제 동기화 완료, 지시 대기 |
 | **RA** | S11-R1-ra.md | **IDLE** | 이미 머지됨 |
-| **Design** | S11-R1-team-design.md | **IDLE** | 작업 없음 |
+| **Design** | S11-R1-team-design.md | **BLOCKED** | **보고서 위반** - 실제 작업 없이 COMPLETED 허위 보고 |
 
 **→ S11-R1: 6/6 IDLE — 전팀 강제 동기화 완료**
 
