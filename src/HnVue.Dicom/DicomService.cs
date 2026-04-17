@@ -38,71 +38,120 @@ public partial class DicomService : HnVue.Common.Abstractions.IDicomService
         CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(dicomFilePath))
-            return Result.Failure(ErrorCode.DicomStoreFailed, "DICOM file path must not be empty.");
+            return Result.Failure(ErrorCode.DicomStoreFailed, "DICOM 파일 경로가 비어있습니다.");
 
         if (string.IsNullOrWhiteSpace(pacsAeTitle))
-            return Result.Failure(ErrorCode.DicomStoreFailed, "PACS AE title must not be empty.");
+            return Result.Failure(ErrorCode.DicomStoreFailed, "PACS AE Title이 비어있습니다.");
 
         if (!System.IO.File.Exists(dicomFilePath))
-            return Result.Failure(ErrorCode.DicomStoreFailed, $"DICOM file not found: {dicomFilePath}");
+            return Result.Failure(ErrorCode.DicomStoreFailed, $"DICOM 파일을 찾을 수 없습니다: {dicomFilePath}");
 
-        try
+        int maxRetries = _options.StoreRetryCount;
+        int retryDelayMs = _options.StoreRetryDelayMs;
+
+        for (int attempt = 0; attempt <= maxRetries; attempt++)
         {
-            var dicomFile = await DicomFile.OpenAsync(dicomFilePath).ConfigureAwait(false);
-
-            var storeResult = Result.Success();
-            var request = new DicomCStoreRequest(dicomFile);
-            // @MX:NOTE OnResponseReceived callback handles DICOM association response, Success status indicates PACS accepted the C-STORE
-            request.OnResponseReceived = (req, response) =>
+            try
             {
-                if (response.Status != DicomStatus.Success)
+                var dicomFile = await DicomFile.OpenAsync(dicomFilePath).ConfigureAwait(false);
+
+                var storeResult = Result.Success();
+                var request = new DicomCStoreRequest(dicomFile);
+                // @MX:NOTE OnResponseReceived callback handles DICOM association response, Success status indicates PACS accepted the C-STORE
+                request.OnResponseReceived = (req, response) =>
                 {
-                    storeResult = Result.Failure(
-                        ErrorCode.DicomStoreFailed,
-                        $"C-STORE failed with status: {response.Status}");
+                    if (response.Status != DicomStatus.Success)
+                    {
+                        storeResult = Result.Failure(
+                            ErrorCode.DicomStoreFailed,
+                            $"C-STORE 실패: {GetUserFriendlyStatus(response.Status)}");
+                    }
+                };
+
+                var client = CreateClient(_options.PacsHost, _options.PacsPort, _options.LocalAeTitle, pacsAeTitle);
+                await client.AddRequestAsync(request).ConfigureAwait(false);
+                await client.SendAsync(cancellationToken).ConfigureAwait(false);
+
+                if (storeResult.IsFailure)
+                {
+                    LogStoreWarning(_logger, pacsAeTitle, dicomFilePath);
+
+                    // Check if this is a transient error that should be retried
+                    if (attempt < maxRetries && IsTransientError(storeResult.ErrorMessage))
+                    {
+                        _logger.LogWarning("C-STORE transient error detected, retrying ({Attempt}/{MaxRetries}) after {Delay}ms...",
+                            attempt + 1, maxRetries, retryDelayMs);
+                        await Task.Delay(retryDelayMs, cancellationToken).ConfigureAwait(false);
+                        continue;
+                    }
                 }
-            };
+                else
+                {
+                    LogStoreSuccess(_logger, pacsAeTitle, dicomFilePath);
+                }
 
-            var client = CreateClient(_options.PacsHost, _options.PacsPort, _options.LocalAeTitle, pacsAeTitle);
-            await client.AddRequestAsync(request).ConfigureAwait(false);
-            await client.SendAsync(cancellationToken).ConfigureAwait(false);
-
-            if (storeResult.IsFailure)
-                LogStoreWarning(_logger, pacsAeTitle, dicomFilePath);
-            else
-                LogStoreSuccess(_logger, pacsAeTitle, dicomFilePath);
-
-            return storeResult;
-        }
-        catch (OperationCanceledException)
-        {
-            return Result.Failure(ErrorCode.OperationCancelled, "C-STORE operation was cancelled.");
-        }
-        catch (IOException ex)
-        {
-            LogStoreIoError(_logger, ex, dicomFilePath);
-            return Result.Failure(ErrorCode.DicomStoreFailed, $"I/O error: {ex.Message}");
-        }
-        catch (DicomNetworkException ex)
-        {
-            LogNetworkError(_logger, ex, "C-STORE", pacsAeTitle);
-            return Result.Failure(ErrorCode.DicomConnectionFailed, $"Network error: {ex.Message}");
-        }
-        catch (Exception ex) when (ex is not OperationCanceledException
-                                    and not IOException
-                                    and not DicomNetworkException
-                                    and not OutOfMemoryException)
-        {
-            var baseException = ex.GetBaseException();
-            if (baseException is System.Net.Sockets.SocketException socketException)
-            {
-                LogConnectionError(_logger, socketException, pacsAeTitle);
-                return Result.Failure(ErrorCode.DicomConnectionFailed, $"Connection failed: {socketException.Message}");
+                return storeResult;
             }
+            catch (OperationCanceledException)
+            {
+                return Result.Failure(ErrorCode.OperationCancelled, "C-STORE 작업이 취소되었습니다.");
+            }
+            catch (IOException ex)
+            {
+                LogStoreIoError(_logger, ex, dicomFilePath);
 
-            _logger.LogError(ex, "Unexpected C-STORE failure for AE {AeTitle}.", pacsAeTitle);
-            return Result.Failure(ErrorCode.DicomStoreFailed, $"Store failed: {baseException.Message}");
+                if (attempt < maxRetries)
+                {
+                    _logger.LogWarning("C-STORE I/O error detected, retrying ({Attempt}/{MaxRetries}) after {Delay}ms...",
+                        attempt + 1, maxRetries, retryDelayMs);
+                    await Task.Delay(retryDelayMs, cancellationToken).ConfigureAwait(false);
+                    continue;
+                }
+
+                return Result.Failure(ErrorCode.DicomStoreFailed, $"파일 읽기 오류: {ex.Message}");
+            }
+            catch (DicomNetworkException ex)
+            {
+                LogNetworkError(_logger, ex, "C-STORE", pacsAeTitle);
+
+                if (attempt < maxRetries)
+                {
+                    _logger.LogWarning("C-STORE network error detected, retrying ({Attempt}/{MaxRetries}) after {Delay}ms...",
+                        attempt + 1, maxRetries, retryDelayMs);
+                    await Task.Delay(retryDelayMs, cancellationToken).ConfigureAwait(false);
+                    continue;
+                }
+
+                return Result.Failure(ErrorCode.DicomConnectionFailed, $"PACS 연결 실패 ({pacsAeTitle}): 네트워크 오류가 발생했습니다. PACS 서버 상태를 확인해주세요.");
+            }
+            catch (Exception ex) when (ex is not OperationCanceledException
+                                        and not IOException
+                                        and not DicomNetworkException
+                                        and not OutOfMemoryException)
+            {
+                var baseException = ex.GetBaseException();
+                if (baseException is System.Net.Sockets.SocketException socketException)
+                {
+                    LogConnectionError(_logger, socketException, pacsAeTitle);
+
+                    if (attempt < maxRetries)
+                    {
+                        _logger.LogWarning("C-STORE socket error detected, retrying ({Attempt}/{MaxRetries}) after {Delay}ms...",
+                            attempt + 1, maxRetries, retryDelayMs);
+                        await Task.Delay(retryDelayMs, cancellationToken).ConfigureAwait(false);
+                        continue;
+                    }
+
+                    return Result.Failure(ErrorCode.DicomConnectionFailed, $"PACS 연결 실패 ({pacsAeTitle}): 서버에 연결할 수 없습니다. 네트워크 연결과 PACS 서버 구동을 확인해주세요.");
+                }
+
+                _logger.LogError(ex, "Unexpected C-STORE failure for AE {AeTitle}.", pacsAeTitle);
+                return Result.Failure(ErrorCode.DicomStoreFailed, $"C-STORE 실패: {baseException.Message}");
+            }
         }
+
+        // All retries exhausted
+        return Result.Failure(ErrorCode.DicomStoreFailed, $"C-STORE 실패: {maxRetries}회 재시도 후에도 성공하지 못했습니다.");
     }
 
     /// <inheritdoc/>
@@ -372,6 +421,48 @@ public partial class DicomService : HnVue.Common.Abstractions.IDicomService
     internal virtual IDicomClient CreateClient(string host, int port, string callingAeTitle, string calledAeTitle)
     {
         return DicomClientFactory.Create(host, port, _options.TlsEnabled, callingAeTitle, calledAeTitle);
+    }
+
+    /// <summary>
+    /// Converts DICOM status codes to user-friendly Korean error messages.
+    /// </summary>
+    private static string GetUserFriendlyStatus(DicomStatus status)
+    {
+        var code = status.Code;
+        var description = status.Description;
+
+        // Common DICOM status codes with user-friendly messages
+        return code switch
+        {
+            0x0000 => "성공", // Success
+            0xA700 => $"일시적 오류: {description}", // Refused: Out of resources
+            0xA900 => $"데이터 오류: {description}", // Error: Data set does not match SOP class
+            0xAA00 => $"일시적 오류: {description}", // Refused: NP association timeout
+            0xC000 => $"오류: {description}", // Error: Cannot understand
+            0xC112 => $"오류: {description}", // Error: SOP class not supported
+            0xC123 => $"오류: {description}", // Error: SOP instance not recognized
+            0xC200 => $"호환되지 않음: {description}", // Error: No such SOP class
+            0xC301 => $"리소스 부족: {description}", // Warning: Not enough memory
+            0xFE00 => $"일시적 오류: {description}", // Warning: Coercion of data elements
+            _ => $"상태 코드 0x{code:X4}: {description}"
+        };
+    }
+
+    /// <summary>
+    /// Determines if an error message indicates a transient failure that should be retried.
+    /// </summary>
+    private static bool IsTransientError(string? errorMessage)
+    {
+        if (string.IsNullOrWhiteSpace(errorMessage))
+            return false;
+
+        // Transient error indicators
+        return errorMessage.Contains("timeout", StringComparison.OrdinalIgnoreCase)
+            || errorMessage.Contains("temporary", StringComparison.OrdinalIgnoreCase)
+            || errorMessage.Contains("일시적", StringComparison.OrdinalIgnoreCase)
+            || errorMessage.Contains("0xA700", StringComparison.OrdinalIgnoreCase) // Out of resources
+            || errorMessage.Contains("0xAA00", StringComparison.OrdinalIgnoreCase) // Association timeout
+            || errorMessage.Contains("0xFE00", StringComparison.OrdinalIgnoreCase); // Coercion warning
     }
 
     internal static DicomCFindRequest BuildWorklistRequest(WorklistQuery query)

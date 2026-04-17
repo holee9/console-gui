@@ -59,4 +59,18 @@ public sealed class DicomOptions
     /// Gets or sets a value indicating whether TLS should be negotiated for all DICOM associations.
     /// </summary>
     public bool TlsEnabled { get; set; }
+
+    // ── Retry Policy ─────────────────────────────────────────────────────────────
+
+    /// <summary>
+    /// Gets or sets the number of retry attempts for transient C-STORE failures.
+    /// Default is 0 (no retry). Set to 1-3 for production resilience.
+    /// </summary>
+    public int StoreRetryCount { get; set; }
+
+    /// <summary>
+    /// Gets or sets the delay in milliseconds between retry attempts.
+    /// Default is 1000ms (1 second).
+    /// </summary>
+    public int StoreRetryDelayMs { get; set; } = 1000;
 }

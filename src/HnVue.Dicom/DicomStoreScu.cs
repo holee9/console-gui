@@ -38,38 +38,139 @@ public sealed class DicomStoreScu
 
         if (!File.Exists(filePath))
             return Result.Failure(ErrorCode.DicomStoreFailed,
-                $"DICOM file not found: '{filePath}'.");
+                $"DICOM 파일을 찾을 수 없습니다: '{filePath}'.");
 
-        try
+        const int maxRetries = 2; // DicomStoreScu uses fixed retry policy
+        const int retryDelayMs = 1000;
+
+        for (int attempt = 0; attempt <= maxRetries; attempt++)
         {
-            // Load DICOM file using fo-dicom
-            var dcmFile = await FellowOakDicom.DicomFile.OpenAsync(filePath).ConfigureAwait(false);
+            try
+            {
+                // Load DICOM file using fo-dicom
+                var dcmFile = await FellowOakDicom.DicomFile.OpenAsync(filePath).ConfigureAwait(false);
 
-            var client = FellowOakDicom.Network.Client.DicomClientFactory.Create(
-                _config.PacsHost,
-                _config.PacsPort,
-                false,
-                _config.LocalAeTitle,
-                _config.PacsAeTitle);
+                var client = FellowOakDicom.Network.Client.DicomClientFactory.Create(
+                    _config.PacsHost,
+                    _config.PacsPort,
+                    false,
+                    _config.LocalAeTitle,
+                    _config.PacsAeTitle);
 
-            // NegotiateAsyncOps() is a synchronous fo-dicom configuration call; no await needed. Issue #33.
-            client.NegotiateAsyncOps();
+                // NegotiateAsyncOps() is a synchronous fo-dicom configuration call; no await needed. Issue #33.
+                client.NegotiateAsyncOps();
 
-            var storageRequest = new FellowOakDicom.Network.DicomCStoreRequest(dcmFile);
-            await client.AddRequestAsync(storageRequest).ConfigureAwait(false);
+                var storageRequest = new FellowOakDicom.Network.DicomCStoreRequest(dcmFile);
 
-            await client.SendAsync(cancellationToken).ConfigureAwait(false);
+                // Add response handler for better error messages
+                var requestResult = Result.Success();
+                storageRequest.OnResponseReceived = (req, response) =>
+                {
+                    if (response.Status != FellowOakDicom.DicomStatus.Success)
+                    {
+                        requestResult = Result.Failure(
+                            ErrorCode.DicomStoreFailed,
+                            $"C-STORE 실패 ({_config.PacsAeTitle}): {GetUserFriendlyStatus(response.Status)}");
+                    }
+                };
 
-            return Result.Success();
+                await client.AddRequestAsync(storageRequest).ConfigureAwait(false);
+                await client.SendAsync(cancellationToken).ConfigureAwait(false);
+
+                if (requestResult.IsFailure)
+                {
+                    if (attempt < maxRetries && IsTransientNetworkError(requestResult.ErrorMessage))
+                    {
+                        await Task.Delay(retryDelayMs, cancellationToken).ConfigureAwait(false);
+                        continue;
+                    }
+                    return requestResult;
+                }
+
+                return Result.Success();
+            }
+            catch (OperationCanceledException)
+            {
+                throw;
+            }
+            catch (System.IO.IOException ex)
+            {
+                if (attempt < maxRetries)
+                {
+                    await Task.Delay(retryDelayMs, cancellationToken).ConfigureAwait(false);
+                    continue;
+                }
+                return Result.Failure(ErrorCode.DicomStoreFailed,
+                    $"파일 읽기 오류: {ex.Message}");
+            }
+            catch (FellowOakDicom.Network.DicomNetworkException ex)
+            {
+                if (attempt < maxRetries)
+                {
+                    await Task.Delay(retryDelayMs, cancellationToken).ConfigureAwait(false);
+                    continue;
+                }
+                return Result.Failure(ErrorCode.DicomStoreFailed,
+                    $"PACS 연결 실패 ({_config.PacsAeTitle}): 네트워크 오류가 발생했습니다. PACS 서버 상태를 확인해주세요.");
+            }
+            catch (Exception ex) when (ex is not OutOfMemoryException and not OperationCanceledException)
+            {
+                var baseException = ex.GetBaseException();
+                if (baseException is System.Net.Sockets.SocketException socketException)
+                {
+                    if (attempt < maxRetries)
+                    {
+                        await Task.Delay(retryDelayMs, cancellationToken).ConfigureAwait(false);
+                        continue;
+                    }
+                    return Result.Failure(ErrorCode.DicomStoreFailed,
+                        $"PACS 연결 실패 ({_config.PacsAeTitle}): 서버에 연결할 수 없습니다. 네트워크 연결과 PACS 서버 구동을 확인해주세요.");
+                }
+
+                if (attempt < maxRetries)
+                {
+                    await Task.Delay(retryDelayMs, cancellationToken).ConfigureAwait(false);
+                    continue;
+                }
+                return Result.Failure(ErrorCode.DicomStoreFailed,
+                    $"C-STORE 실패: {baseException.Message}");
+            }
         }
-        catch (OperationCanceledException)
+
+        return Result.Failure(ErrorCode.DicomStoreFailed,
+            $"C-STORE 실패: {maxRetries}회 재시도 후에도 성공하지 못했습니다.");
+    }
+
+    /// <summary>
+    /// Converts DICOM status codes to user-friendly Korean error messages.
+    /// </summary>
+    private static string GetUserFriendlyStatus(FellowOakDicom.DicomStatus status)
+    {
+        var code = status.Code;
+        var description = status.Description;
+
+        return code switch
         {
-            throw;
-        }
-        catch (Exception ex) when (ex is not OutOfMemoryException)
-        {
-            return Result.Failure(ErrorCode.DicomStoreFailed,
-                $"C-STORE to '{_config.PacsAeTitle}' failed: {ex.Message}");
-        }
+            0x0000 => "성공",
+            0xA700 => $"일시적 오류: {description}",
+            0xA900 => $"데이터 오류: {description}",
+            0xAA00 => $"일시적 오류: {description}",
+            0xC000 => $"오류: {description}",
+            0xFE00 => $"일시적 오류: {description}",
+            _ => $"상태 코드 0x{code:X4}: {description}"
+        };
+    }
+
+    /// <summary>
+    /// Determines if an error message indicates a transient network failure.
+    /// </summary>
+    private static bool IsTransientNetworkError(string? errorMessage)
+    {
+        if (string.IsNullOrWhiteSpace(errorMessage))
+            return false;
+
+        return errorMessage.Contains("timeout", System.StringComparison.OrdinalIgnoreCase)
+            || errorMessage.Contains("network", System.StringComparison.OrdinalIgnoreCase)
+            || errorMessage.Contains("일시적", System.StringComparison.OrdinalIgnoreCase);
     }
 }
