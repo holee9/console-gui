@@ -50,8 +50,8 @@ S11-R1 종료. 언어 프로토콜 위반 개선 후 테스트 실행.
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: 전체 테스트 실행 (P1) | NOT_STARTED | - | - |
-| Task 2: 커버리지 측정 (P2) | NOT_STARTED | - | - |
+| Task 1: 전체 테스트 실행 (P1) | **COMPLETED** | 2026-04-17 16:31 | 3,732/3,733 통과 (99.97%) - 1개 실패(HnVue.Update.Tests) |
+| Task 2: 커버리지 측정 (P2) | **COMPLETED** | 2026-04-17 16:31 | Coverlet 데이터 수집 완료, TestReports/S11-R2-QA-Report.md 생성 |
 
 ---
 
