@@ -13,7 +13,7 @@ public sealed class UserEntity
     [MaxLength(64)]
     public string UserId { get; set; } = string.Empty;
 
-    /// <summary>Login name; must be unique.</summary>
+    /// <summary>Gets or sets the login name; must be unique.</summary>
     [Required]
     [MaxLength(64)]
     public string Username { get; set; } = string.Empty;

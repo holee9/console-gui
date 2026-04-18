@@ -70,6 +70,7 @@ public sealed class EfDoseRepository(HnVueDbContext context)
     /// Returns dose records for the specified patient within an optional date range,
     /// ordered by recording time ascending.
     /// </summary>
+    /// <returns>A <see cref="Result{T}"/> containing the list of dose records on success.</returns>
     public async Task<Result<IReadOnlyList<DoseRecord>>> GetByPatientAsync(
         string patientId,
         DateTimeOffset? from,
@@ -111,7 +112,10 @@ public sealed class EfDoseRepository(HnVueDbContext context)
             IReadOnlyList<DoseRecord> records = entities.Select(ToRecord).ToList();
             return Result.Success(records);
         }
-        catch (OperationCanceledException) { throw; }
+        catch (OperationCanceledException)
+        {
+            throw;
+        }
         catch (Exception ex) when (ex is not OutOfMemoryException)
         {
             return Result.Failure<IReadOnlyList<DoseRecord>>(ErrorCode.DatabaseError, ex.InnerException?.Message ?? ex.Message);

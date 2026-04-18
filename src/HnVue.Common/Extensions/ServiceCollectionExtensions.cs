@@ -105,16 +105,28 @@ internal sealed class ThreadLocalSecurityContext : ISecurityContext, IDisposable
     {
         ArgumentNullException.ThrowIfNull(user);
         _lock.EnterWriteLock();
-        try { _currentUser = user; }
-        finally { _lock.ExitWriteLock(); }
+        try
+        {
+            _currentUser = user;
+        }
+        finally
+        {
+            _lock.ExitWriteLock();
+        }
     }
 
     /// <inheritdoc/>
     public void ClearCurrentUser()
     {
         _lock.EnterWriteLock();
-        try { _currentUser = null; }
-        finally { _lock.ExitWriteLock(); }
+        try
+        {
+            _currentUser = null;
+        }
+        finally
+        {
+            _lock.ExitWriteLock();
+        }
     }
 
     /// <inheritdoc/>

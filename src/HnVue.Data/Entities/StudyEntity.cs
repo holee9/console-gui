@@ -7,12 +7,12 @@ namespace HnVue.Data.Entities;
 /// </summary>
 public sealed class StudyEntity
 {
-    /// <summary>DICOM Study Instance UID (primary key).</summary>
+    /// <summary>Gets or sets the DICOM Study Instance UID (primary key).</summary>
     [Key]
     [MaxLength(128)]
     public string StudyInstanceUid { get; set; } = string.Empty;
 
-    /// <summary>ID of the owning patient (foreign key).</summary>
+    /// <summary>Gets or sets the ID of the owning patient (foreign key).</summary>
     [Required]
     [MaxLength(64)]
     public string PatientId { get; set; } = string.Empty;
