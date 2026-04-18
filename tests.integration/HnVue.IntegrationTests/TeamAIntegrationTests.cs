@@ -306,6 +306,127 @@ public sealed class TeamAIntegrationTests : IDisposable
         isRevoked.Should().BeTrue("token should be marked as revoked");
     }
 
+    // ── Update Module Integration Tests ─────────────────────────────────────────
+
+    [Fact]
+    [Trait("SWR", "SWR-DATA-040")]
+    public async Task EfUpdateRepository_CheckForUpdate_ReturnsLatestInstalledVersion()
+    {
+        // Arrange
+        using var updateRepo = new HnVue.Update.EfUpdateRepository(_dbContext);
+
+        // Act - Check for update with no history
+        var result1 = await updateRepo.CheckForUpdateAsync();
+        result1.IsSuccess.Should().BeTrue();
+        result1.Value.Should().BeNull("no update history should return null");
+
+        // Arrange - Create an update package file
+        var tempDir = Path.Combine(Path.GetTempPath(), $"UpdateIntegrationTest_{Guid.NewGuid():N}");
+        Directory.CreateDirectory(tempDir);
+        var packagePath = Path.Combine(tempDir, "HnVue-1.5.0.zip");
+        await File.WriteAllTextAsync(packagePath, "test package content");
+
+        try
+        {
+            // Act - Apply the package
+            var applyResult = await updateRepo.ApplyPackageAsync(packagePath);
+            applyResult.IsSuccess.Should().BeTrue("package should be applied successfully");
+
+            // Act - Check for update again
+            var result2 = await updateRepo.CheckForUpdateAsync();
+            result2.IsSuccess.Should().BeTrue();
+            result2.Value.Should().NotBeNull("should return latest installed version");
+            result2.Value!.Version.Should().Be("1.5.0");
+            result2.Value.Sha256Hash.Should().NotBeNullOrEmpty();
+        }
+        finally
+        {
+            if (Directory.Exists(tempDir))
+                Directory.Delete(tempDir, recursive: true);
+        }
+    }
+
+    [Fact]
+    [Trait("SWR", "SWR-DATA-041")]
+    public async Task EfUpdateRepository_ApplyPackage_CreatesUpdateHistory()
+    {
+        // Arrange
+        using var updateRepo = new HnVue.Update.EfUpdateRepository(_dbContext);
+        var tempDir = Path.Combine(Path.GetTempPath(), $"UpdateIntegrationTest_{Guid.NewGuid():N}");
+        Directory.CreateDirectory(tempDir);
+        var packagePath = Path.Combine(tempDir, "HnVue-2.0.0.zip");
+        await File.WriteAllTextAsync(packagePath, "update payload");
+
+        try
+        {
+            // Act - Apply package
+            var applyResult = await updateRepo.ApplyPackageAsync(packagePath);
+            applyResult.IsSuccess.Should().BeTrue();
+
+            // Assert - Verify update history was created
+            var history = await _dbContext.UpdateHistories
+                .OrderByDescending(h => h.Timestamp)
+                .FirstOrDefaultAsync();
+
+            history.Should().NotBeNull();
+            history!.FromVersion.Should().Be("0.0.0");
+            history.ToVersion.Should().Be("2.0.0");
+            history.Status.Should().Be("Installed");
+            history.InstalledBy.Should().NotBeNullOrEmpty();
+            history.PackageHash.Should().NotBeNullOrEmpty();
+        }
+        finally
+        {
+            if (Directory.Exists(tempDir))
+                Directory.Delete(tempDir, recursive: true);
+        }
+    }
+
+    [Fact]
+    [Trait("SWR", "SWR-DATA-042")]
+    public async Task EfUpdateRepository_MultipleUpdates_TracksVersionHistory()
+    {
+        // Arrange
+        using var updateRepo = new HnVue.Update.EfUpdateRepository(_dbContext);
+        var tempDir = Path.Combine(Path.GetTempPath(), $"UpdateIntegrationTest_{Guid.NewGuid():N}");
+        Directory.CreateDirectory(tempDir);
+
+        try
+        {
+            // Act - Apply first update (1.0.0)
+            var package1 = Path.Combine(tempDir, "HnVue-1.0.0.zip");
+            await File.WriteAllTextAsync(package1, "version 1.0.0");
+            var result1 = await updateRepo.ApplyPackageAsync(package1);
+            result1.IsSuccess.Should().BeTrue();
+
+            // Act - Apply second update (2.0.0)
+            var package2 = Path.Combine(tempDir, "HnVue-2.0.0.zip");
+            await File.WriteAllTextAsync(package2, "version 2.0.0");
+            var result2 = await updateRepo.ApplyPackageAsync(package2);
+            result2.IsSuccess.Should().BeTrue();
+
+            // Assert - Verify both history entries exist
+            var historyList = await _dbContext.UpdateHistories
+                .OrderByDescending(h => h.Timestamp)
+                .ToListAsync();
+
+            historyList.Should().HaveCount(2);
+            historyList[0].FromVersion.Should().Be("1.0.0");
+            historyList[0].ToVersion.Should().Be("2.0.0");
+            historyList[1].FromVersion.Should().Be("0.0.0");
+            historyList[1].ToVersion.Should().Be("1.0.0");
+
+            // Assert - CheckForUpdate returns latest version
+            var latest = await updateRepo.CheckForUpdateAsync();
+            latest.Value!.Version.Should().Be("2.0.0");
+        }
+        finally
+        {
+            if (Directory.Exists(tempDir))
+                Directory.Delete(tempDir, recursive: true);
+        }
+    }
+
     public void Dispose()
     {
         _dbContext.Database.CloseConnection();
