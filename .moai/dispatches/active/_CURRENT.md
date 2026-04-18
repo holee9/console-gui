@@ -1,4 +1,4 @@
-# DISPATCH Current Index — S12-R2
+# DISPATCH Current Index — S12-R3
 
 > **[HARD] 에이전트 FIRST ACTION**: 이 파일을 가장 먼저 읽는다.
 > 자신의 팀 행(row)에서 파일명을 확인한 뒤, 해당 파일만 읽는다.
@@ -10,14 +10,14 @@
 
 | 팀 | 현재 DISPATCH 파일 | 상태 | 비고 |
 |----|-------------------|------|------|
-| **Team A** | - | **IDLE** | MERGED — Data.Tests 수정 + Update 90.21% 달성 |
-| **Team B** | - | **IDLE** | MERGED — Dicom 커버리지 개선 완료 |
-| **Coordinator** | S12-R2-coordinator.md | **IDLE** | IDLE CONFIRM |
-| **Design** | S12-R2-team-design.md | **IDLE** | IDLE CONFIRM |
-| **QA** | - | **IDLE** | MERGED — S12-R2 QA PASS (3927/3928, 100%) |
-| **RA** | S12-R2-ra.md | **IDLE** | IDLE CONFIRM |
+| **Team A** | S12-R3-team-a.md | **ACTIVE** | 정기 유지보수 |
+| **Team B** | S12-R3-team-b.md | **ACTIVE** | 정기 유지보수 |
+| **Coordinator** | S12-R3-coordinator.md | **ACTIVE** | 정기 유지보수 |
+| **Design** | S12-R3-team-design.md | **ACTIVE** | 정기 유지보수 |
+| **QA** | S12-R3-qa.md | **ACTIVE** | 정기 품질 점검 |
+| **RA** | S12-R3-ra.md | **ACTIVE** | 정기 문서 동기화 |
 
-**→ S12-R2: 3 MERGED (A, B, QA) / 2026-04-19**
+**→ S12-R3: 6 ACTIVE / 2026-04-19**
 
 ---
 
@@ -142,7 +142,8 @@ DISPATCH 읽기 직후    → NOT_STARTED → IN_PROGRESS (즉시 push)
 | 2026-04-14~15 | S09 R1~R3 | ALL MERGED, QA PASS |
 | 2026-04-15~16 | S10 R1~R4 | ALL MERGED, QA CONDITIONAL PASS (81.3%) |
 | 2026-04-16~17 | S11 R1~R2 | ALL MERGED, QA CONDITIONAL PASS (99.97%) |
-| **2026-04-18** | **S12 R1** | **ACTIVE** |
+| 2026-04-18~19 | S12 R1~R2 | ALL MERGED, QA PASS (100%) |
+| **2026-04-19** | **S12 R3** | **ACTIVE** | 6팀 정기 유지보수 |
 
 ---
 
