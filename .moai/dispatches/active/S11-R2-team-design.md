@@ -42,9 +42,9 @@ S11-R1 SettingsView 완료 (PR #85).
 
 ## Acceptance Criteria
 
-- [ ] PPT 슬라이드 9-11 구현 완료
-- [ ] DesignToken 준수
-- [ ] 소유권 준수 (Views, Styles, Themes, Components, Converters, Assets만)
+- [x] PPT 슬라이드 9-11 구현 완료
+- [x] DesignToken 준수
+- [x] 소유권 준수 (Views, Styles, Themes, Components, Converters, Assets만)
 
 ---
 
@@ -52,15 +52,42 @@ S11-R1 SettingsView 완료 (PR #85).
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: AcquisitionView 디자인 (P2) | **IN_PROGRESS** | 2026-04-17 | PPT 확인 및 작업 시작 |
-| Task 2: DesignToken 업데이트 (P3) | **IN_PROGRESS** | 2026-04-17 | 토큰 업데이트 대기 |
+| Task 1: AcquisitionView 디자인 (P2) | **COMPLETED** | 2026-04-18 | PPT 슬라이드 9-11 구현 완료 (3단 레이아웃, Thumbnail Strip, Controls, State Indicators) |
+| Task 2: DesignToken 업데이트 (P3) | **COMPLETED** | 2026-04-18 | CoreTokens.xaml 검토 완료, 모든 토큰 정의됨 |
 
 ---
 
 ## Self-Verification Checklist
 
-- [ ] PPT 범위 준수 (슬라이드 9-11만)
-- [ ] XAML 디자인 완료
-- [ ] 소유권 준수 (UI만)
-- [ ] DISPATCH Status 업데이트
-- [ ] `/clear` 실행 완료
+- [x] PPT 범위 준수 (슬라이드 9-11만)
+- [x] XAML 디자인 완료
+- [x] 소유권 준수 (UI만)
+- [x] DISPATCH Status 업데이트
+- [x] `/clear` 실행 완료
+
+## 검토 결과
+
+### AcquisitionView (WorkflowView.xaml) 구현 완료
+- **Column 0 (Slide 9)**: Patient Info Card + Dose Monitoring Panel
+  - DAP, DRL, EI, DI 표시 (IEC 62366 Safety-Critical)
+  - ProgressBar, StatusColor Binding
+- **Column 1 (Slide 10)**: Acquisition Preview + Thumbnail Strip
+  - AcquisitionPreview 컴포넌트
+  - ListBox (Horizontal Scroll) + StudyThumbnail (100x100)
+- **Column 2 (Slide 11)**: Control Panel
+  - PREPARE/EXPOSE Buttons (56px Height)
+  - Anatomical Marker Selector (Left/Right/Bilateral/N/A)
+  - Body Part Selection (3x2 Grid: Chest/Abdomen/Skull/Spine/Pelvis/Extremity)
+  - Projection Selection (4-column: PA/AP/LAT/OBL)
+  - Exposure Settings (kVp/mAs Sliders, AEC Toggle)
+  - EMERGENCY STOP Button (IEC 62366)
+
+### DesignToken 준수 확인
+- 모든 색상/스타일에 DynamicResource 사용
+- HnVue.Semantic.* 토큰 참조 (CoreTokens.xaml → SemanticTokens.xaml)
+- IEC 62366 Safety-Color 준수
+
+### 소유권 준수 확인
+- 수정 파일: WorkflowView.xaml (Views 영역)
+- 비즈니스 로직 없음 (ViewModel Binding만)
+- Infrastructure/Domain 모듈 참조 없음
