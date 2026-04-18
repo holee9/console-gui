@@ -10,14 +10,14 @@
 
 | 팀 | 현재 DISPATCH 파일 | 상태 | 비고 |
 |----|-------------------|------|------|
-| **Team A** | S12-R1-team-a.md | **ACTIVE** | Update 테스트 수정 + 커버리지 85%+ |
+| **Team A** | - | **IDLE** | S12-R1 MERGED (2026-04-18) — 96.01% coverage |
 | **Team B** | - | **IDLE** | S12-R1 MERGED (2026-04-18) |
-| **Coordinator** | S12-R1-coordinator.md | **ACTIVE** | UI ViewModels 커버리지 개선 |
+| **Coordinator** | - | **IDLE** | S12-R1 MERGED (2026-04-18) — 768/768 PASS |
 | **Design** | S12-R1-team-design.md | **ACTIVE** | UI Tests 커버리지 + DesignTime TODO |
 | **QA** | S12-R1-qa.md | **ACTIVE** | 전체 테스트 PASS 판정 |
-| **RA** | S12-R1-ra.md | **ACTIVE** | RTM 업데이트 + 릴리즈 준비 |
+| **RA** | - | **IDLE** | S12-R1 MERGED (2026-04-18) — RTM v2.7 |
 
-**→ S12-R1: 6/6 ACTIVE (2026-04-18)**
+**→ S12-R1: 3 MERGED / 2 ACTIVE (Design, QA) / 2026-04-18**
 
 ---
 
