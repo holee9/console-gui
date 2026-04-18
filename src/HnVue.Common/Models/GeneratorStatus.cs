@@ -12,7 +12,7 @@ public sealed record GeneratorStatus
     /// <summary>Gets the current heat unit loading percentage (0-100).</summary>
     public double HeatUnitPercentage { get; init; }
 
-    /// <summary>Gets whether the generator is ready to accept an exposure command.</summary>
+    /// <summary>Gets a value indicating whether the generator is ready to accept an exposure command.</summary>
     public bool IsReadyToExpose { get; init; }
 
     /// <summary>Gets the timestamp of this status reading.</summary>

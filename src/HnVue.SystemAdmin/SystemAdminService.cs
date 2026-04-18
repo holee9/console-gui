@@ -6,6 +6,7 @@ using HnVue.Common.Results;
 namespace HnVue.SystemAdmin;
 
 // @MX:NOTE Audit export provides tamper-evident chain for regulatory compliance
+
 /// <summary>
 /// Implements system administration operations: settings management and audit log export.
 /// </summary>
@@ -17,17 +18,18 @@ namespace HnVue.SystemAdmin;
 /// </remarks>
 public sealed class SystemAdminService : ISystemAdminService
 {
+    // @MX:NOTE Cache duration balances freshness with database load reduction
+    private static readonly TimeSpan CacheDuration = TimeSpan.FromMinutes(5);
+
     private readonly ISystemSettingsRepository _settingsRepository;
     private readonly IAuditRepository _auditRepository;
     private readonly ISecurityContext _securityContext;
 
-    // @MX:NOTE Cache duration balances freshness with database load reduction
     private SystemSettings? _cachedSettings;
     private DateTimeOffset _cacheExpiry = DateTimeOffset.MinValue;
-    private static readonly TimeSpan CacheDuration = TimeSpan.FromMinutes(5);
 
     /// <summary>
-    /// Initialises a new <see cref="SystemAdminService"/>.
+    /// Initializes a new instance of the <see cref="SystemAdminService"/> class.
     /// </summary>
     public SystemAdminService(
         ISystemSettingsRepository settingsRepository,
@@ -139,6 +141,38 @@ public sealed class SystemAdminService : ISystemAdminService
         }
     }
 
+    // ── Static helpers ────────────────────────────────────────────────────────
+
+    // @MX:NOTE Port range validation prevents DICOM connection failures
+    // @MX:NOTE AE title validation ensures DICOM network protocol compliance
+    // @MX:NOTE Security settings validation prevents authentication bypass
+    private static string? ValidateSettings(SystemSettings settings)
+    {
+        if (settings.Dicom.PacsPort is < 1 or > 65535)
+            return "PACS port must be between 1 and 65535.";
+
+        if (string.IsNullOrWhiteSpace(settings.Dicom.LocalAeTitle))
+            return "Local AE Title is required.";
+
+        if (settings.Security.SessionTimeoutMinutes < 1)
+            return "Session timeout must be at least 1 minute.";
+
+        if (settings.Security.MaxFailedLogins < 1)
+            return "Max failed logins must be at least 1.";
+
+        return null;
+    }
+
+    // @MX:NOTE RFC 4180 CSV escaping prevents injection and malformed export files
+    private static string CsvEscape(string? value)
+    {
+        if (value is null)
+            return string.Empty;
+        if (value.Contains(',') || value.Contains('"') || value.Contains('\n'))
+            return $"\"{value.Replace("\"", "\"\"")}\"";
+        return value;
+    }
+
     // ── Internals ─────────────────────────────────────────────────────────────
 
     // @MX:NOTE Settings change audit captures all field modifications for regulatory compliance
@@ -205,35 +239,5 @@ public sealed class SystemAdminService : ISystemAdminService
             previousHash: lastHash);
 
         return await _auditRepository.AppendAsync(auditEntry, cancellationToken).ConfigureAwait(false);
-    }
-
-    // @MX:NOTE Port range validation prevents DICOM connection failures
-    // @MX:NOTE AE title validation ensures DICOM network protocol compliance
-    // @MX:NOTE Security settings validation prevents authentication bypass
-    private static string? ValidateSettings(SystemSettings settings)
-    {
-        if (settings.Dicom.PacsPort is < 1 or > 65535)
-            return "PACS port must be between 1 and 65535.";
-
-        if (string.IsNullOrWhiteSpace(settings.Dicom.LocalAeTitle))
-            return "Local AE Title is required.";
-
-        if (settings.Security.SessionTimeoutMinutes < 1)
-            return "Session timeout must be at least 1 minute.";
-
-        if (settings.Security.MaxFailedLogins < 1)
-            return "Max failed logins must be at least 1.";
-
-        return null;
-    }
-
-    // @MX:NOTE RFC 4180 CSV escaping prevents injection and malformed export files
-    private static string CsvEscape(string? value)
-    {
-        if (value is null)
-            return string.Empty;
-        if (value.Contains(',') || value.Contains('"') || value.Contains('\n'))
-            return $"\"{value.Replace("\"", "\"\"")}\"";
-        return value;
     }
 }

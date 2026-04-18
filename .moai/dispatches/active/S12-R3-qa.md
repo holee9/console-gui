@@ -38,7 +38,7 @@ Update 91.62%, Dose 99.6%, Incident 94.7%, Security 95.6%.
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: 정기 품질 점검 (P1) | NOT_STARTED | - | - |
+| Task 1: 정기 품질 점검 (P1) | IN_PROGRESS | - | - |
 
 ---
 
