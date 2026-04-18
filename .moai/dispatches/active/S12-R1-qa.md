@@ -56,9 +56,9 @@ S12-R1 목표: **PASS 전환**
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: 전체 테스트 재실행 (P1) | NOT_STARTED | - | - |
-| Task 2: 커버리지 리포트 (P1) | NOT_STARTED | - | - |
-| Task 3: PASS 판정 (P1) | NOT_STARTED | - | - |
+| Task 1: 전체 테스트 재실행 (P1) | BLOCKED | - | 빌드 실패 - Coordinator 소스 오류 26개 (System.IO using 누락) |
+| Task 2: 커버리지 리포트 (P1) | NOT_STARTED | - | 빌드 실패 - Coordinator 소스 오류 26개 (System.IO using 누락) |
+| Task 3: PASS 판정 (P1) | NOT_STARTED | - | 빌드 실패 - Coordinator 소스 오류 26개 (System.IO using 누락) |
 
 ---
 
