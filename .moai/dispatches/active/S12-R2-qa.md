@@ -54,7 +54,7 @@ Team B가 Dicom 커버리지 개선 후 재검증.
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: 전체 테스트 재실행 (P1) | NOT_STARTED | - | Team A/B 완료 대기 |
+| Task 1: 전체 테스트 재실행 (P1) | IN_PROGRESS | - | 모니터링 중 - Team A/B 완료 대기 |
 | Task 2: 커버리지 리포트 (P1) | NOT_STARTED | - | |
 | Task 3: PASS 판정 (P1) | NOT_STARTED | - | |
 
