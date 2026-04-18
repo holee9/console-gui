@@ -10,13 +10,14 @@ namespace HnVue.UI.Tests;
 /// Unit tests for HnVue UI components (Card, MedicalButton, Sidebar).
 /// Boosts HnVue.UI coverage from 82.3% to 85%+.
 /// </summary>
+[Collection("WpfApplication")]
 public class UIComponentTests
 {
     // ====================================================================
     // Card Component Tests
     // ====================================================================
 
-    [StaFact]
+    [Fact]
     [Trait("Category", "Components")]
     [Trait("Component", "Card")]
     public void Card_DefaultValues_AreExpected()
@@ -32,7 +33,7 @@ public class UIComponentTests
         });
     }
 
-    [StaFact]
+    [Fact]
     [Trait("Category", "Components")]
     [Trait("Component", "Card")]
     public void Card_Header_PropertyRoundTrip_PersistsValue()
@@ -48,7 +49,7 @@ public class UIComponentTests
         });
     }
 
-    [StaFact]
+    [Fact]
     [Trait("Category", "Components")]
     [Trait("Component", "Card")]
     public void Card_Footer_PropertyRoundTrip_PersistsValue()
@@ -64,7 +65,7 @@ public class UIComponentTests
         });
     }
 
-    [StaFact]
+    [Fact]
     [Trait("Category", "Components")]
     [Trait("Component", "Card")]
     public void Card_CornerRadius_PropertyRoundTrip_PersistsValue()
@@ -108,7 +109,7 @@ public class UIComponentTests
     // MedicalButton Component Tests
     // ====================================================================
 
-    [StaFact]
+    [Fact]
     [Trait("Category", "Components")]
     [Trait("Component", "MedicalButton")]
     public void MedicalButton_DefaultValues_AreExpected()
@@ -123,7 +124,7 @@ public class UIComponentTests
         });
     }
 
-    [StaFact]
+    [Fact]
     [Trait("Category", "Components")]
     [Trait("Component", "MedicalButton")]
     public void MedicalButton_IsCritical_PropertyRoundTrip_PersistsValue()
@@ -142,7 +143,7 @@ public class UIComponentTests
     // Sidebar Component Tests
     // ====================================================================
 
-    [StaFact]
+    [Fact]
     [Trait("Category", "Components")]
     [Trait("Component", "Sidebar")]
     public void Sidebar_DefaultValues_AreExpected()
@@ -159,7 +160,7 @@ public class UIComponentTests
         });
     }
 
-    [StaFact]
+    [Fact]
     [Trait("Category", "Components")]
     [Trait("Component", "Sidebar")]
     public void Sidebar_Logo_PropertyRoundTrip_PersistsValue()
@@ -175,7 +176,7 @@ public class UIComponentTests
         });
     }
 
-    [StaFact]
+    [Fact]
     [Trait("Category", "Components")]
     [Trait("Component", "Sidebar")]
     public void Sidebar_MenuItems_PropertyRoundTrip_PersistsValue()
@@ -191,7 +192,7 @@ public class UIComponentTests
         });
     }
 
-    [StaFact]
+    [Fact]
     [Trait("Category", "Components")]
     [Trait("Component", "Sidebar")]
     public void Sidebar_FooterContent_PropertyRoundTrip_PersistsValue()
@@ -207,7 +208,7 @@ public class UIComponentTests
         });
     }
 
-    [StaFact]
+    [Fact]
     [Trait("Category", "Components")]
     [Trait("Component", "Sidebar")]
     public void Sidebar_IsExpanded_PropertyRoundTrip_PersistsValue()
@@ -222,7 +223,7 @@ public class UIComponentTests
         });
     }
 
-    [StaFact]
+    [Fact]
     [Trait("Category", "Components")]
     [Trait("Component", "Sidebar")]
     public void Sidebar_IsExpanded_Toggle_SwitchesState()
@@ -261,7 +262,7 @@ public class UIComponentTests
     // Additional Medical Components Tests
     // ====================================================================
 
-    [StaFact]
+    [Fact]
     [Trait("Category", "Components")]
     [Trait("Component", "AcquisitionPreview")]
     public void AcquisitionPreview_DefaultValues_AreExpected()
@@ -273,7 +274,7 @@ public class UIComponentTests
         });
     }
 
-    [StaFact]
+    [Fact]
     [Trait("Category", "Components")]
     [Trait("Component", "PatientInfoCard")]
     public void PatientInfoCard_DefaultValues_AreExpected()
@@ -285,7 +286,7 @@ public class UIComponentTests
         });
     }
 
-    [StaFact]
+    [Fact]
     [Trait("Category", "Components")]
     [Trait("Component", "StudyThumbnail")]
     public void StudyThumbnail_DefaultValues_AreExpected()
@@ -297,7 +298,7 @@ public class UIComponentTests
         });
     }
 
-    [StaFact]
+    [Fact]
     [Trait("Category", "Components")]
     [Trait("Component", "Modal")]
     public void Modal_DefaultValues_AreExpected()
@@ -310,7 +311,7 @@ public class UIComponentTests
         });
     }
 
-    [StaFact]
+    [Fact]
     [Trait("Category", "Components")]
     [Trait("Component", "Modal")]
     public void Modal_IsOpen_Toggle_SwitchesState()
@@ -327,7 +328,7 @@ public class UIComponentTests
         });
     }
 
-    [StaFact]
+    [Fact]
     [Trait("Category", "Components")]
     [Trait("Component", "MedicalTextBox")]
     public void MedicalTextBox_DefaultValues_AreExpected()

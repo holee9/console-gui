@@ -27,8 +27,10 @@ UI 커버리지 개선 필요. Coordinator 팀과 협업.
 2. ✅ UIComponentTests 확장 (7개 Medical Component 테스트)
 3. ✅ WorkflowView 테스트 추가 (12번째 View 테스트)
 4. ✅ ViewModelBaseTests.cs 생성 (18개 테스트)
-5. ℹ️ 현재 커버리지: 74.21% (목표 85%+)
-6. ℹ️ 테스트 실행: 768개 통과 (748개 → +20개)
+5. ℹ️ 최신 커버리지: **78.66%** (목표 85%+)
+6. ℹ️ HnVue.UI 모듈: **80.23%** (Coordinator refactoring 효과)
+7. ℹ️ 테스트 실행: 768개 통과 (748개 → +20개)
+8. ✅ Coordinator 협업: WpfApplicationFixture refactoring 적용 완료
 
 **최신 변경**:
 - WorkflowView_DefaultConstructor_InitializesComponent 추가
@@ -79,8 +81,8 @@ UI 커버리지 개선 필요. Coordinator 팀과 협업.
 ## Self-Verification Checklist
 
 - [x] 소유권 준수 (UI만)
-- [ ] 커버리지 85%+ 개선 (78.56%, 진행 중)
-- [ ] Coordinator 협업 완료
+- [ ] 커버리지 85%+ 개선 (78.66%, HnVue.UI 모듈 80.23%, 진행 중)
+- [x] Coordinator 협업 완료 (WpfApplicationFixture refactoring)
 - [x] DISPATCH Status 업데이트
 - [ ] `/clear` 실행 완료
 
@@ -102,10 +104,12 @@ Total tests: 768
 ## 커버리지 증거
 
 ```
-line-rate="0.7421" (74.21%)
-lines-covered="1810"
-lines-valid="2439"
+line-rate="0.7866" (78.66%)
+lines-covered="2009"
+lines-valid="2554"
+branches-covered="330"
+branches-valid="489"
 
 HnVue.UI 모듈:
-line-rate="0.7298" (72.98%)
+line-rate="0.8023" (80.23%)
 ```
