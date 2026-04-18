@@ -103,7 +103,7 @@ public sealed class DicomCoverageBoostTests
 
         result.IsFailure.Should().BeTrue();
         result.Error.Should().Be(ErrorCode.DicomStoreFailed);
-        result.ErrorMessage.Should().Contain("path must not be empty");
+        result.ErrorMessage.Should().Contain("DICOM 파일 경로가 비어있습니다");
     }
 
     [Fact]
@@ -137,7 +137,7 @@ public sealed class DicomCoverageBoostTests
 
             result.IsFailure.Should().BeTrue();
             result.Error.Should().Be(ErrorCode.DicomStoreFailed);
-            result.ErrorMessage.Should().Contain("AE title must not be empty");
+            result.ErrorMessage.Should().Contain("PACS AE Title이 비어있습니다");
         }
         finally
         {
@@ -171,7 +171,7 @@ public sealed class DicomCoverageBoostTests
 
         result.IsFailure.Should().BeTrue();
         result.Error.Should().Be(ErrorCode.DicomStoreFailed);
-        result.ErrorMessage.Should().Contain("not found");
+        result.ErrorMessage.Should().Contain("찾을 수 없습니다");
     }
 
     [Fact]
@@ -220,7 +220,7 @@ public sealed class DicomCoverageBoostTests
 
             result.IsFailure.Should().BeTrue();
             result.Error.Should().Be(ErrorCode.DicomStoreFailed);
-            result.ErrorMessage.Should().Contain("C-STORE failed");
+            result.ErrorMessage.Should().Contain("C-STORE 실패");
         }
         finally
         {
@@ -261,7 +261,7 @@ public sealed class DicomCoverageBoostTests
 
             result.IsFailure.Should().BeTrue();
             result.Error.Should().Be(ErrorCode.DicomStoreFailed);
-            result.ErrorMessage.Should().Contain("I/O error");
+            result.ErrorMessage.Should().Contain("파일 읽기 오류");
         }
         finally
         {
@@ -304,7 +304,7 @@ public sealed class DicomCoverageBoostTests
 
             result.IsFailure.Should().BeTrue();
             result.Error.Should().Be(ErrorCode.DicomConnectionFailed);
-            result.ErrorMessage.Should().Contain("Connection failed");
+            result.ErrorMessage.Should().Contain("PACS 연결 실패");
         }
         finally
         {
@@ -325,7 +325,7 @@ public sealed class DicomCoverageBoostTests
 
             result.IsFailure.Should().BeTrue();
             result.Error.Should().Be(ErrorCode.DicomStoreFailed);
-            result.ErrorMessage.Should().Contain("Store failed");
+            result.ErrorMessage.Should().Contain("C-STORE 실패");
         }
         finally
         {
@@ -366,7 +366,7 @@ public sealed class DicomCoverageBoostTests
 
         result.IsFailure.Should().BeTrue();
         result.Error.Should().Be(ErrorCode.DicomQueryFailed);
-        result.ErrorMessage.Should().Contain("AE title must not be empty");
+        result.ErrorMessage.Should().Contain("Worklist AE title must not be empty");
     }
 
     [Fact]
@@ -605,7 +605,7 @@ public sealed class DicomCoverageBoostTests
 
         result.IsFailure.Should().BeTrue();
         result.Error.Should().Be(ErrorCode.DicomPrintFailed);
-        result.ErrorMessage.Should().Contain("path must not be empty");
+        result.ErrorMessage.Should().Contain("DICOM file path must not be empty");
     }
 
     [Fact]
@@ -629,7 +629,7 @@ public sealed class DicomCoverageBoostTests
 
             result.IsFailure.Should().BeTrue();
             result.Error.Should().Be(ErrorCode.DicomPrintFailed);
-            result.ErrorMessage.Should().Contain("AE title must not be empty");
+            result.ErrorMessage.Should().Contain("Printer AE title must not be empty");
         }
         finally
         {
@@ -1649,7 +1649,7 @@ public sealed class DicomCoverageBoostTests
 
         result.IsFailure.Should().BeTrue();
         result.Error.Should().Be(ErrorCode.DicomStoreFailed);
-        result.ErrorMessage.Should().Contain("not found");
+        result.ErrorMessage.Should().Contain("찾을 수 없습니다");
     }
 
     // ══════════════════════════════════════════════════════════════════════════════

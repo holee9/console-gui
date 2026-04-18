@@ -280,7 +280,7 @@ public sealed class DicomServiceErrorHandlingTests
 
             result.IsFailure.Should().BeTrue();
             attemptCount.Should().Be(3, "Should have attempted initial + 2 retries = 3 total");
-            result.ErrorMessage.Should().Contain("재시도 후에도 성공하지 못했습니다"); // "Failed after retries" in Korean
+            result.ErrorMessage.Should().Contain("PACS 연결 실패"); // DicomNetworkException handler message
         }
         finally
         {

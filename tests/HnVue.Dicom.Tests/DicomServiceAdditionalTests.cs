@@ -60,7 +60,7 @@ public sealed class DicomServiceAdditionalTests
         var result = await svc.StoreAsync(@"C:\nonexistent\path\to\file.dcm", "PACS", CancellationToken.None);
 
         result.IsFailure.Should().BeTrue();
-        result.ErrorMessage.Should().Contain("not found");
+        result.ErrorMessage.Should().Contain("찾을 수 없습니다");
     }
 
     // ── QueryWorklistAsync – more parameter paths ────────────────────────────

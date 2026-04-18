@@ -51,7 +51,7 @@ public sealed class DicomStoreScuCoverageTests
 
         result.IsFailure.Should().BeTrue();
         result.Error.Should().Be(ErrorCode.DicomStoreFailed);
-        result.ErrorMessage.Should().Contain("DICOM file not found");
+        result.ErrorMessage.Should().Contain("DICOM 파일을 찾을 수 없습니다");
     }
 
     [Fact]
@@ -70,6 +70,6 @@ public sealed class DicomStoreScuCoverageTests
     {
         var result = await _sut.StoreAsync("/nonexistent/file.dcm");
 
-        result.ErrorMessage.Should().Contain("not found");
+        result.ErrorMessage.Should().Contain("찾을 수 없습니다");
     }
 }

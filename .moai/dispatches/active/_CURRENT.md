@@ -11,7 +11,7 @@
 | 팀 | 현재 DISPATCH 파일 | 상태 | 비고 |
 |----|-------------------|------|------|
 | **Team A** | S12-R1-team-a.md | **ACTIVE** | Update 테스트 수정 + 커버리지 85%+ |
-| **Team B** | S12-R1-team-b.md | **ACTIVE** | Detector TODO 정리 + Dicom 안정성 |
+| **Team B** | - | **IDLE** | S12-R1 MERGED (2026-04-18) |
 | **Coordinator** | S12-R1-coordinator.md | **ACTIVE** | UI ViewModels 커버리지 개선 |
 | **Design** | S12-R1-team-design.md | **ACTIVE** | UI Tests 커버리지 + DesignTime TODO |
 | **QA** | S12-R1-qa.md | **ACTIVE** | 전체 테스트 PASS 판정 |

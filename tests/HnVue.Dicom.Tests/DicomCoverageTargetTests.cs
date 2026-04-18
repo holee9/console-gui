@@ -147,7 +147,7 @@ public sealed class DicomCoverageTargetTests
 
             result.IsFailure.Should().BeTrue();
             result.Error.Should().Be(ErrorCode.DicomStoreFailed);
-            result.ErrorMessage.Should().Contain("C-STORE failed");
+            result.ErrorMessage.Should().Contain("C-STORE 실패");
         }
         finally
         {
