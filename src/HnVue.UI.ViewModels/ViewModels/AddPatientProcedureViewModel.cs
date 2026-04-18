@@ -227,7 +227,9 @@ public sealed partial class AddPatientProcedureViewModel : ObservableObject, IAd
                 Sex: Gender,
                 IsEmergency: false,
                 CreatedAt: DateTimeOffset.UtcNow,
-                CreatedBy: string.Empty);  // TODO: inject current operator ID
+                // @MX:TODO Inject current operator ID from ISecurityContext.CurrentUserId.
+                //          Blocked until ISecurityContext exposes non-null operator for this UI flow (SWR-SEC-AUDIT-003).
+                CreatedBy: string.Empty);
 
             var result = await _patientService.RegisterAsync(record);
             if (result.IsSuccess)

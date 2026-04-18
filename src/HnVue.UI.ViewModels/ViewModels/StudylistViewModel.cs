@@ -69,18 +69,28 @@ public sealed partial class StudylistViewModel : ObservableObject, IStudylistVie
     /// <summary>Gets the list of available PACS server names.</summary>
     public IReadOnlyList<string> PacsServers => _pacsServers;
 
-    /// <summary>Navigates to the previous patient/study set.</summary>
+    /// <summary>Navigates to the previous page of studies.</summary>
+    /// <remarks>
+    /// @MX:TODO Implement paged navigation backed by IStudyRepository paging API (SWR-UI-SL-006).
+    ///          Paging API is pending PACS/C-FIND cursor spec — blocked until Team A exposes
+    ///          <c>GetStudiesAsync(offset, limit)</c> or equivalent cursor. Command remains wired
+    ///          so XAML bindings do not throw; it is a no-op until the repository contract ships.
+    /// </remarks>
     [RelayCommand]
     private static void NavigatePrevious()
     {
-        // TODO: implement paged navigation (previous page)
+        // Intentional no-op placeholder — see XML doc above for @MX:TODO.
     }
 
-    /// <summary>Navigates to the next patient/study set.</summary>
+    /// <summary>Navigates to the next page of studies.</summary>
+    /// <remarks>
+    /// @MX:TODO Implement paged navigation backed by IStudyRepository paging API (SWR-UI-SL-006).
+    ///          Paired with <see cref="NavigatePrevious"/> — both block on the same repository work.
+    /// </remarks>
     [RelayCommand]
     private static void NavigateNext()
     {
-        // TODO: implement paged navigation (next page)
+        // Intentional no-op placeholder — see XML doc above for @MX:TODO.
     }
 
     /// <summary>Applies the given period filter and reloads studies.</summary>
@@ -99,7 +109,11 @@ public sealed partial class StudylistViewModel : ObservableObject, IStudylistVie
         ErrorMessage = null;
         try
         {
-            // TODO: replace with PACS/C-FIND query scoped to SelectedPacsServer and ActivePeriodFilter
+            // @MX:TODO Replace the placeholder delay with a PACS/C-FIND query scoped to
+            //          <see cref="SelectedPacsServer"/> and <see cref="ActivePeriodFilter"/>.
+            //          IStudyRepository currently only exposes local SQLite queries;
+            //          PACS integration is tracked under SWR-UI-SL-009 (blocked pending Team B
+            //          DICOM C-FIND SCU surface). Current behavior keeps UI responsive for tests.
             await Task.Delay(1);
         }
         catch (Exception ex) when (ex is not OperationCanceledException)
