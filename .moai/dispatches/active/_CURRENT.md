@@ -10,14 +10,14 @@
 
 | 팀 | 현재 DISPATCH 파일 | 상태 | 비고 |
 |----|-------------------|------|------|
-| **Team A** | S12-R3-team-a.md | **ACTIVE** | 정기 유지보수 |
-| **Team B** | S12-R3-team-b.md | **ACTIVE** | 정기 유지보수 |
-| **Coordinator** | S12-R3-coordinator.md | **ACTIVE** | 정기 유지보수 |
-| **Design** | S12-R3-team-design.md | **ACTIVE** | 정기 유지보수 |
-| **QA** | S12-R3-qa.md | **ACTIVE** | 정기 품질 점검 |
-| **RA** | S12-R3-ra.md | **ACTIVE** | 정기 문서 동기화 |
+| **Team A** | - | **IDLE** | S12-R3 완료 |
+| **Team B** | - | **IDLE** | S12-R3 완료 |
+| **Coordinator** | - | **IDLE** | S12-R3 완료 |
+| **Design** | - | **IDLE** | S12-R3 완료 |
+| **QA** | - | **IDLE** | S12-R3 완료 |
+| **RA** | - | **IDLE** | S12-R3 완료 |
 
-**→ S12-R3: 6 ACTIVE / 2026-04-19**
+**→ 전체 팀 IDLE / 2026-04-19 15:30**
 
 ---
 
