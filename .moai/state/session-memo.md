@@ -2,7 +2,7 @@
 
 ## P1: Session Context
 
-session_id: c756029e-2144-4c8d-92ed-577bb7f36255
-cwd: D:\workspace-gitea\Console-GUI\.worktrees\team-a
+session_id: 1a531e21-2bf8-40cb-9fbf-375c4336c034
+cwd: D:\workspace-gitea\Console-GUI
 event: PreCompact
 
