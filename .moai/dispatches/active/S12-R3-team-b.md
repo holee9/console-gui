@@ -38,18 +38,30 @@ S12-R2 완료: Dicom 커버리지 개선.
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: 정기 유지보수 (P1) | IN_PROGRESS | - | 작업 시작 |
+| Task 1: 정기 유지보수 (P1) | COMPLETED | 2026-04-19 | StyleCop 경고 정리 완료 |
 
 ---
 
 ## Self-Verification Checklist
 
-- [ ] 전체 빌드 0 오류 확인
-- [ ] 전체 테스트 0 실패 확인
-- [ ] 소유권 준수 (Dicom, Detector, Imaging, Dose, Incident, Workflow, PM, CDBurning)
+- [x] 전체 빌드 0 오류 확인
+- [x] 전체 테스트 0 실패 확인
+- [x] 소유권 준수 (Dicom, Detector, Imaging, Dose, Incident, Workflow, PM, CDBurning)
 
 ---
 
 ## 빌드 증거
 
-(작업 완료 후 업데이트)
+**솔루션 빌드**: 0 오류, 0 에러 (MSBuild Debug)
+**Team B 테스트**: 1868/1868 PASS (0 실패)
+- Detector: 301 PASS
+- Dose: 412 PASS (Safety-Critical 90%+ coverage 유지)
+- Dicom: 538 PASS
+- Incident: 138 PASS (Safety-Critical 90%+ coverage 유지)
+- Workflow: 293 PASS
+- PatientManagement: 139 PASS
+- CDBurning: 47 PASS
+
+**변경 사항**:
+- HnVue.Dose StyleCop 경고: 19 -> 0 (SA1633/SA1203/SA1503/SA1519/SA1025/SA1116 해결)
+- 파일: DoseService.cs, DoseRepository.cs, EfDoseRepository.cs, IDoseRepository.cs, GlobalSuppressions.cs
