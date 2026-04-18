@@ -66,7 +66,7 @@ public sealed class DicomStoreScu
                 var requestResult = Result.Success();
                 storageRequest.OnResponseReceived = (req, response) =>
                 {
-                    if (response.Status != FellowOakDicom.DicomStatus.Success)
+                    if (response.Status != FellowOakDicom.Network.DicomStatus.Success)
                     {
                         requestResult = Result.Failure(
                             ErrorCode.DicomStoreFailed,
@@ -144,7 +144,7 @@ public sealed class DicomStoreScu
     /// <summary>
     /// Converts DICOM status codes to user-friendly Korean error messages.
     /// </summary>
-    private static string GetUserFriendlyStatus(FellowOakDicom.DicomStatus status)
+    private static string GetUserFriendlyStatus(FellowOakDicom.Network.DicomStatus status)
     {
         var code = status.Code;
         var description = status.Description;
