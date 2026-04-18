@@ -62,9 +62,9 @@ UI 커버리지 개선 필요. Coordinator 팀과 협업.
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: UI 커버리지 개선 (P1) | IN_PROGRESS | - | 커버리지 78.56%, 테스트 추가 완료 |
+| Task 1: UI 커버리지 개선 (P1) | IN_PROGRESS | 2026-04-18 | 공개 API 기반 테스트 추가 진행 중 |
 | Task 2: DesignTime TODO 정리 (P2) | COMPLETED | - | TODO 없음, 정리됨 확인 |
-| Task 3: Coordinator 협업 (P1) | NOT_STARTED | - | Coordinator 요청 대기 중 |
+| Task 3: Coordinator 협업 (P1) | COMPLETED | 2026-04-18 | ViewModelBoundaryTests.cs (20 tests) via Coordinator 협업 완료 |
 
 ---
 
