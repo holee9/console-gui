@@ -256,4 +256,86 @@ public class UIComponentTests
             sidebar.Width.Should().Be(width);
         });
     }
+
+    // ====================================================================
+    // Additional Medical Components Tests
+    // ====================================================================
+
+    [StaFact]
+    [Trait("Category", "Components")]
+    [Trait("Component", "AcquisitionPreview")]
+    public void AcquisitionPreview_DefaultValues_AreExpected()
+    {
+        StaRunner.Run(() =>
+        {
+            var preview = new Components.Medical.AcquisitionPreview();
+            preview.Should().NotBeNull();
+        });
+    }
+
+    [StaFact]
+    [Trait("Category", "Components")]
+    [Trait("Component", "PatientInfoCard")]
+    public void PatientInfoCard_DefaultValues_AreExpected()
+    {
+        StaRunner.Run(() =>
+        {
+            var card = new Components.Medical.PatientInfoCard();
+            card.Should().NotBeNull();
+        });
+    }
+
+    [StaFact]
+    [Trait("Category", "Components")]
+    [Trait("Component", "StudyThumbnail")]
+    public void StudyThumbnail_DefaultValues_AreExpected()
+    {
+        StaRunner.Run(() =>
+        {
+            var thumbnail = new Components.Medical.StudyThumbnail();
+            thumbnail.Should().NotBeNull();
+        });
+    }
+
+    [StaFact]
+    [Trait("Category", "Components")]
+    [Trait("Component", "Modal")]
+    public void Modal_DefaultValues_AreExpected()
+    {
+        StaRunner.Run(() =>
+        {
+            var modal = new Components.Common.Modal();
+            modal.Should().NotBeNull();
+            modal.IsOpen.Should().BeFalse();
+        });
+    }
+
+    [StaFact]
+    [Trait("Category", "Components")]
+    [Trait("Component", "Modal")]
+    public void Modal_IsOpen_Toggle_SwitchesState()
+    {
+        StaRunner.Run(() =>
+        {
+            var modal = new Components.Common.Modal();
+
+            modal.IsOpen = true;
+            modal.IsOpen.Should().BeTrue();
+
+            modal.IsOpen = false;
+            modal.IsOpen.Should().BeFalse();
+        });
+    }
+
+    [StaFact]
+    [Trait("Category", "Components")]
+    [Trait("Component", "MedicalTextBox")]
+    public void MedicalTextBox_DefaultValues_AreExpected()
+    {
+        StaRunner.Run(() =>
+        {
+            var textBox = new Components.Common.MedicalTextBox();
+            textBox.Should().NotBeNull();
+        });
+    }
 }

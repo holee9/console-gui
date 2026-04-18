@@ -1,131 +1,160 @@
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |# DISPATCH Current Index
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |> **[HARD] 에이전트 FIRST ACTION**: 이 파일을 가장 먼저 읽는다.
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |> 자신의 팀 행(row)에서 파일명을 확인한 뒤, 해당 파일만 읽는다.
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |> 상태가 `PR_OPEN` 또는 `IDLE`이면 → 새 DISPATCH 없음 → Commander Center에 IDLE 보고.
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |---
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |## [HARD] 자율주행 철학 — 모든 팀 필독
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |**자율주행 = "마음대로"가 아닙니다. 명확한 룰 내에서 자율적으로 실행하는 것입니다.**
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |### [HARD] 세션 시작 절차 (모든 팀 필수)
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |```
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |Step 0: git pull origin main  ← [HARD] 이 파일 읽기 전 반드시 실행
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |Step 1: Read _CURRENT.md (이 파일)
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |Step 2: 자신의 팀 행(row)에서 파일명 확인
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |Step 3: 해당 파일만 읽기 (다른 팀 DISPATCH 절대 읽기 금지)
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |Step 4: 상태가 IDLE이면 → 즉시 IDLE 보고 (다른 작업 금지)
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |```
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |### [HARD] IDLE 상태 절대 규칙
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |```
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |_CURRENT.md에서 자신의 팀이 IDLE이면:
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |1. 즉시 IDLE 보고
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |2. DISPATCH 파일 검색 금지
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |3. 자율 작업 금지
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |4. CC 지시 대기
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |```
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |**위반 시 프로토콜 위반으로 간주합니다.**
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |---
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |Updated: 2026-04-17 (S11-R2: 6/6 ACTIVE — S11-R2 시작)
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/`
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |---
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |## [HARD] CC 모니터링 주기 (S11-R1부터 적용)
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |- **CC 모니터링**: 20분 간격 (git log + DISPATCH Status 확인)
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |- **팀 동기화**: 15분 간격 (DISPATCH Status 주기적 업데이트)
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |- **자율주행 진화**: S11 데이터 축적 → S12 최적화 적용
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |**모니터링 절차**:
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |1. `git fetch origin`
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |2. `git log --oneline origin/team/* --not main` (6팀)
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |3. DISPATCH 파일 Status 테이블 확인
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |4. COMPLETED → 소유권 검증 → 머지 → _CURRENT.md 업데이트
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |5. 20분 후 다시 모니터링 (루프)
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |---
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |---
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |## 현재 팀별 DISPATCH 상태
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ || 팀 | 현재 DISPATCH 파일 | 상태 | 비고 |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ ||----|-------------------|------|------|
-| **Team A** | - | **MERGED** | EfUpdateRepository 커버리지 개선 ✅ |
-| **Team B** | - | **MERGED** | Dicom C-STORE 에러 처리 개선 ✅ |
-| **Coordinator** | - | **MERGED** | ISettingsViewModel + DI 등록 검증 ✅ |
-| **Design** | - | **MERGED** | AcquisitionView 디자인 (슬라이드 9-11) ✅ |
-| **QA** | - | **MERGED** | 전체 테스트 실행 + 커버리지 리포트 ✅ |
-| **RA** | - | **MERGED** | CHANGELOG + SBOM v3.1 업데이트 ✅ |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |**→ S11-R2: 6/6 MERGED ✅**
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |---
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |## 중요 규칙 변경 (S08부터 적용)
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |```
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |[HARD] role-matrix.md (CONSTITUTIONAL): 7팀 역할 경계 최상위 규약 도입
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |- CC 자가점검 4문: dotnet? 소스수정? 구현에이전트? 범위외? → YES = 즉시중단
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |- CC 허용: DISPATCH 기획, 모니터링, 머지, 취합 ONLY
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |- CC 금지: dotnet build/test, 소스코드 수정, 구현 에이전트 호출
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |- QA 독립성: PASS/FAIL 판정 최종권, CC 뒤집기 불가
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |```
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |---
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |## 실행 전 필수: 브랜치 최신화
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |```bash
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |# 각 팀은 작업 시작 전 반드시 실행
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |git checkout team/{your-team}
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |git pull origin main
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |git push origin team/{your-team}
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |```
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |---
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |## DISPATCH 라운드 이력
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ || 날짜 | 라운드 | 파일 | 상태 |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ ||------|--------|------|------|
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ || 2026-04-08 | Phase 0 | DISPATCH-*-2026-04-08.md | `completed/` 아카이브 |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ || 2026-04-09 | S03 QA Coverage | DISPATCH-*-2026-04-09.md | `completed/` 아카이브 |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ || 2026-04-11 | S04 R1+R2 | S04-R{1,2}-*.md | `completed/` 아카이브 (PR #77-82) |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ || 2026-04-12 | S05 R1 | S05-R1-*.md | `completed/` 아카이브 |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ || 2026-04-13 | S05 R2 | S05-R2-*.md | ALL MERGED |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ || 2026-04-13 | S06 R1 | S06-R1-*.md | ALL MERGED (PR #88-90) |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ || 2026-04-13 | S06 R2 | S06-R2-*.md | ALL MERGED |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ || 2026-04-14 | S07 R1~R5 | S07-R{1~5}-*.md | ALL MERGED (Sprint S07 종료) |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ || 2026-04-14 | S08 R1 | S08-R1-*.md | ALL MERGED (PASS) |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ || 2026-04-14 | S08 R2 | S08-R2-*.md | ALL MERGED (PASS) |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ || 2026-04-14 | S09 R1 | S09-R1-*.md | 전팀 MERGED 완료 |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ || 2026-04-14 | **S09 R2** | **S09-R2-*.md** | 전팀 MERGED, QA CONDITIONAL PASS |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ || 2026-04-15 | **S09 R3** | **S09-R3-*.md** | 전팀 MERGED, QA PASS (#104) |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ || 2026-04-15 | **S10 R1** | **S10-R1-*.md** | 6팀 발행 (갭 분석 기반) |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ || 2026-04-15 | **S10 R2** | **S10-R2-*.md** | 3팀 MERGED, 3팀 IDLE |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ || 2026-04-15 | **S10 R3** | **S10-R3-*.md** | 전팀 MERGED (Coordinator 92.58%, QA CONDITIONAL PASS, Design MergeView) |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ || 2026-04-16 | **S10 R4** | **S10-R4-*.md** | 6/6 MERGED, QA CONDITIONAL PASS (81.3%) |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ || 2026-04-16 | **S11 R1** | **S11-R1-*.md** | 6팀 발행 (갭 분석 기반, PASS 전환 목표) |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ || 2026-04-17 | **S11 R2** | **S11-R2-*.md** | 6팀 발행 (갭 분석 기반 실질 작업 할당) |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |---
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |## Commander Center 전용 — 신규 DISPATCH 발행 절차
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |```
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |1. 기존 ACTIVE 파일 상태를 MERGED 또는 SUPERSEDED로 변경
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |2. completed/ 폴더로 이동
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |3. 신규 DISPATCH 파일 생성 (S{N}-R{N}-{team}.md)
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |4. 이 표의 해당 팀 행 업데이트
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |5. git add .moai/dispatches/ && git commit && git push origin main
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |```
+# DISPATCH Current Index — S12-R1
+
+> **[HARD] 에이전트 FIRST ACTION**: 이 파일을 가장 먼저 읽는다.
+> 자신의 팀 행(row)에서 파일명을 확인한 뒤, 해당 파일만 읽는다.
+> 상태가 `IDLE`이면 → 새 DISPATCH 없음 → Commander Center에 IDLE 보고.
+
+---
+
+## 현재 팀별 DISPATCH 상태
+
+| 팀 | 현재 DISPATCH 파일 | 상태 | 비고 |
+|----|-------------------|------|------|
+| **Team A** | S12-R1-team-a.md | **ACTIVE** | Update 테스트 수정 + 커버리지 85%+ |
+| **Team B** | S12-R1-team-b.md | **ACTIVE** | Detector TODO 정리 + Dicom 안정성 |
+| **Coordinator** | S12-R1-coordinator.md | **ACTIVE** | UI ViewModels 커버리지 개선 |
+| **Design** | S12-R1-team-design.md | **ACTIVE** | UI Tests 커버리지 + DesignTime TODO |
+| **QA** | S12-R1-qa.md | **ACTIVE** | 전체 테스트 PASS 판정 |
+| **RA** | S12-R1-ra.md | **ACTIVE** | RTM 업데이트 + 릴리즈 준비 |
+
+**→ S12-R1: 6/6 ACTIVE (2026-04-18)**
+
+---
+
+## [HARD] 세션 시작 절차 (모든 팀 필수)
+
+```
+Step 0: git pull origin main  ← [HARD] 이 파일 읽기 전 반드시 실행
+Step 1: Read _CURRENT.md (이 파일)
+Step 2: 자신의 팀 행(row)에서 파일명 확인
+Step 3: 해당 파일만 읽기 (다른 팀 DISPATCH 절대 읽기 금지)
+Step 4: 상태가 IDLE이면 → 즉시 IDLE 보고 (다른 작업 금지)
+```
+
+---
+
+## [HARD] IDLE 상태 절대 규칙
+
+```
+_CURRENT.md에서 자신의 팀이 IDLE이면:
+1. 즉시 IDLE 보고
+2. DISPATCH 파일 검색 금지
+3. 자율 작업 금지
+4. CC 지시 대기
+```
+
+**위반 시 프로토콜 위반으로 간주합니다.**
+
+---
+
+## S12 자율주행 최적화 목표
+
+### 팀별 모니터링 스케줄 (S11 데이터 기반 최적화)
+
+| 역할 | 모니터링 주기 | 동기화 방식 | 비고 |
+|------|------------|------------|------|
+| **CC** | **15분** | git log + DISPATCH Status 확인 | S11 달성 기반, 전 라운드 목표 |
+| **Team A (인프라)** | 15분 | DISPATCH Status 주기 업데이트 | 빌드 포함 적정 주기 |
+| **Team B (의료영상)** | 15분 | DISPATCH Status 주기 업데이트 | 빌드 포함 적정 주기 |
+| **Coordinator (통합)** | 15분 | DISPATCH Status 주기 업데이트 | 통합테스트 포함 |
+| **Design (순수UI)** | 20분 | DISPATCH Status 주기 업데이트 | XAML 작업 특성 반영 |
+| **QA (품질보증)** | 10분 | DISPATCH Status 주기 업데이트 | 분석/보고 위주, 신속 |
+| **RA (규제)** | 10분 | DISPATCH Status 주기 업데이트 | 문서 작업, 신속 |
+
+### S12 목표 메트릭
+
+| 지표 | S10 기준 | S11 목표 | S12 목표 |
+|------|----------|----------|----------|
+| 라운드 소요 시간 | 2시간 1분 | 1시간 30분 | **1시간 15분** |
+| CC 모니터링 횟수 | 0회 (실패) | 6회/라운드 | **6회 이상/라운드** |
+| 전팀 MERGED→발행 | 11시간 53분 | 10분 이내 | **5분 이내** |
+| 팀간 완료 편차 | 18분 | 10분 | **5분** |
+
+---
+
+## [HARD] CC 모니터링 절차 (S12 기준)
+
+**CC 모니터링**: 15분 간격
+
+```
+1. git fetch origin
+2. git log --oneline origin/team/* --not main (6팀)
+3. DISPATCH 파일 Status 테이블 직접 읽기 확인
+4. COMPLETED 감지 → 소유권 검증 → 머지 → _CURRENT.md 업데이트
+5. 15분 후 다시 모니터링 (루프)
+```
+
+**자율 진행**: COMPLETED + 빌드 증거 + diff 범위 3개 통과 → 즉시 머지, 사용자 확인 불필요
+
+**정지 조건**: 범위 위반 / 빌드 에러 / BLOCKED 5회 연속 / Safety-Critical 90% 미달 3회
+
+---
+
+## [HARD] DISPATCH Status 업데이트 의무
+
+```
+DISPATCH 읽기 직후    → NOT_STARTED → IN_PROGRESS (즉시 push)
+작업 중 주기적으로    → Status 확인 + 필요시 메모 업데이트
+작업 완료 후          → IN_PROGRESS → COMPLETED + 빌드 증거 (즉시 push)
+작업 불가 시          → NOT_STARTED → BLOCKED + 사유 기재 (즉시 push)
+```
+
+**Status 업데이트 없이 대기 = 소통 단절 = 프로토콜 위반**
+
+---
+
+## [HARD] 완료 프로세스 (Git + Session Lifecycle)
+
+```
+1. 작업 완료
+2. git add → git commit → git push origin team/{team-name}
+3. DISPATCH Status COMPLETED + 빌드 증거 업데이트 → push
+4. /clear 실행 [HARD] ← 누락 시 context 누적 → 다음 라운드 작업 불능
+5. CC 자동 감지 → 머지 → _CURRENT.md 업데이트
+```
+
+---
+
+## 팀별 역할 경계 (퀵 레퍼런스)
+
+| 팀 | 소유 모듈 | 핵심 금지 사항 |
+|----|-----------|---------------|
+| **CC** | DISPATCH 관리만 | 소스코드 수정, dotnet 실행, 구현 에이전트 호출 |
+| **Team A** | Common, Data, Security, SystemAdmin, Update | 다른 팀 모듈 수정 |
+| **Team B** | Dicom, Detector, Imaging, Dose, Incident, Workflow, PM, CDBurning | 다른 팀 모듈 수정 |
+| **Coordinator** | UI.Contracts, UI.ViewModels, App, tests.integration | DesignTime/ 수정 |
+| **Design** | UI Views, Styles, Themes, Components, Assets, DesignTime | tests.integration/ 수정 |
+| **QA** | .github/workflows, scripts/ci, scripts/qa | 소스코드 수정 |
+| **RA** | docs/regulatory, docs/planning, docs/risk, docs/verification | 소스코드 수정 |
+
+> **상세**: `.claude/rules/teams/role-matrix.md` (CONSTITUTIONAL)
+
+---
+
+## DISPATCH 라운드 이력
+
+| 날짜 | 라운드 | 상태 |
+|------|--------|------|
+| 2026-04-08~11 | Phase 0 / S04 | `completed/` 아카이브 |
+| 2026-04-12~13 | S05~S06 R1~R2 | ALL MERGED |
+| 2026-04-14 | S07 R1~R5 | ALL MERGED |
+| 2026-04-14 | S08 R1~R2 | ALL MERGED |
+| 2026-04-14~15 | S09 R1~R3 | ALL MERGED, QA PASS |
+| 2026-04-15~16 | S10 R1~R4 | ALL MERGED, QA CONDITIONAL PASS (81.3%) |
+| 2026-04-16~17 | S11 R1~R2 | ALL MERGED, QA CONDITIONAL PASS (99.97%) |
+| **2026-04-18** | **S12 R1** | **ACTIVE** |
+
+---
+
+## CC 전용 — 신규 DISPATCH 발행 절차
+
+```
+1. 기존 ACTIVE 파일 → completed/ 이동
+2. 신규 DISPATCH 파일 생성 (S{N}-R{N}-{team}.md)
+3. 이 표 업데이트 (전팀 ACTIVE or IDLE)
+4. git add .moai/dispatches/ && git commit && git push origin main
+5. 전팀 머지 후 즉시 다음 라운드 기획 (자율 진행)
+```
+
+Updated: 2026-04-18 (S12-R1: 6/6 ACTIVE)
+DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/`

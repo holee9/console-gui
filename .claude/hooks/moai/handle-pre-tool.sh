@@ -3,11 +3,6 @@
 # This script forwards stdin JSON to the moai hook pre-tool command.
 # Project-local hook: .claude/hooks/moai/pre-tool.sh
 
-# Add Windows dotnet to PATH (required for quality gate on Windows)
-if [ -d "/c/Program Files/dotnet" ]; then
-	export PATH="/c/Program Files/dotnet:$PATH"
-fi
-
 # Create temp file to store stdin
 temp_file=$(mktemp)
 trap 'rm -f "$temp_file"' EXIT
