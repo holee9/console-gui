@@ -14,10 +14,10 @@
 | **Team B** | - | **IDLE** | MERGED — Dicom 커버리지 개선 완료 |
 | **Coordinator** | S12-R2-coordinator.md | **IDLE** | IDLE CONFIRM |
 | **Design** | S12-R2-team-design.md | **IDLE** | IDLE CONFIRM |
-| **QA** | S12-R2-qa.md | **ACTIVE** | Team A/B 완료 후 재검증 |
+| **QA** | - | **IDLE** | MERGED — S12-R2 QA PASS (3927/3928, 100%) |
 | **RA** | S12-R2-ra.md | **IDLE** | IDLE CONFIRM |
 
-**→ S12-R2: 2 MERGED (A, B) / 1 ACTIVE (QA) / 2026-04-18**
+**→ S12-R2: 3 MERGED (A, B, QA) / 2026-04-19**
 
 ---
 
