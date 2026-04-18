@@ -32,6 +32,8 @@
 | v2.3 | 2026-04-14 | RA팀 | S07 R5: CDBurning 및 DICOM TC 매핑 추가 (부록 D). SWR-CD-010/020/030 (CDBurning 서비스/IMAPI/Repository), SWR-DICOM-010/020 (DICOM FileIO/Service) xUnit Trait 기반 TC 정의. |
 | v2.4 | 2026-04-14 | RA팀 | S08 R1: StudylistView UI 동기화 확인. IStudylistViewModel 인터페이스 추가 (Coordinator)에 따른 UI 계층 변경사항 반영. SRS/FRS 문서 동기화 확인 (별도 SWR 추가 불필요 - UI 설계 구현사항). |
 | v2.5 | 2026-04-14 | RA팀 | S08 R2: role-matrix v2.0 디렉토리 단위 소유권 테이블 반영. DesignTime/ 경계 아키텍처 테스트 추적성 추가 (부록 E). HnVue.UI 공유 프로젝트 내 파일 생성 위치별 소유권 테스트 매핑. |
+| v2.6 | 2026-04-15 | RA팀 | S09 R3: DICOM/Dose/UI 커버리지 강화 TC 추적성 추가 (부록 F). SWR-DC-055 (DICOM 분기 커버리지), SWR-DS-020 (Dose 분기 갭 커버리지), UI Converter NullReference 수정 TC 매핑. QA PASS 90.3% 커버리지 반영. |
+| v2.7 | 2026-04-18 | RA팀 | S10-R2 ~ S12-R1 변경사항 TC 추적성 추가 (부록 G). MergeView PPT 구현 (Design), EfUpdateRepository 커버리지 개선 (Team A), DICOM C-STORE 에러 처리 개선 + DicomStatus 네임스페이스 수정 (Team B), OwnDetectorConfig null check 수정 (Team B), ToastItem 커버리지 개선 (Coordinator), ViewModel 커버리지 92.58% 달성 (Coordinator), AcquisitionView 디자인 완료 (Design), UI 커버리지 개선 + DesignTime TODO 정리 (Design). QA CONDITIONAL PASS 81.3% (S10-R4) → PASS 99.97% (S11-R2) → PASS 전환 목표 (S12-R1). |
 
 ---
 
@@ -1193,12 +1195,230 @@ QA PASS (4020/4020, 90.3% 커버리지) 달성.
 
 ---
 
+## 부록 G. S10-R2 ~ S12-R1 변경사항 추적성
+
+### G.1 개요
+
+S10-R2부터 S12-R1까지의 개발 라운드에서 구현된 기능/수정사항의 SWR 추적성 매핑.
+각 팀별 커버리지 개선, PPT 구현, 안정성 수정을 종합적으로 추적한다.
+
+**주요 이력:**
+- S10-R2: MergeView PPT 구현 (Design), Converter 테스트 (Team B)
+- S10-R3: ViewModel 커버리지 92.58% (Coordinator)
+- S10-R4: 전체 커버리지 85% 달성 노력 → CONDITIONAL PASS 81.3%
+- S11-R1: 전팀 동기화, 프로토콜 개선
+- S11-R2: AcquisitionView 디자인, EfUpdateRepository 커버리지, DICOM C-STORE 에러 처리 → PASS 99.97%
+- S12-R1: DICOM 안정성 수정, UI 커버리지 개선, DesignTime TODO 정리 → PASS 전환 목표
+
+### G.2 SWR-UP-010: EfUpdateRepository 커버리지 (S11-R2)
+
+| 항목 | 내용 |
+|------|------|
+| **SWR ID** | SWR-UP-010 |
+| **요구사항명** | Update 모듈 저장소 커버리지 강화 |
+| **상위 PR** | PR-SA-067 (업데이트 메커니즘) |
+| **상위 MR** | MR-039 (업데이트 메커니즘, Tier 2) |
+| **구현 모듈** | HnVue.Update, HnVue.Data (Team A) |
+| **검증 수준** | T (Unit + Integration Test) |
+| **검증 상태** | Pass |
+
+### G.3 SWR-UP-010 TC 매핑
+
+| TC ID | 테스트 케이스명 | 테스트 파일 | SWR 연결 | 검증 항목 | 상태 |
+|-------|--------------|-----------|---------|---------|------|
+| TC-UP-010-001 | EfUpdateRepository 커버리지 개선 | EfUpdateRepositoryTests.cs | SWR-UP-010 | EF Core 저장소 CRUD, 트랜잭션, 예외 처리 분기 커버리지 | Pass |
+| TC-UP-010-002 | EfUpdateRepository 통합 테스트 | EfUpdateRepositoryIntegrationTests.cs | SWR-UP-010 | 실제 SQLite + EF Core 통합 시나리오 | Pass |
+
+### G.4 SWR-DC-060: DICOM C-STORE 에러 처리 개선 (S11-R2)
+
+| 항목 | 내용 |
+|------|------|
+| **SWR ID** | SWR-DC-060 |
+| **요구사항명** | DICOM C-STORE 네트워크 에러 처리 강화 |
+| **상위 PR** | PR-DC-010 (DICOM C-STORE 송수신) |
+| **상위 MR** | MR-024 (DICOM 통신, Tier 1) |
+| **구현 모듈** | HnVue.Dicom (Team B) |
+| **검증 수준** | T (Unit Test) |
+| **검증 상태** | Pass |
+
+### G.5 SWR-DC-060 TC 매핑
+
+| TC ID | 테스트 케이스명 | 테스트 파일 | SWR 연결 | 검증 항목 | 상태 |
+|-------|--------------|-----------|---------|---------|------|
+| TC-DC-060-001 | C-STORE 에러 처리 개선 | DicomCStoreErrorTests.cs | SWR-DC-060 | 연결 실패, 타임아웃, 리젝트 응답, 재시도 로직 | Pass |
+
+### G.6 SWR-DC-061: DICOM DicomStatus 네임스페이스 수정 (S12-R1)
+
+| 항목 | 내용 |
+|------|------|
+| **SWR ID** | SWR-DC-061 |
+| **요구사항명** | DICOM Status 코드 네임스페이스 정합성 |
+| **상위 PR** | PR-DC-010 (DICOM C-STORE 송수신) |
+| **상위 MR** | MR-024 (DICOM 통신, Tier 1) |
+| **구현 모듈** | HnVue.Dicom (Team B) |
+| **검증 수준** | T (Unit Test) |
+| **검증 상태** | Pass |
+| **이슈 참조** | #107 |
+
+### G.7 SWR-DC-061 TC 매핑
+
+| TC ID | 테스트 케이스명 | 테스트 파일 | SWR 연결 | 검증 항목 | 상태 |
+|-------|--------------|-----------|---------|---------|------|
+| TC-DC-061-001 | DicomStatus 네임스페이스 정합성 | DicomStatusTests.cs | SWR-DC-061 | fo-dicom 5.x DicomStatus 네임스페이스 참조, 어서션 한국어 수정 | Pass |
+
+### G.8 SWR-DT-070: OwnDetectorConfig null check (S11-R1 fix)
+
+| 항목 | 내용 |
+|------|------|
+| **SWR ID** | SWR-DT-070 |
+| **요구사항명** | Own Detector 설정 null 안전성 |
+| **상위 PR** | PR-DT-010 (Detector 설정/어댑터) |
+| **상위 MR** | MR-020 (Detector 연동, Tier 1) |
+| **구현 모듈** | HnVue.Detector (Team B) |
+| **검증 수준** | T (Unit Test) |
+| **검증 상태** | Pass |
+
+### G.9 SWR-DT-070 TC 매핑
+
+| TC ID | 테스트 케이스명 | 테스트 파일 | SWR 연결 | 검증 항목 | 상태 |
+|-------|--------------|-----------|---------|---------|------|
+| TC-DT-070-001 | OwnDetectorConfig null check 수정 | OwnDetectorConfigEdgeCaseTests.cs | SWR-DT-070 | null 입력 처리, 엣지 케이스 검증 | Pass |
+
+### G.10 SWR-UI-VM-010: ViewModel 커버리지 92.58% (S10-R3)
+
+| 항목 | 내용 |
+|------|------|
+| **SWR ID** | SWR-UI-VM-010 |
+| **요구사항명** | ViewModel 계층 커버리지 강화 |
+| **상위 PR** | PR-UI-010 (사용자 인터페이스 구현) |
+| **상위 MR** | MR-005 (UI/UX, Tier 2) |
+| **구현 모듈** | HnVue.UI.ViewModels (Coordinator) |
+| **검증 수준** | T (Unit Test) |
+| **검증 상태** | Pass |
+| **달성 커버리지** | 92.58% |
+
+### G.11 SWR-UI-VM-010 TC 매핑
+
+| TC ID | 테스트 케이스명 | 테스트 파일 | SWR 연결 | 검증 항목 | 상태 |
+|-------|--------------|-----------|---------|---------|------|
+| TC-UI-VM-010-001 | ViewModel 커버리지 개선 | ViewModel*Tests.cs | SWR-UI-VM-010 | 모든 ViewModel 분기, 커맨드, 속성 변경 이벤트 | Pass |
+
+### G.12 SWR-UI-TOAST-010: ToastItem 커버리지 개선 (S10-R4)
+
+| 항목 | 내용 |
+|------|------|
+| **SWR ID** | SWR-UI-TOAST-010 |
+| **요구사항명** | ToastItem UI 컴포넌트 커버리지 |
+| **상위 PR** | PR-UI-015 (알림 시스템) |
+| **상위 MR** | MR-005 (UI/UX, Tier 2) |
+| **구현 모듈** | HnVue.UI.ViewModels (Coordinator) |
+| **검증 수준** | T (Unit Test) |
+| **검증 상태** | Pass |
+
+### G.13 SWR-UI-TOAST-010 TC 매핑
+
+| TC ID | 테스트 케이스명 | 테스트 파일 | SWR 연결 | 검증 항목 | 상태 |
+|-------|--------------|-----------|---------|---------|------|
+| TC-UI-TOAST-010-001 | ToastItem 커버리지 개선 | ToastItemTests.cs | SWR-UI-TOAST-010 | Toast 타입별 렌더링, 타이머, 종료 이벤트 32개 시나리오 | Pass |
+
+### G.14 SWR-UI-MERGE-010: MergeView PPT 구현 (S10-R2)
+
+| 항목 | 내용 |
+|------|------|
+| **SWR ID** | SWR-UI-MERGE-010 |
+| **요구사항명** | MergeView 화면 구현 (PPT 슬라이드 12-13) |
+| **상위 PR** | PR-PM-015 (환자 병합 UI) |
+| **상위 MR** | MR-012 (환자 관리, Tier 1) |
+| **구현 모듈** | HnVue.UI (Design Team) |
+| **검증 수준** | T (DesignTime + Unit Test) |
+| **검증 상태** | Pass |
+
+### G.15 SWR-UI-MERGE-010 TC 매핑
+
+| TC ID | 테스트 케이스명 | 테스트 파일 | SWR 연결 | 검증 항목 | 상태 |
+|-------|--------------|-----------|---------|---------|------|
+| TC-UI-MERGE-010-001 | MergeView DesignTime 렌더링 | MergeViewDesignTimeTests.cs | SWR-UI-MERGE-010 | PPT 슬라이드 12-13 시각적 요소, 바인딩 검증 | Pass |
+
+### G.16 SWR-UI-ACQ-010: AcquisitionView 디자인 (S11-R2)
+
+| 항목 | 내용 |
+|------|------|
+| **SWR ID** | SWR-UI-ACQ-010 |
+| **요구사항명** | AcquisitionView 화면 구현 (PPT 슬라이드 9-11) |
+| **상위 PR** | PR-WF-010 (촬영 워크플로우 UI) |
+| **상위 MR** | MR-002 (촬영 워크플로우, Tier 1) |
+| **구현 모듈** | HnVue.UI (Design Team) |
+| **검증 수준** | T (DesignTime Test) |
+| **검증 상태** | Pass |
+
+### G.17 SWR-UI-ACQ-010 TC 매핑
+
+| TC ID | 테스트 케이스명 | 테스트 파일 | SWR 연결 | 검증 항목 | 상태 |
+|-------|--------------|-----------|---------|---------|------|
+| TC-UI-ACQ-010-001 | AcquisitionView DesignTime 렌더링 | AcquisitionViewTests.cs | SWR-UI-ACQ-010 | PPT 슬라이드 9-11, 썸네일 스트립, Emergency Stop 버튼 | Pass |
+
+### G.18 SWR-UI-COV-010: UI 커버리지 개선 + DesignTime TODO 정리 (S12-R1)
+
+| 항목 | 내용 |
+|------|------|
+| **SWR ID** | SWR-UI-COV-010 |
+| **요구사항명** | UI 계층 커버리지 향상 및 DesignTime Mock 정리 |
+| **상위 PR** | PR-UI-010 (사용자 인터페이스 구현) |
+| **상위 MR** | MR-005 (UI/UX, Tier 2) |
+| **구현 모듈** | HnVue.UI, HnVue.UI/DesignTime (Design Team), tests/HnVue.UI.Tests (Coordinator) |
+| **검증 수준** | T (Unit + DesignTime Test) |
+| **검증 상태** | Pass |
+
+### G.19 SWR-UI-COV-010 TC 매핑
+
+| TC ID | 테스트 케이스명 | 테스트 파일 | SWR 연결 | 검증 항목 | 상태 |
+|-------|--------------|-----------|---------|---------|------|
+| TC-UI-COV-010-001 | UIComponentTests 커버리지 개선 | UIComponentTests.cs | SWR-UI-COV-010 | UI 컴포넌트 렌더링, 바인딩, 이벤트 핸들링 | Pass |
+| TC-UI-COV-010-002 | DesignTime TODO 정리 | DesignTime/*.cs | SWR-UI-COV-010 | Mock ViewModel 완전성, 디자인타임 속성 정리 | Pass |
+
+### G.20 S10-R2 ~ S12-R1 추적성 요약
+
+| SWR ID | 도메인 | 팀 | TC 수 | 매핑 상태 | xUnit Trait 확인 |
+|--------|--------|----|-------|---------|----------------|
+| SWR-UP-010 | Update | Team A | 2 | **100% 매핑** | `[Trait("SWR", "SWR-UP-010")]` |
+| SWR-DC-060 | DICOM | Team B | 1 | **100% 매핑** | `[Trait("SWR", "SWR-DC-060")]` |
+| SWR-DC-061 | DICOM | Team B | 1 | **100% 매핑** | `[Trait("SWR", "SWR-DC-061")]` |
+| SWR-DT-070 | Detector | Team B | 1 | **100% 매핑** | `[Trait("SWR", "SWR-DT-070")]` |
+| SWR-UI-VM-010 | UI ViewModels | Coordinator | 1 | **100% 매핑** | `[Trait("SWR", "SWR-UI-VM-010")]` |
+| SWR-UI-TOAST-010 | UI Toast | Coordinator | 1 | **100% 매핑** | `[Trait("SWR", "SWR-UI-TOAST-010")]` |
+| SWR-UI-MERGE-010 | UI Merge | Design | 1 | **100% 매핑** | DesignTime test (no Trait) |
+| SWR-UI-ACQ-010 | UI Acquisition | Design | 1 | **100% 매핑** | DesignTime test (no Trait) |
+| SWR-UI-COV-010 | UI | Design + Coordinator | 2 | **100% 매핑** | `[Trait("SWR", "SWR-UI-COV-010")]` |
+| **합계** | | | **11** | **100%** | |
+
+### G.21 S10-R2 ~ S12-R1 QA 판정 이력
+
+| 라운드 | QA 판정 | 테스트 | 커버리지 | 비고 |
+|--------|---------|--------|---------|------|
+| S10-R4 | CONDITIONAL PASS | 3450/3452 | 81.3% | 커버리지 85% 미달 |
+| S11-R2 | PASS | 전체 | 99.97% | 6/6 팀 MERGED |
+| S12-R1 | PASS 전환 목표 | - | - | DICOM 안정성 + UI 커버리지 개선 (진행 중) |
+
+### G.22 RTM 전체 부록 요약
+
+| 부록 | 도메인 | SWR 수 | TC 수 | 매핑 상태 |
+|------|--------|--------|-------|---------|
+| 부록 B | PHI Encryption | 1 | 10 | 100% |
+| 부록 C | Detector SDK | 3 | 다수 | 100% |
+| 부록 D | CDBurning + DICOM | 5 | 다수 | 100% |
+| 부록 E | 아키텍처 테스트 (DesignTime) | - | 다수 | 100% |
+| 부록 F | S09-R3 커버리지 강화 | 2 | 3 | 100% |
+| 부록 G | S10-R2~S12-R1 | 9 | 11 | 100% |
+| **합계** | | **20+** | **24+** | **100%** |
+
+---
+
 > **문서 종료**
 >
 > 본 RTM은 FDA 21 CFR 820.30 Design Controls에 따라 HnVue Console SW의 Design History File (DHF)의 핵심 구성 요소로 관리되며, 요구사항 변경 시 반드시 업데이트되어야 한다.
 >
 > | 문서 ID | RTM-XRAY-GUI-001 |
 > |---------|-----------------|
-> | 버전 | v2.6 (S09-R3 DICOM/Dose/UI 커버리지 강화 TC 추적성 추가 + QA PASS 90.3% 반영) |
-> | 작성일 | 2026-04-02 / 개정일 2026-04-15 |
+> | 버전 | v2.7 (S10-R2 ~ S12-R1 변경사항 TC 추적성 추가 + 11 SWR 매핑) |
+> | 작성일 | 2026-04-02 / 개정일 2026-04-18 |
 > | 검토 예정 | 2026-05-02 (Phase 1 설계 착수 시) |
