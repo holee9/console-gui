@@ -3,7 +3,7 @@
 | 항목 | 내용 |
 |------|------|
 | **문서 번호** | DOC-042 |
-| **버전** | v2.2 |
+| **버전** | v2.3 |
 | **작성일** | 2026-04-08 |
 | **승인일** | 2026-04-11 |
 | **작성자** | drake.lee |
@@ -27,7 +27,7 @@
 | v1.1 | 2026-04-08 | 정적 분석 도구 변경 반영: SonarCloud → 로컬 Roslyn 분석기 인프라 전환 (StyleCop.Analyzers, Roslynator.Analyzers, SecurityCodeScan.VS2019) | drake.lee |
 | v2.0 | 2026-04-11 | Major 개정: 작성자/검토자/승인자 지정, 형상항목 목록 17개 모듈 완전화, Sprint 기반 베이스라인 전략 정의, PR 기반 변경통제 프로세스 명확화, Gitea Actions CI/CD 파이프라인 정의, Approved 상태로 승격 | drake.lee |
 | v2.1 | 2026-04-14 | Minor 개정: IEC 62304 Section 8.2.2 백업/복구 절차 신설 (Section 4.8), Detector SDK 5종 형상항목 반영 (CI-006 갱신), Sprint S05~S07 이력 추가 | drake.lee |
-| v2.2 | 2026-04-15 | Minor 개정: Sprint S08~S09 이력 추가, S07 완료 처리, 문서 상태 관리 v2.1 기준 갱신, S09-R3 QA PASS (90.3%) 반영 | drake.lee |
+| v2.3 | 2026-04-19 | Minor 개정: Sprint S08~S09 이력 추가, S07 완료 처리, 문서 상태 관리 v2.1 기준 갱신, S09-R3 QA PASS (90.3%) 반영 | drake.lee |
 
 ---
 
@@ -357,14 +357,14 @@ Sprint N 완료 시:
 | Approved | 공식 승인 완료 (베이스라인 포함) | Obsolete 또는 Draft (개정 시) |
 | Obsolete | 상위 버전으로 대체됨 | -- |
 
-#### 4.7.2 현재 문서 상태 (v2.2 기준 — 2026-04-15)
+#### 4.7.2 현재 문서 상태 (v2.2 기준 — 2026-04-19)
 
 | 문서 번호 | 문서명 | 현재 버전 | 상태 |
 |----------|--------|----------|------|
-| DOC-042 | 형상관리 계획서 (CMP) | v2.2 | **Approved** |
+| DOC-042 | 형상관리 계획서 (CMP) | v2.3 | **Approved** |
 | DOC-019 | SBOM | v2.0 | Approved |
 | DOC-033 | SOUP Report | v2.1 | Approved |
-| DOC-032 | RTM | v2.2 | Draft (S09-R3 TC 추가 반영 중) |
+| DOC-032 | RTM | v2.3 | Draft (S09-R3 TC 추가 반영 중) |
 | DOC-043 | 빌드 환경 기록 | v1.0 | Approved |
 
 #### 4.7.3 형상 감사 (Configuration Audit)
