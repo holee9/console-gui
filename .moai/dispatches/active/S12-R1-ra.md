@@ -57,8 +57,8 @@ S11-R2 완료. S12-R1 목표: PASS 전환.
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: DOC-032 RTM 업데이트 (P3) | NOT_STARTED | - | - |
-| Task 2: 릴리즈 준비 문서 검토 (P3) | NOT_STARTED | - | - |
+| Task 1: DOC-032 RTM 업데이트 (P3) | IN_PROGRESS | - | S12-R1 변경사항 SWR-TC 매핑 작업 시작 |
+| Task 2: 릴리즈 준비 문서 검토 (P3) | IN_PROGRESS | - | 릴리즈 준비 문서 검토 시작 |
 
 ---
 
