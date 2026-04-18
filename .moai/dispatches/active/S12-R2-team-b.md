@@ -41,7 +41,7 @@ Team B Safety-Critical (Dose 99.6%, Incident 94.7%) PASS.
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: HnVue.Dicom 커버리지 50%+ (P1) | NOT_STARTED | - | |
+| Task 1: HnVue.Dicom 커버리지 50%+ (P1) | IN_PROGRESS | - | 2026-04-18 시작 |
 
 ---
 
