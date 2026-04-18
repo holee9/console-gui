@@ -54,8 +54,8 @@ Team B가 Dicom 커버리지 개선 후 재검증.
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: 전체 테스트 재실행 (P1) | IN_PROGRESS | - | main 기준 실행 완료: 4014/4017 PASS, Data.Tests 3 FAIL (S12-R1과 동일). Team A 수정 미반영 |
-| Task 2: 커버리지 리포트 (P1) | BLOCKED | - | Team A(Update 90%+) / Team B(Dicom 개선) 머지 후 실행 필요 |
+| Task 1: 전체 테스트 재실행 (P1) | IN_PROGRESS | - | Team B 머지 후 재실행: 3914/3918 PASS (99.90%), Data.Tests 3 FAIL. Team A 수정 미반영 |
+| Task 2: 커버리지 리포트 (P1) | BLOCKED | - | Team A(Update 90%+) 머지 후 실행 필요. Team B(Dicom) 이미 머지됨 |
 | Task 3: PASS 판정 (P1) | BLOCKED | - | Task 1/2 완료 후 판정 가능 |
 
 ---
@@ -71,11 +71,17 @@ Team B가 Dicom 커버리지 개선 후 재검증.
 
 ## 빌드 증거 (main 기준 사전 검증)
 
-**빌드**: `dotnet build HnVue.sln -c Release` → 0 errors, 19893 warnings (31초)
-**테스트**: `dotnet test HnVue.sln -c Release --no-build` → 4014/4017 PASS, 3 FAIL (Data.Tests)
-**실패 항목** (S12-R1과 동일):
+**빌드**: `dotnet build HnVue.sln -c Release` → 0 errors, 0 warnings (6초)
+**테스트**: `dotnet test HnVue.sln -c Release --no-build` → 3914/3918 PASS (99.90%), 3 FAIL (Data.Tests), 1 SKIP
+**실패 항목** (S12-R1과 동일, Team A 수정 미반영):
 1. EfUpdateRepositoryTests.RecordInstallationAsync_EmptyFromVersion_ThrowsArgumentNullException
 2. EfUpdateRepositoryTests.RecordInstallationAsync_EmptyToVersion_ThrowsArgumentNullException
 3. DataCoverageBoostV2Tests.UserRepository_AddAsync_DuplicateUsername_ReturnsAlreadyExists
 
-**상태**: Team A (Data.Tests 수정, Update 90%+) 및 Team B (Dicom 커버리지) main 머지 후 재검증 필요
+**모듈별 결과** (Team B Dicom 머지 후):
+- Common: 137 PASS | Data: 330/333 (3 FAIL) | Security: 286 | SystemAdmin: 85 | Update: 257
+- Dicom: 538 PASS | Detector: 301 | Imaging: 77 | Dose: 412 | Incident: 138
+- Workflow: 293 | PatientManagement: 139 | CDBurning: 47 | UI: 810/811 (1 SKIP)
+- Architecture: 14 | Integration: 85 | UI.QA: 65
+
+**상태**: Team A (Data.Tests 수정, Update 90%+) main 머지 후 재검증 필요
