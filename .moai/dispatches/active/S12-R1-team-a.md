@@ -53,8 +53,8 @@ S11-R2 완료. HnVue.Update.Tests 1개 테스트 실패로 CONDITIONAL PASS.
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: Update 테스트 수정 (P0) | NOT_STARTED | - | - |
-| Task 2: Update 커버리지 개선 (P1) | NOT_STARTED | - | - |
+| Task 1: Update 테스트 수정 (P0) | IN_PROGRESS | - | 2026-04-18 작업 시작 |
+| Task 2: Update 커버리지 개선 (P1) | IN_PROGRESS | - | 2026-04-18 작업 시작 |
 
 ---
 
