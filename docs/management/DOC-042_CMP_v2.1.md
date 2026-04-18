@@ -27,7 +27,8 @@
 | v1.1 | 2026-04-08 | 정적 분석 도구 변경 반영: SonarCloud → 로컬 Roslyn 분석기 인프라 전환 (StyleCop.Analyzers, Roslynator.Analyzers, SecurityCodeScan.VS2019) | drake.lee |
 | v2.0 | 2026-04-11 | Major 개정: 작성자/검토자/승인자 지정, 형상항목 목록 17개 모듈 완전화, Sprint 기반 베이스라인 전략 정의, PR 기반 변경통제 프로세스 명확화, Gitea Actions CI/CD 파이프라인 정의, Approved 상태로 승격 | drake.lee |
 | v2.1 | 2026-04-14 | Minor 개정: IEC 62304 Section 8.2.2 백업/복구 절차 신설 (Section 4.8), Detector SDK 5종 형상항목 반영 (CI-006 갱신), Sprint S05~S07 이력 추가 | drake.lee |
-| v2.3 | 2026-04-19 | Minor 개정: Sprint S08~S09 이력 추가, S07 완료 처리, 문서 상태 관리 v2.1 기준 갱신, S09-R3 QA PASS (90.3%) 반영 | drake.lee |
+| v2.2 | 2026-04-15 | Minor 개정: Sprint S08~S09 이력 추가, S07 완료 처리, 문서 상태 관리 v2.1 기준 갱신, S09-R3 QA PASS (90.3%) 반영 | drake.lee |
+| v2.3 | 2026-04-19 | Minor 개정: Sprint S10~S12 이력 추가, S12-R2 QA PASS (100%) 반영, 전체 테스트 3927/3928 PASS | drake.lee |
 
 ---
 
