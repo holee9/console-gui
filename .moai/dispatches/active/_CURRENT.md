@@ -63,11 +63,11 @@
 | **Team A** | - | **MERGED** | EfUpdateRepository 커버리지 개선 ✅ |
 | **Team B** | - | **MERGED** | Dicom C-STORE 에러 처리 개선 ✅ |
 | **Coordinator** | S11-R2-coordinator.md | **ACTIVE** | ISettingsViewModel 인터페이스 |
-| **Design** | S11-R2-team-design.md | **ACTIVE** | AcquisitionView 디자인 (슬라이드 9-11) |
+| **Design** | - | **MERGED** | AcquisitionView 디자인 (슬라이드 9-11) ✅ |
 | **QA** | - | **MERGED** | 전체 테스트 실행 + 커버리지 리포트 ✅ |
 | **RA** | S11-R2-ra.md | **ACTIVE** | CHANGELOG + SBOM 업데이트 |
 | **Design** | - | **IDLE** | S11-R2 완료 ✅ |
-| **Design** | - | **IDLE** | S11-R2 완료 ✅ |**→ S11-R2: 3/6 MERGED, 3/6 ACTIVE**
+| **Design** | - | **IDLE** | S11-R2 완료 ✅ |**→ S11-R2: 4/6 MERGED, 2/6 ACTIVE**
 | **Design** | - | **IDLE** | S11-R2 완료 ✅ |
 | **Design** | - | **IDLE** | S11-R2 완료 ✅ |---
 | **Design** | - | **IDLE** | S11-R2 완료 ✅ |
