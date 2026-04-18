@@ -130,7 +130,7 @@ public sealed class DicomCoverageFinalTests
 
             result.IsFailure.Should().BeTrue();
             result.Error.Should().Be(ErrorCode.DicomStoreFailed);
-            result.ErrorMessage.Should().Contain("I/O error");
+            result.ErrorMessage.Should().Contain("파일 읽기 오류");
         }
         finally
         {
@@ -151,7 +151,7 @@ public sealed class DicomCoverageFinalTests
 
             result.IsFailure.Should().BeTrue();
             result.Error.Should().Be(ErrorCode.DicomConnectionFailed);
-            result.ErrorMessage.Should().Contain("Network error");
+            result.ErrorMessage.Should().Contain("PACS 연결 실패");
         }
         finally
         {

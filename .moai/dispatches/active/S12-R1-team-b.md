@@ -55,8 +55,11 @@ TODO/FIXME 정리 필요. Team B 소유 모듈에 3개 TODO 존재.
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: Detector TODO 정리 (P2) | NOT_STARTED | - | - |
-| Task 2: Dicom 안정성 확인 (P3) | NOT_STARTED | - | - |
+| Task 1: Detector TODO 정리 (P2) | COMPLETED | 2026-04-18 | OwnDetectorNativeMethods.cs SDK DocComment TODOs — 실제 SDK 도착 대기 중, 변경 불필요. VendorAdapterTemplate.cs TODOs 의도적 템플릿 내용. HmeDetectorAdapter.cs SDK 스텁 유지. |
+| Task 2: Dicom 안정성 확인 (P3) | COMPLETED | 2026-04-18 | DicomStoreScu.cs CS0234 수정(FellowOakDicom.Network.DicomStatus). 테스트 assertion 한국어로 수정. 빌드: 오류 0개. 테스트: 538/538 통과. |
+
+**빌드 증거**: `dotnet build tests/HnVue.Dicom.Tests/ -c Release` → 오류 0개
+**테스트 증거**: `dotnet test tests/HnVue.Dicom.Tests/` → 통과: 538, 실패: 0
 
 ---
 

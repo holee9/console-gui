@@ -83,7 +83,7 @@ public sealed class DicomStoreScuTests
 
         result.IsFailure.Should().BeTrue();
         result.Error.Should().Be(ErrorCode.DicomStoreFailed);
-        result.ErrorMessage.Should().Contain("not found");
+        result.ErrorMessage.Should().Contain("찾을 수 없습니다");
     }
 
     // ── StoreAsync — Non-Existent File ────────────────────────────────────────
