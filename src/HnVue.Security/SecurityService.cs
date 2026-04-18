@@ -169,8 +169,11 @@ public sealed class SecurityService(
             return Result.Failure(ErrorCode.AuthenticationFailed, "Current password is incorrect.");
 
         if (!PasswordPolicyRegex.IsMatch(newPassword))
-            return Result.Failure(ErrorCode.PasswordPolicyViolation,
+        {
+            return Result.Failure(
+                ErrorCode.PasswordPolicyViolation,
                 "Password must be at least 8 characters and contain at least one uppercase letter and one digit.");
+        }
 
         var newHash = PasswordHasher.HashPassword(newPassword);
         var updateResult = await _userRepository.UpdatePasswordHashAsync(userId, newHash, cancellationToken).ConfigureAwait(false);
@@ -207,23 +210,31 @@ public sealed class SecurityService(
     {
         var userResult = await _userRepository.GetByIdAsync(userId, cancellationToken).ConfigureAwait(false);
         if (userResult.IsFailure)
+        {
             return Result.Failure(userResult.Error!.Value, userResult.ErrorMessage!);
+        }
 
         var user = userResult.Value;
 
         // Check PIN lockout.
         if (user.QuickPinLockedUntil.HasValue && user.QuickPinLockedUntil.Value > DateTimeOffset.UtcNow)
+        {
             return Result.Failure(ErrorCode.AccountLocked, "Quick PIN is temporarily locked. Try again later.");
+        }
 
         if (user.QuickPinHash is null)
+        {
             return Result.Failure(ErrorCode.PinNotSet, "Quick PIN has not been set for this user.");
+        }
 
         var verifyResult = PasswordHasher.Verify(pin, user.QuickPinHash);
         if (verifyResult.IsSuccess)
         {
             // Correct PIN: reset failure counter.
             if (user.QuickPinFailedCount > 0)
+            {
                 await _userRepository.UpdateQuickPinFailureAsync(userId, 0, null, cancellationToken).ConfigureAwait(false);
+            }
 
             return Result.Success();
         }
@@ -237,7 +248,9 @@ public sealed class SecurityService(
         await _userRepository.UpdateQuickPinFailureAsync(userId, newCount, lockedUntil, cancellationToken).ConfigureAwait(false);
 
         if (lockedUntil.HasValue)
+        {
             return Result.Failure(ErrorCode.AccountLocked, "Quick PIN locked after too many failed attempts.");
+        }
 
         return Result.Failure(ErrorCode.AuthenticationFailed, "Invalid Quick PIN.");
     }
@@ -252,7 +265,7 @@ public sealed class SecurityService(
     {
         var lastHashResult = await _auditRepository.GetLastHashAsync(cancellationToken).ConfigureAwait(false);
         // Ignore failures here — a missing or unavailable last hash means null (first entry or non-critical).
-        var previousHash = (lastHashResult.IsSuccess) ? lastHashResult.Value : null;
+        var previousHash = lastHashResult.IsSuccess ? lastHashResult.Value : null;
 
         var timestamp = DateTimeOffset.UtcNow;
         var entryId = Guid.NewGuid().ToString();

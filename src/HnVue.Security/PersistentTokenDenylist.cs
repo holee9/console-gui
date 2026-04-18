@@ -13,12 +13,13 @@ namespace HnVue.Security;
 internal sealed class PersistentTokenDenylist : ITokenDenylist, IDisposable
 {
     // @MX:NOTE DenylistEntries - ConcurrentDictionary for thread-safe JTI revocation tracking with expiration
+    private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web) { WriteIndented = true };
+
     private readonly ConcurrentDictionary<string, DateTimeOffset> _denylist = new();
     private readonly TimeSpan _defaultTtl;
     private readonly string _persistPath;
     private readonly object _fileLock = new();
     private readonly ILogger<PersistentTokenDenylist>? _logger;
-    private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web) { WriteIndented = true };
 
     /// <summary>
     /// Initializes a new instance with the default TTL and optional persistence path.
@@ -140,6 +141,9 @@ internal sealed class PersistentTokenDenylist : ITokenDenylist, IDisposable
         }
     }
 
+    /// <summary>
+    /// Persists the current denylist state and releases resources.
+    /// </summary>
     public void Dispose()
     {
         // Persist final state before disposal

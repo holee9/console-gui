@@ -255,7 +255,9 @@ internal sealed class UserRepository(HnVueDbContext context) : IUserRepository
                 .ConfigureAwait(false);
 
             if (entity is null)
+            {
                 return Result.Failure(ErrorCode.NotFound, $"User '{userId}' not found.");
+            }
 
             entity.QuickPinFailedCount = failedCount;
             entity.QuickPinLockedUntilTicks = lockedUntil?.UtcTicks;

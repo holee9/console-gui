@@ -136,12 +136,14 @@ public sealed class Result<T>
     public string? ErrorMessage => _errorMessage;
 
     // @MX:ANCHOR Map method - @MX:REASON: Functional transformation primitive, 50+ consumers for Result chaining
+
     /// <summary>
     /// Transforms the value using <paramref name="mapper"/> if the result is successful;
     /// otherwise propagates the existing failure.
     /// </summary>
     /// <typeparam name="TOut">The output value type.</typeparam>
     /// <param name="mapper">Projection function applied to the value on success.</param>
+    /// <returns>A new <see cref="Result{TOut}"/> containing the mapped value or the original failure.</returns>
     public Result<TOut> Map<TOut>(Func<T, TOut> mapper)
     {
         ArgumentNullException.ThrowIfNull(mapper);
@@ -151,12 +153,14 @@ public sealed class Result<T>
     }
 
     // @MX:ANCHOR Bind method - @MX:REASON: Railway composition core, 40+ consumers for monadic chaining
+
     /// <summary>
     /// Chains result-returning operations. If the current result is successful,
     /// applies <paramref name="binder"/> to the value; otherwise propagates the failure.
     /// </summary>
     /// <typeparam name="TOut">The output value type.</typeparam>
     /// <param name="binder">Function that returns a new <see cref="Result{TOut}"/>.</param>
+    /// <returns>A new <see cref="Result{TOut}"/> from the binder or the original failure.</returns>
     public Result<TOut> Bind<TOut>(Func<T, Result<TOut>> binder)
     {
         ArgumentNullException.ThrowIfNull(binder);

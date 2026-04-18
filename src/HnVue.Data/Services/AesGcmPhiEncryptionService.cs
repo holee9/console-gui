@@ -128,6 +128,7 @@ public sealed class AesGcmPhiEncryptionService : IPhiEncryptionService
         var decryptedBytes = new byte[encryptedContent.Length];
 
         using var aes = new AesGcm(_key, TagSize);
+
         // Throws CryptographicException if tag is invalid (REQ-PHI-001)
         aes.Decrypt(nonce, encryptedContent, tag, decryptedBytes);
 
