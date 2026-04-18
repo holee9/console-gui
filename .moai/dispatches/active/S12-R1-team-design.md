@@ -25,8 +25,16 @@ UI 커버리지 개선 필요. Coordinator 팀과 협업.
 **구현 항목**:
 1. ✅ ViewCodeBehindTests.cs 생성 (11개 View 테스트)
 2. ✅ UIComponentTests 확장 (7개 Medical Component 테스트)
-3. ⚠️ 테스트 실행 문제로 커버리지 개선 미달
-4. ℹ️ 현재 커버리지: 78.56% (목표 85%+)
+3. ⚠️ **InternalsVisibleTo 미작동**: WPF 프로젝트 특성으로 View(internal) 접근 불가
+4. ✅ AssemblyInfo.cs 추가 시도했으나 DLL에 InternalsVisibleTo 특성 미포함
+5. ℹ️ 현재 커버리지: 78.56% (목표 85%+)
+6. ℹ️ 테스트 실행: 748개 통과 (ViewCodeBehindTests 미실행으로 개수 증가 없음)
+
+**기술적 문제**:
+- HnVue.UI의 View 클래스들이 internal (public 키워드 없음)
+- InternalsVisibleTo 설정 시도했으나 WPF XAML 컴파일 특성으로 미적용
+- ViewCodeBehindTests가 xUnit으로 발견되지 않음 (DLL에 포함 안됨)
+- 대안: View를 public으로 변경 필요 (Coordination 협업 사항)
 
 ### Task 2: DesignTime TODO 정리 (P2)
 
@@ -62,9 +70,9 @@ UI 커버리지 개선 필요. Coordinator 팀과 협업.
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: UI 커버리지 개선 (P1) | IN_PROGRESS | - | 커버리지 78.56%, 테스트 추가 완료 |
+| Task 1: UI 커버리지 개선 (P1) | BLOCKED | - | InternalsVisibleTo 미작동, Coordinator 협업 필요 |
 | Task 2: DesignTime TODO 정리 (P2) | COMPLETED | - | TODO 없음, 정리됨 확인 |
-| Task 3: Coordinator 협업 (P1) | NOT_STARTED | - | Coordinator 요청 대기 중 |
+| Task 3: Coordinator 협업 (P1) | IN_PROGRESS | - | View public 변경 필요 |
 
 ---
 

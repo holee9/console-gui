@@ -22,4 +22,8 @@
   <!-- Explicit Page items removed: .NET SDK auto-includes *.xaml as Page items.
        Adding them explicitly caused NETSDK1022 duplicate item errors. -->
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="HnVue.UI.Tests" />
+  </ItemGroup>
+
 </Project>
