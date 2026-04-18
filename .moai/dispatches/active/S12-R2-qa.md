@@ -62,8 +62,20 @@ Team B가 Dicom 커버리지 개선 후 재검증.
 
 ## Self-Verification Checklist
 
-- [ ] 전체 테스트 0 실패
-- [ ] 커버리지 리포트 작성
-- [ ] PASS 판정
+- [x] 전체 빌드 0 오류 확인 (0 errors, 19893 warnings)
+- [ ] 전체 테스트 0 실패 (현재: Data.Tests 3 FAIL — Team A 수정 미반영)
+- [ ] 커버리지 리포트 작성 (BLOCKED: Team A/B 머지 후 실행)
+- [ ] PASS 판정 (BLOCKED: Task 1/2 완료 후)
 - [ ] DISPATCH Status COMPLETED
 - [ ] `/clear` 실행 완료
+
+## 빌드 증거 (main 기준 사전 검증)
+
+**빌드**: `dotnet build HnVue.sln -c Release` → 0 errors, 19893 warnings (31초)
+**테스트**: `dotnet test HnVue.sln -c Release --no-build` → 4014/4017 PASS, 3 FAIL (Data.Tests)
+**실패 항목** (S12-R1과 동일):
+1. EfUpdateRepositoryTests.RecordInstallationAsync_EmptyFromVersion_ThrowsArgumentNullException
+2. EfUpdateRepositoryTests.RecordInstallationAsync_EmptyToVersion_ThrowsArgumentNullException
+3. DataCoverageBoostV2Tests.UserRepository_AddAsync_DuplicateUsername_ReturnsAlreadyExists
+
+**상태**: Team A (Data.Tests 수정, Update 90%+) 및 Team B (Dicom 커버리지) main 머지 후 재검증 필요
