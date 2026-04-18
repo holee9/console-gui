@@ -37,9 +37,9 @@ S11-R1 종료. UI.Contracts와 ViewModel 간 연동 개선 필요.
 
 ## Acceptance Criteria
 
-- [ ] ISettingsViewModel 인터페이스 정의 완료
-- [ ] DI 등록 검증 완료
-- [ ] 소유권 준수 (UI.Contracts, UI.ViewModels, App만)
+- [x] ISettingsViewModel 인터페이스 정의 완료
+- [x] DI 등록 검증 완료
+- [x] 소유권 준수 (UI.Contracts, UI.ViewModels, App만)
 
 ---
 
@@ -47,15 +47,36 @@ S11-R1 종료. UI.Contracts와 ViewModel 간 연동 개선 필요.
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: ISettingsViewModel (P2) | NOT_STARTED | - | - |
-| Task 2: DI 등록 검증 (P3) | NOT_STARTED | - | - |
+| Task 1: ISettingsViewModel (P2) | COMPLETED | 2026-04-18 | 이미 구현됨: ISettingsViewModel.cs (85줄, PPT 14-21 반영), SettingsViewModel.cs 구현 완료, DI 등록 확인 |
+| Task 2: DI 등록 검증 (P3) | COMPLETED | 2026-04-18 | 14개 인터페이스-ViewModel 1:1 매칭 확인, 수명주기 검증 완료 (Transient 13개, Singleton 1개 MainViewModel) |
 
 ---
 
 ## Self-Verification Checklist
 
-- [ ] 소유권 준수 (UI.Contracts, UI.ViewModels, App만)
-- [ ] 인터페이스 정의 완료
-- [ ] DI 등록 확인
-- [ ] DISPATCH Status 업데이트
+- [x] 소유권 준수 (UI.Contracts, UI.ViewModels, App만)
+- [x] 인터페이스 정의 완료
+- [x] DI 등록 확인
+- [x] DISPATCH Status 업데이트
 - [ ] `/clear` 실행 완료
+
+---
+
+## Build Evidence (2026-04-18)
+
+**Coordinator 소유 모듈 빌드:**
+- UI.Contracts: 0 errors, warnings only (IDE0005 unused usings)
+- UI.ViewModels: 0 errors, warnings only (SA1600, SA1201)
+- App (HnVue.App): 0 errors, build success
+
+**UI 테스트:**
+- tests/HnVue.UI.Tests/: 748 tests, 748 passed, 0 failed
+
+**전체 솔루션 빌드:**
+- HnVue.Dicom 빌드 에러 1개 (CS0234: FellowOakDicom 네임스페이스 누락) — Team B 소유 모듈, Coordinator 영역 아님
+
+**DI 등록 검증 결과:**
+- 14개 인터페이스 전부 DI 등록 확인 (1:1 매칭)
+- Transient: 13개 (Login, Studylist, PatientList, ImageViewer, Workflow, DoseDisplay, Dose, CDBurn, SystemAdmin, QuickPinLock, Merge, Settings, AddPatientProcedure)
+- Singleton: 1개 (MainViewModel)
+- NavigationToken.Settings 매핑 확인 (MainViewModel line 213, 236)
