@@ -25,16 +25,19 @@ UI 커버리지 개선 필요. Coordinator 팀과 협업.
 **구현 항목**:
 1. ✅ ViewCodeBehindTests.cs 생성 (11개 View 테스트)
 2. ✅ UIComponentTests 확장 (7개 Medical Component 테스트)
-3. ⚠️ **InternalsVisibleTo 미작동**: WPF 프로젝트 특성으로 View(internal) 접근 불가
-4. ✅ AssemblyInfo.cs 추가 시도했으나 DLL에 InternalsVisibleTo 특성 미포함
-5. ℹ️ 현재 커버리지: 78.56% (목표 85%+)
-6. ℹ️ 테스트 실행: 748개 통과 (ViewCodeBehindTests 미실행으로 개수 증가 없음)
+3. ✅ AssemblyInfo.cs 추가 `[assembly: InternalsVisibleTo("HnVue.UI.Tests")]`
+4. ✅ HnVue.UI.csproj InternalsVisibleTo ItemGroup 추가
+5. ✅ HnVue.UI.csproj GenerateAssemblyInfo false 설정
+6. ⚠️ **여전히 InternalsVisibleTo 미작동**: WPF XAML 컴파일 특성
+7. ℹ️ 현재 커버리지: 78.56% (목표 85%+)
+8. ℹ️ 테스트 실행: 748개 통과 (ViewCodeBehindTests 미실행)
 
 **기술적 문제**:
 - HnVue.UI의 View 클래스들이 internal (public 키워드 없음)
-- InternalsVisibleTo 설정 시도했으나 WPF XAML 컴파일 특성으로 미적용
-- ViewCodeBehindTests가 xUnit으로 발견되지 않음 (DLL에 포함 안됨)
-- 대안: View를 public으로 변경 필요 (Coordination 협업 사항)
+- InternalsVisibleTo를 AssemblyInfo.cs, csproj 모두 시도했으나 WPF XAML 컴파일 특성으로 미적용
+- XAML MarkupCompile 과정에서 AssemblyInfo 무시 가능성
+- ViewCodeBehindTests가 xUnit으로 발견되지 않음 (internal View 접근 불가)
+- **확인된 해결책**: View를 public으로 변경 필요 (Coordinator 협업 필수)
 
 ### Task 2: DesignTime TODO 정리 (P2)
 

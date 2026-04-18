@@ -5,6 +5,7 @@
     <RootNamespace>HnVue.UI</RootNamespace>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <!-- CS1591: missing XML doc on public members — IValueConverter implementations
          use inherited interface contracts; suppress to reduce doc noise on converter
          boilerplate. -->
