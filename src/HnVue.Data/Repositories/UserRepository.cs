@@ -222,6 +222,12 @@ internal sealed class UserRepository(HnVueDbContext context) : IUserRepository
     {
         try
         {
+            var exists = await context.Users.AnyAsync(u => u.Username == user.Username, ct).ConfigureAwait(false);
+            if (exists)
+            {
+                return Result.Failure(ErrorCode.AlreadyExists, $"Username '{user.Username}' already exists.");
+            }
+
             var entity = EntityMapper.ToEntity(user);
             await context.Users.AddAsync(entity, ct).ConfigureAwait(false);
             await context.SaveChangesAsync(ct).ConfigureAwait(false);
