@@ -54,8 +54,8 @@ Update 커버리지: **89.9%** (90% 기준 0.1% 미달)
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: Data.Tests 실패 수정 (P1) | NOT_STARTED | - | |
-| Task 2: Update 커버리지 90%+ (P1) | NOT_STARTED | - | |
+| Task 1: Data.Tests 실패 수정 (P1) | IN_PROGRESS | - | 분석 시작 |
+| Task 2: Update 커버리지 90%+ (P1) | IN_PROGRESS | - | 분석 시작 |
 
 ---
 
