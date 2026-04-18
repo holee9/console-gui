@@ -49,8 +49,8 @@ Data/Update 모듈 커버리지 개선 작업 필요.
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: EfUpdateRepository 커버리지 (P2) | NOT_STARTED | - | - |
-| Task 2: Integration Test (P3) | NOT_STARTED | - | - |
+| Task 1: EfUpdateRepository 커버리지 (P2) | IN_PROGRESS | - | - |
+| Task 2: Integration Test (P3) | IN_PROGRESS | - | - |
 
 ---
 
