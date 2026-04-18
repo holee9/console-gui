@@ -1,4 +1,4 @@
-# DISPATCH Current Index — S12-R1
+# DISPATCH Current Index — S12-R2
 
 > **[HARD] 에이전트 FIRST ACTION**: 이 파일을 가장 먼저 읽는다.
 > 자신의 팀 행(row)에서 파일명을 확인한 뒤, 해당 파일만 읽는다.
@@ -10,14 +10,14 @@
 
 | 팀 | 현재 DISPATCH 파일 | 상태 | 비고 |
 |----|-------------------|------|------|
-| **Team A** | - | **IDLE** | S12-R1 MERGED (2026-04-18) — 96.01% coverage |
-| **Team B** | - | **IDLE** | S12-R1 MERGED (2026-04-18) |
-| **Coordinator** | - | **IDLE** | S12-R1 MERGED (2026-04-18) — 768/768 PASS |
-| **Design** | - | **IDLE** | S12-R1 MERGED (2026-04-18) — UI 87.51% coverage |
-| **QA** | S12-R1-qa.md | **ACTIVE** | 전체 테스트 PASS 판정 |
-| **RA** | - | **IDLE** | S12-R1 MERGED (2026-04-18) — RTM v2.7 |
+| **Team A** | S12-R2-team-a.md | **ACTIVE** | Data.Tests 3개 실패 수정 + Update 90%+ |
+| **Team B** | S12-R2-team-b.md | **ACTIVE** | Dicom 11.3%→50%+ 커버리지 개선 |
+| **Coordinator** | S12-R2-coordinator.md | **IDLE** | IDLE CONFIRM |
+| **Design** | S12-R2-team-design.md | **IDLE** | IDLE CONFIRM |
+| **QA** | S12-R2-qa.md | **ACTIVE** | Team A/B 완료 후 재검증 |
+| **RA** | S12-R2-ra.md | **IDLE** | IDLE CONFIRM |
 
-**→ S12-R1: 5 MERGED / 1 ACTIVE (QA) / 2026-04-18**
+**→ S12-R2: 0 MERGED / 3 ACTIVE (A, B, QA) / 2026-04-18**
 
 ---
 
