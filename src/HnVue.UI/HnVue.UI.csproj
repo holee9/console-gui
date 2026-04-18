@@ -5,6 +5,7 @@
     <RootNamespace>HnVue.UI</RootNamespace>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <!-- CS1591: missing XML doc on public members — IValueConverter implementations
          use inherited interface contracts; suppress to reduce doc noise on converter
          boilerplate. -->
@@ -21,5 +22,9 @@
 
   <!-- Explicit Page items removed: .NET SDK auto-includes *.xaml as Page items.
        Adding them explicitly caused NETSDK1022 duplicate item errors. -->
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="HnVue.UI.Tests" />
+  </ItemGroup>
 
 </Project>
