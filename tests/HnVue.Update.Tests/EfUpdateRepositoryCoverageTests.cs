@@ -319,4 +319,45 @@ public sealed class EfUpdateRepositoryCoverageTests : IDisposable
         history.Should().NotBeNull();
         history!.InstalledBy.Should().NotBeNullOrEmpty();
     }
+
+    // ── Exception Handling Tests ───────────────────────────────────────────────────
+
+    [Fact]
+    public async Task CheckForUpdateAsync_DatabaseException_ReturnsDatabaseError()
+    {
+        // Dispose context to simulate database connection failure
+        _ctx.Dispose();
+        _connection.Dispose();
+
+        var repo = new EfUpdateRepository(_ctx);
+
+        var result = await repo.CheckForUpdateAsync();
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.DatabaseError);
+        result.ErrorMessage.Should().NotBeNullOrEmpty();
+    }
+
+    [Fact]
+    public async Task GetPackageInfoAsync_FileInUseException_ReturnsFileOperationFailed()
+    {
+        var repo = CreateRepo();
+        string path = CreatePackageFile("HnVue-1.0.0.zip", "content");
+
+        // Open file exclusively to simulate file in use
+        await using var fileStream = new FileStream(
+            path,
+            FileMode.Open,
+            FileAccess.ReadWrite,
+            FileShare.None);
+
+        var result = await repo.GetPackageInfoAsync(path);
+
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(ErrorCode.FileOperationFailed);
+    }
+
+    // NOTE: DbUpdateException testing is not feasible in SQLite in-memory mode.
+    // Real database scenarios (with actual constraints) should be tested in integration tests.
+    // The EfUpdateRepository.ApplyPackageAsync catches DbUpdateException and returns DatabaseError.
 }
