@@ -54,9 +54,9 @@ Team B가 Dicom 커버리지 개선 후 재검증.
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: 전체 테스트 재실행 (P1) | NOT_STARTED | - | Team A/B 완료 대기 |
-| Task 2: 커버리지 리포트 (P1) | NOT_STARTED | - | |
-| Task 3: PASS 판정 (P1) | NOT_STARTED | - | |
+| Task 1: 전체 테스트 재실행 (P1) | IN_PROGRESS | - | main 기준 실행 완료: 4014/4017 PASS, Data.Tests 3 FAIL (S12-R1과 동일). Team A 수정 미반영 |
+| Task 2: 커버리지 리포트 (P1) | BLOCKED | - | Team A(Update 90%+) / Team B(Dicom 개선) 머지 후 실행 필요 |
+| Task 3: PASS 판정 (P1) | BLOCKED | - | Task 1/2 완료 후 판정 가능 |
 
 ---
 
