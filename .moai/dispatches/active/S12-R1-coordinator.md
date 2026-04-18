@@ -58,8 +58,8 @@ HnVue.UI 커버리지 개선 필요. Design 팀과 협업.
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: UI 커버리지 개선 (P1) | NOT_STARTED | - | - |
-| Task 2: Design 협업 (P1) | NOT_STARTED | - | - |
+| Task 1: UI 커버리지 개선 (P1) | IN_PROGRESS | - | ViewModels TODO/FIXME 정리 시작 |
+| Task 2: Design 협업 (P1) | IN_PROGRESS | - | 커버리지 개선 영역 분석 시작 |
 
 ---
 
