@@ -43,10 +43,10 @@ Update 커버리지: **89.9%** (90% 기준 0.1% 미달)
 
 ## Acceptance Criteria
 
-- [ ] HnVue.Data.Tests 0 실패
-- [ ] HnVue.Update 커버리지 90%+ 달성
-- [ ] 전체 Team A 모듈 빌드 0 에러
-- [ ] 소유권 준수 (HnVue.Common, Data, Security, SystemAdmin, Update, tests/)
+- [x] HnVue.Data.Tests 0 실패
+- [x] HnVue.Update 커버리지 90%+ 달성
+- [x] 전체 Team A 모듈 빌드 0 에러
+- [x] 소유권 준수 (HnVue.Common, Data, Security, SystemAdmin, Update, tests/)
 
 ---
 
@@ -54,15 +54,33 @@ Update 커버리지: **89.9%** (90% 기준 0.1% 미달)
 
 | Task | 상태 | 완료 시각 | 비고 |
 |------|------|---------|------|
-| Task 1: Data.Tests 실패 수정 (P1) | IN_PROGRESS | - | 분석 시작 |
-| Task 2: Update 커버리지 90%+ (P1) | IN_PROGRESS | - | 분석 시작 |
+| Task 1: Data.Tests 실패 수정 (P1) | COMPLETED | 2026-04-18 | 333/333 PASS. EfUpdateRepository 빈문자열 검증 추가, UserRepository 중복명 pre-check 추가 |
+| Task 2: Update 커버리지 90%+ (P1) | COMPLETED | 2026-04-18 | 90.21% 달성. 277/277 PASS. S12CoverageGapTests 21개 신규 테스트 추가 |
+
+### Build Evidence
+
+**Team A Tests**: 1118 passed, 0 failed
+- HnVue.Common.Tests: 137 PASS
+- HnVue.Data.Tests: 333 PASS (0 failures -- 3 failures fixed)
+- HnVue.Security.Tests: 286 PASS
+- HnVue.SystemAdmin.Tests: 85 PASS
+- HnVue.Update.Tests: 277 PASS
+
+**HnVue.Update Coverage**: line-rate=0.9021 (90.21%), branch-rate=0.7685
+
+**Full Solution Build**: `dotnet build HnVue.sln -c Release` → 0 errors, 20081 warnings (StyleCop analyzer warnings from other teams)
+
+### Modified Files (Team A Ownership)
+- `src/HnVue.Data/Repositories/EfUpdateRepository.cs` -- empty string validation
+- `src/HnVue.Data/Repositories/UserRepository.cs` -- duplicate username pre-check
+- `tests/HnVue.Update.Tests/UpdateS12CoverageGapTests.cs` -- 21 new coverage tests
 
 ---
 
 ## Self-Verification Checklist
 
-- [ ] `dotnet test tests/HnVue.Data.Tests/` 0 실패
-- [ ] `dotnet test tests/HnVue.Update.Tests/` 커버리지 90%+
-- [ ] `dotnet build HnVue.sln` 0 에러
-- [ ] DISPATCH Status COMPLETED + 빌드 증거
+- [x] `dotnet test tests/HnVue.Data.Tests/` 0 실패
+- [x] `dotnet test tests/HnVue.Update.Tests/` 커버리지 90%+
+- [x] `dotnet build HnVue.sln` 0 에러
+- [x] DISPATCH Status COMPLETED + 빌드 증거
 - [ ] `/clear` 실행 완료

@@ -10,14 +10,14 @@
 
 | 팀 | 현재 DISPATCH 파일 | 상태 | 비고 |
 |----|-------------------|------|------|
-| **Team A** | S12-R2-team-a.md | **ACTIVE** | Data.Tests 3개 실패 수정 + Update 90%+ |
+| **Team A** | - | **IDLE** | MERGED — Data.Tests 수정 + Update 90.21% 달성 |
 | **Team B** | - | **IDLE** | MERGED — Dicom 커버리지 개선 완료 |
 | **Coordinator** | S12-R2-coordinator.md | **IDLE** | IDLE CONFIRM |
 | **Design** | S12-R2-team-design.md | **IDLE** | IDLE CONFIRM |
 | **QA** | S12-R2-qa.md | **ACTIVE** | Team A/B 완료 후 재검증 |
 | **RA** | S12-R2-ra.md | **IDLE** | IDLE CONFIRM |
 
-**→ S12-R2: 1 MERGED (B) / 2 ACTIVE (A, QA) / 2026-04-18**
+**→ S12-R2: 2 MERGED (A, B) / 1 ACTIVE (QA) / 2026-04-18**
 
 ---
 

@@ -52,6 +52,15 @@ public sealed class EfUpdateRepository(HnVueDbContext context)
     {
         ArgumentNullException.ThrowIfNull(fromVersion);
         ArgumentNullException.ThrowIfNull(toVersion);
+        if (string.IsNullOrWhiteSpace(fromVersion))
+        {
+            throw new ArgumentNullException(nameof(fromVersion));
+        }
+
+        if (string.IsNullOrWhiteSpace(toVersion))
+        {
+            throw new ArgumentNullException(nameof(toVersion));
+        }
 
         try
         {
