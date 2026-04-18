@@ -70,7 +70,15 @@ public sealed partial class SettingsViewModel : ObservableObject, ISettingsViewM
             ActiveTab = tab;
     }
 
-    /// <summary>Persists all settings values. TODO: wire to ISettingsService.</summary>
+    /// <summary>
+    /// Persists all settings values.
+    /// </summary>
+    /// <remarks>
+    /// Currently a no-op placeholder that raises <see cref="SaveCompleted"/>.
+    /// @MX:TODO Wire to ISettingsService.SaveAsync once the service surface is defined
+    /// in UI.Contracts (tracked via SWR-UI-SE-011). Placeholder keeps the dialog flow
+    /// exercised by unit tests while the Settings persistence layer is designed.
+    /// </remarks>
     [RelayCommand]
     private async Task SaveAsync()
     {
@@ -78,7 +86,7 @@ public sealed partial class SettingsViewModel : ObservableObject, ISettingsViewM
         ErrorMessage = null;
         try
         {
-            // TODO: replace with actual ISettingsService.SaveAsync call
+            // @MX:TODO Replace with await _settingsService.SaveAsync(snapshot) once ISettingsService lands.
             await Task.Delay(1);
             SaveCompleted?.Invoke(this, EventArgs.Empty);
         }
