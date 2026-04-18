@@ -1,3 +1,6 @@
+// Copyright (c) H&abyz. All rights reserved.
+// -----------------------------------------------------------------------
+
 using HnVue.Common.Models;
 using HnVue.Common.Results;
 using HnVue.Data;
@@ -15,7 +18,7 @@ public sealed class DoseRepository : IDoseRepository
     private readonly HnVueDbContext _dbContext;
 
     /// <summary>
-    /// Initialises a new <see cref="DoseRepository"/>.
+    /// Initializes a new instance of the <see cref="DoseRepository"/> class.
     /// </summary>
     /// <param name="dbContext">EF Core database context.</param>
     public DoseRepository(HnVueDbContext dbContext)
@@ -50,7 +53,8 @@ public sealed class DoseRepository : IDoseRepository
     /// <inheritdoc/>
     /// <remarks>SWR-DA-002: Dose records can be retrieved by study UID for reporting and audit.</remarks>
     public async Task<Result<DoseRecord?>> GetByStudyAsync(
-        string studyInstanceUid, CancellationToken cancellationToken = default)
+        string studyInstanceUid,
+        CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(studyInstanceUid);
 
@@ -82,8 +86,8 @@ public sealed class DoseRepository : IDoseRepository
     /// </remarks>
     public async Task<Result<IReadOnlyList<DoseRecord>>> GetByPatientAsync(
         string patientId,
-        DateTimeOffset? from,
-        DateTimeOffset? until,
+        DateTimeOffset? from = null,
+        DateTimeOffset? until = null,
         CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(patientId);
@@ -131,7 +135,6 @@ public sealed class DoseRepository : IDoseRepository
     }
 
     // ── Mapping helpers ────────────────────────────────────────────────────────
-
     private static DoseRecordEntity ToEntity(DoseRecord record) =>
         new()
         {

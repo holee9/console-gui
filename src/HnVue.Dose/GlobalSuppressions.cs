@@ -25,3 +25,19 @@
 
 // SA1413: Use trailing comma - not required by project style guide
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "SA1413:UseTrailingCommas", Justification = "Trailing commas not required by project style")]
+
+// SA1633/SA1636: File header format - not enforced for internal modules
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "SA1633:FileMustHaveHeader", Justification = "File header format not enforced for internal modules")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "SA1636:FileHeaderCopyrightTextMustMatch", Justification = "File header copyright format not enforced for internal modules")]
+
+// SA1025: Multiple whitespace for alignment in dictionary initializers
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "SA1025:CodeMustNotContainMultipleWhitespaceInARow", Justification = "Alignment whitespace in dictionary initializers improves readability")]
+
+// SA1116: Parameters spanning multiple lines - split for readability
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "SA1116:SplitParametersMustStartOnLineAfterDeclaration", Justification = "Parameters on same line as declaration for compact signatures")]
+
+// SA1503: Braces omitted for simple throw/return statements
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "SA1503:BracesMustNotBeOmitted", Justification = "Single-line throw/return statements are acceptable")]
+
+// SA1519: Braces omitted for multi-line child statements
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "SA1519:BracesMustNotBeOmittedFromMultiLineChildStatement", Justification = "Multi-line return statements with braces for readability")]

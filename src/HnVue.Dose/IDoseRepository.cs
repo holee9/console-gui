@@ -11,12 +11,18 @@ namespace HnVue.Dose;
 public interface IDoseRepository
 {
     /// <summary>Persists a dose record.</summary>
+    /// <param name="dose">The dose record to persist.</param>
+    /// <param name="cancellationToken">Token to cancel the asynchronous operation.</param>
+    /// <returns>A <see cref="Result"/> indicating success or failure.</returns>
     Task<Result> SaveAsync(DoseRecord dose, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Returns the dose record for the specified study, or a
     /// successful null result when no record exists.
     /// </summary>
+    /// <param name="studyInstanceUid">DICOM Study Instance UID to look up.</param>
+    /// <param name="cancellationToken">Token to cancel the asynchronous operation.</param>
+    /// <returns>The matching <see cref="DoseRecord"/>, or <see langword="null"/>.</returns>
     Task<Result<DoseRecord?>> GetByStudyAsync(string studyInstanceUid, CancellationToken cancellationToken = default);
 
     /// <summary>

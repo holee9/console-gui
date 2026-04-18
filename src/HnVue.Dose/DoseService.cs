@@ -1,3 +1,5 @@
+// Copyright (c) H&abyz. All rights reserved.
+
 using HnVue.Common.Abstractions;
 using HnVue.Common.Enums;
 using HnVue.Common.Models;
@@ -23,55 +25,47 @@ namespace HnVue.Dose;
 /// </remarks>
 public sealed class DoseService : IDoseService
 {
+    // ── Constants ─────────────────────────────────────────────────────────────
+    private const double DefaultDrl = 20.0; // mGy·cm² fallback for unlisted body parts
+    private const double WarnMultiplier = 2.0;
+    private const double BlockMultiplier = 5.0;
+    private const double DefaultBackscatterFactor = 1.35;
+    private const double MinimumFieldAreaCm2 = 1.0;  // Prevent division by zero
+    private const double DefaultEiTarget = 1500;
+    private const double DapNormalisationFactor = 500_000.0;
+
     // ── Dose Reference Levels (mGy·cm²) ──────────────────────────────────────
     // Values based on European DRL guidelines (EC RP 185)
     // @MX:NOTE DRL values per IEC 60601-2-54, CHEST=10.0, ABDOMEN=25.0, etc. DefaultDrl=20.0 fallback for unlisted body parts
-
     private static readonly Dictionary<string, double> DoseReferenceLevels
         = new Dictionary<string, double>(StringComparer.OrdinalIgnoreCase)
         {
-            ["CHEST"]    = 10.0,
-            ["ABDOMEN"]  = 25.0,
-            ["PELVIS"]   = 25.0,
-            ["HAND"]     = 3.0,
-            ["FOOT"]     = 3.0,
-            ["SPINE"]    = 40.0,
-            ["SKULL"]    = 30.0,
-            ["KNEE"]     = 5.0,
+            ["CHEST"] = 10.0,
+            ["ABDOMEN"] = 25.0,
+            ["PELVIS"] = 25.0,
+            ["HAND"] = 3.0,
+            ["FOOT"] = 3.0,
+            ["SPINE"] = 40.0,
+            ["SKULL"] = 30.0,
+            ["KNEE"] = 5.0,
             ["SHOULDER"] = 15.0,
         };
-
-    private const double DefaultDrl       = 20.0;  // mGy·cm² fallback for unlisted body parts
-    private const double WarnMultiplier   = 2.0;
-    private const double BlockMultiplier  = 5.0;
-
-    // ── ESD calculation constants (SWR-DM-042~043) ─────────────────────────────────
-    // @MX:NOTE Backscatter factor 1.35 per IAEA TECDOC-1423 for diagnostic X-ray, accounts for patient scatter
-    private const double DefaultBackscatterFactor = 1.35;
-    private const double MinimumFieldAreaCm2 = 1.0;  // Prevent division by zero
 
     // ── Exposure Index target values per body part (SWR-DM-047~048) ────────────────
     // @MX:NOTE EI target values per IEC 62494-1 recommended values, normalized to EI=1000 at optimal exposure
     private static readonly Dictionary<string, double> ExposureIndexTargets
         = new Dictionary<string, double>(StringComparer.OrdinalIgnoreCase)
         {
-            ["CHEST"]    = 1500,
-            ["ABDOMEN"]  = 1200,
-            ["SPINE"]    = 1800,
-            ["SKULL"]    = 1400,
+            ["CHEST"] = 1500,
+            ["ABDOMEN"] = 1200,
+            ["SPINE"] = 1800,
+            ["SKULL"] = 1400,
         };
-
-    private const double DefaultEiTarget = 1500;
-
-    // ── kVp/mAs to DAP conversion constants (simplified linear model) ─────────
-    // DAP (mGy·cm²) ≈ (kVp^2 × mAs) / normFactor — calibration constant per IEC 60601-2-54
-    // @MX:NOTE DAP normalisation factor 500000.0 is a simplified linear model, requires calibration per IEC 60601-2-54
-    private const double DapNormalisationFactor = 500_000.0;
 
     private readonly IDoseRepository _doseRepository;
 
     /// <summary>
-    /// Initialises a new <see cref="DoseService"/>.
+    /// Initializes a new instance of the <see cref="DoseService"/> class.
     /// </summary>
     /// <param name="doseRepository">Persistence layer for dose records.</param>
     public DoseService(IDoseRepository doseRepository)
@@ -90,16 +84,22 @@ public sealed class DoseService : IDoseService
         ArgumentNullException.ThrowIfNull(parameters);
 
         if (parameters.Kvp <= 0)
+        {
             return Result.Failure<DoseValidationResult>(
                 ErrorCode.ValidationFailed, "kVp must be positive.");
+        }
 
         if (parameters.Mas <= 0)
+        {
             return Result.Failure<DoseValidationResult>(
                 ErrorCode.ValidationFailed, "mAs must be positive.");
+        }
 
         if (parameters.FieldAreaCm2 < MinimumFieldAreaCm2)
+        {
             return Result.Failure<DoseValidationResult>(
                 ErrorCode.ValidationFailed, $"Field area must be at least {MinimumFieldAreaCm2} cm².");
+        }
 
         var estimatedDap = EstimateDap(parameters.Kvp, parameters.Mas);
         var estimatedEsd = CalculateEsd(estimatedDap, parameters.FieldAreaCm2);
@@ -159,13 +159,17 @@ public sealed class DoseService : IDoseService
             .ConfigureAwait(false);
 
         if (lookupResult.IsFailure)
+        {
             return Result.Failure<DoseRecord>(lookupResult.Error!.Value, lookupResult.ErrorMessage!);
+        }
 
         var dose = lookupResult.Value;
         if (dose is null)
+        {
             return Result.Failure<DoseRecord>(
                 ErrorCode.NotFound,
                 $"No dose record found for study '{studyInstanceUid}'.");
+        }
 
         // Use DapMgyCm2 when available (RDSR path); fall back to legacy Dap field.
         var dap = dose.DapMgyCm2 > 0.0 ? dose.DapMgyCm2 : dose.Dap;
@@ -209,30 +213,6 @@ public sealed class DoseService : IDoseService
             .ConfigureAwait(false);
     }
 
-    // ── Internals ─────────────────────────────────────────────────────────────
-
-    // @MX:NOTE EstimateDap uses simplified linear model (kVp² × mAs) / 500000, production requires calibration per detector
-    private static double EstimateDap(double kvp, double mas)
-        => (kvp * kvp * mas) / DapNormalisationFactor;
-
-    private static double GetDrl(string bodyPart)
-        => DoseReferenceLevels.TryGetValue(bodyPart, out var drl) ? drl : DefaultDrl;
-
-    // @MX:NOTE ClassifyDose implements 4-tier interlock: ≤1×DRL=Allow, ≤2×DRL=Warn, ≤5×DRL=Block, >5×DRL=Emergency
-    private static DoseValidationLevel ClassifyDose(double estimatedDap, double drl)
-    {
-        if (estimatedDap <= drl)
-            return DoseValidationLevel.Allow;
-
-        if (estimatedDap <= drl * WarnMultiplier)
-            return DoseValidationLevel.Warn;
-
-        if (estimatedDap <= drl * BlockMultiplier)
-            return DoseValidationLevel.Block;
-
-        return DoseValidationLevel.Emergency;
-    }
-
     /// <inheritdoc/>
     // @MX:ANCHOR CalculateEsd - @MX:REASON: Safety-critical ESD calculation per IEC 60601-2-54, used for patient skin dose tracking, required for regulatory compliance
     public double CalculateEsd(double dap, double fieldAreaCm2, double backscatterFactor = DefaultBackscatterFactor)
@@ -264,6 +244,36 @@ public sealed class DoseService : IDoseService
 
         // @MX:NOTE EI formula: EI = meanPixelValue / targetPixelValue × 1000, per IEC 62494-1
         return (meanPixelValue / targetPixelValue) * 1000.0;
+    }
+
+    // ── Internals ─────────────────────────────────────────────────────────────
+
+    // @MX:NOTE EstimateDap uses simplified linear model (kVp² × mAs) / 500000, production requires calibration per detector
+    private static double EstimateDap(double kvp, double mas)
+        => (kvp * kvp * mas) / DapNormalisationFactor;
+
+    private static double GetDrl(string bodyPart)
+        => DoseReferenceLevels.TryGetValue(bodyPart, out var drl) ? drl : DefaultDrl;
+
+    // @MX:NOTE ClassifyDose implements 4-tier interlock: ≤1×DRL=Allow, ≤2×DRL=Warn, ≤5×DRL=Block, >5×DRL=Emergency
+    private static DoseValidationLevel ClassifyDose(double estimatedDap, double drl)
+    {
+        if (estimatedDap <= drl)
+        {
+            return DoseValidationLevel.Allow;
+        }
+
+        if (estimatedDap <= drl * WarnMultiplier)
+        {
+            return DoseValidationLevel.Warn;
+        }
+
+        if (estimatedDap <= drl * BlockMultiplier)
+        {
+            return DoseValidationLevel.Block;
+        }
+
+        return DoseValidationLevel.Emergency;
     }
 
     private static double GetEiTarget(string bodyPart)

@@ -57,11 +57,16 @@ public sealed class EfDoseRepository(HnVueDbContext context) : IDoseRepository
                 .ConfigureAwait(false);
 
             if (entity is null)
+            {
                 return Result.SuccessNullable<DoseRecord?>(null);
+            }
 
             return Result.Success<DoseRecord?>(ToRecord(entity));
         }
-        catch (OperationCanceledException) { throw; }
+        catch (OperationCanceledException)
+        {
+            throw;
+        }
         catch (Exception ex) when (ex is not OutOfMemoryException)
         {
             return Result.Failure<DoseRecord?>(ErrorCode.DatabaseError, ex.InnerException?.Message ?? ex.Message);
@@ -110,7 +115,10 @@ public sealed class EfDoseRepository(HnVueDbContext context) : IDoseRepository
             IReadOnlyList<DoseRecord> records = entities.Select(ToRecord).ToList();
             return Result.Success(records);
         }
-        catch (OperationCanceledException) { throw; }
+        catch (OperationCanceledException)
+        {
+            throw;
+        }
         catch (Exception ex) when (ex is not OutOfMemoryException)
         {
             return Result.Failure<IReadOnlyList<DoseRecord>>(ErrorCode.DatabaseError, ex.InnerException?.Message ?? ex.Message);
