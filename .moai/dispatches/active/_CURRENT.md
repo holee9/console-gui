@@ -13,11 +13,11 @@
 | **Team A** | - | **IDLE** | S12-R1 MERGED (2026-04-18) — 96.01% coverage |
 | **Team B** | - | **IDLE** | S12-R1 MERGED (2026-04-18) |
 | **Coordinator** | - | **IDLE** | S12-R1 MERGED (2026-04-18) — 768/768 PASS |
-| **Design** | S12-R1-team-design.md | **ACTIVE** | UI Tests 커버리지 + DesignTime TODO |
+| **Design** | - | **IDLE** | S12-R1 MERGED (2026-04-18) — UI 87.51% coverage |
 | **QA** | S12-R1-qa.md | **ACTIVE** | 전체 테스트 PASS 판정 |
 | **RA** | - | **IDLE** | S12-R1 MERGED (2026-04-18) — RTM v2.7 |
 
-**→ S12-R1: 3 MERGED / 2 ACTIVE (Design, QA) / 2026-04-18**
+**→ S12-R1: 5 MERGED / 1 ACTIVE (QA) / 2026-04-18**
 
 ---
 

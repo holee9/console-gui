@@ -1,3 +1,4 @@
+using System.IO;
 using FluentAssertions;
 using HnVue.Common.Abstractions;
 using HnVue.Common.Enums;
@@ -313,7 +314,7 @@ public sealed class TeamAIntegrationTests : IDisposable
     public async Task EfUpdateRepository_CheckForUpdate_ReturnsLatestInstalledVersion()
     {
         // Arrange
-        using var updateRepo = new HnVue.Update.EfUpdateRepository(_dbContext);
+        var updateRepo = new HnVue.Update.EfUpdateRepository(_dbContext);
 
         // Act - Check for update with no history
         var result1 = await updateRepo.CheckForUpdateAsync();
@@ -351,7 +352,7 @@ public sealed class TeamAIntegrationTests : IDisposable
     public async Task EfUpdateRepository_ApplyPackage_CreatesUpdateHistory()
     {
         // Arrange
-        using var updateRepo = new HnVue.Update.EfUpdateRepository(_dbContext);
+        var updateRepo = new HnVue.Update.EfUpdateRepository(_dbContext);
         var tempDir = Path.Combine(Path.GetTempPath(), $"UpdateIntegrationTest_{Guid.NewGuid():N}");
         Directory.CreateDirectory(tempDir);
         var packagePath = Path.Combine(tempDir, "HnVue-2.0.0.zip");
@@ -387,7 +388,7 @@ public sealed class TeamAIntegrationTests : IDisposable
     public async Task EfUpdateRepository_MultipleUpdates_TracksVersionHistory()
     {
         // Arrange
-        using var updateRepo = new HnVue.Update.EfUpdateRepository(_dbContext);
+        var updateRepo = new HnVue.Update.EfUpdateRepository(_dbContext);
         var tempDir = Path.Combine(Path.GetTempPath(), $"UpdateIntegrationTest_{Guid.NewGuid():N}");
         Directory.CreateDirectory(tempDir);
 
