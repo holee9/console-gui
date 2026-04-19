@@ -31,20 +31,24 @@
         </Style>
     </UserControl.Resources>
 
-    <!-- Slide 9-11: 3-Column Layout -->
+    <!-- PPT Slides 9-11: Acquisition Workflow Layout
+         Top: Patient Banner (full width)
+         Left Rail: Acquisition controls (240px)
+         Center: Viewer + Thumbnail strip
+         Right Rail: Tool panels + Emergency Stop (280px)
+         Bottom: Status bar -->
     <Grid Margin="8">
-        <Grid.ColumnDefinitions>
-            <!-- Slide 9: Patient Info Panel -->
-            <ColumnDefinition Width="280" />
-            <!-- Slide 10: Acquisition Preview + Thumbnail Strip -->
-            <ColumnDefinition Width="*" />
-            <!-- Slide 11: Control Panel (preserved) -->
-            <ColumnDefinition Width="340" />
-        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <!-- Row 0: Patient Banner -->
+            <RowDefinition Height="Auto"/>
+            <!-- Row 1: Main content area (Left Rail | Center Viewer | Right Rail) -->
+            <RowDefinition Height="*"/>
+            <!-- Row 2: Status bar -->
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
-        <!-- Column 0: Patient Info Panel (Slide 9)
-             SelectedPatient binding from WorkflowViewModel -->
-        <Border Grid.Column="0" Margin="0,0,8,0">
+        <!-- ═══ Row 0: Patient Banner (Full Width, PPT Slide 9) ═══ -->
+        <Border Grid.Row="0" Margin="0,0,0,8" MaxHeight="80">
             <medical:PatientInfoCard
                 PatientName="{Binding SelectedPatient.Name, TargetNullValue='--', FallbackValue='--'}"
                 PatientId="{Binding SelectedPatient.PatientId, TargetNullValue='--', FallbackValue='--'}"
@@ -53,152 +57,379 @@
                 IsEmergency="{Binding SelectedPatient.IsEmergency, FallbackValue=False}" />
         </Border>
 
-        <!-- Column 1: Acquisition Preview + Thumbnail Strip (Slide 10)
-             PreviewImage and ThumbnailList binding from WorkflowViewModel -->
-        <Grid Grid.Column="1" Margin="0,0,8,0">
-            <Grid.RowDefinitions>
-                <!-- Acquisition Preview -->
-                <RowDefinition Height="*" />
+        <!-- ═══ Row 1: 3-Column main content ═══ -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <!-- Left Rail: Acquisition controls -->
+                <ColumnDefinition Width="240"/>
+                <!-- Center: Viewer + Thumbnail strip -->
+                <ColumnDefinition Width="*"/>
+                <!-- Right Rail: Tool panels + Emergency Stop -->
+                <ColumnDefinition Width="280"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- ─── Column 0: Left Rail — Acquisition Controls (PPT Slide 9) ─── -->
+            <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto" Margin="0,0,8,0">
+                <StackPanel>
+
+                    <!-- Acquisition State Header -->
+                    <Border Style="{StaticResource PanelBorderStyle}" Margin="0,0,0,8">
+                        <StackPanel>
+                            <Grid Margin="0,0,0,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Acquisition"
+                                           Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
+                                           FontSize="{DynamicResource HnVue.Core.FontSize.Large}"
+                                           FontWeight="SemiBold"/>
+                                <TextBlock Grid.Column="1"
+                                           Text="{Binding CurrentState, FallbackValue='IDLE'}"
+                                           Foreground="{DynamicResource HnVue.Semantic.Status.Safe}"
+                                           FontWeight="Bold"
+                                           VerticalAlignment="Center"/>
+                            </Grid>
+
+                            <!-- Mode Tabs: Stand / Table / Portable -->
+                            <UniformGrid Columns="3" Margin="0,0,0,10">
+                                <ToggleButton Content="Stand"
+                                              IsChecked="True"
+                                              MinHeight="44"
+                                              Margin="0,0,4,0"
+                                              AutomationProperties.Name="Stand Mode"
+                                              TabIndex="1"/>
+                                <ToggleButton Content="Table"
+                                              MinHeight="44"
+                                              Margin="2,0,2,0"
+                                              AutomationProperties.Name="Table Mode"
+                                              TabIndex="2"/>
+                                <ToggleButton Content="Portable"
+                                              MinHeight="44"
+                                              Margin="4,0,0,0"
+                                              AutomationProperties.Name="Portable Mode"
+                                              TabIndex="3"/>
+                            </UniformGrid>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Prepare / Expose Buttons -->
+                    <Border Style="{StaticResource PanelBorderStyle}" Margin="0,0,0,8">
+                        <StackPanel>
+                            <Button Command="{Binding PrepareExposureCommand}"
+                                    MinHeight="44"
+                                    Margin="0,0,0,8"
+                                    Content="PREPARE"
+                                    Style="{DynamicResource HnVue.PrimaryButton}"
+                                    AutomationProperties.Name="Prepare Exposure"
+                                    AutomationProperties.HelpText="Transition system into exposure-ready state"
+                                    TabIndex="4"/>
+                            <Button Command="{Binding TriggerExposureCommand}"
+                                    MinHeight="44"
+                                    Background="{DynamicResource HnVue.Semantic.Surface.Card}"
+                                    Foreground="{DynamicResource HnVue.Semantic.Text.Disabled}"
+                                    BorderBrush="{DynamicResource HnVue.Semantic.Surface.Card}"
+                                    Content="EXPOSE"
+                                    AutomationProperties.Name="Trigger Exposure"
+                                    AutomationProperties.HelpText="Trigger the actual X-ray exposure"
+                                    TabIndex="5"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Dose Status Display -->
+                    <Border Style="{StaticResource PanelBorderStyle}" Margin="0,0,0,8">
+                        <StackPanel>
+                            <TextBlock Text="Dose Status"
+                                       Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
+                                       FontSize="{DynamicResource HnVue.Core.FontSize.Normal}"
+                                       FontWeight="SemiBold"
+                                       Margin="0,0,0,8"/>
+                            <Grid Margin="0,0,0,4">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0"
+                                           Text="Safety:"
+                                           Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}"
+                                           FontSize="{DynamicResource HnVue.Core.FontSize.Small}"
+                                           VerticalAlignment="Center"
+                                           Margin="0,0,8,0"/>
+                                <TextBlock Grid.Column="1"
+                                           Text="{Binding SafeStateLabel, FallbackValue='SAFE'}"
+                                           Foreground="{DynamicResource HnVue.Semantic.Status.Safe}"
+                                           FontWeight="Bold"
+                                           FontSize="{DynamicResource HnVue.Core.FontSize.Normal}"
+                                           VerticalAlignment="Center"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Status Message -->
+                    <Border Style="{StaticResource PanelBorderStyle}">
+                        <StackPanel>
+                            <TextBlock Text="Status"
+                                       Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
+                                       FontSize="{DynamicResource HnVue.Core.FontSize.Normal}"
+                                       FontWeight="SemiBold"
+                                       Margin="0,0,0,6"/>
+                            <TextBlock Text="{Binding StatusMessage, FallbackValue='System idle'}"
+                                       Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}"
+                                       FontSize="{DynamicResource HnVue.Core.FontSize.Small}"
+                                       TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- ─── Column 1: Center — Viewer + Thumbnail Strip (PPT Slide 10) ─── -->
+            <Grid Grid.Column="1" Margin="0,0,8,0">
+                <Grid.RowDefinitions>
+                    <!-- Acquisition Preview -->
+                    <RowDefinition Height="*"/>
+                    <!-- Thumbnail Strip -->
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- AcquisitionPreview -->
+                <medical:AcquisitionPreview Grid.Row="0"
+                    Margin="0,0,0,8" />
+
                 <!-- Thumbnail Strip -->
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
+                <Border Grid.Row="1"
+                        Background="{DynamicResource HnVue.Semantic.Surface.Panel}"
+                        BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
+                        BorderThickness="1"
+                        CornerRadius="6"
+                        Padding="8"
+                        Height="120">
+                    <ListBox ItemsSource="{Binding ThumbnailList}"
+                             SelectedIndex="0"
+                             Background="Transparent"
+                             BorderBrush="Transparent"
+                             BorderThickness="0"
+                             ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                             ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                             AutomationProperties.Name="Study Thumbnail Strip">
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <medical:StudyThumbnail
+                                    Width="100"
+                                    Height="100"
+                                    Margin="4,0"
+                                    SeriesDescription="{Binding Description, TargetNullValue='--'}"
+                                    ImageCount="" />
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="BorderBrush" Value="Transparent" />
+                                <Setter Property="Padding" Value="0" />
+                                <Setter Property="Margin" Value="0" />
+                                <Setter Property="Focusable" Value="False" />
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                    </ListBox>
+                </Border>
+            </Grid>
 
-            <!-- AcquisitionPreview -->
-            <medical:AcquisitionPreview Grid.Row="0"
-                Margin="0,0,0,8" />
+            <!-- ─── Column 2: Right Rail — Tool Panels + Emergency Stop (PPT Slide 11) ─── -->
+            <!-- Emergency Stop is OUTSIDE the ScrollViewer, pinned at the bottom (IEC 62366) -->
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <!-- Scrollable tool panels -->
+                    <RowDefinition Height="*"/>
+                    <!-- Emergency Stop — always visible, never scrolled away -->
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-            <!-- Thumbnail Strip -->
-            <Border Grid.Row="1"
-                    Background="{DynamicResource HnVue.Semantic.Surface.Panel}"
-                    BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
-                    BorderThickness="1"
-                    CornerRadius="6"
-                    Padding="8"
-                    Height="120">
-                <ListBox ItemsSource="{Binding ThumbnailList}"
-                         SelectedIndex="0"
-                         Background="Transparent"
-                         BorderBrush="Transparent"
-                         BorderThickness="0"
-                         ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                         ScrollViewer.VerticalScrollBarVisibility="Disabled">
-                    <ListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel Orientation="Horizontal" />
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <medical:StudyThumbnail
-                                Width="100"
-                                Height="100"
-                                Margin="4,0"
-                                SeriesDescription="{Binding Description, TargetNullValue='--'}"
-                                ImageCount="" />
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                    <ListBox.ItemContainerStyle>
-                        <Style TargetType="ListBoxItem">
-                            <Setter Property="Background" Value="Transparent" />
-                            <Setter Property="BorderBrush" Value="Transparent" />
-                            <Setter Property="Padding" Value="0" />
-                            <Setter Property="Margin" Value="0" />
-                            <Setter Property="Focusable" Value="False" />
-                        </Style>
-                    </ListBox.ItemContainerStyle>
-                </ListBox>
-            </Border>
+                <!-- Scrollable Tool Sections -->
+                <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+
+                        <!-- Crop & Marker -->
+                        <Border Style="{StaticResource PanelBorderStyle}" Margin="0,0,0,8">
+                            <StackPanel>
+                                <TextBlock Text="Crop &amp; Marker"
+                                           Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
+                                           FontSize="{DynamicResource HnVue.Core.FontSize.Normal}"
+                                           FontWeight="SemiBold"
+                                           Margin="0,0,0,10"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                    <TextBlock Text="Auto"
+                                               Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
+                                               FontSize="22"
+                                               FontWeight="Bold"
+                                               Margin="0,0,16,0"
+                                               VerticalAlignment="Center"/>
+                                    <TextBlock Text="L"
+                                               Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
+                                               FontSize="28"
+                                               FontWeight="Bold"
+                                               Margin="0,0,16,0"
+                                               VerticalAlignment="Center"/>
+                                    <TextBlock Text="R"
+                                               Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
+                                               FontSize="28"
+                                               FontWeight="Bold"
+                                               Margin="0,0,16,0"
+                                               VerticalAlignment="Center"/>
+                                </StackPanel>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="40"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Text="Input Marker"
+                                             Height="32"
+                                             VerticalContentAlignment="Center"
+                                             Style="{DynamicResource HnVue.DarkTextBox}"
+                                             AutomationProperties.Name="Marker Input"
+                                             TabIndex="10"/>
+                                    <Button Grid.Column="1"
+                                            Style="{StaticResource ToolButtonStyle}"
+                                            Width="40" Height="32"
+                                            Content="&#xE710;"
+                                            Margin="6,0,0,0"
+                                            AutomationProperties.Name="Add Marker"
+                                            TabIndex="11"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Manipulation -->
+                        <Border Style="{StaticResource PanelBorderStyle}" Margin="0,0,0,8">
+                            <StackPanel>
+                                <TextBlock Text="Manipulation"
+                                           Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
+                                           FontSize="{DynamicResource HnVue.Core.FontSize.Normal}"
+                                           FontWeight="SemiBold"
+                                           Margin="0,0,0,10"/>
+                                <WrapPanel>
+                                    <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE7AD;"
+                                            AutomationProperties.Name="Zoom In" TabIndex="12"/>
+                                    <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE16E;"
+                                            AutomationProperties.Name="Zoom Out" TabIndex="13"/>
+                                    <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE1A3;"
+                                            AutomationProperties.Name="Rotate" TabIndex="14"/>
+                                    <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE8A3;"
+                                            AutomationProperties.Name="Pan" TabIndex="15"/>
+                                    <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE777;"
+                                            AutomationProperties.Name="Flip Horizontal" TabIndex="16"/>
+                                    <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE123;"
+                                            AutomationProperties.Name="Flip Vertical" TabIndex="17"/>
+                                </WrapPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Annotation -->
+                        <Border Style="{StaticResource PanelBorderStyle}" Margin="0,0,0,8">
+                            <StackPanel>
+                                <TextBlock Text="Annotation"
+                                           Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
+                                           FontSize="{DynamicResource HnVue.Core.FontSize.Normal}"
+                                           FontWeight="SemiBold"
+                                           Margin="0,0,0,10"/>
+                                <WrapPanel>
+                                    <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE70E;"
+                                            AutomationProperties.Name="Arrow Annotation" TabIndex="18"/>
+                                    <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE739;"
+                                            AutomationProperties.Name="Text Annotation" TabIndex="19"/>
+                                    <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE11B;"
+                                            AutomationProperties.Name="Freehand Draw" TabIndex="20"/>
+                                    <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE160;"
+                                            AutomationProperties.Name="Measure" TabIndex="21"/>
+                                    <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE11A;"
+                                            AutomationProperties.Name="Angle Measure" TabIndex="22"/>
+                                </WrapPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Tool -->
+                        <Border Style="{StaticResource PanelBorderStyle}" Margin="0,0,0,8">
+                            <StackPanel>
+                                <TextBlock Text="Tool"
+                                           Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
+                                           FontSize="{DynamicResource HnVue.Core.FontSize.Normal}"
+                                           FontWeight="SemiBold"
+                                           Margin="0,0,0,10"/>
+                                <WrapPanel>
+                                    <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE74E;"
+                                            AutomationProperties.Name="Window Level" TabIndex="23"/>
+                                    <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE749;"
+                                            AutomationProperties.Name="Gamma Correction" TabIndex="24"/>
+                                    <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE8C8;"
+                                            AutomationProperties.Name="Invert" TabIndex="25"/>
+                                    <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE898;"
+                                            AutomationProperties.Name="Reset View" TabIndex="26"/>
+                                    <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE72D;"
+                                            AutomationProperties.Name="Fullscreen" TabIndex="27"/>
+                                </WrapPanel>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+
+                <!-- EMERGENCY STOP — IEC 62366 safety-critical
+                     Pinned at bottom of right rail, OUTSIDE ScrollViewer.
+                     Always visible and always enabled. -->
+                <Button Grid.Row="1"
+                        Command="{Binding AbortCommand}"
+                        Style="{StaticResource HnVue.EmergencyStopButton}"
+                        Margin="0,8,0,0"
+                        Content="EMERGENCY STOP"
+                        AutomationProperties.Name="Emergency Stop"
+                        AutomationProperties.HelpText="Immediately stops radiation exposure. Keyboard: Escape"
+                        TabIndex="100"/>
+            </Grid>
         </Grid>
 
-        <!-- Column 2: Control Panel (Slide 11 — preserved from original) -->
-        <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto">
-            <StackPanel>
-                <Border Style="{StaticResource PanelBorderStyle}" Margin="0,0,0,10">
-                    <StackPanel>
-                        <Grid Margin="0,0,0,8">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="Acquisition" Foreground="{DynamicResource HnVue.Semantic.Text.Primary}" FontSize="15" FontWeight="Bold"/>
-                            <TextBlock Grid.Column="1" Text="{Binding CurrentState, FallbackValue='IDLE'}" Foreground="{DynamicResource HnVue.Semantic.Status.Safe}" FontWeight="Bold"/>
-                        </Grid>
-                        <UniformGrid Columns="3" Margin="0,0,0,10">
-                            <ToggleButton Content="Stand" IsChecked="True"/>
-                            <ToggleButton Content="Table"/>
-                            <ToggleButton Content="Portable"/>
-                        </UniformGrid>
-                        <Button Command="{Binding PrepareExposureCommand}" Height="40" Margin="0,0,0,8" Content="PREPARE"/>
-                        <Button Command="{Binding TriggerExposureCommand}" Height="44" Background="{DynamicResource HnVue.Semantic.Surface.Card}" Foreground="{DynamicResource HnVue.Semantic.Text.Disabled}" BorderBrush="{DynamicResource HnVue.Semantic.Surface.Card}" Content="EXPOSE"/>
-                    </StackPanel>
-                </Border>
+        <!-- ═══ Row 2: Status Bar (PPT Slide 9) ═══ -->
+        <Border Grid.Row="2"
+                Background="{DynamicResource HnVue.Semantic.Surface.Panel}"
+                BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
+                BorderThickness="1"
+                CornerRadius="6"
+                Padding="12,8"
+                Margin="0,8,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
 
-                <Border Style="{StaticResource PanelBorderStyle}" Margin="0,0,0,10">
-                    <StackPanel>
-                        <TextBlock Text="Crop &amp; Marker" Foreground="{DynamicResource HnVue.Semantic.Text.Primary}" FontSize="15" FontWeight="Bold" Margin="0,0,0,10"/>
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                            <TextBlock Text="Auto" Foreground="{DynamicResource HnVue.Semantic.Text.Primary}" FontSize="22" FontWeight="Bold" Margin="0,0,16,0"/>
-                            <TextBlock Text="L" Foreground="{DynamicResource HnVue.Semantic.Text.Primary}" FontSize="28" FontWeight="Bold" Margin="0,0,16,0"/>
-                            <TextBlock Text="R" Foreground="{DynamicResource HnVue.Semantic.Text.Primary}" FontSize="28" FontWeight="Bold" Margin="0,0,16,0"/>
-                        </StackPanel>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="40"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBox Text="Input Marker" Height="32" VerticalContentAlignment="Center"/>
-                            <Button Grid.Column="1" Style="{StaticResource ToolButtonStyle}" Width="40" Height="32" Content="&#xE710;" Margin="6,0,0,0"/>
-                        </Grid>
-                    </StackPanel>
-                </Border>
+                <!-- Workflow State -->
+                <TextBlock Grid.Column="0"
+                           Text="{Binding CurrentState, FallbackValue='IDLE'}"
+                           Foreground="{DynamicResource HnVue.Semantic.Status.Safe}"
+                           FontWeight="Bold"
+                           FontSize="{DynamicResource HnVue.Core.FontSize.Small}"
+                           VerticalAlignment="Center"
+                           Margin="0,0,24,0"/>
 
-                <Border Style="{StaticResource PanelBorderStyle}" Margin="0,0,0,10">
-                    <StackPanel>
-                        <TextBlock Text="Manipulation" Foreground="{DynamicResource HnVue.Semantic.Text.Primary}" FontSize="15" FontWeight="Bold" Margin="0,0,0,10"/>
-                        <WrapPanel>
-                            <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE7AD;"/>
-                            <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE16E;"/>
-                            <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE1A3;"/>
-                            <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE8A3;"/>
-                            <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE777;"/>
-                            <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE123;"/>
-                        </WrapPanel>
-                    </StackPanel>
-                </Border>
+                <!-- Status Message -->
+                <TextBlock Grid.Column="1"
+                           Text="{Binding StatusMessage, FallbackValue='System idle'}"
+                           Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}"
+                           FontSize="{DynamicResource HnVue.Core.FontSize.Small}"
+                           VerticalAlignment="Center"
+                           TextTrimming="CharacterEllipsis"/>
 
-                <Border Style="{StaticResource PanelBorderStyle}" Margin="0,0,0,10">
-                    <StackPanel>
-                        <TextBlock Text="Annotation" Foreground="{DynamicResource HnVue.Semantic.Text.Primary}" FontSize="15" FontWeight="Bold" Margin="0,0,0,10"/>
-                        <WrapPanel>
-                            <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE70E;"/>
-                            <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE739;"/>
-                            <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE11B;"/>
-                            <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE160;"/>
-                            <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE11A;"/>
-                        </WrapPanel>
-                    </StackPanel>
-                </Border>
-
-                <Border Style="{StaticResource PanelBorderStyle}">
-                    <StackPanel>
-                        <TextBlock Text="Tool" Foreground="{DynamicResource HnVue.Semantic.Text.Primary}" FontSize="15" FontWeight="Bold" Margin="0,0,0,10"/>
-                        <WrapPanel>
-                            <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE74E;"/>
-                            <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE749;"/>
-                            <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE8C8;"/>
-                            <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE898;"/>
-                            <Button Style="{StaticResource ToolButtonStyle}" Content="&#xE72D;"/>
-                        </WrapPanel>
-                        <!-- Emergency Stop: IEC 62366 safety-critical, 56px min-height, always visible and enabled -->
-                        <Button Command="{Binding AbortCommand}"
-                                Style="{StaticResource HnVue.EmergencyStopButton}"
-                                Margin="0,10,0,0"
-                                Content="EMERGENCY STOP"
-                                AutomationProperties.Name="Emergency Stop"
-                                AutomationProperties.HelpText="Immediately stops radiation exposure. Keyboard: Escape"/>
-                    </StackPanel>
-                </Border>
-            </StackPanel>
-        </ScrollViewer>
+                <!-- Safety State -->
+                <TextBlock Grid.Column="2"
+                           Text="{Binding SafeStateLabel, FallbackValue='SAFE'}"
+                           Foreground="{DynamicResource HnVue.Semantic.Status.Safe}"
+                           FontWeight="Bold"
+                           FontSize="{DynamicResource HnVue.Core.FontSize.Small}"
+                           VerticalAlignment="Center"/>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>
