@@ -218,6 +218,7 @@ public partial class App : Application
                     LocalAeTitle: "HNVUE_SCU",
                     MwlHost: "localhost",
                     MwlPort: 11113));
+                services.AddSingleton<IDicomService, DicomService>();
                 services.AddSingleton<DicomStoreScu>();
                 services.AddSingleton<DicomFileIO>();
 
@@ -241,7 +242,7 @@ public partial class App : Application
                 services.AddTransient<ISystemAdminViewModel, SystemAdminViewModel>();
                 services.AddTransient<IQuickPinLockViewModel, QuickPinLockViewModel>();
                 services.AddTransient<IMergeViewModel, MergeViewModel>();
-                services.AddTransient<ISettingsViewModel, SettingsViewModel>();
+                services.AddTransient<ISettingsViewModel>(sp => new SettingsViewModel(sp.GetRequiredService<ISystemAdminService>()));
                 services.AddTransient<IAddPatientProcedureViewModel, AddPatientProcedureViewModel>();
                 // MainViewModel registered as Singleton: NavigationService depends on IMainViewModel,
                 // and MainWindow is Singleton — both require the same shell instance for the app lifetime.

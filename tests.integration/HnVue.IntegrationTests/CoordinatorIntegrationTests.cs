@@ -457,7 +457,7 @@ public sealed class CoordinatorIntegrationTests
     public void Settings_ViewModel_ContainsExpectedTabs()
     {
         // Arrange — create SettingsViewModel (parameterless constructor)
-        var settingsViewModel = new SettingsViewModel();
+        var settingsViewModel = new SettingsViewModel(Substitute.For<ISystemAdminService>());
 
         // Act — get tabs collection
         var tabs = settingsViewModel.Tabs;
@@ -485,7 +485,7 @@ public sealed class CoordinatorIntegrationTests
     public void Settings_ViewModel_ContainsRoleOptions()
     {
         // Arrange
-        var settingsViewModel = new SettingsViewModel();
+        var settingsViewModel = new SettingsViewModel(Substitute.For<ISystemAdminService>());
 
         // Act
         var availableRoles = settingsViewModel.AvailableRoles;
@@ -1294,7 +1294,7 @@ public sealed class CoordinatorIntegrationTests
     public void Settings_TabSelection_UpdatesActiveTabProperty()
     {
         // Arrange
-        var settingsViewModel = new SettingsViewModel();
+        var settingsViewModel = new SettingsViewModel(Substitute.For<ISystemAdminService>());
 
         // Act — select Account tab
         settingsViewModel.ActiveTab = "Account";
@@ -1318,7 +1318,7 @@ public sealed class CoordinatorIntegrationTests
     public async Task Settings_SaveCommand_RaisesSaveCompletedEvent()
     {
         // Arrange
-        var settingsViewModel = new SettingsViewModel();
+        var settingsViewModel = new SettingsViewModel(Substitute.For<ISystemAdminService>());
         var eventRaised = false;
         settingsViewModel.SaveCompleted += (_, _) => eventRaised = true;
 
@@ -1339,7 +1339,7 @@ public sealed class CoordinatorIntegrationTests
     public void Settings_CancelCommand_RaisesCancelledEvent()
     {
         // Arrange
-        var settingsViewModel = new SettingsViewModel();
+        var settingsViewModel = new SettingsViewModel(Substitute.For<ISystemAdminService>());
         var eventRaised = false;
         settingsViewModel.Cancelled += (_, _) => eventRaised = true;
 
@@ -1359,7 +1359,7 @@ public sealed class CoordinatorIntegrationTests
     public void Settings_Properties_HaveExpectedDefaults()
     {
         // Arrange & Act
-        var settingsViewModel = new SettingsViewModel();
+        var settingsViewModel = new SettingsViewModel(Substitute.For<ISystemAdminService>());
 
         // Assert — default tab
         settingsViewModel.ActiveTab.Should().Be("System", "Default active tab should be System");
@@ -1418,7 +1418,7 @@ public sealed class CoordinatorIntegrationTests
     public void Settings_NetworkProperties_DataBindingWorksCorrectly()
     {
         // Arrange
-        var settingsViewModel = new SettingsViewModel();
+        var settingsViewModel = new SettingsViewModel(Substitute.For<ISystemAdminService>());
 
         // Act — set PACS server properties
         settingsViewModel.PacsServerAddress = "192.168.1.100";

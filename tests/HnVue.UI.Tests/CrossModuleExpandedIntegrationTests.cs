@@ -460,7 +460,7 @@ public class InterfaceContractConsistencyTests
     [Fact]
     public void SettingsViewModel_ImplementsISettingsViewModel()
     {
-        var sut = new SettingsViewModel();
+        var sut = new SettingsViewModel(Substitute.For<ISystemAdminService>());
 
         sut.Should().BeAssignableTo<ISettingsViewModel>();
         sut.Should().BeAssignableTo<IViewModelBase>();
@@ -831,7 +831,7 @@ public class ViewModelValidationIntegrationTests
     [Fact]
     public void SettingsViewModel_TabNavigation_PreservesState()
     {
-        var sut = new SettingsViewModel();
+        var sut = new SettingsViewModel(Substitute.For<ISystemAdminService>());
 
         sut.SelectTabCommand.Execute("Network");
         sut.ActiveTab.Should().Be("Network");
@@ -846,7 +846,7 @@ public class ViewModelValidationIntegrationTests
     [Fact]
     public async Task SettingsViewModel_SaveCommand_CompletesSuccessfully()
     {
-        var sut = new SettingsViewModel();
+        var sut = new SettingsViewModel(Substitute.For<ISystemAdminService>());
         var eventRaised = false;
         sut.SaveCompleted += (_, _) => eventRaised = true;
 
@@ -1004,7 +1004,7 @@ public class DIRegistrationVerificationTests
     [Fact]
     public void SettingsViewModel_NoExternalDependencies()
     {
-        var sut = new SettingsViewModel();
+        var sut = new SettingsViewModel(Substitute.For<ISystemAdminService>());
 
         sut.Should().BeAssignableTo<ISettingsViewModel>();
         sut.Should().BeAssignableTo<IViewModelBase>();

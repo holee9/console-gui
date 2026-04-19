@@ -1,5 +1,7 @@
 using FluentAssertions;
+using HnVue.Common.Abstractions;
 using HnVue.UI.ViewModels;
+using NSubstitute;
 using Xunit;
 
 namespace HnVue.UI.Tests;
@@ -10,7 +12,7 @@ namespace HnVue.UI.Tests;
 /// </summary>
 public sealed class SettingsViewModelTests
 {
-    private static SettingsViewModel CreateSut() => new();
+    private static SettingsViewModel CreateSut() => new(Substitute.For<ISystemAdminService>());
 
     // ── Constructor / initial state tests ────────────────────────────────────
 
