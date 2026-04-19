@@ -10,14 +10,14 @@
 
 | 팀 | 현재 DISPATCH 파일 | 상태 | 비고 |
 |----|-------------------|------|------|
-| **Team A** | - | **IDLE** | S12-R3 완료 |
-| **Team B** | - | **IDLE** | S12-R3 완료 |
-| **Coordinator** | - | **IDLE** | S12-R3 완료 |
-| **Design** | - | **IDLE** | S12-R3 완료 |
-| **QA** | - | **IDLE** | S12-R3 완료 |
-| **RA** | - | **IDLE** | S12-R3 완료 |
+| **Team A** | DISPATCH-S12-R4-TEAM-A.md | **ACTIVE** | IDLE CONFIRM |
+| **Team B** | DISPATCH-S12-R4-TEAM-B.md | **ACTIVE** | IDLE CONFIRM |
+| **Coordinator** | DISPATCH-S12-R4-COORDINATOR.md | **ACTIVE** | IDLE CONFIRM |
+| **Design** | DISPATCH-S12-R4-DESIGN.md | **ACTIVE** | IDLE CONFIRM |
+| **QA** | DISPATCH-S12-R4-QA.md | **ACTIVE** | IDLE CONFIRM |
+| **RA** | DISPATCH-S12-R4-RA.md | **ACTIVE** | IDLE CONFIRM |
 
-**→ 전체 팀 IDLE / 2026-04-19 15:30**
+**→ 전체 팀 ACTIVE / 2026-04-19 15:45**
 
 ---
 
@@ -143,7 +143,8 @@ DISPATCH 읽기 직후    → NOT_STARTED → IN_PROGRESS (즉시 push)
 | 2026-04-15~16 | S10 R1~R4 | ALL MERGED, QA CONDITIONAL PASS (81.3%) |
 | 2026-04-16~17 | S11 R1~R2 | ALL MERGED, QA CONDITIONAL PASS (99.97%) |
 | 2026-04-18~19 | S12 R1~R2 | ALL MERGED, QA PASS (100%) |
-| **2026-04-19** | **S12 R3** | **ACTIVE** | 6팀 정기 유지보수 |
+| 2026-04-19 | S12 R3 | ALL MERGED, QA PASS (100%) |
+| **2026-04-19** | **S12 R4** | **ACTIVE** | 6팀 정기 유지보수 |
 
 ---
 
@@ -157,5 +158,5 @@ DISPATCH 읽기 직후    → NOT_STARTED → IN_PROGRESS (즉시 push)
 5. 전팀 머지 후 즉시 다음 라운드 기획 (자율 진행)
 ```
 
-Updated: 2026-04-18 (S12-R1: 6/6 ACTIVE)
+Updated: 2026-04-19 (S12-R4: 6/6 ACTIVE)
 DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/`
