@@ -54,8 +54,8 @@ StudylistView(Slides 5-7) 접근성 개선 + DoseDisplayView 리디자인 검토
 
 | 작업 ID | 설명 | 상태 | 할당자 | 우선순위 | 비고 |
 |---------|------|------|--------|----------|------|
-| T1 | StudylistView 접근성 개선 | IN_PROGRESS | Design | P1 | Slides 5-7 |
-| T2 | DoseDisplayView 레이아웃 개선 | NOT_STARTED | Design | P2 | 선량 표시 |
+| T1 | StudylistView 접근성 개선 | COMPLETED | Design | P1 | Slides 5-7 |
+| T2 | DoseDisplayView 레이아웃 개선 | COMPLETED | Design | P2 | 선량 표시 |
 
 ---
 
@@ -70,6 +70,10 @@ StudylistView(Slides 5-7) 접근성 개선 + DoseDisplayView 리디자인 검토
 ---
 
 ## 6. Build Evidence
+**Build Result**: SUCCESS (0 errors, 2133 warnings)
+**Build Log**: dotnet build src/HnVue.UI/HnVue.UI.csproj --no-incremental
+**Warnings**: StyleCop (SA1101, SA1600, SA1633, etc.) - no blocking issues
+
 
 _(작업 완료 후 기록)_
 
