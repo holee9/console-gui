@@ -1,5 +1,6 @@
 using HnVue.Common.Abstractions;
 using HnVue.Common.Enums;
+using HnVue.Common.ErrorHandling;
 using HnVue.Common.Models;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -22,6 +23,9 @@ public static class ServiceCollectionExtensions
         // Register ISecurityContext as singleton so that all modules share the same
         // authenticated-user state within a single application process.
         services.AddSingleton<ISecurityContext, ThreadLocalSecurityContext>();
+
+        // Polly retry policy factory (WP-T1-ERR)
+        services.AddSingleton<IRetryPolicyFactory, RetryPolicyFactory>();
 
         return services;
     }

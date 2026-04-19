@@ -55,6 +55,14 @@ public static class ServiceCollectionExtensions
         var audit = auditOptions ?? new AuditOptions();
         services.AddSingleton(Options.Create(audit));
         services.AddScoped<IAuditService, AuditService>();
+
+        // STRIDE controls (WBS 5.1.17)
+        services.AddSingleton<IPhiMaskingService, PhiMaskingService>();
+        services.AddSingleton<IRateLimitingService, RateLimitingService>();
+
+        // TLS 1.3 (WBS 5.1.5)
+        services.AddSingleton<ITlsConnectionService, TlsConnectionService>();
+
         return services;
     }
 
