@@ -11,10 +11,13 @@
                  FR-DM-001: real-time DAP + DRL gauge.
                  IEC 62366: color-coded thresholds.
                  DRL gauge thresholds: 0-69% safe, 70-89% warning, 90-99% blocked, 100%+ emergency.
+                 WCAG 2.1 AA: AutomationProperties added for screen reader support.
     -->
     <Border Background="{DynamicResource HnVue.Component.DosePanel.Bg}"
             BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
-            BorderThickness="0,1,0,0">
+            BorderThickness="0,1,0,0"
+            AutomationProperties.Name="Dose monitor panel"
+            AutomationProperties.HelpText="Real-time dose area product and diagnostic reference level monitoring">
         <Grid Margin="12,10,12,12">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -33,12 +36,13 @@
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Column="0"
                            Text="DOSE MONITOR"
-                           FontSize="10"
+                           FontSize="11"
                            FontWeight="Bold"
                            FontFamily="{DynamicResource HnVue.Core.FontFamily}"
                            Foreground="{DynamicResource HnVue.Component.DosePanel.LabelText}"
                            VerticalAlignment="Center"
-                           Margin="0,0,8,0"/>
+                           Margin="0,0,8,0"
+                           AutomationProperties.Name="Dose monitor section header"/>
                 <Rectangle Grid.Column="1"
                            Height="1"
                            Fill="{DynamicResource HnVue.Semantic.Border.Default}"
@@ -51,19 +55,24 @@
                          Height="2"
                          VerticalAlignment="Bottom"
                          Foreground="{DynamicResource HnVue.Semantic.Brand.Accent}"
-                         Visibility="{Binding IsRefreshing, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                         Visibility="{Binding IsRefreshing, Converter={StaticResource BoolToVisibilityConverter}}"
+                         AutomationProperties.Name="Dose data loading"/>
 
             <!-- ErrorMessage display — Issue #16 -->
             <TextBlock Grid.Row="0"
                        Text="{Binding ErrorMessage}"
                        Foreground="{DynamicResource HnVue.Semantic.Status.Emergency}"
                        FontFamily="{DynamicResource HnVue.Core.FontFamily}"
-                       FontSize="10"
+                       FontSize="11"
                        VerticalAlignment="Bottom"
-                       Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}"/>
+                       Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}"
+                       AutomationProperties.Name="Dose monitor error"
+                       AutomationProperties.LiveSetting="Assertive"/>
 
             <!-- DAP row: Label + Value + Unit -->
-            <Grid Grid.Row="1" Margin="0,0,0,6">
+            <Grid Grid.Row="1" Margin="0,0,0,8"
+                  AutomationProperties.Name="Dose area product value"
+                  AutomationProperties.HelpText="Current accumulated dose area product in grays square centimeter">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
@@ -71,22 +80,24 @@
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Column="0"
                            Text="DAP"
-                           FontSize="11"
+                           FontSize="12"
+                           FontWeight="SemiBold"
                            FontFamily="{DynamicResource HnVue.Core.FontFamily}"
                            Foreground="{DynamicResource HnVue.Component.DosePanel.LabelText}"
                            VerticalAlignment="Center"
-                           Width="36"/>
+                           Width="40"/>
                 <TextBlock Grid.Column="1"
                            Text="{Binding CurrentDoseDap, StringFormat=F2, FallbackValue='--'}"
-                           FontSize="16"
+                           FontSize="18"
                            FontWeight="Bold"
                            FontFamily="{DynamicResource HnVue.Core.FontFamily}"
                            Foreground="{DynamicResource HnVue.Component.DosePanel.ValueText}"
                            HorizontalAlignment="Right"
-                           VerticalAlignment="Center"/>
+                           VerticalAlignment="Center"
+                           AutomationProperties.Name="DAP value"/>
                 <TextBlock Grid.Column="2"
                            Text=" Gy&#xB7;cm&#xB2;"
-                           FontSize="10"
+                           FontSize="11"
                            FontFamily="{DynamicResource HnVue.Core.FontFamily}"
                            Foreground="{DynamicResource HnVue.Component.DosePanel.LabelText}"
                            VerticalAlignment="Bottom"
@@ -94,7 +105,8 @@
             </Grid>
 
             <!-- DRL gauge header row: label + percentage -->
-            <Grid Grid.Row="2" Margin="0,0,0,3">
+            <Grid Grid.Row="2" Margin="0,0,0,4"
+                  AutomationProperties.Name="Diagnostic reference level percentage">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
@@ -102,7 +114,8 @@
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Column="0"
                            Text="DRL"
-                           FontSize="11"
+                           FontSize="12"
+                           FontWeight="SemiBold"
                            FontFamily="{DynamicResource HnVue.Core.FontFamily}"
                            Foreground="{DynamicResource HnVue.Component.DosePanel.LabelText}"
                            VerticalAlignment="Center"/>
@@ -110,42 +123,47 @@
                      else falls back to raw DAP display -->
                 <TextBlock Grid.Column="2"
                            Text="{Binding DrlPercentage, StringFormat='{}{0:F0}%', FallbackValue='--'}"
-                           FontSize="11"
+                           FontSize="12"
                            FontWeight="SemiBold"
                            FontFamily="{DynamicResource HnVue.Core.FontFamily}"
                            Foreground="{DynamicResource HnVue.Component.DosePanel.ValueText}"
-                           VerticalAlignment="Center"/>
+                           VerticalAlignment="Center"
+                           AutomationProperties.Name="DRL percentage value"/>
             </Grid>
 
             <!-- DRL progress gauge bar — ProgressBar bounded 0..DrlReferenceLevel -->
-            <Grid Grid.Row="3" Margin="0,0,0,8">
+            <Grid Grid.Row="3" Margin="0,0,0,10">
                 <ProgressBar Value="{Binding CurrentDoseDap, FallbackValue=0}"
                              Minimum="0"
                              Maximum="{Binding DrlReferenceLevel, FallbackValue=100}"
-                             Height="8"
+                             Height="10"
                              Background="{DynamicResource HnVue.Component.DosePanel.GaugeTrack}"
                              BorderThickness="0"
-                             Foreground="{DynamicResource HnVue.Component.DosePanel.GaugeSafe}"/>
+                             Foreground="{DynamicResource HnVue.Component.DosePanel.GaugeSafe}"
+                             AutomationProperties.Name="DRL level gauge"
+                             AutomationProperties.HelpText="Visual indicator of current dose relative to diagnostic reference level"/>
             </Grid>
 
             <!-- DRL alert banner — IEC 62366 color-coded -->
             <Border Grid.Row="4"
                     Background="{DynamicResource HnVue.Semantic.Status.Emergency}"
-                    CornerRadius="3"
-                    Padding="8,4"
-                    Margin="0,0,0,6"
-                    Visibility="{Binding IsDoseAlert, Converter={StaticResource BoolToVisibilityConverter}}">
+                    CornerRadius="4"
+                    Padding="10,6"
+                    Margin="0,0,0,8"
+                    Visibility="{Binding IsDoseAlert, Converter={StaticResource BoolToVisibilityConverter}}"
+                    AutomationProperties.Name="Dose alert warning"
+                    AutomationProperties.LiveSetting="Assertive">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="&#xE7BA;"
                                FontFamily="Segoe MDL2 Assets"
-                               FontSize="12"
+                               FontSize="14"
                                Foreground="White"
                                VerticalAlignment="Center"
-                               Margin="0,0,6,0"/>
+                               Margin="0,0,8,0"/>
                     <TextBlock Text="DOSE ALERT: DAP exceeds DRL"
                                Foreground="White"
                                FontWeight="Bold"
-                               FontSize="11"
+                               FontSize="12"
                                FontFamily="{DynamicResource HnVue.Core.FontFamily}"
                                VerticalAlignment="Center"/>
                 </StackPanel>
@@ -155,33 +173,36 @@
             <Grid Grid.Row="5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="8"/>
+                    <ColumnDefinition Width="10"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
                 <!-- DRL Reference -->
                 <Border Grid.Column="0"
                         Background="{DynamicResource HnVue.Semantic.Surface.Card}"
-                        CornerRadius="3"
-                        Padding="6,4">
+                        CornerRadius="4"
+                        Padding="10,6"
+                        AutomationProperties.Name="Diagnostic reference level value"
+                        AutomationProperties.HelpText="The reference dose level for this examination type">
                     <StackPanel>
                         <TextBlock Text="DRL REF"
-                                   FontSize="9"
+                                   FontSize="10"
                                    FontFamily="{DynamicResource HnVue.Core.FontFamily}"
                                    Foreground="{DynamicResource HnVue.Component.DosePanel.LabelText}"
-                                   Margin="0,0,0,1"/>
+                                   Margin="0,0,0,2"/>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="{Binding DrlReferenceLevel, StringFormat=F1, FallbackValue='--'}"
-                                       FontSize="12"
+                                       FontSize="14"
                                        FontWeight="Bold"
                                        FontFamily="{DynamicResource HnVue.Core.FontFamily}"
-                                       Foreground="{DynamicResource HnVue.Component.DosePanel.ValueText}"/>
+                                       Foreground="{DynamicResource HnVue.Component.DosePanel.ValueText}"
+                                       AutomationProperties.Name="DRL reference value"/>
                             <TextBlock Text=" Gy&#xB7;cm&#xB2;"
-                                       FontSize="9"
+                                       FontSize="10"
                                        FontFamily="{DynamicResource HnVue.Core.FontFamily}"
                                        Foreground="{DynamicResource HnVue.Component.DosePanel.LabelText}"
                                        VerticalAlignment="Bottom"
-                                       Margin="2,0,0,1"/>
+                                       Margin="2,0,0,2"/>
                         </StackPanel>
                     </StackPanel>
                 </Border>
@@ -189,19 +210,22 @@
                 <!-- Dose History count -->
                 <Border Grid.Column="2"
                         Background="{DynamicResource HnVue.Semantic.Surface.Card}"
-                        CornerRadius="3"
-                        Padding="6,4">
+                        CornerRadius="4"
+                        Padding="10,6"
+                        AutomationProperties.Name="Exposure count"
+                        AutomationProperties.HelpText="Number of exposures in current session">
                     <StackPanel>
                         <TextBlock Text="EXPOSURES"
-                                   FontSize="9"
+                                   FontSize="10"
                                    FontFamily="{DynamicResource HnVue.Core.FontFamily}"
                                    Foreground="{DynamicResource HnVue.Component.DosePanel.LabelText}"
-                                   Margin="0,0,0,1"/>
+                                   Margin="0,0,0,2"/>
                         <TextBlock Text="{Binding DoseHistory.Count, FallbackValue='0'}"
-                                   FontSize="12"
+                                   FontSize="14"
                                    FontWeight="Bold"
                                    FontFamily="{DynamicResource HnVue.Core.FontFamily}"
-                                   Foreground="{DynamicResource HnVue.Component.DosePanel.ValueText}"/>
+                                   Foreground="{DynamicResource HnVue.Component.DosePanel.ValueText}"
+                                   AutomationProperties.Name="Total exposures count"/>
                     </StackPanel>
                 </Border>
             </Grid>
