@@ -2,7 +2,7 @@
 
 > **Sprint**: S13 | **Round**: 2 | **팀**: Team A (Infrastructure)
 > **발행일**: 2026-04-19
-> **상태**: NOT_STARTED
+> **상태**: COMPLETED
 
 ---
 
@@ -36,20 +36,28 @@ Update 모듈 테스트 보강 + SystemAdmin 테스트 확장.
 
 | 작업 ID | 설명 | 상태 | 할당자 | 우선순위 | 비고 |
 |---------|------|------|--------|----------|------|
-| T1 | Update 모듈 테스트 보강 | NOT_STARTED | Team A | P1 | Safety-Critical |
-| T2 | SystemAdmin 테스트 확장 | NOT_STARTED | Team A | P2 | 현재 6개 파일 |
+| T1 | Update 모듈 테스트 보강 | COMPLETED | Team A | P1 | Safety-Critical, 40 tests |
+| T2 | SystemAdmin 테스트 확장 | COMPLETED | Team A | P2 | 38 tests |
 
 ---
 
 ## 4. 완료 조건
 
-- [ ] dotnet build 0 errors
-- [ ] dotnet test all passed
-- [ ] HnVue.Update, HnVue.SystemAdmin 범위 내 수정만
-- [ ] DISPATCH Status COMPLETED + 빌드 증거
+- [x] dotnet build 0 errors
+- [x] dotnet test all passed
+- [x] HnVue.Update, HnVue.SystemAdmin 범위 내 수정만
+- [x] DISPATCH Status COMPLETED + 빌드 증거
 
 ---
 
 ## 5. Build Evidence
 
-_(작업 완료 후 기록)_
+## 5. Build Evidence
+
+- **Build**: 0 errors, warnings only (StyleCop SAxxxx)
+- **Update.Tests**: 317/317 passed (including 40 new S13R2 tests)
+- **SystemAdmin.Tests**: 123/123 passed (including 38 new S13R2 tests)
+- **New files**:
+  - `tests/HnVue.Update.Tests/UpdateS13R2CoverageTests.cs` (40 tests)
+  - `tests/HnVue.SystemAdmin.Tests/SystemAdminS13R2CoverageTests.cs` (38 tests)
+- **Total new tests**: 78
