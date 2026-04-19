@@ -1,7 +1,7 @@
 # HnVue Development Operations Guidelines
 
-Version: 2.1.0
-Last Updated: 2026-04-11
+Version: 3.0.0
+Last Updated: 2026-04-19
 Classification: HARD (All teams + Commander Center must comply)
 
 ---
@@ -155,7 +155,80 @@ When introducing new tools, add their artifact patterns to `.gitignore` immediat
 
 CC monitors team progress via **read-only** git operations. CC does NOT build, test, or modify team code.
 
-### Monitoring Commands
+### Monitoring Interval: 10 minutes [HARD — S13-R2]
+
+CC monitors every **10 minutes** (reduced from 15 min based on S13-R1 analysis).
+
+### 3-Team Status Detection (3-Layer)
+
+| Layer | Method | Meaning |
+|-------|--------|---------|
+| Remote commits | `git log origin/team/$team --not main` | Pushed work (confirmed) |
+| Worktree local | `.worktrees/{team}/ git status` | In-progress work (uncommitted) |
+| DISPATCH Status | DISPATCH file Status table | Team self-reported state |
+
+---
+
+## 3.6 Sequential Scheduling v1.0 [HARD — S13-R2]
+
+> **S13-R1 Lesson**: All teams starting simultaneously ignores dependencies → Coordinator integrates without A/B code. Sequential scheduling aligns start times with dependency readiness.
+
+### Phase Structure
+
+```
+Phase 1 (simultaneous):  Team A ──┐
+                            Team B ──┤
+                                     ↓
+Phase 2 (after A+B):     Coordinator ──┐
+                                          ↓
+Phase 3 (after CO):          QA ──┐
+                                     ↓
+Phase 4 (after QA):              RA
+
+Separate Track (parallel):  Design (independent, no dependencies)
+```
+
+### Phase Start Conditions [HARD]
+
+| Phase | Team | Start Condition | CC Action |
+|-------|------|----------------|-----------|
+| Phase 1 | Team A, Team B | DISPATCH published | Immediate ACTIVE |
+| Phase 2 | Coordinator | Team A **AND** Team B MERGED | CC sets DISPATCH Status → ACTIVE |
+| Phase 3 | QA | Coordinator MERGED | CC sets DISPATCH Status → ACTIVE |
+| Phase 4 | RA | QA MERGED | CC sets DISPATCH Status → ACTIVE |
+| Separate | Design | DISPATCH published | Immediate ACTIVE, independent |
+
+### Phase Transition [HARD]
+
+When Phase N teams complete:
+
+1. CC merges COMPLETED team(s)
+2. CC edits next Phase team's DISPATCH: `NOT_STARTED` → `ACTIVE`
+3. CC updates `_CURRENT.md`: `QUEUED` → `ACTIVE`
+4. Single commit + push (merge + phase transition in one transaction)
+
+### QUEUED Team Rules [HARD]
+
+- QUEUED teams may read their DISPATCH but **must not start implementation**
+- Only CC can transition QUEUED → ACTIVE
+- Design is never QUEUED — always immediate ACTIVE
+
+---
+
+## 3.7 Team Reporting Protocol [HARD — S13-R2]
+
+### 15-Minute Reporting Interval
+
+Teams update DISPATCH Status every **15 minutes**:
+
+| Event | Required Action |
+|-------|----------------|
+| DISPATCH read | NOT_STARTED → IN_PROGRESS (immediate push) |
+| Work in progress | Progress notes update (optional) |
+| Work completed | IN_PROGRESS → COMPLETED + build evidence (immediate push) |
+| Work blocked | NOT_STARTED → BLOCKED + reason (immediate push) |
+
+**No status update = communication breakdown = protocol violation**
 
 | Target | Command | Detects |
 |--------|---------|---------|
