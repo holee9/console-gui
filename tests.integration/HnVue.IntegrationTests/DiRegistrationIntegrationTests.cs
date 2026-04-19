@@ -121,6 +121,7 @@ public sealed class DiRegistrationIntegrationTests
         provider.GetService<ICDDVDBurnService>().Should().NotBeNull();
         provider.GetService<IImageProcessor>().Should().NotBeNull();
         provider.GetService<IDicomNetworkConfig>().Should().NotBeNull();
+        provider.GetService<IDicomService>().Should().NotBeNull("IDicomService must be registered (Print SCU)");
         provider.GetService<DicomStoreScu>().Should().NotBeNull();
     }
 
@@ -203,6 +204,7 @@ public sealed class DiRegistrationIntegrationTests
 
         // DICOM
         services.AddSingleton<IDicomNetworkConfig>(new TestDiDicomNetworkConfig());
+        services.AddSingleton<IDicomService, DicomService>();
         services.AddSingleton<DicomStoreScu>();
         services.AddSingleton<DicomFileIO>();
 

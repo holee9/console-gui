@@ -218,6 +218,7 @@ public partial class App : Application
                     LocalAeTitle: "HNVUE_SCU",
                     MwlHost: "localhost",
                     MwlPort: 11113));
+                services.AddSingleton<IDicomService, DicomService>();
                 services.AddSingleton<DicomStoreScu>();
                 services.AddSingleton<DicomFileIO>();
 
