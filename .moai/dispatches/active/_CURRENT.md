@@ -10,7 +10,7 @@
 
 | 팀 | 현재 DISPATCH 파일 | 상태 | 비고 |
 |----|-------------------|------|------|
-| **Team A** | DISPATCH-S13-R1-TEAM-A.md | **ACTIVE** | STRIDE 보안 통제 + PHI AES-256-GCM + TLS 1.3 기초 |
+| **Team A** | - | **MERGED** | S13-R1 COMPLETED — Tier 1 보안 통제 (23 files, 998 LOC) |
 | **Team B** | DISPATCH-S13-R1-TEAM-B.md | **ACTIVE** | Print SCU + RDSR + PACS 비동기 + 선량 인터락 |
 | **Coordinator** | DISPATCH-S13-R1-COORDINATOR.md | **ACTIVE** | ViewModel TODO + 통합테스트 + UI.Contracts |
 | **Design** | DISPATCH-S13-R1-DESIGN.md | **ACTIVE** | AddPatientProcedureView(Slide 8) + WorkflowView(Slides 9-11) |
