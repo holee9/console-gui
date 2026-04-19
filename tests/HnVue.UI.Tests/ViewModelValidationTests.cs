@@ -73,7 +73,7 @@ public class ViewModelValidationTests
     [Fact]
     public void SettingsViewModel_CommandBindings_AreCorrect()
     {
-        var sut = new SettingsViewModel();
+        var sut = new SettingsViewModel(Substitute.For<ISystemAdminService>());
         var iface = (ISettingsViewModel)sut;
 
         iface.SaveCommand.Should().NotBeNull();
@@ -178,7 +178,7 @@ public class ViewModelValidationTests
     [Fact]
     public void SettingsViewModel_RaisesPropertyChanged_ForActiveTab()
     {
-        var sut = new SettingsViewModel();
+        var sut = new SettingsViewModel(Substitute.For<ISystemAdminService>());
         var changed = new List<string>();
         sut.PropertyChanged += (_, e) => changed.Add(e.PropertyName!);
 

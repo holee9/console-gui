@@ -243,7 +243,7 @@ public class SettingsViewModelIntegrationTests
     [Fact]
     public void SettingsViewModel_ImplementsISettingsViewModel()
     {
-        var sut = new SettingsViewModel();
+        var sut = new SettingsViewModel(Substitute.For<ISystemAdminService>());
 
         sut.Should().BeAssignableTo<ISettingsViewModel>();
     }
@@ -251,7 +251,7 @@ public class SettingsViewModelIntegrationTests
     [Fact]
     public void SettingsViewModel_TabsContainExpectedCategories()
     {
-        var sut = new SettingsViewModel();
+        var sut = new SettingsViewModel(Substitute.For<ISystemAdminService>());
 
         sut.Tabs.Should().Contain(new[] { "System", "Account", "Network", "Display" });
     }
@@ -259,7 +259,7 @@ public class SettingsViewModelIntegrationTests
     [Fact]
     public void SettingsViewModel_TabSelection_UpdatesActiveTab()
     {
-        var sut = new SettingsViewModel();
+        var sut = new SettingsViewModel(Substitute.For<ISystemAdminService>());
 
         sut.SelectTabCommand.Execute("Network");
 
@@ -269,7 +269,7 @@ public class SettingsViewModelIntegrationTests
     [Fact]
     public void SettingsViewModel_IsLoading_InterfaceContract()
     {
-        var sut = new SettingsViewModel();
+        var sut = new SettingsViewModel(Substitute.For<ISystemAdminService>());
 
         var asBase = (IViewModelBase)sut;
         asBase.IsLoading.Should().BeFalse();
@@ -278,7 +278,7 @@ public class SettingsViewModelIntegrationTests
     [Fact]
     public async Task SettingsViewModel_SaveCommand_RaisesSaveCompleted()
     {
-        var sut = new SettingsViewModel();
+        var sut = new SettingsViewModel(Substitute.For<ISystemAdminService>());
         var raised = false;
         sut.SaveCompleted += (_, _) => raised = true;
 

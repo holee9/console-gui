@@ -28,7 +28,7 @@ public sealed class ViewModelBoundaryTests
     [Trait("SWR", "SWR-UI-SET-011")]
     public async Task SettingsViewModel_SaveCommand_PlaceholderResetsIsLoading()
     {
-        var vm = new SettingsViewModel();
+        var vm = new SettingsViewModel(Substitute.For<ISystemAdminService>());
 
         vm.SaveCommand.Execute(null);
         await Task.Delay(50);
@@ -41,7 +41,7 @@ public sealed class ViewModelBoundaryTests
     [Trait("SWR", "SWR-UI-SET-011")]
     public async Task SettingsViewModel_SaveCommand_PlaceholderRaisesSaveCompleted()
     {
-        var vm = new SettingsViewModel();
+        var vm = new SettingsViewModel(Substitute.For<ISystemAdminService>());
         var completed = false;
         vm.SaveCompleted += (_, _) => completed = true;
 
@@ -55,7 +55,7 @@ public sealed class ViewModelBoundaryTests
     [Trait("SWR", "SWR-UI-SET-011")]
     public void SettingsViewModel_CancelCommand_ResetsErrorMessage()
     {
-        var vm = new SettingsViewModel
+        var vm = new SettingsViewModel(Substitute.For<ISystemAdminService>())
         {
             ErrorMessage = "stale",
         };
@@ -71,7 +71,7 @@ public sealed class ViewModelBoundaryTests
     [Trait("SWR", "SWR-UI-SET-011")]
     public void SettingsViewModel_SelectTab_WithEmptyString_DoesNotChangeActiveTab()
     {
-        var vm = new SettingsViewModel
+        var vm = new SettingsViewModel(Substitute.For<ISystemAdminService>())
         {
             ActiveTab = "Network",
         };
@@ -85,7 +85,7 @@ public sealed class ViewModelBoundaryTests
     [Trait("SWR", "SWR-UI-SET-011")]
     public void SettingsViewModel_SelectTab_WithNull_DoesNotChangeActiveTab()
     {
-        var vm = new SettingsViewModel
+        var vm = new SettingsViewModel(Substitute.For<ISystemAdminService>())
         {
             ActiveTab = "Display",
         };
