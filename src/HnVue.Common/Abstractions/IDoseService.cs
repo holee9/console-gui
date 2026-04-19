@@ -1,3 +1,4 @@
+using HnVue.Common.Enums;
 using HnVue.Common.Models;
 using HnVue.Common.Results;
 
@@ -121,4 +122,41 @@ public interface IDoseService
         DateTimeOffset? from = null,
         DateTimeOffset? until = null,
         CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Computes the cumulative DAP (mGy·cm²) for a patient and body part
+    /// within a configurable time window (default: 24 hours).
+    /// Used by <see cref="ValidateExposureAsync"/> to enforce cumulative dose thresholds.
+    /// </summary>
+    /// <param name="patientId">Patient identifier to query.</param>
+    /// <param name="bodyPart">DICOM body-part code to filter records.</param>
+    /// <param name="windowHours">Look-back window in hours. Default 24.0.</param>
+    /// <param name="cancellationToken">Token to cancel the asynchronous operation.</param>
+    /// <returns>Cumulative DAP in mGy·cm². Zero when no records exist.</returns>
+    Task<double> GetCumulativeDapAsync(
+        string patientId,
+        string bodyPart,
+        double windowHours = 24.0,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Triggers a dose interlock safety state transition.
+    /// For Emergency level: sets system-wide safety flag requiring physical reset.
+    /// For Block level: records the blocked attempt and returns to safe state.
+    /// Publishes <see cref="DoseInterlockEventArgs"/> for UI notification and audit.
+    /// </summary>
+    /// <param name="level">The interlock level to activate.</param>
+    /// <param name="studyInstanceUid">DICOM Study Instance UID of the associated study.</param>
+    /// <param name="cancellationToken">Token to cancel the asynchronous operation.</param>
+    /// <returns>A <see cref="Result"/> indicating whether the interlock was activated.</returns>
+    Task<Result> TriggerInterlockAsync(
+        DoseValidationLevel level,
+        string studyInstanceUid,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Event raised when a dose interlock state transition occurs.
+    /// Subscribers receive <see cref="DoseInterlockEventArgs"/> with level, study UID, and reason.
+    /// </summary>
+    event EventHandler<DoseInterlockEventArgs>? InterlockTriggered;
 }

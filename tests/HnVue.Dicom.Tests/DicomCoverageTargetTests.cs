@@ -68,7 +68,11 @@ public sealed class DicomCoverageTargetTests
         _mockClient.SendAsync(Arg.Any<CancellationToken>())
             .Returns(call =>
             {
-                foreach (var captured in _capturedRequests)
+                // Process only the requests captured for this specific SendAsync call,
+                // then clear so the next SendAsync only processes its own requests.
+                var batch = _capturedRequests.ToList();
+                _capturedRequests.Clear();
+                foreach (var captured in batch)
                 {
                     callback(captured);
                 }
@@ -651,10 +655,25 @@ public sealed class DicomCoverageTargetTests
                     nCreate.OnResponseReceived?.Invoke(nCreate,
                         new DicomNCreateResponse(nCreate, DicomStatus.Success));
                 }
+                else if (req is DicomNSetRequest nSet)
+                {
+                    nSet.OnResponseReceived?.Invoke(nSet,
+                        new DicomNSetResponse(nSet, DicomStatus.Success));
+                }
                 else if (req is DicomNActionRequest nAction)
                 {
                     nAction.OnResponseReceived?.Invoke(nAction,
                         new DicomNActionResponse(nAction, DicomStatus.Success));
+                }
+                else if (req is DicomNGetRequest nGet)
+                {
+                    var statusDataset = new DicomDataset
+                    {
+                        { DicomTag.ExecutionStatus, "DONE" },
+                    };
+                    var response = new DicomNGetResponse(nGet, DicomStatus.Success);
+                    response.Dataset = statusDataset;
+                    nGet.OnResponseReceived?.Invoke(nGet, response);
                 }
             });
 
@@ -733,6 +752,11 @@ public sealed class DicomCoverageTargetTests
                     nCreate.OnResponseReceived?.Invoke(nCreate,
                         new DicomNCreateResponse(nCreate, DicomStatus.Success));
                 }
+                else if (req is DicomNSetRequest nSet)
+                {
+                    nSet.OnResponseReceived?.Invoke(nSet,
+                        new DicomNSetResponse(nSet, DicomStatus.Success));
+                }
                 else if (req is DicomNActionRequest nAction)
                 {
                     nAction.OnResponseReceived?.Invoke(nAction,
@@ -753,21 +777,59 @@ public sealed class DicomCoverageTargetTests
     }
 
     [Fact]
+    public async Task PrintAsync_ActionPrintFails_WithMessage_ReturnsPrintFailed()
+    {
+        var svc = CreateService();
+        var tempFile = await CreateTempDicomFileAsync();
+        try
+        {
+            SetupSendAsync(req =>
+            {
+                if (req is DicomNCreateRequest nCreate)
+                {
+                    nCreate.OnResponseReceived?.Invoke(nCreate,
+                        new DicomNCreateResponse(nCreate, DicomStatus.Success));
+                }
+                else if (req is DicomNSetRequest nSet)
+                {
+                    nSet.OnResponseReceived?.Invoke(nSet,
+                        new DicomNSetResponse(nSet, DicomStatus.Success));
+                }
+                else if (req is DicomNActionRequest nAction)
+                {
+                    nAction.OnResponseReceived?.Invoke(nAction,
+                        new DicomNActionResponse(nAction, DicomStatus.ProcessingFailure));
+                }
+            });
+
+            var result = await svc.PrintAsync(tempFile, "TESTPRINTER", CancellationToken.None);
+
+            result.IsFailure.Should().BeTrue();
+            result.Error.Should().Be(ErrorCode.DicomPrintFailed);
+            result.ErrorMessage.Should().Contain("N-ACTION Print failed");
+        }
+        finally
+        {
+            File.Delete(tempFile);
+        }
+    }
+
+    [Fact]
     public async Task PrintAsync_ActionNoResponse_ReturnsPrintFailed()
     {
         var svc = CreateService();
         var tempFile = await CreateTempDicomFileAsync();
         try
         {
-            // First call succeeds (N-CREATE), second call gets no response
+            // Flow: 1) Film Session N-CREATE, 2) Film Box N-CREATE, 3) Film Box N-SET,
+            //       4) N-ACTION (no callback -> fails), 5) N-GET (not reached)
             var callCount = 0;
             _mockClient.SendAsync(Arg.Any<CancellationToken>())
                 .Returns(call =>
                 {
                     callCount++;
-                    if (callCount == 1)
+                    if (callCount <= 3)
                     {
-                        // N-CREATE succeeds
                         foreach (var captured in _capturedRequests)
                         {
                             if (captured is DicomNCreateRequest nCreate)
@@ -775,9 +837,14 @@ public sealed class DicomCoverageTargetTests
                                 nCreate.OnResponseReceived?.Invoke(nCreate,
                                     new DicomNCreateResponse(nCreate, DicomStatus.Success));
                             }
+                            else if (captured is DicomNSetRequest nSet)
+                            {
+                                nSet.OnResponseReceived?.Invoke(nSet,
+                                    new DicomNSetResponse(nSet, DicomStatus.Success));
+                            }
                         }
                     }
-                    // Second call (N-ACTION) — no response, actionSucceeded stays false
+                    // Fourth+ call (N-ACTION) — no response, actionSucceeded stays false
                     return Task.CompletedTask;
                 });
 
