@@ -2,7 +2,7 @@
 
 > **Sprint**: S13 | **Round**: 1 | **팀**: Coordinator (Integration)
 > **발행일**: 2026-04-19
-> **상태**: IN_PROGRESS
+> **상태**: COMPLETED
 
 ---
 
@@ -44,9 +44,9 @@ ViewModel TODO 해결 + 통합테스트 보강 + UI.Contracts 업데이트.
 
 | 작업 ID | 설명 | 상태 | 할당자 | 우선순위 | 비고 |
 |---------|------|------|--------|----------|------|
-| T1 | ViewModel TODO 해결 | NOT_STARTED | Coordinator | P1 | 코드 품질 향상 |
-| T2 | 통합테스트 보강 | NOT_STARTED | Coordinator | P0 | 회귀 방지 |
-| T3 | UI.Contracts 업데이트 | NOT_STARTED | Coordinator | P2 | 필요 시 수행 |
+| T1 | ViewModel TODO 해결 | COMPLETED | Coordinator | P1 | ISecurityContext 주입 + NOTE 전환 |
+| T2 | 통합테스트 보강 | COMPLETED | Coordinator | P0 | 76개 신규 (STRIDE 40 + PACS 30 + DI 6) |
+| T3 | UI.Contracts 업데이트 | COMPLETED | Coordinator | P2 | 변경 불필요 (이미 Common에 존재) |
 
 ---
 
@@ -62,7 +62,10 @@ ViewModel TODO 해결 + 통합테스트 보강 + UI.Contracts 업데이트.
 
 ## 5. Build Evidence
 
-_(작업 완료 후 기록)_
+**Build**: `dotnet build HnVue.sln` — 0 errors, 0 warnings (Coordinator scope)
+**Tests**: `dotnet test HnVue.sln` — 4,234/4,235 pass (1 UI code-behind skip)
+**Integration Tests**: 160/160 pass (42 existing + 76 new + 42 cross-module)
+**Commit**: e1d988d
 
 ---
 
