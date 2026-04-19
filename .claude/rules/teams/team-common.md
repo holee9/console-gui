@@ -22,11 +22,15 @@ Step 4: If your team shows IDLE or no active entry → Report IDLE to Commander 
 
 **IDLE 보고 형식:**
 ```
+[TIMESTAMP] 2026-04-19T14:30:00+09:00
 State: IDLE
 Reason: No active DISPATCH found in _CURRENT.md for this team
 Last completed: [마지막 완료 작업 요약]
 Awaiting: New DISPATCH from Commander Center
 ```
+
+- [HARD] 모든 보고의 첫 줄에 `[TIMESTAMP] ISO-8601` 형식 필수
+- [HARD] 타임존 포함 필수 (`+09:00` KST) — CC 시간차 분석의 정확도 보장
 
 ---
 
@@ -161,6 +165,28 @@ Push failure: report "PUSH_FAILED" status in DISPATCH.md, commit+push the status
 - [HARD] **Status 업데이트 없이 대기 = 소통 단절 = 프로토콜 위반**
 - [HARD] S09-R3 사고: QA가 READY 상태였으나 DISPATCH Status를 NOT_STARTED로 방치 → CC가 12회 연속 모니터링하며 변화 감지 불가
 
+### Status 테이블 타임스탬프 의무 [HARD — Effective S14-R1]
+
+**모든 Status 전환 시 ISO-8601 타임스탬프 필수 기록. CC 시간차 분석의 기반 데이터.**
+
+DISPATCH Status 테이블 형식 (타임스탬프 열 추가):
+```
+| 작업 ID | 설명 | 상태 | 할당자 | 우선순위 | 타임스탬프 | 비고 |
+|---------|------|------|--------|----------|-----------|------|
+| T1 | ... | IN_PROGRESS | Team A | P1 | 2026-04-19T20:00:00+09:00 | ... |
+| T2 | ... | COMPLETED | Team A | P2 | 2026-04-19T20:30:00+09:00 | 빌드 증거 |
+```
+
+- [HARD] `NOT_STARTED → IN_PROGRESS` 전환 시: 해당 행 타임스탬프 열에 현재 시간 기록
+- [HARD] `IN_PROGRESS → COMPLETED` 전환 시: 타임스탬프 열 업데이트 (완료 시각)
+- [HARD] `NOT_STARTED → BLOCKED` 전환 시: 타임스탬프 열 업데이트 (차단 시각)
+- [HARD] 포맷: `YYYY-MM-DDTHH:MM:SS+09:00` (KST, ISO-8601)
+- [HARD] 타임스탬프 없는 Status 업데이트 = 프로토콜 위반
+  - 예: 환경 문제, 의존성 미해결, 도구 오류
+  - BLOCKED 상태에서는 CC가 즉시 인지하고 조치 가능
+- [HARD] **Status 업데이트 없이 대기 = 소통 단절 = 프로토콜 위반**
+- [HARD] S09-R3 사고: QA가 READY 상태였으나 DISPATCH Status를 NOT_STARTED로 방치 → CC가 12회 연속 모니터링하며 변화 감지 불가
+
 ### CC Status 변경 금지 [HARD — Effective S09-R3]
 
 - [HARD] CC는 팀의 DISPATCH Status 테이블(IN_PROGRESS/BLOCKED/COMPLETED)을 **임의로 수정 금지**
@@ -241,6 +267,45 @@ CC가 DISPATCH Status 확인 → 머지 → _CURRENT.md 업데이트
 - [HARD] 이 경우 머지는 불필요, _CURRENT.md MERGED 업데이트만 실행
 
 **자율 판단 기준**: DISPATCH Status + 빌드 증거 + diff 범위 검토. 이 3개가 통과되면 묻지 않고 실행.
+
+## CC Time Analysis Protocol [HARD — Effective S14-R1]
+
+**CC는 팀 타임스탬프 데이터를 수집하여 운영 방식을 점진적으로 진화시킨다.**
+
+### 수집 메트릭
+
+| 메트릭 | 계산 방식 | 활용 목적 |
+|--------|-----------|-----------|
+| **DISPATCH 수신→시작** | IN_PROGRESS 타임스탬프 - _CURRENT.md 발행 시각 | 팀 반응 속도, DISPATCH 전달 지연 분석 |
+| **시작→완료** | COMPLETED 타임스탬프 - IN_PROGRESS 타임스탬프 | 팀별 작업 소요 시간, 예측 정확도 |
+| **팀간 완료 편차** | Phase 내 팀간 COMPLETED 타임스탬프 표준편차 | 병목 팀 식별, Phase 재설계 |
+| **CC 머지→Phase 오픈** | Phase 오픈 시각 - 마지막 COMPLETED 타임스탬프 | CC 반응 속도 자가 측정 |
+| **전체 라운드 소요** | 마지막 팀 COMPLETED - DISPATCH 발행 시각 | Sprint/Round 효율성 추이 |
+| **BLOCKED 지속** | BLOCKED 타임스탬프 - 해결 시각 | 환경/의존성 문제 패턴 분석 |
+
+### 분석 주기
+
+- **라운드 종료 시**: 해당 라운드 메트릭 계산 → _CURRENT.md DISPATCH 라운드 이력에 기록
+- **Sprint 종료 시**: Sprint 전체 라운드 평균/추이 분석 → 진화 메트릭 테이블 업데이트
+- **3 Sprint 누적 시**: 운영 파라미터 재조정 (모니터링 주기, Phase 구조, 팀 분배)
+
+### 진화 대상 파라미터
+
+| 파라미터 | 현재 값 | 조정 기준 |
+|----------|---------|-----------|
+| CC 모니터링 주기 | 10분 | 팀 평균 완료 시간의 50% |
+| Phase 구조 | A+B→CO→QA→RA | 팀간 의존성 변화 시 재설계 |
+| 팀 분배 | 고정 6팀 | 메트릭 기반 병목 해소 |
+
+### 타임스탬프 기록 위치
+
+1. **팀 DISPATCH Status 테이블**: 각 Task 행의 `타임스탬프` 열
+2. **_CURRENT.md 라운드 이력**: 라운드 종료 시 요약 메트릭 추가
+3. **CC 모니터링 로그**: CC가 COMPLETED 감지 시 자체 타임스탬프 기록
+
+**목표**: Sprint S14부터 타임스탬프 데이터 축적 → S15에서 첫 데이터 기반 파라미터 조정
+
+---
 
 ## CC Auto-Progression Protocol [HARD — Effective S07-R2]
 
