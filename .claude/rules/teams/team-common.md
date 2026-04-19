@@ -22,11 +22,15 @@ Step 4: If your team shows IDLE or no active entry → Report IDLE to Commander 
 
 **IDLE 보고 형식:**
 ```
+[TIMESTAMP] 2026-04-19T14:30:00+09:00
 State: IDLE
 Reason: No active DISPATCH found in _CURRENT.md for this team
 Last completed: [마지막 완료 작업 요약]
 Awaiting: New DISPATCH from Commander Center
 ```
+
+- [HARD] 모든 보고의 첫 줄에 `[TIMESTAMP] ISO-8601` 형식 필수
+- [HARD] 타임존 포함 필수 (`+09:00` KST) — CC 시간차 분석의 정확도 보장
 
 ---
 

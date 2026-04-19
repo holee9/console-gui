@@ -2,7 +2,7 @@
 
 > **Sprint**: S13 | **Round**: 2 | **팀**: Coordinator (Integration)
 > **발행일**: 2026-04-19
-> **상태**: NOT_STARTED
+> **상태**: ACTIVE
 
 ---
 

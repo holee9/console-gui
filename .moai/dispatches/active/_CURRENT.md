@@ -10,14 +10,14 @@
 
 | 팀 | 현재 DISPATCH 파일 | 상태 | 스케줄 Phase | 비고 |
 |----|-------------------|------|-------------|------|
-| **Team A** | DISPATCH-S13-R2-TEAM-A.md | **ACTIVE** | Phase 1 | IN_PROGRESS — Update + SystemAdmin 테스트 |
-| **Team B** | DISPATCH-S13-R2-TEAM-B.md | **ACTIVE** | Phase 1 | IN_PROGRESS — Imaging + CDBurning 테스트 |
-| **Coordinator** | DISPATCH-S13-R2-COORDINATOR.md | **QUEUED** | Phase 2 | A+B 완료 후 시작 |
+| **Team A** | - | **MERGED** | Phase 1 | 78 tests (Update 40 + SystemAdmin 38) |
+| **Team B** | - | **MERGED** | Phase 1 | 208 tests (Imaging 143 + CDBurning 65) |
+| **Coordinator** | DISPATCH-S13-R2-COORDINATOR.md | **ACTIVE** | Phase 2 | Phase 1 완료 → Phase 2 오픈 |
 | **Design** | - | **MERGED** | 별도 | StudylistView 접근성 + DoseDisplayView 개선 |
 | **QA** | DISPATCH-S13-R2-QA.md | **QUEUED** | Phase 3 | Coordinator 완료 후 시작 |
-| **RA** | DISPATCH-S13-R2-RA.md | **QUEUED** | Phase 4 | QA 완료 후 시작 |
+| **RA** | DISPATCH-S13-R2-RA.md | **MERGED** | Phase 4 | 이미 MERGED |
 
-**→ Phase 1 진행 중 / Design MERGED 완료**
+**→ Phase 1 완료 / Phase 2(Coordinator) 오픈 / Design+RA MERGED**
 
 ---
 
