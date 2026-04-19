@@ -2,7 +2,7 @@
 
 > **Sprint**: S13 | **Round**: 2 | **팀**: Team B (Medical Imaging)
 > **발행일**: 2026-04-19
-> **상태**: NOT_STARTED
+> **상태**: IN_PROGRESS
 
 ---
 
@@ -38,7 +38,7 @@ Imaging 모듈 테스트 대폭 보강 (현재 4개 파일 → 최소 10개) + C
 
 | 작업 ID | 설명 | 상태 | 할당자 | 우선순위 | 비고 |
 |---------|------|------|--------|----------|------|
-| T1 | Imaging 테스트 대폭 보강 | NOT_STARTED | Team B | P0 | 현재 4개 → 10개 목표 |
+| T1 | Imaging 테스트 대폭 보강 | IN_PROGRESS | Team B | P0 | 현재 4개 → 10개 목표 |
 | T2 | CDBurning 테스트 보강 | NOT_STARTED | Team B | P2 | 현재 5개 → 8개 목표 |
 
 ---
