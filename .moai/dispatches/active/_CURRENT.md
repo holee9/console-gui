@@ -12,12 +12,12 @@
 |----|-------------------|------|-------------|------|
 | **Team A** | - | **MERGED** | Phase 1 | 78 tests (Update 40 + SystemAdmin 38) |
 | **Team B** | - | **MERGED** | Phase 1 | 208 tests (Imaging 143 + CDBurning 65) |
-| **Coordinator** | DISPATCH-S13-R2-COORDINATOR.md | **ACTIVE** | Phase 2 | Phase 1 완료 → Phase 2 오픈 |
+| **Coordinator** | - | **MERGED** | Phase 2 | DI 등록 검증 + SettingsViewModel + 엔드투엔드 테스트 |
 | **Design** | - | **MERGED** | 별도 | StudylistView 접근성 + DoseDisplayView 개선 |
-| **QA** | DISPATCH-S13-R2-QA.md | **QUEUED** | Phase 3 | Coordinator 완료 후 시작 |
+| **QA** | DISPATCH-S13-R2-QA.md | **ACTIVE** | Phase 3 | Coordinator MERGED → Phase 3 오픈 |
 | **RA** | DISPATCH-S13-R2-RA.md | **MERGED** | Phase 4 | 이미 MERGED |
 
-**→ Phase 1 완료 / Phase 2(Coordinator) 오픈 / Design+RA MERGED**
+**→ Phase 1+2 완료 / Phase 3(QA) 오픈 / Design+RA MERGED**
 
 ---
 
