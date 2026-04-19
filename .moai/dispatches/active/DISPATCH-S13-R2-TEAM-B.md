@@ -2,7 +2,7 @@
 
 > **Sprint**: S13 | **Round**: 2 | **팀**: Team B (Medical Imaging)
 > **발행일**: 2026-04-19
-> **상태**: NOT_STARTED
+> **상태**: COMPLETED
 
 ---
 
@@ -38,8 +38,8 @@ Imaging 모듈 테스트 대폭 보강 (현재 4개 파일 → 최소 10개) + C
 
 | 작업 ID | 설명 | 상태 | 할당자 | 우선순위 | 비고 |
 |---------|------|------|--------|----------|------|
-| T1 | Imaging 테스트 대폭 보강 | NOT_STARTED | Team B | P0 | 현재 4개 → 10개 목표 |
-| T2 | CDBurning 테스트 보강 | NOT_STARTED | Team B | P2 | 현재 5개 → 8개 목표 |
+| T1 | Imaging 테스트 대폭 보강 | COMPLETED | Team B | P0 | 2→10개 파일, 143/143 통과 |
+| T2 | CDBurning 테스트 보강 | COMPLETED | Team B | P2 | 5→8개 파일, 65/65 통과 |
 
 ---
 
@@ -54,4 +54,22 @@ Imaging 모듈 테스트 대폭 보강 (현재 4개 파일 → 최소 10개) + C
 
 ## 5. Build Evidence
 
-_(작업 완료 후 기록)_
+**Imaging.Tests**: 143/143 통과, 0 errors (10개 테스트 파일)
+- ImageProcessorTests.cs (기존)
+- ImagingCoverageAdditionalTests.cs (기존)
+- ImageLoadingPipelineTests.cs (신규) — 로딩/렌더링 파이프라인
+- ImageFilterTests.cs (신규) — 필터 (밝기, W/L, 노이즈, 엣지, CLAHE, 산란보정)
+- ImageTransformTests.cs (신규) — 변환 (회전, 반전, 줌, 팬)
+- ImagePerformanceTests.cs (신규) — 성능 임계값
+- ImageErrorRecoveryTests.cs (신규) — 오류 복구
+- ImageGainOffsetCorrectionTests.cs (신규) — 안전 관련 Gain/Offset 보정
+- ImageAutoTrimmingAndMaskTests.cs (신규) — 자동 트리밍 + 블랙 마스크
+- ImageDicomProcessingTests.cs (신규) — DICOM 8/16비트 처리
+
+**CDBurning.Tests**: 65/65 통과, 0 errors (8개 테스트 파일)
+- CDDVDBurnServiceTests.cs (기존)
+- StudyRepositoryTests.cs (기존)
+- IMAPIComWrapperTests.cs (기존)
+- CDBurnPipelineTests.cs (신규) — 파이프라인 E2E
+- DiscMediaStatusTests.cs (신규) — 미디어 상태/용량
+- CDBurnErrorHandlingTests.cs (신규) — 오류 처리
