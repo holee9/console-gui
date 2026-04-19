@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using HnVue.Common.Abstractions;
+using HnVue.Common.Models;
 using HnVue.UI.Contracts.ViewModels;
 
 namespace HnVue.UI.ViewModels;
@@ -17,6 +19,8 @@ namespace HnVue.UI.ViewModels;
 /// </summary>
 public sealed partial class SettingsViewModel : ObservableObject, ISettingsViewModel
 {
+    private readonly ISystemAdminService _settingsService;
+
     // IViewModelBase explicit mapping
     bool IViewModelBase.IsLoading => IsLoading;
     ICommand ISettingsViewModel.SaveCommand => SaveCommand;
@@ -28,6 +32,16 @@ public sealed partial class SettingsViewModel : ObservableObject, ISettingsViewM
         "System", "Account", "Detector", "Generator",
         "Network", "Display", "Option", "Database", "DicomSet", "RIS Code"
     };
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SettingsViewModel"/> class.
+    /// </summary>
+    /// <param name="settingsService">System admin service for persisting settings.</param>
+    public SettingsViewModel(ISystemAdminService settingsService)
+    {
+        ArgumentNullException.ThrowIfNull(settingsService);
+        _settingsService = settingsService;
+    }
 
     private readonly List<string> _availableRoles = new()
     {
@@ -74,11 +88,8 @@ public sealed partial class SettingsViewModel : ObservableObject, ISettingsViewM
     /// Persists all settings values.
     /// </summary>
     /// <remarks>
-    /// Currently a no-op placeholder that raises <see cref="SaveCompleted"/>.
-    /// @MX:NOTE Wire to ISettingsService.SaveAsync once the service surface is defined
-    /// in UI.Contracts (tracked via SWR-UI-SE-011). Placeholder keeps the dialog flow
-    /// exercised by unit tests while the Settings persistence layer is designed.
-    /// BLOCKED: ISettingsService not yet defined.
+    /// Maps ViewModel properties to SystemSettings and persists via ISystemAdminService.
+    /// Note: WorklistServerAddress/Port not yet supported by SystemSettings (future extension).
     /// </remarks>
     [RelayCommand]
     private async Task SaveAsync()
@@ -87,9 +98,29 @@ public sealed partial class SettingsViewModel : ObservableObject, ISettingsViewM
         ErrorMessage = null;
         try
         {
-            // @MX:NOTE Placeholder — Replace with await _settingsService.SaveAsync(snapshot) once ISettingsService lands.
-            //          BLOCKED: ISettingsService interface not yet defined in UI.Contracts (SWR-UI-SE-011).
-            await Task.Delay(1);
+            var settings = new SystemSettings
+            {
+                Dicom = new DicomSettings
+                {
+                    PacsHost = PacsServerAddress,
+                    PacsPort = PacsServerPort,
+                    PacsAeTitle = "HNVUE_SCU",  // @MX:TODO Make configurable via UI
+                    LocalAeTitle = "HNVUE_SCU"  // @MX:TODO Make configurable via UI
+                },
+                // @MX:NOTE Generator/Security settings not exposed in current SettingsViewModel UI
+                //          Future UI expansion needed for GeneratorSettings (ComPort, BaudRate)
+                //          and SecuritySettings (SessionTimeoutMinutes, MaxFailedLogins)
+                Generator = new GeneratorSettings(),
+                Security = new SecuritySettings()
+            };
+
+            var result = await _settingsService.UpdateSettingsAsync(settings);
+            if (result.IsFailure)
+            {
+                ErrorMessage = result.ErrorMessage ?? "Settings save failed";
+                return;
+            }
+
             SaveCompleted?.Invoke(this, EventArgs.Empty);
         }
         finally { IsLoading = false; }

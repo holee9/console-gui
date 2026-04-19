@@ -220,7 +220,7 @@ public sealed class DiRegistrationIntegrationTests
         services.AddTransient<ISystemAdminViewModel, SystemAdminViewModel>();
         services.AddTransient<IQuickPinLockViewModel, QuickPinLockViewModel>();
         services.AddTransient<IMergeViewModel, MergeViewModel>();
-        services.AddTransient<ISettingsViewModel, SettingsViewModel>();
+        services.AddTransient<ISettingsViewModel>(sp => new SettingsViewModel(sp.GetRequiredService<ISystemAdminService>()));
         services.AddTransient<IAddPatientProcedureViewModel, AddPatientProcedureViewModel>();
         services.AddSingleton<MainViewModel>();
         services.AddSingleton<IMainViewModel>(sp => sp.GetRequiredService<MainViewModel>());
