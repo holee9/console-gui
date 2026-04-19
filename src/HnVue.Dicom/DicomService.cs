@@ -3,6 +3,7 @@ using System.IO;
 using FellowOakDicom;
 using FellowOakDicom.Network;
 using FellowOakDicom.Network.Client;
+using HnVue.Common.Enums;
 using HnVue.Common.Models;
 using HnVue.Common.Results;
 using Microsoft.Extensions.Logging;
@@ -231,7 +232,7 @@ public partial class DicomService : HnVue.Common.Abstractions.IDicomService
 
         try
         {
-            // N-CREATE: Basic Film Session
+            // Step 1: N-CREATE Basic Film Session
             var filmSessionUid = DicomUID.Generate();
             var filmSessionDataset = new DicomDataset
             {
@@ -267,7 +268,30 @@ public partial class DicomService : HnVue.Common.Abstractions.IDicomService
                     string.IsNullOrEmpty(createFailMessage) ? "N-CREATE did not succeed." : createFailMessage);
             }
 
-            // N-ACTION: Print
+            // Step 2: N-CREATE Basic Film Box
+            var filmBoxResult = await CreateFilmBoxAsync(
+                filmSessionUid, printerAeTitle, cancellationToken).ConfigureAwait(false);
+
+            if (filmBoxResult.IsFailure)
+            {
+                LogPrintWarning(_logger, dicomFilePath, printerAeTitle, "N-CREATE FilmBox");
+                return Result.Failure(filmBoxResult.Error ?? ErrorCode.DicomPrintFailed,
+                    filmBoxResult.ErrorMessage ?? "Film Box creation failed.");
+            }
+
+            var filmBoxUid = filmBoxResult.Value;
+
+            // Step 3: N-SET Film Box (configure image position, resolution, magnification)
+            var setResult = await SetFilmBoxAsync(
+                filmBoxUid, printerAeTitle, cancellationToken).ConfigureAwait(false);
+
+            if (setResult.IsFailure)
+            {
+                LogPrintWarning(_logger, dicomFilePath, printerAeTitle, "N-SET FilmBox");
+                return setResult;
+            }
+
+            // Step 4: N-ACTION Print
             var actionRequest = new DicomNActionRequest(
                 DicomUID.BasicFilmSession, filmSessionUid, 0x0001)
             {
@@ -284,15 +308,26 @@ public partial class DicomService : HnVue.Common.Abstractions.IDicomService
                     actionFailMessage = $"N-ACTION Print failed: {response.Status}";
             };
 
-            var client2 = CreateClient(_options.PrinterHost, _options.PrinterPort, _options.LocalAeTitle, printerAeTitle);
-            await client2.AddRequestAsync(actionRequest).ConfigureAwait(false);
-            await client2.SendAsync(cancellationToken).ConfigureAwait(false);
+            var client3 = CreateClient(_options.PrinterHost, _options.PrinterPort, _options.LocalAeTitle, printerAeTitle);
+            await client3.AddRequestAsync(actionRequest).ConfigureAwait(false);
+            await client3.SendAsync(cancellationToken).ConfigureAwait(false);
 
             if (!actionSucceeded)
             {
                 LogPrintWarning(_logger, dicomFilePath, printerAeTitle, "N-ACTION");
                 return Result.Failure(ErrorCode.DicomPrintFailed,
                     string.IsNullOrEmpty(actionFailMessage) ? "N-ACTION did not succeed." : actionFailMessage);
+            }
+
+            // Step 5: N-GET Status Poll
+            var statusResult = await GetPrintJobStatusAsync(
+                filmSessionUid.UID, printerAeTitle, cancellationToken).ConfigureAwait(false);
+
+            if (statusResult.IsFailure)
+            {
+                // Print action itself succeeded; status poll failure is non-fatal
+                _logger.LogWarning("Print job status poll failed for session {SessionUid}: {Error}",
+                    filmSessionUid, statusResult.ErrorMessage);
             }
 
             LogPrintSuccess(_logger, dicomFilePath, printerAeTitle);
@@ -327,6 +362,249 @@ public partial class DicomService : HnVue.Common.Abstractions.IDicomService
             _logger.LogError(ex, "Unexpected DICOM print failure for AE {AeTitle}.", printerAeTitle);
             return Result.Failure(ErrorCode.DicomPrintFailed, $"Print failed: {baseException.Message}");
         }
+    }
+
+    /// <summary>
+    /// Creates a Basic Film Box SOP instance via N-CREATE, associating it with the given Film Session.
+    /// DICOM PS3.4 Print Management: Basic Film Box belongs to the Film Session.
+    /// </summary>
+    /// <param name="filmSessionUid">SOP Instance UID of the parent Basic Film Session.</param>
+    /// <param name="printerAeTitle">Called AE title of the DICOM printer SCP.</param>
+    /// <param name="cancellationToken">Token to cancel the operation.</param>
+    /// <returns>The generated Film Box SOP Instance UID on success, or a failure result.</returns>
+    internal async Task<Result<DicomUID>> CreateFilmBoxAsync(
+        DicomUID filmSessionUid,
+        string printerAeTitle,
+        CancellationToken cancellationToken)
+    {
+        var filmBoxUid = DicomUID.Generate();
+
+        var filmBoxDataset = new DicomDataset
+        {
+            { DicomTag.ImageDisplayFormat, "STANDARD\\1,1" },
+            { DicomTag.FilmOrientation, "PORTRAIT" },
+            { DicomTag.FilmSizeID, "14IN X 17IN" },
+            { DicomTag.MagnificationType, "BILINEAR" },
+            { DicomTag.SmoothingType, "MEDIUM" },
+            { DicomTag.BorderDensity, "BLACK" },
+            { DicomTag.EmptyImageDensity, "BLACK" },
+        };
+
+        // Reference the parent Film Session
+        filmBoxDataset.Add(new DicomSequence(DicomTag.ReferencedFilmSessionSequence,
+            new DicomDataset
+            {
+                { DicomTag.ReferencedSOPClassUID, DicomUID.BasicFilmSession.UID },
+                { DicomTag.ReferencedSOPInstanceUID, filmSessionUid.UID },
+            }));
+
+        var createRequest = new DicomNCreateRequest(DicomUID.BasicFilmBox, filmBoxUid)
+        {
+            Dataset = filmBoxDataset
+        };
+
+        bool boxCreated = false;
+        string failMessage = string.Empty;
+        createRequest.OnResponseReceived = (req, response) =>
+        {
+            if (response.Status == DicomStatus.Success)
+                boxCreated = true;
+            else
+                failMessage = $"N-CREATE Basic Film Box failed: {response.Status}";
+        };
+
+        var client = CreateClient(_options.PrinterHost, _options.PrinterPort, _options.LocalAeTitle, printerAeTitle);
+        await client.AddRequestAsync(createRequest).ConfigureAwait(false);
+        await client.SendAsync(cancellationToken).ConfigureAwait(false);
+
+        if (!boxCreated)
+            return Result.Failure<DicomUID>(ErrorCode.DicomPrintFailed,
+                string.IsNullOrEmpty(failMessage) ? "Film Box creation did not succeed." : failMessage);
+
+        LogFilmBoxCreated(_logger, filmBoxUid.UID);
+        return Result.Success(filmBoxUid);
+    }
+
+    /// <summary>
+    /// Configures an existing Basic Film Box via N-SET, setting image position, requested resolution,
+    /// and magnification type for each image box in the film layout.
+    /// </summary>
+    /// <param name="filmBoxUid">SOP Instance UID of the Basic Film Box to configure.</param>
+    /// <param name="printerAeTitle">Called AE title of the DICOM printer SCP.</param>
+    /// <param name="cancellationToken">Token to cancel the operation.</param>
+    /// <returns>A successful <see cref="Result"/>, or a failure with <see cref="ErrorCode.DicomPrintFailed"/>.</returns>
+    internal async Task<Result> SetFilmBoxAsync(
+        DicomUID filmBoxUid,
+        string printerAeTitle,
+        CancellationToken cancellationToken)
+    {
+        var setDataset = new DicomDataset
+        {
+            { DicomTag.RequestedResolutionID, "200" },
+            { DicomTag.MagnificationType, "BILINEAR" },
+            { DicomTag.SmoothingType, "MEDIUM" },
+        };
+
+        // Image Box Position (2020,0010) — specified per DICOM PS3.3 C.13.5.2
+        var imageBoxPositionTag = new DicomTag(0x2020, 0x0010);
+        setDataset.Add(imageBoxPositionTag, "1");
+
+        // Polarity (2020,0020) — specified per DICOM PS3.3 C.13.4.1
+        var polarityTag = new DicomTag(0x2020, 0x0020);
+        setDataset.Add(polarityTag, "NORMAL");
+
+        var setRequest = new DicomNSetRequest(DicomUID.BasicFilmBox, filmBoxUid)
+        {
+            Dataset = setDataset
+        };
+
+        bool setSucceeded = false;
+        string failMessage = string.Empty;
+        setRequest.OnResponseReceived = (req, response) =>
+        {
+            if (response.Status == DicomStatus.Success)
+                setSucceeded = true;
+            else
+                failMessage = $"N-SET Basic Film Box failed: {response.Status}";
+        };
+
+        var client = CreateClient(_options.PrinterHost, _options.PrinterPort, _options.LocalAeTitle, printerAeTitle);
+        await client.AddRequestAsync(setRequest).ConfigureAwait(false);
+        await client.SendAsync(cancellationToken).ConfigureAwait(false);
+
+        if (!setSucceeded)
+            return Result.Failure(ErrorCode.DicomPrintFailed,
+                string.IsNullOrEmpty(failMessage) ? "N-SET Film Box did not succeed." : failMessage);
+
+        LogFilmBoxSet(_logger, filmBoxUid.UID);
+        return Result.Success();
+    }
+
+    /// <inheritdoc/>
+    public async Task<Result<PrintJobStatus>> GetPrintJobStatusAsync(
+        string filmSessionUid,
+        string printerAeTitle,
+        CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(filmSessionUid))
+            return Result.Failure<PrintJobStatus>(ErrorCode.DicomPrintFailed,
+                "Film Session UID must not be empty.");
+
+        if (string.IsNullOrWhiteSpace(printerAeTitle))
+            return Result.Failure<PrintJobStatus>(ErrorCode.DicomPrintFailed,
+                "Printer AE title must not be empty.");
+
+        const int maxPollAttempts = 10;
+        const int pollIntervalMs = 1000;
+
+        for (int attempt = 0; attempt < maxPollAttempts; attempt++)
+        {
+            if (cancellationToken.IsCancellationRequested)
+                return Result.Failure<PrintJobStatus>(ErrorCode.OperationCancelled,
+                    "Print job status poll was cancelled.");
+
+            try
+            {
+                var sopInstanceUid = new DicomUID(filmSessionUid, filmSessionUid, DicomUidType.SOPInstance);
+
+                // Request the Execution Status attribute from the Print Job
+                var requestedAttributes = new DicomDataset
+                {
+                    { DicomTag.ExecutionStatus, string.Empty },
+                };
+
+                var getRequest = new DicomNGetRequest(DicomUID.PrintJob, sopInstanceUid)
+                {
+                    Dataset = requestedAttributes
+                };
+
+                DicomDataset? responseDataset = null;
+                bool getCompleted = false;
+                string getFailMessage = string.Empty;
+                getRequest.OnResponseReceived = (req, response) =>
+                {
+                    if (response.Status == DicomStatus.Success)
+                    {
+                        responseDataset = response.Dataset;
+                        getCompleted = true;
+                    }
+                    else
+                    {
+                        getFailMessage = $"N-GET Print Job status failed: {response.Status}";
+                    }
+                };
+
+                var client = CreateClient(_options.PrinterHost, _options.PrinterPort, _options.LocalAeTitle, printerAeTitle);
+                await client.AddRequestAsync(getRequest).ConfigureAwait(false);
+                await client.SendAsync(cancellationToken).ConfigureAwait(false);
+
+                if (!getCompleted)
+                {
+                    LogPrintStatusPollWarning(_logger, filmSessionUid, attempt + 1);
+                    return Result.Failure<PrintJobStatus>(ErrorCode.DicomPrintFailed,
+                        string.IsNullOrEmpty(getFailMessage) ? "N-GET Print Job did not succeed." : getFailMessage);
+                }
+
+                var status = MapExecutionStatus(responseDataset);
+
+                if (status == PrintJobStatus.Done || status == PrintJobStatus.Failure)
+                {
+                    LogPrintStatusComplete(_logger, filmSessionUid, status.ToString());
+                    return Result.Success(status);
+                }
+
+                // Status is Pending or Printing — wait and poll again
+                _logger.LogDebug("Print job {SessionUid} status={Status}, polling ({Attempt}/{Max})...",
+                    filmSessionUid, status, attempt + 1, maxPollAttempts);
+
+                await Task.Delay(pollIntervalMs, cancellationToken).ConfigureAwait(false);
+            }
+            catch (OperationCanceledException)
+            {
+                return Result.Failure<PrintJobStatus>(ErrorCode.OperationCancelled,
+                    "Print job status poll was cancelled.");
+            }
+            catch (DicomNetworkException ex)
+            {
+                LogNetworkError(_logger, ex, "N-GET PrintJob", printerAeTitle);
+                return Result.Failure<PrintJobStatus>(ErrorCode.DicomConnectionFailed,
+                    $"Network error during status poll: {ex.Message}");
+            }
+            catch (Exception ex) when (ex is not OperationCanceledException
+                                        and not DicomNetworkException
+                                        and not OutOfMemoryException)
+            {
+                _logger.LogError(ex, "Unexpected error during print job status poll for session {SessionUid}.",
+                    filmSessionUid);
+                return Result.Failure<PrintJobStatus>(ErrorCode.DicomPrintFailed,
+                    $"Status poll failed: {ex.Message}");
+            }
+        }
+
+        // Polling exhausted — return Pending as the last known state
+        _logger.LogWarning("Print job status poll exhausted for session {SessionUid} after {Attempts} attempts.",
+            filmSessionUid, maxPollAttempts);
+        return Result.Success(PrintJobStatus.Pending);
+    }
+
+    /// <summary>
+    /// Maps the Execution Status attribute from the N-GET response dataset to <see cref="PrintJobStatus"/>.
+    /// </summary>
+    private static PrintJobStatus MapExecutionStatus(DicomDataset? dataset)
+    {
+        if (dataset is null)
+            return PrintJobStatus.Pending;
+
+        var status = dataset.GetSingleValueOrDefault(DicomTag.ExecutionStatus, string.Empty);
+
+        return status.ToUpperInvariant() switch
+        {
+            "PENDING" => PrintJobStatus.Pending,
+            "PRINTING" => PrintJobStatus.Printing,
+            "DONE" => PrintJobStatus.Done,
+            "FAILURE" => PrintJobStatus.Failure,
+            _ => PrintJobStatus.Pending
+        };
     }
 
     /// <inheritdoc/>
@@ -413,6 +691,88 @@ public partial class DicomService : HnVue.Common.Abstractions.IDicomService
             _logger.LogError(ex, "Unexpected Storage Commitment failure for AE {AeTitle}.", pacsAeTitle);
             return Result.Failure(ErrorCode.DicomStoreFailed,
                 $"Storage Commitment failed: {baseException.Message}");
+        }
+    }
+
+    /// <inheritdoc/>
+    /// <remarks>
+    /// SWR-DC-060~065: Generates RDSR from dose record using <see cref="RdsrBuilder"/>,
+    /// wraps it in a DicomCStoreRequest, and sends via the existing C-STORE flow.
+    /// </remarks>
+    public async Task<Result> SendRdsrAsync(
+        DoseRecord doseRecord,
+        RdsrPatientInfo patientInfo,
+        RdsrStudyInfo studyInfo,
+        string pacsAeTitle,
+        RdsrExposureParams? exposureParams = null,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(doseRecord);
+        ArgumentNullException.ThrowIfNull(patientInfo);
+        ArgumentNullException.ThrowIfNull(studyInfo);
+
+        if (string.IsNullOrWhiteSpace(pacsAeTitle))
+            return Result.Failure(ErrorCode.DicomStoreFailed, "PACS AE Title must not be empty.");
+
+        try
+        {
+            // Build the RDSR DICOM dataset
+            var builder = new RdsrBuilder(doseRecord, patientInfo, studyInfo, exposureParams);
+            var rdsrDataset = builder.Build();
+
+            // Wrap in C-STORE request
+            var storeResult = Result.Success();
+            var request = new DicomCStoreRequest(rdsrDataset);
+            request.OnResponseReceived = (_, response) =>
+            {
+                if (response.Status != DicomStatus.Success)
+                {
+                    storeResult = Result.Failure(
+                        ErrorCode.DicomStoreFailed,
+                        $"RDSR C-STORE failed: {GetUserFriendlyStatus(response.Status)}");
+                }
+            };
+
+            var client = CreateClient(_options.PacsHost, _options.PacsPort, _options.LocalAeTitle, pacsAeTitle);
+            await client.AddRequestAsync(request).ConfigureAwait(false);
+            await client.SendAsync(cancellationToken).ConfigureAwait(false);
+
+            if (storeResult.IsSuccess)
+            {
+                LogRdsrSuccess(_logger, pacsAeTitle, doseRecord.StudyInstanceUid);
+            }
+            else
+            {
+                LogRdsrWarning(_logger, pacsAeTitle, doseRecord.StudyInstanceUid);
+            }
+
+            return storeResult;
+        }
+        catch (OperationCanceledException)
+        {
+            return Result.Failure(ErrorCode.OperationCancelled, "RDSR C-STORE was cancelled.");
+        }
+        catch (DicomNetworkException ex)
+        {
+            LogNetworkError(_logger, ex, "RDSR C-STORE", pacsAeTitle);
+            return Result.Failure(ErrorCode.DicomConnectionFailed,
+                $"RDSR network error: {ex.Message}");
+        }
+        catch (Exception ex) when (ex is not OperationCanceledException
+                                    and not OutOfMemoryException)
+        {
+            var baseException = ex.GetBaseException();
+            if (baseException is System.Net.Sockets.SocketException socketException)
+            {
+                LogConnectionError(_logger, socketException, pacsAeTitle);
+                return Result.Failure(ErrorCode.DicomConnectionFailed,
+                    $"RDSR connection failed: {socketException.Message}");
+            }
+
+            _logger.LogError(ex, "Unexpected RDSR transmission failure for AE {AeTitle}, study {StudyUid}.",
+                pacsAeTitle, doseRecord.StudyInstanceUid);
+            return Result.Failure(ErrorCode.DicomStoreFailed,
+                $"RDSR transmission failed: {baseException.Message}");
         }
     }
 
@@ -578,4 +938,22 @@ public partial class DicomService : HnVue.Common.Abstractions.IDicomService
 
     [LoggerMessage(Level = LogLevel.Error, Message = "I/O error reading DICOM file {FilePath} for Print.")]
     private static partial void LogPrintIoError(ILogger logger, IOException ex, string filePath);
+
+    [LoggerMessage(Level = LogLevel.Debug, Message = "Basic Film Box created with UID {FilmBoxUid}.")]
+    private static partial void LogFilmBoxCreated(ILogger logger, string filmBoxUid);
+
+    [LoggerMessage(Level = LogLevel.Debug, Message = "Basic Film Box N-SET succeeded for UID {FilmBoxUid}.")]
+    private static partial void LogFilmBoxSet(ILogger logger, string filmBoxUid);
+
+    [LoggerMessage(Level = LogLevel.Warning, Message = "Print job status poll failed for session {SessionUid}, attempt {Attempt}.")]
+    private static partial void LogPrintStatusPollWarning(ILogger logger, string sessionUid, int attempt);
+
+    [LoggerMessage(Level = LogLevel.Information, Message = "Print job {SessionUid} completed with status {Status}.")]
+    private static partial void LogPrintStatusComplete(ILogger logger, string sessionUid, string status);
+
+    [LoggerMessage(Level = LogLevel.Information, Message = "RDSR C-STORE to {AeTitle} succeeded for study {StudyUid}.")]
+    private static partial void LogRdsrSuccess(ILogger logger, string aeTitle, string studyUid);
+
+    [LoggerMessage(Level = LogLevel.Warning, Message = "RDSR C-STORE to {AeTitle} failed for study {StudyUid}.")]
+    private static partial void LogRdsrWarning(ILogger logger, string aeTitle, string studyUid);
 }

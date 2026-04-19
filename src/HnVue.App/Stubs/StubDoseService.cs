@@ -1,4 +1,5 @@
 using HnVue.Common.Abstractions;
+using HnVue.Common.Enums;
 using HnVue.Common.Models;
 using HnVue.Common.Results;
 
@@ -54,4 +55,22 @@ internal sealed class StubDoseService : IDoseService
         DateTimeOffset? until = null,
         CancellationToken cancellationToken = default)
         => Task.FromResult(Result.Failure<IReadOnlyList<DoseRecord>>(ErrorCode.Unknown, NotImplementedMessage));
+
+    /// <inheritdoc/>
+    public Task<double> GetCumulativeDapAsync(
+        string patientId,
+        string bodyPart,
+        double windowHours = 24.0,
+        CancellationToken cancellationToken = default)
+        => Task.FromResult(0.0);
+
+    /// <inheritdoc/>
+    public Task<Result> TriggerInterlockAsync(
+        DoseValidationLevel level,
+        string studyInstanceUid,
+        CancellationToken cancellationToken = default)
+        => Task.FromResult(Result.Success());
+
+    /// <inheritdoc/>
+    public event EventHandler<DoseInterlockEventArgs>? InterlockTriggered;
 }

@@ -1,3 +1,4 @@
+using HnVue.Common.Enums;
 using HnVue.Common.Models;
 using HnVue.Common.Results;
 
@@ -64,5 +65,44 @@ public interface IDicomService
         string sopClassUid,
         string sopInstanceUid,
         string pacsAeTitle,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Polls the print job status via N-GET after a print action has been submitted.
+    /// Queries the Print Job SOP Instance on the printer SCP until Done or Failure.
+    /// </summary>
+    /// <param name="filmSessionUid">SOP Instance UID of the Basic Film Session.</param>
+    /// <param name="printerAeTitle">Called AE title of the DICOM printer.</param>
+    /// <param name="cancellationToken">Token to cancel the polling operation.</param>
+    /// <returns>
+    /// A successful <see cref="Result{T}"/> containing the <see cref="PrintJobStatus"/>,
+    /// or a failure with <see cref="ErrorCode.DicomPrintFailed"/>.
+    /// </returns>
+    Task<Result<PrintJobStatus>> GetPrintJobStatusAsync(
+        string filmSessionUid,
+        string printerAeTitle,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Generates an RDSR (Radiation Dose Structured Report) from the specified dose record
+    /// and sends it to the PACS via C-STORE.
+    /// SWR-DC-060~065: RDSR generation and transmission.
+    /// </summary>
+    /// <param name="doseRecord">Dose record with exposure metrics.</param>
+    /// <param name="patientInfo">Patient demographic information for the RDSR.</param>
+    /// <param name="studyInfo">Study-level DICOM information for the RDSR.</param>
+    /// <param name="pacsAeTitle">Called AE title of the destination PACS or dose registry.</param>
+    /// <param name="exposureParams">Exposure technique parameters (kVp, mAs, exposure time). Null = omitted from RDSR.</param>
+    /// <param name="cancellationToken">Token to cancel the asynchronous operation.</param>
+    /// <returns>
+    /// A successful <see cref="Result"/> when the RDSR is generated and accepted by PACS,
+    /// or a failure with <see cref="ErrorCode.DicomStoreFailed"/>.
+    /// </returns>
+    Task<Result> SendRdsrAsync(
+        DoseRecord doseRecord,
+        RdsrPatientInfo patientInfo,
+        RdsrStudyInfo studyInfo,
+        string pacsAeTitle,
+        RdsrExposureParams? exposureParams = null,
         CancellationToken cancellationToken = default);
 }

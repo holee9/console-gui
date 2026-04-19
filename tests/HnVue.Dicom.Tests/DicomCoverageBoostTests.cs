@@ -62,7 +62,11 @@ public sealed class DicomCoverageBoostTests
         _mockClient.SendAsync(Arg.Any<CancellationToken>())
             .Returns(call =>
             {
-                foreach (var captured in _capturedRequests)
+                // Process only the requests captured for this specific SendAsync call,
+                // then clear so the next SendAsync only processes its own requests.
+                var batch = _capturedRequests.ToList();
+                _capturedRequests.Clear();
+                foreach (var captured in batch)
                 {
                     callback(captured);
                 }
@@ -662,10 +666,25 @@ public sealed class DicomCoverageBoostTests
                     nCreate.OnResponseReceived?.Invoke(nCreate,
                         new DicomNCreateResponse(nCreate, DicomStatus.Success));
                 }
+                else if (req is DicomNSetRequest nSet)
+                {
+                    nSet.OnResponseReceived?.Invoke(nSet,
+                        new DicomNSetResponse(nSet, DicomStatus.Success));
+                }
                 else if (req is DicomNActionRequest nAction)
                 {
                     nAction.OnResponseReceived?.Invoke(nAction,
                         new DicomNActionResponse(nAction, DicomStatus.Success));
+                }
+                else if (req is DicomNGetRequest nGet)
+                {
+                    var statusDataset = new DicomDataset
+                    {
+                        { DicomTag.ExecutionStatus, "DONE" },
+                    };
+                    var response = new DicomNGetResponse(nGet, DicomStatus.Success);
+                    response.Dataset = statusDataset;
+                    nGet.OnResponseReceived?.Invoke(nGet, response);
                 }
             });
 
@@ -735,14 +754,17 @@ public sealed class DicomCoverageBoostTests
         var tempFile = await CreateTempDicomFileAsync();
         try
         {
-            var requestIndex = 0;
             SetupSendAsync(req =>
             {
-                requestIndex++;
-                if (req is DicomNCreateRequest nCreate && requestIndex <= 1)
+                if (req is DicomNCreateRequest nCreate)
                 {
                     nCreate.OnResponseReceived?.Invoke(nCreate,
                         new DicomNCreateResponse(nCreate, DicomStatus.Success));
+                }
+                else if (req is DicomNSetRequest nSet)
+                {
+                    nSet.OnResponseReceived?.Invoke(nSet,
+                        new DicomNSetResponse(nSet, DicomStatus.Success));
                 }
                 else if (req is DicomNActionRequest nAction)
                 {
@@ -770,13 +792,13 @@ public sealed class DicomCoverageBoostTests
         var tempFile = await CreateTempDicomFileAsync();
         try
         {
-            // First call: N-CREATE succeeds; second call: no callback (N-ACTION fails silently)
+            // First call: N-CREATE succeeds; subsequent calls: N-SET succeeds, N-ACTION gets no callback
             var sendCallCount = 0;
             _mockClient.SendAsync(Arg.Any<CancellationToken>())
                 .Returns(call =>
                 {
                     sendCallCount++;
-                    if (sendCallCount == 1)
+                    if (sendCallCount <= 3)
                     {
                         foreach (var captured in _capturedRequests)
                         {
@@ -785,9 +807,14 @@ public sealed class DicomCoverageBoostTests
                                 nCreate.OnResponseReceived?.Invoke(nCreate,
                                     new DicomNCreateResponse(nCreate, DicomStatus.Success));
                             }
+                            else if (captured is DicomNSetRequest nSet)
+                            {
+                                nSet.OnResponseReceived?.Invoke(nSet,
+                                    new DicomNSetResponse(nSet, DicomStatus.Success));
+                            }
                         }
                     }
-                    // Second call: no callback for N-ACTION, actionSucceeded stays false
+                    // Fourth call (N-ACTION): no callback, actionSucceeded stays false
                     return Task.CompletedTask;
                 });
 
