@@ -3,7 +3,7 @@
 | 항목 | 내용 |
 |------|------|
 | **문서 번호** | DOC-042 |
-| **버전** | v2.3 |
+| **버전** | v2.4 |
 | **작성일** | 2026-04-08 |
 | **승인일** | 2026-04-11 |
 | **작성자** | drake.lee |
@@ -29,6 +29,7 @@
 | v2.1 | 2026-04-14 | Minor 개정: IEC 62304 Section 8.2.2 백업/복구 절차 신설 (Section 4.8), Detector SDK 5종 형상항목 반영 (CI-006 갱신), Sprint S05~S07 이력 추가 | drake.lee |
 | v2.2 | 2026-04-15 | Minor 개정: Sprint S08~S09 이력 추가, S07 완료 처리, 문서 상태 관리 v2.1 기준 갱신, S09-R3 QA PASS (90.3%) 반영 | drake.lee |
 | v2.3 | 2026-04-19 | Minor 개정: Sprint S10~S12 이력 추가, S12-R2 QA PASS (100%) 반영, 전체 테스트 3927/3928 PASS | drake.lee |
+| v2.4 | 2026-04-19 | Minor 개정: S13-R1 DISPATCH 발행, STRIDE 보안 통제 M1 Gate 평가 (DOC-047 v1.1), RTM v2.8 동기화, SBOM 변경 없음 (Team A 완료 후 재확인) | RA팀 |
 
 ---
 
@@ -344,6 +345,10 @@ Sprint N 완료 시:
 | S07 | 2026-04-14~ | CMP 백업/복구 절차 추가, RTM Detector SDK 매핑 갱신 | sprint/S07 |
 | S08 | 2026-04-14 | role-matrix v2.0 도입, 아키텍처 테스트 소유권 경계 정의, Converter 분류 규칙 | sprint/S08 |
 | S09 | 2026-04-14~15 | DesignSystemConverters NullReference 수정, Dicom/Dose 커버리지 강화, QA PASS 90.3% | sprint/S09 |
+| S10 | 2026-04-16~17 | MergeView PPT 구현, EfUpdateRepository 커버리지, QA CONDITIONAL PASS 81.3% | sprint/S10 |
+| S11 | 2026-04-17~18 | DICOM C-STORE 에러 처리, AcquisitionView 디자인, QA PASS 99.97% | sprint/S11 |
+| S12 | 2026-04-18~19 | DICOM 안정성, UI 커버리지 개선, QA PASS 100% (3927/3928) | sprint/S12 |
+| S13 | 2026-04-19~ | STRIDE 보안 통제 Tier 1, DICOM Print SCU, RDSR, PACS 비동기 | sprint/S13 |
 
 ---
 
@@ -362,10 +367,10 @@ Sprint N 완료 시:
 
 | 문서 번호 | 문서명 | 현재 버전 | 상태 |
 |----------|--------|----------|------|
-| DOC-042 | 형상관리 계획서 (CMP) | v2.3 | **Approved** |
+| DOC-042 | 형상관리 계획서 (CMP) | v2.4 | **Approved** |
 | DOC-019 | SBOM | v2.0 | Approved |
 | DOC-033 | SOUP Report | v2.1 | Approved |
-| DOC-032 | RTM | v2.3 | Draft (S09-R3 TC 추가 반영 중) |
+| DOC-032 | RTM | v2.8 | Draft (S09-R3 TC 추가 반영 중) |
 | DOC-043 | 빌드 환경 기록 | v1.0 | Approved |
 
 #### 4.7.3 형상 감사 (Configuration Audit)
