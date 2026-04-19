@@ -54,7 +54,7 @@ StudylistView(Slides 5-7) 접근성 개선 + DoseDisplayView 리디자인 검토
 
 | 작업 ID | 설명 | 상태 | 할당자 | 우선순위 | 비고 |
 |---------|------|------|--------|----------|------|
-| T1 | StudylistView 접근성 개선 | NOT_STARTED | Design | P1 | Slides 5-7 |
+| T1 | StudylistView 접근성 개선 | IN_PROGRESS | Design | P1 | Slides 5-7 |
 | T2 | DoseDisplayView 레이아웃 개선 | NOT_STARTED | Design | P2 | 선량 표시 |
 
 ---
