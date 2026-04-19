@@ -29,14 +29,14 @@ S12-R4 정기 유지보수 라운드 - QA IDLE 상태 확인.
 
 | 작업 ID | 설명 | 상태 | 할당자 | 우선순위 | 비고 |
 |---------|------|------|--------|----------|------|
-| N/A | IDLE CONFIRM | NOT_STARTED | QA | P0 | 할 일 없음 |
+| N/A | IDLE CONFIRM | COMPLETED | QA | P0 | 할 일 없음, 상태 확인 완료 |
 
 ---
 
 ## 4. 완료 조건
 
 - [x] IDLE 상태 확인 완료
-- [ ] DISPATCH.md Status 업데이트
+- [x] DISPATCH.md Status 업데이트
 
 ---
 
