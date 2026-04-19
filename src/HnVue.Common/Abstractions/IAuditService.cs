@@ -34,6 +34,17 @@ public interface IAuditService
         CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// Detects and reports specific tampered entries in the audit chain.
+    /// STRIDE 'T' (Tampering) control — provides granular evidence for incident response.
+    /// </summary>
+    /// <param name="cancellationToken">Token to cancel the asynchronous operation.</param>
+    /// <returns>
+    /// A list of entry IDs where tampering was detected, or an empty list if the chain is intact.
+    /// </returns>
+    Task<Result<IReadOnlyList<string>>> DetectTamperedEntriesAsync(
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// Retrieves audit log entries matching the provided filter criteria.
     /// </summary>
     /// <param name="filter">Query parameters to restrict the result set.</param>
