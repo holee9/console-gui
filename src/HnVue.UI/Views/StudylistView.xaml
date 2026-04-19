@@ -119,14 +119,14 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Column="0" Background="{DynamicResource HnVue.Semantic.Surface.Panel}" BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}" BorderThickness="1" CornerRadius="8" Padding="16">
+            <Border Grid.Column="0" Background="{DynamicResource HnVue.Semantic.Surface.Panel}" BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}" BorderThickness="1" CornerRadius="8" Padding="16" AutomationProperties.Name="Status overview panel" AutomationProperties.HelpText="Study statistics and selected study details">
                 <StackPanel>
                     <Border Background="{DynamicResource HnVue.Component.SectionBadge.Bg}" CornerRadius="4" Padding="10,4" HorizontalAlignment="Left">
                         <TextBlock Text="Studylist" Style="{StaticResource HnVue.SectionBadgeText}"/>
                     </Border>
                     <TextBlock Margin="0,12,0,4" Text="Status Overview" Style="{StaticResource HnVue.DetailHeaderText}"/>
                     <TextBlock Text="Slide 5-7 status summary within the studylist scope." Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}" FontFamily="{DynamicResource HnVue.Core.FontFamily}" FontSize="11" TextWrapping="Wrap"/>
-                    <Grid Margin="0,16,0,16">
+                    <Grid Margin="0,16,0,16" AutomationProperties.Name="Study statistics">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
@@ -144,23 +144,23 @@
                                 <Setter Property="Margin" Value="0,0,0,8"/>
                             </Style>
                         </Grid.Resources>
-                        <Border Grid.Row="0"><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock Text="All Studies" Foreground="{DynamicResource HnVue.Semantic.Text.Primary}" FontFamily="{DynamicResource HnVue.Core.FontFamily}"/><TextBlock Grid.Column="1" Text="{Binding Studies.Count}" Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}" FontFamily="{DynamicResource HnVue.Core.FontFamily}" FontSize="11"/></Grid></Border>
-                        <Border Grid.Row="1"><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock Text="Completed" Foreground="{DynamicResource HnVue.Semantic.Status.Safe}" FontFamily="{DynamicResource HnVue.Core.FontFamily}"/><TextBlock Grid.Column="1" Text="{Binding CompletedCount, FallbackValue=0}" Foreground="{DynamicResource HnVue.Semantic.Status.Safe}" FontFamily="{DynamicResource HnVue.Core.FontFamily}" FontSize="11"/></Grid></Border>
-                        <Border Grid.Row="2"><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock Text="In Progress" Foreground="{DynamicResource HnVue.Semantic.Brand.Accent}" FontFamily="{DynamicResource HnVue.Core.FontFamily}"/><TextBlock Grid.Column="1" Text="{Binding InProgressCount, FallbackValue=0}" Foreground="{DynamicResource HnVue.Semantic.Brand.Accent}" FontFamily="{DynamicResource HnVue.Core.FontFamily}" FontSize="11"/></Grid></Border>
-                        <Border Grid.Row="3"><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock Text="Cancelled" Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}" FontFamily="{DynamicResource HnVue.Core.FontFamily}"/><TextBlock Grid.Column="1" Text="{Binding CancelledCount, FallbackValue=0}" Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}" FontFamily="{DynamicResource HnVue.Core.FontFamily}" FontSize="11"/></Grid></Border>
-                        <Border Grid.Row="4"><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock Text="Reported" Foreground="{DynamicResource HnVue.Semantic.Status.Reported}" FontFamily="{DynamicResource HnVue.Core.FontFamily}"/><TextBlock Grid.Column="1" Text="{Binding ReportedCount, FallbackValue=0}" Foreground="{DynamicResource HnVue.Semantic.Status.Reported}" FontFamily="{DynamicResource HnVue.Core.FontFamily}" FontSize="11"/></Grid></Border>
+                        <Border Grid.Row="0"><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock Text="All Studies" Foreground="{DynamicResource HnVue.Semantic.Text.Primary}" FontFamily="{DynamicResource HnVue.Core.FontFamily}" AutomationProperties.Name="All studies count"/><TextBlock Grid.Column="1" Text="{Binding Studies.Count}" Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}" FontFamily="{DynamicResource HnVue.Core.FontFamily}" FontSize="11" AutomationProperties.Name="Total count"/></Grid></Border>
+                        <Border Grid.Row="1"><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock Text="Completed" Foreground="{DynamicResource HnVue.Semantic.Status.Safe}" FontFamily="{DynamicResource HnVue.Core.FontFamily}" AutomationProperties.Name="Completed studies count"/><TextBlock Grid.Column="1" Text="{Binding CompletedCount, FallbackValue=0}" Foreground="{DynamicResource HnVue.Semantic.Status.Safe}" FontFamily="{DynamicResource HnVue.Core.FontFamily}" FontSize="11" AutomationProperties.Name="Completed count"/></Grid></Border>
+                        <Border Grid.Row="2"><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock Text="In Progress" Foreground="{DynamicResource HnVue.Semantic.Brand.Accent}" FontFamily="{DynamicResource HnVue.Core.FontFamily}" AutomationProperties.Name="In progress studies count"/><TextBlock Grid.Column="1" Text="{Binding InProgressCount, FallbackValue=0}" Foreground="{DynamicResource HnVue.Semantic.Brand.Accent}" FontFamily="{DynamicResource HnVue.Core.FontFamily}" FontSize="11" AutomationProperties.Name="In progress count"/></Grid></Border>
+                        <Border Grid.Row="3"><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock Text="Cancelled" Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}" FontFamily="{DynamicResource HnVue.Core.FontFamily}" AutomationProperties.Name="Cancelled studies count"/><TextBlock Grid.Column="1" Text="{Binding CancelledCount, FallbackValue=0}" Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}" FontFamily="{DynamicResource HnVue.Core.FontFamily}" FontSize="11" AutomationProperties.Name="Cancelled count"/></Grid></Border>
+                        <Border Grid.Row="4"><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock Text="Reported" Foreground="{DynamicResource HnVue.Semantic.Status.Reported}" FontFamily="{DynamicResource HnVue.Core.FontFamily}" AutomationProperties.Name="Reported studies count"/><TextBlock Grid.Column="1" Text="{Binding ReportedCount, FallbackValue=0}" Foreground="{DynamicResource HnVue.Semantic.Status.Reported}" FontFamily="{DynamicResource HnVue.Core.FontFamily}" FontSize="11" AutomationProperties.Name="Reported count"/></Grid></Border>
                     </Grid>
                     <TextBlock Text="Selected Study" Style="{StaticResource HnVue.DetailHeaderText}"/>
-                    <Border Margin="0,12,0,0" Background="{DynamicResource HnVue.Semantic.Surface.Card}" BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}" BorderThickness="1" CornerRadius="6" Padding="12">
+                    <Border Margin="0,12,0,0" Background="{DynamicResource HnVue.Semantic.Surface.Card}" BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}" BorderThickness="1" CornerRadius="6" Padding="12" AutomationProperties.Name="Selected study details" AutomationProperties.HelpText="Detailed information about the currently selected study">
                         <StackPanel>
                             <TextBlock Text="PATIENT ID" Style="{StaticResource HnVue.UppercaseLabel}"/>
-                            <TextBlock Margin="0,4,0,10" Foreground="{DynamicResource HnVue.Semantic.Text.Primary}" FontFamily="{DynamicResource HnVue.Core.FontFamily}" FontSize="12" Text="{Binding SelectedStudy.PatientId, TargetNullValue=No study selected}"/>
+                            <TextBlock Margin="0,4,0,10" Foreground="{DynamicResource HnVue.Semantic.Text.Primary}" FontFamily="{DynamicResource HnVue.Core.FontFamily}" FontSize="12" Text="{Binding SelectedStudy.PatientId, TargetNullValue=No study selected}" AutomationProperties.Name="Patient ID"/>
                             <TextBlock Text="ACCESSION NO" Style="{StaticResource HnVue.UppercaseLabel}"/>
-                            <TextBlock Margin="0,4,0,10" Foreground="{DynamicResource HnVue.Semantic.Text.Primary}" FontFamily="{DynamicResource HnVue.Core.FontFamily}" FontSize="12" Text="{Binding SelectedStudy.AccessionNumber, TargetNullValue=-}"/>
+                            <TextBlock Margin="0,4,0,10" Foreground="{DynamicResource HnVue.Semantic.Text.Primary}" FontFamily="{DynamicResource HnVue.Core.FontFamily}" FontSize="12" Text="{Binding SelectedStudy.AccessionNumber, TargetNullValue=-}" AutomationProperties.Name="Accession number"/>
                             <TextBlock Text="EXAM DATE" Style="{StaticResource HnVue.UppercaseLabel}"/>
-                            <TextBlock Margin="0,4,0,10" Foreground="{DynamicResource HnVue.Semantic.Text.Primary}" FontFamily="{DynamicResource HnVue.Core.FontFamily}" FontSize="12" Text="{Binding SelectedStudy.StudyDate, StringFormat={}{0:yyyy-MM-dd HH:mm}, TargetNullValue=-}"/>
+                            <TextBlock Margin="0,4,0,10" Foreground="{DynamicResource HnVue.Semantic.Text.Primary}" FontFamily="{DynamicResource HnVue.Core.FontFamily}" FontSize="12" Text="{Binding SelectedStudy.StudyDate, StringFormat={}{0:yyyy-MM-dd HH:mm}, TargetNullValue=-}" AutomationProperties.Name="Exam date"/>
                             <TextBlock Text="DESCRIPTION" Style="{StaticResource HnVue.UppercaseLabel}"/>
-                            <TextBlock Margin="0,4,0,0" Foreground="{DynamicResource HnVue.Semantic.Text.Primary}" FontFamily="{DynamicResource HnVue.Core.FontFamily}" FontSize="12" Text="{Binding SelectedStudy.Description, TargetNullValue=Select a study row to review details.}" TextWrapping="Wrap"/>
+                            <TextBlock Margin="0,4,0,0" Foreground="{DynamicResource HnVue.Semantic.Text.Primary}" FontFamily="{DynamicResource HnVue.Core.FontFamily}" FontSize="12" Text="{Binding SelectedStudy.Description, TargetNullValue=Select a study row to review details.}" TextWrapping="Wrap" AutomationProperties.Name="Study description"/>
                         </StackPanel>
                     </Border>
                 </StackPanel>
@@ -210,6 +210,7 @@
                                 <Setter Property="BorderThickness" Value="0"/>
                                 <Setter Property="Padding" Value="12,0"/>
                                 <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                <Setter Property="AutomationProperties.Name" Value="{Binding Column.Header, RelativeSource={RelativeSource AncestorType=DataGridColumnHeader}}"/>
                             </Style>
                         </DataGrid.CellStyle>
                         <DataGrid.Columns>
@@ -230,17 +231,17 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" VerticalAlignment="Center" Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}" FontFamily="{DynamicResource HnVue.Core.FontFamily}" FontSize="11"><Run Text="Search: "/><Run Text="{Binding SearchQuery, TargetNullValue=Any study}"/><Run Text="  |  PACS: "/><Run Text="{Binding SelectedPacsServer, TargetNullValue=LOCAL}"/></TextBlock>
-                <TextBlock Grid.Column="0" VerticalAlignment="Center" Foreground="{DynamicResource HnVue.Semantic.Status.Emergency}" FontFamily="{DynamicResource HnVue.Core.FontFamily}" FontSize="11" Text="{Binding ErrorMessage}" Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}"/>
-                <TextBlock Grid.Column="1" VerticalAlignment="Center" Foreground="{DynamicResource HnVue.Component.Label.Muted}" FontFamily="{DynamicResource HnVue.Core.FontFamily}" FontSize="11"><Run Text="{Binding Studies.Count}"/><Run Text=" / active filter"/></TextBlock>
+                <TextBlock Grid.Column="0" VerticalAlignment="Center" Foreground="{DynamicResource HnVue.Semantic.Text.Secondary}" FontFamily="{DynamicResource HnVue.Core.FontFamily}" FontSize="11" AutomationProperties.Name="Search status" AutomationProperties.HelpText="Current search filter and PACS server"><Run Text="Search: "/><Run Text="{Binding SearchQuery, TargetNullValue=Any study}"/><Run Text="  |  PACS: "/><Run Text="{Binding SelectedPacsServer, TargetNullValue=LOCAL}"/></TextBlock>
+                <TextBlock Grid.Column="0" VerticalAlignment="Center" Foreground="{DynamicResource HnVue.Semantic.Status.Emergency}" FontFamily="{DynamicResource HnVue.Core.FontFamily}" FontSize="11" Text="{Binding ErrorMessage}" Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}" AutomationProperties.Name="Error message" AutomationProperties.LiveSetting="Assertive"/>
+                <TextBlock Grid.Column="1" VerticalAlignment="Center" Foreground="{DynamicResource HnVue.Component.Label.Muted}" FontFamily="{DynamicResource HnVue.Core.FontFamily}" FontSize="11" AutomationProperties.Name="Study count"><Run Text="{Binding Studies.Count}"/><Run Text=" / active filter"/></TextBlock>
             </Grid>
         </Border>
 
-        <Border Grid.Row="2" Background="{DynamicResource HnVue.Semantic.Surface.Page}" CornerRadius="8" Margin="16,0,16,16" Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}">
+        <Border Grid.Row="2" Background="{DynamicResource HnVue.Semantic.Surface.Page}" CornerRadius="8" Margin="16,0,16,16" Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}" AutomationProperties.Name="Loading studies" AutomationProperties.LiveSetting="Polite">
             <Grid>
                 <Border Width="220" Height="88" CornerRadius="8" Background="{DynamicResource HnVue.Semantic.Surface.Panel}" BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}" BorderThickness="1" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                        <ProgressBar Width="160" Height="4" IsIndeterminate="True" Foreground="{DynamicResource HnVue.Semantic.Brand.Accent}" Background="{DynamicResource HnVue.Semantic.Surface.Card}"/>
+                        <ProgressBar Width="160" Height="4" IsIndeterminate="True" Foreground="{DynamicResource HnVue.Semantic.Brand.Accent}" Background="{DynamicResource HnVue.Semantic.Surface.Card}" AutomationProperties.Name="Loading progress"/>
                         <TextBlock Margin="0,12,0,0" Text="Loading studies..." Foreground="{DynamicResource HnVue.Semantic.Text.Primary}" FontFamily="{DynamicResource HnVue.Core.FontFamily}" FontSize="12" HorizontalAlignment="Center"/>
                     </StackPanel>
                 </Border>
