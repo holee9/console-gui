@@ -2,7 +2,7 @@
 
 > **Sprint**: S13 | **Round**: 1 | **팀**: Team B (Medical Imaging)
 > **발행일**: 2026-04-19
-> **상태**: NOT_STARTED
+> **상태**: IN_PROGRESS
 
 ---
 
@@ -54,10 +54,10 @@ DICOM 프로토콜 완성 + 선량 인터락 보강 + PACS 파이프라인.
 
 | 작업 ID | 설명 | 상태 | 할당자 | 우선순위 | 비고 |
 |---------|------|------|--------|----------|------|
-| T1 | fo-dicom Print SCU | NOT_STARTED | Team B | P1 | DICOM 프로토콜 완성 |
-| T2 | DICOM RDSR | NOT_STARTED | Team B | P2 | 선량 관리 |
-| T3 | PACS 비동기 전송 | NOT_STARTED | Team B | P1 | 30초 이내 목표 |
-| T4 | 선량 인터락 보강 | NOT_STARTED | Team B | P0 | Safety-Critical |
+| T1 | fo-dicom Print SCU | IN_PROGRESS | Team B | P1 | DICOM 프로토콜 완성 |
+| T2 | DICOM RDSR | IN_PROGRESS | Team B | P2 | 선량 관리 |
+| T3 | PACS 비동기 전송 | IN_PROGRESS | Team B | P1 | 30초 이내 목표 |
+| T4 | 선량 인터락 보강 | IN_PROGRESS | Team B | P0 | Safety-Critical |
 
 ---
 
