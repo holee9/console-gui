@@ -10,14 +10,14 @@
 
 | 팀 | 현재 DISPATCH 파일 | 상태 | 스케줄 Phase | 비고 |
 |----|-------------------|------|-------------|------|
-| **Team A** | DISPATCH-S13-R2-TEAM-A.md | **ACTIVE** | Phase 1 | IN_PROGRESS — Update + SystemAdmin 테스트 |
-| **Team B** | DISPATCH-S13-R2-TEAM-B.md | **ACTIVE** | Phase 1 | IN_PROGRESS — Imaging + CDBurning 테스트 |
-| **Coordinator** | DISPATCH-S13-R2-COORDINATOR.md | **QUEUED** | Phase 2 | A+B 완료 후 시작 |
+| **Team A** | - | **MERGED** | Phase 1 | 78 tests (Update 40 + SystemAdmin 38) |
+| **Team B** | - | **MERGED** | Phase 1 | 208 tests (Imaging 143 + CDBurning 65) |
+| **Coordinator** | DISPATCH-S13-R2-COORDINATOR.md | **ACTIVE** | Phase 2 | Phase 1 완료 → Phase 2 오픈 |
 | **Design** | - | **MERGED** | 별도 | StudylistView 접근성 + DoseDisplayView 개선 |
 | **QA** | DISPATCH-S13-R2-QA.md | **QUEUED** | Phase 3 | Coordinator 완료 후 시작 |
-| **RA** | DISPATCH-S13-R2-RA.md | **QUEUED** | Phase 4 | QA 완료 후 시작 |
+| **RA** | DISPATCH-S13-R2-RA.md | **MERGED** | Phase 4 | 이미 MERGED |
 
-**→ Phase 1 진행 중 / Design MERGED 완료**
+**→ Phase 1 완료 / Phase 2(Coordinator) 오픈 / Design+RA MERGED**
 
 ---
 
@@ -199,11 +199,22 @@ DISPATCH 읽기 직후    → NOT_STARTED → IN_PROGRESS (즉시 push)
 ```
 1. 기존 ACTIVE 파일 → completed/ 이동
 2. 신규 DISPATCH 파일 생성 (S{N}-R{N}-{team}.md)
+   - Status 테이블에 '타임스탬프' 열 포함 (team-common.md 규칙)
 3. 이 표 업데이트 (Phase/QUEUED/ACTIVE 지정)
 4. Phase 1 팀 + Design만 ACTIVE, 나머지 QUEUED
 5. git add .moai/dispatches/ && git commit && git push origin main
 6. CC 모니터링 루프 즉시 시작 (10분 간격)
 ```
+
+### DISPATCH Status 테이블 표준 형식 (S14-R1~)
+
+```markdown
+| 작업 ID | 설명 | 상태 | 할당자 | 우선순위 | 타임스탬프 | 비고 |
+|---------|------|------|--------|----------|-----------|------|
+| T1 | ... | NOT_STARTED | Team X | P1 | _ | ... |
+```
+
+팀이 Status 전환 시 타임스탬프 열에 ISO-8601 기록 (team-common.md 의무).
 
 ---
 
