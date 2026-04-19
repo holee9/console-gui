@@ -1,6 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 using HnVue.Common.Abstractions;
+using HnVue.Common.Results;
 
 namespace HnVue.Security;
 
@@ -8,6 +9,15 @@ namespace HnVue.Security;
 /// AES-256-GCM encryption service for PHI column-level encryption (SWR-CS-080).
 /// Key must be 32 bytes (256 bits). Each encryption generates a random 12-byte nonce.
 /// Output format: base64(nonce + tag + ciphertext)
+///
+/// SQLCipher integration notes:
+/// - SQLCipher default uses AES-256-CBC; this service provides column-level GCM on top.
+/// - For SQLCipher PRAGMA optimization, set in DbContext configuration:
+///   PRAGMA cipher = 'aes-256-gcm'; PRAGMA cipher_page_size = 4096;
+///   PRAGMA kdf_iter = 256000; PRAGMA cipher_hmac_algorithm = HMAC_SHA512;
+/// - GCM tag verification is built into AesGcm.Decrypt (throws on tag mismatch).
+/// - Existing data migration: CBC-encrypted columns require re-encryption with GCM.
+///   See Migration_GCM_ReEncrypt pattern in HnVue.Data migrations.
 /// </summary>
 public sealed class PhiEncryptionService : IPhiEncryptionService
 {
@@ -72,5 +82,52 @@ public sealed class PhiEncryptionService : IPhiEncryptionService
         aes.Decrypt(nonce, encryptedBytes, tag, decryptedBytes);
 
         return Encoding.UTF8.GetString(decryptedBytes);
+    }
+
+    /// <inheritdoc/>
+    public Result VerifyTag(string ciphertext)
+    {
+        if (string.IsNullOrEmpty(ciphertext))
+            return Result.Success();
+
+        byte[] data;
+        try
+        {
+            data = Convert.FromBase64String(ciphertext);
+        }
+        catch (FormatException)
+        {
+            return Result.Failure(ErrorCode.EncryptionFailed, "Invalid base64 ciphertext format.");
+        }
+
+        var nonceSize = AesGcm.NonceByteSizes.MaxSize;
+        var tagSize = AesGcm.TagByteSizes.MaxSize;
+
+        if (data.Length < nonceSize + tagSize)
+            return Result.Failure(ErrorCode.EncryptionFailed, "Ciphertext too short for GCM format.");
+
+        var nonce = data[..nonceSize];
+        var tag = data[nonceSize..(nonceSize + tagSize)];
+        var encryptedBytes = data[(nonceSize + tagSize)..];
+
+        try
+        {
+            var decryptedBytes = new byte[encryptedBytes.Length];
+            using var aes = new AesGcm(_key, AesGcm.TagByteSizes.MaxSize);
+            aes.Decrypt(nonce, encryptedBytes, tag, decryptedBytes);
+            return Result.Success();
+        }
+        catch (AuthenticationTagMismatchException)
+        {
+            return Result.Failure(ErrorCode.EncryptionFailed, "GCM authentication tag verification failed. Data may be tampered.");
+        }
+    }
+
+    /// <inheritdoc/>
+    public string GenerateKey()
+    {
+        var key = new byte[32];
+        RandomNumberGenerator.Fill(key);
+        return Convert.ToBase64String(key);
     }
 }

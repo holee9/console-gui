@@ -255,6 +255,20 @@ public sealed class SecurityService(
         return Result.Failure(ErrorCode.AuthenticationFailed, "Invalid Quick PIN.");
     }
 
+    /// <inheritdoc/>
+    public async Task<Result> ReauthenticateAsync(
+        string userId,
+        string pin,
+        CancellationToken cancellationToken = default)
+    {
+        var pinResult = await VerifyQuickPinAsync(userId, pin, cancellationToken).ConfigureAwait(false);
+        if (pinResult.IsFailure)
+            return Result.Failure(ErrorCode.ReauthenticationRequired, "Re-authentication failed. Please verify your Quick PIN.");
+
+        await WriteAuditInternalAsync(userId, "REAUTHENTICATED", null, cancellationToken).ConfigureAwait(false);
+        return Result.Success();
+    }
+
     // ── Internal helpers ──────────────────────────────────────────────────────────
 
     private async Task WriteAuditInternalAsync(

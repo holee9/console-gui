@@ -111,4 +111,20 @@ public interface ISecurityService
         string userId,
         string pin,
         CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Re-authenticates the current user via Quick PIN for high-privilege operations.
+    /// STRIDE 'S' (Spoofing) control — prevents session hijacking on sensitive actions.
+    /// </summary>
+    /// <param name="userId">Unique identifier of the user to re-authenticate.</param>
+    /// <param name="pin">Quick PIN for identity confirmation.</param>
+    /// <param name="cancellationToken">Token to cancel the asynchronous operation.</param>
+    /// <returns>
+    /// Success if re-authentication passes; failure with
+    /// <see cref="ErrorCode.ReauthenticationRequired"/> if the PIN is invalid.
+    /// </returns>
+    Task<Result> ReauthenticateAsync(
+        string userId,
+        string pin,
+        CancellationToken cancellationToken = default);
 }
