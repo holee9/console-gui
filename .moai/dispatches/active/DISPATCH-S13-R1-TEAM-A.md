@@ -2,7 +2,7 @@
 
 > **Sprint**: S13 | **Round**: 1 | **팀**: Team A (Infrastructure)
 > **발행일**: 2026-04-19
-> **상태**: NOT_STARTED
+> **상태**: IN_PROGRESS
 
 ---
 
