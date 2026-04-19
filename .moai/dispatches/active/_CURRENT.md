@@ -12,12 +12,12 @@
 |----|-------------------|------|------|
 | **Team A** | - | **MERGED** | S13-R1 COMPLETED — Tier 1 보안 통제 (23 files, 998 LOC) |
 | **Team B** | - | **MERGED** | Print SCU + RDSR + PACS 비동기 + 선량 인터락 |
-| **Coordinator** | DISPATCH-S13-R1-COORDINATOR.md | **ACTIVE** | ViewModel TODO + 통합테스트 + UI.Contracts |
-| **Design** | DISPATCH-S13-R1-DESIGN.md | **ACTIVE** | AddPatientProcedureView(Slide 8) + WorkflowView(Slides 9-11) |
-| **QA** | - | **MERGED** | S13-R1 QA Gate PASS | 빌드/테스트/커버리지 검증 + 아키텍처 테스트 |
+| **Coordinator** | - | **MERGED** | ViewModel TODO 해결 + 통합테스트 보강 + DI 등록 검증 |
+| **Design** | - | **MERGED** | AddPatientProcedureView(Slide 8) + WorkflowView(Slides 9-11) 리디자인 |
+| **QA** | - | **MERGED** | S13-R1 QA Gate PASS — 빌드/테스트/커버리지 검증 + 아키텍처 테스트 |
 | **RA** | - | **MERGED** | S13-R1 COMPLETED — STRIDE + RTM v2.8 + CMP v2.4 |
 
-**→ 전팀 ACTIVE / 2026-04-19 발행**
+**→ 전팀 MERGED / S13-R1 완료**
 
 ---
 
@@ -146,7 +146,7 @@ DISPATCH 읽기 직후    → NOT_STARTED → IN_PROGRESS (즉시 push)
 | 2026-04-18~19 | S12 R1~R2 | ALL MERGED, QA PASS (100%) |
 | 2026-04-19 | S12 R3 | ALL MERGED, QA PASS (100%) |
 | 2026-04-19 | S12 R4 | ALL MERGED (IDLE CONFIRM) |
-| **2026-04-19** | **S13 R1** | **ACTIVE** |
+| **2026-04-19** | **S13 R1** | **ALL MERGED** — Coordinator + Design 최종 머지 |
 
 ---
 
