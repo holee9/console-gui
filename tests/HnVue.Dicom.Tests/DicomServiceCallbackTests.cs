@@ -370,6 +370,11 @@ public sealed class DicomServiceCallbackTests
                     nCreate.OnResponseReceived?.Invoke(nCreate,
                         new DicomNCreateResponse(nCreate, DicomStatus.Success));
                 }
+                else if (req is DicomNSetRequest nSet)
+                {
+                    nSet.OnResponseReceived?.Invoke(nSet,
+                        new DicomNSetResponse(nSet, DicomStatus.Success));
+                }
                 else if (req is DicomNActionRequest nAction)
                 {
                     nAction.OnResponseReceived?.Invoke(nAction,

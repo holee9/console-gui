@@ -17,9 +17,12 @@ namespace HnVue.Dose;
 ///
 /// Interlock thresholds (multiples of DRL):
 ///   Allow     → DAP &lt;= 1.0 × DRL
-///   Warn      → DAP &lt;= 2.0 × DRL
+///   Warn      → DAP &lt;= 2.0 × DRL (sub-divided into WarnLow ≤ 1.5×DRL and WarnHigh ≤ 2.0×DRL)
 ///   Block     → DAP &lt;= 5.0 × DRL
 ///   Emergency → DAP &gt;  5.0 × DRL
+///
+/// Cumulative DAP tracking:
+///   If cumulative DAP for patient+body part within 24h exceeds 3×DRL, force Block level.
 ///
 /// IEC 62304 Class B — safety-critical radiation protection module.
 /// </remarks>
@@ -27,12 +30,15 @@ public sealed class DoseService : IDoseService
 {
     // ── Constants ─────────────────────────────────────────────────────────────
     private const double DefaultDrl = 20.0; // mGy·cm² fallback for unlisted body parts
+    private const double WarnLowMultiplier = 1.5;
     private const double WarnMultiplier = 2.0;
     private const double BlockMultiplier = 5.0;
+    private const double CumulativeBlockMultiplier = 3.0;
     private const double DefaultBackscatterFactor = 1.35;
     private const double MinimumFieldAreaCm2 = 1.0;  // Prevent division by zero
     private const double DefaultEiTarget = 1500;
     private const double DapNormalisationFactor = 500_000.0;
+    private const double DefaultCumulativeWindowHours = 24.0;
 
     // ── Dose Reference Levels (mGy·cm²) ──────────────────────────────────────
     // Values based on European DRL guidelines (EC RP 185)
@@ -63,6 +69,21 @@ public sealed class DoseService : IDoseService
         };
 
     private readonly IDoseRepository _doseRepository;
+
+    // ── Interlock state ──────────────────────────────────────────────────────
+    // @MX:NOTE _emergencySafetyFlag tracks system-wide safety state; once set, requires physical reset to clear
+    private volatile bool _emergencySafetyFlag;
+
+    /// <summary>
+    /// Gets a value indicating whether the emergency safety interlock is currently active.
+    /// When true, all exposures are blocked until physical reset is performed.
+    /// </summary>
+    public bool IsEmergencySafetyActive => _emergencySafetyFlag;
+
+    /// <summary>
+    /// Event raised when a dose interlock state transition occurs.
+    /// </summary>
+    public event EventHandler<DoseInterlockEventArgs>? InterlockTriggered;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="DoseService"/> class.
@@ -112,20 +133,42 @@ public sealed class DoseService : IDoseService
 
         var drl = GetDrl(parameters.BodyPart);
         var level = ClassifyDose(estimatedDap, drl);
+
+        // ── Cumulative DAP check ─────────────────────────────────────────────
+        var cumulativeDap = 0.0;
+        if (!string.IsNullOrEmpty(parameters.PatientId))
+        {
+            cumulativeDap = await GetCumulativeDapInternalAsync(
+                parameters.PatientId, parameters.BodyPart, DefaultCumulativeWindowHours, cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        // If cumulative DAP exceeds 3×DRL, force Block even if single exposure would be Allow.
+        if (level is DoseValidationLevel.Allow or DoseValidationLevel.Warn
+            && cumulativeDap + estimatedDap > drl * CumulativeBlockMultiplier)
+        {
+            level = DoseValidationLevel.Block;
+        }
+
+        // ── Warn level segmentation ──────────────────────────────────────────
+        var warnLevel = ClassifyWarnLevel(estimatedDap, drl, level);
+
         var isAllowed = level is DoseValidationLevel.Allow or DoseValidationLevel.Warn;
 
         string? message = level switch
         {
             DoseValidationLevel.Allow     => null,
-            DoseValidationLevel.Warn      => $"Estimated DAP {estimatedDap:F1} mGy·cm² exceeds DRL ({drl} mGy·cm²). Proceed with caution.",
-            DoseValidationLevel.Block     => $"Estimated DAP {estimatedDap:F1} mGy·cm² exceeds block threshold ({drl * BlockMultiplier:F1} mGy·cm²). Exposure blocked.",
+            DoseValidationLevel.Warn      => warnLevel == DoseWarnLevel.High
+                ? $"Estimated DAP {estimatedDap:F1} mGy·cm² exceeds DRL ({drl} mGy·cm²). HIGH warning zone ({drl * WarnLowMultiplier:F1}-{drl * WarnMultiplier:F1} mGy·cm²). Acknowledgment required. Cumulative DAP: {cumulativeDap:F1} mGy·cm²."
+                : $"Estimated DAP {estimatedDap:F1} mGy·cm² exceeds DRL ({drl} mGy·cm²). Proceed with caution. Cumulative DAP: {cumulativeDap:F1} mGy·cm².",
+            DoseValidationLevel.Block     => $"Estimated DAP {estimatedDap:F1} mGy·cm² exceeds block threshold ({drl * BlockMultiplier:F1} mGy·cm²). Exposure blocked. Cumulative DAP: {cumulativeDap:F1} mGy·cm².",
             DoseValidationLevel.Emergency => $"Estimated DAP {estimatedDap:F1} mGy·cm² exceeds EMERGENCY threshold. Safety interlock activated.",
             _                              => null,
         };
 
         var validationResult = new DoseValidationResult(
-            isAllowed, level, message, estimatedDap, estimatedEsd, exposureIndex);
-        return await Task.FromResult(Result.Success(validationResult)).ConfigureAwait(false);
+            isAllowed, level, message, estimatedDap, estimatedEsd, exposureIndex, warnLevel, cumulativeDap);
+        return Result.Success(validationResult);
     }
 
     /// <inheritdoc/>
@@ -214,6 +257,58 @@ public sealed class DoseService : IDoseService
     }
 
     /// <inheritdoc/>
+    public async Task<double> GetCumulativeDapAsync(
+        string patientId,
+        string bodyPart,
+        double windowHours = DefaultCumulativeWindowHours,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(patientId);
+
+        return await GetCumulativeDapInternalAsync(patientId, bodyPart, windowHours, cancellationToken)
+            .ConfigureAwait(false);
+    }
+
+    /// <inheritdoc/>
+    // @MX:ANCHOR TriggerInterlockAsync - @MX:REASON: Safety-critical interlock state transition, Emergency sets system-wide safety flag requiring physical reset
+    public Task<Result> TriggerInterlockAsync(
+        DoseValidationLevel level,
+        string studyInstanceUid,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(studyInstanceUid);
+
+        if (level is not (DoseValidationLevel.Block or DoseValidationLevel.Emergency))
+        {
+            return Task.FromResult(Result.Failure(
+                ErrorCode.ValidationFailed,
+                $"TriggerInterlockAsync is only valid for Block or Emergency levels. Received: {level}."));
+        }
+
+        string reason;
+        bool requiresPhysicalReset;
+
+        if (level == DoseValidationLevel.Emergency)
+        {
+            _emergencySafetyFlag = true;
+            reason = $"EMERGENCY interlock activated for study {studyInstanceUid}. System-wide safety flag set. Physical reset required.";
+            requiresPhysicalReset = true;
+        }
+        else
+        {
+            reason = $"Block interlock recorded for study {studyInstanceUid}. Exposure attempt blocked. Returning to safe state.";
+            requiresPhysicalReset = false;
+        }
+
+        var eventArgs = new DoseInterlockEventArgs(
+            level, studyInstanceUid, DateTimeOffset.UtcNow, reason, requiresPhysicalReset);
+
+        InterlockTriggered?.Invoke(this, eventArgs);
+
+        return Task.FromResult(Result.Success());
+    }
+
+    /// <inheritdoc/>
     // @MX:ANCHOR CalculateEsd - @MX:REASON: Safety-critical ESD calculation per IEC 60601-2-54, used for patient skin dose tracking, required for regulatory compliance
     public double CalculateEsd(double dap, double fieldAreaCm2, double backscatterFactor = DefaultBackscatterFactor)
     {
@@ -274,6 +369,56 @@ public sealed class DoseService : IDoseService
         }
 
         return DoseValidationLevel.Emergency;
+    }
+
+    // @MX:NOTE ClassifyWarnLevel segments Warn into Low (1x-1.5x DRL) and High (1.5x-2x DRL), returns None for non-Warn levels
+    private static DoseWarnLevel ClassifyWarnLevel(double estimatedDap, double drl, DoseValidationLevel level)
+    {
+        if (level != DoseValidationLevel.Warn)
+        {
+            return DoseWarnLevel.None;
+        }
+
+        if (estimatedDap <= drl * WarnLowMultiplier)
+        {
+            return DoseWarnLevel.Low;
+        }
+
+        return DoseWarnLevel.High;
+    }
+
+    /// <summary>
+    /// Internal cumulative DAP computation. Queries repository for patient+bodyPart records
+    /// within the specified time window and sums DAP values.
+    /// </summary>
+    private async Task<double> GetCumulativeDapInternalAsync(
+        string patientId,
+        string bodyPart,
+        double windowHours,
+        CancellationToken cancellationToken)
+    {
+        var from = DateTimeOffset.UtcNow.AddHours(-windowHours);
+        var until = DateTimeOffset.UtcNow;
+
+        var historyResult = await _doseRepository
+            .GetByPatientAsync(patientId, from, until, cancellationToken)
+            .ConfigureAwait(false);
+
+        if (historyResult.IsFailure || historyResult.Value is null)
+        {
+            return 0.0;
+        }
+
+        var relevantRecords = historyResult.Value
+            .Where(r => string.Equals(r.BodyPart, bodyPart, StringComparison.OrdinalIgnoreCase))
+            .ToList();
+
+        if (relevantRecords.Count == 0)
+        {
+            return 0.0;
+        }
+
+        return relevantRecords.Sum(r => r.DapMgyCm2 > 0.0 ? r.DapMgyCm2 : r.Dap);
     }
 
     private static double GetEiTarget(string bodyPart)

@@ -651,6 +651,11 @@ public sealed class DicomCoverageTargetTests
                     nCreate.OnResponseReceived?.Invoke(nCreate,
                         new DicomNCreateResponse(nCreate, DicomStatus.Success));
                 }
+                else if (req is DicomNSetRequest nSet)
+                {
+                    nSet.OnResponseReceived?.Invoke(nSet,
+                        new DicomNSetResponse(nSet, DicomStatus.Success));
+                }
                 else if (req is DicomNActionRequest nAction)
                 {
                     nAction.OnResponseReceived?.Invoke(nAction,
@@ -733,6 +738,11 @@ public sealed class DicomCoverageTargetTests
                     nCreate.OnResponseReceived?.Invoke(nCreate,
                         new DicomNCreateResponse(nCreate, DicomStatus.Success));
                 }
+                else if (req is DicomNSetRequest nSet)
+                {
+                    nSet.OnResponseReceived?.Invoke(nSet,
+                        new DicomNSetResponse(nSet, DicomStatus.Success));
+                }
                 else if (req is DicomNActionRequest nAction)
                 {
                     nAction.OnResponseReceived?.Invoke(nAction,
@@ -759,15 +769,14 @@ public sealed class DicomCoverageTargetTests
         var tempFile = await CreateTempDicomFileAsync();
         try
         {
-            // First call succeeds (N-CREATE), second call gets no response
+            // First calls succeed (N-CREATE, N-SET), last call (N-ACTION) gets no response
             var callCount = 0;
             _mockClient.SendAsync(Arg.Any<CancellationToken>())
                 .Returns(call =>
                 {
                     callCount++;
-                    if (callCount == 1)
+                    if (callCount <= 3)
                     {
-                        // N-CREATE succeeds
                         foreach (var captured in _capturedRequests)
                         {
                             if (captured is DicomNCreateRequest nCreate)
@@ -775,9 +784,14 @@ public sealed class DicomCoverageTargetTests
                                 nCreate.OnResponseReceived?.Invoke(nCreate,
                                     new DicomNCreateResponse(nCreate, DicomStatus.Success));
                             }
+                            else if (captured is DicomNSetRequest nSet)
+                            {
+                                nSet.OnResponseReceived?.Invoke(nSet,
+                                    new DicomNSetResponse(nSet, DicomStatus.Success));
+                            }
                         }
                     }
-                    // Second call (N-ACTION) — no response, actionSucceeded stays false
+                    // Fourth call (N-ACTION) — no response, actionSucceeded stays false
                     return Task.CompletedTask;
                 });
 
