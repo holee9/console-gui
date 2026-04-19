@@ -62,7 +62,11 @@ public sealed class DicomCoverageBoostTests
         _mockClient.SendAsync(Arg.Any<CancellationToken>())
             .Returns(call =>
             {
-                foreach (var captured in _capturedRequests)
+                // Process only the requests captured for this specific SendAsync call,
+                // then clear so the next SendAsync only processes its own requests.
+                var batch = _capturedRequests.ToList();
+                _capturedRequests.Clear();
+                foreach (var captured in batch)
                 {
                     callback(captured);
                 }
@@ -671,6 +675,16 @@ public sealed class DicomCoverageBoostTests
                 {
                     nAction.OnResponseReceived?.Invoke(nAction,
                         new DicomNActionResponse(nAction, DicomStatus.Success));
+                }
+                else if (req is DicomNGetRequest nGet)
+                {
+                    var statusDataset = new DicomDataset
+                    {
+                        { DicomTag.ExecutionStatus, "DONE" },
+                    };
+                    var response = new DicomNGetResponse(nGet, DicomStatus.Success);
+                    response.Dataset = statusDataset;
+                    nGet.OnResponseReceived?.Invoke(nGet, response);
                 }
             });
 
