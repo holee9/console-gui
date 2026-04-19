@@ -1,8 +1,8 @@
 ---
 document_id: DOC-050
 title: HnVue AI 에이전트 중심 워크트리 개발 운영 전략
-version: 2.0.0
-date: 2026-04-11
+version: 2.1.0
+date: 2026-04-19
 classification: Internal
 author: Software Development Team
 reviewer: Project Manager
