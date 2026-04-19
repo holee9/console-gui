@@ -15,7 +15,7 @@
 | **Coordinator** | DISPATCH-S13-R1-COORDINATOR.md | **ACTIVE** | ViewModel TODO + 통합테스트 + UI.Contracts |
 | **Design** | DISPATCH-S13-R1-DESIGN.md | **ACTIVE** | AddPatientProcedureView(Slide 8) + WorkflowView(Slides 9-11) |
 | **QA** | DISPATCH-S13-R1-QA.md | **ACTIVE** | 빌드/테스트/커버리지 검증 + 아키텍처 테스트 |
-| **RA** | DISPATCH-S13-R1-RA.md | **ACTIVE** | STRIDE 검토(M1 Gate) + RTM 동기화 + CMP 업데이트 |
+| **RA** | - | **MERGED** | S13-R1 COMPLETED — STRIDE + RTM v2.8 + CMP v2.4 |
 
 **→ 전팀 ACTIVE / 2026-04-19 발행**
 
