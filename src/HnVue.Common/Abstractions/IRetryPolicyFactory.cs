@@ -25,4 +25,21 @@ public interface IRetryPolicyFactory
     /// <param name="retryCount">Maximum number of retry attempts after the initial failure. Default is 3.</param>
     /// <returns>A Polly <see cref="IAsyncPolicy"/> configured for database transient errors.</returns>
     IAsyncPolicy CreateDatabaseRetryPolicy(int retryCount = 3);
+
+    /// <summary>
+    /// Creates a retry policy for DICOM network operations with extended timeout.
+    /// Uses longer backoff intervals suitable for medical imaging network characteristics.
+    /// </summary>
+    /// <param name="retryCount">Maximum number of retry attempts. Default is 2.</param>
+    /// <returns>A Polly <see cref="IAsyncPolicy"/> configured for DICOM retry.</returns>
+    IAsyncPolicy CreateDicomRetryPolicy(int retryCount = 2);
+
+    /// <summary>
+    /// Creates a circuit-breaker policy that blocks calls after a threshold of consecutive failures.
+    /// Prevents cascading failures when a dependent service is unavailable.
+    /// </summary>
+    /// <param name="failureThreshold">Number of consecutive failures before opening the circuit. Default is 5.</param>
+    /// <param name="durationOfBreak">Duration to keep the circuit open before attempting recovery. Default is 30 seconds.</param>
+    /// <returns>A Polly <see cref="IAsyncPolicy"/> configured as a circuit breaker.</returns>
+    IAsyncPolicy CreateCircuitBreakerPolicy(int failureThreshold = 5, TimeSpan? durationOfBreak = null);
 }

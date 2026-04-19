@@ -1,6 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 using HnVue.Common.Abstractions;
+using HnVue.Common.Results;
 
 namespace HnVue.Data.Services;
 
@@ -133,5 +134,45 @@ public sealed class AesGcmPhiEncryptionService : IPhiEncryptionService
         aes.Decrypt(nonce, encryptedContent, tag, decryptedBytes);
 
         return Encoding.UTF8.GetString(decryptedBytes);
+    }
+
+    /// <inheritdoc/>
+    public Result VerifyTag(string ciphertext)
+    {
+        if (string.IsNullOrEmpty(ciphertext))
+            return Result.Success();
+
+        try
+        {
+            var data = Convert.FromBase64String(ciphertext);
+
+            if (data.Length < NonceSize + TagSize)
+                return Result.Failure(ErrorCode.EncryptionFailed, "Ciphertext too short for GCM format.");
+
+            var nonce = data[..NonceSize];
+            var encryptedContent = data[NonceSize..(data.Length - TagSize)];
+            var tag = data[(data.Length - TagSize)..];
+
+            var decryptedBytes = new byte[encryptedContent.Length];
+            using var aes = new AesGcm(_key, TagSize);
+            aes.Decrypt(nonce, encryptedContent, tag, decryptedBytes);
+            return Result.Success();
+        }
+        catch (AuthenticationTagMismatchException)
+        {
+            return Result.Failure(ErrorCode.EncryptionFailed, "GCM authentication tag verification failed.");
+        }
+        catch (FormatException)
+        {
+            return Result.Failure(ErrorCode.EncryptionFailed, "Invalid base64 ciphertext format.");
+        }
+    }
+
+    /// <inheritdoc/>
+    public string GenerateKey()
+    {
+        var key = new byte[32];
+        RandomNumberGenerator.Fill(key);
+        return Convert.ToBase64String(key);
     }
 }

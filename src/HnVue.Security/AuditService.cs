@@ -109,6 +109,40 @@ public sealed class AuditService : IAuditService
         return await _auditRepository.QueryAsync(filter, cancellationToken).ConfigureAwait(false);
     }
 
+    /// <inheritdoc/>
+    public async Task<Result<IReadOnlyList<string>>> DetectTamperedEntriesAsync(
+        CancellationToken cancellationToken = default)
+    {
+        var queryResult = await _auditRepository
+            .QueryAsync(new AuditQueryFilter(MaxResults: int.MaxValue), cancellationToken)
+            .ConfigureAwait(false);
+
+        if (queryResult.IsFailure)
+            return Result.Failure<IReadOnlyList<string>>(ErrorCode.IncidentLogFailed, "Failed to retrieve audit log for tampering detection.");
+
+        var entries = queryResult.Value;
+        var tampered = new List<string>();
+        string? expectedPreviousHash = null;
+
+        foreach (var entry in entries)
+        {
+            if (entry.PreviousHash != expectedPreviousHash)
+                tampered.Add(entry.EntryId);
+
+            var payload = BuildPayload(entry.EntryId, entry.Timestamp, entry.UserId, entry.Action, entry.Details, entry.PreviousHash);
+            var recomputedHash = ComputeHmacInternal(payload, _hmacKey);
+            if (!string.Equals(recomputedHash, entry.CurrentHash, StringComparison.Ordinal))
+            {
+                if (!tampered.Contains(entry.EntryId))
+                    tampered.Add(entry.EntryId);
+            }
+
+            expectedPreviousHash = entry.CurrentHash;
+        }
+
+        return Result.Success<IReadOnlyList<string>>(tampered);
+    }
+
     // ── Internal helpers (internal for SecurityService reuse) ─────────────────────
 
     /// <summary>

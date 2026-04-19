@@ -71,6 +71,21 @@ public enum ErrorCode
     /// <summary>Calibration data (Gain/Offset) is missing or expired. SWR-IP-039.</summary>
     CalibrationDataMissing = 2008,
 
+    /// <summary>Rate limit exceeded for the requested operation.</summary>
+    RateLimitExceeded = 2009,
+
+    /// <summary>Re-authentication required for a high-privilege operation.</summary>
+    ReauthenticationRequired = 2010,
+
+    /// <summary>Role elevation attempt was blocked by security policy.</summary>
+    RoleElevationBlocked = 2011,
+
+    /// <summary>Audit log tampering was detected during integrity verification.</summary>
+    AuditTamperingDetected = 2012,
+
+    /// <summary>TLS connection or certificate validation failed.</summary>
+    TlsConnectionFailed = 2013,
+
     // ── Data (3xxx) ────────────────────────────────────────────────────────────
 
     /// <summary>A database-level error occurred.</summary>

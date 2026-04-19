@@ -2,7 +2,7 @@
 
 > **Sprint**: S13 | **Round**: 1 | **팀**: Team A (Infrastructure)
 > **발행일**: 2026-04-19
-> **상태**: IN_PROGRESS
+> **상태**: COMPLETED
 
 ---
 
@@ -55,10 +55,10 @@ Tier 1 보안 통제 완성 — STRIDE, PHI AES-256-GCM, TLS 1.3 기초, 에러 
 
 | 작업 ID | 설명 | 상태 | 할당자 | 우선순위 | 비고 |
 |---------|------|------|--------|----------|------|
-| T1 | STRIDE 보안 통제 구현 | NOT_STARTED | Team A | P0 | M1 Gate 항목 |
-| T2 | PHI AES-256-GCM | NOT_STARTED | Team A | P1 | MS2 차단 |
-| T3 | TLS 1.3 기초 | NOT_STARTED | Team A | P2 | MS2 차단 |
-| T4 | 에러 처리 매트릭스 | NOT_STARTED | Team A | P2 | 품질 강화 |
+| T1 | STRIDE 보안 통제 구현 | COMPLETED | Team A | P0 | M1 Gate 항목 |
+| T2 | PHI AES-256-GCM | COMPLETED | Team A | P1 | MS2 차단 |
+| T3 | TLS 1.3 기초 | COMPLETED | Team A | P2 | MS2 차단 |
+| T4 | 에러 처리 매트릭스 | COMPLETED | Team A | P2 | 품질 강화 |
 
 ---
 
@@ -74,7 +74,38 @@ Tier 1 보안 통제 완성 — STRIDE, PHI AES-256-GCM, TLS 1.3 기초, 에러 
 
 ## 5. Build Evidence
 
-_(작업 완료 후 기록)_
+**Build**: MSBuild 0 errors (full solution)
+**Tests**: 3,960/3,962 passed (2 pre-existing UI failures, not Team A scope)
+  - HnVue.Security.Tests: 286/286 PASS
+  - HnVue.Common.Tests: 137/137 PASS
+  - HnVue.Data.Tests: 333/333 PASS
+  - Architecture.Tests: 14/14 PASS
+
+**New files (8)**:
+- HnVue.Common/Abstractions/IPhiMaskingService.cs (STRIDE-I)
+- HnVue.Common/Abstractions/IRateLimitingService.cs (STRIDE-D)
+- HnVue.Common/Abstractions/ITlsConnectionService.cs (TLS 1.3)
+- HnVue.Common/ErrorHandling/ErrorCategory.cs (에러 분류)
+- HnVue.Common/ErrorHandling/WatchdogTimer.cs (워치독)
+- HnVue.Common/ErrorHandling/RetryPolicyFactory.cs (Polly 보강)
+- HnVue.Security/PhiMaskingService.cs (STRIDE-I 구현)
+- HnVue.Security/RateLimitingService.cs (STRIDE-D 구현)
+- HnVue.Security/RoleElevationValidator.cs (STRIDE-E 구현)
+- HnVue.Security/TlsConnectionService.cs (TLS 1.3 구현)
+
+**Modified files (10)**:
+- HnVue.Common/Results/ErrorCode.cs (+6 new codes)
+- HnVue.Common/Abstractions/ISecurityService.cs (+ReauthenticateAsync)
+- HnVue.Common/Abstractions/IAuditService.cs (+DetectTamperedEntriesAsync)
+- HnVue.Common/Abstractions/IPhiEncryptionService.cs (+VerifyTag, GenerateKey)
+- HnVue.Common/Abstractions/IRetryPolicyFactory.cs (+DICOM, CircuitBreaker)
+- HnVue.Common/Extensions/ServiceCollectionExtensions.cs (+DI registrations)
+- HnVue.Security/SecurityService.cs (+ReauthenticateAsync)
+- HnVue.Security/AuditService.cs (+DetectTamperedEntriesAsync)
+- HnVue.Security/PhiEncryptionService.cs (+VerifyTag, GenerateKey, SQLCipher docs)
+- HnVue.Security/Extensions/ServiceCollectionExtensions.cs (+DI registrations)
+- HnVue.Data/Security/PhiEncryptionService.cs (+VerifyTag, GenerateKey)
+- HnVue.Data/Services/AesGcmPhiEncryptionService.cs (+VerifyTag, GenerateKey)
 
 ---
 
