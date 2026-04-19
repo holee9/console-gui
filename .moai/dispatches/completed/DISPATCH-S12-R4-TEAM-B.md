@@ -36,7 +36,7 @@ S12-R4 정기 유지보수 라운드 - Team B IDLE 상태 확인.
 ## 4. 완료 조건
 
 - [x] IDLE 상태 확인 완료
-- [x] DISPATCH.md Status 업데이트 완료
+- [x] DISPATCH.md Status 업데이트
 
 ---
 
