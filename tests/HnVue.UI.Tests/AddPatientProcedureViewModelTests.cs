@@ -17,7 +17,7 @@ public sealed class AddPatientProcedureViewModelTests
     private static (AddPatientProcedureViewModel Vm, IPatientService PatientService) CreateSut()
     {
         var patientService = Substitute.For<IPatientService>();
-        var vm = new AddPatientProcedureViewModel(patientService);
+        var vm = new AddPatientProcedureViewModel(patientService, Substitute.For<ISecurityContext>());
         return (vm, patientService);
     }
 

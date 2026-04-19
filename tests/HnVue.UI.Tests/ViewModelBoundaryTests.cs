@@ -254,7 +254,7 @@ public sealed class ViewModelBoundaryTests
         var patientService = Substitute.For<IPatientService>();
         patientService.RegisterAsync(Arg.Any<PatientRecord>(), Arg.Any<CancellationToken>())
             .Returns(Result.Failure<PatientRecord>(ErrorCode.AlreadyExists, "duplicate"));
-        var vm = new AddPatientProcedureViewModel(patientService)
+        var vm = new AddPatientProcedureViewModel(patientService, Substitute.For<ISecurityContext>())
         {
             PatientId = "P-100",
             PatientName = "Kim Test",
@@ -282,7 +282,7 @@ public sealed class ViewModelBoundaryTests
                 captured = ci.Arg<PatientRecord>();
                 return Result.Success(captured);
             });
-        var vm = new AddPatientProcedureViewModel(patientService)
+        var vm = new AddPatientProcedureViewModel(patientService, Substitute.For<ISecurityContext>())
         {
             PatientId = "P-200",
             PatientName = "Lee Test",

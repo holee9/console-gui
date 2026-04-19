@@ -478,7 +478,7 @@ public class InterfaceContractConsistencyTests
     [Fact]
     public void AddPatientProcedureViewModel_ImplementsIAddPatientProcedureViewModel()
     {
-        var sut = new AddPatientProcedureViewModel(Substitute.For<IPatientService>());
+        var sut = new AddPatientProcedureViewModel(Substitute.For<IPatientService>(), Substitute.For<ISecurityContext>());
 
         sut.Should().BeAssignableTo<IAddPatientProcedureViewModel>();
         sut.Should().BeAssignableTo<IViewModelBase>();
@@ -755,7 +755,7 @@ public class PatientStudyWorkflowE2ETests
     [Fact]
     public void AddPatientProcedureViewModel_AutoGenerate_SetsInitialValues()
     {
-        var sut = new AddPatientProcedureViewModel(Substitute.For<IPatientService>());
+        var sut = new AddPatientProcedureViewModel(Substitute.For<IPatientService>(), Substitute.For<ISecurityContext>());
 
         // Auto-generated fields should have non-empty initial values
         sut.PatientId.Should().NotBeNullOrEmpty();
@@ -765,7 +765,7 @@ public class PatientStudyWorkflowE2ETests
     [Fact]
     public void AddPatientProcedureViewModel_AvailableProjections_ContainsExpectedValues()
     {
-        var sut = new AddPatientProcedureViewModel(Substitute.For<IPatientService>());
+        var sut = new AddPatientProcedureViewModel(Substitute.For<IPatientService>(), Substitute.For<ISecurityContext>());
 
         sut.AvailableProjections.Should().Contain("Chest PA", "Hand PA", "Spine AP");
         sut.AvailableProjections.Should().HaveCountGreaterThan(5);
@@ -774,7 +774,7 @@ public class PatientStudyWorkflowE2ETests
     [Fact]
     public void AddPatientProcedureViewModel_AvailableDescriptions_ContainsExpectedValues()
     {
-        var sut = new AddPatientProcedureViewModel(Substitute.For<IPatientService>());
+        var sut = new AddPatientProcedureViewModel(Substitute.For<IPatientService>(), Substitute.For<ISecurityContext>());
 
         sut.AvailableDescriptions.Should().Contain("Routine", "Emergency", "Follow-up");
     }
@@ -996,7 +996,7 @@ public class DIRegistrationVerificationTests
     {
         var patientService = Substitute.For<IPatientService>();
 
-        var sut = new AddPatientProcedureViewModel(patientService);
+        var sut = new AddPatientProcedureViewModel(patientService, Substitute.For<ISecurityContext>());
 
         sut.Should().BeAssignableTo<IAddPatientProcedureViewModel>();
     }

@@ -75,9 +75,10 @@ public sealed partial class SettingsViewModel : ObservableObject, ISettingsViewM
     /// </summary>
     /// <remarks>
     /// Currently a no-op placeholder that raises <see cref="SaveCompleted"/>.
-    /// @MX:TODO Wire to ISettingsService.SaveAsync once the service surface is defined
+    /// @MX:NOTE Wire to ISettingsService.SaveAsync once the service surface is defined
     /// in UI.Contracts (tracked via SWR-UI-SE-011). Placeholder keeps the dialog flow
     /// exercised by unit tests while the Settings persistence layer is designed.
+    /// BLOCKED: ISettingsService not yet defined.
     /// </remarks>
     [RelayCommand]
     private async Task SaveAsync()
@@ -86,7 +87,8 @@ public sealed partial class SettingsViewModel : ObservableObject, ISettingsViewM
         ErrorMessage = null;
         try
         {
-            // @MX:TODO Replace with await _settingsService.SaveAsync(snapshot) once ISettingsService lands.
+            // @MX:NOTE Placeholder — Replace with await _settingsService.SaveAsync(snapshot) once ISettingsService lands.
+            //          BLOCKED: ISettingsService interface not yet defined in UI.Contracts (SWR-UI-SE-011).
             await Task.Delay(1);
             SaveCompleted?.Invoke(this, EventArgs.Empty);
         }
