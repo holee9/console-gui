@@ -72,17 +72,30 @@ _CURRENT.md에서 자신의 팀이 IDLE이면:
 
 ---
 
-## [HARD] CC 모니터링 절차 (S12 기준)
+## [HARD] CC 모니터링 절차 (S13 기준 — Worktree 인식 추가)
 
 **CC 모니터링**: 15분 간격
 
 ```
 1. git fetch origin
-2. git log --oneline origin/team/* --not main (6팀)
-3. DISPATCH 파일 Status 테이블 직접 읽기 확인
-4. COMPLETED 감지 → 소유권 검증 → 머지 → _CURRENT.md 업데이트
-5. 15분 후 다시 모니터링 (루프)
+2. git log --oneline origin/team/* --not main (6팀) — remote 커밋 확인
+3. [S13 추가] .worktrees/{team}/ 로컬 상태 확인:
+   - git status --short — 미커밋 변경 파일 존재 = 활발히 작업 중
+   - git log --oneline -1 — 마지막 커밋 시간 파악
+   - 미커밋 변경 있음 → "WORKING (uncommitted)" 상태로 인식
+   - 미커밋 변경 없음 + remote 커밋 없음 → "IDLE/NOT_STARTED" 상태
+4. DISPATCH 파일 Status 테이블 직접 읽기 확인
+5. COMPLETED 감지 → 소유권 검증 → 머지 → _CURRENT.md 업데이트
+6. 15분 후 다시 모니터링 (루프)
 ```
+
+**팀 상태 판정 기준 (3-layer)**:
+
+| 레이어 | 확인 방법 | 의미 |
+|--------|-----------|------|
+| Remote 커밋 | `git log origin/team/* --not main` | push된 작업 (확정) |
+| Worktree 로컬 | `.worktrees/{team}/ git status` | 진행 중 작업 (미커밋) |
+| DISPATCH Status | DISPATCH 파일 Status 테이블 | 팀 자가보고 상태 |
 
 **자율 진행**: COMPLETED + 빌드 증거 + diff 범위 3개 통과 → 즉시 머지, 사용자 확인 불필요
 
