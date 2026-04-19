@@ -20,14 +20,17 @@ namespace HnVue.UI.ViewModels;
 public sealed partial class AddPatientProcedureViewModel : ObservableObject, IAddPatientProcedureViewModel
 {
     private readonly IPatientService _patientService;
+    private readonly ISecurityContext _securityContext;
     private readonly List<string> _availableProjections;
     private readonly List<string> _availableDescriptions;
 
     /// <summary>Initialises a new instance of <see cref="AddPatientProcedureViewModel"/>.</summary>
     /// <param name="patientService">Service used to register the new patient record.</param>
-    public AddPatientProcedureViewModel(IPatientService patientService)
+    /// <param name="securityContext">Security context providing the current operator ID for audit.</param>
+    public AddPatientProcedureViewModel(IPatientService patientService, ISecurityContext securityContext)
     {
         _patientService = patientService;
+        _securityContext = securityContext;
 
         _availableProjections = new List<string>
         {
@@ -227,9 +230,7 @@ public sealed partial class AddPatientProcedureViewModel : ObservableObject, IAd
                 Sex: Gender,
                 IsEmergency: false,
                 CreatedAt: DateTimeOffset.UtcNow,
-                // @MX:TODO Inject current operator ID from ISecurityContext.CurrentUserId.
-                //          Blocked until ISecurityContext exposes non-null operator for this UI flow (SWR-SEC-AUDIT-003).
-                CreatedBy: string.Empty);
+                CreatedBy: _securityContext.CurrentUserId ?? string.Empty);
 
             var result = await _patientService.RegisterAsync(record);
             if (result.IsSuccess)

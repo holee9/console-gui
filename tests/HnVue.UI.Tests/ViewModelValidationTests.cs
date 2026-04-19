@@ -96,7 +96,7 @@ public class ViewModelValidationTests
     [Fact]
     public void AddPatientProcedureViewModel_CommandBindings_AreCorrect()
     {
-        var sut = new AddPatientProcedureViewModel(Substitute.For<IPatientService>());
+        var sut = new AddPatientProcedureViewModel(Substitute.For<IPatientService>(), Substitute.For<ISecurityContext>());
         var iface = (IAddPatientProcedureViewModel)sut;
 
         iface.AddProjectionCommand.Should().NotBeNull();

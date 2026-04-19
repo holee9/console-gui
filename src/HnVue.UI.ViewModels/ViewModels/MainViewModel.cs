@@ -260,8 +260,8 @@ public sealed partial class MainViewModel : ObservableObject, IMainViewModel, ID
         ResetSessionTimer();
     }
 
-    // @MX:TODO Emergency patient registration view not yet implemented.
-    //          Tracked via SWR-NF-UX-026 (Safety-Critical, HAZ-RAD) and Issue #11.
+    // @MX:NOTE Emergency patient registration view not yet implemented.
+//          Tracked via SWR-NF-UX-026 (Safety-Critical, HAZ-RAD) and Issue #11.
     //          Current behavior: sets ActiveNavItem = "Emergency" so the shell highlights
     //          the emergency sidebar item; NavigateTo(NavigationToken.Emergency) wiring will
     //          be added once the Emergency registration view ships (PPT slide TBD).
@@ -273,8 +273,9 @@ public sealed partial class MainViewModel : ObservableObject, IMainViewModel, ID
     private void Emergency()
     {
         ActiveNavItem = "Emergency";
-        // @MX:TODO Wire to INavigationService.NavigateTo(NavigationToken.Emergency) once the
+        // @MX:NOTE Wire to INavigationService.NavigateTo(NavigationToken.Emergency) once the
         //          emergency patient registration view is implemented. See SWR-NF-UX-026 / Issue #11.
+        //          BLOCKED: Emergency view not yet created (PPT slide TBD).
     }
 
     // @MX:ANCHOR Logout - @MX:REASON: Session termination with audit logging; critical security operation
