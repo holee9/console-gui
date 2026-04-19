@@ -2,7 +2,7 @@
 
 > **Sprint**: S13 | **Round**: 2 | **팀**: Team A (Infrastructure)
 > **발행일**: 2026-04-19
-> **상태**: NOT_STARTED
+> **상태**: IN_PROGRESS
 
 ---
 
@@ -36,7 +36,7 @@ Update 모듈 테스트 보강 + SystemAdmin 테스트 확장.
 
 | 작업 ID | 설명 | 상태 | 할당자 | 우선순위 | 비고 |
 |---------|------|------|--------|----------|------|
-| T1 | Update 모듈 테스트 보강 | NOT_STARTED | Team A | P1 | Safety-Critical |
+| T1 | Update 모듈 테스트 보강 | IN_PROGRESS | Team A | P1 | Safety-Critical |
 | T2 | SystemAdmin 테스트 확장 | NOT_STARTED | Team A | P2 | 현재 6개 파일 |
 
 ---
