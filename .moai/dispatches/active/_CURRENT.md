@@ -1,4 +1,4 @@
-# DISPATCH Current Index — S12-R3
+# DISPATCH Current Index — S13-R1
 
 > **[HARD] 에이전트 FIRST ACTION**: 이 파일을 가장 먼저 읽는다.
 > 자신의 팀 행(row)에서 파일명을 확인한 뒤, 해당 파일만 읽는다.
@@ -10,14 +10,14 @@
 
 | 팀 | 현재 DISPATCH 파일 | 상태 | 비고 |
 |----|-------------------|------|------|
-| **Team A** | - | **IDLE** | S12-R4 완료 |
-| **Team B** | - | **IDLE** | S12-R4 완료 |
-| **Coordinator** | - | **IDLE** | S12-R4 완료 |
-| **Design** | - | **IDLE** | S12-R4 완료 |
-| **QA** | - | **IDLE** | S12-R4 완료 |
-| **RA** | - | **IDLE** | S12-R4 완료 |
+| **Team A** | DISPATCH-S13-R1-TEAM-A.md | **ACTIVE** | STRIDE 보안 통제 + PHI AES-256-GCM + TLS 1.3 기초 |
+| **Team B** | DISPATCH-S13-R1-TEAM-B.md | **ACTIVE** | Print SCU + RDSR + PACS 비동기 + 선량 인터락 |
+| **Coordinator** | DISPATCH-S13-R1-COORDINATOR.md | **ACTIVE** | ViewModel TODO + 통합테스트 + UI.Contracts |
+| **Design** | DISPATCH-S13-R1-DESIGN.md | **ACTIVE** | AddPatientProcedureView(Slide 8) + WorkflowView(Slides 9-11) |
+| **QA** | DISPATCH-S13-R1-QA.md | **ACTIVE** | 빌드/테스트/커버리지 검증 + 아키텍처 테스트 |
+| **RA** | DISPATCH-S13-R1-RA.md | **ACTIVE** | STRIDE 검토(M1 Gate) + RTM 동기화 + CMP 업데이트 |
 
-**→ 전체 팀 IDLE / 2026-04-19 15:50**
+**→ 전팀 ACTIVE / 2026-04-19 발행**
 
 ---
 
@@ -61,14 +61,14 @@ _CURRENT.md에서 자신의 팀이 IDLE이면:
 | **QA (품질보증)** | 10분 | DISPATCH Status 주기 업데이트 | 분석/보고 위주, 신속 |
 | **RA (규제)** | 10분 | DISPATCH Status 주기 업데이트 | 문서 작업, 신속 |
 
-### S12 목표 메트릭
+### S13 목표 메트릭
 
-| 지표 | S10 기준 | S11 목표 | S12 목표 |
-|------|----------|----------|----------|
-| 라운드 소요 시간 | 2시간 1분 | 1시간 30분 | **1시간 15분** |
-| CC 모니터링 횟수 | 0회 (실패) | 6회/라운드 | **6회 이상/라운드** |
-| 전팀 MERGED→발행 | 11시간 53분 | 10분 이내 | **5분 이내** |
-| 팀간 완료 편차 | 18분 | 10분 | **5분** |
+| 지표 | S12 기준 | S13 목표 |
+|------|----------|----------|
+| 라운드 소요 시간 | S12-R4 IDLE | 1시간 15분 |
+| CC 모니터링 횟수 | 6회 이상/라운드 | 6회 이상/라운드 |
+| 전팀 MERGED→발행 | 즉시 | 5분 이내 |
+| 팀간 완료 편차 | 5분 이내 | 5분 이내 |
 
 ---
 
@@ -103,18 +103,6 @@ DISPATCH 읽기 직후    → NOT_STARTED → IN_PROGRESS (즉시 push)
 
 ---
 
-## [HARD] 완료 프로세스 (Git + Session Lifecycle)
-
-```
-1. 작업 완료
-2. git add → git commit → git push origin team/{team-name}
-3. DISPATCH Status COMPLETED + 빌드 증거 업데이트 → push
-4. /clear 실행 [HARD] ← 누락 시 context 누적 → 다음 라운드 작업 불능
-5. CC 자동 감지 → 머지 → _CURRENT.md 업데이트
-```
-
----
-
 ## 팀별 역할 경계 (퀵 레퍼런스)
 
 | 팀 | 소유 모듈 | 핵심 금지 사항 |
@@ -144,7 +132,8 @@ DISPATCH 읽기 직후    → NOT_STARTED → IN_PROGRESS (즉시 push)
 | 2026-04-16~17 | S11 R1~R2 | ALL MERGED, QA CONDITIONAL PASS (99.97%) |
 | 2026-04-18~19 | S12 R1~R2 | ALL MERGED, QA PASS (100%) |
 | 2026-04-19 | S12 R3 | ALL MERGED, QA PASS (100%) |
-| **2026-04-19** | **S12 R4** | **IDLE** | 6팀 정기 유지보수 완료 |
+| 2026-04-19 | S12 R4 | ALL MERGED (IDLE CONFIRM) |
+| **2026-04-19** | **S13 R1** | **ACTIVE** |
 
 ---
 
@@ -158,5 +147,5 @@ DISPATCH 읽기 직후    → NOT_STARTED → IN_PROGRESS (즉시 push)
 5. 전팀 머지 후 즉시 다음 라운드 기획 (자율 진행)
 ```
 
-Updated: 2026-04-19 (S12-R4: IDLE - 정기 유지보수 완료)
+Updated: 2026-04-19 (S13-R1: ACTIVE - Tier 1 보안 완성 + DICOM 프로토콜)
 DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/`
