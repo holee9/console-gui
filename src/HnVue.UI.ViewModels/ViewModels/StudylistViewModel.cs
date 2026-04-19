@@ -71,26 +71,25 @@ public sealed partial class StudylistViewModel : ObservableObject, IStudylistVie
 
     /// <summary>Navigates to the previous page of studies.</summary>
     /// <remarks>
-    /// @MX:TODO Implement paged navigation backed by IStudyRepository paging API (SWR-UI-SL-006).
-    ///          Paging API is pending PACS/C-FIND cursor spec — blocked until Team A exposes
-    ///          <c>GetStudiesAsync(offset, limit)</c> or equivalent cursor. Command remains wired
-    ///          so XAML bindings do not throw; it is a no-op until the repository contract ships.
+    /// @MX:NOTE Paged navigation not yet implemented.
+    ///          BLOCKED: IStudyRepository paging API pending PACS/C-FIND cursor spec (SWR-UI-SL-006).
+    ///          Command remains wired so XAML bindings do not throw; it is a no-op until the repository contract ships.
     /// </remarks>
     [RelayCommand]
     private static void NavigatePrevious()
     {
-        // Intentional no-op placeholder — see XML doc above for @MX:TODO.
+        // Intentional no-op placeholder — see XML doc above for @MX:NOTE.
     }
 
     /// <summary>Navigates to the next page of studies.</summary>
     /// <remarks>
-    /// @MX:TODO Implement paged navigation backed by IStudyRepository paging API (SWR-UI-SL-006).
-    ///          Paired with <see cref="NavigatePrevious"/> — both block on the same repository work.
+    /// @MX:NOTE Paged navigation not yet implemented.
+    ///          BLOCKED: Same dependency as NavigatePrevious (SWR-UI-SL-006).
     /// </remarks>
     [RelayCommand]
     private static void NavigateNext()
     {
-        // Intentional no-op placeholder — see XML doc above for @MX:TODO.
+        // Intentional no-op placeholder — see XML doc above for @MX:NOTE.
     }
 
     /// <summary>Applies the given period filter and reloads studies.</summary>
@@ -109,11 +108,9 @@ public sealed partial class StudylistViewModel : ObservableObject, IStudylistVie
         ErrorMessage = null;
         try
         {
-            // @MX:TODO Replace the placeholder delay with a PACS/C-FIND query scoped to
-            //          <see cref="SelectedPacsServer"/> and <see cref="ActivePeriodFilter"/>.
-            //          IStudyRepository currently only exposes local SQLite queries;
-            //          PACS integration is tracked under SWR-UI-SL-009 (blocked pending Team B
-            //          DICOM C-FIND SCU surface). Current behavior keeps UI responsive for tests.
+            // @MX:NOTE Placeholder delay — PACS C-FIND query not yet implemented.
+            //          BLOCKED: IStudyRepository only exposes local SQLite queries;
+            //          PACS integration tracked under SWR-UI-SL-009 (pending Team B DICOM C-FIND SCU).
             await Task.Delay(1);
         }
         catch (Exception ex) when (ex is not OperationCanceledException)

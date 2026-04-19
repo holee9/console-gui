@@ -110,8 +110,8 @@ public sealed partial class MergeViewModel : ObservableObject, IMergeViewModel
         ErrorMessage = null;
         try
         {
-            // @MX:TODO Replace the placeholder delay with IStudyMergeService.MergeAsync(SelectedPatientA, SelectedPatientB, SelectedStudies).
-            //          IStudyMergeService is not yet defined in UI.Contracts (blocked pending domain decision — see SWR-UI-MG-004).
+            // @MX:NOTE Placeholder delay — IStudyMergeService not yet defined in UI.Contracts.
+            //          BLOCKED: Pending domain decision on merge API surface (SWR-UI-MG-004).
             //          Current behavior raises MergeCompleted so the dialog closes and UI flow stays testable.
             await Task.Delay(1);
             MergeCompleted?.Invoke(this, EventArgs.Empty);
