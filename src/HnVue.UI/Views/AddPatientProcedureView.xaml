@@ -5,6 +5,7 @@
              Auto-Generate toggles for PatientId and AccessionNumber.
              View Projection and Description shown as removable chips (WrapPanel + Border).
              Study Group field removed per PPT specification.
+             WCAG 2.1 AA: AutomationProperties, TabIndex, MinHeight >= 44px on buttons.
 -->
 <UserControl x:Class="HnVue.UI.Views.AddPatientProcedureView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -12,7 +13,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:converters="clr-namespace:HnVue.UI.Converters"
+             xmlns:designTime="clr-namespace:HnVue.UI.DesignTime"
              mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance Type=designTime:DesignTimeAddPatientProcedureViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="650" d:DesignWidth="700"
              Background="{DynamicResource HnVue.Semantic.Surface.Page}">
 
@@ -21,6 +24,27 @@
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterInverted" IsInverted="True"/>
         <converters:InverseBoolConverter x:Key="InverseBoolConverter"/>
         <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
+
+        <!-- WCAG 2.1 AA: visible focus border on TextBox -->
+        <Style x:Key="HnVue.FormTextBox" TargetType="TextBox">
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Padding" Value="8,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Background" Value="{DynamicResource HnVue.Semantic.Surface.Card}"/>
+            <Setter Property="Foreground" Value="{DynamicResource HnVue.Semantic.Text.Primary}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource HnVue.Semantic.Border.Default}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontFamily" Value="{DynamicResource HnVue.Core.FontFamily}"/>
+            <Setter Property="FontSize" Value="{DynamicResource HnVue.Core.FontSize.Normal}"/>
+            <Setter Property="MinHeight" Value="32"/>
+            <Style.Triggers>
+                <Trigger Property="IsFocused" Value="True">
+                    <Setter Property="BorderBrush" Value="{DynamicResource HnVue.Semantic.Brand.Accent}"/>
+                    <Setter Property="BorderThickness" Value="2"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
         <!-- Auto-Generate button active state style (accent fill when ON) -->
         <Style x:Key="AutoGenButton" TargetType="Button" BasedOn="{StaticResource HnVue.OutlineButton}">
             <Style.Triggers>
@@ -120,17 +144,10 @@
                             <TextBox Grid.Column="0"
                                      Text="{Binding PatientId, UpdateSourceTrigger=PropertyChanged}"
                                      IsEnabled="{Binding IsPatientIdAutoGenerate, Converter={StaticResource InverseBoolConverter}}"
-                                     Height="32"
-                                     Padding="8,0"
-                                     VerticalContentAlignment="Center"
-                                     Background="{DynamicResource HnVue.Semantic.Surface.Card}"
-                                     Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
-                                     BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
-                                     BorderThickness="1"
-                                     FontFamily="{DynamicResource HnVue.Core.FontFamily}"
-                                     FontSize="{DynamicResource HnVue.Core.FontSize.Normal}">
+                                     AutomationProperties.Name="Patient ID"
+                                     TabIndex="1">
                                 <TextBox.Style>
-                                    <Style TargetType="TextBox">
+                                    <Style TargetType="TextBox" BasedOn="{StaticResource HnVue.FormTextBox}">
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding IsPatientIdAutoGenerate}" Value="True">
                                                 <Setter Property="Opacity" Value="0.55"/>
@@ -143,9 +160,12 @@
                                     Content="Auto-Generate"
                                     Command="{Binding TogglePatientIdAutoGenerateCommand}"
                                     Height="32"
+                                    MinHeight="44" MinWidth="44"
                                     Padding="10,0"
                                     FontSize="11"
                                     Style="{StaticResource AutoGenButton}"
+                                    AutomationProperties.Name="Toggle Patient ID Auto-Generate"
+                                    TabIndex="2"
                                     Cursor="Hand"/>
                         </Grid>
                     </StackPanel>
@@ -162,15 +182,9 @@
                                        VerticalAlignment="Center"/>
                         </StackPanel>
                         <TextBox Text="{Binding PatientName, UpdateSourceTrigger=PropertyChanged}"
-                                 Height="32"
-                                 Padding="8,0"
-                                 VerticalContentAlignment="Center"
-                                 Background="{DynamicResource HnVue.Semantic.Surface.Card}"
-                                 Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
-                                 BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
-                                 BorderThickness="1"
-                                 FontFamily="{DynamicResource HnVue.Core.FontFamily}"
-                                 FontSize="{DynamicResource HnVue.Core.FontSize.Normal}"/>
+                                 Style="{StaticResource HnVue.FormTextBox}"
+                                 AutomationProperties.Name="Patient Name (required)"
+                                 TabIndex="3"/>
                     </StackPanel>
 
                     <!-- Birth Date (*) -->
@@ -185,15 +199,9 @@
                                        VerticalAlignment="Center"/>
                         </StackPanel>
                         <TextBox Text="{Binding BirthDate, UpdateSourceTrigger=PropertyChanged}"
-                                 Height="32"
-                                 Padding="8,0"
-                                 VerticalContentAlignment="Center"
-                                 Background="{DynamicResource HnVue.Semantic.Surface.Card}"
-                                 Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
-                                 BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
-                                 BorderThickness="1"
-                                 FontFamily="{DynamicResource HnVue.Core.FontFamily}"
-                                 FontSize="{DynamicResource HnVue.Core.FontSize.Normal}">
+                                 Style="{StaticResource HnVue.FormTextBox}"
+                                 AutomationProperties.Name="Birth Date (required, format yyyy-MM-dd)"
+                                 TabIndex="4">
                             <TextBox.ToolTip>Format: yyyy-MM-dd</TextBox.ToolTip>
                         </TextBox>
                     </StackPanel>
@@ -211,13 +219,16 @@
                         </StackPanel>
                         <ComboBox SelectedValue="{Binding Gender, UpdateSourceTrigger=PropertyChanged}"
                                   Height="32"
+                                  MinHeight="44"
                                   VerticalContentAlignment="Center"
                                   Background="{DynamicResource HnVue.Semantic.Surface.Card}"
                                   Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
                                   BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
                                   BorderThickness="1"
                                   FontFamily="{DynamicResource HnVue.Core.FontFamily}"
-                                  FontSize="{DynamicResource HnVue.Core.FontSize.Normal}">
+                                  FontSize="{DynamicResource HnVue.Core.FontSize.Normal}"
+                                  AutomationProperties.Name="Gender (required)"
+                                  TabIndex="5">
                             <ComboBoxItem Content="M" Tag="M"/>
                             <ComboBoxItem Content="F" Tag="F"/>
                             <ComboBoxItem Content="Other" Tag="Other"/>
@@ -266,17 +277,10 @@
                             </Grid.ColumnDefinitions>
                             <TextBox Grid.Column="0"
                                      Text="{Binding AccessionNumber, UpdateSourceTrigger=PropertyChanged}"
-                                     Height="32"
-                                     Padding="8,0"
-                                     VerticalContentAlignment="Center"
-                                     Background="{DynamicResource HnVue.Semantic.Surface.Card}"
-                                     Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
-                                     BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
-                                     BorderThickness="1"
-                                     FontFamily="{DynamicResource HnVue.Core.FontFamily}"
-                                     FontSize="{DynamicResource HnVue.Core.FontSize.Normal}">
+                                     AutomationProperties.Name="Accession Number (required)"
+                                     TabIndex="6">
                                 <TextBox.Style>
-                                    <Style TargetType="TextBox">
+                                    <Style TargetType="TextBox" BasedOn="{StaticResource HnVue.FormTextBox}">
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding IsAccNoAutoGenerate}" Value="True">
                                                 <Setter Property="Opacity" Value="0.55"/>
@@ -289,9 +293,12 @@
                                     Content="Auto-Generate"
                                     Command="{Binding ToggleAccNoAutoGenerateCommand}"
                                     Height="32"
+                                    MinHeight="44" MinWidth="44"
                                     Padding="10,0"
                                     FontSize="11"
                                     Style="{StaticResource AutoGenAccButton}"
+                                    AutomationProperties.Name="Toggle Accession Number Auto-Generate"
+                                    TabIndex="7"
                                     Cursor="Hand"/>
                         </Grid>
                     </StackPanel>
@@ -311,6 +318,7 @@
                         <!-- Projection chips -->
                         <ItemsControl ItemsSource="{Binding SelectedProjections}"
                                       Margin="0,0,0,4"
+                                      AutomationProperties.Name="Selected View Projections"
                                       Visibility="{Binding SelectedProjections.Count, Converter={StaticResource BoolToVisibilityConverter}}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
@@ -339,6 +347,8 @@
                                                     FontSize="9"
                                                     Margin="4,0,0,0"
                                                     Padding="0"
+                                                    MinHeight="20" MinWidth="20"
+                                                    AutomationProperties.Name="Remove Projection"
                                                     Cursor="Hand"
                                                     ToolTip="Remove"/>
                                         </StackPanel>
@@ -358,19 +368,25 @@
                                       Grid.Column="0"
                                       ItemsSource="{Binding AvailableProjections}"
                                       Height="32"
+                                      MinHeight="44"
                                       VerticalContentAlignment="Center"
                                       Background="{DynamicResource HnVue.Semantic.Surface.Card}"
                                       Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
                                       BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
                                       BorderThickness="1"
                                       FontFamily="{DynamicResource HnVue.Core.FontFamily}"
-                                      FontSize="{DynamicResource HnVue.Core.FontSize.Normal}"/>
+                                      FontSize="{DynamicResource HnVue.Core.FontSize.Normal}"
+                                      AutomationProperties.Name="Select View Projection"
+                                      TabIndex="8"/>
                             <Button Grid.Column="2"
                                     Content="+ Add"
                                     Height="32"
+                                    MinHeight="44" MinWidth="44"
                                     Padding="10,0"
                                     FontSize="12"
                                     Style="{StaticResource HnVue.OutlineButton}"
+                                    AutomationProperties.Name="Add View Projection"
+                                    TabIndex="9"
                                     Cursor="Hand"
                                     Command="{Binding AddProjectionCommand}"
                                     CommandParameter="{Binding ElementName=ProjectionCombo, Path=SelectedItem}"/>
@@ -385,7 +401,8 @@
 
                         <!-- Description chips -->
                         <ItemsControl ItemsSource="{Binding SelectedDescriptions}"
-                                      Margin="0,0,0,4">
+                                      Margin="0,0,0,4"
+                                      AutomationProperties.Name="Selected Descriptions">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <WrapPanel Orientation="Horizontal"/>
@@ -415,6 +432,8 @@
                                                     FontSize="9"
                                                     Margin="4,0,0,0"
                                                     Padding="0"
+                                                    MinHeight="20" MinWidth="20"
+                                                    AutomationProperties.Name="Remove Description"
                                                     Cursor="Hand"/>
                                         </StackPanel>
                                     </Border>
@@ -435,19 +454,25 @@
                                       Text="{Binding DescriptionInput, UpdateSourceTrigger=PropertyChanged}"
                                       IsEditable="True"
                                       Height="32"
+                                      MinHeight="44"
                                       VerticalContentAlignment="Center"
                                       Background="{DynamicResource HnVue.Semantic.Surface.Card}"
                                       Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
                                       BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
                                       BorderThickness="1"
                                       FontFamily="{DynamicResource HnVue.Core.FontFamily}"
-                                      FontSize="{DynamicResource HnVue.Core.FontSize.Normal}"/>
+                                      FontSize="{DynamicResource HnVue.Core.FontSize.Normal}"
+                                      AutomationProperties.Name="Select or Type Description"
+                                      TabIndex="10"/>
                             <Button Grid.Column="2"
                                     Content="+ Add"
                                     Height="32"
+                                    MinHeight="44" MinWidth="44"
                                     Padding="10,0"
                                     FontSize="12"
                                     Style="{StaticResource HnVue.OutlineButton}"
+                                    AutomationProperties.Name="Add Description"
+                                    TabIndex="11"
                                     Cursor="Hand"
                                     Command="{Binding AddDescriptionCommand}"
                                     CommandParameter="{Binding ElementName=DescriptionCombo, Path=Text}"/>
@@ -460,15 +485,9 @@
                                    Style="{StaticResource HnVue.MutedLabel}"
                                    Margin="0,0,0,4"/>
                         <TextBox Text="{Binding RisCode, UpdateSourceTrigger=PropertyChanged}"
-                                 Height="32"
-                                 Padding="8,0"
-                                 VerticalContentAlignment="Center"
-                                 Background="{DynamicResource HnVue.Semantic.Surface.Card}"
-                                 Foreground="{DynamicResource HnVue.Semantic.Text.Primary}"
-                                 BorderBrush="{DynamicResource HnVue.Semantic.Border.Default}"
-                                 BorderThickness="1"
-                                 FontFamily="{DynamicResource HnVue.Core.FontFamily}"
-                                 FontSize="{DynamicResource HnVue.Core.FontSize.Normal}">
+                                 Style="{StaticResource HnVue.FormTextBox}"
+                                 AutomationProperties.Name="RIS Code"
+                                 TabIndex="12">
                             <TextBox.ToolTip>Enter RIS code to link with external RIS system</TextBox.ToolTip>
                         </TextBox>
                     </StackPanel>
@@ -483,6 +502,7 @@
                 Padding="12,6"
                 CornerRadius="4"
                 Background="{DynamicResource HnVue.Semantic.Status.Emergency}"
+                AutomationProperties.Name="Error Message"
                 Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}">
             <StackPanel Orientation="Horizontal">
                 <!-- Warning icon: Segoe MDL2 &#xE7BA; -->
@@ -512,6 +532,7 @@
                 <StackPanel Orientation="Horizontal"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Left"
+                            AutomationProperties.Name="Saving in progress"
                             Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}">
                     <!-- Sync/loading icon: Segoe MDL2 &#xE72C; -->
                     <TextBlock Text="&#xE72C;"
@@ -536,17 +557,25 @@
                             Style="{StaticResource HnVue.OutlineButton}"
                             Width="100"
                             Height="36"
+                            MinHeight="44"
                             Margin="0,0,8,0"
                             FontSize="13"
                             IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBoolConverter}}"
+                            AutomationProperties.Name="Cancel"
+                            AutomationProperties.HelpText="Discard all input and close (Escape)"
+                            TabIndex="13"
                             Cursor="Hand"/>
                     <Button Content="Save"
                             Command="{Binding SaveCommand}"
                             Style="{StaticResource HnVue.PrimaryButton}"
                             Width="100"
                             Height="36"
+                            MinHeight="44"
                             FontSize="13"
                             IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBoolConverter}}"
+                            AutomationProperties.Name="Save"
+                            AutomationProperties.HelpText="Validate and save patient and procedure (Enter)"
+                            TabIndex="14"
                             Cursor="Hand"/>
                 </StackPanel>
             </Grid>
