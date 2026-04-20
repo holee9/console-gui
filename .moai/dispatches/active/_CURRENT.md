@@ -1,4 +1,4 @@
-# DISPATCH Current Index — S14-R2 완료
+# DISPATCH Current Index — S15-R1 진행 중
 
 > **[HARD] 에이전트 FIRST ACTION**: 이 파일을 가장 먼저 읽는다.
 > 자신의 팀 행(row)에서 파일명을 확인한 뒤, 해당 파일만 읽는다.
@@ -10,14 +10,14 @@
 
 | 팀 | 현재 DISPATCH 파일 | 상태 | 스케줄 Phase | 비고 |
 |----|-------------------|------|-------------|------|
-| **Team A** | - | **MERGED** | Phase 1 | 87개 Trait 수정, 373/373 pass, Security 90.04% |
-| **Team B** | - | **MERGED** | Phase 1 | IDLE CONFIRM — 추가 작업 없음 |
-| **Coordinator** | - | **MERGED** | Phase 2 | PARTIAL: 4 tests failed (Dose Safety-Critical 포함) |
-| **Design** | - | **MERGED** | 별도 | IDLE CONFIRM |
-| **QA** | - | **MERGED** | Phase 3 | CONDITIONAL PASS (4107/4124, 99.59%), Safety-Critical 100% |
-| **RA** | - | **MERGED** | Phase 4 | CMP v2.5 + RTM Trait 확인 완료 |
+| **Team A** | DISPATCH-S15-R1-TEAM-A.md | **ACTIVE** | Phase 1 | Update.Tests 5건 실패 수정 |
+| **Team B** | DISPATCH-S15-R1-TEAM-B.md | **ACTIVE** | Phase 1 | IDLE CONFIRM (테스트 전체 통과) |
+| **Coordinator** | DISPATCH-S15-R1-COORDINATOR.md | **QUEUED** | Phase 2 | SettingsViewModel + 통합테스트 9건 수정 |
+| **Design** | DISPATCH-S15-R1-DESIGN.md | **ACTIVE** | 별도 | UI Performance 테스트 수정 |
+| **QA** | DISPATCH-S15-R1-QA.md | **QUEUED** | Phase 3 | 전체 테스트 재검증 |
+| **RA** | DISPATCH-S15-R1-RA.md | **QUEUED** | Phase 4 | 규제 문서 영향 평가 |
 
-**→ S14-R2 ALL MERGED — 라운드 종료**
+**→ S15-R1 DISPATCH 발행 완료 — Phase 1 시작 (Team A + Team B + Design ACTIVE)**
 
 ---
 
@@ -83,9 +83,19 @@ _CURRENT.md에서 자신의 팀이:
 
 ---
 
-## CC 모니터링 프로토콜 v2.0 [HARD — S13-R2 개선]
+## CC 모니터링 프로토콜 v3.0 [HARD — S15 CronCreate 의무화]
 
-### CC 모니터링: 10분 간격
+### CC 세션 시작 시 [HARD — FIRST ACTION]
+
+```
+Step 0: git pull origin main
+Step 1: Read _CURRENT.md → ACTIVE 팀 확인
+Step 2: ACTIVE 팀 있으면 → 즉시 CronCreate("*/20 * * * *", "CC 20분 모니터링 루프")
+Step 3: ACTIVE 팀 없고 전팀 MERGED/IDLE → 갭 분석 → DISPATCH 발행 → CronCreate
+Step 4: CronCreate 미실행 = 프로토콜 위반
+```
+
+### CC 모니터링: 20분 간격 (CronCreate 자동 실행)
 
 ```
 1. git fetch origin
@@ -98,7 +108,7 @@ _CURRENT.md에서 자신의 팀이:
    d. Phase 4 팀(RA) COMPLETED → 머지 → 라운드 종료
    e. Design(별도) COMPLETED → 머지 (Phase 독립)
 5. Phase 오픈: 해당 팀 DISPATCH Status NOT_STARTED → ACTIVE 전환 + push
-6. 10분 후 다시 모니터링 (루프)
+6. 루프 종료 조건: 전팀 MERGED/IDLE → CronDelete 후 갭 분석 → DISPATCH 발행 → 새 CronCreate
 ```
 
 ### Phase 오픈 액션 [HARD]
@@ -111,10 +121,10 @@ CC가 Phase 진행 조건 충족 시:
 4. "Phase {N} 오픈: {team} ACTIVE 전환" 보고
 ```
 
-### 팀 상태 보고: 15분 간격 [HARD]
+### 팀 상태 보고: 20분 간격 [HARD]
 
 ```
-팀은 15분마다 자체 DISPATCH Status 확인 + 업데이트:
+팀은 20분마다 자체 DISPATCH Status 확인 + 업데이트:
 - 작업 시작 시: NOT_STARTED → IN_PROGRESS + push
 - 작업 진행 중: 진행 상황 메모 업데이트 (선택)
 - 작업 완료 시: IN_PROGRESS → COMPLETED + 빌드 증거 + push
@@ -139,8 +149,8 @@ CC가 Phase 진행 조건 충족 시:
 
 | 지표 | S13-R1 기준 | S13-R2 목표 | 개선 포인트 |
 |------|------------|------------|------------|
-| CC 모니터링 주기 | 15분 | **10분** | 감지 속도 33% 향상 |
-| 팀 보고 주기 | 15분 | **15분** | 유지 |
+| CC 모니터링 주기 | 15분 | **20분** | 단일 통일 주기 |
+| 팀 보고 주기 | 15분 | **20분** | 단일 통일 주기 |
 | Phase 진행 | 전팀 동시 | **순차** | 의존성 정렬 |
 | 라운드 소요 | ~2시간 | **1시간 30분** | 병목 감소 |
 | 전팀 MERGED→발행 | 즉시 | **5분 이내** | 유지 |
@@ -151,7 +161,7 @@ CC가 Phase 진행 조건 충족 시:
 
 ```
 DISPATCH 읽기 직후    → NOT_STARTED → IN_PROGRESS (즉시 push)
-작업 중 15분마다      → Status 확인 + 필요시 메모 업데이트
+작업 중 20분마다      → Status 확인 + 필요시 메모 업데이트
 작업 완료 후          → IN_PROGRESS → COMPLETED + 빌드 증거 (즉시 push)
 작업 불가 시          → NOT_STARTED → BLOCKED + 사유 기재 (즉시 push)
 ```
@@ -193,6 +203,7 @@ DISPATCH 읽기 직후    → NOT_STARTED → IN_PROGRESS (즉시 push)
 | **2026-04-20** | **S13 R2** | **ALL MERGED — QA COMPLETED (TEST 3599/3612, COV 22.98%)** |
 | **2026-04-20** | **S14 R1** | **ALL MERGED — QA CONDITIONAL PASS, RA COMPLETED** |
 | **2026-04-20** | **S14 R2** | **ALL MERGED — QA CONDITIONAL PASS(99.59%), RA CMP v2.5 완료** |
+| **2026-04-21** | **S15 R1** | **진행 중 — 15건 테스트 실패 수정 (A + Design → CO → QA → RA)** |
 
 ---
 
@@ -205,7 +216,7 @@ DISPATCH 읽기 직후    → NOT_STARTED → IN_PROGRESS (즉시 push)
 3. 이 표 업데이트 (Phase/QUEUED/ACTIVE 지정)
 4. Phase 1 팀 + Design만 ACTIVE, 나머지 QUEUED
 5. git add .moai/dispatches/ && git commit && git push origin main
-6. CC 모니터링 루프 즉시 시작 (10분 간격)
+6. CC 모니터링 루프 즉시 시작 (20분 간격)
 ```
 
 ### DISPATCH Status 테이블 표준 형식 (S14-R1~)
@@ -225,13 +236,13 @@ DISPATCH 읽기 직후    → NOT_STARTED → IN_PROGRESS (즉시 push)
 ### 발견된 문제
 1. **전팀 동시 시작**: 의존성 무시 → Coordinator가 A/B 코드 없이 통합테스트 작성
 2. **Design DISPATCH 관리 위반**: Design이 _CURRENT.md + QA DISPATCH 파일 수정 (S13-R1)
-3. **CC 모니터링 지연**: 15분 간격으로 COMPLETED 감지 지연
+3. **CC 모니터링 지연**: 이전 15분 간격로 COMPLETED 감지 지연
 
 ### 개선 조치
 1. **순차 스케줄링**: 의존성 기반 Phase 구조 (A,B → CO → QA → RA)
 2. **Design 독립 트랙**: 의존성 없으므로 Phase 1과 병렬 진행
-3. **CC 모니터링 10분**: 감지 속도 향상
+3. **CC 모니터링 20분**: 단일 통일 주기
 4. **DISPATCH 관리 강화**: Design 팀 역할 경계에 명시적 금지 항목 추가
 
-Updated: 2026-04-19 (S13-R2: 순차 스케줄링 v1.0 + CC 10분 모니터링)
+Updated: 2026-04-20 (20분 단일 통일 주기)
 DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/`
