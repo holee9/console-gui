@@ -47,8 +47,8 @@
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
         <Style x:Key="SideIconButtonStyle" TargetType="Button">
-            <Setter Property="Width" Value="38"/>
-            <Setter Property="Height" Value="38"/>
+            <Setter Property="Width" Value="44"/>
+            <Setter Property="Height" Value="44"/>
             <Setter Property="Margin" Value="0,0,6,6"/>
             <Setter Property="Background" Value="{DynamicResource HnVue.Semantic.Surface.Panel}"/>
             <Setter Property="BorderBrush" Value="{DynamicResource HnVue.Semantic.Border.Default}"/>
@@ -106,13 +106,13 @@
             <TextBlock Grid.Column="2" Text="&#xE76C;" FontFamily="Segoe MDL2 Assets" Foreground="{DynamicResource HnVue.Semantic.Text.Primary}" FontSize="26" VerticalAlignment="Center"/>
             <!-- PPT Slide 5: Period filter buttons with OutlineButton style -->
             <StackPanel Grid.Column="4" Orientation="Horizontal">
-                <Button Content="Today" Style="{StaticResource HnVue.OutlineButton}" Command="{Binding FilterByPeriodCommand}" CommandParameter="Today" Width="82" Height="32" Margin="0,0,6,0"/>
-                <Button Content="3Days" Style="{StaticResource HnVue.OutlineButton}" Command="{Binding FilterByPeriodCommand}" CommandParameter="3Days" Width="82" Height="32" Margin="0,0,6,0"/>
-                <Button Content="1Week" Style="{StaticResource HnVue.OutlineButton}" Command="{Binding FilterByPeriodCommand}" CommandParameter="1Week" Width="82" Height="32" Margin="0,0,6,0"/>
-                <Button Content="All" Style="{StaticResource HnVue.OutlineButton}" Command="{Binding FilterByPeriodCommand}" CommandParameter="All" Width="70" Height="32" Margin="0,0,6,0"/>
-                <Button Content="1Month" Style="{StaticResource HnVue.OutlineButton}" Command="{Binding FilterByPeriodCommand}" CommandParameter="1Month" Width="90" Height="32"/>
+                <Button Content="Today" Style="{StaticResource HnVue.OutlineButton}" Command="{Binding FilterByPeriodCommand}" CommandParameter="Today" Width="82" Height="32" Margin="0,0,6,0" AutomationProperties.Name="오늘 환자 목록"/>
+                <Button Content="3Days" Style="{StaticResource HnVue.OutlineButton}" Command="{Binding FilterByPeriodCommand}" CommandParameter="3Days" Width="82" Height="32" Margin="0,0,6,0" AutomationProperties.Name="최근 3일 환자 목록"/>
+                <Button Content="1Week" Style="{StaticResource HnVue.OutlineButton}" Command="{Binding FilterByPeriodCommand}" CommandParameter="1Week" Width="82" Height="32" Margin="0,0,6,0" AutomationProperties.Name="최근 1주 환자 목록"/>
+                <Button Content="All" Style="{StaticResource HnVue.OutlineButton}" Command="{Binding FilterByPeriodCommand}" CommandParameter="All" Width="70" Height="32" Margin="0,0,6,0" AutomationProperties.Name="전체 환자 목록"/>
+                <Button Content="1Month" Style="{StaticResource HnVue.OutlineButton}" Command="{Binding FilterByPeriodCommand}" CommandParameter="1Month" Width="90" Height="32" AutomationProperties.Name="최근 1개월 환자 목록"/>
             </StackPanel>
-            <DatePicker Grid.Column="5" Width="130" Height="32" Margin="12,0,6,0"/>
+            <DatePicker Grid.Column="5" Width="130" Height="32" Margin="12,0,6,0" AutomationProperties.Name="날짜 선택"/>
             <DatePicker Grid.Column="6" Width="130" Height="32"/>
         </Grid>
 
