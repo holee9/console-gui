@@ -40,9 +40,9 @@ S14-R2 통합 검증. Team A Trait 수정 후 통합빌드 확인.
 
 ## 5. Build Evidence
 
-**빌드 결과**: ✅ HnVue.sln 0 errors (모든 프로젝트 빌드 성공)
+**빌드 결과**: HnVue.sln 0 errors (모든 프로젝트 빌드 성공)
 
-**통합테스트 결과**: ❌ 175/179 passed (4 failures)
+**통합테스트 결과**: 175/179 passed (4 failures)
 
 **실패한 테스트**:
 1. `DiRegistrationIntegrationTests.DI_DomainServices_ResolveSuccessfully` - DI 등록 실패
@@ -63,3 +63,11 @@ S14-R2 통합 검증. Team A Trait 수정 후 통합빌드 확인.
 - [x] HnVue.sln 빌드 0 errors
 - [ ] 통합테스트 0 failures (4건 실패) (4건 실패로 미달성)
 - [x] DISPATCH Status에 빌드 증거 기록
+
+---
+
+## 6. 원인 분석 노트 (CC 기록)
+
+**Coordinator 브랜치 동기화 문제**: Coordinator가 Phase 1 Team A 머지 이전 시점의 main에서 분기하여 작업. Team A의 87개 Trait 추가가 브랜치에 누락됨. 결과적으로 diff에서 Team A 작업이 "삭제"로 표시됨 (실제 삭제가 아님). Coordinator 브랜치는 main으로 강제 동기화하여 무효화. DISPATCH 정보(통합테스트 결과)는 CC가 main에 보존.
+
+**재발 방지**: Phase 2 시작 전 `git pull origin main` + `git merge main` 필수 (team-common.md에 명시 예정)
