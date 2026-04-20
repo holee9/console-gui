@@ -43,7 +43,7 @@
 
 | 작업 ID | 설명 | 상태 | 할당자 | 우선순위 | 타임스탬프 | 비고 |
 |---------|------|------|--------|----------|-----------|------|
-| T1 | Dicom 커버리지 85%+ | NOT_STARTED | Team B | P0 | _ | Standard |
+| T1 | Dicom 커버리지 85%+ | IN_PROGRESS | Team B | P0 | 2026-04-20T20:30:00+09:00 | Standard |
 | T2 | Dose 커버리지 90%+ 유지 | NOT_STARTED | Team B | P1 | _ | Safety-Critical |
 | T3 | Workflow/PM 커버리지 85%+ | NOT_STARTED | Team B | P2 | _ | Standard |
 
