@@ -34,8 +34,8 @@ S14 품질 개선에 따른 규제 문서 동기화 + CMP 진행.
 
 | 작업 ID | 설명 | 상태 | 할당자 | 우선순위 | 타임스탬프 | 비고 |
 |---------|------|------|--------|----------|-----------|------|
-| T1 | RTM 업데이트 | NOT_STARTED | RA | P0 | _ | ACTIVE (CC 전환) |
-| T2 | DOC-042 CMP 진행 | NOT_STARTED | RA | P1 | _ | ACTIVE (CC 전환) |
+| T1 | RTM 업데이트 | IN_PROGRESS | RA | P0 | 2026-04-20T16:00:00+09:00 | Data.Tests 3건 수정 반영 |
+| T2 | DOC-042 CMP 진행 | IN_PROGRESS | RA | P1 | 2026-04-20T16:00:00+09:00 | Draft → Review 진행 |
 
 ---
 
