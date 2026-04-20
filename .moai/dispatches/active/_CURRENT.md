@@ -14,10 +14,10 @@
 | **Team B** | - | **MERGED** | Phase 1 | 208 tests (Imaging 143 + CDBurning 65) |
 | **Coordinator** | - | **MERGED** | Phase 2 | DI 등록 검증 + SettingsViewModel + 엔드투엔드 테스트 |
 | **Design** | - | **MERGED** | 별도 | StudylistView 접근성 + DoseDisplayView 개선 |
-| **QA** | DISPATCH-S13-R2-QA.md | **ACTIVE** | Phase 3 | Coordinator MERGED → Phase 3 오픈 |
-| **RA** | DISPATCH-S13-R2-RA.md | **MERGED** | Phase 4 | 이미 MERGED |
+| **QA** | - | **MERGED** | Phase 3 | BUILD 0에러, TEST 3599/3612, COV 22.98%, Arch 14/14 |
+| **RA** | - | **MERGED** | Phase 4 | 이미 MERGED |
 
-**→ Phase 1+2 완료 / Phase 3(QA) 오픈 / Design+RA MERGED**
+**→ S13-R2 전팀 MERGED — 라운드 종료**
 
 ---
 
@@ -190,7 +190,7 @@ DISPATCH 읽기 직후    → NOT_STARTED → IN_PROGRESS (즉시 push)
 | 2026-04-18~19 | S12 R1~R2 | ALL MERGED, QA PASS (100%) |
 | 2026-04-19 | S12 R3~R4 | ALL MERGED (IDLE CONFIRM) |
 | 2026-04-19 | S13 R1 | ALL MERGED — Coordinator + Design |
-| **2026-04-19** | **S13 R2** | **ACTIVE — 순차 스케줄링 v1.0** |
+| **2026-04-20** | **S13 R2** | **ALL MERGED — QA COMPLETED (TEST 3599/3612, COV 22.98%)** |
 
 ---
 
