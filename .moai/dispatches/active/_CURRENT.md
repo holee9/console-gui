@@ -14,8 +14,8 @@
 | **Team B** | - | **MERGED** | Phase 1 | T1~T3 COMPLETED (Dicom 83.8%, Dose 99.7%, WF 88.3%, PM 99.3%) |
 | **Coordinator** | - | **MERGED** | Phase 2 | T1~T3 COMPLETED (통합빌드 0에러, Dicom통합 15/15, DI확인) |
 | **Design** | - | **MERGED** | 별도 | T1+T2 COMPLETED (접근성 점검 + Mock 업데이트) |
-| **QA** | DISPATCH-S14-R1-QA.md | **ACTIVE** | Phase 3 | 빌드/테스트 게이트 + 커버리지 + 아키텍처 |
-| **RA** | DISPATCH-S14-R1-RA.md | **QUEUED** | Phase 4 | QA MERGED 후 ACTIVE |
+| **QA** | - | **MERGED** | Phase 3 | CONDITIONAL PASS (Build 0에러, Arch 14/14, dotnet test S14-R2 재검증) |
+| **RA** | DISPATCH-S14-R1-RA.md | **ACTIVE** | Phase 4 | RTM 업데이트 + DOC-042 CMP 진행 |
 
 **→ S14-R1 발행: Phase 1(Team A/B) + Design ACTIVE, 나머지 QUEUED**
 
