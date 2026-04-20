@@ -248,10 +248,12 @@ CC: 갭 분석 → 다음 라운드 6팀 DISPATCH 발행 → 반복
 | S09-R3 | CO+TD 교차 소유권 침범 | CO, TD | Coordinator가 Converters/DesignTime 수정, Design이 tests.integration/ 수정 + DISPATCH 파일 관리 충돌 | CC 머지 후 team 브랜치 동기화 의무화, DISPATCH 파일 CC 단독 관리, 머지 전 소유권 교차 검증 추가 |
 | S09-R3 | QA Status 업데이트 누락 | QA | QA가 작업 불가(node 없음) 상태를 DISPATCH에 BLOCKED로 업데이트 않고 NOT_STARTED 방치 → CC 12회 연속 대기만 반복 | DISPATCH Status 의무 업데이트, CC Stall Detection(3회→경고, 5회→사용자 조치요청), 자가점검 Q6 추가 |
 | S09-R3 | CC 임의 Status 변경 | CC | CC가 QA 확인 없이 DISPATCH Status를 BLOCKED로 임의 변경 → QA 실제 작업 중이었음 → 상태 왜곡 | CC는 팀 DISPATCH Status 임의 변경 금지, CC는 읽기만. Stall Detection도 경고만, 임의 BLOCKED 금지 |
+| S14-R2 | Coordinator main 동기화 누락 | CO | Phase 2 시작 시 Phase 1 Team A 머지 이전 base에서 분기 → Team A의 87개 Trait 추가 누락 → 소유권 위반으로 보이지만 실제는 구버전 base | Phase 전환 시 강제 `git pull origin main` + `git merge main` 의무화 (team-common.md) |
+| S14-R2 | QA 타팀 DISPATCH 수정 | QA | QA가 Design DISPATCH를 COMPLETED→NOT_STARTED로 되돌림 (구버전 base에서의 diff) | Phase 전환 시 강제 main 동기화 규칙으로 재발 방지 |
 
 ---
 
-Version: 2.0.0
+Version: 2.1.0
 Classification: CONSTITUTIONAL (FROZEN)
 Effective: 2026-04-14
-Source: S07-R4 사고교훈 + S08-R1 DesignTime 충돌 사고교훈
+Source: S07-R4 사고교훈 + S08-R1 DesignTime 충돌 사고교훈 + S14-R2 main 동기화 누락 사고교훈
