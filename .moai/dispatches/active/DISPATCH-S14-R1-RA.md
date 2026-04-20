@@ -2,7 +2,7 @@
 
 > **Sprint**: S14 | **Round**: 1 | **팀**: RA (Regulatory Affairs)
 > **발행일**: 2026-04-20
-> **상태**: QUEUED (Phase 4 — QA MERGED 후 ACTIVE 전환)
+> **상태**: ACTIVE (Phase 4 오픈 — QA CONDITIONAL PASS)
 
 ---
 
@@ -34,8 +34,8 @@ S14 품질 개선에 따른 규제 문서 동기화 + CMP 진행.
 
 | 작업 ID | 설명 | 상태 | 할당자 | 우선순위 | 타임스탬프 | 비고 |
 |---------|------|------|--------|----------|-----------|------|
-| T1 | RTM 업데이트 | NOT_STARTED | RA | P0 | _ | Phase 4 |
-| T2 | DOC-042 CMP 진행 | NOT_STARTED | RA | P1 | _ | Phase 4 |
+| T1 | RTM 업데이트 | NOT_STARTED | RA | P0 | _ | ACTIVE (CC 전환) |
+| T2 | DOC-042 CMP 진행 | NOT_STARTED | RA | P1 | _ | ACTIVE (CC 전환) |
 
 ---
 
