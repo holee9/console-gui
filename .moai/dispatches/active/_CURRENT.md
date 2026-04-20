@@ -15,7 +15,7 @@
 | **Coordinator** | - | **MERGED** | Phase 2 | T1~T3 COMPLETED (통합빌드 0에러, Dicom통합 15/15, DI확인) |
 | **Design** | - | **MERGED** | 별도 | T1+T2 COMPLETED (접근성 점검 + Mock 업데이트) |
 | **QA** | - | **MERGED** | Phase 3 | CONDITIONAL PASS (Build 0에러, Arch 14/14, dotnet test S14-R2 재검증) |
-| **RA** | DISPATCH-S14-R1-RA.md | **ACTIVE** | Phase 4 | RTM 업데이트 + DOC-042 CMP 진행 |
+| **RA** | - | **MERGED** | Phase 4 | T1+T2 COMPLETED (RTM 업데이트, CMP v2.4 Approved) |
 
 **→ S14-R1 발행: Phase 1(Team A/B) + Design ACTIVE, 나머지 QUEUED**
 
@@ -191,7 +191,7 @@ DISPATCH 읽기 직후    → NOT_STARTED → IN_PROGRESS (즉시 push)
 | 2026-04-19 | S12 R3~R4 | ALL MERGED (IDLE CONFIRM) |
 | 2026-04-19 | S13 R1 | ALL MERGED — Coordinator + Design |
 | **2026-04-20** | **S13 R2** | **ALL MERGED — QA COMPLETED (TEST 3599/3612, COV 22.98%)** |
-| **2026-04-20** | **S14 R1** | **ACTIVE — 갭 분석 기반 품질 개선** |
+| **2026-04-20** | **S14 R1** | **ALL MERGED — QA CONDITIONAL PASS, RA COMPLETED** |
 
 ---
 
