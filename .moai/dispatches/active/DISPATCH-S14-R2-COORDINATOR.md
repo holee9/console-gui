@@ -2,7 +2,7 @@
 
 > **Sprint**: S14 | **Round**: 2 | **팀**: Coordinator (Integration)
 > **발행일**: 2026-04-20
-> **상태**: QUEUED (Phase 2 — Team A, B 완료 후 ACTIVE)
+> **상태**: ACTIVE (Phase 2 오픈 — Team A, B MERGED)
 
 ---
 
