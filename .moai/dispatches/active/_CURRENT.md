@@ -10,9 +10,9 @@
 
 | 팀 | 현재 DISPATCH 파일 | 상태 | 스케줄 Phase | 비고 |
 |----|-------------------|------|-------------|------|
-| **Team A** | DISPATCH-S14-R2-TEAM-A.md | **ACTIVE** | Phase 1 | SecurityCoverageBoostV2Tests Trait 누락 수정 |
-| **Team B** | DISPATCH-S14-R2-TEAM-B.md | **ACTIVE** | Phase 1 | IDLE CONFIRM |
-| **Coordinator** | DISPATCH-S14-R2-COORDINATOR.md | **QUEUED** | Phase 2 | Team A+B 완료 후 ACTIVE |
+| **Team A** | - | **MERGED** | Phase 1 | 87개 Trait 수정, 373/373 pass, Security 90.04% |
+| **Team B** | - | **MERGED** | Phase 1 | IDLE CONFIRM — 추가 작업 없음 |
+| **Coordinator** | DISPATCH-S14-R2-COORDINATOR.md | **ACTIVE** | Phase 2 | Team A+B MERGED → Phase 2 오픈 |
 | **Design** | DISPATCH-S14-R2-DESIGN.md | **ACTIVE** | 별도 | IDLE CONFIRM |
 | **QA** | DISPATCH-S14-R2-QA.md | **QUEUED** | Phase 3 | Coordinator 완료 후 ACTIVE |
 | **RA** | DISPATCH-S14-R2-RA.md | **QUEUED** | Phase 4 | QA 완료 후 ACTIVE |

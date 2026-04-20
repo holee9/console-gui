@@ -2,7 +2,7 @@
 
 > **Sprint**: S14 | **Round**: 2 | **팀**: Coordinator (Integration)
 > **발행일**: 2026-04-20
-> **상태**: QUEUED (Phase 2 — Team A, B 완료 후 ACTIVE)
+> **상태**: ACTIVE (Phase 2 오픈 — Team A, B MERGED)
 
 ---
 
@@ -26,7 +26,7 @@ S14-R2 통합 검증. Team A Trait 수정 후 통합빌드 확인.
 
 | 작업 ID | 설명 | 상태 | 할당자 | 우선순위 | 타임스탬프 | 비고 |
 |---------|------|------|--------|----------|-----------|------|
-| T1 | 통합빌드 + 통합테스트 확인 | NOT_STARTED | Coordinator | P0 | _ | Phase 2 |
+| T1 | 통합빌드 + 통합테스트 확인 | IN_PROGRESS | Coordinator | P0 | 2026-04-20T23:35:00+09:00 | Phase 2 |
 
 ---
 
