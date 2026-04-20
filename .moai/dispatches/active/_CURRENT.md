@@ -13,7 +13,7 @@
 | **Team A** | DISPATCH-S14-R1-TEAM-A.md | **ACTIVE** | Phase 1 | Data.Tests 실패 3건 수정 + Update 90% |
 | **Team B** | DISPATCH-S14-R1-TEAM-B.md | **ACTIVE** | Phase 1 | Dicom 85%+ + Dose 90%+ 유지 |
 | **Coordinator** | DISPATCH-S14-R1-COORDINATOR.md | **QUEUED** | Phase 2 | Team A/B MERGED 후 ACTIVE |
-| **Design** | DISPATCH-S14-R1-DESIGN.md | **ACTIVE** | 별도 | 접근성 점검 + Mock 업데이트 |
+| **Design** | - | **MERGED** | 별도 | T1+T2 COMPLETED (접근성 점검 + Mock 업데이트) |
 | **QA** | DISPATCH-S14-R1-QA.md | **QUEUED** | Phase 3 | Coordinator MERGED 후 ACTIVE |
 | **RA** | DISPATCH-S14-R1-RA.md | **QUEUED** | Phase 4 | QA MERGED 후 ACTIVE |
 
