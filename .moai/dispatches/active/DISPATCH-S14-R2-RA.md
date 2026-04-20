@@ -33,8 +33,8 @@ S14-R2 규제 문서 동기화: CMP v2.5 반영 + RTM Trait 수정 확인.
 
 | 작업 ID | 설명 | 상태 | 할당자 | 우선순위 | 타임스탬프 | 비고 |
 |---------|------|------|--------|----------|-----------|------|
-| T1 | CMP v2.5 업데이트 | IN_PROGRESS | RA | P1 | 2026-04-20T15:30:00+09:00 | Phase 4 |
-| T2 | RTM Trait 수정 확인 | IN_PROGRESS | RA | P0 | 2026-04-20T15:30:00+09:00 | Phase 4 |
+| T1 | CMP v2.5 업데이트 | COMPLETED | RA | P1 | 2026-04-20T16:00:00+09:00 | v2.5 작성 완료, Team A Trait 수정 + QA CONDITIONAL PASS 반영 |
+| T2 | RTM Trait 수정 확인 | COMPLETED | RA | P0 | 2026-04-20T16:00:00+09:00 | RTM v2.2 확인: SecurityCoverageBoostV2Tests Trait 누락, v2.8 업데이트 필요 |
 
 ---
 
