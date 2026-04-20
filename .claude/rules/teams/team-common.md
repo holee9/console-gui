@@ -20,6 +20,21 @@ Step 4: If your team shows IDLE or no active entry → Report IDLE to Commander 
 - [HARD] 작업이 완료된 후 새 DISPATCH가 없으면 Commander Center에 IDLE 보고하고 대기한다
 - [HARD] DISPATCH 파일 경로는 항상 Main 프로젝트 절대경로 기준: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/`
 
+### Phase 전환 시 강제 main 동기화 [HARD — S14-R2 사고교훈]
+
+**QUEUED → ACTIVE 전환 감지 시 반드시 실행. 미실행 시 이전 Phase 팀의 작업이 누락됨.**
+
+```
+QUEUED → ACTIVE 감지 시:
+1. git pull origin main        ← CC의 머지 포함 최신 코드 확보
+2. git merge main              ← team 브랜치에 최신 main 반영
+3. 이후에만 DISPATCH 읽기 + 작업 시작
+```
+
+- [HARD] Phase 2+ 팀은 ACTIVE 감지 후 **반드시 `git pull origin main` + `git merge main`** 실행
+- [HARD] 이전 Phase 팀의 머지가 브랜치에 아직 반영되지 않았을 수 있음 — pull 없이 작업 시작 = 구버전 base 위험
+- [HARD] S14-R2 사고: Coordinator가 Phase 1 Team A 머지 이전 base에서 분기 → Team A의 87개 Trait 추가가 누락 → diff에서 "삭제"로 표시
+
 **IDLE 보고 형식:**
 ```
 [TIMESTAMP] 2026-04-19T14:30:00+09:00
