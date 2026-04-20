@@ -42,9 +42,9 @@ Team A/B 품질 개선 완료 후 통합 검증 + Dicom 통합테스트 추가.
 
 | 작업 ID | 설명 | 상태 | 할당자 | 우선순위 | 타임스탬프 | 비고 |
 |---------|------|------|--------|----------|-----------|------|
-| T1 | 통합 빌드 검증 | NOT_STARTED | Coordinator | P0 | _ | ACTIVE (CC 전환) |
-| T2 | Dicom 통합테스트 | NOT_STARTED | Coordinator | P1 | _ | ACTIVE (CC 전환) |
-| T3 | DI 등록 누락 확인 | NOT_STARTED | Coordinator | P2 | _ | ACTIVE (CC 전환) |
+| T1 | 통합 빌드 검증 | IN_PROGRESS | Coordinator | P0 | 2026-04-20T15:45:00+09:00 | 작업 시작 |
+| T2 | Dicom 통합테스트 | IN_PROGRESS | Coordinator | P1 | 2026-04-20T15:45:00+09:00 | 작업 시작 |
+| T3 | DI 등록 누락 확인 | IN_PROGRESS | Coordinator | P2 | 2026-04-20T15:45:00+09:00 | 작업 시작 |
 
 ---
 
