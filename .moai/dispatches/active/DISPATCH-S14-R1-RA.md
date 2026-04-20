@@ -34,8 +34,8 @@ S14 품질 개선에 따른 규제 문서 동기화 + CMP 진행.
 
 | 작업 ID | 설명 | 상태 | 할당자 | 우선순위 | 타임스탬프 | 비고 |
 |---------|------|------|--------|----------|-----------|------|
-| T1 | RTM 업데이트 | IN_PROGRESS | RA | P0 | 2026-04-20T16:00:00+09:00 | Data.Tests 3건 수정 반영 |
-| T2 | DOC-042 CMP 진행 | IN_PROGRESS | RA | P1 | 2026-04-20T16:00:00+09:00 | Draft → Review 진행 |
+| T1 | RTM 업데이트 | COMPLETED | RA | P0 | 2026-04-20T16:15:00+09:00 | SecurityCoverageBoostV2Tests Trait 누락 분석 완료, Team A 조치 요청 필요 |
+| T2 | DOC-042 CMP 진행 | COMPLETED | RA | P1 | 2026-04-20T16:15:00+09:00 | v2.4 Approved 확인, v2.5 S14-R1 반영 필요 |
 
 ---
 
