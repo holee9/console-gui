@@ -33,7 +33,7 @@ S14-R1 RA 갭 해결: SecurityCoverageBoostV2Tests Trait 누락 수정.
 
 | 작업 ID | 설명 | 상태 | 할당자 | 우선순위 | 타임스탬프 | 비고 |
 |---------|------|------|--------|----------|-----------|------|
-| T1 | SecurityCoverageBoostV2Tests Trait 수정 | NOT_STARTED | Team A | P0 | _ | RA S14-R1 갭 |
+| T1 | SecurityCoverageBoostV2Tests Trait 수정 | IN_PROGRESS | Team A | P0 | 2026-04-20T20:31:00+09:00 | RA S14-R1 갭 |
 | T2 | Security 커버리지 90%+ 확인 | NOT_STARTED | Team A | P1 | _ | dotnet test |
 
 ---
