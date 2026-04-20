@@ -1,4 +1,4 @@
-# DISPATCH Current Index — S14-R1
+# DISPATCH Current Index — S14-R2
 
 > **[HARD] 에이전트 FIRST ACTION**: 이 파일을 가장 먼저 읽는다.
 > 자신의 팀 행(row)에서 파일명을 확인한 뒤, 해당 파일만 읽는다.
@@ -10,14 +10,14 @@
 
 | 팀 | 현재 DISPATCH 파일 | 상태 | 스케줄 Phase | 비고 |
 |----|-------------------|------|-------------|------|
-| **Team A** | - | **MERGED** | Phase 1 | T1~T3 COMPLETED (Data 333/333, Update 90.21%, Security 90.04%) |
-| **Team B** | - | **MERGED** | Phase 1 | T1~T3 COMPLETED (Dicom 83.8%, Dose 99.7%, WF 88.3%, PM 99.3%) |
-| **Coordinator** | - | **MERGED** | Phase 2 | T1~T3 COMPLETED (통합빌드 0에러, Dicom통합 15/15, DI확인) |
-| **Design** | - | **MERGED** | 별도 | T1+T2 COMPLETED (접근성 점검 + Mock 업데이트) |
-| **QA** | - | **MERGED** | Phase 3 | CONDITIONAL PASS (Build 0에러, Arch 14/14, dotnet test S14-R2 재검증) |
-| **RA** | DISPATCH-S14-R1-RA.md | **ACTIVE** | Phase 4 | RTM 업데이트 + DOC-042 CMP 진행 |
+| **Team A** | DISPATCH-S14-R2-TEAM-A.md | **ACTIVE** | Phase 1 | SecurityCoverageBoostV2Tests Trait 누락 수정 |
+| **Team B** | DISPATCH-S14-R2-TEAM-B.md | **ACTIVE** | Phase 1 | IDLE CONFIRM |
+| **Coordinator** | DISPATCH-S14-R2-COORDINATOR.md | **QUEUED** | Phase 2 | Team A+B 완료 후 ACTIVE |
+| **Design** | DISPATCH-S14-R2-DESIGN.md | **ACTIVE** | 별도 | IDLE CONFIRM |
+| **QA** | DISPATCH-S14-R2-QA.md | **QUEUED** | Phase 3 | Coordinator 완료 후 ACTIVE |
+| **RA** | DISPATCH-S14-R2-RA.md | **QUEUED** | Phase 4 | QA 완료 후 ACTIVE |
 
-**→ S14-R1 발행: Phase 1(Team A/B) + Design ACTIVE, 나머지 QUEUED**
+**→ S14-R2 발행: Phase 1(Team A/B) + Design ACTIVE, 나머지 QUEUED**
 
 ---
 
@@ -191,7 +191,8 @@ DISPATCH 읽기 직후    → NOT_STARTED → IN_PROGRESS (즉시 push)
 | 2026-04-19 | S12 R3~R4 | ALL MERGED (IDLE CONFIRM) |
 | 2026-04-19 | S13 R1 | ALL MERGED — Coordinator + Design |
 | **2026-04-20** | **S13 R2** | **ALL MERGED — QA COMPLETED (TEST 3599/3612, COV 22.98%)** |
-| **2026-04-20** | **S14 R1** | **ACTIVE — 갭 분석 기반 품질 개선** |
+| **2026-04-20** | **S14 R1** | **ALL MERGED — QA CONDITIONAL PASS, RA COMPLETED** |
+| **2026-04-20** | **S14 R2** | **ACTIVE — Trait 수정 + 테스트/커버리지 재검증** |
 
 ---
 
