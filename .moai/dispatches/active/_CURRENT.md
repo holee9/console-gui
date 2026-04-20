@@ -1,4 +1,4 @@
-# DISPATCH Current Index — S14-R2
+# DISPATCH Current Index — S14-R2 완료
 
 > **[HARD] 에이전트 FIRST ACTION**: 이 파일을 가장 먼저 읽는다.
 > 자신의 팀 행(row)에서 파일명을 확인한 뒤, 해당 파일만 읽는다.
@@ -13,11 +13,11 @@
 | **Team A** | - | **MERGED** | Phase 1 | 87개 Trait 수정, 373/373 pass, Security 90.04% |
 | **Team B** | - | **MERGED** | Phase 1 | IDLE CONFIRM — 추가 작업 없음 |
 | **Coordinator** | - | **MERGED** | Phase 2 | PARTIAL: 4 tests failed (Dose Safety-Critical 포함) |
-| **Design** | DISPATCH-S14-R2-DESIGN.md | **ACTIVE** | 별도 | IDLE CONFIRM |
+| **Design** | - | **MERGED** | 별도 | IDLE CONFIRM |
 | **QA** | - | **MERGED** | Phase 3 | CONDITIONAL PASS (4107/4124, 99.59%), Safety-Critical 100% |
-| **RA** | DISPATCH-S14-R2-RA.md | **ACTIVE** | Phase 4 | QA MERGED → Phase 4 오픈 |
+| **RA** | - | **MERGED** | Phase 4 | CMP v2.5 + RTM Trait 확인 완료 |
 
-**→ S14-R2 발행: Phase 1(Team A/B) + Design ACTIVE, 나머지 QUEUED**
+**→ S14-R2 ALL MERGED — 라운드 종료**
 
 ---
 
@@ -192,7 +192,7 @@ DISPATCH 읽기 직후    → NOT_STARTED → IN_PROGRESS (즉시 push)
 | 2026-04-19 | S13 R1 | ALL MERGED — Coordinator + Design |
 | **2026-04-20** | **S13 R2** | **ALL MERGED — QA COMPLETED (TEST 3599/3612, COV 22.98%)** |
 | **2026-04-20** | **S14 R1** | **ALL MERGED — QA CONDITIONAL PASS, RA COMPLETED** |
-| **2026-04-20** | **S14 R2** | **ACTIVE — Trait 수정 + 테스트/커버리지 재검증** |
+| **2026-04-20** | **S14 R2** | **ALL MERGED — QA CONDITIONAL PASS(99.59%), RA CMP v2.5 완료** |
 
 ---
 
