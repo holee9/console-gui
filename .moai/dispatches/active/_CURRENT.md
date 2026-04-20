@@ -14,8 +14,8 @@
 | **Team B** | - | **MERGED** | Phase 1 | IDLE CONFIRM — 추가 작업 없음 |
 | **Coordinator** | - | **MERGED** | Phase 2 | PARTIAL: 4 tests failed (Dose Safety-Critical 포함) |
 | **Design** | DISPATCH-S14-R2-DESIGN.md | **ACTIVE** | 별도 | IDLE CONFIRM |
-| **QA** | DISPATCH-S14-R2-QA.md | **ACTIVE** | Phase 3 | Coordinator MERGED → Phase 3 오픈 |
-| **RA** | DISPATCH-S14-R2-RA.md | **QUEUED** | Phase 4 | QA 완료 후 ACTIVE |
+| **QA** | - | **MERGED** | Phase 3 | CONDITIONAL PASS (4107/4124, 99.59%), Safety-Critical 100% |
+| **RA** | DISPATCH-S14-R2-RA.md | **ACTIVE** | Phase 4 | QA MERGED → Phase 4 오픈 |
 
 **→ S14-R2 발행: Phase 1(Team A/B) + Design ACTIVE, 나머지 QUEUED**
 

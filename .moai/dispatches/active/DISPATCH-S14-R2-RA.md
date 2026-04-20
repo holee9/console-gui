@@ -2,7 +2,7 @@
 
 > **Sprint**: S14 | **Round**: 2 | **팀**: RA (Regulatory Affairs)
 > **발행일**: 2026-04-20
-> **상태**: QUEUED (Phase 4 — QA 완료 후 ACTIVE)
+> **상태**: ACTIVE (Phase 4 오픈 — QA MERGED)
 
 ---
 
