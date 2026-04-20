@@ -1,4 +1,4 @@
-# DISPATCH Current Index — S13-R2
+# DISPATCH Current Index — S14-R1
 
 > **[HARD] 에이전트 FIRST ACTION**: 이 파일을 가장 먼저 읽는다.
 > 자신의 팀 행(row)에서 파일명을 확인한 뒤, 해당 파일만 읽는다.
@@ -10,14 +10,14 @@
 
 | 팀 | 현재 DISPATCH 파일 | 상태 | 스케줄 Phase | 비고 |
 |----|-------------------|------|-------------|------|
-| **Team A** | - | **MERGED** | Phase 1 | 78 tests (Update 40 + SystemAdmin 38) |
-| **Team B** | - | **MERGED** | Phase 1 | 208 tests (Imaging 143 + CDBurning 65) |
-| **Coordinator** | - | **MERGED** | Phase 2 | DI 등록 검증 + SettingsViewModel + 엔드투엔드 테스트 |
-| **Design** | - | **MERGED** | 별도 | StudylistView 접근성 + DoseDisplayView 개선 |
-| **QA** | - | **MERGED** | Phase 3 | BUILD 0에러, TEST 3599/3612, COV 22.98%, Arch 14/14 |
-| **RA** | - | **MERGED** | Phase 4 | 이미 MERGED |
+| **Team A** | DISPATCH-S14-R1-TEAM-A.md | **ACTIVE** | Phase 1 | Data.Tests 실패 3건 수정 + Update 90% |
+| **Team B** | DISPATCH-S14-R1-TEAM-B.md | **ACTIVE** | Phase 1 | Dicom 85%+ + Dose 90%+ 유지 |
+| **Coordinator** | DISPATCH-S14-R1-COORDINATOR.md | **QUEUED** | Phase 2 | Team A/B MERGED 후 ACTIVE |
+| **Design** | DISPATCH-S14-R1-DESIGN.md | **ACTIVE** | 별도 | 접근성 점검 + Mock 업데이트 |
+| **QA** | DISPATCH-S14-R1-QA.md | **QUEUED** | Phase 3 | Coordinator MERGED 후 ACTIVE |
+| **RA** | DISPATCH-S14-R1-RA.md | **QUEUED** | Phase 4 | QA MERGED 후 ACTIVE |
 
-**→ S13-R2 전팀 MERGED — 라운드 종료**
+**→ S14-R1 발행: Phase 1(Team A/B) + Design ACTIVE, 나머지 QUEUED**
 
 ---
 
@@ -191,6 +191,7 @@ DISPATCH 읽기 직후    → NOT_STARTED → IN_PROGRESS (즉시 push)
 | 2026-04-19 | S12 R3~R4 | ALL MERGED (IDLE CONFIRM) |
 | 2026-04-19 | S13 R1 | ALL MERGED — Coordinator + Design |
 | **2026-04-20** | **S13 R2** | **ALL MERGED — QA COMPLETED (TEST 3599/3612, COV 22.98%)** |
+| **2026-04-20** | **S14 R1** | **ACTIVE — 갭 분석 기반 품질 개선** |
 
 ---
 
