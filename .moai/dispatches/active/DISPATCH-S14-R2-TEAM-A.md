@@ -33,20 +33,37 @@ S14-R1 RA 갭 해결: SecurityCoverageBoostV2Tests Trait 누락 수정.
 
 | 작업 ID | 설명 | 상태 | 할당자 | 우선순위 | 타임스탬프 | 비고 |
 |---------|------|------|--------|----------|-----------|------|
-| T1 | SecurityCoverageBoostV2Tests Trait 수정 | IN_PROGRESS | Team A | P0 | 2026-04-20T20:31:00+09:00 | RA S14-R1 갭 |
-| T2 | Security 커버리지 90%+ 확인 | NOT_STARTED | Team A | P1 | _ | dotnet test |
+| T1 | SecurityCoverageBoostV2Tests Trait 수정 | COMPLETED | Team A | P0 | 2026-04-20T20:35:00+09:00 | 87개 Trait 추가, build 0 err, test 373/373 pass |
+| T2 | Security 커버리지 90%+ 확인 | COMPLETED | Team A | P1 | 2026-04-20T20:38:00+09:00 | Security 90.04% 달성 |
 
 ---
 
 ## 4. 완료 조건
 
-- [ ] SecurityCoverageBoostV2Tests Trait 어노테이션 누락 전부 수정
-- [ ] dotnet test 0 failures
-- [ ] Security 모듈 커버리지 90%+ 유지
-- [ ] DISPATCH Status에 빌드 증거 기록
+- [x] SecurityCoverageBoostV2Tests Trait 어노테이션 누락 전부 수정
+- [x] dotnet test 0 failures
+- [x] Security 모듈 커버리지 90%+ 유지
+- [x] DISPATCH Status에 빌드 증거 기록
 
 ---
 
 ## 5. Build Evidence
 
-_(작업 완료 후 기록)_
+### T1: SecurityCoverageBoostV2Tests Trait 수정
+- **파일**: `tests/HnVue.Security.Tests/SecurityCoverageBoostV2Tests.cs`
+- **변경**: 87개 테스트 메서드에 `[Trait("SWR", "SWR-xxx")]` 추가
+- **SWR 매핑**:
+  - PhiMaskingService → SWR-CS-080 (PHI 보호)
+  - RateLimitingService → SWR-CS-071 (계정 잠금)
+  - RoleElevationValidator → SWR-SA-060 (RBAC)
+  - TlsConnectionService → SWR-SEC-002 (TLS)
+  - PhiEncryptionService → SWR-CS-080 (PHI 암호화)
+  - ReauthenticateAsync → SWR-CS-076 (Quick PIN)
+  - AuditService → SWR-SA-072 (Audit Trail)
+  - ServiceCollectionExtensions → SWR-CS-070 (인증 인프라)
+- **Build**: 0 errors, 1693 warnings (SA1600 기존)
+- **Tests**: 373/373 passed, 0 failed, 0 skipped
+
+### T2: 커버리지 확인
+- **Security 모듈**: 90.04% (목표 90%+ 달성)
+- **cobertura**: `tests/HnVue.Security.Tests/TestResults/bbbca5a7/coverage.cobertura.xml`

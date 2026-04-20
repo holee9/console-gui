@@ -26,6 +26,7 @@ public sealed class SecurityCoverageBoostV2Tests
 {
     // ── PhiMaskingService ──────────────────────────────────────────────────────
 
+    [Trait("SWR", "SWR-CS-080")]
     [Fact]
     public void MaskName_KoreanName_MasksSurname()
     {
@@ -34,6 +35,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.Should().Be("홍**");
     }
 
+    [Trait("SWR", "SWR-CS-080")]
     [Fact]
     public void MaskName_KoreanTwoCharName_MasksGiven()
     {
@@ -42,6 +44,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.Should().Be("김*");
     }
 
+    [Trait("SWR", "SWR-CS-080")]
     [Fact]
     public void MaskName_EnglishName_MasksRest()
     {
@@ -50,6 +53,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.Should().Be("J*******");
     }
 
+    [Trait("SWR", "SWR-CS-080")]
     [Fact]
     public void MaskName_SingleChar_ReturnsStar()
     {
@@ -58,6 +62,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.Should().Be("*");
     }
 
+    [Trait("SWR", "SWR-CS-080")]
     [Fact]
     public void MaskName_Null_ReturnsNull()
     {
@@ -66,6 +71,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.Should().BeNull();
     }
 
+    [Trait("SWR", "SWR-CS-080")]
     [Fact]
     public void MaskName_Empty_ReturnsEmpty()
     {
@@ -74,6 +80,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.Should().BeEmpty();
     }
 
+    [Trait("SWR", "SWR-CS-080")]
     [Fact]
     public void MaskName_Whitespace_ReturnsSame()
     {
@@ -82,6 +89,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.Should().Be("   ");
     }
 
+    [Trait("SWR", "SWR-CS-080")]
     [Fact]
     public void MaskNationalId_ValidFormat_MasksLast7()
     {
@@ -90,6 +98,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.Should().Be("900101-*******");
     }
 
+    [Trait("SWR", "SWR-CS-080")]
     [Fact]
     public void MaskNationalId_NoHyphen_MasksLast7()
     {
@@ -98,6 +107,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.Should().Be("900101-*******");
     }
 
+    [Trait("SWR", "SWR-CS-080")]
     [Fact]
     public void MaskNationalId_ShortValue_MasksAll()
     {
@@ -106,6 +116,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.Should().Be("*****");
     }
 
+    [Trait("SWR", "SWR-CS-080")]
     [Fact]
     public void MaskNationalId_Null_ReturnsNull()
     {
@@ -114,6 +125,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.Should().BeNull();
     }
 
+    [Trait("SWR", "SWR-CS-080")]
     [Fact]
     public void MaskNationalId_LongNonMatching_FallbackMask()
     {
@@ -122,6 +134,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.Should().Be("ABCDEF******");
     }
 
+    [Trait("SWR", "SWR-CS-080")]
     [Fact]
     public void MaskPhone_KoreanFormat_MasksLast4()
     {
@@ -130,6 +143,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.Should().Be("010-1234-****");
     }
 
+    [Trait("SWR", "SWR-CS-080")]
     [Fact]
     public void MaskPhone_NoHyphen_MasksLast4()
     {
@@ -138,6 +152,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.Should().Be("02-123-****");
     }
 
+    [Trait("SWR", "SWR-CS-080")]
     [Fact]
     public void MaskPhone_ShortValue_MasksAll()
     {
@@ -146,6 +161,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.Should().Be("***");
     }
 
+    [Trait("SWR", "SWR-CS-080")]
     [Fact]
     public void MaskPhone_Null_ReturnsNull()
     {
@@ -154,6 +170,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.Should().BeNull();
     }
 
+    [Trait("SWR", "SWR-CS-080")]
     [Fact]
     public void MaskPhone_FallbackLong_MasksLast4()
     {
@@ -162,6 +179,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.Should().Be("+1-234-567-****");
     }
 
+    [Trait("SWR", "SWR-CS-080")]
     [Fact]
     public void MaskDateOfBirth_ValidDate_MasksMonthDay()
     {
@@ -170,6 +188,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.Should().Be("1990-**-**");
     }
 
+    [Trait("SWR", "SWR-CS-080")]
     [Fact]
     public void MaskDateOfBirth_NoHyphen_MasksMonthDay()
     {
@@ -178,6 +197,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.Should().Be("1990-**-**");
     }
 
+    [Trait("SWR", "SWR-CS-080")]
     [Fact]
     public void MaskDateOfBirth_Null_ReturnsNull()
     {
@@ -186,6 +206,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.Should().BeNull();
     }
 
+    [Trait("SWR", "SWR-CS-080")]
     [Fact]
     public void MaskDateOfBirth_InvalidFormat_ReturnsOriginal()
     {
@@ -194,6 +215,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.Should().Be("Jan 15, 1990");
     }
 
+    [Trait("SWR", "SWR-CS-080")]
     [Fact]
     public void MaskPatientDisplay_NonNull_ReturnsSame()
     {
@@ -202,6 +224,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.Should().Be("patient info");
     }
 
+    [Trait("SWR", "SWR-CS-080")]
     [Fact]
     public void MaskPatientDisplay_Null_ReturnsNull()
     {
@@ -212,6 +235,7 @@ public sealed class SecurityCoverageBoostV2Tests
 
     // ── RateLimitingService ────────────────────────────────────────────────────
 
+    [Trait("SWR", "SWR-CS-071")]
     [Fact]
     public void CheckRateLimit_DefaultAllows_UpToLimit()
     {
@@ -223,6 +247,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.IsFailure.Should().BeTrue();
     }
 
+    [Trait("SWR", "SWR-CS-071")]
     [Fact]
     public void CheckRateLimit_LoginPolicy_Allows10Attempts()
     {
@@ -233,6 +258,7 @@ public sealed class SecurityCoverageBoostV2Tests
         sut.CheckRateLimit("LOGIN", "user1").IsFailure.Should().BeTrue();
     }
 
+    [Trait("SWR", "SWR-CS-071")]
     [Fact]
     public void CheckRateLimit_ExposurePolicy_Allows30Attempts()
     {
@@ -243,6 +269,7 @@ public sealed class SecurityCoverageBoostV2Tests
         sut.CheckRateLimit("EXPOSURE", "device1").IsFailure.Should().BeTrue();
     }
 
+    [Trait("SWR", "SWR-CS-071")]
     [Fact]
     public void CheckRateLimit_PasswordChangePolicy_Allows5()
     {
@@ -253,6 +280,7 @@ public sealed class SecurityCoverageBoostV2Tests
         sut.CheckRateLimit("PASSWORD_CHANGE", "user1").IsFailure.Should().BeTrue();
     }
 
+    [Trait("SWR", "SWR-CS-071")]
     [Fact]
     public void CheckRateLimit_PinVerifyPolicy_Allows5()
     {
@@ -263,6 +291,7 @@ public sealed class SecurityCoverageBoostV2Tests
         sut.CheckRateLimit("PIN_VERIFY", "user1").IsFailure.Should().BeTrue();
     }
 
+    [Trait("SWR", "SWR-CS-071")]
     [Fact]
     public void CheckRateLimit_DifferentKeys_IndependentCounters()
     {
@@ -272,6 +301,7 @@ public sealed class SecurityCoverageBoostV2Tests
         sut.CheckRateLimit("TEST", "key2").IsSuccess.Should().BeTrue();
     }
 
+    [Trait("SWR", "SWR-CS-071")]
     [Fact]
     public void CheckRateLimit_NullOperation_Throws()
     {
@@ -280,6 +310,7 @@ public sealed class SecurityCoverageBoostV2Tests
         act.Should().Throw<ArgumentException>();
     }
 
+    [Trait("SWR", "SWR-CS-071")]
     [Fact]
     public void CheckRateLimit_NullKey_Throws()
     {
@@ -288,6 +319,7 @@ public sealed class SecurityCoverageBoostV2Tests
         act.Should().Throw<ArgumentException>();
     }
 
+    [Trait("SWR", "SWR-CS-071")]
     [Fact]
     public void Reset_AllowsNewAttempts()
     {
@@ -301,6 +333,7 @@ public sealed class SecurityCoverageBoostV2Tests
 
     // ── RoleElevationValidator ──────────────────────────────────────────────────
 
+    [Trait("SWR", "SWR-SA-060")]
     [Fact]
     public void ValidateRoleAssignment_AdminCannotAssignAdmin()
     {
@@ -308,6 +341,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.IsFailure.Should().BeTrue();
     }
 
+    [Trait("SWR", "SWR-SA-060")]
     [Fact]
     public void ValidateRoleAssignment_AdminCannotAssignService()
     {
@@ -315,6 +349,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.IsFailure.Should().BeTrue();
     }
 
+    [Trait("SWR", "SWR-SA-060")]
     [Fact]
     public void ValidateRoleAssignment_AdminCanAssignRadiologist()
     {
@@ -322,6 +357,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.IsSuccess.Should().BeTrue();
     }
 
+    [Trait("SWR", "SWR-SA-060")]
     [Fact]
     public void ValidateRoleAssignment_AdminCanAssignRadiographer()
     {
@@ -329,6 +365,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.IsSuccess.Should().BeTrue();
     }
 
+    [Trait("SWR", "SWR-SA-060")]
     [Fact]
     public void ValidateRoleAssignment_RadiologistCannotAssignRadiologist()
     {
@@ -336,6 +373,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.IsFailure.Should().BeTrue();
     }
 
+    [Trait("SWR", "SWR-SA-060")]
     [Fact]
     public void ValidateRoleAssignment_RadiologistCanAssignRadiographer()
     {
@@ -343,6 +381,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.IsSuccess.Should().BeTrue();
     }
 
+    [Trait("SWR", "SWR-SA-060")]
     [Fact]
     public void ValidateRoleAssignment_RadiographerCannotAssignRadiologist()
     {
@@ -350,6 +389,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.IsFailure.Should().BeTrue();
     }
 
+    [Trait("SWR", "SWR-SA-060")]
     [Fact]
     public void ValidateRoleAssignment_ServiceCannotAssignAdmin()
     {
@@ -357,6 +397,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.IsFailure.Should().BeTrue();
     }
 
+    [Trait("SWR", "SWR-SA-060")]
     [Fact]
     public void ValidateRoleAssignment_ServiceCanAssignRadiographer()
     {
@@ -364,6 +405,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.IsSuccess.Should().BeTrue();
     }
 
+    [Trait("SWR", "SWR-SA-060")]
     [Fact]
     public void ValidateNoSelfElevation_HigherRole_Blocked()
     {
@@ -371,6 +413,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.IsFailure.Should().BeTrue();
     }
 
+    [Trait("SWR", "SWR-SA-060")]
     [Fact]
     public void ValidateNoSelfElevation_SameRole_Allowed()
     {
@@ -378,6 +421,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.IsSuccess.Should().BeTrue();
     }
 
+    [Trait("SWR", "SWR-SA-060")]
     [Fact]
     public void ValidateNoSelfElevation_LowerRole_Allowed()
     {
@@ -385,24 +429,28 @@ public sealed class SecurityCoverageBoostV2Tests
         result.IsSuccess.Should().BeTrue();
     }
 
+    [Trait("SWR", "SWR-SA-060")]
     [Fact]
     public void RequiresReauthentication_Admin_ReturnsTrue()
     {
         RoleElevationValidator.RequiresReauthentication(UserRole.Admin).Should().BeTrue();
     }
 
+    [Trait("SWR", "SWR-SA-060")]
     [Fact]
     public void RequiresReauthentication_Service_ReturnsTrue()
     {
         RoleElevationValidator.RequiresReauthentication(UserRole.Service).Should().BeTrue();
     }
 
+    [Trait("SWR", "SWR-SA-060")]
     [Fact]
     public void RequiresReauthentication_Radiographer_ReturnsFalse()
     {
         RoleElevationValidator.RequiresReauthentication(UserRole.Radiographer).Should().BeFalse();
     }
 
+    [Trait("SWR", "SWR-SA-060")]
     [Fact]
     public void RequiresReauthentication_Radiologist_ReturnsFalse()
     {
@@ -411,6 +459,7 @@ public sealed class SecurityCoverageBoostV2Tests
 
     // ── TlsConnectionService ────────────────────────────────────────────────────
 
+    [Trait("SWR", "SWR-SEC-002")]
     [Fact]
     public void ConnectAsync_EmptyHost_Throws()
     {
@@ -419,6 +468,7 @@ public sealed class SecurityCoverageBoostV2Tests
         act.Should().ThrowAsync<ArgumentException>();
     }
 
+    [Trait("SWR", "SWR-SEC-002")]
     [Fact]
     public async Task ConnectAsync_InvalidPort_ReturnsFailure()
     {
@@ -427,6 +477,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.IsFailure.Should().BeTrue();
     }
 
+    [Trait("SWR", "SWR-SEC-002")]
     [Fact]
     public async Task ConnectAsync_PortTooLarge_ReturnsFailure()
     {
@@ -435,6 +486,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.IsFailure.Should().BeTrue();
     }
 
+    [Trait("SWR", "SWR-SEC-002")]
     [Fact]
     public async Task ConnectAsync_UnreachableHost_ReturnsFailure()
     {
@@ -443,6 +495,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.IsFailure.Should().BeTrue();
     }
 
+    [Trait("SWR", "SWR-SEC-002")]
     [Fact]
     public void ValidateCertificate_NullBytes_Throws()
     {
@@ -451,6 +504,7 @@ public sealed class SecurityCoverageBoostV2Tests
         act.Should().Throw<ArgumentNullException>();
     }
 
+    [Trait("SWR", "SWR-SEC-002")]
     [Fact]
     public void ValidateCertificate_EmptyHost_Throws()
     {
@@ -459,6 +513,7 @@ public sealed class SecurityCoverageBoostV2Tests
         act.Should().Throw<ArgumentException>();
     }
 
+    [Trait("SWR", "SWR-SEC-002")]
     [Fact]
     public void ValidateCertificate_InvalidBytes_ReturnsFailure()
     {
@@ -467,6 +522,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.IsFailure.Should().BeTrue();
     }
 
+    [Trait("SWR", "SWR-SEC-002")]
     [Fact]
     public void ValidateCertificate_ExpiredCert_ReturnsFailure()
     {
@@ -477,6 +533,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.IsFailure.Should().BeTrue();
     }
 
+    [Trait("SWR", "SWR-SEC-002")]
     [Fact]
     public void ValidateCertificate_ValidCertWithWrongHost_ReturnsFailure()
     {
@@ -489,6 +546,7 @@ public sealed class SecurityCoverageBoostV2Tests
 
     // ── PhiEncryptionService additional coverage ────────────────────────────────
 
+    [Trait("SWR", "SWR-CS-080")]
     [Fact]
     public void PhiEncryption_NullKey_Throws()
     {
@@ -496,6 +554,7 @@ public sealed class SecurityCoverageBoostV2Tests
         act.Should().Throw<ArgumentNullException>();
     }
 
+    [Trait("SWR", "SWR-CS-080")]
     [Fact]
     public void PhiEncryption_WrongKeySize_Throws()
     {
@@ -503,6 +562,7 @@ public sealed class SecurityCoverageBoostV2Tests
         act.Should().Throw<ArgumentException>();
     }
 
+    [Trait("SWR", "SWR-CS-080")]
     [Fact]
     public void Encrypt_Null_ReturnsNull()
     {
@@ -511,6 +571,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.Should().BeNull();
     }
 
+    [Trait("SWR", "SWR-CS-080")]
     [Fact]
     public void Encrypt_Empty_ReturnsEmpty()
     {
@@ -519,6 +580,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.Should().BeEmpty();
     }
 
+    [Trait("SWR", "SWR-CS-080")]
     [Fact]
     public void Decrypt_Null_ReturnsNull()
     {
@@ -527,6 +589,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.Should().BeNull();
     }
 
+    [Trait("SWR", "SWR-CS-080")]
     [Fact]
     public void Decrypt_Empty_ReturnsEmpty()
     {
@@ -535,6 +598,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.Should().BeEmpty();
     }
 
+    [Trait("SWR", "SWR-CS-080")]
     [Fact]
     public void Decrypt_InvalidBase64_Throws()
     {
@@ -543,6 +607,7 @@ public sealed class SecurityCoverageBoostV2Tests
         act.Should().Throw<FormatException>();
     }
 
+    [Trait("SWR", "SWR-CS-080")]
     [Fact]
     public void Decrypt_TruncatedData_Throws()
     {
@@ -552,6 +617,7 @@ public sealed class SecurityCoverageBoostV2Tests
         act.Should().Throw<FormatException>();
     }
 
+    [Trait("SWR", "SWR-CS-080")]
     [Fact]
     public void VerifyTag_Empty_ReturnsSuccess()
     {
@@ -560,6 +626,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.IsSuccess.Should().BeTrue();
     }
 
+    [Trait("SWR", "SWR-CS-080")]
     [Fact]
     public void VerifyTag_Null_ReturnsSuccess()
     {
@@ -568,6 +635,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.IsSuccess.Should().BeTrue();
     }
 
+    [Trait("SWR", "SWR-CS-080")]
     [Fact]
     public void VerifyTag_InvalidBase64_ReturnsFailure()
     {
@@ -576,6 +644,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.IsFailure.Should().BeTrue();
     }
 
+    [Trait("SWR", "SWR-CS-080")]
     [Fact]
     public void VerifyTag_TruncatedData_ReturnsFailure()
     {
@@ -585,6 +654,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.IsFailure.Should().BeTrue();
     }
 
+    [Trait("SWR", "SWR-CS-080")]
     [Fact]
     public void VerifyTag_TamperedData_ReturnsFailure()
     {
@@ -601,6 +671,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.IsFailure.Should().BeTrue();
     }
 
+    [Trait("SWR", "SWR-CS-080")]
     [Fact]
     public void VerifyTag_ValidData_ReturnsSuccess()
     {
@@ -613,6 +684,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.IsSuccess.Should().BeTrue();
     }
 
+    [Trait("SWR", "SWR-CS-080")]
     [Fact]
     public void GenerateKey_Returns32BytesBase64()
     {
@@ -625,6 +697,7 @@ public sealed class SecurityCoverageBoostV2Tests
         keyBytes.Length.Should().Be(32);
     }
 
+    [Trait("SWR", "SWR-CS-080")]
     [Fact]
     public void EncryptDecrypt_Roundtrip_Works()
     {
@@ -638,6 +711,7 @@ public sealed class SecurityCoverageBoostV2Tests
         decrypted.Should().Be(original);
     }
 
+    [Trait("SWR", "SWR-CS-080")]
     [Fact]
     public void Encrypt_DifferentNonceEachCall()
     {
@@ -652,6 +726,7 @@ public sealed class SecurityCoverageBoostV2Tests
 
     // ── ReauthenticateAsync ────────────────────────────────────────────────────
 
+    [Trait("SWR", "SWR-CS-076")]
     [Fact]
     public async Task ReauthenticateAsync_ValidPin_ReturnsSuccess()
     {
@@ -680,6 +755,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.IsSuccess.Should().BeTrue();
     }
 
+    [Trait("SWR", "SWR-CS-076")]
     [Fact]
     public async Task ReauthenticateAsync_InvalidPin_ReturnsFailure()
     {
@@ -712,6 +788,7 @@ public sealed class SecurityCoverageBoostV2Tests
 
     // ── AuditService.DetectTamperedEntriesAsync ──────────────────────────────────
 
+    [Trait("SWR", "SWR-SA-072")]
     [Fact]
     public async Task DetectTamperedEntriesAsync_NoTampering_ReturnsEmptyList()
     {
@@ -741,6 +818,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.Value.Should().BeEmpty();
     }
 
+    [Trait("SWR", "SWR-SA-072")]
     [Fact]
     public async Task DetectTamperedEntriesAsync_TamperedHash_ReturnsEntryId()
     {
@@ -762,6 +840,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.Value.Should().Contain("id1");
     }
 
+    [Trait("SWR", "SWR-SA-072")]
     [Fact]
     public async Task DetectTamperedEntriesAsync_BrokenChain_ReturnsTamperedEntry()
     {
@@ -788,6 +867,7 @@ public sealed class SecurityCoverageBoostV2Tests
         result.Value.Should().Contain("id2");
     }
 
+    [Trait("SWR", "SWR-SA-072")]
     [Fact]
     public async Task DetectTamperedEntriesAsync_RepoFails_ReturnsFailure()
     {
@@ -804,6 +884,7 @@ public sealed class SecurityCoverageBoostV2Tests
 
     // ── ServiceCollectionExtensions additional coverage ─────────────────────────
 
+    [Trait("SWR", "SWR-CS-070")]
     [Fact]
     public void AddHnVueSecurity_ShortSecretKey_Throws()
     {
@@ -812,6 +893,7 @@ public sealed class SecurityCoverageBoostV2Tests
         act.Should().Throw<InvalidOperationException>();
     }
 
+    [Trait("SWR", "SWR-CS-070")]
     [Fact]
     public void AddHnVueSecurity_ShortPreviousKey_Throws()
     {
@@ -824,6 +906,7 @@ public sealed class SecurityCoverageBoostV2Tests
         act.Should().Throw<InvalidOperationException>();
     }
 
+    [Trait("SWR", "SWR-CS-070")]
     [Fact]
     public void AddHnVueSecurity_ValidOptions_RegistersServices()
     {
@@ -840,6 +923,7 @@ public sealed class SecurityCoverageBoostV2Tests
         sp.GetRequiredService<ITlsConnectionService>().Should().NotBeNull();
     }
 
+    [Trait("SWR", "SWR-CS-070")]
     [Fact]
     public void AddHnVueSecurity_DefaultJwtOptions_Throws()
     {
@@ -848,6 +932,7 @@ public sealed class SecurityCoverageBoostV2Tests
         act.Should().Throw<InvalidOperationException>();
     }
 
+    [Trait("SWR", "SWR-CS-070")]
     [Fact]
     public void AddHnVueSecurity_NullAuditOptions_UsesDefault()
     {
@@ -859,6 +944,7 @@ public sealed class SecurityCoverageBoostV2Tests
         services.Count.Should().BeGreaterThan(5);
     }
 
+    [Trait("SWR", "SWR-CS-070")]
     [Fact]
     public void AddPhiEncryption_NoKey_Throws()
     {
@@ -871,6 +957,7 @@ public sealed class SecurityCoverageBoostV2Tests
         act.Should().Throw<InvalidOperationException>();
     }
 
+    [Trait("SWR", "SWR-CS-070")]
     [Fact]
     public void AddPhiEncryption_ValidKey_RegistersService()
     {
