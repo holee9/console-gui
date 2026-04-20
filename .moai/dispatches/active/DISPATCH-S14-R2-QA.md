@@ -2,7 +2,7 @@
 
 > **Sprint**: S14 | **Round**: 2 | **팀**: QA (Quality Assurance)
 > **발행일**: 2026-04-20
-> **상태**: QUEUED (Phase 3 — Coordinator 완료 후 ACTIVE)
+> **상태**: ACTIVE (Phase 3 오픈 — Coordinator MERGED)
 
 ---
 
