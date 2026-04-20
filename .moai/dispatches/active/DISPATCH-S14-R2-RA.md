@@ -2,7 +2,7 @@
 
 > **Sprint**: S14 | **Round**: 2 | **팀**: RA (Regulatory Affairs)
 > **발행일**: 2026-04-20
-> **상태**: QUEUED (Phase 4 — QA 완료 후 ACTIVE)
+> **상태**: ACTIVE (Phase 4 오픈 — QA MERGED)
 
 ---
 
@@ -33,8 +33,8 @@ S14-R2 규제 문서 동기화: CMP v2.5 반영 + RTM Trait 수정 확인.
 
 | 작업 ID | 설명 | 상태 | 할당자 | 우선순위 | 타임스탬프 | 비고 |
 |---------|------|------|--------|----------|-----------|------|
-| T1 | CMP v2.5 업데이트 | NOT_STARTED | RA | P1 | _ | Phase 4 |
-| T2 | RTM Trait 수정 확인 | NOT_STARTED | RA | P0 | _ | Phase 4 |
+| T1 | CMP v2.5 업데이트 | IN_PROGRESS | RA | P1 | 2026-04-20T15:30:00+09:00 | Phase 4 |
+| T2 | RTM Trait 수정 확인 | IN_PROGRESS | RA | P0 | 2026-04-20T15:30:00+09:00 | Phase 4 |
 
 ---
 
