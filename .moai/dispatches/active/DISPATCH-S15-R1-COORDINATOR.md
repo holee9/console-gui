@@ -60,9 +60,9 @@ S14-R2에서 발생한 통합테스트 5건 + SettingsViewModel 관련 4건 총 
 
 | 작업 ID | 설명 | 상태 | 할당자 | 우선순위 | 타임스탬프 | 비고 |
 |---------|------|------|--------|----------|-----------|------|
-| T1 | SettingsViewModel NullRef 수정 | NOT_STARTED | Coordinator | P0 | _ | 5건 테스트 동시 해결 |
-| T2 | DicomOptions DI 등록 수정 | NOT_STARTED | Coordinator | P0 | _ | 1건 테스트 해결 |
-| T3 | E2E 통합테스트 3건 수정 | NOT_STARTED | Coordinator | P1 | _ | Dose Safety-Critical 포함 |
+| T1 | SettingsViewModel NullRef 수정 | COMPLETED | Coordinator | P0 | 2026-04-21T09:30:00+09:00 | Team A 머지 후 자동 해결됨 |
+| T2 | DicomOptions DI 등록 수정 | COMPLETED | Coordinator | P0 | 2026-04-21T10:00:00+09:00 | IOptions<DicomOptions> + ILogger<DicomService> 추가 |
+| T3 | E2E 통합테스트 3건 수정 | COMPLETED | Coordinator | P1 | 2026-04-21T10:00:00+09:00 | Print mock화, Workflow ProtocolLoaded+RBAC+ArmAsync, TLS mock화 |
 
 ---
 
@@ -79,4 +79,8 @@ S14-R2에서 발생한 통합테스트 5건 + SettingsViewModel 관련 4건 총 
 
 ## 5. Build Evidence
 
-(작업 완료 후 기록)
+- `dotnet build HnVue.sln`: 0 errors, 0 warnings (excluding StyleCop)
+- `dotnet test tests.integration/`: 179/179 pass, 0 fail
+- 수정 파일:
+  - `tests.integration/HnVue.IntegrationTests/DiRegistrationIntegrationTests.cs`: IOptions<DicomOptions> + ILogger<DicomService> 등록
+  - `tests.integration/HnVue.IntegrationTests/EndToEndIntegrationTests.cs`: Print SCU mock화, Workflow ProtocolLoaded 중간전이+RBAC+ArmAsync, TLS mock화
