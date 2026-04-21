@@ -22,10 +22,15 @@ DISPATCH 읽기 → Status 업데이트 → push → COMPLETED 보고.
 
 | 작업 ID | 설명 | 상태 | 할당자 | 우선순위 | 타임스탬프 | 비고 |
 |---------|------|------|--------|----------|-----------|------|
-| T1 | IDLE CONFIRM | NOT_STARTED | QA | P3 | _ | 동작 확인 |
+| T1 | IDLE CONFIRM | COMPLETED | QA | P3 | 2026-04-21T22:27:00+09:00 | 동작 확인 완료 |
 
 ---
 
 ## 4. Build Evidence
 
-(작업 완료 후 기록)
+IDLE CONFIRM completed. DISPATCH Resolution Protocol executed successfully:
+- git pull origin main: Already up to date
+- git merge main: Already up to date
+- Read _CURRENT.md: QA row ACTIVE, file DISPATCH-S15-R2-QA.md
+- DISPATCH read: T1 IDLE CONFIRM task confirmed
+- Status updated: NOT_STARTED -> COMPLETED at 2026-04-21T22:27:00+09:00
