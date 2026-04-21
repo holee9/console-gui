@@ -10,14 +10,14 @@
 
 | 팀 | 현재 DISPATCH 파일 | 상태 | 스케줄 Phase | 비고 |
 |----|-------------------|------|-------------|------|
-| **Team A** | DISPATCH-S15-R3-TEAM-A.md | **ACTIVE** | Phase 1 | IDLE CONFIRM |
-| **Team B** | DISPATCH-S15-R3-TEAM-B.md | **ACTIVE** | Phase 1 | IDLE CONFIRM |
-| **Coordinator** | DISPATCH-S15-R3-COORDINATOR.md | **ACTIVE** | Phase 2 | IDLE CONFIRM |
-| **Design** | DISPATCH-S15-R3-DESIGN.md | **ACTIVE** | 별도 | IDLE CONFIRM (S15-R2 TIMEOUT 후 재시도) |
-| **QA** | DISPATCH-S15-R3-QA.md | **ACTIVE** | Phase 3 | IDLE CONFIRM |
-| **RA** | DISPATCH-S15-R3-RA.md | **ACTIVE** | Phase 4 | IDLE CONFIRM |
+| **Team A** | - | **IDLE** | - | S15-R3 MERGED |
+| **Team B** | - | **IDLE** | - | S15-R3 MERGED |
+| **Coordinator** | - | **IDLE** | - | S15-R3 MERGED |
+| **Design** | DISPATCH-S15-R3-DESIGN.md | **ACTIVE** | 별도 | NOT_STARTED |
+| **QA** | DISPATCH-S15-R3-QA.md | **ACTIVE** | Phase 3 | NOT_STARTED |
+| **RA** | - | **IDLE** | - | S15-R3 MERGED (직접 main push) |
 
-**→ S15-R3: 6팀 전원 ACTIVE — 시스템 정상화 확인**
+**→ S15-R3: 4/6 MERGED, Design/QA 대기 중 (TIMEOUT까지 ~25분)**
 
 ---
 
@@ -37,9 +37,9 @@
 |------|--------|------|
 | 2026-04-21 | S15 R1 | ALL MERGED — QA CONDITIONAL PASS (99.47%) |
 | 2026-04-21 | S15 R2 | ALL MERGED — Design TIMEOUT (미응답) |
-| **2026-04-21** | **S15 R3** | **6팀 ACTIVE — 시스템 정상화 IDLE CONFIRM** |
+| **2026-04-21** | **S15 R3** | **4/6 MERGED — Design/QA 대기** |
 
 ---
 
-Updated: 2026-04-21 (S15-R3 6팀 ACTIVE — 스케줄링 전수 점검 후 정상화)
+Updated: 2026-04-21 (S15-R3 4/6 MERGED — Team A/B/Coordinator/RA 완료)
 DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/`
