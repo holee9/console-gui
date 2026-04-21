@@ -22,16 +22,18 @@ S15-R2에서 Team B 소유 모듈에 대한 변경 필요 사항 없음.
 
 | 작업 ID | 설명 | 상태 | 할당자 | 우선순위 | 타임스탬프 | 비고 |
 |---------|------|------|--------|----------|-----------|------|
-| T1 | IDLE CONFIRM | NOT_STARTED | Team B | P3 | _ | 작업 없음 |
+| T1 | IDLE CONFIRM | COMPLETED | Team B | P3 | 2026-04-21T09:05:00+09:00 | 작업 없음 — IDLE CONFIRM |
 
 ---
 
 ## 4. 완료 조건
 
-- [ ] IDLE CONFIRM 보고
+- [x] IDLE CONFIRM 보고
 
 ---
 
 ## 5. Build Evidence
 
 (작업 완료 후 기록)
+
+**IDLE CONFIRM**: S15-R2에서 Team B 소유 모듈(Dicom, Detector, Imaging, Dose, Incident, Workflow, PatientManagement, CDBurning)에 대한 변경 필요 사항 없음. 전체 테스트 S15-R1 기준 통과 상태 유지 중.
