@@ -20,6 +20,7 @@ using HnVue.UI.Contracts.ViewModels;
 using HnVue.UI.ViewModels;
 using HnVue.Workflow;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NSubstitute;
 using Xunit;
@@ -203,6 +204,8 @@ public sealed class DiRegistrationIntegrationTests
         services.AddSingleton<ICDDVDBurnService, CDDVDBurnService>();
 
         // DICOM
+        services.AddSingleton(Options.Create(new DicomOptions()));
+        services.AddSingleton(Substitute.For<ILogger<DicomService>>());
         services.AddSingleton<IDicomNetworkConfig>(new TestDiDicomNetworkConfig());
         services.AddSingleton<IDicomService, DicomService>();
         services.AddSingleton<DicomStoreScu>();
