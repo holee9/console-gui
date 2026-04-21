@@ -24,10 +24,12 @@
 
 | 작업 ID | 설명 | 상태 | 할당자 | 우선순위 | 타임스탬프 | 비고 |
 |---------|------|------|--------|----------|-----------|------|
-| T1 | IDLE CONFIRM | NOT_STARTED | Team A | P3 | _ | 신규 reset 프로토콜 검증 |
+| T1 | IDLE CONFIRM | COMPLETED | Team A | P3 | 2026-04-21T22:35:00+09:00 | HEAD 동기화 확인 (d8bc0b8) |
 
 ---
 
 ## 4. Build Evidence
 
-(작업 완료 후 기록)
+- HEAD: d8bc0b8 (origin/main과 일치)
+- reset 불필요 (이미 동기화됨)
+- 빌드/테스트 불필요 (IDLE CONFIRM)
