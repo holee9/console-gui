@@ -2,7 +2,7 @@
 
 > **Sprint**: S15 | **Round**: 1 | **팀**: Coordinator (Integration)
 > **발행일**: 2026-04-21
-> **상태**: QUEUED (Phase 2 — Team A MERGED 후 ACTIVE 전환)
+> **상태**: ACTIVE (Phase 2 오픈 — Team A + Design MERGED, Team B IDLE CONFIRM)
 
 ---
 

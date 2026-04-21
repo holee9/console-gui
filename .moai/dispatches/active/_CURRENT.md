@@ -10,14 +10,14 @@
 
 | 팀 | 현재 DISPATCH 파일 | 상태 | 스케줄 Phase | 비고 |
 |----|-------------------|------|-------------|------|
-| **Team A** | DISPATCH-S15-R1-TEAM-A.md | **ACTIVE** | Phase 1 | Update.Tests 5건 실패 수정 |
-| **Team B** | DISPATCH-S15-R1-TEAM-B.md | **ACTIVE** | Phase 1 | IDLE CONFIRM (테스트 전체 통과) |
-| **Coordinator** | DISPATCH-S15-R1-COORDINATOR.md | **QUEUED** | Phase 2 | SettingsViewModel + 통합테스트 9건 수정 |
-| **Design** | DISPATCH-S15-R1-DESIGN.md | **ACTIVE** | 별도 | UI Performance 테스트 수정 |
+| **Team A** | DISPATCH-S15-R1-TEAM-A.md | **MERGED** | Phase 1 | Update.Tests 317/317 통과 (재현 불가) |
+| **Team B** | DISPATCH-S15-R1-TEAM-B.md | **MERGED** | Phase 1 | IDLE CONFIRM — 전체 통과 |
+| **Coordinator** | DISPATCH-S15-R1-COORDINATOR.md | **ACTIVE** | Phase 2 | SettingsViewModel + 통합테스트 9건 수정 |
+| **Design** | DISPATCH-S15-R1-DESIGN.md | **MERGED** | 별도 | UI virtualization (StudylistView + MergeView) |
 | **QA** | DISPATCH-S15-R1-QA.md | **QUEUED** | Phase 3 | 전체 테스트 재검증 |
 | **RA** | DISPATCH-S15-R1-RA.md | **QUEUED** | Phase 4 | 규제 문서 영향 평가 |
 
-**→ S15-R1 DISPATCH 발행 완료 — Phase 1 시작 (Team A + Team B + Design ACTIVE)**
+**→ Phase 1 완료 — Phase 2 Coordinator ACTIVE 전환**
 
 ---
 
