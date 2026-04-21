@@ -30,6 +30,7 @@
 | **팀 ScheduleWakeup** | **1200초 (20분)** | IDLE/QUEUED 팀의 폴링 간격 |
 | **CC CronCreate** | **10분** | CC 모니터링 간격 |
 | **ACTIVE 팀 즉시 시작** | 예 | ACTIVE 감지 시 ScheduleWakeup 대기 없이 즉시 작업 시작 |
+| **준수 점검** | **매 틱** | 소유권/DISPATCH 범위/커밋 접두사 검증 |
 
 ### 팀 ScheduleWakeup 규칙 [HARD]
 
