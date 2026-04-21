@@ -11,7 +11,7 @@
 | 팀 | 현재 DISPATCH 파일 | 상태 | 스케줄 Phase | 비고 |
 |----|-------------------|------|-------------|------|
 | **Team A** | DISPATCH-S15-R2-TEAM-A.md | **ACTIVE** | Phase 1 | AssemblyResolve 리뷰 |
-| **Team B** | DISPATCH-S15-R2-TEAM-B.md | **ACTIVE** | Phase 1 | IDLE CONFIRM |
+| **Team B** | DISPATCH-S15-R2-TEAM-B.md | **MERGED** | Phase 1 | IDLE CONFIRM |
 | **Coordinator** | DISPATCH-S15-R2-COORDINATOR.md | **QUEUED** | Phase 2 | Team A/B 완료 후 |
 | **Design** | DISPATCH-S15-R2-DESIGN.md | **ACTIVE** | 별도 | IDLE CONFIRM |
 | **QA** | DISPATCH-S15-R2-QA.md | **QUEUED** | Phase 3 | CO 완료 후 — 19건 실패 분석 |
