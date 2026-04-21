@@ -24,10 +24,12 @@
 
 | 작업 ID | 설명 | 상태 | 할당자 | 우선순위 | 타임스탬프 | 비고 |
 |---------|------|------|--------|----------|-----------|------|
-| T1 | IDLE CONFIRM | NOT_STARTED | Coordinator | P3 | _ | 신규 reset 프로토콜 검증 |
+| T1 | IDLE CONFIRM | COMPLETED | Coordinator | P3 | 2026-04-21T22:40:00+09:00 | reset 불필요(이미 main HEAD 동일), 정상화 확인 |
 
 ---
 
 ## 4. Build Evidence
 
-(작업 완료 후 기록)
+- HEAD == origin/main (d8bc0b8) 동일 — reset 불필요
+- DISPATCH 읽기 정상, Status 업데이트 정상
+- 빌드/테스트 불필요 (IDLE CONFIRM)
