@@ -13,11 +13,11 @@
 | **Team A** | - | **IDLE** | - | S15-R3 MERGED |
 | **Team B** | - | **IDLE** | - | S15-R3 MERGED |
 | **Coordinator** | - | **IDLE** | - | S15-R3 MERGED |
-| **Design** | DISPATCH-S15-R3-DESIGN.md | **ACTIVE** | 별도 | NOT_STARTED |
-| **QA** | DISPATCH-S15-R3-QA.md | **ACTIVE** | Phase 3 | NOT_STARTED |
+| **Design** | DISPATCH-S15-R3-DESIGN.md | **ACTIVE** | 별도 | 미응답 (S15-R2~R3 연속) |
+| **QA** | - | **IDLE** | - | S15-R3 BLOCKED (Bash 권한 거부) |
 | **RA** | - | **IDLE** | - | S15-R3 MERGED (직접 main push) |
 
-**→ S15-R3: 4/6 MERGED, Design/QA 대기 중 (TIMEOUT까지 ~25분)**
+**→ S15-R3: 5/6 처리 완료, Design만 대기 (TIMEOUT까지 ~15분)**
 
 ---
 
@@ -37,9 +37,9 @@
 |------|--------|------|
 | 2026-04-21 | S15 R1 | ALL MERGED — QA CONDITIONAL PASS (99.47%) |
 | 2026-04-21 | S15 R2 | ALL MERGED — Design TIMEOUT (미응답) |
-| **2026-04-21** | **S15 R3** | **4/6 MERGED — Design/QA 대기** |
+| **2026-04-21** | **S15 R3** | **5/6 완료 — 4MERGED + QA BLOCKED + Design 대기** |
 
 ---
 
-Updated: 2026-04-21 (S15-R3 4/6 MERGED — Team A/B/Coordinator/RA 완료)
+Updated: 2026-04-21 (S15-R3 5/6 — QA BLOCKED 처리, Design TIMEOUT 대기)
 DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/`

@@ -24,10 +24,10 @@
 
 | 작업 ID | 설명 | 상태 | 할당자 | 우선순위 | 타임스탬프 | 비고 |
 |---------|------|------|--------|----------|-----------|------|
-| T1 | IDLE CONFIRM | NOT_STARTED | QA | P3 | _ | 신규 reset 프로토콜 검증 |
+| T1 | IDLE CONFIRM | BLOCKED | QA | P3 | 2026-04-21T20:13:00+09:00 | Bash 권한 거부 — 사용자 직접 실행 필요 |
 
 ---
 
 ## 4. Build Evidence
 
-(작업 완료 후 기록)
+BLOCKED: Bash 권한 거부로 DISPATCH Resolution Protocol 수행 불가
