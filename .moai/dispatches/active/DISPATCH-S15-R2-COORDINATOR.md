@@ -22,10 +22,10 @@ DISPATCH 읽기 → Status 업데이트 → push → COMPLETED 보고.
 
 | 작업 ID | 설명 | 상태 | 할당자 | 우선순위 | 타임스탬프 | 비고 |
 |---------|------|------|--------|----------|-----------|------|
-| T1 | IDLE CONFIRM | NOT_STARTED | Coordinator | P3 | _ | 동작 확인 |
+| T1 | IDLE CONFIRM | COMPLETED | Coordinator | P3 | 2026-04-21T22:05:00+09:00 | 동작 확인 완료 |
 
 ---
 
 ## 4. Build Evidence
 
-(작업 완료 후 기록)
+N/A — IDLE CONFIRM (코드 변경 없음, 빌드 불필요)
