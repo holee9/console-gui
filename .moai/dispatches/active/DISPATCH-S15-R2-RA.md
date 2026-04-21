@@ -22,7 +22,7 @@ DISPATCH 읽기 → Status 업데이트 → push → COMPLETED 보고.
 
 | 작업 ID | 설명 | 상태 | 할당자 | 우선순위 | 타임스탬프 | 비고 |
 |---------|------|------|--------|----------|-----------|------|
-| T1 | IDLE CONFIRM | NOT_STARTED | RA | P3 | _ | 동작 확인 |
+| T1 | IDLE CONFIRM | IN_PROGRESS | RA | P3 | 2026-04-21T15:45:00+09:00 | 동작 확인 |
 
 ---
 
