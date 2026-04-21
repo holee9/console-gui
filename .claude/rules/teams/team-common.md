@@ -137,7 +137,7 @@ git diff --name-only main..origin/team/{team}
   ```
 
 ### 하한선 규칙 [HARD]
-- [HARD] 팀 ScheduleWakeup **최소 600초 (10분)** — _CURRENT.md 값이 600 미만이면 600으로 보정
+- [HARD] 팀 ScheduleWakeup **최소 300초 (5분)** — _CURRENT.md 값이 300 미만이면 300으로 보정
 - [HARD] ScheduleWakeup 값은 **하드코딩 금지** — 반드시 _CURRENT.md에서 읽을 것
 - [HARD] 작업 완료 직후(push 완료)에는 ScheduleWakeup(읽은 값) 재설정 (다음 DISPATCH 대기)
 - [HARD] ACTIVE 감지 시 → 대기 없이 즉시 작업 시작 (ScheduleWakeup 먼저 설정하지 말 것)
@@ -182,7 +182,8 @@ Before reporting COMPLETED, verify ALL:
 - [ ] Only modified files within ownership scope?
 - [ ] DISPATCH.md Status contains build evidence?
 - [ ] Incomplete items honestly marked as PARTIAL?
-- [ ] **`/clear` 실행 완료? (Session Lifecycle 필수)**
+- [ ] **ScheduleWakeup(읽은 값) 재설정 완료? (Session Lifecycle 필수)**
+- [ ] **`/clear` 실행하지 않았는가? (S15-R3 개정 — ScheduleWakeup 소멸 방지)**
 
 ## Git Completion Protocol [HARD]
 
@@ -247,25 +248,28 @@ DISPATCH Status 테이블 형식 (타임스탬프 열 추가):
 - [HARD] CC가 할 수 있는 것: _CURRENT.md의 팀 상태 행(IDLE/ACTIVE/MERGED) 관리 + DISPATCH 파일 active/↔completed/ 이동
 - [HARD] S09-R3 사고: CC가 QA 확인 없이 BLOCKED로 임의 변경 → QA 실제로 작업 중이었음 → 상태 왜곡
 
-## Session Lifecycle [HARD — Effective S09-R3]
+## Session Lifecycle [HARD — Effective S15-R3 개정]
 
-**목표**: 완료 후 세션 컨텍스트를 정리하여 토큰 낭비 방지. Worktree는 유지.
+**목표**: 완료 후 세션 컨텍스트를 정리하되, ScheduleWakeup은 반드시 유지.
 
-**사고이력 (S09-R2)**: QA 에이전트가 context limit 도달 후 28회 연속 작업 불능 발생.
-원인: 이전 라운드 컨텍스트가 누적되어 새 DISPATCH 수행 불가. `/clear` 미실행.
+**사고이력**:
+- S09-R2: QA context limit 도달 → 28회 작업 불능 (원인: /clear 미실행)
+- S15-R3: 전팀 ScheduleWakeup 소멸 → DISPATCH 수신 불가 (원인: /clear 후 cron 소멸)
+
+**S15-R3 개정: `/clear` 폐지, ScheduleWakeup 유지로 전환**
 
 After completing ALL DISPATCH tasks and pushing:
 
 1. Update DISPATCH Status → COMPLETED + build evidence
 2. Push the status update to `team/{team-name}`
-3. **`/clear` 실행 [HARD]**: COMPLETED push 직후 반드시 `/clear`로 세션 컨텍스트 초기화
-   - [HARD] `/clear` 없이 다음 DISPATCH 대기 = context 누적 → 작업 불능 위험
-   - [HARD] 새 DISPATCH 수신 시 **항상 깨끗한 세션**으로 시작
-   - Worktree 디렉토리와 브랜치는 유지 (소스 관리)
-   - DISPATCH 파일은 git에 push되므로 `/clear` 후에도 CC가 확인 가능
-4. Report completion to Commander Center (DISPATCH 상태 업데이트로 대체)
+3. **ScheduleWakeup 재설정 [HARD]**: _CURRENT.md에서 ScheduleWakeup 값 읽어 즉시 재설정
+   - [HARD] COMPLETED push 후 **반드시 ScheduleWakeup(읽은 값) 실행** — 이것이 다음 DISPATCH 수신의 유일한 채널
+   - [HARD] ScheduleWakeup 없이 대기 = CC와 단절 = 자율주행 불가
+4. **`/clear` 금지 [HARD — S15-R3 개정]**: ScheduleWakeup이 소멸하므로 /clear 실행 금지
+   - 대신 context가 누적되면 ScheduleWakeup 콜백 내에서 `/clear` 후 DISPATCH Resolution Protocol 재실행
+   - Worktree 디렉토리와 브랜치는 유지
 
-### 완료 프로세스 흐름 (개정)
+### 완료 프로세스 흐름 (S15-R3 개정)
 
 ```
 DISPATCH 작업 완료
@@ -274,12 +278,21 @@ git add → git commit → git push origin team/{team-name}
     ↓
 DISPATCH Status COMPLETED 업데이트 → push
     ↓
-[HARD] /clear 실행 ← 이 단계 누락 = context 누적 = 다음 라운드 작업 불능
+[HARD] ScheduleWakeup(읽은 값) 재설정 ← 이것이 다음 DISPATCH 수신 채널
     ↓
-CC가 DISPATCH Status 확인 → 머지 → _CURRENT.md 업데이트
+ScheduleWakeup 깨어남 → git pull → _CURRENT.md 확인
     ↓
-새 DISPATCH 발행 → 팀은 깨끗한 세션으로 수행
+IDLE → ScheduleWakeup 재설정 (폴링 계속)
+ACTIVE → DISPATCH 읽기 → 작업 시작
 ```
+
+### /clear 대체 정책
+
+| 이전 (S09~S15-R2) | 이후 (S15-R3+) |
+|---|---|
+| `/clear` 후 수동 대기 | `/clear` 금지, ScheduleWakeup 유지 |
+| context 누적 위험 | context 누적 시 ScheduleWakeup 콜백에서 자동 /clear |
+| 팀-CC 단절 빈번 | ScheduleWakeup으로 항상 연결 유지 |
 
 ## CC Merge Protocol [HARD — 자율 주행 원칙 v2]
 
