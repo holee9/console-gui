@@ -1,4 +1,4 @@
-# DISPATCH Current Index — S15-R3 완료
+# DISPATCH Current Index — S16-R1 ACTIVE
 
 > **[HARD] 에이전트 FIRST ACTION**: 이 파일을 가장 먼저 읽는다.
 > 자신의 팀 행(row)에서 파일명을 확인한 뒤, 해당 파일만 읽는다.
@@ -10,14 +10,14 @@
 
 | 팀 | 현재 DISPATCH 파일 | 상태 | 스케줄 Phase | 비고 |
 |----|-------------------|------|-------------|------|
-| **Team A** | - | **IDLE** | - | S15-R3 MERGED |
-| **Team B** | - | **IDLE** | - | S15-R3 MERGED |
-| **Coordinator** | - | **IDLE** | - | S15-R3 MERGED |
-| **Design** | - | **IDLE** | - | S15-R3 TIMEOUT (2라운드 연속) |
-| **QA** | - | **IDLE** | - | S15-R3 BLOCKED (Bash 권한) |
-| **RA** | - | **IDLE** | - | S15-R3 MERGED (직접 push) |
+| **Team A** | DISPATCH-S16-R1-TEAM-A.md | **ACTIVE** | Phase 1 | IDLE CONFIRM |
+| **Team B** | DISPATCH-S16-R1-TEAM-B.md | **ACTIVE** | Phase 1 | IDLE CONFIRM |
+| **Coordinator** | DISPATCH-S16-R1-COORDINATOR.md | **ACTIVE** | Phase 1 | IDLE CONFIRM |
+| **Design** | DISPATCH-S16-R1-DESIGN.md | **ACTIVE** | Phase 1 | ScheduleWakeup 최우선 (2라운드 연속 TIMEOUT 복구) |
+| **QA** | DISPATCH-S16-R1-QA.md | **ACTIVE** | Phase 1 | node PATH 문제 해결 필요 |
+| **RA** | DISPATCH-S16-R1-RA.md | **ACTIVE** | Phase 1 | IDLE CONFIRM |
 
-**→ S15-R3 완료 — 전팀 IDLE**
+**→ S16-R1 ACTIVE — 전팀 Phase 1 동시 시작**
 
 ---
 
@@ -37,20 +37,18 @@
 |------|--------|------|
 | 2026-04-21 | S15 R1 | ALL MERGED — QA CONDITIONAL PASS (99.47%) |
 | 2026-04-21 | S15 R2 | ALL MERGED — Design TIMEOUT (미응답) |
-| **2026-04-21** | **S15 R3** | **완료 — 4 MERGED + QA BLOCKED + Design TIMEOUT** |
+| 2026-04-21 | S15 R3 | 완료 — 4 MERGED + QA BLOCKED + Design TIMEOUT |
+| **2026-04-21** | **S16 R1** | **ACTIVE — 전팀 IDLE CONFIRM + ScheduleWakeup 필수 설정** |
 
 ---
 
-## S15-R3 사고 이력 (CC 기록)
+## S16-R1 특별 지시
 
-| 팀 | 이슈 | 원인 | 조치 |
-|----|------|------|------|
-| Team A/B/CO | RA DISPATCH stale diff 포함 | CC 머지 전 stale base에서 작업 | -X ours로 해결 |
-| QA | BLOCKED + 전체 리버트 포함 | stale base + Bash 권한 거부 | 머지 스킵, 수동 BLOCKED 업데이트 |
-| Design | 2라운드 연속 TIMEOUT | 팀 세션 ScheduleWakeup 미설정 | TIMEOUT 처리 |
-| **전체** | **팀 ScheduleWakeup 미설정** | **세션 재시작 후 cron 소멸** | **CC 갭: 중앙 관리 미흡** |
+**모든 팀**: /clear 후 세션 재시작 시 ScheduleWakeup이 소멸됩니다.
+이번 라운드의 **최우선 작업**은 ScheduleWakeup(300초) 설정입니다.
+ScheduleWakeup 없이 IDLE 보고 = 다음 DISPATCH 수신 불가 = TIMEOUT 반복.
 
 ---
 
-Updated: 2026-04-21 (S15-R3 완료 — 전팀 IDLE)
+Updated: 2026-04-21 (S16-R1 ACTIVE — 전팀 Phase 1)
 DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/`
