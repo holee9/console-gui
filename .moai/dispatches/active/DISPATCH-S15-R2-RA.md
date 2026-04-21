@@ -22,10 +22,14 @@ DISPATCH 읽기 → Status 업데이트 → push → COMPLETED 보고.
 
 | 작업 ID | 설명 | 상태 | 할당자 | 우선순위 | 타임스탬프 | 비고 |
 |---------|------|------|--------|----------|-----------|------|
-| T1 | IDLE CONFIRM | IN_PROGRESS | RA | P3 | 2026-04-21T15:45:00+09:00 | 동작 확인 |
+| T1 | IDLE CONFIRM | COMPLETED | RA | P3 | 2026-04-21T15:46:00+09:00 | DISPATCH Resolution Protocol 정상 동작 확인 완료 |
 
 ---
 
 ## 4. Build Evidence
 
-(작업 완료 후 기록)
+### RA Team 동작 확인
+- DISPATCH Resolution Protocol 정상 동작 확인
+- git pull origin main + team/ra 성공
+- _CURRENT.md 읽기 및 DISPATCH 파일 확인 성공
+- Status 업데이트 및 push 완료
