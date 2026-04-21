@@ -24,10 +24,10 @@
 
 | 작업 ID | 설명 | 상태 | 할당자 | 우선순위 | 타임스탬프 | 비고 |
 |---------|------|------|--------|----------|-----------|------|
-| T1 | IDLE CONFIRM | NOT_STARTED | RA | P3 | _ | 신규 reset 프로토콜 검증 |
+| T1 | IDLE CONFIRM | COMPLETED | RA | P3 | 2026-04-21T15:50:00+09:00 | 문서 상태 확인 완료, git reset은 CC 역할로 skip |
 
 ---
 
 ## 4. Build Evidence
 
-(작업 완료 후 기록)
+문서 상태 확인: docs/regulatory/, docs/planning/, docs/risk/, docs/verification/, docs/management/ 정상
