@@ -15,7 +15,7 @@
 | **Coordinator** | DISPATCH-S15-R2-COORDINATOR.md | **ACTIVE** | Phase 2 | 동작 확인 |
 | **Design** | DISPATCH-S15-R2-DESIGN.md | **ACTIVE** | 별도 | 동작 확인 |
 | **QA** | DISPATCH-S15-R2-QA.md | **ACTIVE** | Phase 3 | 동작 확인 |
-| **RA** | DISPATCH-S15-R2-RA.md | **ACTIVE** | Phase 4 | 동작 확인 |
+| **RA** | DISPATCH-S15-R2-RA.md | **MERGED** | Phase 4 | 동작 확인 완료 |
 
 **→ S15-R2 전팀 ACTIVE — 동작 확인용 IDLE CONFIRM 요청**
 
