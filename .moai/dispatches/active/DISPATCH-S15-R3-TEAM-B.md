@@ -24,10 +24,13 @@
 
 | 작업 ID | 설명 | 상태 | 할당자 | 우선순위 | 타임스탬프 | 비고 |
 |---------|------|------|--------|----------|-----------|------|
-| T1 | IDLE CONFIRM | NOT_STARTED | Team B | P3 | _ | 신규 reset 프로토콜 검증 |
+| T1 | IDLE CONFIRM | COMPLETED | Team B | P3 | 2026-04-21T21:20:00+09:00 | git pull 완료, main HEAD 동일 확인 |
 
 ---
 
 ## 4. Build Evidence
 
-(작업 완료 후 기록)
+- git pull origin main: OK (Fast-forward bd0db9d..d8bc0b8)
+- HEAD: d8bc0b8 = origin/main HEAD
+- 빌드/테스트: 불필요 (IDLE CONFIRM)
+- reset --hard: 거부되었으나 pull로 이미 main 동기화 완료
