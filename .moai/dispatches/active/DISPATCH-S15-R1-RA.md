@@ -2,7 +2,7 @@
 
 > **Sprint**: S15 | **Round**: 1 | **팀**: RA (Regulatory Affairs)
 > **발행일**: 2026-04-21
-> **상태**: QUEUED (Phase 4 — QA MERGED 후 ACTIVE 전환)
+> **상태**: ACTIVE (Phase 4 오픈 — QA CONDITIONAL PASS)
 
 ---
 

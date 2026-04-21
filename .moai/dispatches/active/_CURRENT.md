@@ -14,10 +14,10 @@
 | **Team B** | DISPATCH-S15-R1-TEAM-B.md | **MERGED** | Phase 1 | IDLE CONFIRM — 전체 통과 |
 | **Coordinator** | DISPATCH-S15-R1-COORDINATOR.md | **MERGED** | Phase 2 | 통합테스트 4건 수정 (DI + E2E) |
 | **Design** | DISPATCH-S15-R1-DESIGN.md | **MERGED** | 별도 | UI virtualization (StudylistView + MergeView) |
-| **QA** | DISPATCH-S15-R1-QA.md | **ACTIVE** | Phase 3 | 전체 테스트 재검증 |
-| **RA** | DISPATCH-S15-R1-RA.md | **QUEUED** | Phase 4 | 규제 문서 영향 평가 |
+| **QA** | DISPATCH-S15-R1-QA.md | **MERGED** | Phase 3 | CONDITIONAL PASS (99.47%, 19건 실패) |
+| **RA** | DISPATCH-S15-R1-RA.md | **ACTIVE** | Phase 4 | 규제 문서 영향 평가 |
 
-**→ Phase 2 완료 — Phase 3 QA ACTIVE 전환**
+**→ Phase 3 QA CONDITIONAL PASS — Phase 4 RA ACTIVE 전환**
 
 ---
 
