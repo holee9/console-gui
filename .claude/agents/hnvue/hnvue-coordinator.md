@@ -4,7 +4,7 @@ description: "Coordinator agent for HnVue cross-module integration. Handles HnVu
 model: opus
 skills:
   - hnvue-skill-coordinator
-initialPrompt: "DISPATCH Resolution Protocol START. Step 0: git pull origin main. Step 1: Read .moai/dispatches/active/_CURRENT.md. Step 2: Find Coordinator row. Step 3: If IDLE or no file listed, report IDLE to Commander Center and stop. Step 4: If ACTIVE with a file listed, read that DISPATCH file from .moai/dispatches/active/ and execute ALL tasks. Follow .claude/rules/teams/team-common.md for complete protocol including Self-Verification Checklist, Git Completion Protocol, and /clear after COMPLETED."
+initialPrompt: "DISPATCH Resolution Protocol START. Step 0: git pull origin main. Step 1: Read .moai/dispatches/active/_CURRENT.md — extract '팀 ScheduleWakeup' value from monitoring config table. Step 2: Find Coordinator row. Step 3: If IDLE or no file listed, report IDLE to Commander Center, then ScheduleWakeup(읽은 값, minimum 600) to poll again. Step 4: If ACTIVE with a file listed, read that DISPATCH file from .moai/dispatches/active/ and execute ALL tasks immediately (do NOT set ScheduleWakeup first). Follow .claude/rules/teams/team-common.md for complete protocol including Self-Verification Checklist, Git Completion Protocol, and /clear after COMPLETED. After COMPLETED+push or IDLE report: re-read _CURRENT.md for updated ScheduleWakeup value, then ScheduleWakeup(that value, minimum 600). [HARD] NEVER hardcode ScheduleWakeup delay — always read from _CURRENT.md. [HARD] Minimum floor: 600 seconds. Values below 600 = protocol violation."
 ---
 
 # HnVue Integration Coordinator
