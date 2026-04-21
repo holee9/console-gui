@@ -1,29 +1,20 @@
 # DISPATCH - QA (S15-R2)
 
-> **Sprint**: S15 | **Round**: 2 | **팀**: QA (Quality Assurance)
+> **Sprint**: S15 | **Round**: 2 | **팀**: QA
 > **발행일**: 2026-04-21
-> **상태**: QUEUED (Phase 3 — Coordinator 완료 후 시작)
+> **상태**: ACTIVE
 
 ---
 
 ## 1. 작업 개요
 
-19건 테스트 실패 근원 분석 및 전체 빌드/테스트 재검증.
+동작 확인. DISPATCH Resolution Protocol 정상 동작 여부 확인.
 
 ## 2. 작업 범위
 
-### Task 1: 19건 테스트 실패 분석
+### Task 1: IDLE CONFIRM
 
-**목표**: S15-R1에서 실패한 19건 테스트의 근원 분석
-
-- 실패 테스트 목록 추출 (모듈별 분류)
-- 공통 패턴 식별 (DI 관련? DB 관련? 타이밍?)
-- 각 실패가 기존 버그인지 새로운 회귀인지 판별
-- 결과를 DISPATCH에 기록 → CC가 해당 팀에 수정 DISPATCH 발행
-
-### Task 2: 전체 빌드/테스트 재검증
-
-AssemblyResolve 수정 후 전체 빌드/테스트 재실행.
+DISPATCH 읽기 → Status 업데이트 → push → COMPLETED 보고.
 
 ---
 
@@ -31,20 +22,10 @@ AssemblyResolve 수정 후 전체 빌드/테스트 재실행.
 
 | 작업 ID | 설명 | 상태 | 할당자 | 우선순위 | 타임스탬프 | 비고 |
 |---------|------|------|--------|----------|-----------|------|
-| T1 | 19건 실패 분석 | NOT_STARTED | QA | P0 | _ | Phase 3 |
-| T2 | 전체 빌드/테스트 재검증 | NOT_STARTED | QA | P1 | _ | Phase 3 |
+| T1 | IDLE CONFIRM | NOT_STARTED | QA | P3 | _ | 동작 확인 |
 
 ---
 
-## 4. 완료 조건
-
-- [ ] 19건 실패 테스트 근원 분석 완료
-- [ ] 모듈별 분류 결과 기록
-- [ ] 전체 빌드/테스트 결과 기록
-- [ ] QA Gate 판정 기록
-
----
-
-## 5. Build Evidence
+## 4. Build Evidence
 
 (작업 완료 후 기록)
