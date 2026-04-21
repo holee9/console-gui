@@ -21,6 +21,37 @@
 
 ---
 
+## [HARD] 팀 모니터링 설정 (CC 중앙 제어)
+
+> **CC가 이 값을 동적으로 변경. 모든 팀은 DISPATCH Resolution 시 이 값을 읽어 ScheduleWakeup에 반영.**
+
+| 설정 항목 | 값 | 비고 |
+|----------|-----|------|
+| **팀 ScheduleWakeup** | **1200초 (20분)** | IDLE/QUEUED 팀의 폴링 간격 |
+| **CC CronCreate** | **10분** | CC 모니터링 간격 |
+| **ACTIVE 팀 즉시 시작** | 예 | ACTIVE 감지 시 ScheduleWakeup 대기 없이 즉시 작업 시작 |
+
+### 팀 ScheduleWakeup 규칙 [HARD]
+
+```
+1. DISPATCH Resolution 시 _CURRENT.md의 '팀 ScheduleWakeup' 값 읽기
+2. IDLE/QUEUED → ScheduleWakeup(1200)로 대기 (값을 하드코딩하지 말고 이 표에서 읽을 것)
+3. ACTIVE 감지 → ScheduleWakeup 대기 없이 즉시 NOT_STARTED→IN_PROGRESS + 작업 시작
+4. 작업 완료 후 COMPLETED push → ScheduleWakeup(1200)로 다음 DISPATCH 대기
+5. CC가 이 값을 변경하면 다음 폴링 주기부터 자동 적용
+```
+
+### CC 동적 조정 기준
+
+| 상황 | 팀 ScheduleWakeup | CC CronCreate |
+|------|-------------------|---------------|
+| ACTIVE 팀 없음 (전팀 IDLE/MERGED) | 1200초 | 20분 |
+| Phase 1~2 진행 중 (빠른 작업) | 1200초 | 5분 |
+| Phase 3 QA (장시간 테스트) | 1200초 | 10분 |
+| Phase 4 RA (문서 작업) | 1200초 | 5분 |
+
+---
+
 ## [HARD] 순차 스케줄링 (S13-R2 신규)
 
 > **S13-R1 분석 기반 프로세스 개선: 의존성 기반 순차 시작**

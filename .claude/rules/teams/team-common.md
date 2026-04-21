@@ -6,19 +6,20 @@
 
 ```
 Step 0: git pull origin main  ← [HARD] _CURRENT.md 읽기 전 반드시 실행 (구버전 오독 방지)
-Step 1: Read D:/workspace-gitea/Console-GUI/.moai/dispatches/active/_CURRENT.md
+Step 1: Read _CURRENT.md → '팀 ScheduleWakeup' 값 읽어 다음 대기 간격 결정
 Step 2: Find your team in the index table
 Step 3: Read ONLY that specified DISPATCH file from the same active/ directory
-Step 4: If your team shows IDLE or no active entry → Report IDLE to Commander Center
+Step 4: If your team shows IDLE or no active entry → Report IDLE → ScheduleWakeup(읽은 값)
 ```
 
 - [HARD] **Step 0 필수**: `_CURRENT.md` 읽기 전 반드시 `git pull origin main` 실행 — 미실행 시 구버전 DISPATCH 오독으로 IDLE 오보고 발생
-- [HARD] `_CURRENT.md` 상태가 `MERGED` 또는 `IDLE`이면 → 새 DISPATCH 없음 → Commander Center에 IDLE 보고
+- [HARD] **Step 1 필수**: `_CURRENT.md`의 '팀 모니터링 설정' 테이블에서 ScheduleWakeup 초 값 읽기 — 하드코딩 금지, 이 값 사용
+- [HARD] `_CURRENT.md` 상태가 `MERGED` 또는 `IDLE`이면 → 새 DISPATCH 없음 → Commander Center에 IDLE 보고 → ScheduleWakeup(읽은 값)
 - [HARD] `_CURRENT.md`에 없는 팀은 작업 없음(IDLE) — 임의로 다른 DISPATCH 파일을 찾지 않는다
-- [HARD] 루트의 `DISPATCH-*-2026-04-*.md` 파일은 **절대 읽지 않는다** — 모두 아카이브된 구형 파일. `DISPATCH.md`(CC 전용)도 읽지 않는다
-- [HARD] 날짜가 오래된 DISPATCH 파일(DISPATCH-TEAM-*-2026-04-XX.md 형식)은 모두 아카이브됨 — 읽지 않는다
-- [HARD] 작업이 완료된 후 새 DISPATCH가 없으면 Commander Center에 IDLE 보고하고 대기한다
-- [HARD] DISPATCH 파일 경로는 항상 Main 프로젝트 절대경로 기준: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/`
+- [HARD] 루트의 `DISPATCH-*-2026-04-*.md` 파일은 **절대 읽지 않는다** — 모두 아카이브된 구형 파일
+- [HARD] 작업 완료 후 COMPLETED push → ScheduleWakeup(읽은 값)로 다음 DISPATCH 대기
+- [HARD] ACTIVE 감지 시 → ScheduleWakeup 대기 없이 즉시 NOT_STARTED→IN_PROGRESS + 작업 시작
+- [HARD] DISPATCH 파일 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/`
 
 ### Phase 전환 시 강제 main 동기화 [HARD — S14-R2 사고교훈]
 
@@ -62,6 +63,8 @@ Q1: 이것이 dotnet/msbuild/커버리지 명령인가?        → YES = 중단,
 Q2: 이것이 소스코드(.cs/.xaml) 수정인가?             → YES = 중단, 해당 팀 DISPATCH로 전환
 Q3: 이것이 구현 에이전트(expert-*) 호출인가?          → YES = 중단, 해당 팀 DISPATCH로 전환
 Q4: 이것이 내 소유 모듈 밖의 직접 작업인가?           → YES = 중단, 해당 팀 DISPATCH로 전환
+Q5: 이것이 Sprint/Round 진행 결정인가?        → YES = 묻지 말고 자율 실행
+Q6: CronCreate로 모니터링 루프를 생성했는가?    → NO = 즉시 생성 후 진행
 ```
 
 ### CC 허용 작업 (이것만 가능)
@@ -109,6 +112,39 @@ git diff --name-only main..origin/team/{team}
 - [HARD] S09-R3 사고: QA 12회 연속 NOT_STARTED → CC가 임의로 BLOCKED 처리 → QA 실제 작업 중이었음 → 상태 왜곡
 
 ---
+
+## 모니터링/폴링 간격 [HARD — S15, CC 중앙 제어 v2]
+
+**CC가 _CURRENT.md에서 간격을 중앙 제어. 팀은 이 값을 읽어 ScheduleWakeup에 반영.**
+
+### CC 모니터링 (CronCreate)
+- 목적: 팀 COMPLETED 감지 → 머지 → Phase 진행 → DISPATCH 발행
+- CC가 Phase 상태에 따라 동적으로 간격 조정 (빠른 작업 5분, 장시간 작업 10분, IDLE 20분)
+
+### 팀 DISPATCH 폴링 (ScheduleWakeup)
+- 목적: CC가 새 DISPATCH를 발행했는지 확인 → ACTIVE 감지 시 작업 시작
+- **[HARD] 간격을 _CURRENT.md '팀 모니터링 설정' 테이블에서 읽기 — 하드코딩 금지**
+- 폴링 루프:
+  ```
+  1. _CURRENT.md 읽기 → '팀 ScheduleWakeup' 값 획득
+  2. ScheduleWakeup(읽은 값) 대기
+  3. 깨어나면 → git pull origin main
+  4. Read _CURRENT.md → 자체 팀 행 확인 → ScheduleWakeup 값 재확인 (CC가 변경했을 수 있음)
+  5. IDLE/MERGED → IDLE 보고 → ScheduleWakeup(읽은 값) 재대기
+  6. ACTIVE → DISPATCH 읽기 → NOT_STARTED→IN_PROGRESS → 작업 실행 → COMPLETED → push → ScheduleWakeup(읽은 값) 재대기
+  ```
+
+### 하한선 규칙 [HARD]
+- [HARD] 팀 ScheduleWakeup **최소 600초 (10분)** — _CURRENT.md 값이 600 미만이면 600으로 보정
+- [HARD] ScheduleWakeup 값은 **하드코딩 금지** — 반드시 _CURRENT.md에서 읽을 것
+- [HARD] 작업 완료 직후(push 완료)에는 ScheduleWakeup(읽은 값) 재설정 (다음 DISPATCH 대기)
+- [HARD] ACTIVE 감지 시 → 대기 없이 즉시 작업 시작 (ScheduleWakeup 먼저 설정하지 말 것)
+- [HARD] 예외: `/clear` 후 새 세션 시작 시 즉시 DISPATCH Resolution Protocol 실행 (대기 없이)
+
+### 팀 폴링이 필요한 이유
+- CC가 DISPATCH를 발행하고 push해도, 팀은 스스로 pull하지 않으면 새 DISPATCH를 모름
+- 팀은 CC의 "알림"을 받는 채널이 없음 — git polling이 유일한 감지 메커니즘
+- CC가 _CURRENT.md에서 간격을 중앙 제어 → 상황에 맞게 동적 조정 가능
 
 ## Project Philosophy [CONSTITUTIONAL]
 
@@ -308,7 +344,7 @@ CC가 DISPATCH Status 확인 → 머지 → _CURRENT.md 업데이트
 
 | 파라미터 | 현재 값 | 조정 기준 |
 |----------|---------|-----------|
-| CC 모니터링 주기 | 10분 | 팀 평균 완료 시간의 50% |
+| CC 모니터링 주기 | 20분 | 단일 통일 주기 (2026-04-20~) |
 | Phase 구조 | A+B→CO→QA→RA | 팀간 의존성 변화 시 재설계 |
 | 팀 분배 | 고정 6팀 | 메트릭 기반 병목 해소 |
 
@@ -390,27 +426,36 @@ CC가 DISPATCH Status 확인 → 머지 → _CURRENT.md 업데이트
 6. "S{N}-R{M} 발행 완료 (6팀)" 보고
 ```
 
-### CC 모니터링 주기 [HARD — Effective S11-R1]
+### CC 모니터링 주기 [HARD — Effective S15 CronCreate 의무화]
 
-**20분 모니터링 + 15분 팀 동기화 (자율주행 진화 v3.0)**
+**20분 단일 주기 + CronCreate 자동화 (2026-04-21~)**
 
-- [HARD] CC 모니터링 주기: **20분** (S10-R4 데이터: 평균 팀간 간격 30분의 66%)
-- [HARD] 팀 작업 동기화 주기: **15분** (S10-R4 데이터: 표준편차 21분의 72%)
-- [HARD] **자율주행 진화**: S11 데이터 축적 → S11 종료 후 분석 → S12부터 최적화 적용
+- [HARD] CC 세션 시작 시 ACTIVE 팀 있으면 → **즉시 CronCreate**로 20분 모니터링 루프 생성
+- [HARD] CronCreate 없이 "모니터링 중" 보고 = 프로토콜 위반
+- [HARD] 팀 동기화 주기: **20분** (CC와 동일)
+- [HARD] 차등 주기(10/15/20분) 폐지 — 단일 20분으로 통일
 
-**모니터링 절차:**
+**CC 세션 시작 절차 (CronCreate 포함):**
+```
+Step 0: git pull origin main
+Step 1: Read _CURRENT.md → ACTIVE 팀 확인
+Step 2: ACTIVE 팀 있으면 → CronCreate("*/20 * * * *", "CC 20분 모니터링") 즉시 실행
+Step 3: ACTIVE 팀 없고 전팀 MERGED/IDLE → 갭 분석 → DISPATCH 발행 → CronCreate
+```
+
+**모니터링 루프 (CronCreate로 자동 실행):**
 ```
 1. git fetch origin
 2. git log --oneline origin/team/* --not main (6팀)
 3. DISPATCH 파일 Status 테이블 확인
 4. COMPLETED → 소유권 검증 → 머지 → _CURRENT.md 업데이트
-5. 20분 후 다시 모니터링 (루프)
+5. 전팀 MERGED → CronDelete → 갭 분석 → DISPATCH 발행 → 새 CronCreate
 ```
 
 **팀 동기화 규칙:**
 ```
 1. DISPATCH 읽기 직후: Status NOT_STARTED → IN_PROGRESS 업데이트 + push
-2. 작업 진행 중: 15분마다 Status 확인 + 필요 시 업데이트
+2. 작업 진행 중: 20분마다 Status 확인 + 필요 시 업데이트
 3. 작업 완료 시: Status IN_PROGRESS → COMPLETED + 빌드 증거 + push
 4. 작업 불가 시: Status NOT_STARTED → BLOCKED + 사유 기재 + push
 ```
@@ -428,12 +473,11 @@ CC가 DISPATCH Status 확인 → 머지 → _CURRENT.md 업데이트
 | 전팀 MERGED→발행 | 11시간 53분 | 10분 이내 | 5분 이내 |
 | 팀간 완료 편차 | 18분 | 10분 | 5분 |
 
-**데이터 기반 최적 주기 (Phase 3 공식):**
+**단일 통일 주기 (2026-04-20~):**
 ```
-최적 CC 모니터링 주기 = (평균 팀간 완료 간격) × 0.5
-최적 팀 동기화 주기 = (표준편차) × 0.8
+모든 모니터링/동기화: 20분 단일 주기
+차등 주기(10/15/20분) 폐지
 ```
-S10-R4 데이터 기반: 15분/17분 → 20분/15분 설정 (보수적 조정)
 
 ---
 
