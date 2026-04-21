@@ -12,12 +12,12 @@
 |----|-------------------|------|-------------|------|
 | **Team A** | DISPATCH-S15-R1-TEAM-A.md | **MERGED** | Phase 1 | Update.Tests 317/317 통과 (재현 불가) |
 | **Team B** | DISPATCH-S15-R1-TEAM-B.md | **MERGED** | Phase 1 | IDLE CONFIRM — 전체 통과 |
-| **Coordinator** | DISPATCH-S15-R1-COORDINATOR.md | **ACTIVE** | Phase 2 | SettingsViewModel + 통합테스트 9건 수정 |
+| **Coordinator** | DISPATCH-S15-R1-COORDINATOR.md | **MERGED** | Phase 2 | 통합테스트 4건 수정 (DI + E2E) |
 | **Design** | DISPATCH-S15-R1-DESIGN.md | **MERGED** | 별도 | UI virtualization (StudylistView + MergeView) |
-| **QA** | DISPATCH-S15-R1-QA.md | **QUEUED** | Phase 3 | 전체 테스트 재검증 |
+| **QA** | DISPATCH-S15-R1-QA.md | **ACTIVE** | Phase 3 | 전체 테스트 재검증 |
 | **RA** | DISPATCH-S15-R1-RA.md | **QUEUED** | Phase 4 | 규제 문서 영향 평가 |
 
-**→ Phase 1 완료 — Phase 2 Coordinator ACTIVE 전환**
+**→ Phase 2 완료 — Phase 3 QA ACTIVE 전환**
 
 ---
 
