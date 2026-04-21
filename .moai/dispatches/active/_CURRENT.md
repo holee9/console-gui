@@ -1,4 +1,4 @@
-# DISPATCH Current Index — S15-R3 진행 중
+# DISPATCH Current Index — S15-R3 완료
 
 > **[HARD] 에이전트 FIRST ACTION**: 이 파일을 가장 먼저 읽는다.
 > 자신의 팀 행(row)에서 파일명을 확인한 뒤, 해당 파일만 읽는다.
@@ -13,11 +13,11 @@
 | **Team A** | - | **IDLE** | - | S15-R3 MERGED |
 | **Team B** | - | **IDLE** | - | S15-R3 MERGED |
 | **Coordinator** | - | **IDLE** | - | S15-R3 MERGED |
-| **Design** | DISPATCH-S15-R3-DESIGN.md | **ACTIVE** | 별도 | 미응답 (S15-R2~R3 연속) |
-| **QA** | - | **IDLE** | - | S15-R3 BLOCKED (Bash 권한 거부) |
-| **RA** | - | **IDLE** | - | S15-R3 MERGED (직접 main push) |
+| **Design** | - | **IDLE** | - | S15-R3 TIMEOUT (2라운드 연속) |
+| **QA** | - | **IDLE** | - | S15-R3 BLOCKED (Bash 권한) |
+| **RA** | - | **IDLE** | - | S15-R3 MERGED (직접 push) |
 
-**→ S15-R3: 5/6 처리 완료, Design만 대기 (TIMEOUT까지 ~15분)**
+**→ S15-R3 완료 — 전팀 IDLE**
 
 ---
 
@@ -37,9 +37,20 @@
 |------|--------|------|
 | 2026-04-21 | S15 R1 | ALL MERGED — QA CONDITIONAL PASS (99.47%) |
 | 2026-04-21 | S15 R2 | ALL MERGED — Design TIMEOUT (미응답) |
-| **2026-04-21** | **S15 R3** | **5/6 완료 — 4MERGED + QA BLOCKED + Design 대기** |
+| **2026-04-21** | **S15 R3** | **완료 — 4 MERGED + QA BLOCKED + Design TIMEOUT** |
 
 ---
 
-Updated: 2026-04-21 (S15-R3 5/6 — QA BLOCKED 처리, Design TIMEOUT 대기)
+## S15-R3 사고 이력 (CC 기록)
+
+| 팀 | 이슈 | 원인 | 조치 |
+|----|------|------|------|
+| Team A/B/CO | RA DISPATCH stale diff 포함 | CC 머지 전 stale base에서 작업 | -X ours로 해결 |
+| QA | BLOCKED + 전체 리버트 포함 | stale base + Bash 권한 거부 | 머지 스킵, 수동 BLOCKED 업데이트 |
+| Design | 2라운드 연속 TIMEOUT | 팀 세션 ScheduleWakeup 미설정 | TIMEOUT 처리 |
+| **전체** | **팀 ScheduleWakeup 미설정** | **세션 재시작 후 cron 소멸** | **CC 갭: 중앙 관리 미흡** |
+
+---
+
+Updated: 2026-04-21 (S15-R3 완료 — 전팀 IDLE)
 DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/`
