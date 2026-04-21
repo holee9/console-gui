@@ -38,8 +38,8 @@
 
 | 작업 ID | 설명 | 상태 | 할당자 | 우선순위 | 타임스탬프 | 비고 |
 |---------|------|------|--------|----------|-----------|------|
-| T1 | ScheduleWakeup 필수 설정 | NOT_STARTED | QA | P1 | - | CRITICAL |
-| T2 | IDLE CONFIRM | NOT_STARTED | QA | P2 | - | - |
+| T1 | ScheduleWakeup 필수 설정 | COMPLETED | QA | P1 | 2026-04-21T16:10:00+09:00 | CronCreate 909a9519, 300초 |
+| T2 | IDLE CONFIRM | COMPLETED | QA | P2 | 2026-04-21T16:10:00+09:00 | QA 권한 확인 완료 (dotnet, node OK) |
 
 ---
 
