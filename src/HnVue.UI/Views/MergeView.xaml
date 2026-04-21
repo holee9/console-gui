@@ -259,7 +259,7 @@
                                   Background="Transparent"
                                   BorderThickness="0"
                                   FontFamily="{DynamicResource HnVue.Core.FontFamily}"
-                                  FontSize="11">
+                                  FontSize="11" VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="*"/>
                                 <DataGridTextColumn Header="Body Part" Binding="{Binding BodyPart}" Width="60"/>
@@ -414,7 +414,7 @@
                                   Background="Transparent"
                                   BorderThickness="0"
                                   FontFamily="{DynamicResource HnVue.Core.FontFamily}"
-                                  FontSize="11">
+                                  FontSize="11" VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="*"/>
                                 <DataGridTextColumn Header="Body Part" Binding="{Binding BodyPart}" Width="60"/>

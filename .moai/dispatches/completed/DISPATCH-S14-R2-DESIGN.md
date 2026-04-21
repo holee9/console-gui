@@ -32,11 +32,13 @@ S14-R2 IDLE CONFIRM. Design 소유 모듈에 대한 추가 작업 없음.
 
 ## 4. 완료 조건
 
-- [ ] S14-R1 상태 유지 확인
-- [ ] DISPATCH Status에 확인 결과 기록
+- [x] S14-R1 상태 유지 확인
+- [x] DISPATCH Status에 확인 결과 기록
 
 ---
 
 ## 5. Build Evidence
 
-_(IDLE CONFIRM만 수행)_
+- DesignTime Mock ViewModels: 5개 파일 정상
+- Styles/Themes 정상 구성
+- 추가 UI 작업 없음 (IDLE CONFIRM)
