@@ -1,4 +1,4 @@
-# DISPATCH Current Index — S15-R2 진행 중
+# DISPATCH Current Index — S15-R2 완료
 
 > **[HARD] 에이전트 FIRST ACTION**: 이 파일을 가장 먼저 읽는다.
 > 자신의 팀 행(row)에서 파일명을 확인한 뒤, 해당 파일만 읽는다.
@@ -10,14 +10,14 @@
 
 | 팀 | 현재 DISPATCH 파일 | 상태 | 스케줄 Phase | 비고 |
 |----|-------------------|------|-------------|------|
-| **Team A** | DISPATCH-S15-R2-TEAM-A.md | **MERGED** | Phase 1 | IDLE CONFIRM |
-| **Team B** | DISPATCH-S15-R2-TEAM-B.md | **MERGED** | Phase 1 | IDLE CONFIRM |
-| **Coordinator** | DISPATCH-S15-R2-COORDINATOR.md | **MERGED** | Phase 2 | IDLE CONFIRM |
-| **Design** | DISPATCH-S15-R2-DESIGN.md | **ACTIVE** | 별도 | 미응답 |
-| **QA** | DISPATCH-S15-R2-QA.md | **MERGED** | Phase 3 | IDLE CONFIRM |
-| **RA** | DISPATCH-S15-R2-RA.md | **MERGED** | Phase 4 | IDLE CONFIRM |
+| **Team A** | - | **IDLE** | - | S15-R2 MERGED |
+| **Team B** | - | **IDLE** | - | S15-R2 MERGED |
+| **Coordinator** | - | **IDLE** | - | S15-R2 MERGED |
+| **Design** | - | **IDLE** | - | S15-R2 TIMEOUT → SKIPPED |
+| **QA** | - | **IDLE** | - | S15-R2 MERGED |
+| **RA** | - | **IDLE** | - | S15-R2 MERGED |
 
-**→ S15-R2: Design만 남음 — CC 스폰 대기 중**
+**→ S15-R2: 전팀 IDLE — CC 갭 분석 대기**
 
 ---
 
@@ -36,9 +36,9 @@
 | 날짜 | 라운드 | 상태 |
 |------|--------|------|
 | 2026-04-21 | S15 R1 | ALL MERGED — QA CONDITIONAL PASS (99.47%) |
-| **2026-04-21** | **S15 R2** | **5/6 MERGED — Design 대기 중** |
+| 2026-04-21 | S15 R2 | ALL MERGED — Design TIMEOUT (미응답) |
 
 ---
 
-Updated: 2026-04-21 (S15-R2 5/6 MERGED)
+Updated: 2026-04-21 (S15-R2 전팀 IDLE — 브랜치 전체 동기화 완료)
 DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/`

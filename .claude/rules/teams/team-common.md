@@ -27,14 +27,16 @@ Step 4: If your team shows IDLE or no active entry → Report IDLE → ScheduleW
 
 ```
 QUEUED → ACTIVE 감지 시:
-1. git pull origin main        ← CC의 머지 포함 최신 코드 확보
-2. git merge main              ← team 브랜치에 최신 main 반영
+1. git fetch origin main       ← CC의 머지 포함 최신 코드 확보
+2. git reset --hard origin/main ← team 브랜치를 main HEAD와 정확히 일치 (merge commit 누적 방지)
 3. 이후에만 DISPATCH 읽기 + 작업 시작
 ```
 
-- [HARD] Phase 2+ 팀은 ACTIVE 감지 후 **반드시 `git pull origin main` + `git merge main`** 실행
-- [HARD] 이전 Phase 팀의 머지가 브랜치에 아직 반영되지 않았을 수 있음 — pull 없이 작업 시작 = 구버전 base 위험
+- [HARD] Phase 2+ 팀은 ACTIVE 감지 후 **반드시 `git fetch origin main` + `git reset --hard origin/main`** 실행
+- [HARD] `merge` 대신 `reset --hard` 사용 — merge commit 누적 방지 (S15-R2 사고교훈)
+- [HARD] 이전 Phase 팀의 머지가 브랜치에 아직 반영되지 않았을 수 있음 — fetch 없이 작업 시작 = 구버전 base 위험
 - [HARD] S14-R2 사고: Coordinator가 Phase 1 Team A 머지 이전 base에서 분기 → Team A의 87개 Trait 추가가 누락 → diff에서 "삭제"로 표시
+- [HARD] S15-R2 사고: `merge` 방식 사용으로 브랜치에 merge commit 누적 → false positive 미머지 감지
 
 **IDLE 보고 형식:**
 ```
@@ -301,11 +303,14 @@ CC가 DISPATCH Status 확인 → 머지 → _CURRENT.md 업데이트
 - [HARD] 정리 후 반드시 `git add .moai/dispatches/ && git commit && git push origin main` 실행
 - [HARD] **MERGED DISPATCH 파일이 active/에 잔존하면 팀이 세션 재시작 시 계속 IDLE 보고 반복** — 이것이 S07-R3 사고 원인
 
-### 머지 후 team 브랜치 동기화 [HARD — Effective S09-R3]
-- [HARD] CC가 머지 완료 후 `git checkout team/{team} && git merge main && git push origin team/{team}` 실행
+### 머지 후 team 브랜치 동기화 [HARD — Effective S15-R2]
+- [HARD] CC가 머지 완료 후 **워크트리 디렉토리**에서 `git reset --hard origin/main && git push origin team/{team} --force` 실행
+- [HARD] `merge` 대신 **`reset --hard`** 사용 — merge commit 누적 방지 (S15-R2 사고교훈)
+- [HARD] 명령: `cd .worktrees/{team-name} && git reset --hard origin/main && git push origin team/{team} --force`
+- [HARD] 워크트리가 브랜치를 잡고 있으므로 `git checkout` 불가 → 반드시 워크트리 디렉토리에서 직접 실행
 - [HARD] 미동기화 시 `git log origin/team/{team} --not main`이 **이미 머지된 커밋을 false positive**로 보고
 - [HARD] S09-R3 사고: Coordinator 머지 완료했으나 team/coordinator 브랜치 미동기화 → 다음 모니터링에서 동일 커밋 재감지
-- [HARD] 동기화 후 `git checkout main`으로 복귀
+- [HARD] S15-R2 사고: `merge` 방식 사용으로 Team B에 5개, Design에 19개 merge commit 누적 → `reset --hard`로 전환
 
 ### 머지 전 소유권 교차 검증 [HARD — Effective S09-R3]
 - [HARD] CC가 머지 전 `git diff --name-only main..origin/team/{team}` 로 변경 파일 목록 확인
@@ -397,6 +402,25 @@ CC가 DISPATCH Status 확인 → 머지 → _CURRENT.md 업데이트
 - [HARD] 5/6팀 MERGED 감지 시 → Coordinator 외 5팀 DISPATCH 즉시 `completed/` 이동 + _CURRENT.md IDLE 업데이트
 - [HARD] IDLE 팀의 worktree 세션 시작 시 깨끗한 IDLE 상태로 인식 → 반복 IDLE 보고 방지
 - [HARD] 마지막 1팀(COMMONDINATOR 등) 작업 완료 대기 중에도 갭 분석 **병행 준비**
+
+### 팀 TIMEOUT 프로토콜 [HARD — Effective S15-R2]
+
+**미응답 팀 처리 — 무한 대기 금지.**
+
+```
+N-1팀 MERGED + 1팀 미응답 상태:
+1. DISPATCH 발행 후 60분 경과 시 → TIMEOUT 선언
+2. DISPATCH 파일 active/ → completed/ 이동 (Status: TIMEOUT)
+3. _CURRENT.md 해당 팀 IDLE로 업데이트
+4. 전팀 IDLE 확인 → 즉시 갭 분석 → 다음 라운드 발행
+5. TIMEOUT 팀은 다음 라운드에서 정상 포함 (재시도)
+```
+
+- [HARD] 미응답 팀을 **무한정 대기하지 않음** — 60분 후 TIMEOUT 처리
+- [HARD] TIMEOUT 처리 후에도 갭 분석 → 다음 라운드 발행 **즉시 진행**
+- [HARD] TIMEOUT 팀은 페널티 없이 다음 라운드에 포함 (워크트리/에이전트 미실행이 원인일 수 있음)
+- [HARD] 연속 3회 TIMEOUT → 사용자 보고 (워크트리/에이전트 구성 문제 의심)
+- [HARD] S15-R2 사고: Design이 응답하지 않아 S15-R2가 무기한 대기 상태 방치
 - [HARD] 절대 "사용자가 모니터링 지시할 때까지 대기" 금지 — CC가 자율 판단하여 실행
 
 ### 전팀 완료 감지

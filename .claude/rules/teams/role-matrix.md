@@ -250,10 +250,12 @@ CC: 갭 분석 → 다음 라운드 6팀 DISPATCH 발행 → 반복
 | S09-R3 | CC 임의 Status 변경 | CC | CC가 QA 확인 없이 DISPATCH Status를 BLOCKED로 임의 변경 → QA 실제 작업 중이었음 → 상태 왜곡 | CC는 팀 DISPATCH Status 임의 변경 금지, CC는 읽기만. Stall Detection도 경고만, 임의 BLOCKED 금지 |
 | S14-R2 | Coordinator main 동기화 누락 | CO | Phase 2 시작 시 Phase 1 Team A 머지 이전 base에서 분기 → Team A의 87개 Trait 추가 누락 → 소유권 위반으로 보이지만 실제는 구버전 base | Phase 전환 시 강제 `git pull origin main` + `git merge main` 의무화 (team-common.md) |
 | S14-R2 | QA 타팀 DISPATCH 수정 | QA | QA가 Design DISPATCH를 COMPLETED→NOT_STARTED로 되돌림 (구버전 base에서의 diff) | Phase 전환 시 강제 main 동기화 규칙으로 재발 방지 |
+| S15-R2 | merge commit 누적 | CC | CC 머지 후 `git merge main` 방식 사용 → Team B 5개, Design 19개 merge commit 누적 → false positive 미머지 감지 | `merge` → `reset --hard` 전환 (team-common.md) |
+| S15-R2 | Design 미응답 무한 대기 | CC | Design이 DISPATCH에 응답하지 않아 S15-R2 무기한 대기 상태 방치 → 전체 라운드 진행 불가 | 팀 TIMEOUT 프로토콜 추가 (60분 후 TIMEOUT → 다음 라운드 진행) |
 
 ---
 
-Version: 2.1.0
+Version: 2.2.0
 Classification: CONSTITUTIONAL (FROZEN)
-Effective: 2026-04-14
+Effective: 2026-04-21
 Source: S07-R4 사고교훈 + S08-R1 DesignTime 충돌 사고교훈 + S14-R2 main 동기화 누락 사고교훈
