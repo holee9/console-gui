@@ -25,10 +25,16 @@
 
 | 작업 ID | 설명 | 상태 | 할당자 | 우선순위 | 타임스탬프 | 비고 |
 |---------|------|------|--------|----------|-----------|------|
-| T1 | IDLE CONFIRM | NOT_STARTED | Team A | P3 | _ | 동작 확인 |
+| T1 | IDLE CONFIRM | COMPLETED | Team A | P3 | 2026-04-21T14:27:52+09:00 | 동작 확인 완료 |
 
 ---
 
 ## 4. Build Evidence
 
-(작업 완료 후 기록)
+DISPATCH Resolution Protocol 정상 동작 확인.
+- git pull origin main: OK
+- git merge main: Already up to date
+- _CURRENT.md 읽기: Team A ACTIVE 확인
+- DISPATCH-S15-R2-TEAM-A.md 읽기: IDLE CONFIRM 작업 확인
+- Status 업데이트: NOT_STARTED -> COMPLETED
+- git push origin team/team-a: 진행 중
