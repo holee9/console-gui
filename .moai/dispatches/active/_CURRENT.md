@@ -10,14 +10,14 @@
 
 | 팀 | 현재 DISPATCH 파일 | 상태 | 근거 SPEC/문서 | 우선순위 |
 |----|-------------------|------|---------------|---------|
-| **Team A** | DISPATCH-S16-R2-TEAM-A.md | **ACTIVE** | SPEC-INFRA-002 (P0-Blocker) | HIGH |
-| **Team B** | DISPATCH-S16-R2-TEAM-B.md | **ACTIVE** | SPEC-TEAMB-COV-001 | HIGH |
-| **Coordinator** | DISPATCH-S16-R2-COORDINATOR.md | **ACTIVE** | SPEC-COORDINATOR-001 (P0-Blocker) | HIGH |
-| **Design** | DISPATCH-S16-R2-DESIGN.md | **ACTIVE** | SPEC-UI-001 / UISPEC-002, UISPEC-003 | HIGH |
-| **QA** | DISPATCH-S16-R2-QA.md | **ACTIVE** | Quality Standards + CONDITIONAL PASS 해소 | HIGH |
-| **RA** | DISPATCH-S16-R2-RA.md | **ACTIVE** | SPEC-GOVERNANCE-001 + DOC-042 CMP | HIGH |
+| **Team A** | DISPATCH-S16-R2-TEAM-A.md | **MERGED** | SPEC-INFRA-002 (P0-Blocker) | SPEC-INFRA-002 planning 완료 ✅ |
+| **Team B** | DISPATCH-S16-R2-TEAM-B.md | **MERGED** | SPEC-TEAMB-COV-001 | Dose Safety-Critical 90%+ 달성 ✅ |
+| **Coordinator** | DISPATCH-S16-R2-COORDINATOR.md | **MERGED** | SPEC-COORDINATOR-001 (P0-Blocker) | SPEC-COORDINATOR-001 planning 완료 ✅ |
+| **Design** | DISPATCH-S16-R2-DESIGN.md | **MERGED** | SPEC-UI-001 / UISPEC-002, UISPEC-003 | PatientListView 필수 컬럼 추가 ✅ |
+| **QA** | DISPATCH-S16-R2-QA.md | **ACTIVE** | Quality Standards + CONDITIONAL PASS 해소 | T1 IN_PROGRESS 🔄 |
+| **RA** | DISPATCH-S16-R2-RA.md | **ACTIVE** | SPEC-GOVERNANCE-001 + DOC-042 CMP | T1 IN_PROGRESS 🔄 |
 
-**→ S16-R2 ACTIVE — 실질 개발 재시작 (2026-04-22 시스템 재정비 완료)**
+**→ S16-R2: 4/6 MERGED — QA/RA 작업 중 (2026-04-22)**
 
 ---
 
