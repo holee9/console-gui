@@ -57,7 +57,7 @@ S14-R2에서 QA가 CONDITIONAL PASS (4107/4124 = 99.47%) 판정.
 
 | 작업 ID | 설명 | 상태 | 할당자 | 우선순위 | 타임스탬프 | 비고 |
 |---------|------|------|--------|----------|-----------|------|
-| T1 | 전체 빌드 + 테스트 재측정 | IN_PROGRESS | QA | P1 | - | Release 구성 |
+| T1 | 전체 빌드 + 테스트 재측정 | IN_PROGRESS | QA | P1 | 2026-04-22T14:15:00+09:00 | Release 구성 |
 | T2 | Safety-Critical 90% 검증 | NOT_STARTED | QA | P1 | - | Dose/Incident/Security/Update |
 | T3 | CONDITIONAL PASS 해소 분석 | NOT_STARTED | QA | P2 | - | S14-R2 비교 |
 | T4 | 릴리즈 준비도 스냅샷 | NOT_STARTED | QA | P3 | - | RELEASE_READY HTML |
