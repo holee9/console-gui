@@ -49,9 +49,9 @@ S16-R2 QA 최종 판정에서 **HnVue.Security 89.62%** 가 Safety-Critical 90% 
 
 | 작업 ID | 설명 | 상태 | 할당자 | 우선순위 | 타임스탬프 | 비고 |
 |---------|------|------|--------|----------|-----------|------|
-| T1 | Security 90%+ 달성 | NOT_STARTED | Team A | P1 | - | Issue #109 |
+| T1 | Security 90%+ 달성 | IN_PROGRESS | Team A | P1 | 2026-04-22T14:30:00+09:00 | Issue #109 |
 | T2 | SPEC-INFRA-002 REFACTOR + DI 교체 | NOT_STARTED | Team A | P2 | - | - |
-| T3 | DISPATCH Status 업데이트 | NOT_STARTED | Team A | P3 | - | 상시 |
+| T3 | DISPATCH Status 업데이트 | COMPLETED | Team A | P3 | 2026-04-22T14:30:00+09:00 | 상시 |
 
 ---
 
