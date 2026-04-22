@@ -155,6 +155,9 @@
                             <DataGridTextColumn Header="Sex" Binding="{Binding Sex}" Width="60"/>
                             <DataGridTextColumn Header="Age" Binding="{Binding DateOfBirth, Converter={StaticResource AgeConverter}}" Width="80"/>
                             <DataGridTextColumn Header="BirthDate" Binding="{Binding DateOfBirth, StringFormat={}{0:yyyyMMdd}}" Width="120"/>
+                            <!-- UISPEC-002: 필수 데이터 요소 추가 -->
+                            <DataGridTextColumn Header="Ref. Physician" Binding="{Binding RefPhysician}" Width="150"/>
+                            <DataGridTextColumn Header="Exam Date" Binding="{Binding ExamDate, StringFormat={}{0:yyyyMMdd}}" Width="120"/>
                         </DataGrid.Columns>
                     </DataGrid>
                     <!-- PPT Slide 4: Empty state with improved message -->
