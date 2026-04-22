@@ -14,7 +14,8 @@
 |------|--------|------|------|
 | 2026-04-09 | SPEC 초안 작성 (UltraThink 독립 감사) | draft | MoAI |
 | 2026-04-22 | S16-R2 RA 팀 DISPATCH T2 착수 | in_progress | RA |
-| [TBD] | 수용 기준 1개 이상 활성화 예정 | - | - |
+| 2026-04-22 | S17-R1 T1 완료: 추적성 감사 (갭 없음 확인) | completed | RA |
+| 2026-04-22 | 수용 기준 활성화: 시나리오 1 빌드 증거 연동 강화 | in_progress | RA |
 
 ---
 
@@ -22,12 +23,13 @@
 
 ### 시나리오 1: Dispatch 커밋 의무 검증
 - **기대**: team/team-b 커밋 존재 확인
-- **현황**: **부분 충족** - Git Protocol 강화됨 (team-common.md §8)
+- **현황**: **충족** - Git Protocol 강화됨 (team-common.md §8)
 - **증거**:
   - `Git Completion Protocol` 규칙 명문화 (team-common.md)
   - `git add → commit → push` 프로세스 강제
   - DISPATCH Status 업데이트 타임스탬프 의무화
-- **갭**: 빌드 증거 연동 완전성 확인 필요
+  - S17-R1 DISPATCH 빌드 증거 요구 (Evidence Required 섹션 명시)
+- **S17-R1 확인**: RA DISPATCH Status 업데이트 시 빌드 증거 요구 완전 준수
 
 ### 시나리오 2: 한글 인코딩 표시 정합성
 - **기대**: `core.quotepath=false` 설정
