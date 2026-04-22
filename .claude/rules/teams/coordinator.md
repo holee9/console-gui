@@ -62,7 +62,7 @@ Design Team이 DISPATCH에서 `NEEDS_VIEWMODEL` 을 보고하면:
 
 ## Scope Limitation [HARD]
 - Coordinator worktree only inspects its OWN source code modules
-- Analyzing other teams' work is Commander Center's role
+- Analyzing other teams' work is the user's (orchestrator's) role
 - **예외**: `team-common.md` DISPATCH Resolution Protocol(`_CURRENT.md`, `DISPATCH 파일`)은
   [HARD — FIRST ACTION] 규칙에 따라 반드시 실행. Scope Limitation은 소스 코드 모듈에만 적용.
 - **예외**: `Completion Gate`를 위한 전체 솔루션 빌드(`HnVue.sln`)는 허용

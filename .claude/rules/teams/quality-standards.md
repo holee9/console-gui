@@ -76,9 +76,8 @@ Safety-Critical 모듈 수정 시 추가:
 
 ## 5. QA 독립성 [CONSTITUTIONAL]
 
-- [HARD] QA의 PASS/FAIL 판정은 **최종** — CC가 번복 불가
+- [HARD] QA의 PASS/FAIL 판정은 **최종** — 사용자 승인 없이 번복 불가
 - [HARD] QA는 구현에 관여하지 않고 검증에만 관여
-- [HARD] CC는 QA 보고서를 **읽어서** 판단 (직접 검증 도구 실행 금지)
 - [HARD] 소유 도구: `dotnet build/test`, Coverlet, Stryker, SonarCloud, StyleCop, OWASP 도구
 
 ---
@@ -96,6 +95,6 @@ GitHub Actions / Gitea CI에서 다음 게이트 강제:
 
 ---
 
-Version: 1.0.0 (team-common.md §4~§6에서 분리, SSOT 재확인)
+Version: 1.1.0 (CC 역할 제거)
 Effective: 2026-04-22
-Cross-ref: `qa.md`, `cc-operating-protocol.md`, `dispatch-protocol.md`
+Cross-ref: `qa.md`, `dispatch-protocol.md`
