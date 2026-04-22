@@ -46,9 +46,9 @@ S16-R2에서 Dose 모듈 99.68% line / 93.8% branch 달성으로 Safety-Critical
 
 | 작업 ID | 설명 | 상태 | 할당자 | 우선순위 | 타임스탬프 | 비고 |
 |---------|------|------|--------|----------|-----------|------|
-| T1 | Incident branch 90% 달성 | NOT_STARTED | Team B | P1 | - | Safety-Critical |
+| T1 | Incident branch 90% 달성 | IN_PROGRESS | Team B | P1 | 2026-04-22T15:45:00+09:00 | Safety-Critical 77.38% → 90%+ |
 | T2 | Dicom 커버리지 향상 | NOT_STARTED | Team B | P2 | - | 54.10% → 70%+ |
-| T3 | DISPATCH Status 업데이트 | NOT_STARTED | Team B | P3 | - | 상시 |
+| T3 | DISPATCH Status 업데이트 | COMPLETED | Team B | P3 | 2026-04-22T15:45:00+09:00 | IN_PROGRESS 전환 완료 |
 
 ---
 
