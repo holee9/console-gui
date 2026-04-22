@@ -1,3 +1,5 @@
+> 🛑 **[HOLD — 2026-04-22]** 이 DISPATCH는 시스템 재정비 완료 후 재발행 예정. **ScheduleWakeup 설정 금지. 작업 착수 금지. 세션 종료 권장.**
+
 # DISPATCH S16-R2 — Design (Pure UI)
 
 ## Sprint: S16 | Round: R2 | Issued: 2026-04-22
@@ -15,19 +17,11 @@ SPEC-UI-001 UISPEC 매트릭스에 따르면:
 - **UISPEC-001 (LoginView)**: 95% compliant — 안정
 
 이전 2라운드 연속 TIMEOUT으로 실질 기여가 없었음.
-이번 라운드는 ScheduleWakeup 설정 후 즉시 UI 개선 작업 착수.
+[HOLD] 이 DISPATCH는 시스템 재정비 후 재발행 예정 — ScheduleWakeup 설정 금지.
 
 ---
 
 ## Tasks
-
-### T0: ScheduleWakeup 설정 [P1 — 최우선]
-- **설명**: 2라운드 연속 TIMEOUT 원인 = ScheduleWakeup 미설정
-- **체크리스트**:
-  - [ ] `_CURRENT.md`에서 팀 ScheduleWakeup 값 읽기 (현재 300초)
-  - [ ] ScheduleWakeup(300) 즉시 실행
-  - [ ] 실패 시 CC에 BLOCKED 보고
-- **완료 조건**: ScheduleWakeup 활성
 
 ### T1: UISPEC-002 PatientListView 준수도 분석 [P1]
 - **설명**: 현재 44%의 갭 원인 식별
@@ -56,7 +50,6 @@ SPEC-UI-001 UISPEC 매트릭스에 따르면:
 
 | 작업 ID | 설명 | 상태 | 할당자 | 우선순위 | 타임스탬프 | 비고 |
 |---------|------|------|--------|----------|-----------|------|
-| T0 | ScheduleWakeup 설정 | NOT_STARTED | Design | P1 | - | CRITICAL — 최우선 |
 | T1 | UISPEC-002 갭 분석 | NOT_STARTED | Design | P1 | - | PatientListView |
 | T2 | UISPEC-002 1개 항목 구현 | NOT_STARTED | Design | P2 | - | XAML 개선 |
 | T3 | DISPATCH Status 업데이트 | NOT_STARTED | Design | P3 | - | 상시 |

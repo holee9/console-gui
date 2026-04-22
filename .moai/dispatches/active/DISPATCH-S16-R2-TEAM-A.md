@@ -1,3 +1,5 @@
+> 🛑 **[HOLD — 2026-04-22]** 이 DISPATCH는 시스템 재정비 완료 후 재발행 예정. **ScheduleWakeup 설정 금지. 작업 착수 금지. 세션 종료 권장.**
+
 # DISPATCH S16-R2 — Team A (Infrastructure)
 
 ## Sprint: S16 | Round: R2 | Issued: 2026-04-22
@@ -59,7 +61,7 @@ SPEC-INFRA-002는 P0-Blocker(priority: P0-Blocker)로 2026-04-11 승인되었으
 - [HARD] SPEC-INFRA-002 범위 엄수 — MFA, Key Rotation, 기존 데이터 마이그레이션은 Out of Scope
 - [HARD] 빌드/테스트 검증 없이 COMPLETED 보고 금지 — `dotnet build` 0 errors 확인
 - [HARD] RED 테스트는 "실패해야 함" — 테스트가 실수로 PASS되면 테스트 로직 재검토
-- [HARD] ScheduleWakeup(300초) 유지 — /clear 후 첫 액션
+- [HARD] ScheduleWakeup 설정 금지 (HOLD 중 — _CURRENT.md 참조)
 
 ## Evidence Required
 
