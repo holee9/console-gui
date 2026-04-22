@@ -4,16 +4,14 @@ For full operational rules, see: `docs/development/DEV-OPS-GUIDELINES.md` (Singl
 
 ---
 
-## CC Pre-DISPATCH Checklist
+## Pre-DISPATCH Checklist (사용자)
 
-Before writing a DISPATCH, CC verifies:
-- [ ] Am I planning/instructing (allowed) or implementing (forbidden)?
-- [ ] DISPATCH content aligns with SPEC acceptance criteria?
-- [ ] Cross-team dependencies are specified?
-- [ ] Acceptance criteria are measurable (numbers, commands, artifacts)?
-- [ ] Source code files (.cs/.xaml/.csproj) are NOT being modified by CC?
+DISPATCH 작성 전 확인:
+- [ ] DISPATCH 내용이 SPEC Acceptance Criteria와 일치하는가?
+- [ ] Cross-team 의존성이 명시되어 있는가?
+- [ ] Acceptance Criteria가 측정 가능한가 (수치, 명령어, 산출물)?
 
-## DISPATCH Template v2.0
+## DISPATCH Template v2.1
 
 ```markdown
 # DISPATCH: {Team} — S{NN} Round {N}
@@ -21,7 +19,7 @@ Before writing a DISPATCH, CC verifies:
 | Field | Value |
 |-------|-------|
 | Issued | YYYY-MM-DD |
-| Issued By | Commander Center (CC) |
+| Issued By | 사용자 |
 | Target | {Team} |
 | Branch | team/{team} |
 | Type | S{NN} Round {N} — {summary} |
@@ -73,7 +71,7 @@ dotnet test {test project} -> all pass required
 1. git add {changed files}
 2. git commit -m "{type}({team}): S{NN} R{N} {summary}"
 3. git push origin team/{team}
-4. DO NOT create PR (CC exclusive)
+4. DO NOT create PR (user manages directly)
 
 ## Status (Update after work)
 - **State**: NOT_STARTED
@@ -86,9 +84,9 @@ dotnet test {test project} -> all pass required
 - **Blocked By**: --
 ```
 
-## Monitoring Judgment Criteria (CC Reference)
+## Monitoring Judgment Criteria
 
-| Situation | Judgment | CC Action |
+| Situation | Judgment | Action |
 |-----------|---------|-----------|
 | Status=COMPLETED + uncommitted | DONE_UNCOMMITTED | Instruct commit+push |
 | 20min+ no change | STALLED | Check status or re-dispatch |

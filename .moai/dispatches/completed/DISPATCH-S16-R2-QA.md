@@ -57,10 +57,40 @@ S14-R2에서 QA가 CONDITIONAL PASS (4107/4124 = 99.47%) 판정.
 
 | 작업 ID | 설명 | 상태 | 할당자 | 우선순위 | 타임스탬프 | 비고 |
 |---------|------|------|--------|----------|-----------|------|
-| T1 | 전체 빌드 + 테스트 재측정 | IN_PROGRESS | QA | P1 | - | Release 구성 |
-| T2 | Safety-Critical 90% 검증 | NOT_STARTED | QA | P1 | - | Dose/Incident/Security/Update |
-| T3 | CONDITIONAL PASS 해소 분석 | NOT_STARTED | QA | P2 | - | S14-R2 비교 |
-| T4 | 릴리즈 준비도 스냅샷 | NOT_STARTED | QA | P3 | - | RELEASE_READY HTML |
+| T1 | 전체 빌드 + 테스트 재측정 | COMPLETED | QA | P1 | 2026-04-22T15:30:00+09:00 | 빌드 0 errors / 22860 warnings; 테스트 4754 PASS / 13 FAIL / 4768 total (99.73%) |
+| T2 | Safety-Critical 90% 검증 | COMPLETED | QA | P1 | 2026-04-22T15:30:00+09:00 | Dose 100%, Incident 95.24%, Update 96%, Security 89.62% (FAIL) — Issue #109 |
+| T3 | CONDITIONAL PASS 해소 분석 | COMPLETED | QA | P2 | 2026-04-22T15:30:00+09:00 | S14-R2 17 fail → S16-R2 13 fail (4 recovered), CONDITIONAL PASS 유지 |
+| T4 | 릴리즈 준비도 스냅샷 | BLOCKED | QA | P3 | 2026-04-22T15:30:00+09:00 | Generate-ReleaseReport.ps1 UTF-8 no-BOM으로 PS 5.1 파서 실패. FINAL-COVERAGE.md 수동 대체본 작성 |
+
+## Final Verdict (QA Independent Ruling)
+
+**S16-R2 최종 판정: CONDITIONAL PASS**
+
+### PASS 영역
+- Build Gate: PASS (0 errors)
+- Test Gate: 99.73% success rate (4754/4768) — 프로젝트 역대 최고 수준
+- Safety-Critical Dose: 100.00% PASS
+- Safety-Critical Incident: 95.24% PASS
+- Safety-Critical Update: 96.00% PASS (단독 측정 시)
+- Standard Modules: Data/Detector/Imaging/Workflow/PatientMgmt/CDBurning/UI/UI.Contracts/UI.ViewModels 9/12 PASS
+
+### FAIL 영역
+- **Safety-Critical Security: 89.62%** (target 90%, -0.38%p) → Issue #109, team-a
+- Standard Common: 48.74% < 85%
+- Standard Dicom: 54.10% < 85%
+- Standard SystemAdmin: 62.90% < 85%
+
+### Evidence
+- Build log: TestReports/S16-R2/build.log
+- Test log: TestReports/S16-R2/test.log
+- Coverage summary (max-per-module): TestReports/S16-R2/coverage-summary-max.csv
+- Final coverage report: TestReports/S16-R2/FINAL-COVERAGE.md
+- Update/Security isolated re-run: TestReports/S16-R2/coverage-update/, coverage-security/
+
+### CC 후속 조치 권고
+1. Issue #109 Team A에게 전달 → Security 0.38%p 보강
+2. S16-R2는 CONDITIONAL PASS로 S17-R1 진행 가능 (Safety-Critical gate 3/4 PASS)
+3. Common/Dicom/SystemAdmin은 non-safety 모듈로 후속 라운드 커버리지 보강 권장
 
 ---
 
