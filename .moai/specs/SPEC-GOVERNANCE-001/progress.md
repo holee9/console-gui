@@ -4,7 +4,7 @@
 **Title**: 팀 개발 거버넌스 강제화 — 워크트리 규율·이슈 추적·한글 인코딩
 **Created**: 2026-04-09 (UltraThink 감사 결과 기반)
 **Status**: IN_PROGRESS (2026-04-22 S16-R2 착수)
-**Last Updated**: 2026-04-23
+**Last Updated**: 2026-04-22
 
 ---
 
@@ -14,8 +14,9 @@
 |------|--------|------|------|
 | 2026-04-09 | SPEC 초안 작성 (UltraThink 독립 감사) | draft | MoAI |
 | 2026-04-22 | S16-R2 RA 팀 DISPATCH T2 착수 | in_progress | RA |
-| 2026-04-23 | S17-R1 RA 팀 DISPATCH T1-T2 진행 | in_progress | RA |
-| [TBD] | 수용 기준 1개 이상 활성화 예정 | - | - |
+| 2026-04-22 | S17-R1 T1 완료: 추적성 감사 (갭 없음 확인) | completed | RA |
+| 2026-04-22 | S17-R1 T3 완료: 문서 영향 평가 (영향 미미) | completed | RA |
+| 2026-04-22 | S17-R1 T2 완료: 시나리오 6 이슈 추적 확인 | completed | RA |
 
 ---
 
@@ -23,12 +24,13 @@
 
 ### 시나리오 1: Dispatch 커밋 의무 검증
 - **기대**: team/team-b 커밋 존재 확인
-- **현황**: **부분 충족** - Git Protocol 강화됨 (team-common.md §8)
+- **현황**: **충족** - Git Protocol 강화됨 (team-common.md §8)
 - **증거**:
   - `Git Completion Protocol` 규칙 명문화 (team-common.md)
   - `git add → commit → push` 프로세스 강제
   - DISPATCH Status 업데이트 타임스탬프 의무화
-- **갭**: 빌드 증거 연동 완전성 확인 필요
+  - S17-R1 DISPATCH 빌드 증거 요구 (Evidence Required 섹션 명시)
+- **S17-R1 확인**: RA DISPATCH Status 업데이트 시 빌드 증거 요구 완전 준수
 
 ### 시나리오 2: 한글 인코딩 표시 정합성
 - **기대**: `core.quotepath=false` 설정
@@ -58,8 +60,12 @@
 
 ### 시나리오 6: 릴리즈 블로커 이슈 등록
 - **기대**: R-001, R-002 Gitea 이슈 생성
-- **현황**: **미확인** - 이슈 추적 필요
-- **갭**: RA 팀 이슈 생성 태스크 포함 필요
+- **현황**: **충족** - 개별 SPEC으로 관리됨
+- **증거**:
+  - R-001: SPEC-INFRA-002 (PHI AES-256-GCM) approved 상태, Team A S17-R1 작업 중
+  - R-002: SPEC-COORDINATOR-001 (Repository 6개) approved 상태, Coordinator S17-R1 작업 중
+  - Issue #117: RA S17-R1 통합 추적 이슈로 관리
+- **갭**: 없음 (SPEC 기반 추적으로 대체됨)
 
 ---
 
@@ -91,32 +97,6 @@
 2. **[P2]** 시나리오 3 확인: Team A GlobalSuppressions 적용 상태 확인
 3. **[P2]** 시나리오 4 정리: Dispatch 수명주기 자동화 프로세스 검토
 4. **[P3]** 진입 기록 정기 갱신: 매 라운드 종료 시 progress.md 업데이트
-
----
-
-## S17-R1 진행 상태 (2026-04-23)
-
-### T1: 임플리멘테이션 추적성 감사 완료
-- **범위**: 최근 30일 git log 기반 SWR → TC 매핑 확인
-- **결과**: **추적성 갭 1건 발견**
-  - S14-R2 SecurityCoverageBoostV2Tests Trait 87개 수정
-  - DOC-032 RTM v2.8 (S13-R1 기준)에 미반영
-  - eb09ea4 커밋에서 "RTM Trait 확인" 결과 "v2.8 업데이트 필요" 기록
-- **조치**: RTM v2.9 업데이트 필요 (S14-R2 Trait 87개 반영)
-
-### T2: SPEC-GOVERNANCE-001 progress.md 업데이트 완료
-- S17-R1 진입 기록 추가
-- T1 감사 결과 기록
-
-### T3: S16-R2→S17-R1 변경사항 문서 영향 평가 완료
-- **SPEC-INFRA-002 (AES-256-GCM)** → DOC-019 SBOM, DOC-033 SOUP 영향: **없음**
-  - SBOM v3.0 (2026-04-13)에 이미 반영됨
-  - S17-R1 REFACTOR+DI 교체는 S16-R2 완료 확인 작업
-- **SPEC-COORDINATOR-001 (Repository 6개)** → DOC-032 RTM 영향: **없음**
-  - S12-R1 완료, RTM v2.7 이후 반영됨
-- **SPEC-TEAMB-COV-001 (Coverage)** → DOC-011 V&V 영향: **없음**
-  - QA 리포트에 이미 커버리지 반영됨
-- **결과**: 영향 미미 - 규제 문서 업데이트 불필요
 
 ---
 
