@@ -4,16 +4,16 @@
 ## Team: {Team Name}
 ## Priority: P4-Low
 ## Type: **IDLE CONFIRM** (실질 업무 없음 — 상태 유지만 확인)
-## 근거: {CC 갭 분석 결과 이 팀에 할 업무 없음 — 구체적 이유 명시}
+## 근거: {갭 분석 결과 이 팀에 할 업무 없음 — 구체적 이유 명시}
 
 ---
 
 ## [HARD] IDLE CONFIRM 사용 제한 규칙
 
 - [HARD] IDLE CONFIRM은 **2라운드 연속 발행 금지** — 3라운드 연속 시 프로세스 사망 나선 경고
-- [HARD] IDLE CONFIRM 발행 전 CC는 팀 소유 모듈/문서를 **반드시** 갭 분석 — 근거 SPEC 또는 개선 여지 없음을 증명
+- [HARD] IDLE CONFIRM 발행 전 팀 소유 모듈/문서를 **반드시** 갭 분석 — 근거 SPEC 또는 개선 여지 없음을 증명
 - [HARD] IDLE CONFIRM은 `STANDARD-DISPATCH.md` 대체재가 아님 — 예외적 수단
-- [HARD] 실질 커밋 0건이 2라운드 이상 지속되면 CC는 사용자에게 즉시 보고
+- [HARD] 실질 커밋 0건이 2라운드 이상 지속되면 사용자에게 즉시 보고
 
 ---
 
@@ -46,15 +46,14 @@
 
 ---
 
-## CC에게 알림
+## 이 팀에 할 일이 2라운드 연속 없는 경우
 
-이 팀에 할 일이 2라운드 연속 없는 경우:
-1. CC는 갭 분석 결과를 `_CURRENT.md` DISPATCH 라운드 이력에 기록
+1. 갭 분석 결과를 `_CURRENT.md` DISPATCH 라운드 이력에 기록
 2. 3라운드 연속 IDLE CONFIRM 발생 시 사용자에게 보고
 3. 보고 내용: "S{NN}-R{M} ~ S{NN}-R{M+2} 3라운드 동안 {팀명}에게 실질 업무 할당 불가. 근본 원인 분석 필요."
 
 ---
 
-Version: 1.0.0
+Version: 1.1.0 (CC 역할 제거)
 Effective: 2026-04-22
-Cross-ref: `STANDARD-DISPATCH.md` (정상 템플릿), `cc-operating-protocol.md` §9 (사망 나선 모니터링)
+Cross-ref: `STANDARD-DISPATCH.md` (정상 템플릿)
