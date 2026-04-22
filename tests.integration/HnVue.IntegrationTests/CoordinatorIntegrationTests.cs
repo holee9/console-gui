@@ -1318,7 +1318,10 @@ public sealed class CoordinatorIntegrationTests
     public async Task Settings_SaveCommand_RaisesSaveCompletedEvent()
     {
         // Arrange
-        var settingsViewModel = new SettingsViewModel(Substitute.For<ISystemAdminService>());
+        var settingsService = Substitute.For<ISystemAdminService>();
+        settingsService.UpdateSettingsAsync(Arg.Any<SystemSettings>(), Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(Result.Success()));
+        var settingsViewModel = new SettingsViewModel(settingsService);
         var eventRaised = false;
         settingsViewModel.SaveCompleted += (_, _) => eventRaised = true;
 
