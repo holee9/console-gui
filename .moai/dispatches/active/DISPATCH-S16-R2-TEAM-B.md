@@ -57,7 +57,7 @@ Safety-Critical 모듈(Dose, Incident)의 90% 커버리지는 IEC 62304 Class B 
 - [HARD] Dose 4-level interlock 로직 불변 — 비즈니스 로직 변경 시 RA 위험 평가 필요
 - [HARD] characterization test로 기존 동작 보존
 - [HARD] 빌드/테스트 검증 없이 COMPLETED 보고 금지
-- [HARD] ScheduleWakeup(300초 이상) 유지 — 작업 완료 push 직후 재설정 (session-lifecycle.md §2)
+- [HARD] ScheduleWakeup(900초) 유지 — 작업 완료 push 직후 재설정 (Phase 1, _CURRENT.md §팀별설정)
 
 ## Evidence Required
 

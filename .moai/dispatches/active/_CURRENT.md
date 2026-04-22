@@ -15,9 +15,9 @@
 | **Coordinator** | DISPATCH-S16-R2-COORDINATOR.md | **MERGED** | SPEC-COORDINATOR-001 (P0-Blocker) | SPEC-COORDINATOR-001 planning 완료 ✅ |
 | **Design** | DISPATCH-S16-R2-DESIGN.md | **MERGED** | SPEC-UI-001 / UISPEC-002, UISPEC-003 | PatientListView 필수 컬럼 추가 ✅ |
 | **QA** | DISPATCH-S16-R2-QA.md | **ACTIVE** | Quality Standards + CONDITIONAL PASS 해소 | T1 IN_PROGRESS 🔄 |
-| **RA** | DISPATCH-S16-R2-RA.md | **ACTIVE** | SPEC-GOVERNANCE-001 + DOC-042 CMP | T1 IN_PROGRESS 🔄 |
+| **RA** | DISPATCH-S16-R2-RA.md | **MERGED** | SPEC-GOVERNANCE-001 + DOC-042 CMP | T1/T2 COMPLETED ✅ |
 
-**→ S16-R2: 4/6 MERGED — QA/RA 작업 중 (2026-04-22)**
+**→ S16-R2: 5/6 MERGED — QA 작업 중 (2026-04-22)**
 
 ---
 
@@ -25,9 +25,19 @@
 
 | 설정 항목 | 값 | 비고 |
 |----------|-----|------|
-| **팀 ScheduleWakeup** | **300초 (5분)** | 작업 완료 push 직후 반드시 재설정 |
 | **CC CronCreate** | **20분** | CC 모니터링 간격 |
 | **ACTIVE 팀 즉시 시작** | 예 | ACTIVE 감지 시 ScheduleWakeup 없이 즉시 작업 |
+
+### 팀별 ScheduleWakeup (Phase 시차 적용 — 2026-04-22)
+
+| 팀 | ScheduleWakeup | Phase | 시차 이유 |
+|----|---------------|-------|----------|
+| **Team A** | **900초** | Phase 1 | 인프라 선행 기준점 |
+| **Team B** | **900초** | Phase 1 | A와 병렬, 동일 주기 |
+| **Coordinator** | **960초** | Phase 2 | A/B 머지 후 확인 (+1분) |
+| **Design** | **960초** | 독립 | CO와 동기화 묶음 (+1분) |
+| **QA** | **1020초** | Phase 3 | 구현팀 완료 후 검증 (+2분) |
+| **RA** | **1080초** | Phase 4 | QA 결과 반영 문서화 (+3분) |
 
 ---
 
