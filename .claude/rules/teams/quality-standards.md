@@ -95,6 +95,6 @@ GitHub Actions / Gitea CI에서 다음 게이트 강제:
 
 ---
 
-Version: 1.1.0 (CC 역할 제거)
+Version: 1.2.0 (CC v2 도입 — 품질 기준 변경 없음, CC는 검증 권한 없음)
 Effective: 2026-04-22
 Cross-ref: `qa.md`, `dispatch-protocol.md`

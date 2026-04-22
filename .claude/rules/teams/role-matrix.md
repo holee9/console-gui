@@ -1,4 +1,4 @@
-# Team Role Matrix [CONSTITUTIONAL — v1.0]
+# Team Role Matrix [CONSTITUTIONAL — v2.0]
 
 > **이 문서는 모든 팀의 역할 경계를 정의하는 최상위 규약이다.**
 > **위반 = 프로세스 신뢰 훼손 = 즉시 중단 + 사용자 보고**
@@ -8,10 +8,11 @@ Classification: CONSTITUTIONAL (FROZEN — human-only modification)
 
 ---
 
-## 1. 6개 역할 정의
+## 1. 7개 역할 정의
 
 | Role | ID | 본질 | 한줄 설명 |
 |------|-----|------|-----------|
+| **CC** | **CC** | **중앙지휘** | **DISPATCH 생성, PR 관리, 이슈 추적, 팀 진행 모니터링** |
 | Team A | TA | 인프라 | Common, Data, Security, SystemAdmin, Update |
 | Team B | TB | 의료영상 | Dicom, Detector, Imaging, Dose, Incident, Workflow, PM, CDBurning |
 | Coordinator | CO | 통합 | UI.Contracts, ViewModels, App, 통합테스트 |
@@ -71,7 +72,7 @@ Classification: CONSTITUTIONAL (FROZEN — human-only modification)
 |---|-----------|------|
 | 1 | 다른 팀 소유 모듈 소스코드 분석·수정 | Scope Limitation 위반 |
 | 2 | 다른 팀 DISPATCH 파일 읽기 | 자체 DISPATCH만 수행 |
-| 3 | PR 생성 | 사용자 직접 관리 |
+| 3 | PR 생성 | 구현팀 PR 생성 금지 — CC 또는 사용자가 관리 |
 | 4 | DISPATCH 없이 자율 작업 | 모든 작업은 DISPATCH에서 지시 |
 | 5 | 빌드/테스트 검증 없이 COMPLETED 보고 | Self-Verification Checklist 필수 |
 | 6 | 전체 솔루션 빌드 없이 완료 보고 | Cross-Team 검증 누락 방지 |
@@ -168,20 +169,34 @@ docs/regulatory/, docs/planning/, docs/risk/, docs/verification/, docs/managemen
 ## 7. DISPATCH 흐름도 (전체 프로세스)
 
 ```
-사용자 요청 / 진행 결정
+사용자: 프로젝트 방향/우선순위 결정 → CC에 지시
          ↓
-사용자: 갭 분석 + DISPATCH 기획·작성 (할 일 없는 팀은 IDLE CONFIRM)
+CC: 갭 분석 + DISPATCH 기획·작성 + _CURRENT.md 업데이트 + push + 이슈 생성
          ↓
-사용자: _CURRENT.md 업데이트 + commit + push
+각 팀: git pull → DISPATCH 감지 → 이슈 등록 → 구현 → 자가검증 → push → COMPLETED
          ↓
-각 팀: git pull → DISPATCH 읽기 → 이슈 등록 → 구현 → 자가검증 → push → COMPLETED
+CC: COMPLETED 감지 → 소유권 검증 → PR 생성 (Gitea API) → 이슈 업데이트
          ↓
-사용자: COMPLETED 감지 → 소유권 검증 → 머지 → team 브랜치 동기화 → _CURRENT.md MERGED → completed/ 이동 → push
+사용자: PR 리뷰/승인 → 머지 → CC가 _CURRENT.md MERGED 업데이트 → completed/ 이동
          ↓
-전팀 MERGED/IDLE 감지
-         ↓
-사용자: 갭 분석 → 다음 라운드 DISPATCH 발행 → 반복
+CC: 전팀 MERGED/IDLE 감지 → 갭 분석 → 다음 라운드 DISPATCH 발행 → 반복
 ```
+
+### CC 역할 상세 (§1-a)
+
+CC는 독립 worktree + Claude 세션으로 운영되는 **순수 오케스트레이터**:
+
+| 작업 | 허용 | 도구 |
+|------|------|------|
+| DISPATCH 파일 생성/수정 | ✅ | Write, Edit |
+| _CURRENT.md 업데이트 | ✅ | Edit |
+| Gitea PR 생성 | ✅ | gitea-api.sh |
+| Gitea 이슈 관리 | ✅ | gitea-api.sh |
+| 팀 DISPATCH Status 모니터링 | ✅ | Read, git pull |
+| 소스코드 작성/수정 | ❌ | CONSTITUTIONAL PROHIBITION |
+| dotnet build/test 실행 | ❌ | CONSTITUTIONAL PROHIBITION |
+| main에 직접 머지 | ❌ | PR만 생성 |
+| DISPATCH 파일 이동 (active↔completed) | ❌ | 사용자 직접 관리 |
 
 ---
 
@@ -200,6 +215,7 @@ docs/regulatory/, docs/planning/, docs/risk/, docs/verification/, docs/managemen
 | S15-R2 | merge commit 누적 | (구) CC | 머지 후 `git merge main` 방식 사용 → Team B 5개, Design 19개 merge commit 누적 → false positive 미머지 감지 | `merge` → `reset --hard` 전환 |
 | S15-R2 | Design 미응답 무한 대기 | (구) CC | Design이 DISPATCH에 응답하지 않아 S15-R2 무기한 대기 상태 방치 → 전체 라운드 진행 불가 | 팀 TIMEOUT 프로토콜 추가 (60분 후 TIMEOUT → 다음 라운드 진행) |
 | S16-R1 | 프로세스 사망 나선 | (구) CC | S14-R2 이후 3개 Sprint 동안 실질 제품 커밋 0건, IDLE CONFIRM 자기복제, 모든 커밋이 ScheduleWakeup/프로토콜 패치 | STANDARD-DISPATCH.md 근거 SPEC 필수화, CC 역할 폐지 → 사용자 직접 오케스트레이션 |
+| S17-R1 | CC v2 도입 | CC | 독립 worktree + PR-only + 이슈 추적으로 재도입. v1과의 차이: 코드/빌드/테스트 CONSTITUTIONAL PROHIBITION, 직접 머지 금지(PR만), Gitea 이슈 전 이력 추적 | CONSTITUTIONAL PROHIBITION 명문화, PR-only 워크플로우, 이슈-DISPATCH 연동 |
 
 ---
 
@@ -217,6 +233,7 @@ docs/regulatory/, docs/planning/, docs/risk/, docs/verification/, docs/managemen
 | `.claude/rules/teams/{team-a,b,coordinator,design}.md` | 해당 팀 | 팀 자율, 사용자 통보 |
 | `.claude/rules/teams/qa.md` | QA | QA 주도 |
 | `.claude/rules/teams/ra.md` | RA | RA 주도 |
+| `.claude/rules/teams/cc.md` | CC | CC 주도, 사용자 승인 |
 | `CLAUDE.md` | 사용자 | 사용자 승인 필수 |
 | `.moai/config/` | 사용자 | 사용자 직접 관리 |
 | `.moai/dispatches/active/`, `completed/` | 사용자 (단독) | 사용자 단독, 팀 수정 금지 |
@@ -243,7 +260,7 @@ Cross-ref: [관련 파일 목록]
 
 ---
 
-Version: 4.0.0 (CC 역할 제거 — 사용자 직접 오케스트레이션)
+Version: 5.0.0 (CC v2 도입 — 독립 worktree + PR-only + 이슈 추적)
 Classification: CONSTITUTIONAL (FROZEN — human-only modification)
 Effective: 2026-04-22
-Source: S16-R1 CC 역할 폐지 결정
+Source: S17-R1 CC v2 도입 결정

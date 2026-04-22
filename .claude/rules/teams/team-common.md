@@ -3,7 +3,7 @@
 팀 운영에 공통 적용되는 규칙의 **인덱스 파일**. 실제 규칙은 초점 파일에 정의.
 
 2026-04-22 재정비: 564줄 단일 파일을 5개 초점 파일로 분해.
-2026-04-22 추가 개정: CC 역할 제거 — 사용자 직접 오케스트레이션.
+2026-04-22 추가 개정: CC v2 도입 — 독립 worktree + PR-only + 이슈 추적.
 
 ---
 
@@ -11,10 +11,11 @@
 
 | 파일 | 담당 내용 |
 |------|----------|
-| [`role-matrix.md`](./role-matrix.md) | **[CONSTITUTIONAL — FROZEN]** 6개 역할 정의, 소유권 매트릭스, 사고 이력 |
+| [`role-matrix.md`](./role-matrix.md) | **[CONSTITUTIONAL — FROZEN]** 7개 역할 정의 (CC 포함), 소유권 매트릭스, 사고 이력 |
 | [`dispatch-protocol.md`](./dispatch-protocol.md) | DISPATCH 해석, Status 업데이트, 파일 관리, 이슈 추적 |
 | [`quality-standards.md`](./quality-standards.md) | **[SSOT]** 품질 지표 (빌드, 테스트, 커버리지, Safety-Critical) |
 | [`session-lifecycle.md`](./session-lifecycle.md) | ScheduleWakeup, /clear, Stall Detection 세션 관리 |
+| [`cc.md`](./cc.md) | CC(Command Center) 오케스트레이션 규칙 |
 | `{team}.md` (team-a, team-b, coordinator, team-design, qa, ra) | 팀별 소유 모듈 + 팀 특화 규칙 |
 
 ---
@@ -68,7 +69,8 @@
 | 1.0 | 2026-04-01~14 | 최초 작성, 단일 파일 |
 | 1.5 | 2026-04-15~21 | S07~S15 사고 대응 HARD 규칙 누적 (564줄 비대화) |
 | **2.0** | **2026-04-22** | **5개 초점 파일로 분해, 본 파일은 인덱스로 축소** |
-| **2.1** | **2026-04-22** | **CC 역할 제거 — 사용자 직접 오케스트레이션** |
+| **2.1** | **2026-04-22** | CC 역할 제거 — 사용자 직접 오케스트레이션 |
+| **3.0** | **2026-04-22** | **CC v2 도입 — 독립 worktree + PR-only + Gitea 이슈 추적** |
 
 ---
 
@@ -90,6 +92,6 @@
 
 ---
 
-Version: 2.1.0 (INDEX — CC 역할 제거)
+Version: 3.0.0 (INDEX — CC v2 도입)
 Effective: 2026-04-22
 Classification: Governance

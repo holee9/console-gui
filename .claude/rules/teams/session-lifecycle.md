@@ -132,6 +132,6 @@ N-1팀 MERGED + 1팀 미응답:
 
 ---
 
-Version: 1.1.0 (CC 역할 제거 — 사용자 직접 오케스트레이션)
+Version: 1.2.0 (CC v2 도입 — CC ScheduleWakeup 600초, 팀은 기존 유지)
 Effective: 2026-04-22
 Cross-ref: `dispatch-protocol.md`, `quality-standards.md`
