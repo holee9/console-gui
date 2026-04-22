@@ -1,23 +1,23 @@
-# DISPATCH Current Index — S15-R3 완료
+# DISPATCH Current Index — S16-R2 [ACTIVE] — 실질 개발 재시작
 
 > **[HARD] 에이전트 FIRST ACTION**: 이 파일을 가장 먼저 읽는다.
 > 자신의 팀 행(row)에서 파일명을 확인한 뒤, 해당 파일만 읽는다.
-> 상태가 `IDLE`이면 → 새 DISPATCH 없음 → Commander Center에 IDLE 보고.
+> 상태가 `ACTIVE`이면 → **즉시 작업 시작**. `IDLE/MERGED`이면 → ScheduleWakeup(300) 설정 후 대기.
 
 ---
 
 ## 현재 팀별 DISPATCH 상태
 
-| 팀 | 현재 DISPATCH 파일 | 상태 | 스케줄 Phase | 비고 |
-|----|-------------------|------|-------------|------|
-| **Team A** | - | **IDLE** | - | S15-R3 MERGED |
-| **Team B** | - | **IDLE** | - | S15-R3 MERGED |
-| **Coordinator** | - | **IDLE** | - | S15-R3 MERGED |
-| **Design** | - | **IDLE** | - | S15-R3 TIMEOUT (2라운드 연속) |
-| **QA** | - | **IDLE** | - | S15-R3 BLOCKED (Bash 권한) |
-| **RA** | - | **IDLE** | - | S15-R3 MERGED (직접 push) |
+| 팀 | 현재 DISPATCH 파일 | 상태 | 근거 SPEC/문서 | 우선순위 |
+|----|-------------------|------|---------------|---------|
+| **Team A** | DISPATCH-S16-R2-TEAM-A.md | **MERGED** | SPEC-INFRA-002 (P0-Blocker) | SPEC-INFRA-002 planning 완료 ✅ |
+| **Team B** | DISPATCH-S16-R2-TEAM-B.md | **MERGED** | SPEC-TEAMB-COV-001 | Dose Safety-Critical 90%+ 달성 ✅ |
+| **Coordinator** | DISPATCH-S16-R2-COORDINATOR.md | **MERGED** | SPEC-COORDINATOR-001 (P0-Blocker) | SPEC-COORDINATOR-001 planning 완료 ✅ |
+| **Design** | DISPATCH-S16-R2-DESIGN.md | **MERGED** | SPEC-UI-001 / UISPEC-002, UISPEC-003 | PatientListView 필수 컬럼 추가 ✅ |
+| **QA** | DISPATCH-S16-R2-QA.md | **ACTIVE** | Quality Standards + CONDITIONAL PASS 해소 | T1 IN_PROGRESS 🔄 |
+| **RA** | DISPATCH-S16-R2-RA.md | **ACTIVE** | SPEC-GOVERNANCE-001 + DOC-042 CMP | T1 IN_PROGRESS 🔄 |
 
-**→ S15-R3 완료 — 전팀 IDLE**
+**→ S16-R2: 4/6 MERGED — QA/RA 작업 중 (2026-04-22)**
 
 ---
 
@@ -25,32 +25,54 @@
 
 | 설정 항목 | 값 | 비고 |
 |----------|-----|------|
-| **팀 ScheduleWakeup** | **300초 (5분)** | 폴링 간격 |
-| **CC CronCreate** | **10분** | CC 모니터링 간격 |
-| **ACTIVE 팀 즉시 시작** | 예 | ACTIVE 감지 시 즉시 작업 시작 |
+| **팀 ScheduleWakeup** | **300초 (5분)** | 작업 완료 push 직후 반드시 재설정 |
+| **CC CronCreate** | **20분** | CC 모니터링 간격 |
+| **ACTIVE 팀 즉시 시작** | 예 | ACTIVE 감지 시 ScheduleWakeup 없이 즉시 작업 |
+
+---
+
+## S16-R2 목표 (Exit Criteria)
+
+| 팀 | 성공 기준 |
+|----|----------|
+| Team A | SPEC-INFRA-002 plan/acceptance/tasks 작성 + AesGcmPhiEncryptionService RED 테스트 3개 |
+| Team B | Dose 또는 Incident 중 1개 모듈 90%+ 커버리지 달성 |
+| Coordinator | SPEC-COORDINATOR-001 planning 산출물 + Repository 1개 실구현 + 통합테스트 1개 |
+| Design | UISPEC-002 갭 분석 + 1개 항목 XAML 개선 |
+| QA | 전체 빌드 + 테스트 재측정 + Safety-Critical 4개 모듈 커버리지 리포트 |
+| RA | DOC-042 CMP v2.0 승격 + SPEC-GOVERNANCE-001 progress.md 착수 |
+
+---
+
+## CC 정지 조건 (사용자 보고 후 대기)
+
+| 조건 | 비고 |
+|------|------|
+| 범위 위반 머지 (타 팀 소유 파일 포함) | diff 소유권 교차 검증 필수 |
+| 빌드/테스트 에러 머지 | 품질 게이트 위반 |
+| BLOCKED 팀 5회 연속 | 환경/의존성 문제 |
+| Safety-Critical 90% 미달 3회 연속 | 규제 리스크 |
+| 전체 프로젝트 완료 | 릴리즈 게이트 |
+
+그 외 (CONDITIONAL PASS 수용, Sprint 전환, DISPATCH 기획 등)는 모두 CC 자율 실행.
 
 ---
 
 ## DISPATCH 라운드 이력
 
-| 날짜 | 라운드 | 상태 |
-|------|--------|------|
-| 2026-04-21 | S15 R1 | ALL MERGED — QA CONDITIONAL PASS (99.47%) |
-| 2026-04-21 | S15 R2 | ALL MERGED — Design TIMEOUT (미응답) |
-| **2026-04-21** | **S15 R3** | **완료 — 4 MERGED + QA BLOCKED + Design TIMEOUT** |
+| 날짜 | 라운드 | 상태 | 실질 커밋 |
+|------|--------|------|----------|
+| 2026-04-19 | S14 R1 | ALL MERGED | ✅ SecurityCoverageBoost 준비 |
+| 2026-04-19 | S14 R2 | ALL MERGED — QA CONDITIONAL PASS (99.47%) | ✅ Trait 87개 수정 (마지막 실질) |
+| 2026-04-20 | S15 R1 | ALL MERGED — QA CONDITIONAL PASS | ❌ IDLE CONFIRM만 |
+| 2026-04-21 | S15 R2 | ALL MERGED — Design TIMEOUT | ❌ IDLE CONFIRM만 |
+| 2026-04-21 | S15 R3 | 4 MERGED + QA BLOCKED + Design TIMEOUT | ❌ 프로토콜 패치만 |
+| 2026-04-21 | S16 R1 | 1/6 (QA만 COMPLETED) | ❌ ScheduleWakeup 수정 |
+| **2026-04-22** | **S16 R2** | **ACTIVE — 실질 개발 재시작** | **🎯 목표: 제품 커밋 복귀** |
 
 ---
 
-## S15-R3 사고 이력 (CC 기록)
-
-| 팀 | 이슈 | 원인 | 조치 |
-|----|------|------|------|
-| Team A/B/CO | RA DISPATCH stale diff 포함 | CC 머지 전 stale base에서 작업 | -X ours로 해결 |
-| QA | BLOCKED + 전체 리버트 포함 | stale base + Bash 권한 거부 | 머지 스킵, 수동 BLOCKED 업데이트 |
-| Design | 2라운드 연속 TIMEOUT | 팀 세션 ScheduleWakeup 미설정 | TIMEOUT 처리 |
-| **전체** | **팀 ScheduleWakeup 미설정** | **세션 재시작 후 cron 소멸** | **CC 갭: 중앙 관리 미흡** |
-
----
-
-Updated: 2026-04-21 (S15-R3 완료 — 전팀 IDLE)
+Updated: 2026-04-22 (시스템 재정비 완료 — HOLD 해제, ACTIVE 전환)
 DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/`
+팀 시작 프롬프트: `.moai/team-prompts/` 참조
+재정비 계획: `.moai/plans/SYSTEM-REFORM-2026-04-22.md`
