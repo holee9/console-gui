@@ -1,8 +1,10 @@
 # DISPATCH Current Index — S16-R2 [ACTIVE] — 실질 개발 재시작
 
 > **[HARD] 에이전트 FIRST ACTION**: 이 파일을 가장 먼저 읽는다.
-> 자신의 팀 행(row)에서 파일명을 확인한 뒤, 해당 파일만 읽는다.
-> 상태가 `ACTIVE`이면 → **즉시 작업 시작**. `IDLE/MERGED`이면 → ScheduleWakeup(300) 설정 후 대기.
+> 자신의 팀 행(row)에서 상태 확인:
+> - `ACTIVE` → DISPATCH 파일을 `active/`에서 읽고 즉시 작업 시작
+> - `MERGED` → **작업 없음**. DISPATCH 파일은 `completed/`로 이동됨. IDLE 보고 + ScheduleWakeup(_CURRENT.md 값) 설정 후 대기
+> - `IDLE` → ScheduleWakeup(_CURRENT.md 값) 설정 후 대기
 
 ---
 
@@ -10,12 +12,12 @@
 
 | 팀 | 현재 DISPATCH 파일 | 상태 | 근거 SPEC/문서 | 우선순위 |
 |----|-------------------|------|---------------|---------|
-| **Team A** | DISPATCH-S16-R2-TEAM-A.md | **MERGED** | SPEC-INFRA-002 (P0-Blocker) | SPEC-INFRA-002 planning 완료 ✅ |
-| **Team B** | DISPATCH-S16-R2-TEAM-B.md | **MERGED** | SPEC-TEAMB-COV-001 | Dose Safety-Critical 90%+ 달성 ✅ |
-| **Coordinator** | DISPATCH-S16-R2-COORDINATOR.md | **MERGED** | SPEC-COORDINATOR-001 (P0-Blocker) | SPEC-COORDINATOR-001 planning 완료 ✅ |
-| **Design** | DISPATCH-S16-R2-DESIGN.md | **MERGED** | SPEC-UI-001 / UISPEC-002, UISPEC-003 | PatientListView 필수 컬럼 추가 ✅ |
+| **Team A** | ~~DISPATCH-S16-R2-TEAM-A.md~~ → completed/ | **MERGED** | SPEC-INFRA-002 (P0-Blocker) | SPEC-INFRA-002 planning 완료 ✅ |
+| **Team B** | ~~DISPATCH-S16-R2-TEAM-B.md~~ → completed/ | **MERGED** | SPEC-TEAMB-COV-001 | Dose Safety-Critical 90%+ 달성 ✅ |
+| **Coordinator** | ~~DISPATCH-S16-R2-COORDINATOR.md~~ → completed/ | **MERGED** | SPEC-COORDINATOR-001 (P0-Blocker) | SPEC-COORDINATOR-001 planning 완료 ✅ |
+| **Design** | ~~DISPATCH-S16-R2-DESIGN.md~~ → completed/ | **MERGED** | SPEC-UI-001 / UISPEC-002, UISPEC-003 | PatientListView 필수 컬럼 추가 ✅ |
 | **QA** | DISPATCH-S16-R2-QA.md | **ACTIVE** | Quality Standards + CONDITIONAL PASS 해소 | T1 IN_PROGRESS 🔄 |
-| **RA** | DISPATCH-S16-R2-RA.md | **MERGED** | SPEC-GOVERNANCE-001 + DOC-042 CMP | T1/T2 COMPLETED ✅ |
+| **RA** | ~~DISPATCH-S16-R2-RA.md~~ → completed/ | **MERGED** | SPEC-GOVERNANCE-001 + DOC-042 CMP | T1/T2 COMPLETED ✅ |
 
 **→ S16-R2: 5/6 MERGED — QA 작업 중 (2026-04-22)**
 
