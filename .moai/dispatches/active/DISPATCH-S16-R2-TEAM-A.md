@@ -59,7 +59,7 @@ SPEC-INFRA-002는 P0-Blocker(priority: P0-Blocker)로 2026-04-11 승인되었으
 - [HARD] SPEC-INFRA-002 범위 엄수 — MFA, Key Rotation, 기존 데이터 마이그레이션은 Out of Scope
 - [HARD] 빌드/테스트 검증 없이 COMPLETED 보고 금지 — `dotnet build` 0 errors 확인
 - [HARD] RED 테스트는 "실패해야 함" — 테스트가 실수로 PASS되면 테스트 로직 재검토
-- [HARD] ScheduleWakeup(300초 이상) 유지 — 작업 완료 push 직후 재설정 (session-lifecycle.md §2)
+- [HARD] ScheduleWakeup(900초) 유지 — 작업 완료 push 직후 재설정 (Phase 1, _CURRENT.md §팀별설정)
 
 ## Evidence Required
 

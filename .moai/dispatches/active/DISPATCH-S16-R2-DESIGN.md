@@ -62,7 +62,7 @@ SPEC-UI-001 UISPEC 매트릭스에 따르면:
 - [HARD] ViewModel 구현은 Coordinator 담당 — 필요 시 `NEEDS_VIEWMODEL` 태그로 요청
 - [HARD] 도메인 Converter (SafeStateToColorConverter 등)는 Team B 담당
 - [HARD] DesignTime Mock은 Design 단독 소유 — 통합테스트 Mock은 Coordinator가 tests.integration/에 생성
-- [HARD] ScheduleWakeup(300초 이상) 유지 — 작업 완료 push 직후 재설정 (session-lifecycle.md §2)
+- [HARD] ScheduleWakeup(960초) 유지 — 작업 완료 push 직후 재설정 (독립, _CURRENT.md §팀별설정)
 
 ## Evidence Required
 
