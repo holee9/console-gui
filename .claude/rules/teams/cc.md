@@ -30,12 +30,31 @@ CC does NOT own source code modules. CC owns orchestration artifacts:
 ### Session Start
 
 ```
-1. git pull origin main
+1. git fetch origin main && git reset --hard origin/main
 2. Read .moai/dispatches/active/_CURRENT.md
 3. Read all team DISPATCH files referenced in _CURRENT.md
 4. Create/resume Gitea round tracking issue if not exists
 5. Begin operating cycle
 ```
+
+### Git Push Protocol [CRITICAL]
+
+CC worktree는 `team/cc` 브랜치에 있지만, DISPATCH 파일은 **main에 push**해야 팀이 감지한다.
+
+**DISPATCH push 절차:**
+```bash
+# DISPATCH 파일과 _CURRENT.md만 add (다른 파일 절대 포함 금지)
+git add .moai/dispatches/active/DISPATCH-*.md .moai/dispatches/active/_CURRENT.md
+git commit -m "dispatch: S{N}-R{M} {설명}"
+# team/cc 브랜치에서 main으로 직접 push
+git push origin HEAD:main
+```
+
+**주의:**
+- `git push origin main`이 아님 (현재 브랜치가 team/cc이므로 거부됨)
+- 반드시 `git push origin HEAD:main` 사용
+- DISPATCH 파일과 _CURRENT.md만 커밋에 포함
+- `.moai/config/` 등 다른 변경은 절대 포함하지 않음
 
 ### Operating Cycle (ScheduleWakeup 600s)
 
