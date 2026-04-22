@@ -164,6 +164,23 @@ Q5: Did I create an issue for this action?      → NO  = Create first
 Q6: Did I verify DISPATCH has SPEC reference?   → NO  = Verify first
 ```
 
+## Git Push Protocol [CRITICAL]
+
+CC worktree runs on `team/cc` branch. DISPATCH files MUST go to `main` for teams to detect them.
+
+**Push procedure (execute exactly this):**
+```bash
+git add .moai/dispatches/active/DISPATCH-*.md .moai/dispatches/active/_CURRENT.md
+git commit -m "dispatch: S{N}-R{M} {description}"
+git push origin HEAD:main
+```
+
+**IMPORTANT:**
+- Use `git push origin HEAD:main` — NOT `git push origin main` (will be rejected on team/cc)
+- Only stage DISPATCH files and _CURRENT.md — never include other modified files
+- After push, verify with `git fetch origin main && git log --oneline origin/main -3`
+```
+
 ## References
 
 - **Team Rules**: `.claude/rules/teams/cc.md`
