@@ -15,9 +15,9 @@
 | **Coordinator** | DISPATCH-S16-R2-COORDINATOR.md | **MERGED** | SPEC-COORDINATOR-001 (P0-Blocker) | SPEC-COORDINATOR-001 planning 완료 ✅ |
 | **Design** | DISPATCH-S16-R2-DESIGN.md | **MERGED** | SPEC-UI-001 / UISPEC-002, UISPEC-003 | PatientListView 필수 컬럼 추가 ✅ |
 | **QA** | DISPATCH-S16-R2-QA.md | **ACTIVE** | Quality Standards + CONDITIONAL PASS 해소 | T1 IN_PROGRESS 🔄 |
-| **RA** | DISPATCH-S16-R2-RA.md | **ACTIVE** | SPEC-GOVERNANCE-001 + DOC-042 CMP | T1 IN_PROGRESS 🔄 |
+| **RA** | DISPATCH-S16-R2-RA.md | **MERGED** | SPEC-GOVERNANCE-001 + DOC-042 CMP | T1/T2 COMPLETED ✅ |
 
-**→ S16-R2: 4/6 MERGED — QA/RA 작업 중 (2026-04-22)**
+**→ S16-R2: 5/6 MERGED — QA 작업 중 (2026-04-22)**
 
 ---
 
