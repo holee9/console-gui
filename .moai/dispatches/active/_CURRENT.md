@@ -16,10 +16,10 @@
 | **Team B** | ~~DISPATCH-S16-R2-TEAM-B.md~~ → completed/ | **MERGED** | SPEC-TEAMB-COV-001 | Dose Safety-Critical 90%+ 달성 ✅ |
 | **Coordinator** | ~~DISPATCH-S16-R2-COORDINATOR.md~~ → completed/ | **MERGED** | SPEC-COORDINATOR-001 (P0-Blocker) | SPEC-COORDINATOR-001 planning 완료 ✅ |
 | **Design** | ~~DISPATCH-S16-R2-DESIGN.md~~ → completed/ | **MERGED** | SPEC-UI-001 / UISPEC-002, UISPEC-003 | PatientListView 필수 컬럼 추가 ✅ |
-| **QA** | DISPATCH-S16-R2-QA.md | **ACTIVE** | Quality Standards + CONDITIONAL PASS 해소 | T1 IN_PROGRESS 🔄 |
+| **QA** | ~~DISPATCH-S16-R2-QA.md~~ → completed/ | **MERGED** | Quality Standards + CONDITIONAL PASS 해소 | CONDITIONAL PASS ✅ |
 | **RA** | ~~DISPATCH-S16-R2-RA.md~~ → completed/ | **MERGED** | SPEC-GOVERNANCE-001 + DOC-042 CMP | T1/T2 COMPLETED ✅ |
 
-**→ S16-R2: 5/6 MERGED — QA 작업 중 (2026-04-22)**
+**→ S16-R2: 6/6 MERGED — ALL COMPLETED (2026-04-22)**
 
 ---
 
