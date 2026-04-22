@@ -15,7 +15,7 @@
 | **Team A** | DISPATCH-S17-R1-TEAM-A.md | **ACTIVE** | SPEC-INFRA-002 + Issue #109 (Security 89.62%) | Security 90%+ + DI 교체 |
 | **Team B** | DISPATCH-S17-R1-TEAM-B.md | **ACTIVE** | SPEC-TEAMB-COV-001 + QA FINAL-COVERAGE | Incident branch 90%+ + Dicom 향상 |
 | **Coordinator** | DISPATCH-S17-R1-COORDINATOR.md | **ACTIVE** | SPEC-COORDINATOR-001 | 6개 Repository 통합 검증 |
-| **Design** | DISPATCH-S17-R1-DESIGN.md | **ACTIVE** | SPEC-UI-001 / UISPEC-002, UISPEC-003 | PatientListView 갭 + Studylist 분석 |
+| **Design** | DISPATCH-S17-R1-DESIGN.md | **MERGED** | SPEC-UI-001 / UISPEC-002, UISPEC-003 | PatientListView 갭 + Studylist 분석 |
 | **QA** | DISPATCH-S17-R1-QA.md | **ACTIVE** | Quality Standards + Issue #109 | Safety-Critical 4/4 검증 |
 | **RA** | DISPATCH-S17-R1-RA.md | **ACTIVE** | SPEC-GOVERNANCE-001 + DOC-032 RTM | 추적성 감사 + 문서 영향 평가 |
 
