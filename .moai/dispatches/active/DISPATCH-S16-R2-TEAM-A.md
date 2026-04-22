@@ -47,9 +47,9 @@ SPEC-INFRA-002는 P0-Blocker(priority: P0-Blocker)로 2026-04-11 승인되었으
 
 | 작업 ID | 설명 | 상태 | 할당자 | 우선순위 | 타임스탬프 | 비고 |
 |---------|------|------|--------|----------|-----------|------|
-| T1 | SPEC-INFRA-002 Planning 산출물 | NOT_STARTED | Team A | P1 | - | research/plan/acceptance/tasks |
-| T2 | AesGcmPhiEncryptionService RED | NOT_STARTED | Team A | P2 | - | TDD RED phase |
-| T3 | DISPATCH Status 업데이트 | NOT_STARTED | Team A | P3 | - | 상시 |
+| T1 | SPEC-INFRA-002 Planning 산출물 | COMPLETED | Team A | P1 | 2026-04-22T11:30:00+09:00 | research.md, plan.md, acceptance.md, tasks.md 생성 |
+| T2 | AesGcmPhiEncryptionService RED | COMPLETED | Team A | P2 | 2026-04-22T11:35:00+09:00 | 14개 테스트 GREEN (build: 0 errors, test: 14/14 pass) |
+| T3 | DISPATCH Status 업데이트 | COMPLETED | Team A | P3 | 2026-04-22T11:36:00+09:00 | Status 반영 완료 |
 
 ---
 

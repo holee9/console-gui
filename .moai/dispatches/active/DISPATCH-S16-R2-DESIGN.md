@@ -48,9 +48,9 @@ SPEC-UI-001 UISPEC 매트릭스에 따르면:
 
 | 작업 ID | 설명 | 상태 | 할당자 | 우선순위 | 타임스탬프 | 비고 |
 |---------|------|------|--------|----------|-----------|------|
-| T1 | UISPEC-002 갭 분석 | NOT_STARTED | Design | P1 | - | PatientListView |
-| T2 | UISPEC-002 1개 항목 구현 | NOT_STARTED | Design | P2 | - | XAML 개선 |
-| T3 | DISPATCH Status 업데이트 | NOT_STARTED | Design | P3 | - | 상시 |
+| T1 | UISPEC-002 갭 분석 | COMPLETED | Design | P1 | 2026-04-22T10:00:00+09:00 | PatientListView 필수 컬럼 추가 완료 |
+| T2 | UISPEC-002 1개 항목 구현 | COMPLETED | Design | P2 | 2026-04-22T10:00:00+09:00 | feat(design): UISPEC-002 PatientListView 커밋 확인 |
+| T3 | DISPATCH Status 업데이트 | COMPLETED | Design | P3 | 2026-04-22T10:00:00+09:00 | CC가 force-push 복구로 대신 업데이트 |
 
 ---
 
