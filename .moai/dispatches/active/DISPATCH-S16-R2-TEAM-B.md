@@ -45,9 +45,9 @@ Safety-Critical 모듈(Dose, Incident)의 90% 커버리지는 IEC 62304 Class B 
 
 | 작업 ID | 설명 | 상태 | 할당자 | 우선순위 | 타임스탬프 | 비고 |
 |---------|------|------|--------|----------|-----------|------|
-| T1 | 커버리지 현황 재측정 | NOT_STARTED | Team B | P1 | - | Dose + Incident |
-| T2 | Safety-Critical 90% 달성 | NOT_STARTED | Team B | P1 | - | Dose 또는 Incident |
-| T3 | DISPATCH Status 업데이트 | NOT_STARTED | Team B | P3 | - | 상시 |
+| T1 | 커버리지 현황 재측정 | IN_PROGRESS | Team B | P1 | 2026-04-22T09:30:00+09:00 | Dose + Incident 측정 중 |
+| T2 | Safety-Critical 90% 달성 | NOT_STARTED | Team B | P1 | - | T1 결과 후 결정 |
+| T3 | DISPATCH Status 업데이트 | IN_PROGRESS | Team B | P3 | 2026-04-22T09:30:00+09:00 | 상시 |
 
 ---
 
