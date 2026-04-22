@@ -15,7 +15,8 @@
 | 2026-04-09 | SPEC 초안 작성 (UltraThink 독립 감사) | draft | MoAI |
 | 2026-04-22 | S16-R2 RA 팀 DISPATCH T2 착수 | in_progress | RA |
 | 2026-04-22 | S17-R1 T1 완료: 추적성 감사 (갭 없음 확인) | completed | RA |
-| 2026-04-22 | 수용 기준 활성화: 시나리오 1 빌드 증거 연동 강화 | in_progress | RA |
+| 2026-04-22 | S17-R1 T3 완료: 문서 영향 평가 (영향 미미) | completed | RA |
+| 2026-04-22 | S17-R1 T2 완료: 시나리오 6 이슈 추적 확인 | completed | RA |
 
 ---
 
@@ -59,8 +60,12 @@
 
 ### 시나리오 6: 릴리즈 블로커 이슈 등록
 - **기대**: R-001, R-002 Gitea 이슈 생성
-- **현황**: **미확인** - 이슈 추적 필요
-- **갭**: RA 팀 이슈 생성 태스크 포함 필요
+- **현황**: **충족** - 개별 SPEC으로 관리됨
+- **증거**:
+  - R-001: SPEC-INFRA-002 (PHI AES-256-GCM) approved 상태, Team A S17-R1 작업 중
+  - R-002: SPEC-COORDINATOR-001 (Repository 6개) approved 상태, Coordinator S17-R1 작업 중
+  - Issue #117: RA S17-R1 통합 추적 이슈로 관리
+- **갭**: 없음 (SPEC 기반 추적으로 대체됨)
 
 ---
 
