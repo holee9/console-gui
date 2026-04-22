@@ -4,6 +4,7 @@
 ## Team: {Team A | Team B | Coordinator | Design | QA | RA}
 ## Priority: {P1-Critical | P2-High | P3-Medium | P4-Low}
 ## 근거 SPEC/문서: **{SPEC-XXX-NNN 또는 docs/ 경로 — [HARD] 생략 불가}**
+## Gitea Issue: **#{N}** ([HARD] CC가 발행 전 생성, DISPATCH에 기록 필수)
 
 ---
 
@@ -75,7 +76,7 @@ Safety-Critical 모듈(Dose, Incident, Security, Update) 수정 시 추가:
 
 - **근거 SPEC**: `.moai/specs/{SPEC-ID}/` (spec.md, plan.md, acceptance.md, tasks.md)
 - **팀 규칙**: `.claude/rules/teams/{team}.md`
-- **공통 프로토콜**: `.claude/rules/teams/dispatch-protocol.md`, `cc-operating-protocol.md`, `quality-standards.md`, `session-lifecycle.md`
+- **공통 프로토콜**: `.claude/rules/teams/dispatch-protocol.md`, `cc.md`, `quality-standards.md`, `session-lifecycle.md`
 - **역할 경계**: `.claude/rules/teams/role-matrix.md` (CONSTITUTIONAL)
 
 ---
@@ -88,7 +89,19 @@ Safety-Critical 모듈(Dose, Incident, Security, Update) 수정 시 추가:
 - [HARD] `Status 테이블` 타임스탬프 열 삭제 금지
 - [HARD] DISPATCH 발행 시 `STANDARD-DISPATCH.md`의 모든 섹션 준수
 
+### 파일 명명 규칙 [HARD]
+
+```
+DISPATCH-S{NN}-R{M}-{TEAM-NAME}.md
+```
+
+- `S{NN}`: Sprint 번호 (S17, S18, ...)
+- `R{M}`: Round 번호 (R1, R2, ...)
+- `{TEAM-NAME}`: TEAM-A | TEAM-B | COORDINATOR | DESIGN | QA | RA
+- 예시: `DISPATCH-S17-R1-TEAM-A.md`
+- 구버전 명명 (`DISPATCH-{TEAM}-2026-04-*.md`)은 completed/ 아카이브에만 존재
+
 ---
 
-Version: 1.0.0 (구버전 `dispatch-template.md` 대체)
+Version: 1.2.0 (Gitea Issue # 필드 추가)
 Effective: 2026-04-22
