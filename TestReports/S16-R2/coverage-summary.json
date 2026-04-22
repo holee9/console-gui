@@ -1,0 +1,146 @@
+﻿[
+    {
+        "Module":  "HnVue.Common",
+        "LinesCovered":  822,
+        "LinesValid":  5950,
+        "Coverage":  13.82,
+        "TargetPct":  85,
+        "SafetyCritical":  false,
+        "Status":  "FAIL"
+    },
+    {
+        "Module":  "HnVue.Data",
+        "LinesCovered":  1988,
+        "LinesValid":  6566,
+        "Coverage":  30.28,
+        "TargetPct":  85,
+        "SafetyCritical":  false,
+        "Status":  "FAIL"
+    },
+    {
+        "Module":  "HnVue.Security",
+        "LinesCovered":  608,
+        "LinesValid":  2658,
+        "Coverage":  22.87,
+        "TargetPct":  90,
+        "SafetyCritical":  true,
+        "Status":  "FAIL"
+    },
+    {
+        "Module":  "HnVue.Dicom",
+        "LinesCovered":  422,
+        "LinesValid":  3120,
+        "Coverage":  13.53,
+        "TargetPct":  85,
+        "SafetyCritical":  false,
+        "Status":  "FAIL"
+    },
+    {
+        "Module":  "HnVue.Detector",
+        "LinesCovered":  180,
+        "LinesValid":  296,
+        "Coverage":  60.81,
+        "TargetPct":  85,
+        "SafetyCritical":  false,
+        "Status":  "FAIL"
+    },
+    {
+        "Module":  "HnVue.Imaging",
+        "LinesCovered":  1158,
+        "LinesValid":  3756,
+        "Coverage":  30.83,
+        "TargetPct":  85,
+        "SafetyCritical":  false,
+        "Status":  "FAIL"
+    },
+    {
+        "Module":  "HnVue.Dose",
+        "LinesCovered":  306,
+        "LinesValid":  600,
+        "Coverage":  51,
+        "TargetPct":  90,
+        "SafetyCritical":  true,
+        "Status":  "FAIL"
+    },
+    {
+        "Module":  "HnVue.Incident",
+        "LinesCovered":  186,
+        "LinesValid":  504,
+        "Coverage":  36.9,
+        "TargetPct":  90,
+        "SafetyCritical":  true,
+        "Status":  "FAIL"
+    },
+    {
+        "Module":  "HnVue.Workflow",
+        "LinesCovered":  600,
+        "LinesValid":  892,
+        "Coverage":  67.26,
+        "TargetPct":  85,
+        "SafetyCritical":  false,
+        "Status":  "FAIL"
+    },
+    {
+        "Module":  "HnVue.PatientManagement",
+        "LinesCovered":  48,
+        "LinesValid":  56,
+        "Coverage":  85.71,
+        "TargetPct":  85,
+        "SafetyCritical":  false,
+        "Status":  "PASS"
+    },
+    {
+        "Module":  "HnVue.CDBurning",
+        "LinesCovered":  54,
+        "LinesValid":  56,
+        "Coverage":  96.43,
+        "TargetPct":  85,
+        "SafetyCritical":  false,
+        "Status":  "PASS"
+    },
+    {
+        "Module":  "HnVue.SystemAdmin",
+        "LinesCovered":  78,
+        "LinesValid":  124,
+        "Coverage":  62.9,
+        "TargetPct":  85,
+        "SafetyCritical":  false,
+        "Status":  "FAIL"
+    },
+    {
+        "Module":  "HnVue.Update",
+        "LinesCovered":  0,
+        "LinesValid":  350,
+        "Coverage":  0,
+        "TargetPct":  90,
+        "SafetyCritical":  true,
+        "Status":  "FAIL"
+    },
+    {
+        "Module":  "HnVue.UI",
+        "LinesCovered":  814,
+        "LinesValid":  4580,
+        "Coverage":  17.77,
+        "TargetPct":  85,
+        "SafetyCritical":  false,
+        "Status":  "FAIL"
+    },
+    {
+        "Module":  "HnVue.UI.Contracts",
+        "LinesCovered":  7,
+        "LinesValid":  49,
+        "Coverage":  14.29,
+        "TargetPct":  85,
+        "SafetyCritical":  false,
+        "Status":  "FAIL"
+    },
+    {
+        "Module":  "HnVue.UI.ViewModels",
+        "LinesCovered":  869,
+        "LinesValid":  3045,
+        "Coverage":  28.54,
+        "TargetPct":  85,
+        "SafetyCritical":  false,
+        "Status":  "FAIL"
+    }
+]
