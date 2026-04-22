@@ -252,10 +252,56 @@ CC: 갭 분석 → 다음 라운드 6팀 DISPATCH 발행 → 반복
 | S14-R2 | QA 타팀 DISPATCH 수정 | QA | QA가 Design DISPATCH를 COMPLETED→NOT_STARTED로 되돌림 (구버전 base에서의 diff) | Phase 전환 시 강제 main 동기화 규칙으로 재발 방지 |
 | S15-R2 | merge commit 누적 | CC | CC 머지 후 `git merge main` 방식 사용 → Team B 5개, Design 19개 merge commit 누적 → false positive 미머지 감지 | `merge` → `reset --hard` 전환 (team-common.md) |
 | S15-R2 | Design 미응답 무한 대기 | CC | Design이 DISPATCH에 응답하지 않아 S15-R2 무기한 대기 상태 방치 → 전체 라운드 진행 불가 | 팀 TIMEOUT 프로토콜 추가 (60분 후 TIMEOUT → 다음 라운드 진행) |
+| S16-R1 | 프로세스 사망 나선 | CC | S14-R2 이후 3개 Sprint 동안 실질 제품 커밋 0건, IDLE CONFIRM 자기복제, 모든 커밋이 ScheduleWakeup/프로토콜 패치 | STANDARD-DISPATCH.md 근거 SPEC 필수화, IDLE CONFIRM 2회 연속 경고, team-common.md 5개 파일로 분해, 거버넌스 소유권 명시 (§10) |
 
 ---
 
-Version: 2.2.0
-Classification: CONSTITUTIONAL (FROZEN)
-Effective: 2026-04-21
-Source: S07-R4 사고교훈 + S08-R1 DesignTime 충돌 사고교훈 + S14-R2 main 동기화 누락 사고교훈
+## 10. Governance Ownership [NEW — 2026-04-22]
+
+### 거버넌스 파일 소유권
+
+이전까지 소유권이 불명확했던 시스템 거버넌스 파일의 책임 할당.
+
+| 경로 | 1차 소유 | 2차 소유 | 변경 권한 |
+|------|---------|---------|----------|
+| `.claude/rules/teams/role-matrix.md` | 사용자 (CONSTITUTIONAL FROZEN) | — | 사용자 승인 필수 |
+| `.claude/rules/teams/team-common.md` | CC | Coordinator | CC 자율, 중대 변경은 사용자 통보 |
+| `.claude/rules/teams/dispatch-protocol.md` | CC | Coordinator | CC 자율 |
+| `.claude/rules/teams/cc-operating-protocol.md` | CC | — | CC 자율 |
+| `.claude/rules/teams/quality-standards.md` | QA | CC | QA 주도, CC 조율 |
+| `.claude/rules/teams/session-lifecycle.md` | CC | Coordinator | CC 자율 |
+| `.claude/rules/teams/{team-a,b,coordinator,design}.md` | 해당 팀 | CC | 팀 자율, CC 통보 |
+| `.claude/rules/teams/qa.md` | QA | CC | QA 주도 |
+| `.claude/rules/teams/ra.md` | RA | CC | RA 주도 |
+| `.claude/rules/moai/**` | CC | Coordinator | CC 자율 (MoAI 프레임워크) |
+| `CLAUDE.md` | 사용자 | CC | 사용자 승인 필수 |
+| `.moai/config/` | CC | — | CC 자율 |
+| `.moai/dispatches/active/`, `completed/` | CC (단독) | — | CC 단독, 팀 수정 금지 |
+| `.moai/dispatches/templates/` | CC | Coordinator | CC 자율 |
+| `.moai/plans/` | CC | 사용자 | CC 자율, 사용자 리뷰 가능 |
+| `.moai/specs/` | 해당 팀 (SPEC의 `team:` 필드) | CC | 팀 주도, CC 조율 |
+
+### 거버넌스 변경 프로토콜
+
+- [HARD] CONSTITUTIONAL (FROZEN) 파일(role-matrix.md, CLAUDE.md) 변경은 반드시 사용자 승인
+- [HARD] 5개 초점 파일(dispatch-protocol, cc-operating-protocol, quality-standards, session-lifecycle, team-common 인덱스)은 CC 자율 변경 가능, 구조적 변경은 사용자 통보
+- [HARD] 팀별 규칙 파일(team-*.md)은 해당 팀이 자율 변경, PR 시 CC 통보
+- [HARD] `.moai/dispatches/` 구조 변경은 CC 단독 권한
+
+### 거버넌스 문서 작성 표준
+
+모든 규칙 파일은 아래 필드를 메타데이터로 포함:
+
+```
+Version: N.M.P (semver)
+Effective: YYYY-MM-DD
+Classification: {CONSTITUTIONAL FROZEN | Governance | Operational}
+Cross-ref: [관련 파일 목록]
+```
+
+---
+
+Version: 3.0.0
+Classification: CONSTITUTIONAL (FROZEN for §1-§9, §10 Governance 정의는 CC 자율 업데이트 가능)
+Effective: 2026-04-22
+Source: S07-R4 + S08-R1 + S14-R2 + S16-R1 프로세스 사망 나선 사고교훈
