@@ -1,5 +1,3 @@
-> 🛑 **[HOLD — 2026-04-22]** 이 DISPATCH는 시스템 재정비 완료 후 재발행 예정. **ScheduleWakeup 설정 금지. 작업 착수 금지. 세션 종료 권장.**
-
 # DISPATCH S16-R2 — Design (Pure UI)
 
 ## Sprint: S16 | Round: R2 | Issued: 2026-04-22
@@ -17,7 +15,7 @@ SPEC-UI-001 UISPEC 매트릭스에 따르면:
 - **UISPEC-001 (LoginView)**: 95% compliant — 안정
 
 이전 2라운드 연속 TIMEOUT으로 실질 기여가 없었음.
-[HOLD] 이 DISPATCH는 시스템 재정비 후 재발행 예정 — ScheduleWakeup 설정 금지.
+이번 라운드에서 UISPEC-002 갭 분석 + 1개 항목 XAML 개선 착수.
 
 ---
 
@@ -64,6 +62,7 @@ SPEC-UI-001 UISPEC 매트릭스에 따르면:
 - [HARD] ViewModel 구현은 Coordinator 담당 — 필요 시 `NEEDS_VIEWMODEL` 태그로 요청
 - [HARD] 도메인 Converter (SafeStateToColorConverter 등)는 Team B 담당
 - [HARD] DesignTime Mock은 Design 단독 소유 — 통합테스트 Mock은 Coordinator가 tests.integration/에 생성
+- [HARD] ScheduleWakeup(300초 이상) 유지 — 작업 완료 push 직후 재설정 (session-lifecycle.md §2)
 
 ## Evidence Required
 

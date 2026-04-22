@@ -1,5 +1,3 @@
-> 🛑 **[HOLD — 2026-04-22]** 이 DISPATCH는 시스템 재정비 완료 후 재발행 예정. **ScheduleWakeup 설정 금지. 작업 착수 금지. 세션 종료 권장.**
-
 # DISPATCH S16-R2 — QA (Quality Assurance)
 
 ## Sprint: S16 | Round: R2 | Issued: 2026-04-22
@@ -72,7 +70,7 @@ S14-R2에서 QA가 CONDITIONAL PASS (4107/4124 = 99.47%) 판정.
 - [HARD] PASS/FAIL 판정은 QA 독립 권한 (CC가 번복 불가)
 - [HARD] 소유 도구만 사용: `dotnet build`, `dotnet test`, Coverlet, Stryker, SonarCloud, StyleCop, OWASP 도구
 - [HARD] Safety-Critical 미달 시 `priority-high` 이슈 + 해당 팀 통지
-- [HARD] ScheduleWakeup 설정 금지 (HOLD 중 — _CURRENT.md 참조)
+- [HARD] ScheduleWakeup(300초 이상) 유지 — 작업 완료 push 직후 재설정 (session-lifecycle.md §2)
 
 ## Evidence Required
 
