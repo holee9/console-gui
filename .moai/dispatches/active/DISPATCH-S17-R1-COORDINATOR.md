@@ -45,9 +45,9 @@ DISPATCH에 "S17에서 Team A가 품질 보강" 권고가 있었음.
 
 | 작업 ID | 설명 | 상태 | 할당자 | 우선순위 | 타임스탬프 | 비고 |
 |---------|------|------|--------|----------|-----------|------|
-| T1 | 6개 Repository 통합 검증 | NOT_STARTED | Coordinator | P1 | - | - |
-| T2 | 통합테스트 보강 | NOT_STARTED | Coordinator | P2 | - | - |
-| T3 | DISPATCH Status 업데이트 | NOT_STARTED | Coordinator | P3 | - | 상시 |
+| T1 | 6개 Repository 통합 검증 | COMPLETED | Coordinator | P1 | 2026-04-22T22:50:00+09:00 | Build 0 errors, 179/179 PASS, DI 6개 정상 |
+| T2 | 통합테스트 보강 | COMPLETED | Coordinator | P2 | 2026-04-22T22:50:00+09:00 | Settings_SaveCommand mock 수정 — 178→179/179 |
+| T3 | DISPATCH Status 업데이트 | COMPLETED | Coordinator | P3 | 2026-04-22T22:50:00+09:00 | 상시 |
 
 ---
 

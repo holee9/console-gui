@@ -51,12 +51,26 @@ HnVue 프로젝트의 품질 지표 정의. **모든 품질 기준은 이 문서
 DISPATCH 작업 완료 보고 전 모두 검증:
 
 - [ ] All Task acceptance criteria met?
-- [ ] `dotnet build` 0 errors confirmed?
-- [ ] `dotnet test` all passed confirmed? (자기 소유 테스트 프로젝트만)
+- [ ] **전체 솔루션 빌드** `dotnet build HnVue.sln` 0 errors confirmed? (모듈 빌드만으로는 의존성 회귀 검증 불가)
+- [ ] **자기 소유 테스트** `dotnet test` all passed confirmed? (자기 소유 테스트 프로젝트만 — 타팀 테스트는 QA가 검증)
 - [ ] Only modified files within ownership scope? (`git diff --name-only` 확인)
 - [ ] DISPATCH Status 테이블에 build evidence 기재?
 - [ ] Incomplete items honestly marked as PARTIAL?
 - [ ] ScheduleWakeup(읽은 값) 재설정 완료? (session-lifecycle.md 참조)
+
+### 빌드 범위 기준 [HARD — S14-R2 교훈]
+
+| 팀 | 빌드 범위 | 이유 |
+|----|----------|------|
+| Team A | **HnVue.sln 전체** | 인프라 모듈 변경이 전체에 영향 |
+| Team B | **HnVue.sln 전체** | 의료 도메인 모듈이 다른 모듈 참조 |
+| Coordinator | **HnVue.sln 전체** | DI/통합 변경이 전체에 영향 |
+| Design | **HnVue.UI 프로젝트** | UI는 독립적, 전체 빌드 불필요 |
+| QA | **HnVue.sln 전체** | 검증 기관이므로 전체 범위 |
+| RA | **빌드 불필요** | 문서만 작업 |
+
+- [HARD] 구현팀(TA, TB, CO)은 반드시 **전체 솔루션 빌드**로 자기 변경이 다른 모듈에 회귀를 일으키지 않는지 확인
+- [HARD] 모듈 빌드만 수행하고 COMPLETED 보고 = Self-Verification 위반
 
 ---
 
@@ -95,6 +109,6 @@ GitHub Actions / Gitea CI에서 다음 게이트 강제:
 
 ---
 
-Version: 1.2.0 (CC v2 도입 — 품질 기준 변경 없음, CC는 검증 권한 없음)
+Version: 1.3.0 (빌드 범위 기준 명확화 — 전체 솔루션 빌드 의무화)
 Effective: 2026-04-22
-Cross-ref: `qa.md`, `dispatch-protocol.md`
+Cross-ref: `qa.md`, `dispatch-protocol.md`, `role-matrix.md`
