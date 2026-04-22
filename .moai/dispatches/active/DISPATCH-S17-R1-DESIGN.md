@@ -47,9 +47,9 @@ UISPEC-003(스터디리스트)도 63% compliant로 갭이 존재.
 
 | 작업 ID | 설명 | 상태 | 할당자 | 우선순위 | 타임스탬프 | 비고 |
 |---------|------|------|--------|----------|-----------|------|
-| T1 | UISPEC-002 남은 갭 구현 | NOT_STARTED | Design | P1 | - | - |
-| T2 | UISPEC-003 갭 분석 | NOT_STARTED | Design | P2 | - | - |
-| T3 | DISPATCH Status 업데이트 | NOT_STARTED | Design | P3 | - | 상시 |
+| T1 | UISPEC-002 남은 갭 구현 | COMPLETED | Design | P1 | 2026-04-22T19:05:00+09:00 | 우측 패널 제목 추가 ✅ |
+| T2 | UISPEC-003 갭 분석 | COMPLETED | Design | P2 | 2026-04-22T19:05:00+09:00 | 갭 분석 완료 ✅ |
+| T3 | DISPATCH Status 업데이트 | COMPLETED | Design | P3 | 2026-04-22T19:10:00+09:00 | 완료 보고 |
 
 ---
 
