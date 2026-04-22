@@ -2,8 +2,7 @@
 
 팀 운영에 공통 적용되는 규칙의 **인덱스 파일**. 실제 규칙은 초점 파일에 정의.
 
-2026-04-22 재정비: 564줄 단일 파일을 5개 초점 파일로 분해.
-2026-04-22 추가 개정: CC v2 도입 — 독립 worktree + PR-only + 이슈 추적.
+CC v2 도입: 독립 worktree + PR-only + Gitea 이슈 추적.
 
 ---
 
@@ -12,7 +11,7 @@
 | 파일 | 담당 내용 |
 |------|----------|
 | [`role-matrix.md`](./role-matrix.md) | **[CONSTITUTIONAL — FROZEN]** 7개 역할 정의 (CC 포함), 소유권 매트릭스, 사고 이력 |
-| [`dispatch-protocol.md`](./dispatch-protocol.md) | DISPATCH 해석, Status 업데이트, 파일 관리, 이슈 추적 |
+| [`dispatch-protocol.md`](./dispatch-protocol.md) | DISPATCH 해석, Status 업데이트, Phase 종속성, 이슈 추적 |
 | [`quality-standards.md`](./quality-standards.md) | **[SSOT]** 품질 지표 (빌드, 테스트, 커버리지, Safety-Critical) |
 | [`session-lifecycle.md`](./session-lifecycle.md) | ScheduleWakeup, /clear, Stall Detection 세션 관리 |
 | [`cc.md`](./cc.md) | CC(Command Center) 오케스트레이션 규칙 |
@@ -21,8 +20,6 @@
 ---
 
 ## 필수 읽기 순서 (에이전트용)
-
-### 팀 에이전트 세션 시작 시
 
 ```
 1. role-matrix.md §2~§4       — 자기 팀 역할 확인
@@ -55,43 +52,17 @@
 | DISPATCH 시작 전 `git pull` 필수 | `dispatch-protocol.md` §1 |
 | Status 업데이트 시 타임스탬프 필수 | `dispatch-protocol.md` §2 |
 | DISPATCH 파일 이동은 사용자 직접 관리 | `dispatch-protocol.md` §3 |
+| Phase 종속성: Phase 1 실패 시 후속 Phase IDLE 대기 | `dispatch-protocol.md` §6 |
 | ScheduleWakeup 최소 300초, 하드코딩 금지 | `session-lifecycle.md` §2 |
 | Safety-Critical 90% 커버리지 | `quality-standards.md` §2 |
 | QA 판정은 최종, 사용자 승인 없이 번복 불가 | `quality-standards.md` §5 |
-| DISPATCH 템플릿 `STANDARD-DISPATCH.md` 준수 | `.moai/dispatches/templates/` |
+| DISPATCH 명명: `DISPATCH-S{NN}-R{M}-{TEAM}.md` | `STANDARD-DISPATCH.md` |
+| DISPATCH Status는 team 브랜치에 push | `dispatch-protocol.md` §4 |
+| CC는 team 브랜치에서 DISPATCH Status 읽기 | `cc.md` Operating Cycle |
+| DISPATCH 수정 구분 (Status=팀, 나머지=CC) | `dispatch-protocol.md` §3 |
 
 ---
 
-## 변경 이력
-
-| 버전 | 날짜 | 변경 |
-|------|------|------|
-| 1.0 | 2026-04-01~14 | 최초 작성, 단일 파일 |
-| 1.5 | 2026-04-15~21 | S07~S15 사고 대응 HARD 규칙 누적 (564줄 비대화) |
-| **2.0** | **2026-04-22** | **5개 초점 파일로 분해, 본 파일은 인덱스로 축소** |
-| **2.1** | **2026-04-22** | CC 역할 제거 — 사용자 직접 오케스트레이션 |
-| **3.0** | **2026-04-22** | **CC v2 도입 — 독립 worktree + PR-only + Gitea 이슈 추적** |
-
----
-
-## 재정비 근거
-
-`.moai/plans/SYSTEM-REFORM-2026-04-22.md` 참조.
-
-기존 564줄 단일 파일의 구조적 결함:
-- SSOT 위배 (Quality Standards 중복)
-- Incident-driven patch 축적 (모순 규칙 발생)
-- 거버넌스 소유권 공백
-- 탐색 비효율
-
-재정비 후:
-- 각 초점 파일 ≤ 250줄
-- SSOT 단일화 (quality-standards.md)
-- 명확한 cross-reference
-- 사고 교훈은 role-matrix.md §8에 통합 보관
-
----
-
-Version: 3.0.0 (INDEX — CC v2 도입)
+Version: 3.2.0 (DISPATCH Status push 명확화, CC 모니터링 프로토콜 반영)
 Effective: 2026-04-22
 Classification: Governance
