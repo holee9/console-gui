@@ -14,9 +14,9 @@
 |------|--------|------|------|
 | 2026-04-09 | SPEC 초안 작성 (UltraThink 독립 감사) | draft | MoAI |
 | 2026-04-22 | S16-R2 RA 팀 DISPATCH T2 착수 | in_progress | RA |
-| 2026-04-22 | S17-R1 T1 완료: 추적성 감사 (갭 없음 확인) | completed | RA |
-| 2026-04-22 | S17-R1 T3 완료: 문서 영향 평가 (영향 미미) | completed | RA |
-| 2026-04-22 | S17-R1 T2 완료: 시나리오 6 이슈 추적 확인 | completed | RA |
+| 2026-04-22 | S16-R2 COMPLETED: Role Matrix v2.0 + CC v2.0 + 거버넌스 강제화 | completed | RA |
+| 2026-04-24 | S17-R1 T1 완료: 추적성 감사 (갭 0건) | completed | RA |
+| 2026-04-24 | S17-R1 T2 진행: 시나리오 6 이슈 추적 확인 + 다음 액션 정리 | in_progress | RA |
 
 ---
 
