@@ -17,6 +17,7 @@
 | 2026-04-22 | S16-R2 COMPLETED: Role Matrix v2.0 + CC v2.0 + 거버넌스 강제화 | completed | RA |
 | 2026-04-24 | S17-R1 T1 완료: 추적성 감사 (갭 0건) | completed | RA |
 | 2026-04-24 | S17-R1 T2 진행: 시나리오 6 이슈 추적 확인 + 다음 액션 정리 | in_progress | RA |
+| 2026-04-24 | S17-R1 T2 완료: SPEC-GOVERNANCE-001 progress.md 업데이트 + 다음 액션 정리 | completed | RA |
 
 ---
 
