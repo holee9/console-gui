@@ -54,10 +54,10 @@ S14-R2 이후 다수의 구현 변경(Trait 87개, Repository 6개, Security/AES
 
 | 작업 ID | 설명 | 상태 | 할당자 | 우선순위 | 타임스탬프 | 비고 |
 |---------|------|------|--------|----------|-----------|------|
-| T1 | 임플리멘테이션 추적성 감사 | NOT_STARTED | RA | P1 | - | S16-R2 T3 미완료 |
-| T2 | SPEC-GOVERNANCE-001 진행 | NOT_STARTED | RA | P2 | - | progress.md |
-| T3 | 변경사항 문서 영향 평가 | NOT_STARTED | RA | P2 | - | - |
-| T4 | DISPATCH Status 업데이트 | NOT_STARTED | RA | P3 | - | 상시 |
+| T1 | 임플리멘테이션 추적성 감사 | COMPLETED | RA | P1 | 2026-04-25T14:15:00+09:00 | RTM 갭: SWR-COORD-120/130 미포함 |
+| T2 | SPEC-GOVERNANCE-001 진행 | IN_PROGRESS | RA | P2 | 2026-04-25T14:20:00+09:00 | 시나리오 6 활성화 중 |
+| T3 | 변경사항 문서 영향 평가 | IN_PROGRESS | RA | P2 | 2026-04-25T14:25:00+09:00 | SPEC 변경사항 분석 중 |
+| T4 | DISPATCH Status 업데이트 | IN_PROGRESS | RA | P3 | 2026-04-25T14:30:00+09:00 | 타임스탬프 정확 반영 중 |
 
 ---
 
