@@ -99,7 +99,7 @@
 ---
 
 Updated: 2026-05-10 (S18-R1 발행 — SPEC-METHODOLOGY-001 발효 후 첫 라운드)
-Round Issue: TBD (CC가 생성 예정)
+Round Issue: #128 (생성됨, http://10.11.1.40:7001/DR_RnD/Console-GUI/issues/128)
 DISPATCH 절대 경로: `D:/workspace-gitea/Console-GUI/.moai/dispatches/active/`
 이전 라운드 DISPATCH: `.moai/dispatches/completed/DISPATCH-S17-R1-*.md` (6건)
 적용 SPEC: SPEC-METHODOLOGY-001, SPEC-CONSTITUTION-001, SPEC-DISPATCH-V2-001, SPEC-AUTODRIVE-GATE-001, SPEC-SPEC-TRIAGE-001, SPEC-ROADMAP-001
