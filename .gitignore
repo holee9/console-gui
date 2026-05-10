@@ -258,3 +258,21 @@ docs/planning/archive/
 .moai/state/.gitkeep
 .mcp.json
 CLAUDE.md
+
+# ===========================================
+# Ephemeral agent / session artifacts (S18-R1 clean)
+# ===========================================
+.moai/reports/
+.moai/plans/
+.moai/state/*.pid
+.moai/state/*-state.json
+.cla/
+.tmp_wiki_full/
+.worktrees/
+TestReports/
+coverage-reports/
+test-coverage/
+tests.e2e/bin/
+tests.e2e/obj/
+tests.e2e/TestResults/
+*.har
