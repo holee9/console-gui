@@ -1,13 +1,14 @@
 ---
 id: SPEC-GOVERNANCE-001
-version: 1.0.0
-status: draft
+version: 1.1.0
+status: deprecated
+superseded_by: SPEC-METHODOLOGY-001
 created: 2026-04-09
-updated: 2026-04-09
+updated: 2026-05-10
 author: MoAI Orchestrator (UltraThink)
 priority: P1-Critical
 issue_number: 0
-title: 팀 개발 거버넌스 강제화 — 워크트리 규율·이슈 추적·한글 인코딩
+title: 팀 개발 거버넌스 강제화 — 워크트리 규율·이슈 추적·한글 인코딩 [SUPERSEDED]
 ---
 
 ## HISTORY
@@ -15,6 +16,24 @@ title: 팀 개발 거버넌스 강제화 — 워크트리 규율·이슈 추적�
 | 버전 | 날짜 | 변경 내용 |
 |------|------|-----------|
 | 1.0.0 | 2026-04-09 | 독립 감사 결과 기반 초안 작성 (UltraThink) |
+| 1.1.0 | 2026-05-10 | **SUPERSEDED by SPEC-METHODOLOGY-001** — draft 상태로 종결. 8건 REQ는 5축 부속 SPEC에 흡수됨 |
+
+---
+
+> **🟥 SUPERSEDED — 2026-05-10**
+> 이 SPEC은 **SPEC-METHODOLOGY-001 (자율주행 개발방법론 메타 SPEC)** 으로 흡수되어 더 이상 활성 SPEC이 아닙니다.
+>
+> 후속 SPEC 매핑:
+> - REQ-GOV-001 (커밋 의무) → SPEC-AUTODRIVE-GATE-001 REQ-AUTOGATE-009
+> - REQ-GOV-002 (워크트리 계층) → SPEC-CONSTITUTION-001 REQ-CONST-001
+> - REQ-GOV-003 (Coordinator 통합) → SPEC-DISPATCH-V2-001 REQ-DISPATCH-V2-003
+> - REQ-GOV-004 (Issue-First) → SPEC-DISPATCH-V2-001 REQ-DISPATCH-V2-007
+> - REQ-GOV-005 (한글 인코딩) → SPEC-DISPATCH-V2-001 REQ-DISPATCH-V2-008
+> - REQ-GOV-006 (QA 보고서) → SPEC-AUTODRIVE-GATE-001 REQ-AUTOGATE-008
+> - REQ-GOV-007 (수명주기 이행) → SPEC-DISPATCH-V2-001 REQ-DISPATCH-V2-010
+> - REQ-GOV-008 (블로커 이슈) → SPEC-CONSTITUTION-001 REQ-CONST-008
+>
+> 본문은 사후 참조용으로 보존됩니다. 신규 작업은 `.moai/specs/SPEC-METHODOLOGY-001/spec.md`를 참조하세요.
 
 ---
 
