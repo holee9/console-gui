@@ -216,6 +216,8 @@ CC는 독립 worktree + Claude 세션으로 운영되는 **순수 오케스트�
 | S15-R2 | Design 미응답 무한 대기 | (구) CC | Design이 DISPATCH에 응답하지 않아 S15-R2 무기한 대기 상태 방치 → 전체 라운드 진행 불가 | 팀 TIMEOUT 프로토콜 추가 (60분 후 TIMEOUT → 다음 라운드 진행) |
 | S16-R1 | 프로세스 사망 나선 | (구) CC | S14-R2 이후 3개 Sprint 동안 실질 제품 커밋 0건, IDLE CONFIRM 자기복제, 모든 커밋이 ScheduleWakeup/프로토콜 패치 | STANDARD-DISPATCH.md 근거 SPEC 필수화, CC 역할 폐지 → 사용자 직접 오케스트레이션 |
 | S17-R1 | CC v2 도입 | CC | 독립 worktree + PR-only + 이슈 추적으로 재도입. v1과의 차이: 코드/빌드/테스트 CONSTITUTIONAL PROHIBITION, 직접 머지 금지(PR만), Gitea 이슈 전 이력 추적 | CONSTITUTIONAL PROHIBITION 명문화, PR-only 워크플로우, 이슈-DISPATCH 연동 |
+| **S15~S16-R1** | **사망 나선 (정식 등재)** | (구) CC + 시스템 | S14-R2 이후 3 Sprint(15+ 라운드) 동안 실질 제품 커밋 0건. 모든 커밋이 ScheduleWakeup/프로토콜 패치/IDLE CONFIRM 자기복제. 의사진행 fatigue 누적 | **SPEC-CONSTITUTION-001 REQ-CONST-005 (사망 나선 헌법 조항)** + SPEC-AUTODRIVE-GATE-001 REQ-AUTOGATE-003/005 (5라운드 연속 실질 커밋 0 → 사용자 알림) |
+| S17→S18 | 메타 SPEC 도입 | 사용자 + Orchestrator | SPEC-METHODOLOGY-001 + 5축 부속 SPEC(CONSTITUTION/DISPATCH-V2/AUTODRIVE-GATE/SPEC-TRIAGE/ROADMAP) 발효. SPEC-GOVERNANCE-001 SUPERSEDED | S18-R1부터 신 방법론 강제. 본 §8 행은 정식 사고 등재 |
 
 ---
 
@@ -240,6 +242,12 @@ CC는 독립 worktree + Claude 세션으로 운영되는 **순수 오케스트�
 | `.moai/dispatches/templates/` | 사용자 | 사용자 직접 관리 |
 | `.moai/plans/` | 사용자 | 사용자 직접 관리 |
 | `.moai/specs/` | 해당 팀 (SPEC의 `team:` 필드) | 팀 주도, 사용자 조율 |
+| `.moai/specs/SPEC-METHODOLOGY-001/` | 사용자 (메타 SPEC) | 사용자 승인 필수 — 5개 부속 SPEC 변경 시 동시 갱신 |
+| `.moai/specs/SPEC-CONSTITUTION-001/` | 사용자 (헌법 부속) | 사용자 승인 필수 — role-matrix·CLAUDE.md와 동기 |
+| `.moai/specs/SPEC-DISPATCH-V2-001/` | CC + 사용자 | CC 주도, 사용자 승인. dispatch-protocol.md와 동기 |
+| `.moai/specs/SPEC-AUTODRIVE-GATE-001/` | QA + 사용자 | QA 주도, 사용자 승인. quality-standards.md와 동기 |
+| `.moai/specs/SPEC-SPEC-TRIAGE-001/` | 사용자 | SPEC 재고 정리 권한은 사용자 단독 |
+| `.moai/specs/SPEC-ROADMAP-001/` | 사용자 + CC | 라운드 계획. 사용자 승인 후 CC가 DISPATCH 발행 |
 
 ### 거버넌스 변경 프로토콜
 
@@ -260,7 +268,10 @@ Cross-ref: [관련 파일 목록]
 
 ---
 
-Version: 5.1.0 (_CURRENT.md 소유권 CC 예외 명시)
+Version: 5.2.0 (S15~S16 사망 나선 정식 등재 + SPEC-METHODOLOGY-001 거버넌스 매트릭스 통합)
 Classification: CONSTITUTIONAL (FROZEN — human-only modification)
-Effective: 2026-04-22
-Source: S17-R1 CC v2 도입 결정
+Effective: 2026-05-10
+Source: SPEC-METHODOLOGY-001 + SPEC-CONSTITUTION-001 (S17→S18 메타 SPEC 도입)
+History:
+  - 5.1.0 (2026-04-22): _CURRENT.md 소유권 CC 예외 명시
+  - 5.2.0 (2026-05-10): 사망 나선 §8 등재 + 신규 6개 SPEC 거버넌스 매트릭스 추가
