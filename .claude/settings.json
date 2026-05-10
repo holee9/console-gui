@@ -497,6 +497,7 @@
   },
   "outputStyle": "MoAI",
   "effortLevel": "medium",
+  "model": "claude-opus-4-7",
   "plansDirectory": ".moai/plans",
   "teammateMode": "auto",
   "enabledPlugins": {
