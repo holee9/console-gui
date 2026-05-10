@@ -1,7 +1,14 @@
-# DISPATCH Current Index — S17-R1 [ACTIVE] — Safety-Critical 4/4 PASS
+# DISPATCH Current Index — S17-R1 [FROZEN] — 메타작업(SPEC-METHODOLOGY-001) 우선
+
+> **🔴 [HARD] FREEZE — 2026-05-10 발효**
+> S17-R1은 메타작업(자율주행 개발방법론 재정립) 동안 **일시정지**.
+> 모든 팀(TA/TB/CO/TD/QA/RA)은 **즉시 IDLE 전환**, 새 DISPATCH 대기.
+> CC는 신규 DISPATCH 발행 금지 — 사용자가 freeze 해제 시까지 대기.
+> 사유: SPEC-METHODOLOGY-001 + 5개 부속 SPEC 작성 중. S18-R1부터 신 방법론 적용.
 
 > **[HARD] 에이전트 FIRST ACTION**: 이 파일을 가장 먼저 읽는다.
-> 자신의 팀 행(row)에서 상태 확인:
+> FREEZE 기간 동안 모든 팀 상태는 `IDLE`로 간주.
+> 평소 규칙: 자신의 팀 행(row)에서 상태 확인:
 > - `ACTIVE` → DISPATCH 파일을 `active/`에서 읽고 즉시 작업 시작
 > - `MERGED` → **작업 없음**. DISPATCH 파일은 `completed/`로 이동됨. IDLE 보고 + ScheduleWakeup(_CURRENT.md 값) 설정 후 대기
 > - `IDLE` → ScheduleWakeup(_CURRENT.md 값) 설정 후 대기
@@ -12,14 +19,14 @@
 
 | 팀 | 현재 DISPATCH 파일 | 상태 | 근거 SPEC/문서 | 우선순위 |
 |----|-------------------|------|---------------|---------|
-| **Team A** | DISPATCH-S17-R1-TEAM-A.md | **ACTIVE** | SPEC-INFRA-002 + Issue #109 (Security 89.62%) | Security 90%+ + DI 교체 |
-| **Team B** | DISPATCH-S17-R1-TEAM-B.md | **ACTIVE** | SPEC-TEAMB-COV-001 + QA FINAL-COVERAGE | Incident branch 90%+ + Dicom 향상 |
-| **Coordinator** | DISPATCH-S17-R1-COORDINATOR.md | **ACTIVE** | SPEC-COORDINATOR-001 | 6개 Repository 통합 검증 |
-| **Design** | DISPATCH-S17-R1-DESIGN.md | **MERGED** | SPEC-UI-001 / UISPEC-002, UISPEC-003 | PatientListView 갭 + Studylist 분석 |
-| **QA** | DISPATCH-S17-R1-QA.md | **ACTIVE** | Quality Standards + Issue #109 | Safety-Critical 4/4 검증 |
-| **RA** | DISPATCH-S17-R1-RA.md | **ACTIVE** | SPEC-GOVERNANCE-001 + DOC-032 RTM | 추적성 감사 + 문서 영향 평가 |
+| **Team A** | DISPATCH-S17-R1-TEAM-A.md | **FROZEN→IDLE** | SPEC-INFRA-002 + Issue #109 (Security 89.62%) | freeze 해제 시 재개 |
+| **Team B** | DISPATCH-S17-R1-TEAM-B.md | **FROZEN→IDLE** | SPEC-TEAMB-COV-001 + QA FINAL-COVERAGE | freeze 해제 시 재개 |
+| **Coordinator** | DISPATCH-S17-R1-COORDINATOR.md | **FROZEN→IDLE** | SPEC-COORDINATOR-001 | freeze 해제 시 재개 |
+| **Design** | DISPATCH-S17-R1-DESIGN.md | **MERGED** | SPEC-UI-001 / UISPEC-002, UISPEC-003 | (freeze 이전 머지됨) |
+| **QA** | DISPATCH-S17-R1-QA.md | **FROZEN→IDLE** | Quality Standards + Issue #109 | freeze 해제 시 재개 |
+| **RA** | DISPATCH-S17-R1-RA.md | **FROZEN→IDLE** | SPEC-GOVERNANCE-001 + DOC-032 RTM | freeze 해제 시 재개 |
 
-**→ S17-R1: 6/6 ACTIVE — Safety-Critical 4/4 PASS 목표**
+**→ S17-R1: FROZEN — SPEC-METHODOLOGY-001 작성 중. S18-R1부터 신 방법론 적용**
 
 ---
 
