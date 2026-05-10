@@ -6,34 +6,48 @@
 |------|-----|
 | **빌드** | `dotnet build HnVue.sln -c Release` 기준 0 errors |
 | **테스트** | 2,539+ 통과 / 0 실패 / Flaky 0건 |
-| **Safety-Critical** | Dose 100%, Incident 95.24%, Update 96%, Security 89.62% (90% 목표) |
+| **Safety-Critical** | Dose 100%, Incident 95.24%, Update 96%, Security 89.62% (90% 목표 — S18-R1 carryover) |
 | **아키텍처** | 11/11 규정 준수 (NetArchTest) |
 | **인허가 분류** | IEC 62304 Class B |
-| **Sprint** | S17-R1 ACTIVE (2026-04-22) |
-| **운영 모델** | CC v2 (독립 worktree + PR-only + Gitea 이슈 추적) |
+| **Sprint** | **S18-R1 ACTIVE (2026-05-10)** — 신 방법론 첫 라운드 |
+| **개발 방법론** | **SPEC-METHODOLOGY-001** + 5축 부속 SPEC (CONSTITUTION, DISPATCH-V2, AUTODRIVE-GATE, SPEC-TRIAGE, ROADMAP) |
+| **운영 모델** | CC v2 (독립 worktree + PR-only + Gitea 이슈 추적) + Self-Verification 7항목 + Phase 종속성 강제 |
+| **Round Issue** | [#128](http://10.11.1.40:7001/DR_RnD/Console-GUI/issues/128) |
 
 ---
 
-## 개발 진도 현황 (2026-04-22 기준)
+## 개발 진도 현황 (2026-05-10 기준)
 
-> 상세: [개발 현황 상세](docs/management/development-status.md) | [WBS v4.0](docs/management/WBS-001_WBS_v3.0.md)
+> 상세: [개발 현황 상세](docs/management/development-status.md) | [WBS v4.0](docs/management/WBS-001_WBS_v3.0.md) | [메타 SPEC](.moai/specs/SPEC-METHODOLOGY-001/spec.md)
 
 ```
 Phase 1: S12 / S24 (50.0%)    전체 프로젝트: S12 / S48 (25.0%)
 Phase 1 남음: 50.0% (12 Sprint)    전체 남음: 75.0% (36 Sprint)
 ```
 
-### Sprint S17-R1 진행 현황 — CC v2 자율주행
+### Sprint S18-R1 진행 현황 — 신 방법론 첫 라운드
 
 | Phase | 팀 | 작업 | 상태 |
 |-------|-----|------|------|
-| Phase 1 | Team A | Security 90%+ 달성 + SPEC-INFRA-002 REFACTOR | ACTIVE |
-| Phase 1 | Team B | Incident branch 90%+ + Dicom 향상 | ACTIVE |
-| Phase 2 | Coordinator | 6개 Repository 통합 검증 | ACTIVE |
-| 독립 | Design | PatientListView 갭 + Studylist 분석 | MERGED |
-| Phase 3 | QA | Safety-Critical 4/4 검증 | ACTIVE |
-| Phase 4 | RA | 추적성 감사 + 문서 영향 평가 | ACTIVE |
+| Phase 1 | Team A | Security 90%+ + Self-Verification 7항목 첫 적용 | ACTIVE |
+| Phase 1 | Team B | Incident branch 90%+ + Dicom 향상 (carryover) | ACTIVE |
+| Phase 2 | Coordinator | 6 Repository 통합 + Phase 2 게이트 검증 | ACTIVE |
+| 독립 | Design | SPEC-UI-001 메타데이터 보강 + UISPEC-003 분석 | ACTIVE |
+| Phase 3 | QA | Safety-Critical 4/4 + Substantive Commit Rate 첫 측정 | ACTIVE |
+| Phase 4 | RA | SPEC-INFRA-001 archive (TRIAGE A2) + DOC-032 RTM | ACTIVE |
 | 상시 | CC | DISPATCH 관리 + PR 생성 + 이슈 추적 | ACTIVE |
+
+### S17→S18 메타 전환 (PR #127 머지)
+
+신 방법론 발효 — S18-R1부터 강제:
+
+| 게이트 | 출처 SPEC | 효과 |
+|--------|-----------|------|
+| **Self-Verification 7항목** | AUTODRIVE-GATE-001 REQ-AUTOGATE-009 | 실질 커밋 SHA 의무 + 전체 솔루션 빌드 증거 |
+| **Phase 종속성 강제** | DISPATCH-V2-001 REQ-DISPATCH-V2-003 | Phase 1 미완료 시 후속 Phase 자동 IDLE |
+| **사망 나선 가드** | CONSTITUTION-001 REQ-CONST-005 | 5라운드 연속 실질 커밋 0건 → 사용자 알림 |
+| **Substantive Commit Rate** | quality-standards.md §2 | QA 라운드별 측정·보고 |
+| **Stall/TIMEOUT 상세화** | DISPATCH-V2-001 REQ-DISPATCH-V2-006 | 3회 경고 / 5회 사용자 조치 / 60분 TIMEOUT |
 
 ### S16-R2 QA 판정 (CONDITIONAL PASS)
 
@@ -46,8 +60,9 @@ Phase 1 남음: 50.0% (12 Sprint)    전체 남음: 75.0% (36 Sprint)
 
 > Security 89.62% < 90% 미달이 S17-R1에서 보강 목표
 
-### Sprint S07~S17 주요 성과
+### Sprint S07~S18 주요 성과
 
+- **S18-R0 메타 SPEC 발효 (PR #127)**: SPEC-METHODOLOGY-001 + 5축 부속 SPEC(46 EARS) 작성, GOVERNANCE-001 SUPERSEDED, 헌법/SSOT 5건 동기화. 사망 나선 헌법 조항 신설
 - **S17-R1 CC v2 도입**: 독립 worktree + PR-only + Gitea 이슈 추적, 코드/빌드/테스트 CONSTITUTIONAL PROHIBITION
 - **S16-R2 실질 개발 재시작**: S14-R2 이후 첫 실질 제품 커밋, Security 보강 진행
 - **S14-R2 QA CONDITIONAL PASS**: 87개 Trait 추가, 구버전 base 동기화 이슈 해결
@@ -97,13 +112,26 @@ Phase 1 남음: 50.0% (12 Sprint)    전체 남음: 75.0% (36 Sprint)
 
 | 문서 | 설명 |
 |------|------|
-| [역할 매트릭스 v5.1](.claude/rules/teams/role-matrix.md) | 7팀 역할 경계 최상위 규약 (CONSTITUTIONAL FROZEN) |
+| [**역할 매트릭스 v5.2**](.claude/rules/teams/role-matrix.md) | 7팀 역할 경계 최상위 규약 (CONSTITUTIONAL FROZEN). §8 사망 나선 정식 등재 + §9 신규 6 SPEC 거버넌스 매트릭스 |
 | [CC 오케스트레이션 v2.1](.claude/rules/teams/cc.md) | CC v2: 독립 worktree, PR-only, team 브랜치 DISPATCH 모니터링 |
-| [DISPATCH 프로토콜 v2.5](.claude/rules/teams/dispatch-protocol.md) | DISPATCH 생애주기, Phase 종속성, Status push 흐름 |
-| [품질 기준 v1.3](.claude/rules/teams/quality-standards.md) | 품질 지표 SSOT, 빌드 범위 기준 (전체 솔루션 빌드 의무화) |
+| [**DISPATCH 프로토콜 v2.5**](.claude/rules/teams/dispatch-protocol.md) | DISPATCH 생애주기, Phase 종속성 강제 게이트, Status push 흐름. SPEC-DISPATCH-V2-001 REQ 인용 |
+| [**품질 기준 v1.3+**](.claude/rules/teams/quality-standards.md) | 품질 지표 SSOT, 사망 나선 메트릭, Self-Verification 7항목 (실질 커밋 게이트) |
 | [세션 관리 v1.2](.claude/rules/teams/session-lifecycle.md) | ScheduleWakeup, TIMEOUT, Stall Detection |
 | [팀 공통 규칙 v3.2](.claude/rules/teams/team-common.md) | 규칙 파일 인덱스, HARD 규칙 요약 |
 | [DISPATCH 템플릿 v1.2](.moai/dispatches/templates/STANDARD-DISPATCH.md) | DISPATCH 파일 표준 형식 (Issue # 필드 포함) |
+
+### 자율주행 개발방법론 SPEC군 (S18-R1 발효)
+
+| SPEC | 역할 | 핵심 |
+|------|------|------|
+| [**SPEC-METHODOLOGY-001**](.moai/specs/SPEC-METHODOLOGY-001/spec.md) | 메타 SPEC | 5축 부속 SPEC RTM 상위 키, GOVERNANCE-001 흡수 (8 REQ → 5축) |
+| [SPEC-CONSTITUTION-001](.moai/specs/SPEC-CONSTITUTION-001/spec.md) | 헌법 재정립 | 7팀 경계 + CC 권한 경계 + 사망 나선 헌법 조항 |
+| [SPEC-DISPATCH-V2-001](.moai/specs/SPEC-DISPATCH-V2-001/spec.md) | DISPATCH v2 | Phase 종속성, Stall, TIMEOUT, Status push |
+| [SPEC-AUTODRIVE-GATE-001](.moai/specs/SPEC-AUTODRIVE-GATE-001/spec.md) | 자율주행 게이트 | Evidence-Based Completion + 사망 나선 감지 |
+| [SPEC-SPEC-TRIAGE-001](.moai/specs/SPEC-SPEC-TRIAGE-001/spec.md) | SPEC 재고 정리 | 3분류 (ACTIVE/COMPLETED/DEPRECATED) |
+| [SPEC-ROADMAP-001](.moai/specs/SPEC-ROADMAP-001/spec.md) | 라운드 로드맵 | S18+ 라운드별 적용 계획 |
+| [SPEC-GOVERNANCE-001 [SUPERSEDED]](.moai/specs/SPEC-GOVERNANCE-001/spec.md) | 흡수됨 | 8 REQ → METHODOLOGY-001 RTM (2026-05-10) |
+| [마이그레이션 보고서](.moai/reports/methodology-migration-S18-R1.md) | S17→S18 전환 | 사고 케이스 8건 인용, RTM 매핑 |
 
 ---
 
@@ -276,9 +304,10 @@ HnVue는 H&abyz의 소유 소프트웨어입니다. 상용 의료기기로 판�
 
 ---
 
-**프로젝트 상태:** S17-R1 ACTIVE — CC v2 자율주행 (Safety-Critical 4/4 PASS 목표)
+**프로젝트 상태:** S18-R1 ACTIVE — 신 방법론 첫 라운드 (SPEC-METHODOLOGY-001 발효)
 **현재 단계:** Phase 1 -- Tier 1+2 구현 (50.0% 완료)
 **남음:** Phase 1 50.0% (12 Sprint), 전체 프로젝트 75.0% (36 Sprint)
 **현실적 릴리즈:** 2027년 Q1~Q2 (Phase 1 완료 기준)
+**Round Issue:** [#128](http://10.11.1.40:7001/DR_RnD/Console-GUI/issues/128) | **메타 PR:** [#127](http://10.11.1.40:7001/DR_RnD/Console-GUI/pulls/127) (머지)
 
-문서 최종 업데이트: 2026-04-22
+문서 최종 업데이트: 2026-05-10 (S18-R1 발행 — SPEC-METHODOLOGY-001 발효 반영)

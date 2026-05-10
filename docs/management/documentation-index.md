@@ -121,10 +121,11 @@
 
 ## 개발 운영 전략
 
-팀 기반 Worktree 분리 개발 체계로 운영됩니다. 3개 구현팀 + Coordinator + QA + RA = 6개 워크트리.
+팀 기반 Worktree 분리 개발 체계로 운영됩니다. **CC + 6 구현/검증팀 = 7개 워크트리** (S17-R1 CC v2 도입).
 
 | 에이전트 | 팀 | 담당 모듈 |
 |---------|-----|----------|
+| `hnvue-cc` | CC | DISPATCH 작성, PR 생성, 이슈 추적 (코드/빌드/테스트 CONSTITUTIONAL PROHIBITION) |
 | `hnvue-infra` | Team A | Common, Data, Security, SystemAdmin, Update |
 | `hnvue-medical` | Team B | Dicom, Detector, Imaging, Dose, Incident, Workflow, PM, CDBurning |
 | `hnvue-ui` | Design | UI Views, Styles, Themes, Components, DesignTime |
@@ -136,6 +137,23 @@
 - [운영 전략 가이드](../OPERATIONS.md)
 - [QA 릴리즈 기준](../OPERATIONS.md#5-qa-게이트-및-릴리즈-기준)
 - [RA 문서 절차](../OPERATIONS.md#6-ra-문서-유지보수-절차)
+
+### 자율주행 개발방법론 SPEC군 (S18-R1 발효, 2026-05-10)
+
+| SPEC | 역할 | 주요 REQ |
+|------|------|----------|
+| **SPEC-METHODOLOGY-001** | 메타 (5축 RTM 상위 키) | REQ-METHODOLOGY-001~006 |
+| SPEC-CONSTITUTION-001 | 헌법 재정립 + CC 권한 + 사망 나선 헌법 조항 | REQ-CONST-001~008 |
+| SPEC-DISPATCH-V2-001 | DISPATCH v2 (Phase 종속성, Stall, TIMEOUT) | REQ-DISPATCH-V2-001~012 |
+| SPEC-AUTODRIVE-GATE-001 | Evidence-Based Completion + 사망 나선 감지 | REQ-AUTOGATE-001~009 |
+| SPEC-SPEC-TRIAGE-001 | SPEC 3분류 (ACTIVE/COMPLETED/DEPRECATED) | REQ-TRIAGE-001~005 |
+| SPEC-ROADMAP-001 | S18+ 라운드별 적용 계획 | REQ-ROADMAP-001~006 |
+| SPEC-GOVERNANCE-001 [SUPERSEDED] | METHODOLOGY-001에 흡수 (8 REQ) | (deprecated) |
+| 마이그레이션 보고서 | `.moai/reports/methodology-migration-S18-R1.md` | RTM 매핑 + 사고 케이스 8건 인용 |
+
+관련 PR/Issue:
+- PR [#127](http://10.11.1.40:7001/DR_RnD/Console-GUI/pulls/127) (메타 SPEC 발효, 머지 완료)
+- Round Issue [#128](http://10.11.1.40:7001/DR_RnD/Console-GUI/issues/128) (S18-R1 첫 라운드)
 
 ---
 

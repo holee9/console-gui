@@ -5,7 +5,38 @@
 
 ## [Unreleased]
 
-### 추가
+### S18-R0 메타 SPEC 전환 (2026-05-10) — PR #127
+
+#### 추가 — 자율주행 개발방법론 SPEC군 (46 EARS)
+- **SPEC-METHODOLOGY-001** (메타, 6 REQ): 5축 부속 SPEC RTM 상위 키
+- **SPEC-CONSTITUTION-001** (8 REQ): 7팀 헌법 재정립 + CC 권한 경계 + 사망 나선 헌법 조항
+- **SPEC-DISPATCH-V2-001** (12 REQ): Phase 종속성 강제, Stall/TIMEOUT 상세화, DISPATCH v2 프로토콜
+- **SPEC-AUTODRIVE-GATE-001** (9 REQ): Evidence-Based Completion 강화, 사망 나선 감지, Self-Verification 7항목
+- **SPEC-SPEC-TRIAGE-001** (5 REQ): SPEC 3분류 (ACTIVE/COMPLETED/DEPRECATED), 마이그레이션 절차
+- **SPEC-ROADMAP-001** (6 REQ): S18+ 라운드별 신 방법론 적용 계획
+- `.moai/reports/methodology-migration-S18-R1.md`: S17→S18 전환 보고서, 사고 케이스 8건 인용 (S05~S17)
+
+#### 변경 — 헌법/SSOT 동기화
+- `.claude/rules/teams/role-matrix.md` v5.1 → **v5.2**: §8 사망 나선(S15~S16-R1) 정식 등재 + S17→S18 메타 SPEC 도입 행 추가; §9 신규 6 SPEC 거버넌스 매트릭스 통합
+- `CLAUDE.md`: §5 메타 SPEC 인덱스 추가 (METHODOLOGY-001 + 5축); §7 Self-Verification 7항목 인용 (실질 커밋 게이트)
+- `.claude/rules/teams/dispatch-protocol.md` §1·§6: SPEC-DISPATCH-V2-001 REQ-DISPATCH-V2-001 (FIRST ACTION) + REQ-DISPATCH-V2-003 (Phase 종속성) 인용 추가
+- `.claude/rules/teams/quality-standards.md` §2·§3: 사망 나선 메트릭 2행 (Substantive Commit Rate, Round Effective Throughput) + Self-Verification 7번 체크 ("실질 커밋 발생 여부") 추가
+- `.moai/specs/SPEC-GOVERNANCE-001/spec.md`: SUPERSEDED by SPEC-METHODOLOGY-001 처리, 8 REQ → 5축 흡수 매핑 안내
+
+#### 신 운영 게이트 (S18-R1부터 강제)
+- Self-Verification 7항목 — 실질 커밋 SHA 의무 + 전체 솔루션 빌드 증거
+- Phase 종속성 강제 게이트 — Phase 1 미완료 시 후속 Phase 자동 IDLE
+- 사망 나선 가드 — 5라운드 연속 실질 커밋 0건 시 사용자 알림 (S15~S16-R1 재발 방지)
+- Substantive Commit Rate — QA 라운드별 측정·보고 신 메트릭
+
+#### S18-R1 발행 (Round Issue #128)
+- DISPATCH 6건 신규 발행: TEAM-A, TEAM-B, COORDINATOR, DESIGN, QA, RA
+- S17-R1 DISPATCH 6건 `active/` → `completed/` 이동
+- _CURRENT.md S18-R1 ACTIVE 6/6 갱신, S17-R1 freeze 해제
+
+---
+
+### 추가 (이전 Unreleased)
 - 팀 기반 Worktree 분리 개발 운영 체계 구축
 - QA 자동화 인프라 (SonarCloud, OWASP, Stryker.NET)
 - RA 문서 자동화 스크립트 (SBOM, RTM)

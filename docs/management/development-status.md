@@ -1,12 +1,23 @@
 # HnVue 개발 진행 현황 및 로드맵
 
 > 원본: README.md "개발 진행 현황" + "개발 로드맵" 섹션에서 분리 (2026-04-09)
-> 최종 업데이트: 2026-04-19 (S12-R4 IDLE CONFIRM 완료)
-> 실행 모델: AI 에이전트 6팀 구현 + 인간 7명 리뷰/의사결정
+> 최종 업데이트: **2026-05-10 (S18-R1 ACTIVE — 신 방법론 첫 라운드)**
+> 실행 모델: AI 에이전트 7팀 (CC v2 + 6 구현팀) + 인간 2명 리뷰/의사결정
+> **발효 방법론**: SPEC-METHODOLOGY-001 + 5축 부속 SPEC (PR #127 머지)
+
+## S17→S18 메타 전환 (2026-05-10)
+
+S15~S16-R1 사망 나선(3 Sprint, 실질 커밋 0건) 재발 방지를 위해 메타 SPEC 도입:
+
+- **SPEC-METHODOLOGY-001** (메타) + 5축 부속 SPEC(46 EARS) 작성 — PR [#127](http://10.11.1.40:7001/DR_RnD/Console-GUI/pulls/127) 머지
+- **SPEC-GOVERNANCE-001** SUPERSEDED (8 REQ → 5축 흡수)
+- 헌법/SSOT 5건 동기화 (role-matrix v5.2, CLAUDE.md, dispatch-protocol, quality-standards, 마이그레이션 보고서)
+- S18-R1부터 강제: Self-Verification 7항목, Phase 종속성, 사망 나선 가드, Substantive Commit Rate
+- Round Issue: [#128](http://10.11.1.40:7001/DR_RnD/Console-GUI/issues/128)
 
 ## 현재 진도 요약
 
-> **S12-R4 IDLE CONFIRM | 누적 ~80 AS (Agent Session)** | 상세: [PROGRESS-002](PROGRESS-002_DetailedAnalysis_v1.0.md) | [WBS v4.0](WBS-001_WBS_v3.0.md)
+> **S18-R1 ACTIVE | 누적 ~120 AS (Agent Session)** | 상세: [PROGRESS-002](PROGRESS-002_DetailedAnalysis_v1.0.md) | [WBS v4.0](WBS-001_WBS_v3.0.md) | [메타 SPEC](../../.moai/specs/SPEC-METHODOLOGY-001/spec.md)
 
 ### 계획 대비 진도 (AS 기반)
 
