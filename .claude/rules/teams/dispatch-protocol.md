@@ -12,6 +12,9 @@ git pull로 DISPATCH를 감지하여 작업 수행. DISPATCH 생성 권한은 CC
 
 ## 1. DISPATCH Resolution [HARD — FIRST ACTION]
 
+> **Authoritative Source**: SPEC-DISPATCH-V2-001 REQ-DISPATCH-V2-001 (FIRST ACTION 강제)
+> 본 §1은 해당 REQ의 운영 명세. SPEC 변경 시 본 §1도 동기 업데이트.
+
 세션 시작 시 가장 먼저 실행. 다른 어떤 작업보다 우선.
 
 ```
@@ -189,6 +192,9 @@ DISPATCH 읽기 → 이슈 생성 → DISPATCH Status에 이슈 번호 기록 �
 ---
 
 ## 6. Phase Dependency Protocol [S17+ 도입]
+
+> **Authoritative Source**: SPEC-DISPATCH-V2-001 REQ-DISPATCH-V2-003 (Phase 종속성 강제 게이트)
+> Phase 1 미완료 시 Phase 2+ 자동 IDLE 처리는 SPEC 명세를 따른다. S14-R2 사고 재발 방지 헌법 조항.
 
 ### Phase 구조
 

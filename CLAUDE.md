@@ -76,21 +76,19 @@ Integrate and report results:
 
 Definition: Single entry point for all MoAI development workflows.
 
-Subcommands: plan, run, sync, project, fix, loop, mx, feedback, review, clean, codemaps, coverage, e2e
+Subcommands: plan, run, sync, design, db, project, fix, loop, mx, feedback, review, clean, codemaps, coverage, e2e
 Default (natural language): Routes to autonomous workflow (plan -> run -> sync pipeline)
 
 Allowed Tools: Full access (Agent, AskUserQuestion, TaskCreate, TaskUpdate, TaskList, TaskGet, Bash, Read, Write, Edit, Glob, Grep)
 
-### Unified Skill: /agency
+### Unified Skill: /moai design
 
-Definition: Self-evolving creative production system for websites, landing pages, and web applications.
+Definition: Hybrid design workflow — Claude Design (path A) or code-based brand design (path B).
 
-Subcommands: brief, build, review, learn, evolve, resume, profile, phase, sync-upstream, rollback, config
-Default (natural language): Routes to agency pipeline (Planner -> Copywriter/Designer -> Builder -> Evaluator -> Learner)
+Subcommands: design (unified entry point)
+Default (natural language): Routes to /moai design with AskUserQuestion path selection (Claude Design vs code-based)
 
-Pipeline: GAN Loop (Builder-Evaluator iterates up to 5 times until quality threshold 0.75 is met)
-
-For detailed Agency rules, see .claude/rules/agency/constitution.md
+For detailed design rules, see .claude/rules/moai/design/constitution.md
 
 ---
 
@@ -121,9 +119,10 @@ agent, skill, plugin
 evaluator-active (independent skeptical quality assessment, 4-dimension scoring)
 plan-auditor (independent plan-phase document audit, bias prevention, EARS compliance)
 
-### Agency Agents (6)
+### Agency Agents (2) — copywriter and designer retained as fallback path B skills
 
-planner, copywriter, designer, builder, evaluator, learner (self-evolving creative production pipeline)
+copywriter (absorbed into moai-domain-copywriting skill), designer (absorbed into moai-domain-brand-design skill)
+planner, builder, evaluator, learner removed in SPEC-AGENCY-ABSORB-001 M5
 
 ### Dynamic Team Generation (Experimental)
 
@@ -140,6 +139,18 @@ For detailed agent descriptions, see the Agent Catalog section above. For agent 
 ## 5. SPEC-Based Workflow
 
 MoAI uses DDD and TDD as its development methodologies, selected via quality.yaml.
+
+### Methodology Meta SPEC (Effective S18-R1)
+
+Autonomous-driving methodology is governed by **SPEC-METHODOLOGY-001** (meta) and 5 sub-SPECs:
+
+- `SPEC-CONSTITUTION-001` — 7-team constitution + CC permission boundary
+- `SPEC-DISPATCH-V2-001` — Phase dependency, Stall, TIMEOUT, DISPATCH v2
+- `SPEC-AUTODRIVE-GATE-001` — Evidence-Based Completion + death-spiral detection
+- `SPEC-SPEC-TRIAGE-001` — SPEC triage rules (ACTIVE / COMPLETED / DEPRECATED)
+- `SPEC-ROADMAP-001` — S18+ round application roadmap
+
+`SPEC-GOVERNANCE-001` is SUPERSEDED by `SPEC-METHODOLOGY-001` (2026-05-10).
 
 ### MoAI Command Flow
 
@@ -212,6 +223,16 @@ MoAI-ADK implements LSP-based quality gates:
 ### Development Safeguards (5 HARD Rules)
 
 These rules ensure code quality and prevent regressions in the project codebase.
+
+**Self-Verification (7 items, before COMPLETED)** — per `SPEC-AUTODRIVE-GATE-001` REQ-AUTOGATE-009 + `quality-standards.md` §3:
+1. All Task acceptance criteria met
+2. `dotnet build HnVue.sln` 0 errors (full-solution)
+3. Self-owned `dotnet test` all passed
+4. Modified files within ownership scope (`git diff --name-only`)
+5. DISPATCH Status build evidence recorded
+6. Incomplete items honestly marked PARTIAL
+7. **Round produced a substantive commit** (not just protocol/scheduler patches) — death-spiral guard
+
 
 **Rule 1: Approach-First Development**
 
@@ -398,16 +419,18 @@ MoAI-ADK uses Claude Code's official rules system at `.claude/rules/moai/`:
 - **Workflow rules**: Progressive disclosure, token budget, workflow modes
 - **Development rules**: Skill frontmatter schema, tool permissions
 - **Language rules**: Path-specific rules for 16 programming languages
-- **Agency rules**: AI Agency constitution (.claude/rules/agency/constitution.md)
+- **Design rules**: Design system constitution (.claude/rules/moai/design/constitution.md)
 
-### Agency Configuration
+### Design System Configuration (absorbed from agency, SPEC-AGENCY-ABSORB-001)
 
-- `.agency/config.yaml`: Agency pipeline settings, adaptation weights, iteration limits
-- `.agency/context/`: Brand voice, visual identity, target audience, tech preferences
-- `.agency/fork-manifest.yaml`: Fork tracking for agency agents/skills evolved from MoAI upstream
+- `.moai/config/sections/design.yaml`: Design pipeline settings, GAN loop parameters, sprint contract, evolution thresholds
+- `.moai/project/brand/`: Brand voice (brand-voice.md), visual identity (visual-identity.md), target audience (target-audience.md)
+- `.claude/rules/moai/design/constitution.md`: FROZEN/EVOLVABLE zone definitions, safety architecture
 - `.moai/config/sections/constitution.yaml`: Project technical constraints (machine-readable)
 - `.moai/config/sections/harness.yaml`: Quality depth routing (minimal/standard/thorough)
 - `.moai/config/evaluator-profiles/`: Evaluator scoring profiles (default, strict, lenient, frontend)
+
+Legacy .agency/ directories are archived via `moai migrate agency` command.
 
 ### Language Rules
 

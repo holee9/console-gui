@@ -31,6 +31,8 @@ HnVue 프로젝트의 품질 지표 정의. **모든 품질 기준은 이 문서
 | **SonarCloud Code Smell** | <50 | <50 | Warning, not blocker |
 | **Stryker Mutation Score** | N/A | ≥70% | Safety-Critical 모듈만 |
 | **OWASP CVSS** | <7.0 | <7.0 | ≥7.0 triggers build failure |
+| **Substantive Commit Rate** | ≥1 per round | ≥1 per round | 5라운드 연속 0 → 사망 나선 알림 (SPEC-AUTODRIVE-GATE-001 REQ-AUTOGATE-005) |
+| **Round Effective Throughput** | 실질 커밋 ≥1 | 실질 커밋 ≥1 | ScheduleWakeup·프로토콜 패치·IDLE CONFIRM은 실질 커밋에서 제외 (SPEC-CONSTITUTION-001 REQ-CONST-005) |
 
 ### Safety-Critical 모듈 정의
 
@@ -57,6 +59,7 @@ DISPATCH 작업 완료 보고 전 모두 검증:
 - [ ] DISPATCH Status 테이블에 build evidence 기재?
 - [ ] Incomplete items honestly marked as PARTIAL?
 - [ ] ScheduleWakeup(읽은 값) 재설정 완료? (session-lifecycle.md 참조)
+- [ ] **이번 라운드가 실질 커밋(소스/문서/SPEC)을 발생시켰는가?** ScheduleWakeup·프로토콜 패치·IDLE CONFIRM 단독은 실질 커밋 아님. (SPEC-AUTODRIVE-GATE-001 REQ-AUTOGATE-009 — 사망 나선 방지)
 
 ### 빌드 범위 기준 [HARD — S14-R2 교훈]
 
