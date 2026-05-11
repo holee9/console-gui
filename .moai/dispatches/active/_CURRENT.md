@@ -50,7 +50,7 @@
 | G5 | DOC-032 RTM 파일명/버전/commit 일원화 | 미해결 |
 | G6 | Self-Verification 7항목 검증 절차 정의 | 미해결 |
 | G7 | Phase 종속성 발행 정합 (Phase 1만 ACTIVE) | 미해결 |
-| G8 | CC 워크트리 부재 해소 | 미해결 |
+| G8 | CC 워크트리 부재 해소 | ✅ (2026-05-11 검증: `.worktrees/cc` + `team/cc` 정상) |
 | G9 | 스테일 브랜치 정리 (feature/web-ui, mrd_*, manage_md) | 미해결 |
 | G10 | 빌드 베이스라인 (HnVue.sln 0 errors 증거) | 미해결 |
 | G11 | SPEC-UI-001 frontmatter 보강 | 미해결 |
@@ -65,5 +65,5 @@
 
 ---
 
-Updated: 2026-05-10 (S18-R1 CANCELLED — 클린 초기화 진입)
+Updated: 2026-05-11 (G8 ✅ — CC 워크트리/브랜치 정상 검증)
 Round Issue: #128 (생성 상태 — 사용자 종결 예정)
