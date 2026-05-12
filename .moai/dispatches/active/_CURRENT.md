@@ -1,16 +1,15 @@
-# DISPATCH Current Index — READY [S18-R2 발행 준비 완료]
+# DISPATCH Current Index — S18-R2 ACTIVE
 
-> **✅ 클린 게이트 통과 (2026-05-12)**: G1~G11 전체 완료
+> **S18-R2 발행 완료 (2026-05-12)**
 >
-> - Meta SPEC 6개 `approved` 상태로 승격 완료
-> - Sprint 라벨 S04 → S18 갱신 완료
-> - SPEC-UI-001 YAML frontmatter 표준화 완료
-> - S18-R2 발행 준비 완료
+> - Team B: DISPATCH-S18-R2-TEAM-B.md 발행 (Dicom/Update 커버리지)
+> - 근거 SPEC: SPEC-TEAMB-COV-001
+> - Priority: P2-High
 >
 > **[HARD] 에이전트 FIRST ACTION**:
 > 이 파일을 가장 먼저 읽는다. 자기 팀 행에서 상태 확인:
-> - 모든 팀: **IDLE** → S18-R2 DISPATCH 대기
-> - ScheduleWakeup(300초) 설정 — 폴링 재개
+> - Team B: **ACTIVE** → DISPATCH-S18-R2-TEAM-B.md 읽고 작업 시작
+> - 나머지 팀: **IDLE** → ScheduleWakeup(300초) 대기
 
 ---
 
@@ -19,14 +18,14 @@
 | 팀 | 현재 DISPATCH 파일 | 상태 | 비고 |
 |----|-------------------|------|------|
 | Team A | (발행 예정) | **IDLE** | S18-R2 대기 |
-| Team B | (발행 예정) | **IDLE** | S18-R2 대기 |
+| Team B | DISPATCH-S18-R2-TEAM-B.md | **ACTIVE** | Dicom/Update 커버리지 작업 |
 | Coordinator | (발행 예정) | **IDLE** | S18-R2 대기 |
 | Design | (발행 예정) | **IDLE** | S18-R2 대기 |
 | QA | (발행 예정) | **IDLE** | S18-R2 대기 |
 | RA | (발행 예정) | **IDLE** | S18-R2 대기 |
-| CC | (발행 예정) | **IDLE** | S18-R2 기획 |
+| CC | (발행 예정) | **IDLE** | S18-R2 모니터링 |
 
-**→ 0/7 ACTIVE — S18-R2 발행 대기**
+**→ 1/7 ACTIVE — Team B 작업 중**
 
 ---
 
