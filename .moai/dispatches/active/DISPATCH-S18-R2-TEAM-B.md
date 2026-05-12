@@ -4,7 +4,7 @@
 ## Team: Team B
 ## Priority: P2-High
 ## 근거 SPEC/문서: **SPEC-TEAMB-COV-001** (Team B 모듈 테스트 커버리지 목표 달성)
-## Gitea Issue: **#TODO** (CC가 발행 후 생성 예정)
+## Gitea Issue: **#129**
 
 ---
 
