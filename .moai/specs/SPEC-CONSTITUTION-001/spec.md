@@ -1,7 +1,7 @@
 ---
 id: SPEC-CONSTITUTION-001
 version: 1.0.0
-status: draft
+status: approved
 priority: P0
 team: meta
 title: HnVue 헌법 재정립 — 7팀 경계, CC 권한, FROZEN/EVOLVABLE 영역, 사망 나선 방지 헌법 조항

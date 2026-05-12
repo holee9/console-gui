@@ -1,7 +1,7 @@
 ---
 id: SPEC-METHODOLOGY-001
 version: 1.0.0
-status: draft
+status: approved
 priority: P0
 team: meta
 title: HnVue 자율주행 개발 방법론 메타 SPEC — 5축 부속 SPEC 통합 헌장

@@ -1,7 +1,7 @@
 ---
 id: SPEC-ROADMAP-001
 version: 1.0.0
-status: draft
+status: approved
 priority: P1
 team: meta
 title: 자율주행 방법론 적용 로드맵 — S18+ 라운드 우선순위 계획

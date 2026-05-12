@@ -1,19 +1,20 @@
-# SPEC-UI-001: HnVue UI Redesign — Module Independence, Usability Evaluation, Modern Medical Design
-
+---
+id: SPEC-UI-001
+version: "1.0"
+status: draft
+priority: P2
+team: team-design
+title: HnVue UI Redesign — Module Independence, Usability Evaluation & Modern Medical Design
+created: "2026-04-06"
+updated: "2026-05-12"
+author: MoAI Strategic Orchestrator (ultrathink)
+issue_number: 0
+regulatory_references: IEC 62366-1:2015+AMD1:2020, FDA HFE Guidance, WCAG 2.2 AA
+baseline: SUS 82.3 (DOC-028)
+supersedes: null
 ---
 
-## Metadata
-
-| Field | Value |
-|-------|-------|
-| SPEC ID | SPEC-UI-001 |
-| Title | HnVue UI Redesign — Module Independence, Usability Evaluation & Modern Medical Design |
-| Status | Draft |
-| Created | 2026-04-06 |
-| Author | MoAI Strategic Orchestrator (ultrathink) |
-| Regulatory References | IEC 62366-1:2015+AMD1:2020, FDA HFE Guidance, WCAG 2.2 AA |
-| Baseline | SUS 82.3 (DOC-028 Usability Test Report v1.0) |
-| Priority | High |
+# SPEC-UI-001: HnVue UI Redesign — Module Independence, Usability Evaluation, Modern Medical Design
 
 ---
 

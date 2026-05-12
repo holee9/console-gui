@@ -1,7 +1,7 @@
 ---
 id: SPEC-DISPATCH-V2-001
 version: 1.0.0
-status: draft
+status: approved
 priority: P0
 team: meta
 title: DISPATCH 프로토콜 v2 — Phase Dependency 강제, Stall/TIMEOUT 해석, Worktree·이슈 정합성

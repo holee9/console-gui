@@ -1,7 +1,7 @@
 ---
 id: SPEC-SPEC-TRIAGE-001
 version: 1.0.0
-status: draft
+status: approved
 priority: P1
 team: meta
 title: SPEC 재고 정리 — 3분류(ACTIVE/COMPLETED/DEPRECATED), 기존 7개 SPEC 마이그레이션

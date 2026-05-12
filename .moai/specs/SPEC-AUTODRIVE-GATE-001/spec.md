@@ -1,7 +1,7 @@
 ---
 id: SPEC-AUTODRIVE-GATE-001
 version: 1.0.0
-status: draft
+status: approved
 priority: P0
 team: meta
 title: 자율주행 게이트 — Evidence-Based Completion 강화, 사망 나선 감지, Self-Verification 7항목

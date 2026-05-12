@@ -8,7 +8,7 @@ author: moai
 priority: P0-Blocker
 issue_number: 0
 team: coordinator
-sprint: S04
+sprint: S18
 ---
 
 # SPEC-COORDINATOR-001: Null Repository Stub 교체 — EF Core 실제 구현
